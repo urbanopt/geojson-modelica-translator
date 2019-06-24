@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
+  "title": "Properties of a District System object",
+  "description": "Schema for a District System object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "type": "string",
+      "enum": [
+        "ElectricalJunction"
+      ]
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Feature name",
+      "type": "string"
+    },
+    "connector_type": {
+      "$ref": "#/definitions/ElectricalJunctionType"
+    },
+    "building_id": {
+      "type": "string"
+    },
+    "district_system_id": {
+      "type": "string"
+    },
+    "user_data": {
+      "description": "Arbitrary user data"
+    }
+  },
+  "required": [
+    "type",
+    "connector_type"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "ElectricalJunctionType": {
+      "type": "string",
+      "enum": [
+        "ElectricalPanel"
+      ]
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
+  "title": "Properties of a District System object",
+  "description": "Schema for a District System object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "type": "string",
+      "enum": [
+        "ThermalConnector"
+      ]
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Feature name",
+      "type": "string"
+    },
+    "connector_type": {
+      "$ref": "#/definitions/ThermalConnectorType"
+    },
+    "lengths": {
+      "description": "Length of each segment in ft, generated on export.",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "total_length": {
+      "description": "Total length of the connector in ft, generated on export.",
+      "type": "number"
+    },
+    "start_junction_id": {
+      "description": "Id of the junction that this connector starts at.",
+      "type": "string"
+    },
+    "end_junction_id": {
+      "type": "string"
+    },
+    "fluid_temperature_type": {
+      "description": "Classification of temperature range of fluid in this connector",
+      "$ref": "#/definitions/TemperatureType"
+    },
+    "flow_direction": {
+      "description": "Charcterization of connector, relative to the central plant",
+      "$ref": "#/definitions/FlowDirection"
+    },
+    "user_data": {
+      "description": "Arbitrary user data"
+    }
+  },
+  "required": [
+    "type",
+    "connector_type",
+    "start_junction_id",
+    "end_junction_id",
+    "fluid_temperature_type",
+    "flow_direction"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "ThermalConnectorType": {
+      "type": "string",
+      "enum": [
+        "OnePipe",
+        "TwoPipe",
+        "ThreePipe",
+        "FourPipe"
+      ]
+    },
+    "TemperatureType": {
+      "type": "string",
+      "enum": [
+        "Hot",
+        "Cold",
+        "Ambient"
+      ]
+    },
+    "FlowDirection": {
+      "type": "string",
+      "enum": [
+        "Supply",
+        "Return"
+      ]
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
+  "title": "Properties of a District System object",
+  "description": "Schema for a District System object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "type": "string",
+      "enum": [
+        "District System"
+      ]
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Feature name",
+      "type": "string"
+    },
+    "legal_name": {
+      "description": "Legal name used to identify this feature.",
+      "type": "string"
+    },
+    "address": {
+      "description": "Street address",
+      "type": "string"
+    },
+    "district_system_type": {
+      "$ref": "#/definitions/districtSystemType"
+    },
+    "detailed_model_filename": {
+      "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
+      "type": "string"
+    },
+    "equipment_array": {
+      "description": "array of equipment",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/equipmentType"
+      }
+    },
+    "equipment_1": {
+      "description": "First piece of equipment used in this plant",
+      "$ref": "#/definitions/equipmentType",
+      "type": "string"
+    },
+    "equipment_2": {
+      "description": "Second piece of equipment used in this plant",
+      "$ref": "#/definitions/equipmentType",
+      "type": "string"
+    },
+    "equipment_3": {
+      "description": "Third piece of equipment used in this plant",
+      "$ref": "#/definitions/equipmentType",
+      "type": "string"
+    },
+    "equipment_4": {
+      "description": "Fourth piece of equipment used in this plant",
+      "$ref": "#/definitions/equipmentType",
+      "type": "string"
+    },
+    "equipment_5": {
+      "description": "Fifth piece of equipment used in this plant",
+      "$ref": "#/definitions/equipmentType",
+      "type": "string"
+    },
+    "user_data": {
+      "description": "Arbitrary user data"
+    }
+  },
+  "required": [
+    "type",
+    "district_system_type"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "districtSystemType": {
+      "type": "string",
+      "enum": [
+        "District Thermal",
+        "Community Photovoltaic",
+        "Transformer"
+      ]
+    },
+    "equipmentType": {
+      "type": "string",
+      "enum": [
+        "Air-Cooled Chiller--Cold Water",
+        "Air-Cooled Chiller--Ambient Water",
+        "Water-Cooled Chiller--Cold Water",
+        "Water-Cooled Chiller---Ambient Water",
+        "Cooling Tower--Heat Rejection from Chiller, Cold Water",
+        "Cooling Tower--Heat Rejection from Chiller, Ambient Water",
+        "Cooling Tower--Direct--Chilled Water",
+        "Cooling Tower--Direct--Ambient Water",
+        "Boiler--Hot Water",
+        "Boiler--Ambient Water",
+        "Boiler--Combined Heat and Power--Hot Water",
+        "Boiler--Combined Heat and Power--Ambient Water",
+        "Water to Water Heat Pump--Ambient Water",
+        "Water to Water Heat Pump--Cold Water",
+        "Water to Water Heat Pump--Hot Water",
+        "Air to Water Heat Pump--Ambient Water",
+        "Air to Water Heat Pump--Cold Water",
+        "Air to Water Heat Pump--Hot Water",
+        "Ground Source Heat Pump--Ambient Water",
+        "Ground Source Heat Pump--Cold Water",
+        "Ground Source Heat Pump--Hot Water",
+        "Solar Thermal Array--Ambient Water",
+        "Solar Thermal Array--Hot Water",
+        "Storage--Hot Water",
+        "Storage--Cold Water",
+        "Storage--Ambient Water",
+        "Waste Heat Source--Hot Water",
+        "Waste Heat Source--Ambient Water"
+      ]
+    }
+  }
+}

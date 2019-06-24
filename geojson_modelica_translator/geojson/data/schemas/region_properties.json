@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/region_properties.json#",
+  "title": "Region object",
+  "description": "Schema for a Region object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "type": "string",
+      "enum": [
+        "Region"
+      ]
+    },
+    "region_type": {
+      "type": "string",
+      "enum": [
+        "Taxlot",
+        "Park",
+        "Road",
+        "Lake",
+        "Obstacle"
+      ]
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Feature name.",
+      "type": "string"
+    },
+    "legal_name": {
+      "description": "Legal name used to identify this feature.",
+      "type": "string"
+    },
+    "address": {
+      "description": "Street address.",
+      "type": "string"
+    },
+    "footprint_area": {
+      "description": "Area of the footprint (ft^2).  Calculated on export.",
+      "type": "number"
+    },
+    "footprint_perimeter": {
+      "description": "Perimeter of the footprint (ft). Calculated on export.",
+      "type": "number"
+    },
+    "exterior_lighting_zone": {
+      "description": "Choice of exterior lighting zone.",
+      "type": "string",
+      "enum": [
+        "0 - Undeveloped Areas Parks",
+        "1 - Developed Areas Parks",
+        "2 - Neighborhood",
+        "3 - All Other Areas",
+        "4 - High Activity"
+      ]
+    },
+    "taxlot_zoning": {
+      "type": "string",
+      "enum": [
+        "Vacant",
+        "Mixed",
+        "Residential",
+        "Commercial",
+        "OpenSpace"
+      ]
+    },
+    "user_data": {
+      "description": "Arbitrary user data"
+    }
+  },
+  "required": [
+    "type",
+    "region_type"
+  ],
+  "additionalProperties": false
+}

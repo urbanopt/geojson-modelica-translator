@@ -1,0 +1,356 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/building_properties.json#",
+  "title": "Building object",
+  "description": "Schema for a Building object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "type": "string",
+      "enum": [
+        "Building"
+      ]
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Feature name.",
+      "type": "string"
+    },
+    "legal_name": {
+      "description": "Legal name used to identify this feature.",
+      "type": "string"
+    },
+    "address": {
+      "description": "Street address.",
+      "type": "string"
+    },
+    "building_status": {
+      "description": "Building status.",
+      "type": "string",
+      "enum": [
+        "Proposed",
+        "Existing"
+      ]
+    },
+    "detailed_model_filename": {
+      "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
+      "type": "string"
+    },
+    "weather_filename": {
+      "description": "Name of EPW weather file for this building.  Defaults to site's weather_filename.",
+      "type": "string"
+    },
+    "tariff_filename": {
+      "description": "Name of the tariff file for this building.  Defaults to site's tariff_filename. ",
+      "type": "string"
+    },
+    "surface_elevation": {
+      "description": "The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.",
+      "type": "number"
+    },
+    "floor_area": {
+      "description": "Usable floor area (ft^2).",
+      "type": "number"
+    },
+    "number_of_stories": {
+      "description": "The maximum number of building stories, sum of number of above and below ground stories.",
+      "type": "integer"
+    },
+    "number_of_stories_above_ground": {
+      "description": "The number of building stories above ground. Defaults to number_of_stories.",
+      "type": "integer"
+    },
+    "maximum_roof_height": {
+      "description": "Maximum height of the roof relative to surface elevation (ft)",
+      "type": "number"
+    },
+    "roof_type": {
+      "description": "The basic roof geometry. Defaults to flat.",
+      "type": "string",
+      "enum": [
+        "Flat",
+        "Gable",
+        "Hip"
+      ]
+    },
+    "footprint_area": {
+      "description": "Area of the footprint (ft^2).  Calculated on export.",
+      "type": "number"
+    },
+    "footprint_perimeter": {
+      "description": "Perimeter of the footprint (ft). Calculated on export.",
+      "type": "number"
+    },
+    "year_built": {
+      "description": "The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year. ",
+      "type": "integer"
+    },
+    "template": {
+      "$ref": "#/definitions/templateType"
+    },
+    "building_type": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "system_type": {
+      "$ref": "#/definitions/systemType"
+    },
+    "weekday_start_time": {
+      "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
+      "type": "string"
+    },
+    "weekday_duration": {
+      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
+      "type": "string"
+    },
+    "weekend_start_time": {
+      "description": "Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
+      "type": "string"
+    },
+    "weekend_duration": {
+      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
+      "type": "string"
+    },
+    "mixed_type_1": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_1_percentage": {
+      "description": "Percentage of 1st mixed building space type. Only used when building_type is Mixed use.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "mixed_type_2": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_2_percentage": {
+      "description": "Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "mixed_type_3": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_3_percentage": {
+      "description": "Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "mixed_type_4": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_4_percentage": {
+      "description": "Percentage of 4th mixed building space type. Only used when building_type is Mixed use.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "number_of_residential_units": {
+      "description": "Total number of residential units in the building. Required for residential buildings or mixed-use buildings with residential use types.",
+      "type": "integer"
+    },
+    "exterior_lighting_zone": {
+      "description": "Choice of exterior lighting zone.",
+      "type": "string",
+      "enum": [
+        "0 - Undeveloped Areas Parks",
+        "1 - Developed Areas Parks",
+        "2 - Neighborhood",
+        "3 - All Other Areas",
+        "4 - High Activity"
+      ]
+    },
+    "onsite_parking_fraction": {
+      "description": "Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "power_factor": {
+      "description": "Ratio of the real power used by building to the apparent power seen by grid.",
+      "type": "number",
+      "minimum": 0
+    },
+    "user_data": {
+      "description": "Arbitrary user data"
+    }
+  },
+  "required": [
+    "type",
+    "floor_area",
+    "number_of_stories",
+    "building_type",
+    "system_type"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "buildingType": {
+      "description": "Primary building space type.",
+      "type": "string",
+      "enum": [
+        "Single-Family",
+        "Multifamily (2 to 4 units)",
+        "Multifamily (5 or more units)",
+        "Mobile Home",
+        "Vacant",
+        "Office",
+        "Laboratory",
+        "Nonrefrigerated warehouse",
+        "Food sales",
+        "Public order and safety",
+        "Outpatient health care",
+        "Refrigerated warehouse",
+        "Religious worship",
+        "Public assembly",
+        "Education",
+        "Food service",
+        "Inpatient health care",
+        "Nursing",
+        "Lodging",
+        "Strip shopping mall",
+        "Enclosed mall",
+        "Retail other than mall",
+        "Service",
+        "Mixed use",
+        "Uncovered Parking",
+        "Covered Parking"
+      ]
+    },
+    "systemType": {
+      "description": "Building HVAC system type. Should this be part of a mixed type struct?",
+      "type": "string",
+      "enum": [
+        "Ideal Air Loads",
+        "PTAC with hot water heat",
+        "PTAC with hot water heat with central air source heat pump",
+        "PTAC with gas coil heat",
+        "PTAC with electric baseboard heat",
+        "PTAC with no heat",
+        "PTAC with district hot water heat",
+        "PTAC with central air source heat pump heat",
+        "PTHP",
+        "PSZ-AC with gas coil heat",
+        "PSZ-AC with electric baseboard heat",
+        "PSZ-AC with no heat",
+        "PSZ-AC with district hot water heat",
+        "PSZ-AC with central air source heat pump heat",
+        "PSZ-HP",
+        "Fan coil district chilled water with no heat",
+        "Fan coil district chilled water and boiler",
+        "Fan coil district chilled water and central air source heat pump",
+        "Fan coil district chilled water unit heaters",
+        "Fan coil district chilled water electric baseboard heat",
+        "Fan coil district hot and chilled water",
+        "Fan coil district hot water and chiller",
+        "Fan coil district hot water and air-cooled chiller",
+        "Fan coil chiller and boiler",
+        "Fan coil air-cooled chiller and boiler",
+        "Fan coil chiller and central air source heat pump",
+        "Fan coil air-cooled chiller and central air source heat pump",
+        "Fan coil chiller with no heat",
+        "DOAS with fan coil district chilled water with no heat",
+        "DOAS with fan coil district chilled water and boiler",
+        "DOAS with fan coil district chilled water and central air source heat pump",
+        "DOAS with fan coil district chilled water unit heaters",
+        "DOAS with fan coil district chilled water electric baseboard heat",
+        "DOAS with fan coil district hot and chilled water",
+        "DOAS with fan coil district hot water and chiller",
+        "DOAS with fan coil district hot water and air-cooled chiller",
+        "DOAS with fan coil chiller and boiler",
+        "DOAS with fan coil air-cooled chiller and boiler",
+        "DOAS with fan coil chiller and central air source heat pump",
+        "DOAS with fan coil air-cooled chiller and central air source heat pump",
+        "DOAS with fan coil chiller with no heat",
+        "VRF with DOAS",
+        "Ground Source Heat Pumps with DOAS",
+        "Baseboard district hot water heat",
+        "Baseboard district hot water heat with direct evap coolers",
+        "Baseboard electric heat",
+        "Baseboard electric heat with direct evap coolers",
+        "Baseboard hot water heat",
+        "Baseboard hot water heat with direct evap coolers",
+        "Window AC with no heat",
+        "Window AC with forced air furnace",
+        "Window AC with district hot water baseboard heat",
+        "Window AC with hot water baseboard heat",
+        "Window AC with electric baseboard heat",
+        "Window AC with unit heaters",
+        "Direct evap coolers",
+        "Direct evap coolers with unit heaters",
+        "Unit heaters",
+        "Heat pump heat with no cooling",
+        "Heat pump heat with direct evap cooler",
+        "VAV with reheat",
+        "VAV with reheat central air source heat pump",
+        "VAV with PFP boxes",
+        "VAV with gas reheat",
+        "VAV with zone unit heaters",
+        "VAV with electric baseboard heat",
+        "VAV cool with zone heat pump heat",
+        "PVAV with reheat",
+        "PVAV with reheat with central air source heat pump",
+        "PVAV with PFP boxes",
+        "Residential forced air",
+        "Residential forced air cooling hot water baseboard heat",
+        "Residential forced air with district hot water",
+        "Residential heat pump",
+        "Forced air furnace",
+        "Forced air furnace district chilled water fan coil",
+        "Forced air furnace direct evap cooler",
+        "Residential AC with no heat",
+        "Residential AC with electric baseboard heat"
+      ]
+    },
+    "templateType": {
+      "description": "Standard template applied to building.",
+      "type": "string",
+      "enum": [
+        "DOE Ref Pre-1980",
+        "DOE Ref 1980-2004",
+        "90.1-2004",
+        "90.1-2007",
+        "90.1-2010",
+        "90.1-2013",
+        "NREL ZNE Ready 2017",
+        "DEER Pre-1975",
+        "DEER 1985",
+        "DEER 1996",
+        "DEER 2003",
+        "DEER 2007",
+        "DEER 2011",
+        "DEER 2014",
+        "DEER 2015",
+        "DEER 2017",
+        "DEER 2020",
+        "DEER 2025",
+        "DEER 2030",
+        "DEER 2035",
+        "DEER 2040",
+        "DEER 2045",
+        "DEER 2050",
+        "DEER 2055",
+        "DEER 2060",
+        "DEER 2065",
+        "DEER 2070",
+        "DEER 2075"
+      ]
+    }
+  }
+}
