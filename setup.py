@@ -4,6 +4,7 @@
 from setuptools import setup, find_packages
 
 from management.update_schemas import UpdateSchemas
+from management.update_licenses import UpdateLicenses
 
 with open('README.rst') as f:
     readme = f.read()
@@ -12,7 +13,7 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='',
+    name='GeoJSON Modelica Translator',
     version='0.1.0',
     description='Package for converting GeoJSON to Modelica models for Urban Scale Analyses.',
     long_description=readme,
@@ -23,7 +24,6 @@ setup(
     packages=find_packages(exclude=('tests', 'docs')),
     cmdclass={
         'update_schemas': UpdateSchemas,
-        # 'create_example': CreateExample,
-        # 'add_copyrights': AddCopyrights,
+        'update_licenses': UpdateLicenses,
     },
 )

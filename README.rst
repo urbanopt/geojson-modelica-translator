@@ -48,6 +48,7 @@ Todos
 -----
 
 * copyrights task
+* Convert over to a single project with multiple buildings (instead of single project per building)
 * Modelica path object to break up between loads and resources, etc.
 * Validate remaining schema objects
 * handle weather
