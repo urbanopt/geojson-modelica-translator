@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/system_design_parameter_def",
+  "definitions": {
+    "system_design_parameter_def": {
+      "title": "System Design Parameter Schema",
+      "description": "Definition of System Design Parameters. (Version 0.1)",
+      "type": "object",
+      "properties": {
+        "buildings": {
+          "title": "custom",
+          "description": "Parameters for all or individual buildings.",
+          "type": "object",
+          "properties": {
+            "default": {
+              "$ref": "#/definitions/building_def"
+            },
+            "custom": {
+              "description": "List of individual buildings and their custom parameters.",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/building_def"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "connectors": {
+          "description": "Parameters related to the connections between objects.",
+          "type": "object",
+          "properties": {
+            "default": {
+              "$ref": "#/definitions/connector_def"
+            }
+          },
+          "additionalProperties": false
+        },
+        "district_system": {
+          "description": "Parameters associated with district systems.",
+          "type": "object",
+          "properties": {
+            "default": {
+              "$ref": "#/definitions/district_system_def"
+            }
+          },
+          "additionalProperties": false
+        },
+        "topology": {
+          "title": "defaults",
+          "description": "Parameters associated with district topologies.",
+          "type": "object",
+          "properties": {
+            "default": {
+              "$ref": "#/definitions/topology_def"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "topology_def": {
+      "title": "defaults",
+      "description": "Parameters associated with district topologies.",
+      "type": "object",
+      "properties": {
+        "topology_style": {
+          "type": "string",
+          "enum": [
+            "Radial",
+            "Ring",
+            "Mesh",
+            "Out and Back"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "building_def": {
+      "description": "The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.",
+      "type": "object",
+      "properties": {
+        "geojson_id": {
+          "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
+          "type": "string"
+        },
+        "ets": {
+          "title": "ets",
+          "description": "ETS connection information",
+          "type": "object",
+          "properties": {
+            "system": {
+              "description": "Type of ETS system that the building is connected to.",
+              "type": "string",
+              "enum": [
+                "Booster Heater",
+                "Heat Exchanger Only"
+              ]
+            },
+            "description": {
+              "description": "User defined description. Not used in the translation process.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "system",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "load_model": {
+          "description": "Type of load model to use for the building.",
+          "type": "string",
+          "enum": [
+            "ROM/RC",
+            "ROM/DDM",
+            "CSV",
+            "Spawn"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "connector_def": {
+      "description": "Parameters associated with the connectors in a distrcit system.",
+      "type": "object",
+      "properties": {
+        "pipe_diameter": {
+          "description": "Pipe diameter. (inches)",
+          "type": "number"
+        },
+        "pipe_insulation_rvalue": {
+          "description": "Pipe insulation R-Value. (F-ft2-hr/Btu)",
+          "type": "number"
+        },
+        "pipe_location": {
+          "description": "Location of the pipe.",
+          "type": "string",
+          "enum": [
+            "Tunnel",
+            "Buried"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "district_system_def": {
+      "description": "Parameters associated with the district system.",
+      "type": "object",
+      "properties": {
+        "return_configuration": {
+          "description": "Type of return configuration for the overall district system.",
+          "type": "string",
+          "enum": [
+            "Direct Return",
+            "Reverse Return"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

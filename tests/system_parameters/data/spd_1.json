@@ -1,0 +1,36 @@
+{
+	"buildings": {
+		"default": {
+			"load_model": "ROM/RC"
+		},
+		"custom": [
+			{
+				"geojson_id": "abcd1234",
+				"ets": {
+					"system": "Booster Heater",
+					"description": "User input on describing the ETS"
+				}
+			}, {
+				"geojson_id": "defgh2345",
+				"load_model": "ROM/RC"
+			}
+		]
+	},
+	"connectors": {
+		"default": {
+			"pipe_diameter": 12,
+			"pipe_insulation_rvalue": 5,
+			"pipe_location": "Tunnel"
+		}
+	},
+	"district_system": {
+		"default": {
+			"return_configuration": "Reverse Return"
+		}
+	},
+	"topology": {
+		"default": {
+			"topology_style": "Radial"
+		}
+	}
+}

@@ -25,6 +25,34 @@ Modules
 GeoJSON
 +++++++
 
+This module manages the connection to the GeoJSON file including any calculations that are needed. Calculations can include distance calculations, number of buildings, number of connections, etc.
+
+The GeoJSON model should include checks for ensuring the accuracy of the area calculations, non-overlapping building areas and coordinates, and various others.
+
+Load Model Connectors
++++++++++++++++++++++
+
+The Model Connectors are libraries that are used to connect between the data that exist in the GeoJSON with a model-based engine for calculating loads (and potentially energy consumption). Examples includes, TEASER, Data-Driven Model (DDM), CSV, Spawn, etc.
+
+
+Simulation Mapper Class / Translator
+++++++++++++++++++++++++++++++++++++
+
+The Simulation Mapper Class can operate at mulitple levels:
+
+1. The GeoJSON level -- input: geojson, output: geojson+
+2. The Load Model Connection -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
+3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
+
+In some cases, the Level 3 case (transalation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
+
+Adjacency Matrix
+++++++++++++++++
+
+
+Topology Maker
+++++++++++++++
+
 
 Managed Tasks
 -------------
@@ -47,7 +75,6 @@ Updating Copyrights
 Todos
 -----
 
-* copyrights task
 * Convert over to a single project with multiple buildings (instead of single project per building)
 * Modelica path object to break up between loads and resources, etc.
 * Validate remaining schema objects
