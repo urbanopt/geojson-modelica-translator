@@ -36,14 +36,35 @@ from geojson_modelica_translator.model_connectors.base import Base as model_conn
 
 
 class TeaserConnector(model_connector_base):
-    def __init__(self, urbanopt_building):
-        super().__init__(urbanopt_building)
+    def __init__(self):
+        super().__init__(self)
 
     def mappings(self):
         """
         :return:
         """
         pass
+
+    def add_building(self, urbanopt_building, mapper=None):
+        """
+        Add building to the translator.
+
+        :param urbanopt_building: an urbanopt_building
+        :return:
+        """
+        # TODO: Need to convert units, these should exist on the urbanopt_building object
+        # TODO: Abstract out the GeoJSON functionality
+        if mapper is None:
+            self.buildings.append({
+                "area": urbanopt_building.feature.properties['floor_area'] * 0.092936,  # ft2 -> m2
+                "building_id": urbanopt_building.feature.properties['id'],
+                "building_type": urbanopt_building.feature.properties['building_type'],
+                "floor_height": urbanopt_building.feature.properties['height'] * 0.3048,  # ft -> m
+                "num_stories": urbanopt_building.feature.properties['number_of_stories_above_ground'],
+                "num_stories_below_grade": urbanopt_building.feature.properties['number_of_stories'] -
+                                           urbanopt_building.feature.properties['number_of_stories_above_ground'],
+                "year_built": urbanopt_building.feature.properties['year_built']
+            })
 
     def lookup_building_type(self, building_type):
         if 'office' in building_type.lower():
@@ -61,36 +82,38 @@ class TeaserConnector(model_connector_base):
         curdir = os.getcwd()
         try:
             prj = Project(load_data=True)
-            prj.name = self.building_id
-            prj.add_non_residential(
-                method='bmvbs',
-                usage=self.lookup_building_type(self.building_type),
-                name=self.building_id,
-                year_of_construction=self.year_built,
-                number_of_floors=self.num_stories,
-                height_of_floors=self.floor_height,
-                net_leased_area=self.area,
-                office_layout=1,
-                window_layout=1,
-                with_ahu=False,
-                construction_type="heavy"
-            )
+            # prj.name = self.building_id
 
-            prj.used_library_calc = 'IBPSA'
-            prj.number_of_elements_calc = 2
-            prj.merge_windows_calc = False
-            # prj.weather_file_path = utilities.get_full_path(
-            #     os.path.join(
-            #         "data",
-            #         "input",
-            #         "inputdata",
-            #         "weatherdata",
-            #         "DEU_BW_Mannheim_107290_TRY2010_12_Jahr_BBSR.mos"))
+            for building in self.buildings:
+                prj.add_non_residential(
+                    method='bmvbs',
+                    usage=self.lookup_building_type(building['building_type']),
+                    name=building['building_id'],
+                    year_of_construction=building['year_built'],
+                    number_of_floors=building['num_stories'],
+                    height_of_floors=building['floor_height'],
+                    net_leased_area=building['area'],
+                    office_layout=1,
+                    window_layout=1,
+                    with_ahu=False,
+                    construction_type="heavy"
+                )
+
+                prj.used_library_calc = 'IBPSA'
+                prj.number_of_elements_calc = 4
+                prj.merge_windows_calc = False
+                # prj.weather_file_path = utilities.get_full_path(
+                #     os.path.join(
+                #         "data",
+                #         "input",
+                #         "inputdata",
+                #         "weatherdata",
+                #         "DEU_BW_Mannheim_107290_TRY2010_12_Jahr_BBSR.mos"))
             prj.calc_all_buildings()
 
             prj.export_ibpsa(
-                library="BuildingSystems",
-                internal_id=prj.buildings[-1].internal_id,  # export the last building added only
+                library="Buildings",
+                # internal_id=prj.buildings[-1].internal_id,  # export the last building added only
                 path=root_building_dir
             )
         finally:
@@ -110,4 +133,4 @@ class TeaserConnector(model_connector_base):
         :param filename (optional): str, filename to save to
         :return: None
         """
-        project.save_citygml(filename, root_building_dir)
+        project.save_citygml(filename, root_directory)

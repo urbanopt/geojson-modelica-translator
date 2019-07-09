@@ -105,6 +105,7 @@ class GeoJsonModelicaTranslator(object):
             os.makedirs(check_path, exist_ok=True)
             setattr(self, p['member_variable'], check_path)
 
+
     def to_modelica(self, root_dir, model_connector_str='TeaserConnector'):
         """
         Convert the data in the GeoJSON to modelica based-objects
@@ -115,14 +116,20 @@ class GeoJsonModelicaTranslator(object):
         """
         self.scaffold_directory(root_dir)
 
+        # TODO: Handle other connectors -- create map based on model_connector_str
+        import geojson_modelica_translator.model_connectors.teaser
+        mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
+        model_connector = mc_klass()
+
         _log.info('Exporting to Modelica')
         for building in self.buildings:
-            _log.info("Translating building to model %s" % building)
-            # TODO: Handle other connectors -- create map based on model_connector_str
-            import geojson_modelica_translator.model_connectors.teaser
-            mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
-            model_connector = mc_klass(building)
-            model_connector.to_modelica(self.loads_dir)
+            _log.info(f'Adding building to model connector: {mc_klass.__class__}')
+
+            model_connector.add_building(building)
+
+        _log.info("Translating building to model %s" % building)
+        model_connector.to_modelica(self.loads_dir)
+
 
 
         # TODO: BuildingModelClass
