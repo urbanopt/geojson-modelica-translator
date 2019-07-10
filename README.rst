@@ -75,9 +75,7 @@ Updating Copyrights
 Todos
 -----
 
-* Convert over to a single project with multiple buildings (instead of single project per building)
-* Modelica path object to break up between loads and resources, etc.
-* Validate remaining schema objects
 * handle weather
+* Validate remaining schema objects
 * install tox
 * hook up travis

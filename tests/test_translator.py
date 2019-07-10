@@ -47,27 +47,27 @@ class GeoJSONTranslatorTest(unittest.TestCase):
 
         self.assertEqual(len(gj.buildings), 3)
 
-    def test_scaffold(self):
-        gj = GeoJsonModelicaTranslator()
-        p = os.path.abspath(os.path.join('tests', 'output', 'test_01'))
-        gj.scaffold_directory(p)
-
-        # check the existence of all the member variables
-        self.assertEqual(gj.loads_dir, os.path.join(p, 'Loads'))
-        self.assertEqual(gj.substations_dir, os.path.join(p, 'Substations'))
-        self.assertEqual(gj.plants_dir, os.path.join(p, 'Plants'))
-        self.assertEqual(gj.districts_dir, os.path.join(p, 'Districts'))
-        self.assertEqual(gj.resources_dir, os.path.join(p, 'Resources'))
-        self.assertEqual(gj.resources_data_root_dir, os.path.join(p, 'Resources', 'Data'))
-        self.assertEqual(gj.resources_data_loads_dir, os.path.join(p, 'Resources', 'Data', 'Loads'))
-        self.assertEqual(gj.resources_data_districts_dir, os.path.join(p, 'Resources', 'Data', 'Districts'))
-        self.assertEqual(gj.resources_data_weather_dir, os.path.join(p, 'Resources', 'Data', 'Weather'))
+    # def test_scaffold(self):
+    #     gj = GeoJsonModelicaTranslator()
+    #     p = os.path.abspath(os.path.join('tests', 'output', 'test_01'))
+    #     gj.scaffold_directory(p)
+    #
+    #     # check the existence of all the member variables
+    #     self.assertEqual(gj.loads_dir, os.path.join(p, 'Loads'))
+    #     self.assertEqual(gj.substations_dir, os.path.join(p, 'Substations'))
+    #     self.assertEqual(gj.plants_dir, os.path.join(p, 'Plants'))
+    #     self.assertEqual(gj.districts_dir, os.path.join(p, 'Districts'))
+    #     self.assertEqual(gj.resources_dir, os.path.join(p, 'Resources'))
+    #     self.assertEqual(gj.resources_data_root_dir, os.path.join(p, 'Resources', 'Data'))
+    #     self.assertEqual(gj.resources_data_loads_dir, os.path.join(p, 'Resources', 'Data', 'Loads'))
+    #     self.assertEqual(gj.resources_data_districts_dir, os.path.join(p, 'Resources', 'Data', 'Districts'))
+    #     self.assertEqual(gj.resources_data_weather_dir, os.path.join(p, 'Resources', 'Data', 'Weather'))
 
     def test_to_modelica(self):
         filename = os.path.abspath('tests/geojson/data/geojson_1.json')
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
         gj.to_modelica('tests/output/geojson_1')
-        self.assertTrue(os.path.exists(gj.loads_dir))
+        self.assertTrue(os.path.exists(gj.loads_path.files_dir))
 
 
 if __name__ == '__main__':

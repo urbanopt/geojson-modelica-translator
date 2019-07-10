@@ -109,19 +109,17 @@ class TeaserConnector(model_connector_base):
                 #         "inputdata",
                 #         "weatherdata",
                 #         "DEU_BW_Mannheim_107290_TRY2010_12_Jahr_BBSR.mos"))
-            prj.calc_all_buildings()
 
+            # calculate the properties of all the buildings and export to the Buildings library
+            prj.calc_all_buildings()
             prj.export_ibpsa(
                 library="Buildings",
-                # internal_id=prj.buildings[-1].internal_id,  # export the last building added only
-                path=root_building_dir
+                path=os.path.join(curdir, root_building_dir)
             )
         finally:
             os.chdir(curdir)
 
-        # TODO: Determine if we need to move the files to the correct places
-        # There are two projects that are exported based on the self.building_id, a Project
-        # and a Building. We only care about the buildings for now.
+        # TODO: Move the files anywhere? Add in the ETS?
 
     def to_citygml(self, project, root_directory, filename='citygml.xml'):
         """

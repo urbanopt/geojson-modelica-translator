@@ -28,56 +28,26 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import logging
+from .context import geojson_modelica_translator  # Do not remove this line
+
 import os
-import shutil
+import unittest
 
-_log = logging.getLogger(__name__)
-
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.utils import ModelicaPath
 
 
-class ModelicaPath(object):
-    """
-    Class for storing Modelica paths. This allows the path to point to
-    the model directory and the resources directory.
-    """
+class ModelicaPathTest(unittest.TestCase):
+    def test_properties(self):
+        mp = ModelicaPath('Loads', root_dir=None)
+        self.assertEqual(mp.files_dir, 'Loads')
+        self.assertEqual(mp.resources_dir, os.path.join('Resources','Data','Loads'))
 
-    def __init__(self, name, root_dir, overwrite=False):
-        """
-        Create a new modelica-based path with name of 'name'
+    def test_scaffold(self):
+        root_dir = os.path.abspath(os.path.join('tests', 'output', 'test_02'))
+        ModelicaPath('RandomContainer', root_dir)
+        self.assertTrue(os.path.exists(os.path.join(root_dir, 'RandomContainer')))
+        self.assertTrue(os.path.exists(os.path.join(root_dir, 'Resources', 'Data', 'RandomContainer')))
 
-        :param name: Name to create
-        """
-        self.name = name
-        self.root_dir = root_dir
 
-        # create the directories
-        if root_dir is not None:
-            check_path = os.path.join(self.files_dir)
-            self.clear_path(check_path, overwrite=overwrite)
-            check_path = os.path.join(self.resources_dir)
-            self.clear_path(check_path, overwrite=overwrite)
-
-    def clear_path(self, path, overwrite=False):
-        if os.path.exists(path):
-            if overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % path)
-            else:
-                shutil.rmtree(path)
-        os.makedirs(path, exist_ok=True)
-
-    @property
-    def files_dir(self):
-        if self.root_dir is None:
-            return self.name
-        else:
-            return os.path.join(self.root_dir, self.name)
-
-    @property
-    def resources_dir(self):
-        if self.root_dir is None:
-            return os.path.join('Resources', 'Data', self.name)
-        else:
-            return os.path.join(self.root_dir, 'Resources', 'Data', self.name)
-
+if __name__ == '__main__':
+    unittest.main()

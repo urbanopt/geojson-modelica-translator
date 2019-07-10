@@ -36,6 +36,7 @@ import importlib
 _log = logging.getLogger(__name__)
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.utils import ModelicaPath
 
 
 class GeoJsonModelicaTranslator(object):
@@ -47,15 +48,10 @@ class GeoJsonModelicaTranslator(object):
         self.buildings = []
 
         # directory name member variables. These are set in the scaffold_directory method
-        self.loads_dir = None
-        self.substations_dir = None
-        self.plants_dir = None
-        self.districts_dir = None
-        self.resources_dir = None
-        self.resources_data_root_dir = None
-        self.resources_data_loads_dir = None
-        self.resources_data_districts_dir = None
-        self.resources_data_weather_dir = None
+        self.loads_path = None
+        self.substations_path = None
+        self.plants_path = None
+        self.districts_path = None
 
     @classmethod
     def from_geojson(cls, filename):
@@ -82,39 +78,27 @@ class GeoJsonModelicaTranslator(object):
         :param root_dir: string, absolute path where to save results
         :return: bool, did the directory get scaffolded
         """
+        # TODO: need to be careful with this. If we are mixing load models, then we need to not remove the entire path
         if os.path.exists(root_dir):
             if overwrite:
                 raise Exception("Directory already exists and overwrite is false for %s" % root_dir)
             else:
                 shutil.rmtree(root_dir)
 
-        paths = [
-            {'member_variable': 'loads_dir', 'path': ['Loads']},
-            {'member_variable': 'substations_dir', 'path': ['Substations']},
-            {'member_variable': 'plants_dir', 'path': ['Plants']},
-            {'member_variable': 'districts_dir', 'path': ['Districts']},
-            {'member_variable': 'resources_dir', 'path': ['Resources']},
-            {'member_variable': 'resources_data_root_dir', 'path': ['Resources', 'Data']},
-            {'member_variable': 'resources_data_loads_dir', 'path': ['Resources', 'Data', 'Loads']},
-            {'member_variable': 'resources_data_districts_dir', 'path': ['Resources', 'Data', 'Districts']},
-            {'member_variable': 'resources_data_weather_dir', 'path': ['Resources', 'Data', 'Weather']},
-        ]
+        self.loads_path = ModelicaPath('Loads', root_dir=root_dir)
+        self.substations_path = ModelicaPath('Substations', root_dir=root_dir)
+        self.plants_path = ModelicaPath('Plants', root_dir=root_dir)
+        self.districts_path = ModelicaPath('Districts', root_dir=root_dir)
 
-        for p in paths:
-            check_path = os.path.abspath(os.path.join(root_dir, str.join(os.path.sep, p['path'])))
-            os.makedirs(check_path, exist_ok=True)
-            setattr(self, p['member_variable'], check_path)
-
-
-    def to_modelica(self, root_dir, model_connector_str='TeaserConnector'):
+    def to_modelica(self, save_dir, model_connector_str='TeaserConnector'):
         """
         Convert the data in the GeoJSON to modelica based-objects
 
-        :param root_dir: str, directory where the exported building loads will be stored
+        :param save_dir: str, directory where the exported building loads will be stored
         :param model_connector_str: str, which model_connector to use
         :return:
         """
-        self.scaffold_directory(root_dir)
+        self.scaffold_directory(save_dir)
 
         # TODO: Handle other connectors -- create map based on model_connector_str
         import geojson_modelica_translator.model_connectors.teaser
@@ -127,10 +111,8 @@ class GeoJsonModelicaTranslator(object):
 
             model_connector.add_building(building)
 
-        _log.info("Translating building to model %s" % building)
-        model_connector.to_modelica(self.loads_dir)
-
-
+        _log.info(f'Translating building to model {building}')
+        model_connector.to_modelica(self.loads_path.files_dir)
 
         # TODO: BuildingModelClass
         # TODO: mapper class
