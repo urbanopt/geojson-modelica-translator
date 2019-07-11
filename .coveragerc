@@ -9,6 +9,9 @@ source =
     */site-packages/
 
 [report]
+omit =
+    geojson_modelica_translator/cli.py
+    
 # Regexes for lines to exclude from consideration
 exclude_lines =
     # Have to re-enable the standard pragma

@@ -4,6 +4,9 @@ GeoJSON / Modelica Translator
 .. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
     :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
 
+.. image:: https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop
+:target: https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop
+
 
 Description
 -----------
