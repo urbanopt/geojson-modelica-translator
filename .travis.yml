@@ -19,3 +19,5 @@ env:
     - TOX_ENV=docs
 script:
   - tox -e $TOX_ENV
+after_success:
+  - coveralls
