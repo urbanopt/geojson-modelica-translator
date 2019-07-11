@@ -34,8 +34,6 @@ import shutil
 
 _log = logging.getLogger(__name__)
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
-
 
 class ModelicaPath(object):
     """
@@ -80,4 +78,3 @@ class ModelicaPath(object):
             return os.path.join('Resources', 'Data', self.name)
         else:
             return os.path.join(self.root_dir, 'Resources', 'Data', self.name)
-

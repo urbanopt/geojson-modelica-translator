@@ -32,7 +32,6 @@ import logging
 import os
 from collections import defaultdict
 import geojson
-from jsonschema import validate as validate_json
 from geojson_modelica_translator.geojson.schemas import Schemas
 
 _log = logging.getLogger(__name__)

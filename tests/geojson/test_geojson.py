@@ -31,7 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from ..context import geojson_modelica_translator  # Do not remove this line
+from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 
 

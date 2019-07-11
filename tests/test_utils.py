@@ -28,7 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from .context import geojson_modelica_translator  # Do not remove this line
+from .context import geojson_modelica_translator  # noqa - Do not remove this line
 
 import os
 import unittest
@@ -40,7 +40,7 @@ class ModelicaPathTest(unittest.TestCase):
     def test_properties(self):
         mp = ModelicaPath('Loads', root_dir=None)
         self.assertEqual(mp.files_dir, 'Loads')
-        self.assertEqual(mp.resources_dir, os.path.join('Resources','Data','Loads'))
+        self.assertEqual(mp.resources_dir, os.path.join('Resources', 'Data', 'Loads'))
 
     def test_scaffold(self):
         root_dir = os.path.abspath(os.path.join('tests', 'output', 'test_02'))

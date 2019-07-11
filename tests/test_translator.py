@@ -28,7 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from .context import geojson_modelica_translator  # Do not remove this line
+from .context import geojson_modelica_translator  # noqa - Do not remove this line
 
 import os
 import unittest

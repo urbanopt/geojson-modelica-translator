@@ -33,6 +33,7 @@ import os
 
 from jsonschema.validators import _LATEST_VERSION as LatestValidator
 
+
 class Schemas(object):
     """
     Class to hold the various schemas

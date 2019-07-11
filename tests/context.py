@@ -35,4 +35,4 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import geojson_modelica_translator  # noqa  # Do not remove this line.
+import geojson_modelica_translator  # noqa - Do not remove this line.

@@ -39,6 +39,5 @@ class Base(object):
         self.buildings = []
         # extract data out of the urbanopt_building object and store into the base object
 
-
     # These methods need to be defined in each of the derived model connectors
     # def to_modelica(self):

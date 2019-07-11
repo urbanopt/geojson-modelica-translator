@@ -34,7 +34,7 @@ import glob
 import os
 import re
 
-PYTHON_REGEX = re.compile('^""".\*{100}.*:copyright.*\*{100}."""$', re.MULTILINE | re.DOTALL)
+PYTHON_REGEX = re.compile(r'^""".\*{100}.*:copyright.*\*{100}."""$', re.MULTILINE | re.DOTALL)
 PYTHON_LICENSE = '''"""
 ****************************************************************************************************
 :copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.

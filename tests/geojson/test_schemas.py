@@ -28,7 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from ..context import geojson_modelica_translator  # Do not remove this line
+from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 import unittest
 
@@ -49,7 +49,7 @@ class SchemasTest(unittest.TestCase):
 
     def test_validate_schema(self):
         s = Schemas()
-        data = s.retrieve('building')
+        s.retrieve('building')
 
         # verify that the schema can validate an instance with simple parameters
         instance = {

@@ -28,15 +28,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 import logging
 import os
 import shutil
-import importlib
 
 _log = logging.getLogger(__name__)
-
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
-from geojson_modelica_translator.utils import ModelicaPath
 
 
 class GeoJsonModelicaTranslator(object):
