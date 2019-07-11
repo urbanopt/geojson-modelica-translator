@@ -1,6 +1,9 @@
 GeoJSON / Modelica Translator
 =============================
 
+.. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
+    :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
+
 
 Description
 -----------
@@ -77,5 +80,3 @@ Todos
 
 * handle weather
 * Validate remaining schema objects
-* install tox
-* hook up travis

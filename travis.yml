@@ -1,0 +1,21 @@
+sudo: required
+dist: xenial
+cache:
+  directories:
+    - "$HOME/.pip-cache/"
+    - ".tox"
+language: python
+python:
+  - "3.6"
+services:
+  - docker
+install:
+  - pip install --upgrade pip
+  - pip install tox==3.13.2
+env:
+  matrix:
+    - TOX_ENV=python
+    - TOX_ENV=flake8
+    - TOX_ENV=docs
+script:
+  - tox -e $TOX_ENV

@@ -120,6 +120,8 @@ class TeaserConnector(model_connector_base):
             os.chdir(curdir)
 
         # TODO: Move the files anywhere? Add in the ETS?
+        # TODO: Remove building names in children files.
+        # TODO: move internal gains to the Resources/Data/Loads/ProjectXXX -- MW either is correct. Library is typically
 
     def to_citygml(self, project, root_directory, filename='citygml.xml'):
         """
