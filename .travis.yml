@@ -12,6 +12,7 @@ services:
 install:
   - pip install --upgrade pip
   - pip install tox==3.13.2
+  - pip install python-coveralls
 env:
   matrix:
     - TOX_ENV=python
