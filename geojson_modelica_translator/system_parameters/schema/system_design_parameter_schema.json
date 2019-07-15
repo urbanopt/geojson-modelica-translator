@@ -50,9 +50,41 @@
           "description": "Parameters associated with district topologies.",
           "type": "object",
           "properties": {
-            "default": {
+            "topology_style": {
+              "description": "Description of topology style",
+              "type": "string",
               "$ref": "#/definitions/topology_def"
+            },
+            "topology_optimization": {
+              "description": "Perform topology optimization?",
+              "type": "boolean"
+            },
+            "Cost_Function": {
+              "description": "Cost function to use in topology optimization",
+              "type": "string",
+              "$ref": "#/definitions/cost_fun_def"
+            },
+            "Optimization_Approach": {
+              "description": "Approach to use for topology optimization",
+              "type": "string",
+              "$ref": "#/definitions/opt_approach_def"
+            },
+            "Time_Period": {
+              "description": "Time horizon for topology optimization.This paramater is used only if LCC is used as the cost function.",
+              "type": "integer"
+            },
+            "Discount_Rate": {
+              "description": "Discount rate for topology optimization. This paramater is used only if LCC is used as the cost function.",
+              "type": "integer"
             }
+          },
+          "dependencies": {
+            "topology_optimization": [
+              "Cost_Function",
+              "Optimization_Approach",
+              "Time_Period",
+              "Discount_Rate"
+            ]
           },
           "additionalProperties": false
         }
@@ -71,6 +103,37 @@
             "Ring",
             "Mesh",
             "Out and Back"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "cost_fun_def": {
+      "title": "defaults",
+      "description": "Possible cost functions for the topology optimization problem",
+      "type": "object",
+      "properties": {
+        "cost_fun": {
+          "type": "string",
+          "enum": [
+            "Energy",
+            "Life Cycle Cost",
+            "Carbon Emissions"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "opt_approach_def": {
+      "title": "opt_approach_def",
+      "description": "Optimization approach for the topology optimization problem",
+      "type": "object",
+      "properties": {
+        "opt_approach": {
+          "type": "string",
+          "enum": [
+            "Black box",
+            "Gradient-based"
           ]
         }
       },
