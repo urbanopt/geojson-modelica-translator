@@ -49,7 +49,6 @@ coverage.xml
 .hypothesis/
 
 # Translations
-*.mo
 *.pot
 
 # Django stuff:
@@ -94,3 +93,4 @@ ENV/
 
 # Test outputs
 tests/output
+tests/modelica/output

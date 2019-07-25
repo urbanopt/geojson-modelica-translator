@@ -149,7 +149,7 @@
       "type": "object",
       "properties": {
         "return_configuration": {
-          "description": "Type of return configuration for the overall district system.",
+          "description": "Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.",
           "type": "string",
           "enum": [
             "Direct Return",

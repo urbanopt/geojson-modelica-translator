@@ -30,10 +30,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 import os
+import shutil
 from teaser.project import Project
 
 from geojson_modelica_translator.model_connectors.base import Base as model_connector_base
-
+from geojson_modelica_translator.modelica.input_parser import InputParser
 
 class TeaserConnector(model_connector_base):
     def __init__(self):
@@ -79,16 +80,18 @@ class TeaserConnector(model_connector_base):
         :return:
         """
         # Teaser changes the current dir, so make sure to reset it back to where we started
+        building_names = []
         curdir = os.getcwd()
         try:
             prj = Project(load_data=True)
             # prj.name = self.building_id
 
             for building in self.buildings:
+                building_name = building['building_id']
                 prj.add_non_residential(
                     method='bmvbs',
                     usage=self.lookup_building_type(building['building_type']),
-                    name=building['building_id'],
+                    name=building_name,
                     year_of_construction=building['year_built'],
                     number_of_floors=building['num_stories'],
                     height_of_floors=building['floor_height'],
@@ -98,9 +101,10 @@ class TeaserConnector(model_connector_base):
                     with_ahu=False,
                     construction_type="heavy"
                 )
+                building_names.append(building_name)
 
                 prj.used_library_calc = 'IBPSA'
-                prj.number_of_elements_calc = 4
+                prj.number_of_elements_calc = 2
                 prj.merge_windows_calc = False
                 # prj.weather_file_path = utilities.get_full_path(
                 #     os.path.join(
@@ -119,9 +123,42 @@ class TeaserConnector(model_connector_base):
         finally:
             os.chdir(curdir)
 
+        self.post_process(root_building_dir, building_names)
         # TODO: Move the files anywhere? Add in the ETS?
         # TODO: Remove building names in children files.
         # TODO: move internal gains to the Resources/Data/Loads/ProjectXXX -- MW either is correct. Library is typically
+
+    def post_process(self, root_building_dir, building_names):
+        """
+        Cleanup the export of the TEASER files into a format suitable for the district-based analysis. This includes
+        the following:
+
+            * Update the partial to inherit from the GeojsonExport class defined in MBL.
+            * Rename the files to remove the names of the buildings
+            * Move the files to the Loads level and remove the Project folder (default export method from TEASER)
+            * Add heat port
+            * Add return temperature
+            * Remove weaDat and rely on weaBus
+        :param building_names: list, names of the buildings that need to be cleaned up after export
+        :return:
+        """
+        file_exts = ['Floor.mo', 'ICT.mo', 'Meeting.mo', 'Office.mo', 'Restrooms.mo', 'Storage.mo']
+
+        # move files to loads level
+        for b in building_names:
+            shutil.move(
+                os.path.join(root_building_dir, f'Project/B{b}/B{b}_Models'), os.path.join(root_building_dir, f'B{b}')
+            )
+
+            # process each of the building models
+            for file_ext in file_exts:
+                filename = os.path.join(root_building_dir, f'B{b}/B{b}{file_ext}')
+                new_filename = os.path.join(root_building_dir, f'B{b}/{file_ext}')
+                if os.path.exists(os.path.join(root_building_dir, filename)):
+                    mofile = InputParser(filename)
+                    mofile.save_as(new_filename)
+                    # os.remove(filename)
+
 
     def to_citygml(self, project, root_directory, filename='citygml.xml'):
         """
