@@ -67,7 +67,7 @@ class TeaserConnector(model_connector_base):
                 "floor_height": urbanopt_building.feature.properties['height'] * 0.3048,  # ft -> m
                 "num_stories": urbanopt_building.feature.properties['number_of_stories_above_ground'],
                 "num_stories_below_grade": urbanopt_building.feature.properties['number_of_stories'] -
-                                           urbanopt_building.feature.properties['number_of_stories_above_ground'],
+                urbanopt_building.feature.properties['number_of_stories_above_ground'],
                 "year_built": urbanopt_building.feature.properties['year_built']
             })
 
@@ -197,7 +197,7 @@ class TeaserConnector(model_connector_base):
 
                 # add heat port
                 data = [
-                    'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'
+                    'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'  # noqa
                 ]
                 mofile.add_model_object('Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a', 'port_a', data)
 
@@ -243,7 +243,6 @@ class TeaserConnector(model_connector_base):
 
         package = PackageParser.new_from_template(root_building_dir, 'Loads', ['B' + b for b in building_names])
         package.save()
-
 
     def to_citygml(self, project, root_directory, filename='citygml.xml'):
         """

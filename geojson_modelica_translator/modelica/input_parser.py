@@ -29,7 +29,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-from jinja2 import Template, FileSystemLoader, Environment
+
+from jinja2 import FileSystemLoader, Environment
 
 
 class PackageParser(object):
@@ -143,56 +144,58 @@ class InputParser(object):
         obj_data = ''
         connect_data = ''
         with open(self.modelica_filename, 'r') as f:
-            for index, l in enumerate(f.readlines()):
-                if l == '\n':
+            for index, line in enumerate(f.readlines()):
+                if line == '\n':
                     # Skip blank lines (for now?
-                    continue;
-                elif l.startswith('within'):
+                    continue
+                elif line.startswith('within'):
                     # these lines typically only have a single line, so just persist it
                     if not self.within:
-                        self.within = l.split(' ')[1].rstrip()
+                        # remove the line feed and the trailing semicolon
+                        self.within = line.split(' ')[1].rstrip().replace(';', '')
                     else:
                         raise Exception("More than one 'within' lines found")
                     continue
-                elif l.startswith('model'):
+                elif line.startswith('model'):
                     # get the model name and save
-                    self.model['name'] = l.split(' ')[1].rstrip()
+                    self.model['name'] = line.split(' ')[1].rstrip()
                     current_block = 'model'
                     continue
-                elif l.startswith('equation'):
+                elif line.startswith('equation'):
                     current_block = 'equation'
                     continue
-                elif l.startswith('end'):
+                elif line.startswith('end'):
                     current_block = 'end'
                 else:
                     # check if any other tokens are triggered and throw a 'not-supported' message
                     for t in tokens:
-                        if l.startswith(t):
-                            raise Exception(f"Found other token '{t}' in '{self.modelica_filename}' that is not supported... cannot continue")
+                        if line.startswith(t):
+                            raise Exception(
+                                f"Found other token '{t}' in '{self.modelica_filename}' that is not supported... cannot continue")  # noqa
 
                 # now store data that is in between these other blocks
                 if current_block == 'model':
                     # grab the lines that are comments:
-                    if not obj_data and l.strip().startswith('"') and l.strip().endswith('"'):
-                        self.model['comment'] = l.rstrip()
+                    if not obj_data and line.strip().startswith('"') and line.strip().endswith('"'):
+                        self.model['comment'] = line.rstrip()
                         continue
 
                     # determine if this is a new object or a new object (look for ';')
-                    obj_data += l
-                    if l.endswith(';\n'):
+                    obj_data += line
+                    if line.endswith(';\n'):
                         self.model['objects'].append(obj_data)
                         obj_data = ''
                 elif current_block == 'equation':
-                    if l.strip().startswith('connect'):
-                        connect_data += l
-                    elif connect_data and l.endswith(';\n'):
-                        connect_data += l
+                    if line.strip().startswith('connect'):
+                        connect_data += line
+                    elif connect_data and line.endswith(';\n'):
+                        connect_data += line
                         self.connections.append(connect_data)
                         connect_data = ''
                     elif connect_data:
-                        connect_data += l
+                        connect_data += line
                     else:
-                        self.equations.append(l)
+                        self.equations.append(line)
                 elif current_block == 'end':
                     pass
                 else:

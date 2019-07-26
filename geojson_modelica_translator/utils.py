@@ -34,6 +34,7 @@ import shutil
 
 _log = logging.getLogger(__name__)
 
+
 def copytree(src, dst, symlinks=False, ignore=None):
     """
     Alternate version of copytree that will work if the directory already exists (use instead of shutil)
@@ -45,6 +46,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
             shutil.copytree(s, d, symlinks, ignore)
         else:
             shutil.copy2(s, d)
+
 
 class ModelicaPath(object):
     """
