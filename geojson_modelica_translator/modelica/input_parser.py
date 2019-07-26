@@ -38,12 +38,15 @@ class PackageParser(object):
     Class to read and modify the package.mo and the package.order file
     """
 
-    def __init__(self, file_path=None):
+    def __init__(self, path=None):
         """
-        Read in the files
-        :param file_path: string, path to where the package.mo and package.order reside.
+        Create an instance to manage the package.mo/order file. If no path is provided then the user
+        must add in their own package and order data. Or the user can load from the new_from_template
+        class method.
+
+        :param path: string, path to where the package.mo and package.order reside.
         """
-        self.file_path = file_path
+        self.path = path
         self.order_data = None
         self.package_data = None
         self.load()
@@ -78,12 +81,12 @@ class PackageParser(object):
         """
         Load the package.mo and package.mo data from the member variable path
         """
-        filename = os.path.join(self.file_path, 'package.mo')
+        filename = os.path.join(self.path, 'package.mo')
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 self.package_data = f.read()
 
-        filename = os.path.join(self.file_path, 'package.order')
+        filename = os.path.join(self.path, 'package.order')
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 self.order_data = f.read()
@@ -92,10 +95,10 @@ class PackageParser(object):
         """
         Save the updated files to the same location
         """
-        with open(os.path.join(os.path.join(self.file_path, 'package.mo')), 'w') as f:
+        with open(os.path.join(os.path.join(self.path, 'package.mo')), 'w') as f:
             f.write(self.package_data)
 
-        with open(os.path.join(os.path.join(self.file_path, 'package.order')), 'w') as f:
+        with open(os.path.join(os.path.join(self.path, 'package.order')), 'w') as f:
             f.write(self.order_data)
 
     @property

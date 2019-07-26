@@ -231,7 +231,7 @@ class TeaserConnector(model_connector_base):
                 os.remove(f)
 
             # save the updated package.mo and package.order.
-            new_package = PackageParser.new_from_template(package.file_path, f'B{b}', package.order, within='Loads')
+            new_package = PackageParser.new_from_template(package.path, f'B{b}', package.order, within='Loads')
             new_package.save()
 
         # remaining clean up tasks across the entire exported project
