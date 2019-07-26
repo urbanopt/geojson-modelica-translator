@@ -29,6 +29,90 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+from jinja2 import Template, FileSystemLoader, Environment
+
+
+class PackageParser(object):
+    """
+    Class to read and modify the package.mo and the package.order file
+    """
+
+    def __init__(self, file_path=None):
+        """
+        Read in the files
+        :param file_path: string, path to where the package.mo and package.order reside.
+        """
+        self.file_path = file_path
+        self.order_data = None
+        self.package_data = None
+        self.load()
+
+    @classmethod
+    def new_from_template(cls, path, name, order, within=None):
+        """
+        Create new package data based on the package.mo template. If within is not specified, then it is
+        assumed that this is a top level package and will load from the package_base template.
+
+        :param path:
+        :param name:
+        :param order:
+        :param within:
+        :return:
+        """
+        klass = PackageParser(path)
+        environ = Environment(
+            loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
+        )
+        if within:
+            template = environ.get_template('package.mot')
+        else:
+            template = environ.get_template('package_base.mot')
+
+        klass.package_data = template.render(within=within, name=name, order=order)
+        klass.order_data = '\n'.join(order)
+        klass.order_data += '\n'  # trailing line
+        return klass
+
+    def load(self):
+        """
+        Load the package.mo and package.mo data from the member variable path
+        """
+        filename = os.path.join(self.file_path, 'package.mo')
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                self.package_data = f.read()
+
+        filename = os.path.join(self.file_path, 'package.order')
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                self.order_data = f.read()
+
+    def save(self):
+        """
+        Save the updated files to the same location
+        """
+        with open(os.path.join(os.path.join(self.file_path, 'package.mo')), 'w') as f:
+            f.write(self.package_data)
+
+        with open(os.path.join(os.path.join(self.file_path, 'package.order')), 'w') as f:
+            f.write(self.order_data)
+
+    @property
+    def order(self):
+        """
+        Return the order of the packages from the package.order file
+        """
+        return self.order_data.split('\n')
+
+    def rename_model(self, old_model, new_model):
+        """
+        Rename the model name in the package.order file
+
+        :param old_model: string, existing name
+        :param new_model: string, new name
+        :return:
+        """
+        self.order_data = self.order_data.replace(old_model, new_model)
 
 
 class InputParser(object):
@@ -45,7 +129,7 @@ class InputParser(object):
         self.parse_mo()
 
     def init_vars(self):
-        self.withins = []
+        self.within = None
         self.model = {'name': None, 'comment': None, 'objects': []}
         self.connections = []
         self.equations = []
@@ -60,9 +144,15 @@ class InputParser(object):
         connect_data = ''
         with open(self.modelica_filename, 'r') as f:
             for index, l in enumerate(f.readlines()):
-                if l.startswith('within'):
+                if l == '\n':
+                    # Skip blank lines (for now?
+                    continue;
+                elif l.startswith('within'):
                     # these lines typically only have a single line, so just persist it
-                    self.withins.append(l)
+                    if not self.within:
+                        self.within = l.split(' ')[1].rstrip()
+                    else:
+                        raise Exception("More than one 'within' lines found")
                     continue
                 elif l.startswith('model'):
                     # get the model name and save
@@ -78,13 +168,13 @@ class InputParser(object):
                     # check if any other tokens are triggered and throw a 'not-supported' message
                     for t in tokens:
                         if l.startswith(t):
-                            raise Exception(f'Found other token {t} that is not supported... cannot continue')
+                            raise Exception(f"Found other token '{t}' in '{self.modelica_filename}' that is not supported... cannot continue")
 
                 # now store data that is in between these other blocks
                 if current_block == 'model':
                     # grab the lines that are comments:
                     if not obj_data and l.strip().startswith('"') and l.strip().endswith('"'):
-                        self.model['comment'] = l
+                        self.model['comment'] = l.rstrip()
                         continue
 
                     # determine if this is a new object or a new object (look for ';')
@@ -138,6 +228,14 @@ class InputParser(object):
         if index is not None:
             del self.model['objects'][index]
 
+    def replace_within_string(self, new_string):
+        """
+        Replacement of the path portion of the  within string
+
+        :param new_string: string, what to replace the existing within string with.
+        """
+        self.within = new_string
+
     def find_model_object(self, obj_name):
         """
         Find a model object in the list of parsed objects
@@ -164,11 +262,10 @@ class InputParser(object):
 
         This will not work with arrays or lists (e.g., {...}, [...])
 
-        :param model_name: string,
-        :param model_instance: string,
-        :param field: string,
-        :param new_value: string,
-        :return:
+        :param model_name: string, name of the model
+        :param model_instance: string, instance of the model
+        :param old_string: string, name of the old string to replace
+        :param new_string: string, the new string
         """
         index, _model = self.find_model_object(f'{model_name} {model_instance}')
         if index is not None:
@@ -226,6 +323,7 @@ class InputParser(object):
         :param b: string, existing port b
         :param new_a: string, new port (or none)
         :param new_b: string, new port b (or none
+        :param replace_all: boolean, allow replacemnt of all strings
         """
         # find the connection that matches a, b
         index, c = self.find_connect(a, b)
@@ -247,23 +345,16 @@ class InputParser(object):
 
         :return: string
         """
-        str = ""
-        for w in self.withins:
-            str += w
-
+        str = f'within {self.within};\n'
         str += f"model {self.model['name']}\n"
-        str += f"{self.model['comment']}"
+        str += f"{self.model['comment']}\n\n"
         for o in self.model['objects']:
             for l in o:
                 str += l
-
         str += 'equation\n'
         for c in self.connections:
             str += c
-
         for e in self.equations:
             str += e
-
         str += f"end {self.model['name']};\n"
-
         return str

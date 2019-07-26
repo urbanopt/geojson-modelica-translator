@@ -34,6 +34,17 @@ import shutil
 
 _log = logging.getLogger(__name__)
 
+def copytree(src, dst, symlinks=False, ignore=None):
+    """
+    Alternate version of copytree that will work if the directory already exists (use instead of shutil)
+    """
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
 
 class ModelicaPath(object):
     """
@@ -73,8 +84,17 @@ class ModelicaPath(object):
             return os.path.join(self.root_dir, self.name)
 
     @property
+    def resources_relative_dir(self):
+        """
+        Return the relative resource directory instead of the full path. This is useful when replacing
+        strings within modelica files which are relative to the package.
+        :return:
+        """
+        return os.path.join('Resources', 'Data', self.name)
+
+    @property
     def resources_dir(self):
         if self.root_dir is None:
-            return os.path.join('Resources', 'Data', self.name)
+            return self.resources_relative_dir
         else:
-            return os.path.join(self.root_dir, 'Resources', 'Data', self.name)
+            return os.path.join(self.root_dir, self.resources_relative_dir)
