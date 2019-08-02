@@ -44,18 +44,11 @@ class TeaserConnector(model_connector_base):
     def __init__(self):
         super().__init__(self)
 
-    def mappings(self):
-        """
-        :return:
-        """
-        pass
-
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
 
         :param urbanopt_building: an urbanopt_building
-        :return:
         """
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
@@ -78,18 +71,21 @@ class TeaserConnector(model_connector_base):
             # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
             return 'office'
 
-    def to_modelica(self, root_building_dir):
+    def to_modelica(self, project_name, root_building_dir, rc_order=2):
         """
+        Save the TEASER representation of the buildings to the filesystem. The path will
+        be root_building_dir.
+
         :param root_building_dir: str, root directory where building model will be exported
-        :return:
+        :param rc_order: int, order of RC [1, 2, 4]
         """
         # Teaser changes the current dir, so make sure to reset it back to where we started
         building_names = []
         curdir = os.getcwd()
         try:
             prj = Project(load_data=True)
-            # prj.name = self.building_id
 
+            # TODO: pull fixed values from system design parameters?
             for building in self.buildings:
                 building_name = building['building_id']
                 prj.add_non_residential(
@@ -108,15 +104,8 @@ class TeaserConnector(model_connector_base):
                 building_names.append(building_name)
 
                 prj.used_library_calc = 'IBPSA'
-                prj.number_of_elements_calc = 2
+                prj.number_of_elements_calc = rc_order
                 prj.merge_windows_calc = False
-                # prj.weather_file_path = utilities.get_full_path(
-                #     os.path.join(
-                #         "data",
-                #         "input",
-                #         "inputdata",
-                #         "weatherdata",
-                #         "DEU_BW_Mannheim_107290_TRY2010_12_Jahr_BBSR.mos"))
 
             # calculate the properties of all the buildings and export to the Buildings library
             prj.calc_all_buildings()
@@ -127,12 +116,9 @@ class TeaserConnector(model_connector_base):
         finally:
             os.chdir(curdir)
 
-        self.post_process(root_building_dir, building_names)
-        # TODO: Move the files anywhere? Add in the ETS?
-        # TODO: Remove building names in children files.
-        # TODO: move internal gains to the Resources/Data/Loads/ProjectXXX -- MW either is correct. Library is typically
+        self.post_process(project_name, root_building_dir, building_names)
 
-    def post_process(self, root_building_dir, building_names):
+    def post_process(self, project_name, root_building_dir, building_names):
         """
         Cleanup the export of the TEASER files into a format suitable for the district-based analysis. This includes
         the following:
@@ -184,7 +170,7 @@ class TeaserConnector(model_connector_base):
 
                 # previous paths and replace with the new one.
                 # Make sure to update the names of any resources as well.
-                mofile.replace_within_string(f'Loads.B{b}')
+                mofile.replace_within_string(f'{project_name}.Loads.B{b}')
 
                 # remove ReaderTMY3
                 mofile.remove_object('ReaderTMY3')
@@ -231,7 +217,9 @@ class TeaserConnector(model_connector_base):
                 os.remove(f)
 
             # save the updated package.mo and package.order.
-            new_package = PackageParser.new_from_template(package.path, f'B{b}', package.order, within='Loads')
+            new_package = PackageParser.new_from_template(
+                package.path, f'B{b}', package.order, within=f'{project_name}.Loads'
+            )
             new_package.save()
 
         # remaining clean up tasks across the entire exported project
@@ -240,8 +228,9 @@ class TeaserConnector(model_connector_base):
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
         # add in the silly 'B' before the building names
-
-        package = PackageParser.new_from_template(root_building_dir, 'Loads', ['B' + b for b in building_names])
+        package = PackageParser.new_from_template(
+            root_building_dir, 'Loads', ['B' + b for b in building_names], within=f'{project_name}'
+        )
         package.save()
 
     def to_citygml(self, project, root_directory, filename='citygml.xml'):

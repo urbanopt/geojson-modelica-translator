@@ -50,7 +50,7 @@ class GeoJSONTranslatorTest(unittest.TestCase):
     def test_to_modelica(self):
         filename = os.path.abspath('tests/geojson/data/geojson_1.json')
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        gj.to_modelica('tests/output/geojson_1')
+        gj.to_modelica('geojson_1', 'tests/output')
         self.assertTrue(os.path.exists(gj.loads_path.files_dir))
 
 

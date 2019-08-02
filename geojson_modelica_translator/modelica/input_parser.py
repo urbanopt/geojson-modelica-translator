@@ -51,26 +51,26 @@ class PackageParser(object):
         self.package_data = None
         self.load()
 
+        self.template_env = Environment(
+            loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
+        )
+
     @classmethod
     def new_from_template(cls, path, name, order, within=None):
         """
         Create new package data based on the package.mo template. If within is not specified, then it is
         assumed that this is a top level package and will load from the package_base template.
 
-        :param path:
-        :param name:
-        :param order:
-        :param within:
-        :return:
+        :param path: string, the path where the resulting files will be saved to.
+        :param name: string, the name of the model
+        :param order: list, ordered list of which models will be loaded (saved to package.order)
+        :param within: string, (optional), name where this package is within.
         """
         klass = PackageParser(path)
-        environ = Environment(
-            loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
-        )
         if within:
-            template = environ.get_template('package.mot')
+            template = klass.template_env.get_template('package.mot')
         else:
-            template = environ.get_template('package_base.mot')
+            template = klass.template_env.get_template('package_base.mot')
 
         klass.package_data = template.render(within=within, name=name, order=order)
         klass.order_data = '\n'.join(order)
@@ -105,6 +105,8 @@ class PackageParser(object):
     def order(self):
         """
         Return the order of the packages from the package.order file
+
+        :return: list, list of the loaded models in the package.order file
         """
         return self.order_data.split('\n')
 
@@ -114,7 +116,6 @@ class PackageParser(object):
 
         :param old_model: string, existing name
         :param new_model: string, new name
-        :return:
         """
         self.order_data = self.order_data.replace(old_model, new_model)
 
@@ -236,7 +237,7 @@ class InputParser(object):
 
     def replace_within_string(self, new_string):
         """
-        Replacement of the path portion of the  within string
+        Replacement of the path portion of the within string
 
         :param new_string: string, what to replace the existing within string with.
         """
