@@ -28,11 +28,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from geojson_modelica_translator.utils import ModelicaPath
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 import logging
 import os
 import shutil
+
+from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 _log = logging.getLogger(__name__)
 
@@ -88,15 +90,16 @@ class GeoJsonModelicaTranslator(object):
         self.plants_path = ModelicaPath('Plants', root_dir=root_dir)
         self.districts_path = ModelicaPath('Districts', root_dir=root_dir)
 
-    def to_modelica(self, save_dir, model_connector_str='TeaserConnector'):
+    def to_modelica(self, project_name, save_dir, model_connector_str='TeaserConnector'):
         """
         Convert the data in the GeoJSON to modelica based-objects
 
-        :param save_dir: str, directory where the exported building loads will be stored
+        :param save_dir: str, directory where the exported project will be stored. The name of the project will be
+                              {save_dir}/{project_name}
         :param model_connector_str: str, which model_connector to use
-        :return:
         """
-        self.scaffold_directory(save_dir)
+        prj_dir = f'{save_dir}/{project_name}'
+        self.scaffold_directory(prj_dir)
 
         # TODO: Handle other connectors -- create map based on model_connector_str
         import geojson_modelica_translator.model_connectors.teaser
@@ -110,7 +113,15 @@ class GeoJsonModelicaTranslator(object):
             model_connector.add_building(building)
 
         _log.info(f'Translating building to model {building}')
-        model_connector.to_modelica(self.loads_path.files_dir)
+        model_connector.to_modelica(project_name, self.loads_path.files_dir)
+
+        # add in Substations
+        # add in Districts
+        # add in Plants
+
+        # now add in the top level package.
+        pp = PackageParser.new_from_template(prj_dir, project_name, ['Loads'])
+        pp.save()
 
         # TODO: BuildingModelClass
         # TODO: mapper class
