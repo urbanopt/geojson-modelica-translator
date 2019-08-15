@@ -30,7 +30,12 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
+import os
+import shutil
+from io import BytesIO
+from zipfile import ZipFile
 
+from requests import get
 from setuptools import setup, find_packages
 
 from management.update_licenses import UpdateLicenses
@@ -58,13 +63,7 @@ setup(
     },
 )
 
-# install the Modelica Buildings Library
-from zipfile import ZipFile
-from io import BytesIO
-from requests import get
-import os
-import shutil
-
+# install portions of the Modelica Buildings Library for grabbing files as needed (e.g. MOS files, examples, etc)
 libs_to_extract = ['Buildings/Applications/DHC']
 save_path = 'geojson_modelica_translator/modelica/buildingslibrary'
 tmp_save_path = 'geojson_modelica_translator/modelica/tmp_buildingslibrary'
