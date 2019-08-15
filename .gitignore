@@ -94,3 +94,4 @@ ENV/
 # Test outputs
 tests/output
 tests/modelica/output
+/geojson_modelica_translator/modelica/buildingslibrary/
