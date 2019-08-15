@@ -44,6 +44,8 @@ class TeaserConnector(model_connector_base):
     def __init__(self):
         super().__init__(self)
 
+        self.rc_order = 2
+
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
@@ -71,7 +73,7 @@ class TeaserConnector(model_connector_base):
             # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
             return 'office'
 
-    def to_modelica(self, project_name, root_building_dir, rc_order=2):
+    def to_modelica(self, project_name, root_building_dir):
         """
         Save the TEASER representation of the buildings to the filesystem. The path will
         be root_building_dir.
@@ -104,7 +106,7 @@ class TeaserConnector(model_connector_base):
                 building_names.append(building_name)
 
                 prj.used_library_calc = 'IBPSA'
-                prj.number_of_elements_calc = rc_order
+                prj.number_of_elements_calc = self.rc_order
                 prj.merge_windows_calc = False
 
             # calculate the properties of all the buildings and export to the Buildings library
