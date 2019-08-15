@@ -88,5 +88,3 @@ with ZipFile(BytesIO(r.content)) as zip:
 shutil.move(os.path.join(tmp_save_path, f'{repo_name}-{mbl_archive_name}'), save_path)
 if os.path.exists(tmp_save_path):
     shutil.rmtree(tmp_save_path)
-# z.extract('open-location-code-68ba7ed4c6e7fae41a0255e4394ba1fa0f8435bb/python/*',
-#           path=)

@@ -20,7 +20,7 @@ The GeoJSON / Modelica Translator is still in early alpha-phase development and 
 
 If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
 
-.. code-block::bash
+.. code-block:: bash
 
     pip install -r requirements.txt
     python setup.py build
@@ -71,7 +71,7 @@ Updating Schemas
 
 There is managed task to automatically pull updated GeoJSON schemas from the `urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
 
-.. code-block::bash
+.. code-block:: bash
 
     ./setup.py update_schemas
 
