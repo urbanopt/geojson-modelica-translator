@@ -7,6 +7,9 @@ jsonschema==3.0.1
 
 # dependent projects
 BuildingsPy==1.7.0
+## Require the MBL. Note this is a large dependency, but needed to assemble the models
+#-e git+https://github.com/SEED-platform/buildingid.git@f68219df82191563cc2aca818e0b0fa1b32dd52d#egg=buildingid
+#-e git+https://github.com/lbl-srg/modelica-buildings.git@issue1442_loadCoupling#egg=buildings
 teaser==0.6.8
 
 # Test and documentation

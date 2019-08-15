@@ -18,9 +18,12 @@ Getting Started
 
 The GeoJSON / Modelica Translator is still in early alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is to run the following
 
+If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
+
 .. code-block::bash
 
     pip install -r requirements.txt
+    python setup.py build
     py.test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
@@ -83,3 +86,5 @@ Todos
 
 * handle weather
 * Validate remaining schema objects
+* AHU example
+* runnable example
