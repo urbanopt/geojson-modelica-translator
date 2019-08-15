@@ -30,11 +30,16 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
+import os
+import shutil
+from io import BytesIO
+from zipfile import ZipFile
 
+from requests import get
 from setuptools import setup, find_packages
 
-from management.update_schemas import UpdateSchemas
 from management.update_licenses import UpdateLicenses
+from management.update_schemas import UpdateSchemas
 
 with open('README.rst') as f:
     readme = f.read()
@@ -57,3 +62,31 @@ setup(
         'update_licenses': UpdateLicenses,
     },
 )
+
+# install portions of the Modelica Buildings Library for grabbing files as needed (e.g. MOS files, examples, etc)
+libs_to_extract = ['Buildings/Applications/DHC']
+save_path = 'geojson_modelica_translator/modelica/buildingslibrary'
+tmp_save_path = 'geojson_modelica_translator/modelica/tmp_buildingslibrary'
+repo_name = 'modelica-buildings'
+if os.path.exists(save_path):
+    shutil.rmtree(save_path)
+if os.path.exists(tmp_save_path):
+    shutil.rmtree(tmp_save_path)
+mbl_archive_name = 'issue1442_loadCoupling'
+r = get(f'https://github.com/lbl-srg/{repo_name}/archive/{mbl_archive_name}.zip')
+with ZipFile(BytesIO(r.content)) as zip:
+    files = zip.namelist()
+    for file in files:
+        # check if this needs to be extracted by looking into the libs_to_extract list
+        for lib_to_extract in libs_to_extract:
+            # make the path system independent when searching
+            if os.path.join(lib_to_extract.replace('/', os.path.sep)) in file:
+                print(f'extracting ... {file}')
+                zip.extract(file, path=tmp_save_path)
+
+# Move the whole directory
+shutil.move(os.path.join(tmp_save_path, f'{repo_name}-{mbl_archive_name}'), save_path)
+if os.path.exists(tmp_save_path):
+    shutil.rmtree(tmp_save_path)
+# z.extract('open-location-code-68ba7ed4c6e7fae41a0255e4394ba1fa0f8435bb/python/*',
+#           path=)
