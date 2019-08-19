@@ -33,8 +33,8 @@ import os
 import shutil
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
-from geojson_modelica_translator.utils import ModelicaPath
 from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.utils import ModelicaPath
 
 _log = logging.getLogger(__name__)
 
@@ -53,13 +53,15 @@ class GeoJsonModelicaTranslator(object):
         self.plants_path = None
         self.districts_path = None
 
+        self.system_parameters = None
+
     @classmethod
     def from_geojson(cls, filename):
         """
         Initialize the translator from a GeoJSON file
 
-        :param filename:
-        :return:
+        :param filename: string, GeoJSON file
+        :return: object, GeoJsonModelicaTranslator
         """
 
         if os.path.exists(filename):
@@ -69,7 +71,15 @@ class GeoJsonModelicaTranslator(object):
             klass.buildings = json.buildings
             return klass
         else:
-            raise Exception("Filename does not exist: %s" % filename)
+            raise Exception(f'GeoJSON file does not exist: {filename}')
+
+    def set_system_parameters(self, sys_params):
+        """
+        Read in the system design parameter data
+
+        :param SystemParameters: SystemParameters object
+        """
+        self.system_parameters = sys_params
 
     def scaffold_directory(self, root_dir, overwrite=False):
         """
@@ -104,7 +114,7 @@ class GeoJsonModelicaTranslator(object):
         # TODO: Handle other connectors -- create map based on model_connector_str
         import geojson_modelica_translator.model_connectors.teaser
         mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
-        model_connector = mc_klass()
+        model_connector = mc_klass(self.system_parameters)
 
         _log.info('Exporting to Modelica')
         for building in self.buildings:
@@ -113,7 +123,7 @@ class GeoJsonModelicaTranslator(object):
             model_connector.add_building(building)
 
         _log.info(f'Translating building to model {building}')
-        model_connector.to_modelica(project_name, self.loads_path.files_dir)
+        model_connector.to_modelica(project_name, self.loads_path.files_dir, keep_original_models=False)
 
         # add in Substations
         # add in Districts

@@ -41,10 +41,8 @@ from geojson_modelica_translator.utils import ModelicaPath, copytree
 
 
 class TeaserConnector(model_connector_base):
-    def __init__(self):
-        super().__init__(self)
-
-        self.rc_order = 2
+    def __init__(self, system_parameters):
+        super().__init__(system_parameters)
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -73,21 +71,19 @@ class TeaserConnector(model_connector_base):
             # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
             return 'office'
 
-    def to_modelica(self, project_name, root_building_dir):
+    def to_modelica(self, project_name, root_building_dir, keep_original_models=False):
         """
         Save the TEASER representation of the buildings to the filesystem. The path will
         be root_building_dir.
 
         :param root_building_dir: str, root directory where building model will be exported
-        :param rc_order: int, order of RC [1, 2, 4]
+
         """
         # Teaser changes the current dir, so make sure to reset it back to where we started
         building_names = []
         curdir = os.getcwd()
         try:
             prj = Project(load_data=True)
-
-            # TODO: pull fixed values from system design parameters?
             for building in self.buildings:
                 building_name = building['building_id']
                 prj.add_non_residential(
@@ -106,7 +102,7 @@ class TeaserConnector(model_connector_base):
                 building_names.append(building_name)
 
                 prj.used_library_calc = 'IBPSA'
-                prj.number_of_elements_calc = self.rc_order
+                prj.number_of_elements_calc = self.system_parameters.get_param('buildings.default.rc_order', default=2)
                 prj.merge_windows_calc = False
 
             # calculate the properties of all the buildings and export to the Buildings library
@@ -118,9 +114,9 @@ class TeaserConnector(model_connector_base):
         finally:
             os.chdir(curdir)
 
-        self.post_process(project_name, root_building_dir, building_names)
+        self.post_process(project_name, root_building_dir, building_names, keep_original_models=keep_original_models)
 
-    def post_process(self, project_name, root_building_dir, building_names):
+    def post_process(self, project_name, root_building_dir, building_names, keep_original_models=False):
         """
         Cleanup the export of the TEASER files into a format suitable for the district-based analysis. This includes
         the following:
@@ -131,14 +127,17 @@ class TeaserConnector(model_connector_base):
             * Add heat port
             * Add return temperature
             * Remove weaDat and rely on weaBus
+
+        :param project_name: string, name of the project which will be used to set the package.mo file
+        :param root_building_dir: string, where the project will be ultimately saved
         :param building_names: list, names of the buildings that need to be cleaned up after export
-        :return:
+        :return: None
         """
         for b in building_names:
             # create a list of strings that we need to replace in all the file as we go along
             string_replace_list = []
 
-            # create a new modelica based path for the buildings
+            # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
             b_modelica_path = ModelicaPath(f'B{b}', root_building_dir, True)
 
             # copy over the entire model to the new location
@@ -190,6 +189,7 @@ class TeaserConnector(model_connector_base):
                 mofile.add_model_object('Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a', 'port_a', data)
 
                 # add TAir output
+                # TODO: read in the object by name -- parse the parenthetic content
                 instance = 'TAir(\n    quantity="ThermodynamicTemperature", unit="K", displayUnit="degC")'
                 data = [
                     '"Room air temperature"',
@@ -201,12 +201,24 @@ class TeaserConnector(model_connector_base):
                 mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
 
                 # add new port connections
-                # TODO: abstract out the "thermalZoneTwoElements"
-                data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
-                mofile.add_connect('port_a', 'thermalZoneTwoElements.intGainsConv', data)
+                if self.system_parameters.get_param('buildings.default.rc_order', default=2) == 1:
+                    data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
+                    mofile.add_connect('port_a', 'thermalZoneOneElement.intGainsConv', data)
 
-                data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
-                mofile.add_connect('thermalZoneTwoElements.TAir', 'TAir', data)
+                    data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
+                    mofile.add_connect('thermalZoneOneElement.TAir', 'TAir', data)
+                elif self.system_parameters.get_param('buildings.default.rc_order', default=2) == 2:
+                    data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
+                    mofile.add_connect('port_a', 'thermalZoneTwoElements.intGainsConv', data)
+
+                    data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
+                    mofile.add_connect('thermalZoneTwoElements.TAir', 'TAir', data)
+                elif self.system_parameters.get_param('buildings.default.rc_order', default=2) == 4:
+                    data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
+                    mofile.add_connect('port_a', 'thermalZoneFourElements.intGainsConv', data)
+
+                    data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
+                    mofile.add_connect('thermalZoneFourElements.TAir', 'TAir', data)
 
                 # change the name of the modelica model to remove the building id, update in package too!
                 new_model_name = mofile.model['name'].split("_")[1]
@@ -214,7 +226,7 @@ class TeaserConnector(model_connector_base):
                 mofile.model['name'] = new_model_name
 
                 # Save as the new filename (without building ID)
-                new_filename = os.path.join(root_building_dir, f'B{b}/{os.path.basename(f.split("_")[2])}')
+                new_filename = os.path.join(root_building_dir, f'B{b}/{os.path.basename(f).split("_")[1]}')
                 mofile.save_as(new_filename)
                 os.remove(f)
 
@@ -225,7 +237,8 @@ class TeaserConnector(model_connector_base):
             new_package.save()
 
         # remaining clean up tasks across the entire exported project
-        shutil.rmtree(os.path.join(root_building_dir, 'Project'))
+        if not keep_original_models:
+            shutil.rmtree(os.path.join(root_building_dir, 'Project'))
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
@@ -234,15 +247,3 @@ class TeaserConnector(model_connector_base):
             root_building_dir, 'Loads', ['B' + b for b in building_names], within=f'{project_name}'
         )
         package.save()
-
-    def to_citygml(self, project, root_directory, filename='citygml.xml'):
-        """
-        Export a single project Teaser project to citygml. Note that you much pass in a full Teaser project
-        to be converted since, at the moment, there is no member variable holding the Teaser project.
-
-        :param project: Teaser Project, project to convert to CityGML.
-        :param root_directory: str, root directory where building model will be exported
-        :param filename (optional): str, filename to save to
-        :return: None
-        """
-        project.save_citygml(filename, root_directory)

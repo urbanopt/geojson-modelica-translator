@@ -39,10 +39,15 @@ _log = logging.getLogger(__name__)
 
 # TODO: Inherit from GeoJSON Feature class, move to its own file
 class UrbanOptBuilding(object):
+    """
+    An UrbanOptBuilding is a container for holding Building-related data in a dictionary.
+    """
     def __init__(self, feature):
         self.feature = feature
+        self.id = feature.get('properties', {}).get('id', 'NO ID')
+        self.dirname = f'B{self.id}'
 
-
+[]
 class UrbanOptGeoJson(object):
     """
     Root class for parsing an URBANopt GeoJSON file. This class simply reads and parses
@@ -53,7 +58,7 @@ class UrbanOptGeoJson(object):
         if os.path.exists(filename):
             self.data = geojson.load(open(filename))
         else:
-            raise Exception("URBANopt GeoJSON file not found: %s" % filename)
+            raise Exception(f'URBANopt GeoJSON file does not exist: {filename}')
 
         # load the shemas
         self.schemas = Schemas()

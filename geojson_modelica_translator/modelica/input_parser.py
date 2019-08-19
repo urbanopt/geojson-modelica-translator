@@ -127,7 +127,7 @@ class InputParser(object):
 
     def __init__(self, modelica_filename):
         if not os.path.exists(modelica_filename):
-            raise Exception(f'File does not exist {modelica_filename}')
+            raise Exception(f'Modelica file does not exist: {modelica_filename}')
 
         self.modelica_filename = modelica_filename
         self.init_vars()

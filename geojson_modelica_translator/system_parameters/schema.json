@@ -117,6 +117,15 @@
             "CSV",
             "Spawn"
           ]
+        },
+        "rc_order": {
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            4
+          ],
+          "default": 2
         }
       },
       "additionalProperties": false

@@ -1,7 +1,8 @@
 {
 	"buildings": {
 		"default": {
-			"load_model": "ROM/RC"
+			"load_model": "ROM/RC",
+			"rc_order": 2
 		},
 		"custom": [
 			{
