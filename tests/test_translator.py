@@ -28,12 +28,14 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from .context import geojson_modelica_translator  # noqa - Do not remove this line
-
 import os
+import shutil
 import unittest
+import itertools
 
+from .context import geojson_modelica_translator  # noqa - Do not remove this line
 from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 
 class GeoJSONTranslatorTest(unittest.TestCase):
@@ -47,11 +49,79 @@ class GeoJSONTranslatorTest(unittest.TestCase):
 
         self.assertEqual(len(gj.buildings), 3)
 
-    def test_to_modelica(self):
+    def test_missing_geojson(self):
+        fn = 'non-existent-path'
+        with self.assertRaises(Exception) as exc:
+            GeoJsonModelicaTranslator.from_geojson(fn)
+        self.assertEqual(f'GeoJSON file does not exist: {fn}', str(exc.exception))
+
+    def test_to_modelica_defaults(self):
+        self.results_path = os.path.abspath('tests/output/geojson_1')
+        if os.path.exists(self.results_path):
+            shutil.rmtree(self.results_path)
+
         filename = os.path.abspath('tests/geojson/data/geojson_1.json')
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        sys_params = SystemParameters()
+        gj.set_system_parameters(sys_params)
         gj.to_modelica('geojson_1', 'tests/output')
-        self.assertTrue(os.path.exists(gj.loads_path.files_dir))
+
+        # setup what we are going to check
+        model_names = ['Floor', 'ICT', 'Meeting', 'Office', 'package', 'Restroom', 'Storage']
+        building_paths = [os.path.join(gj.loads_path.files_dir, b.dirname) for b in gj.buildings]
+        path_checks = [f'{os.path.sep.join(r)}.mo' for r in itertools.product(building_paths, model_names)]
+
+        for p in path_checks:
+            # print(p)
+            self.assertTrue(os.path.exists(p))
+
+        # look for resource files
+        resource_names = ['InternalGains_Floor', 'InternalGains_ICT', 'InternalGains_Meeting', 'InternalGains_Office',
+                          'InternalGains_Restroom', 'InternalGains_Storage']
+        resource_paths = [os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname) for b in gj.buildings]
+        path_checks = [f'{os.path.sep.join(r)}.mat' for r in itertools.product(resource_paths, resource_names)]
+
+        for p in path_checks:
+            self.assertTrue(os.path.exists(p))
+
+    def test_to_modelica_rc_order_4(self):
+        self.results_path = os.path.abspath('tests/output/rc_order_4')
+        if os.path.exists(self.results_path):
+            shutil.rmtree(self.results_path)
+
+        filename = os.path.abspath('tests/geojson/data/geojson_1.json')
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        sys_params = SystemParameters.loadd(
+            {
+                "buildings": {
+                    "default": {
+                        "rc_order": 4
+                    }
+                }
+            }
+        )
+        self.assertEqual(len(sys_params.validate()), 0)
+        gj.set_system_parameters(sys_params)
+
+        gj.to_modelica('rc_order_4', 'tests/output')
+
+        # setup what we are going to check
+        model_names = ['Floor', 'ICT', 'Meeting', 'Office', 'package', 'Restroom', 'Storage']
+        building_paths = [os.path.join(gj.loads_path.files_dir, b.dirname) for b in gj.buildings]
+        path_checks = [f'{os.path.sep.join(r)}.mo' for r in itertools.product(building_paths, model_names)]
+
+        for p in path_checks:
+            # print(p)
+            self.assertTrue(os.path.exists(p))
+
+        # look for resource files
+        resource_names = ['InternalGains_Floor', 'InternalGains_ICT', 'InternalGains_Meeting', 'InternalGains_Office',
+                          'InternalGains_Restroom', 'InternalGains_Storage']
+        resource_paths = [os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname) for b in gj.buildings]
+        path_checks = [f'{os.path.sep.join(r)}.mat' for r in itertools.product(resource_paths, resource_names)]
+
+        for p in path_checks:
+            self.assertTrue(os.path.exists(p))
 
 
 if __name__ == '__main__':

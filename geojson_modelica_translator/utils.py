@@ -80,6 +80,12 @@ class ModelicaPath(object):
 
     @property
     def files_dir(self):
+        """
+        Return the path to the files (models) for the specified ModelicaPath. This path does not include the
+        trailing slash.
+
+        :return: string, path to where files (models) are stored, without trailing slash
+        """
         if self.root_dir is None:
             return self.name
         else:
@@ -96,6 +102,12 @@ class ModelicaPath(object):
 
     @property
     def resources_dir(self):
+        """
+        Return the path to the resources directory for the specified ModelicaPath. This path does not include
+        the trailing slash.
+
+        :return: string, path to where resources are stored, without trailing slash.
+        """
         if self.root_dir is None:
             return self.resources_relative_dir
         else:

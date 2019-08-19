@@ -35,8 +35,14 @@ class Base(object):
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
 
-    def __init__(self, urbanopt_building):
+    def __init__(self, system_parameters):
+        """
+        Base initializer
+
+        :param system_parameters: SystemParameters object
+        """
         self.buildings = []
+        self.system_parameters = system_parameters
         # extract data out of the urbanopt_building object and store into the base object
 
     # These methods need to be defined in each of the derived model connectors

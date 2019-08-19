@@ -43,6 +43,12 @@ class InputParserTest(unittest.TestCase):
         if not os.path.exists(self.results_path):
             os.mkdir(self.results_path)
 
+    def test_missing_file(self):
+        fn = 'non-existent-path'
+        with self.assertRaises(Exception) as exc:
+            InputParser(fn)
+        self.assertEqual(f'Modelica file does not exist: {fn}', str(exc.exception))
+
     def test_roundtrip(self):
         filename = os.path.abspath('tests/modelica/data/test_1.mo')
         new_filename = os.path.abspath('tests/modelica/output/test_1_output_1.mo')

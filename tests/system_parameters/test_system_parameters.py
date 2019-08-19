@@ -32,30 +32,73 @@ import os
 import unittest
 
 from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 
 class GeoJSONTest(unittest.TestCase):
 
-    def test_load_geojson(self):
-        filename = os.path.abspath('tests/geojson/data/geojson_1.json')
-        json = UrbanOptGeoJson(filename)
-        self.assertIsNotNone(json.data)
-        self.assertEqual(len(json.data.features), 4)
+    def test_load_system_parameters(self):
+        filename = os.path.abspath('tests/system_parameters/data/system_params_1.json')
+        sdp = SystemParameters(filename)
+        self.assertEqual(sdp.data['buildings']['default']['rc_order'], 2)
 
     def test_missing_file(self):
         fn = 'non-existent-path'
         with self.assertRaises(Exception) as exc:
-            UrbanOptGeoJson(fn)
-        self.assertEqual(f'URBANopt GeoJSON file does not exist: {fn}', str(exc.exception))
+            SystemParameters(fn)
+        self.assertEqual(f'System design parameters file does not exist: {fn}', str(exc.exception))
 
-    def test_validate(self):
-        filename = os.path.abspath('tests/geojson/data/geojson_1.json')
-        json = UrbanOptGeoJson(filename)
-        valid, results = json.validate()
-        self.assertFalse(valid)
-        self.assertEqual(len(results['building']), 3)
-        self.assertEqual(results['building'][0]['id'], '5a6b99ec37f4de7f94020090')
+    def test_errors(self):
+        data = {
+            "buildings": {
+                "default": {
+                    "load_model": "Spawn",
+                    "rc_order": 6
+                }
+            }
+        }
+        sp = SystemParameters.loadd(data)
+        self.assertEqual(sp.validate()[0], '6 is not one of [1, 2, 4]')
+
+    def test_get_param(self):
+        data = {
+            "buildings": {
+                "default": {
+                    "load_model": "Spawn",
+                    "rc_order": 6
+                }
+            }
+        }
+        sp = SystemParameters.loadd(data)
+        value = sp.get_param('buildings.default.rc_order')
+        self.assertEqual(value, 6)
+
+        value = sp.get_param('buildings.default.load_model')
+        self.assertEqual(value, 'Spawn')
+
+        value = sp.get_param('buildings.default')
+        self.assertDictEqual(value, {'load_model': 'Spawn', 'rc_order': 6})
+
+        value = sp.get_param('')
+        self.assertIsNone(value)
+
+        value = sp.get_param('not.a.real.path')
+        self.assertIsNone(value)
+
+    def test_get_param_with_default(self):
+        data = {
+            "buildings": {
+                "default": {
+                    "load_model": "Spawn"
+                }
+            }
+        }
+        sp = SystemParameters.loadd(data)
+        value = sp.get_param('buildings.default.rc_order', default=2)
+        self.assertEqual(value, 2)
+
+        value = sp.get_param('not.a.real.path', default=2)
+        self.assertEqual(value, 2)
 
 
 if __name__ == '__main__':
