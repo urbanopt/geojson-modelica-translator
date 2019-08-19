@@ -47,7 +47,7 @@ class UrbanOptBuilding(object):
         self.id = feature.get('properties', {}).get('id', 'NO ID')
         self.dirname = f'B{self.id}'
 
-[]
+
 class UrbanOptGeoJson(object):
     """
     Root class for parsing an URBANopt GeoJSON file. This class simply reads and parses
