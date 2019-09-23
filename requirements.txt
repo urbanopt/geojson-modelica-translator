@@ -6,11 +6,14 @@ geojson==2.4.1
 jsonschema==3.0.1
 
 # dependent projects
+## Require the MBL. Note this is a large dependency, but needed to assemble the models for running
 BuildingsPy==1.7.0
-## Require the MBL. Note this is a large dependency, but needed to assemble the models
-#-e git+https://github.com/SEED-platform/buildingid.git@f68219df82191563cc2aca818e0b0fa1b32dd52d#egg=buildingid
 #-e git+https://github.com/lbl-srg/modelica-buildings.git@issue1442_loadCoupling#egg=buildings
-teaser==0.6.8
+
+# Use TEASER from URBANopt for now to support MBL 7.0
+#teaser==0.6.8
+#-e file:../TEASER-urbanopt#egg=teaser
+-e git+https://github.com/urbanopt/TEASER.git@mbl-7.0#egg=teaser
 
 # Test and documentation
 nose==1.3.7
