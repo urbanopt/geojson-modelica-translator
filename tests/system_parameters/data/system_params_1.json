@@ -2,7 +2,11 @@
 	"buildings": {
 		"default": {
 			"load_model": "ROM/RC",
-			"rc_order": 2
+			"load_model_parameters": {
+				"rc": {
+					"order": 2
+				}
+			}
 		},
 		"custom": [
 			{
@@ -11,7 +15,8 @@
 					"system": "Booster Heater",
 					"description": "User input on describing the ETS"
 				}
-			}, {
+			},
+			{
 				"geojson_id": "defgh2345",
 				"load_model": "ROM/RC"
 			}
@@ -30,8 +35,8 @@
 		}
 	},
 	"topology": {
-		"default": {
-			"topology_style": "Radial"
+		"topology_parameters": {
+			"configuration": "Radial"
 		}
 	}
 }

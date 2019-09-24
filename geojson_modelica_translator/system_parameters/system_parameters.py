@@ -55,19 +55,26 @@ class SystemParameters(object):
             else:
                 raise Exception(f"System design parameters file does not exist: {filename}")
 
-            self.validate()
+            errors = self.validate()
+            if len(errors) != 0:
+                raise Exception(f"Invalid system parameter file. Errors: {errors}")
+
 
     @classmethod
-    def loadd(cls, d):
+    def loadd(cls, d, validate_on_load=True):
         """
         Create a system parameters instance from a dictionary
         :param d: dict, system parameter data
 
         :return: object, SystemParameters
         """
-        sp = SystemParameters()
+        sp = cls()
         sp.data = d
-        sp.validate()
+
+        if validate_on_load:
+            errors = sp.validate()
+            if len(errors) != 0:
+                raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
         return sp
 

@@ -50,7 +50,7 @@
           "description": "Parameters associated with district topologies.",
           "type": "object",
           "properties": {
-            "topology_style": {
+            "topology_parameters": {
               "description": "Description of topology style",
               "type": "string",
               "$ref": "#/definitions/topology_def"
@@ -101,7 +101,7 @@
       "description": "Parameters associated with district topologies.",
       "type": "object",
       "properties": {
-        "topology_style": {
+        "configuration": {
           "type": "string",
           "enum": [
             "Radial",
@@ -186,14 +186,17 @@
             "Spawn"
           ]
         },
-        "rc_order": {
-          "type": "integer",
-          "enum": [
-            1,
-            2,
-            4
-          ],
-          "default": 2
+        "load_model_parameters": {
+          "type": "object",
+          "properties": {
+            "spawn": {
+              "$ref": "#/definitions/spawn_model_parameters"
+            },
+            "rc": {
+              "$ref": "#/definitions/rc_model_parameters"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -232,6 +235,43 @@
             "Direct Return",
             "Reverse Return"
           ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "spawn_model_parameters": {
+      "description": "Parameters associated with spawn models.",
+      "type": "object",
+      "properties": {
+        "idf_filename": {
+          "type": "string"
+        },
+        "zone_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "idf_filename",
+        "zone_names"
+      ],
+      "additionalProperties": false
+    },
+    "rc_model_parameters": {
+      "description": "Parameters associated with RC models.",
+      "type": "object",
+      "properties": {
+        "order": {
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "default": 2
         }
       },
       "additionalProperties": false
