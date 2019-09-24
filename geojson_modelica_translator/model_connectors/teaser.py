@@ -102,7 +102,7 @@ class TeaserConnector(model_connector_base):
                 building_names.append(building_name)
 
                 prj.used_library_calc = 'IBPSA'
-                prj.number_of_elements_calc = self.system_parameters.get_param('buildings.default.rc_order', default=2)
+                prj.number_of_elements_calc = self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2)
                 prj.merge_windows_calc = False
 
             # calculate the properties of all the buildings and export to the Buildings library
@@ -201,19 +201,19 @@ class TeaserConnector(model_connector_base):
                 mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
 
                 # add new port connections
-                if self.system_parameters.get_param('buildings.default.rc_order', default=2) == 1:
+                if self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 1:
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
                     mofile.add_connect('port_a', 'thermalZoneOneElement.intGainsConv', data)
 
                     data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
                     mofile.add_connect('thermalZoneOneElement.TAir', 'TAir', data)
-                elif self.system_parameters.get_param('buildings.default.rc_order', default=2) == 2:
+                elif self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 2:
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
                     mofile.add_connect('port_a', 'thermalZoneTwoElements.intGainsConv', data)
 
                     data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
                     mofile.add_connect('thermalZoneTwoElements.TAir', 'TAir', data)
-                elif self.system_parameters.get_param('buildings.default.rc_order', default=2) == 4:
+                elif self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 4:
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
                     mofile.add_connect('port_a', 'thermalZoneFourElements.intGainsConv', data)
 

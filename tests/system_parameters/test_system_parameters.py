@@ -112,7 +112,7 @@ class GeoJSONTest(unittest.TestCase):
             }
         }
         sp = SystemParameters.loadd(data)
-        value = sp.get_param('buildings.default.rc_order', default=2)
+        value = sp.get_param('buildings.default.load_model_parameters.rc.order', default=2)
         self.assertEqual(value, 2)
 
         value = sp.get_param('not.a.real.path', default=2)
