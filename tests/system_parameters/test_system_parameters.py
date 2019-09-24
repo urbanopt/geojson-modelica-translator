@@ -31,7 +31,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 
@@ -117,6 +116,13 @@ class GeoJSONTest(unittest.TestCase):
 
         value = sp.get_param('not.a.real.path', default=2)
         self.assertEqual(value, 2)
+
+    def test_get_param_with_building_id(self):
+        filename = os.path.abspath('tests/system_parameters/data/system_params_1.json')
+        sdp = SystemParameters(filename)
+
+        value = sdp.get_param_by_building_id('abcd1234', 'ets.system')
+        self.assertEqual(value, 'Booster Heater')
 
 
 if __name__ == '__main__':

@@ -246,6 +246,9 @@
         "idf_filename": {
           "type": "string"
         },
+        "weather_filename": {
+          "type": "string"
+        },
         "zone_names": {
           "type": "array",
           "items": {
@@ -255,6 +258,7 @@
       },
       "required": [
         "idf_filename",
+        "weather_filename",
         "zone_names"
       ],
       "additionalProperties": false

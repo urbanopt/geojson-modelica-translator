@@ -75,7 +75,9 @@ class TeaserConnector(model_connector_base):
         Save the TEASER representation of the buildings to the filesystem. The path will
         be root_building_dir.
 
+        :param project_name: str, Name of the overall project that will be set in the modelica file
         :param root_building_dir: str, root directory where building model will be exported
+        :param keep_original_models: boolean, whether or not to remove the models after exporting from Teaser
 
         """
         # Teaser changes the current dir, so make sure to reset it back to where we started
