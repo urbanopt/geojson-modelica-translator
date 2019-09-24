@@ -95,7 +95,7 @@ class GeoJSONTest(unittest.TestCase):
         self.assertEqual(value, 'ROM/RC')
 
         value = sp.get_param('buildings.default')
-        self.assertDictEqual(value, {'load_model': 'ROM/RC', 'load_model_parameters': {"rc": { "order": 4}}})
+        self.assertDictEqual(value, {'load_model': 'ROM/RC', 'load_model_parameters': {"rc": {"order": 4}}})
 
         value = sp.get_param('')
         self.assertIsNone(value)

@@ -42,6 +42,7 @@ class UrbanOptBuilding(object):
     """
     An UrbanOptBuilding is a container for holding Building-related data in a dictionary.
     """
+
     def __init__(self, feature):
         self.feature = feature
         self.id = feature.get('properties', {}).get('id', 'NO ID')

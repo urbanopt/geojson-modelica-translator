@@ -59,7 +59,6 @@ class SystemParameters(object):
             if len(errors) != 0:
                 raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
-
     @classmethod
     def loadd(cls, d, validate_on_load=True):
         """
