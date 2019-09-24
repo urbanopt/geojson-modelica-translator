@@ -246,10 +246,13 @@
         "idf_filename": {
           "type": "string"
         },
-        "weather_filename": {
+        "epw_filename": {
           "type": "string"
         },
-        "zone_names": {
+        "mos_weather_filename": {
+          "type": "string"
+        },
+        "thermal_zone_names": {
           "type": "array",
           "items": {
             "type": "string"
@@ -258,8 +261,9 @@
       },
       "required": [
         "idf_filename",
-        "weather_filename",
-        "zone_names"
+        "epw_filename",
+        "mos_weather_filename",
+        "thermal_zone_names"
       ],
       "additionalProperties": false
     },

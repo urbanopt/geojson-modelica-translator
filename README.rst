@@ -84,7 +84,9 @@ Updating Copyrights
 Todos
 -----
 
-* handle weather
+* handle weather in Teaser
+* Create a Script directory in the modelica_path class
+* EBNF parsing
 * Validate remaining schema objects
 * AHU example
 * runnable example
