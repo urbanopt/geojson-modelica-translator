@@ -95,7 +95,7 @@ class SpawnConnector(model_connector_base):
         try:
             for building in self.buildings:
                 # create each spawn building and save to the correct directory
-                print(f"Creating spawn fo building: {building['building_id']}")
+                print(f"Creating spawn for building: {building['building_id']}")
 
                 # Path for building data
                 building_names.append(f"B{building['building_id']}")

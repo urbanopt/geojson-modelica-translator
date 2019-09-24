@@ -22,7 +22,9 @@
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "path to a file",
-            "zone_names": [
+            "epw_filename": "path to a file",
+            "mos_weather_filename": "path to a file",
+            "thermal_zone_names": [
               "zone a",
               "zone_b"
             ]
