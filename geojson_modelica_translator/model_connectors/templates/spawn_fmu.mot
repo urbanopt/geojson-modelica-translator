@@ -8,7 +8,7 @@ model building
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}")
     "Name of the IDF file";
   parameter String weaName = Modelica.Utilities.Files.loadResource(
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['epw']['epw_filename']}}")
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['epw']['filename']}}")
     "Name of the weather file";
 
   {% raw %}Modelica.Blocks.Sources.Constant qConGai_flow(k=0) "Convective heat gain"
@@ -20,7 +20,7 @@ model building
   Modelica.Blocks.Sources.Constant qLatGai_flow(k=0) "Latent heat gain"
     annotation (Placement(transformation(extent={{-74,-50},{-54,-30}})));{% endraw %}
   {% for zone in data['thermal_zones'] %}
-  ThermalZone {{zone['modelica_object_name']}}(
+  Buildings.Experimental.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium = Medium,
     idfName=idfName,
     weaName=weaName,
@@ -30,8 +30,8 @@ model building
     zoneName="{{zone['spawn_object_name']}}") "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{20,40},{60,80}}))); {% endraw %}
   {% endfor %}
-  BoundaryConditions.WeatherData.ReaderTMY3 weaDat(filNam=
-    Modelica.Utilities.Files.loadResource("modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['mos_weather_filename']}}"))
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(filNam=
+    Modelica.Utilities.Files.loadResource("modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"))
     "Weather data reader"
     {% raw %}annotation (Placement(transformation(extent={{-80,80},{-60,100}})));
 equation
