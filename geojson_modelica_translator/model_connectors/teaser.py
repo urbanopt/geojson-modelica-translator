@@ -34,7 +34,6 @@ import shutil
 
 from teaser.project import Project
 
-
 from geojson_modelica_translator.model_connectors.base import Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import InputParser, PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, copytree
@@ -76,7 +75,9 @@ class TeaserConnector(model_connector_base):
         Save the TEASER representation of the buildings to the filesystem. The path will
         be root_building_dir.
 
+        :param project_name: str, Name of the overall project that will be set in the modelica file
         :param root_building_dir: str, root directory where building model will be exported
+        :param keep_original_models: boolean, whether or not to remove the models after exporting from Teaser
 
         """
         # Teaser changes the current dir, so make sure to reset it back to where we started
@@ -102,7 +103,8 @@ class TeaserConnector(model_connector_base):
                 building_names.append(building_name)
 
                 prj.used_library_calc = 'IBPSA'
-                prj.number_of_elements_calc = self.system_parameters.get_param('buildings.default.rc_order', default=2)
+                prj.number_of_elements_calc = self.system_parameters.get_param(
+                    'buildings.default.load_model_parameters.rc.order', default=2)
                 prj.merge_windows_calc = False
 
             # calculate the properties of all the buildings and export to the Buildings library
@@ -201,19 +203,19 @@ class TeaserConnector(model_connector_base):
                 mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
 
                 # add new port connections
-                if self.system_parameters.get_param('buildings.default.rc_order', default=2) == 1:
+                if self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 1:  # noqa
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
                     mofile.add_connect('port_a', 'thermalZoneOneElement.intGainsConv', data)
 
                     data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
                     mofile.add_connect('thermalZoneOneElement.TAir', 'TAir', data)
-                elif self.system_parameters.get_param('buildings.default.rc_order', default=2) == 2:
+                elif self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 2:  # noqa
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
                     mofile.add_connect('port_a', 'thermalZoneTwoElements.intGainsConv', data)
 
                     data = 'annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))'
                     mofile.add_connect('thermalZoneTwoElements.TAir', 'TAir', data)
-                elif self.system_parameters.get_param('buildings.default.rc_order', default=2) == 4:
+                elif self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 4:  # noqa
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
                     mofile.add_connect('port_a', 'thermalZoneFourElements.intGainsConv', data)
 

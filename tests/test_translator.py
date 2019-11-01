@@ -95,7 +95,11 @@ class GeoJSONTranslatorTest(unittest.TestCase):
             {
                 "buildings": {
                     "default": {
-                        "rc_order": 4
+                        "load_model_parameters": {
+                            "rc": {
+                                "order": 4
+                            }
+                        }
                     }
                 }
             }

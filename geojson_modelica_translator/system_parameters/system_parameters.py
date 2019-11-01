@@ -55,19 +55,25 @@ class SystemParameters(object):
             else:
                 raise Exception(f"System design parameters file does not exist: {filename}")
 
-            self.validate()
+            errors = self.validate()
+            if len(errors) != 0:
+                raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
     @classmethod
-    def loadd(cls, d):
+    def loadd(cls, d, validate_on_load=True):
         """
         Create a system parameters instance from a dictionary
         :param d: dict, system parameter data
 
         :return: object, SystemParameters
         """
-        sp = SystemParameters()
+        sp = cls()
         sp.data = d
-        sp.validate()
+
+        if validate_on_load:
+            errors = sp.validate()
+            if len(errors) != 0:
+                raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
         return sp
 
@@ -98,6 +104,25 @@ class SystemParameters(object):
                 return value
             else:
                 return self.get_param('.'.join(paths), data=value, default=default)
+
+    def get_param_by_building_id(self, building_id, path, default=None):
+        """
+        return a parameter for a specific building_id. This is similar to get_param but allows the user
+        to constrain the data based on the building type.
+
+        :param building_id: string, id of the building to look up in the custom section of the system parameters
+        :param path: string, period delimeted path of the data to retrieve
+        :param default: variant, (optional) value to return if can't find the result
+        :return: variant, the value from the data
+        """
+
+        # TODO: return the default value if the building ID is not defined
+        for b in self.data.get('buildings', {}).get('custom', {}):
+            if b.get('geojson_id', None) == building_id:
+                # print(f"Building found for {building_id}")
+                return self.get_param(path, b, default=default)
+
+        return None
 
     def validate(self):
         """

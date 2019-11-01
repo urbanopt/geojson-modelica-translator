@@ -31,16 +31,20 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 
 class GeoJSONTest(unittest.TestCase):
 
-    def test_load_system_parameters(self):
+    def test_load_system_parameters_1(self):
         filename = os.path.abspath('tests/system_parameters/data/system_params_1.json')
         sdp = SystemParameters(filename)
-        self.assertEqual(sdp.data['buildings']['default']['rc_order'], 2)
+        self.assertEqual(sdp.data['buildings']['default']['load_model_parameters']['rc']['order'], 2)
+
+    def test_load_system_parameters_2(self):
+        filename = os.path.abspath('tests/system_parameters/data/system_params_2.json')
+        sdp = SystemParameters(filename)
+        self.assertIsNotNone(sdp)
 
     def test_missing_file(self):
         fn = 'non-existent-path'
@@ -52,32 +56,45 @@ class GeoJSONTest(unittest.TestCase):
         data = {
             "buildings": {
                 "default": {
-                    "load_model": "Spawn",
-                    "rc_order": 6
+                    "load_model": "ROM/RC",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 6
+                        }
+                    }
                 }
             }
         }
-        sp = SystemParameters.loadd(data)
-        self.assertEqual(sp.validate()[0], '6 is not one of [1, 2, 4]')
+
+        with self.assertRaises(Exception) as exc:
+            SystemParameters.loadd(data)
+        self.assertRegex(str(exc.exception), 'Invalid system parameter file.*')
+
+        sp = SystemParameters.loadd(data, validate_on_load=False)
+        self.assertEqual(sp.validate()[0], '6 is not one of [1, 2, 3, 4]')
 
     def test_get_param(self):
         data = {
             "buildings": {
                 "default": {
-                    "load_model": "Spawn",
-                    "rc_order": 6
+                    "load_model": "ROM/RC",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4
+                        }
+                    }
                 }
             }
         }
         sp = SystemParameters.loadd(data)
-        value = sp.get_param('buildings.default.rc_order')
-        self.assertEqual(value, 6)
+        value = sp.get_param('buildings.default.load_model_parameters.rc.order')
+        self.assertEqual(value, 4)
 
         value = sp.get_param('buildings.default.load_model')
-        self.assertEqual(value, 'Spawn')
+        self.assertEqual(value, 'ROM/RC')
 
         value = sp.get_param('buildings.default')
-        self.assertDictEqual(value, {'load_model': 'Spawn', 'rc_order': 6})
+        self.assertDictEqual(value, {'load_model': 'ROM/RC', 'load_model_parameters': {"rc": {"order": 4}}})
 
         value = sp.get_param('')
         self.assertIsNone(value)
@@ -94,11 +111,18 @@ class GeoJSONTest(unittest.TestCase):
             }
         }
         sp = SystemParameters.loadd(data)
-        value = sp.get_param('buildings.default.rc_order', default=2)
+        value = sp.get_param('buildings.default.load_model_parameters.rc.order', default=2)
         self.assertEqual(value, 2)
 
         value = sp.get_param('not.a.real.path', default=2)
         self.assertEqual(value, 2)
+
+    def test_get_param_with_building_id(self):
+        filename = os.path.abspath('tests/system_parameters/data/system_params_1.json')
+        sdp = SystemParameters(filename)
+
+        value = sdp.get_param_by_building_id('abcd1234', 'ets.system')
+        self.assertEqual(value, 'Booster Heater')
 
 
 if __name__ == '__main__':

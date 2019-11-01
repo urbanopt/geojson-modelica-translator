@@ -61,6 +61,20 @@ setup(
         'update_schemas': UpdateSchemas,
         'update_licenses': UpdateLicenses,
     },
+    install_requires=[
+        'geojson==2.4.1',
+        'jsonschema==3.0.1',
+        'requests==2.22.0',
+    ],
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+    ],
 )
 
 # install portions of the Modelica Buildings Library for grabbing files as needed (e.g. MOS files, examples, etc)
