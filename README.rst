@@ -62,6 +62,49 @@ Adjacency Matrix
 Topology Maker
 ++++++++++++++
 
+Running Simulations
+-------------------
+
+Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
+will automatically run the models without having to follow the steps below.
+
+* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions.
+* Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
+* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling (make sure you have git-lfs installed).
+* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
+* Example simulation: `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
+* Visualize the results by inspecting the resulting mat file using BuildingsPy.
+
+    .. code-block:: python
+
+        %matplotlib inline
+        import os
+        import matplotlib.pyplot as plt
+
+        from buildingspy.io.outputfile import Reader
+
+        mat = Reader(os.path.join(
+            "tests", "model_connectors", "output", "spawn_two_building_Loads_B5a6b99ec37f4de7f94020090_building_result.mat"),
+            "dymola"
+        )
+        # List off all the variables
+        for var in mat.varNames():
+            print(var)
+
+        (time1, zn_1_temp) = mat.values("znPerimeter_ZN_1.vol.T")
+        (_time1, zn_4_temp) = mat.values("znPerimeter_ZN_4.vol.T")
+        plt.style.use('seaborn-whitegrid')
+
+        fig = plt.figure(figsize=(16, 8))
+        ax = fig.add_subplot(211)
+        ax.plot(time1 / 3600, zn_1_temp - 273.15, 'r', label='$T_1$')
+        ax.plot(time1 / 3600, zn_4_temp - 273.15, 'b', label='$T_4$')
+        ax.set_xlabel('time [h]')
+        ax.set_ylabel(r'temperature [$^\circ$C]')
+        # Simulation is only for 168 hours?
+        ax.set_xlim([0, 168])
+        ax.legend()
+        ax.grid(True)
 
 Managed Tasks
 -------------

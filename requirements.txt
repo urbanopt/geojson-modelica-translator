@@ -1,9 +1,10 @@
-# pip install -r requirements.txt
-# Remember to also add them in setup.cfg but unpinned.
+# Run `pip install -r requirements.txt`
+# Remember to also add them in setup.py
 
 # core libraries
 geojson==2.4.1
 jsonschema==3.0.1
+requests=2.22.0
 
 # dependent projects
 ## Require the MBL. Note this is a large dependency, but needed to assemble the models for running
@@ -25,3 +26,8 @@ python-coveralls==2.9.2
 autopep8==1.4.4
 flake8==3.7.8
 tox==3.13.2
+
+# debugging and testing, not used at the moment in the main portion of the code (i.e. not needed in setup.cfg)
+scipy
+jupyter
+numpy
