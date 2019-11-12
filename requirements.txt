@@ -4,7 +4,7 @@
 # core libraries
 geojson==2.4.1
 jsonschema==3.0.1
-requests=2.22.0
+requests==2.22.0
 
 # dependent projects
 ## Require the MBL. Note this is a large dependency, but needed to assemble the models for running
