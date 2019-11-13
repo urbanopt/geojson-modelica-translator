@@ -72,7 +72,9 @@ will automatically run the models without having to follow the steps below.
 * Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
 * Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling (make sure you have git-lfs installed).
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
-* Example simulation: `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building` or `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
+* Example simulation: 
+    * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
+    * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy.
 
     .. code-block:: python
