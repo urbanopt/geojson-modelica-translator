@@ -70,7 +70,10 @@ will automatically run the models without having to follow the steps below.
 
 * Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions.
 * Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
-* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling (make sure you have git-lfs installed).
+* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling 
+    * **Make sure you have git-lfs installed**. You may need to checkout out the library again after install lfs.
+    * Mac: `brew install git-lfs; git lfs install`
+    * Ubuntu: `sudo apt install git-lfs; git lfs install`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
 * Example simulation: 
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
