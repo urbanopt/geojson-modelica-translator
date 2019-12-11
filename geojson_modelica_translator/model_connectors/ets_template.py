@@ -58,7 +58,7 @@ class ETS_Template():
     def check_ets_from_building_modelica(self):
         '''check if ETS-indirectCooling are in modelica building library'''
         ets_modelica_available = os.path.isfile(self.ets_from_building_modelica)
-        print ("ets-available: ", ets_modelica_available)
+        #print ("ets-available: ", ets_modelica_available)
 
         return ets_modelica_available
 
@@ -68,7 +68,7 @@ class ETS_Template():
         if self.check_ets_from_building_modelica():
             with open(self.ets_from_building_modelica) as f:
                 ets_modelica = f.read()
-                print ( ets_modelica )
+                #print ( ets_modelica )
         else:
             pass
 
@@ -82,6 +82,7 @@ class ETS_Template():
 ######################################################################################################################
 ######                                     For local test only                         ######
 ######################################################################################################################
+'''
 thermal_junction_properties_geojson = "/home/mindcoder/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
 system_parameters_geojson = "/home/mindcoder/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
 ets_from_building_modelica = "/home/mindcoder/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
@@ -91,4 +92,4 @@ ets.check_ets_thermal_junction()
 ets.check_system_parameters()
 ets.check_ets_from_building_modelica()
 ets.to_modelica()
-
+'''
