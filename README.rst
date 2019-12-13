@@ -128,6 +128,11 @@ There is managed task to automatically pull updated GeoJSON schemas from the `ur
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
+Templating of Connectivity
+**************************
+.. image:: ./ConnectionTemplate.jpg
+
+
 Updating Copyrights
 *******************
 
