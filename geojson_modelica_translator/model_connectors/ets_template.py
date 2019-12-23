@@ -11,6 +11,7 @@ from geojson_modelica_translator.utils import ModelicaPath
 class ETS_Template():
     '''This class will template the ETS modelica model.'''
     def __init__(self, thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica):
+        super().__init__()
         '''
         thermal_junction_properties_geojson contains the ETS at brief and at higher level;
         system_parameters_geojson contains the ETS with details                          ;
@@ -19,7 +20,15 @@ class ETS_Template():
         self.thermal_junction_properties_geojson = thermal_junction_properties_geojson
         self.system_parameters_geojson = system_parameters_geojson
         self.ets_from_building_modelica = ets_from_building_modelica
-        print ("you are good here!!!!")
+
+        #print ( "Yanfei-path: ",  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates') )
+
+        self.template_env = Environment(
+            loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
+        )
+
+
+        print ("@@@@@@you are good here!!!!", self.template_env)
 
     def check_ets_thermal_junction(self):
         '''check if ETS info are in thermal-junction-geojson file'''
@@ -72,6 +81,31 @@ class ETS_Template():
         else:
             pass
 
+        curdir = os.getcwd()
+        print("Yanfei-2: ", curdir)
+        #loads_root_path = os.path.join(root_building_dir, project_name, 'Loads')
+        ets_template = self.template_env.get_template('CoolingIndirect.mot')
+        #print ("Yanfei-2: ", curdir)
+
+        building_names = []
+        ets_data = {
+            "Q_flow_nominal": [8000],
+            "eta_efficiency": [0.666],
+            "NominalFlow_district": [0.666],
+            "NominalFlow_buiding":[0.666],
+            "PressureDrop_Valve": [888],
+            "PressureDrop_HX_Secondary": [999],
+            "PressureDrop_HX_Primary": [999],
+
+        }
+
+        file_data = ets_template.render(
+            ets_data=ets_data
+        )
+
+        with open(os.path.join(os.path.join(os.getcwd(), 'ets_cooling_indirect.mo')), 'w') as f:
+            f.write(file_data)
+
         return ets_modelica
 
     def connect(self):
@@ -82,14 +116,14 @@ class ETS_Template():
 ######################################################################################################################
 ######                                     For local test only                         ######
 ######################################################################################################################
-'''
-thermal_junction_properties_geojson = "/home/mindcoder/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
-system_parameters_geojson = "/home/mindcoder/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
-ets_from_building_modelica = "/home/mindcoder/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
+
+thermal_junction_properties_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
+system_parameters_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
+ets_from_building_modelica = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
 print ( os.getcwd() )
 ets = ETS_Template(thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica )
-ets.check_ets_thermal_junction()
-ets.check_system_parameters()
+#ets.check_ets_thermal_junction()
+#ets.check_system_parameters()
 ets.check_ets_from_building_modelica()
 ets.to_modelica()
-'''
+
