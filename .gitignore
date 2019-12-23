@@ -95,4 +95,4 @@ ENV/
 tests/output
 tests/modelica/output
 tests/model_connectors/output
-/geojson_modelica_translator/modelica/buildingslibrary/
+#/geojson_modelica_translator/modelica/buildingslibrary/
