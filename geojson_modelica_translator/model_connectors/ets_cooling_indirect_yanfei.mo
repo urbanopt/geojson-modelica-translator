@@ -1,7 +1,7 @@
 
 within Buildings.Applications.DHC.EnergyTransferStations;
 model CoolingIndirect
-{% raw %}
+
   "Indirect cooling energy transfer station for district energy systems"
   extends Buildings.Fluid.Interfaces.PartialFourPort(
     redeclare final package Medium1 = Medium,
@@ -9,94 +9,83 @@ model CoolingIndirect
 
   replaceable package Medium =
     Modelica.Media.Interfaces.PartialMedium "Medium in the component";
-{% endraw %}
 
-  {% for mflow_district in ets_data["NominalFlow_district"]%}
+
+  
   // mass flow rates
   parameter Modelica.SIunits.MassFlowRate m1_flow_nominal(
     final min=0,
-    start={{mflow_district}})
+    start=0.666)
     "Nominal mass flow rate of primary (district) district cooling side";
-  {% endfor %}
+  
 
-  {% for mflow_building in ets_data["NominalFlow_building"]%}
-  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal(
-    final min=0,
-    start=0.5)
-    "Nominal mass flow rate of secondary (building) district cooling side";
-  {% endfor %}
+  
 
-  {% for dp in ets_data["PressureDrop_valve"]%}
-  // Primary supply control valve
-  parameter Modelica.SIunits.PressureDifference dpValve_nominal(
-    final min=0,
-    final displayUnit="Pa")={{dp}}
-    "Nominal pressure drop of fully open control valve";
-  {% endfor %}
+  
 
-  {% for dp in ets_data["PressureDrop_HX_Primary"]%}
+  
   // Heat exchanger
   parameter Modelica.SIunits.PressureDifference dp1_nominal(
     final min=0,
-    start={{dp}},
+    start=999,
     final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation(Dialog(group="Heat exchanger"));
-  {% endfor %}
+  
 
- {% for dp in ets_data["PressureDrop_HX_Secondary"]%}
+ 
   parameter Modelica.SIunits.PressureDifference dp2_nominal(
     final min=0,
-    start={{dp}},
+    start=999,
     final displayUnit="Pa")
     "Nominal pressure difference on secondary side"
     annotation(Dialog(group="Heat exchanger"));
-  {% endfor %}
+  
 
-   {% raw %}
+   
   parameter Boolean use_Q_flow_nominal=true
     "Set to true to specify Q_flow_nominal and temperatures, or to false to specify effectiveness"
     annotation(Dialog(group="Heat exchanger"));
-    {% endraw %}
+    
 
-  {% for Q_flow in ets_data['Q_flow_nominal'] %}
+  
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
     final min=0,
-    start={{Q_flow}})
+    start=8000)
     "Nominal heat transfer"
-    {% raw %}annotation(Dialog(group="Heat exchanger"));{% endraw %}
-  {% endfor %}
+    annotation(Dialog(group="Heat exchanger"));
+  
 
 
-  {% for supply_water_temp_district in ets_data['SWT_District'] %}
+  
   parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
-    start={{supply_water_temp_district}}+273.15,
+    start=5+273.15,
     final displayUnit="K")
     "Nominal temperature at port a1"
     annotation(Dialog(group="Heat exchanger"));
-   {% endfor %}
+   
 
-  {% for supply_water_temp_building in ets_data['SWT_Building'] %}
+  
   parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
-    start={{supply_water_temp_building}}+273.15,
+    start=7+273.15,
     final displayUnit="K")
     "Nominal temperature at port a2"
     annotation(Dialog(group="Heat exchanger"));
-    {% endfor %}
+    
 
- {% for efficiency in ets_data['eta_efficiency'] %}
+ 
   parameter Modelica.SIunits.Efficiency eta(
     final min=0,
-    final max=1)={{efficiency}}
+    final max=1)=0.666
     "Constant effectiveness"
     annotation(Dialog(group="Heat exchanger"));
-  {% endfor %}
+  
 
-  {%raw%}
+  
   // Controller parameters
   parameter Modelica.Blocks.Types.SimpleController controllerType=
     Modelica.Blocks.Types.SimpleController.PI
@@ -362,5 +351,5 @@ Engineers. (2013). Chapter 5: End User Interface. In
 November 1, 2019, by Kathryn Hinkelman:<br/>
 First implementation. </li>
 </ul>
-</html>"));{% endraw %}
+</html>"));
 end CoolingIndirect;

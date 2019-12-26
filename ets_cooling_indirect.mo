@@ -31,7 +31,7 @@ model CoolingIndirect
     final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation(Dialog(group="Heat exchanger"));
-    
+  
 
  
   parameter Modelica.SIunits.PressureDifference dp2_nominal(
@@ -65,6 +65,9 @@ model CoolingIndirect
     final displayUnit="K")
     "Nominal temperature at port a1"
     annotation(Dialog(group="Heat exchanger"));
+   
+
+  
   parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
