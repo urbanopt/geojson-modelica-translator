@@ -106,7 +106,7 @@ class ETS_Template():
             "Q_flow_nominal": [8000],
             "eta_efficiency": [0.666],
             "NominalFlow_district": [0.666],
-            "NominalFlow_buiding":[0.666],
+            "NominalFlow_building":[0.666],
             "PressureDrop_Valve": [888],
             "PressureDrop_HX_Secondary": [999],
             "PressureDrop_HX_Primary": [999],
@@ -120,7 +120,7 @@ class ETS_Template():
         )
 
         # write templated ETS back to modelica file , to the tests folder for further test
-        with open(os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated_yanfei.mo'), 'w') as f:
+        with open(os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated.mo'), 'w') as f:
             f.write(file_data)
 
         # write templated ETS back to modelica file for further test
