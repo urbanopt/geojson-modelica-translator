@@ -129,13 +129,13 @@ class ETS_Template():
 
         return file_data
 
+
     def test_templated_ets_openloops(self):
         '''after we creating the templated ets, we need to test it in open loops.
         Here we refactor the example file: CoolingIndirectOpenLoops, to test our templated ets model.
         '''
         if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo"):
             print ("file exists!")
-            #shutil.copyfile( "CoolingIndirectOpenLoops.mo", "CoolingIndirectTemplatedOpenLoops.mo")
         else:
             print("CoolingIndirectOpenLoops.mo not exist")
 
@@ -149,12 +149,6 @@ class ETS_Template():
                     examplefile.write( fx)
                 else:
                     examplefile.write(f)
-
-
-
-
-
-
 
 
     def connect(self):
