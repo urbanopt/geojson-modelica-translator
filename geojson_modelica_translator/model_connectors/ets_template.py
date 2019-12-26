@@ -2,6 +2,7 @@ import os
 import shutil
 import json
 
+
 from jinja2 import FileSystemLoader, Environment
 
 from geojson_modelica_translator.model_connectors.base import Base as model_connector_base
@@ -21,16 +22,21 @@ class ETS_Template():
         self.system_parameters_geojson = system_parameters_geojson
         self.ets_from_building_modelica = ets_from_building_modelica
 
+        # get the path of modelica-buildings library
+        directory_up_1_levels = os.path.abspath( (os.path.join(__file__, "../../")) )
+        print ("yanfei-modelica: ", directory_up_1_levels)
+        self.directory_modelica_building = os.path.join( directory_up_1_levels + "/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/")
+
         # go up two levels of directory, to get the path of tests folder for ets
-        directory_up2levels = os.path.abspath(os.path.join(__file__, "../../.."))
-        self.directory_ets_templated = os.path.join(directory_up2levels + "/tests/output/ets/")
+        directory_up_2_levels = os.path.abspath(os.path.join(__file__, "../../.."))
+        self.directory_ets_templated = os.path.join(directory_up_2_levels + "/tests/output/ets/")
         if not os.path.exists(self.directory_ets_templated):
             os.mkdir(self.directory_ets_templated)
         else:
             print ("test/ets folder is already there!!!\n")
             pass
 
-        
+
         # here comes the Jinja2 function: Environment()
         self.template_env = Environment(
             loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
@@ -112,11 +118,44 @@ class ETS_Template():
         file_data = ets_template.render(
             ets_data=ets_data
         )
-        # write templated ETS back to modelica file
+
+        # write templated ETS back to modelica file , to the tests folder for further test
         with open(os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated_yanfei.mo'), 'w') as f:
             f.write(file_data)
 
-        return ets_modelica
+        # write templated ETS back to modelica file for further test
+        with open(os.path.join( self.directory_modelica_building, 'ets_cooling_indirect_templated.mo'), 'w') as f:
+            f.write(file_data)
+
+        return file_data
+
+    def test_templated_ets_openloops(self):
+        '''after we creating the templated ets, we need to test it in open loops.
+        Here we refactor the example file: CoolingIndirectOpenLoops, to test our templated ets model.
+        '''
+        if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo"):
+            print ("file exists!")
+            #shutil.copyfile( "CoolingIndirectOpenLoops.mo", "CoolingIndirectTemplatedOpenLoops.mo")
+        else:
+            print("CoolingIndirectOpenLoops.mo not exist")
+
+
+        file = open(self.directory_modelica_building+"/Examples/CoolingIndirectOpenLoops.mo","r")
+        with open(self.directory_modelica_building + "/Examples/CoolingIndirectTemplatedOpenLoops.mo", "w") as examplefile:
+            for f in file:
+                if "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo" in f:
+                    fx = f.replace( "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo", \
+                                   "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated.mo coo")
+                    examplefile.write( fx)
+                else:
+                    examplefile.write(f)
+
+
+
+
+
+
+
 
     def connect(self):
         '''connect ETS-modelica to building-modelica (specifically TEASER modelica)'''
@@ -136,4 +175,6 @@ ets = ETS_Template(thermal_junction_properties_geojson, system_parameters_geojso
 #ets.check_system_parameters()
 ets.check_ets_from_building_modelica()
 ets.to_modelica()
+ets.test_templated_ets_openloops()
+
 
