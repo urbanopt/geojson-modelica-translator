@@ -21,8 +21,17 @@ class ETS_Template():
         self.system_parameters_geojson = system_parameters_geojson
         self.ets_from_building_modelica = ets_from_building_modelica
 
-        #print ( "Yanfei-path: ",  os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates') )
+        # go up two levels of directory, to get the path of tests folder for ets
+        directory_up2levels = os.path.abspath(os.path.join(__file__, "../../.."))
+        self.directory_ets_templated = os.path.join(directory_up2levels + "/tests/output/ets/")
+        if not os.path.exists(self.directory_ets_templated):
+            os.mkdir(self.directory_ets_templated)
+        else:
+            print ("test/ets folder is already there!!!\n")
+            pass
 
+        
+        # here comes the Jinja2 function: Environment()
         self.template_env = Environment(
             loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
         )
@@ -81,9 +90,8 @@ class ETS_Template():
         else:
             pass
 
-        curdir = os.getcwd()
-        print("Yanfei-2: ", curdir)
-        #loads_root_path = os.path.join(root_building_dir, project_name, 'Loads')
+
+        # Here come the Jinja2 function: get_template()
         ets_template = self.template_env.get_template('CoolingIndirect.mot')
         #print ("Yanfei-2: ", curdir)
 
@@ -96,14 +104,16 @@ class ETS_Template():
             "PressureDrop_Valve": [888],
             "PressureDrop_HX_Secondary": [999],
             "PressureDrop_HX_Primary": [999],
+            "SWT_District": [5],
+            "SWT_Building":[7]
 
         }
-
+        #Here comes the Jina2 function: render()
         file_data = ets_template.render(
             ets_data=ets_data
         )
-
-        with open(os.path.join(os.path.join(os.getcwd(), 'ets_cooling_indirect.mo')), 'w') as f:
+        # write templated ETS back to modelica file
+        with open(os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated_yanfei.mo'), 'w') as f:
             f.write(file_data)
 
         return ets_modelica
