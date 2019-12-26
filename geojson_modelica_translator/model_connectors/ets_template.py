@@ -103,10 +103,10 @@ class ETS_Template():
 
         building_names = []
         ets_data = {
-            "Q_flow_nominal": [8000],
-            "eta_efficiency": [0.666],
-            "NominalFlow_district": [0.666],
-            "NominalFlow_building":[0.666],
+            "Q_Flow_Nominal": [8000],
+            "Eta_Efficiency": [0.666],
+            "NominalFlow_District": [0.666],
+            "NominalFlow_Building":[0.666],
             "PressureDrop_Valve": [888],
             "PressureDrop_HX_Secondary": [999],
             "PressureDrop_HX_Primary": [999],

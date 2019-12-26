@@ -11,7 +11,7 @@ model CoolingIndirect
     Modelica.Media.Interfaces.PartialMedium "Medium in the component";
 {% endraw %}
 
-  {% for mflow_district in ets_data["NominalFlow_district"]%}
+  {% for mflow_district in ets_data["NominalFlow_District"]%}
   // mass flow rates
   parameter Modelica.SIunits.MassFlowRate m1_flow_nominal(
     final min=0,
@@ -19,14 +19,14 @@ model CoolingIndirect
     "Nominal mass flow rate of primary (district) district cooling side";
   {% endfor %}
 
-  {% for mflow_building in ets_data["NominalFlow_building"]%}
+  {% for mflow_building in ets_data["NominalFlow_Building"]%}
   parameter Modelica.SIunits.MassFlowRate m2_flow_nominal(
     final min=0,
     start=0.5)
     "Nominal mass flow rate of secondary (building) district cooling side";
   {% endfor %}
 
-  {% for dp in ets_data["PressureDrop_valve"]%}
+  {% for dp in ets_data["PressureDrop_Valve"]%}
   // Primary supply control valve
   parameter Modelica.SIunits.PressureDifference dpValve_nominal(
     final min=0,
@@ -59,7 +59,7 @@ model CoolingIndirect
     annotation(Dialog(group="Heat exchanger"));
     {% endraw %}
 
-  {% for Q_flow in ets_data['Q_flow_nominal'] %}
+  {% for Q_flow in ets_data['Q_Flow_Nominal'] %}
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
     final min=0,
     start={{Q_flow}})
@@ -88,7 +88,7 @@ model CoolingIndirect
     annotation(Dialog(group="Heat exchanger"));
     {% endfor %}
 
- {% for efficiency in ets_data['eta_efficiency'] %}
+ {% for efficiency in ets_data['Eta_Efficiency'] %}
   parameter Modelica.SIunits.Efficiency eta(
     final min=0,
     final max=1)={{efficiency}}
