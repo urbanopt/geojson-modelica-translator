@@ -36,14 +36,11 @@ class ETS_Template():
             print ("test/ets folder is already there!!!\n")
             pass
 
-
         # here comes the Jinja2 function: Environment()
         self.template_env = Environment(
             loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
         )
-
-
-        print ("@@@@@@you are good here!!!!", self.template_env)
+        #print ("@@@@@@you are good here!!!!", self.template_env)
 
     def check_ets_thermal_junction(self):
         '''check if ETS info are in thermal-junction-geojson file'''
@@ -86,6 +83,7 @@ class ETS_Template():
 
         return ets_modelica_available
 
+
     def to_modelica(self):
         '''convert ETS json to modelica'''
         ets_modelica=""
@@ -96,13 +94,13 @@ class ETS_Template():
         else:
             pass
 
-
         # Here come the Jinja2 function: get_template()
         ets_template = self.template_env.get_template('CoolingIndirect.mot')
         #print ("Yanfei-2: ", curdir)
 
         building_names = []
         ets_data = {
+            "ModelName":"ets_cooling_indirect_templated",
             "Q_Flow_Nominal": [8000],
             "Eta_Efficiency": [0.666],
             "NominalFlow_District": [0.666],
@@ -112,26 +110,29 @@ class ETS_Template():
             "PressureDrop_HX_Primary": [999],
             "SWT_District": [5],
             "SWT_Building":[7]
-
         }
         #Here comes the Jina2 function: render()
         file_data = ets_template.render(
             ets_data=ets_data
         )
 
-        # write templated ETS back to modelica file , to the tests folder for further test
+        # write templated ETS back to modelica file , to the tests folder for Dymola test
+        if os.path.exists( os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated.mo') ):
+            os.remove(os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated.mo'))
         with open(os.path.join( self.directory_ets_templated, 'ets_cooling_indirect_templated.mo'), 'w') as f:
             f.write(file_data)
 
-        # write templated ETS back to modelica file for further test
+        # write templated ETS back to building-modelica folder for Dymola test
+        if os.path.exists( os.path.join( self.directory_modelica_building, 'ets_cooling_indirect_templated.mo') ):
+            os.remove(os.path.join( self.directory_modelica_building, 'ets_cooling_indirect_templated.mo'))
         with open(os.path.join( self.directory_modelica_building, 'ets_cooling_indirect_templated.mo'), 'w') as f:
             f.write(file_data)
 
         return file_data
 
 
-    def test_templated_ets_openloops(self):
-        '''after we creating the templated ets, we need to test it in open loops.
+    def templated_ets_openloops_Dymola(self):
+        '''after we creating the templated ets, we need to test it in Dymola under open loops.
         Here we refactor the example file: CoolingIndirectOpenLoops, to test our templated ets model.
         '''
         if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo"):
@@ -141,25 +142,44 @@ class ETS_Template():
 
 
         file = open(self.directory_modelica_building+"/Examples/CoolingIndirectOpenLoops.mo","r")
-        with open(self.directory_modelica_building + "/Examples/CoolingIndirectTemplatedOpenLoops.mo", "w") as examplefile:
+
+        #if the modelica example file is existed, delete it first
+        if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops_Templated.mo"):
+            os.remove( self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops_Templated.mo" )
+
+        # create the modelica example file for Dymola test
+        with open(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops_Templated.mo", "w") as examplefile:
             for f in file:
-                if "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo" in f:
-                    fx = f.replace( "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo", \
-                                   "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated.mo coo")
-                    examplefile.write( fx)
+                if f.strip() == "model CoolingIndirectOpenLoops":
+                    print ("model header!!!")
+                    fx = f.replace("model CoolingIndirectOpenLoops", "model CoolingIndirectOpenLoops_Templated"+"\n")
+
+                elif f.strip() == "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo(":
+                    print("model refer!!!")
+                    fx = f.replace( "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo(", \
+                                   "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated coo(")
+                elif f.strip() == "end CoolingIndirectOpenLoops;":
+                    print ("model ender!!!")
+                    fx = f.replace("end CoolingIndirectOpenLoops;", "end CoolingIndirectOpenLoops_Templated;")
                 else:
-                    examplefile.write(f)
+                    fx =f
+
+                examplefile.write(fx)
+
+        return examplefile
 
 
     def connect(self):
-        '''connect ETS-modelica to building-modelica (specifically TEASER modelica)'''
+        '''connect ETS-modelica to building-modelica (specifically TEASER modelica).
+        This function will be modified in future'''
+
         pass
 
 
 ######################################################################################################################
 ######                                     For local test only                         ######
 ######################################################################################################################
-
+'''
 thermal_junction_properties_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
 system_parameters_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
 ets_from_building_modelica = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
@@ -169,6 +189,6 @@ ets = ETS_Template(thermal_junction_properties_geojson, system_parameters_geojso
 #ets.check_system_parameters()
 ets.check_ets_from_building_modelica()
 ets.to_modelica()
-ets.test_templated_ets_openloops()
+ets.templated_ets_openloops_Dymola()
 
-
+'''

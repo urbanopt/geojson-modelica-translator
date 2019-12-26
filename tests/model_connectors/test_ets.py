@@ -31,6 +31,8 @@ class ETS_ModelConnectorSingleBuildingTest(unittest.TestCase):
     def test_ets_to_modelica(self):
         self.assertIsNotNone( self.ets.to_modelica() )
 
+    def test_ets_in_Dymola(self):
+        self.assertIsNotNone( self.ets.templated_ets_openloops_Dymola())
 
 if __name__ == '__main__':
     unittest.main()
