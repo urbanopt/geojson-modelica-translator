@@ -20,8 +20,8 @@ class ETS_Template():
 
         # get the path of modelica-buildings library
         directory_up_1_levels = os.path.abspath((os.path.join(__file__, "../../")))
-        print("yanfei-modelica: ", directory_up_1_levels)
-        self.directory_modelica_building = os.path.join(directory_up_1_levels + "/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/")
+        dest_path = "/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/"
+        self.directory_modelica_building = os.path.join(directory_up_1_levels + dest_path)
 
         # go up two levels of directory, to get the path of tests folder for ets
         directory_up_2_levels = os.path.abspath(os.path.join(__file__, "../../.."))
@@ -120,37 +120,42 @@ class ETS_Template():
 
         return file_data
 
+    # TODO: do not capitalize Dymola
     def templated_ets_openloops_Dymola(self):
         '''after we creating the templated ets, we need to test it in Dymola under open loops.
         Here we refactor the example file: CoolingIndirectOpenLoops, to test our templated ets model.
         '''
-        if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo"):
-            print("file exists!")
-        else:
-            print("CoolingIndirectOpenLoops.mo not exist")
+        # if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo"):
+        #     print("file exists!")
+        # else:
+        #     print("CoolingIndirectOpenLoops.mo not exist")
 
         file = open(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo", "r")
+        cooling_indirect_filename = "/Examples/CoolingIndirectOpenLoops_Templated.mo"
 
         # if the modelica example file is existed, delete it first
-        if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops_Templated.mo"):
-            os.remove(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops_Templated.mo")
+        if os.path.exists(self.directory_modelica_building + cooling_indirect_filename):
+            os.remove(self.directory_modelica_building + cooling_indirect_filename)
 
         # create the modelica example file for Dymola test
-        with open(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops_Templated.mo", "w") as examplefile:
-            for f in file:
-                if f.strip() == "model CoolingIndirectOpenLoops":
-                    print("model header!!!")
-                    fx = f.replace("model CoolingIndirectOpenLoops", "model CoolingIndirectOpenLoops_Templated" + "\n")
+        # TODO: Replace this with the ModelicaFile Class -- extend ModelicaFile class if does not support.
+        repl_dict = {}
+        from_str = "model CoolingIndirectOpenLoops"
+        to_str = "model CoolingIndirectOpenLoops_Templated\n"
+        repl_dict[from_str] = to_str
+        from_str = "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo("
+        to_str = "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated coo("
+        repl_dict[from_str] = to_str
+        from_str = "end CoolingIndirectOpenLoops;"
+        to_str = "end CoolingIndirectOpenLoops_Templated;"
+        repl_dict[from_str] = to_str
 
-                elif f.strip() == "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo(":
-                    print("model refer!!!")
-                    fx = f.replace("Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo(",
-                                   "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated coo(")
-                elif f.strip() == "end CoolingIndirectOpenLoops;":
-                    print("model ender!!!")
-                    fx = f.replace("end CoolingIndirectOpenLoops;", "end CoolingIndirectOpenLoops_Templated;")
-                else:
-                    fx = f
+        with open(self.directory_modelica_building + cooling_indirect_filename, "w") as examplefile:
+            for f in file:
+                fx = f
+                for from_str, to_str in enumerate(repl_dict):
+                    if f.string() == from_str:
+                        fx = f.replace(from_str, to_str)
 
                 examplefile.write(fx)
 
@@ -161,18 +166,3 @@ class ETS_Template():
         This function will be modified in future'''
 
         pass
-
-
-'''
-# For local test only
-thermal_junction_properties_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
-system_parameters_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
-ets_from_building_modelica = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
-print ( os.getcwd() )
-ets = ETS_Template(thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica )
-#ets.check_ets_thermal_junction()
-#ets.check_system_parameters()
-ets.check_ets_from_building_modelica()
-ets.to_modelica()
-ets.templated_ets_openloops_Dymola()
-'''

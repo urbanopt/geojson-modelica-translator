@@ -7,12 +7,19 @@ from ..context import geojson_modelica_translator  # noqa - Do not remove this l
 
 class ETS_ModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):  # the first method/member must be setUp
-        folder_base = os.getcwd()
-        self.thermal_junction_properties_geojson = folder_base + "/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
-        self.system_parameters_geojson = folder_base + "/geojson_modelica_translator/system_parameters/schema.json"
-        self.ets_from_building_modelica = folder_base + "/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
+        base_folder = os.path.join(os.getcwd(), 'geojson_modelica_translator')
+        dest_path = "geojson/data/schemas/thermal_junction_properties.json"
+        self.thermal_junction_properties_geojson = base_folder + dest_path
+        dest_path = "system_parameters/schema.json"
+        self.system_parameters_geojson = base_folder + dest_path
+        dest_path = "modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
+        self.ets_from_building_modelica = base_folder + dest_path
 
-        self.ets = ETS_Template(self.thermal_junction_properties_geojson, self.system_parameters_geojson, self.ets_from_building_modelica)
+        self.ets = ETS_Template(
+            self.thermal_junction_properties_geojson,
+            self.system_parameters_geojson,
+            self.ets_from_building_modelica
+        )
         self.assertIsNotNone(self.ets)
 
         return self.ets
