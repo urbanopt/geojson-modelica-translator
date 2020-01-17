@@ -31,10 +31,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
 from geojson_modelica_translator.model_connectors.spawn import SpawnConnector
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
+from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):

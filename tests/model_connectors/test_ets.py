@@ -1,8 +1,8 @@
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-
-import unittest
-from geojson_modelica_translator.model_connectors.ets_template import ETS_Template
 import os
+import unittest
+
+from geojson_modelica_translator.model_connectors.ets_template import ETS_Template
+from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class ETS_ModelConnectorSingleBuildingTest(unittest.TestCase):
@@ -19,7 +19,6 @@ class ETS_ModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def test_ets_thermal_junction(self):
         ets_general = self.ets.check_ets_thermal_junction()
-        #print ("yanfei: ", ets_general)
         self.assertTrue(ets_general)
 
     def test_ets_system_parameters(self):

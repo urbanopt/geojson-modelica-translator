@@ -28,11 +28,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-
 import unittest
 
 from geojson_modelica_translator.geojson.schemas import Schemas
+from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class SchemasTest(unittest.TestCase):

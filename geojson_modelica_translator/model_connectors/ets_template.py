@@ -1,13 +1,7 @@
-import os
-import shutil
 import json
-
+import os
 
 from jinja2 import FileSystemLoader, Environment
-
-from geojson_modelica_translator.model_connectors.base import Base as model_connector_base
-from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath
 
 
 class ETS_Template():
@@ -42,7 +36,6 @@ class ETS_Template():
         self.template_env = Environment(
             loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
         )
-        #print ("@@@@@@you are good here!!!!", self.template_env)
 
     def check_ets_thermal_junction(self):
         '''check if ETS info are in thermal-junction-geojson file'''
@@ -69,7 +62,6 @@ class ETS_Template():
 
         ets_details = False
         for key, value in data.items():
-            #print (key, " <==> " ,value)
             # four levels down to get the details
             ets_details = data["definitions"]["building_def"]["properties"]["ets"]
             print(ets_details)
@@ -81,25 +73,22 @@ class ETS_Template():
     def check_ets_from_building_modelica(self):
         '''check if ETS-indirectCooling are in modelica building library'''
         ets_modelica_available = os.path.isfile(self.ets_from_building_modelica)
-        #print ("ets-available: ", ets_modelica_available)
 
         return ets_modelica_available
 
     def to_modelica(self):
         '''convert ETS json to modelica'''
-        ets_modelica = ""
-        if self.check_ets_from_building_modelica():
-            with open(self.ets_from_building_modelica) as f:
-                ets_modelica = f.read()
-                #print ( ets_modelica )
-        else:
-            pass
+        # NL: This code doesn't appear to be used... review
+        # ets_modelica = ""
+        # if self.check_ets_from_building_modelica():
+        #     with open(self.ets_from_building_modelica) as f:
+        #         ets_modelica = f.read()
+        # else:
+        #     pass
 
         # Here come the Jinja2 function: get_template()
         ets_template = self.template_env.get_template('CoolingIndirect.mot')
-        #print ("Yanfei-2: ", curdir)
 
-        building_names = []
         ets_data = {
             "ModelName": "ets_cooling_indirect_templated",
             "Q_Flow_Nominal": [8000],
@@ -174,10 +163,8 @@ class ETS_Template():
         pass
 
 
-######################################################################################################################
-######                                     For local test only                         ######
-######################################################################################################################
 '''
+# For local test only
 thermal_junction_properties_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
 system_parameters_geojson = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
 ets_from_building_modelica = "/home/Yanfei_Projects/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
@@ -188,5 +175,4 @@ ets = ETS_Template(thermal_junction_properties_geojson, system_parameters_geojso
 ets.check_ets_from_building_modelica()
 ets.to_modelica()
 ets.templated_ets_openloops_Dymola()
-
 '''

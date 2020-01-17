@@ -28,10 +28,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+import geojson
 import logging
 import os
 from collections import defaultdict
-import geojson
+
 from geojson_modelica_translator.geojson.schemas import Schemas
 
 _log = logging.getLogger(__name__)

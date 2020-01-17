@@ -28,12 +28,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from .context import geojson_modelica_translator  # noqa - Do not remove this line
-
 import os
 import unittest
 
 from geojson_modelica_translator.utils import ModelicaPath
+from .context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class ModelicaPathTest(unittest.TestCase):
