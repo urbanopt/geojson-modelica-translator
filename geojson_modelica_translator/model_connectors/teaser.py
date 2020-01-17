@@ -31,7 +31,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import glob
 import os
 import shutil
-
 from teaser.project import Project
 
 from geojson_modelica_translator.model_connectors.base import Base as model_connector_base

@@ -4,16 +4,13 @@
 ##########################################################################
 # Import the function for compilation of models and the load_fmu method
 
-from pymodelica import compile_fmu
-import traceback
-import logging
-
-from pyfmi import load_fmu
-import pymodelica
-
 import os
+import pymodelica
 import shutil
 import sys
+from pyfmi import load_fmu
+from pymodelica import compile_fmu
+
 #    import matplotlib.pyplot as plt
 
 debug_solver = False

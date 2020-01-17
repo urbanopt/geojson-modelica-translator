@@ -28,13 +28,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-
 import filecmp
 import os
 import unittest
 
 from geojson_modelica_translator.modelica.input_parser import InputParser
+from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class InputParserTest(unittest.TestCase):

@@ -1,6 +1,8 @@
 
 within Buildings.Applications.DHC.EnergyTransferStations;
-model CoolingIndirect
+
+model ets_cooling_indirect_templated
+
 
   "Indirect cooling energy transfer station for district energy systems"
   extends Buildings.Fluid.Interfaces.PartialFourPort(
@@ -20,7 +22,18 @@ model CoolingIndirect
   
 
   
+  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal(
+    final min=0,
+    start=0.5)
+    "Nominal mass flow rate of secondary (building) district cooling side";
+  
 
+  
+  // Primary supply control valve
+  parameter Modelica.SIunits.PressureDifference dpValve_nominal(
+    final min=0,
+    final displayUnit="Pa")=888
+    "Nominal pressure drop of fully open control valve";
   
 
   
@@ -350,6 +363,7 @@ Engineers. (2013). Chapter 5: End User Interface. In
 <li>
 November 1, 2019, by Kathryn Hinkelman:<br/>
 First implementation. </li>
+<li> 12/15/2020, Yanfei Li, Templating ETS model.</li>
 </ul>
 </html>"));
-end CoolingIndirect;
+end ets_cooling_indirect_templated;
