@@ -5,6 +5,7 @@ from geojson_modelica_translator.model_connectors.ets_template import ETS_Templa
 from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
+# TODO: do not mix upper camel case and snake case. Spell out ETS or use ETSModelConnector...
 class ETS_ModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):  # the first method/member must be setUp
         base_folder = os.path.join(os.getcwd(), 'geojson_modelica_translator')

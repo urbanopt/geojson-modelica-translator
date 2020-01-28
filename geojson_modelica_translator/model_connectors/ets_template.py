@@ -4,10 +4,12 @@ import os
 from jinja2 import FileSystemLoader, Environment
 
 
+# TODO: Class name should be upper camel case, not a mix of camel and snake case.
 class ETS_Template():
     '''This class will template the ETS modelica model.'''
 
     def __init__(self, thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica):
+        # TODO: Doc string needs to be triple double quotes and before the first method (super().__init__()).
         super().__init__()
         '''
         thermal_junction_properties_geojson contains the ETS at brief and at higher level;
@@ -29,6 +31,7 @@ class ETS_Template():
         if not os.path.exists(self.directory_ets_templated):
             os.mkdir(self.directory_ets_templated)
         else:
+            # TODO: remove print statement
             print("test/ets folder is already there!!!\n")
             pass
 
@@ -38,6 +41,7 @@ class ETS_Template():
         )
 
     def check_ets_thermal_junction(self):
+        # TODO: docstring should be triple doublequotes
         '''check if ETS info are in thermal-junction-geojson file'''
         with open(self.thermal_junction_properties_geojson, 'r') as f:
             data = json.load(f)
@@ -56,6 +60,7 @@ class ETS_Template():
         return ets_general
 
     def check_system_parameters(self):
+        # TODO: docstring should be triple doublequotes
         '''check detailed parameters of ETS'''
         with open(self.system_parameters_geojson, 'r') as f:
             data = json.load(f)
@@ -71,6 +76,7 @@ class ETS_Template():
         return ets_details
 
     def check_ets_from_building_modelica(self):
+        # TODO: docstring should be triple doublequotes
         '''check if ETS-indirectCooling are in modelica building library'''
         ets_modelica_available = os.path.isfile(self.ets_from_building_modelica)
 
@@ -89,6 +95,7 @@ class ETS_Template():
         # Here come the Jinja2 function: get_template()
         ets_template = self.template_env.get_template('CoolingIndirect.mot')
 
+        # TODO: Seems like the ets_data below should allow defaults from the system parameters JSON file, correct?
         ets_data = {
             "ModelName": "ets_cooling_indirect_templated",
             "Q_Flow_Nominal": [8000],
@@ -154,6 +161,8 @@ class ETS_Template():
             for f in file:
                 fx = f
                 for from_str, to_str in enumerate(repl_dict):
+                    print(f.__class__)
+                    # TODO: f.string() causes errors, check code
                     if f.string() == from_str:
                         fx = f.replace(from_str, to_str)
 
