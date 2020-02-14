@@ -5,7 +5,7 @@ from jinja2 import FileSystemLoader, Environment
 
 
 # TODO: Class name should be upper camel case, not a mix of camel and snake case.
-class ETS_Template():
+class ETSTemplate():
     """This class will template the ETS modelica model."""
 
     def __init__(self, thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica):
@@ -16,8 +16,13 @@ class ETS_Template():
         ets_from_building_modelica contains the modelica model of ETS                    ;
         """
         self.thermal_junction_properties_geojson = thermal_junction_properties_geojson
+        self.thermal_junction_properties_geojson = self.thermal_junction_properties_geojson.replace("\\", "/")
+
         self.system_parameters_geojson = system_parameters_geojson
+        self.system_parameters_geojson = self.system_parameters_geojson.replace("\\" , "/")
+
         self.ets_from_building_modelica = ets_from_building_modelica
+        self.ets_from_building_modelica  = self.ets_from_building_modelica.replace("\\", "/")
 
         # get the path of modelica-buildings library
         directory_up_one_levels = os.path.abspath((os.path.join(__file__, "../../")))
@@ -172,8 +177,8 @@ class ETS_Template():
 thermal_junction_properties_geojson = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
 system_parameters_geojson = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
 ets_from_building_modelica = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
-print ( "current folder: ", os.getcwd(), "\n")
-ets = ETS_Template(thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica )
+#print ( "current folder: ", os.getcwd(), "\n")
+ets = ETSTemplate(thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica )
 ets.check_ets_thermal_junction()
 ets.check_ets_system_parameters()
 ets.check_ets_from_building_modelica()
