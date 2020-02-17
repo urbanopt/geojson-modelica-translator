@@ -7,14 +7,14 @@ jsonschema==3.0.1
 requests==2.22.0
 
 # dependent projects
-## Require the MBL. Note this is a large dependency, but needed to assemble the models for running
 BuildingsPy==1.7.0
+# There may be a need to require the MBL. Note this is a large dependency, but needed to assemble the models for running
 #-e git+https://github.com/lbl-srg/modelica-buildings.git@issue1442_loadCoupling#egg=buildings
 
 # Use TEASER from URBANopt for now to support MBL 7.0
 #teaser==0.6.8
 #-e file:../TEASER-urbanopt#egg=teaser
--e git+https://github.com/urbanopt/TEASER.git@mbl-7.0#egg=teaser
+-e git+https://github.com/RWTH-EBC/TEASER.git@0.7.2#egg=teaser
 
 # Test and documentation
 nose==1.3.7
