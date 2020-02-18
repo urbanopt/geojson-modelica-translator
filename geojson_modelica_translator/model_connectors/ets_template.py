@@ -19,23 +19,25 @@ class ETSTemplate():
         self.thermal_junction_properties_geojson = self.thermal_junction_properties_geojson.replace("\\", "/")
 
         self.system_parameters_geojson = system_parameters_geojson
-        self.system_parameters_geojson = self.system_parameters_geojson.replace("\\" , "/")
+        if "\\" in self.system_parameters_geojson:
+            self.system_parameters_geojson = self.system_parameters_geojson.replace("\\" , "/")
 
         self.ets_from_building_modelica = ets_from_building_modelica
-        self.ets_from_building_modelica  = self.ets_from_building_modelica.replace("\\", "/")
+        if "\\" in self.ets_from_building_modelica:
+            self.ets_from_building_modelica  = self.ets_from_building_modelica.replace("\\", "/")
 
         # get the path of modelica-buildings library
         directory_up_one_levels = os.path.abspath((os.path.join(__file__, "../../")))
         dest_path = "/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/"
         self.directory_modelica_building = os.path.join(directory_up_one_levels + dest_path)
-
-        self.directory_modelica_building = self.directory_modelica_building.replace("\\", "/")
+        if "\\" in self.directory_modelica_building:
+            self.directory_modelica_building = self.directory_modelica_building.replace("\\", "/")
 
         # go up two levels of directory, to get the path of tests folder for ets
         directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
-
         self.directory_ets_templated = os.path.join(directory_up_two_levels + "/tests/output_ets")
-        self.directory_ets_templated = self.directory_ets_templated.replace("\\", "/")
+        if "\\" in self.directory_ets_templated:
+            self.directory_ets_templated = self.directory_ets_templated.replace("\\", "/")
 
         if not os.path.isdir(self.directory_ets_templated):
             os.mkdir(self.directory_ets_templated)
@@ -43,6 +45,7 @@ class ETSTemplate():
             pass
 
         # here comes the Jinja2 function: Environment()
+        # it loads all the "*.mot" files into an environment by Jinja2
         self.template_env = Environment(
             loader=FileSystemLoader(searchpath=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
         )
@@ -69,14 +72,13 @@ class ETSTemplate():
         with open(self.system_parameters_geojson, 'r') as f:
             data = json.load(f)
 
-        ets_details = False
-        for key, value in data.items():
-            # four levels down to get the details
-            ets_details = data["definitions"]["building_def"]["properties"]["ets"]
-            if ets_details:
-                ets_details = True
-
-        return ets_details
+        ets_parameters = False
+        # four levels down to get the ets model description
+        ets_overall = data["definitions"]["building_def"]["properties"]["ets"]
+        # three levels down to get the parameters
+        ets_parameters = data["definitions"]["ets_parameters"]["properties"]
+        #print ("est_parameters are: ", type(ets_parameters) )
+        return ets_parameters
 
     def check_ets_from_building_modelica(self):
         """check if ETS-indirectCooling are in modelica building library"""
@@ -86,25 +88,15 @@ class ETSTemplate():
 
     def to_modelica(self):
         """convert ETS json to modelica"""
-
         # Here come the Jinja2 function: get_template(), which will read into the templated_ets model.
-        # CoolingIndirect.mot was manually created as a starting point.
+        # CoolingIndirect.mot was manually created as a starting point, by adding stuff following Jinja2.
         # it has all the necessary parameters which need to be changed through templating.
         ets_template = self.template_env.get_template('CoolingIndirect.mot')
 
         # TODO: Seems like the ets_data below should allow defaults from the system parameters JSON file, correct?
-        ets_data = {
-            "ModelName": "ets_cooling_indirect_templated",
-            "Q_Flow_Nominal": [8000],
-            "Eta_Efficiency": [0.666],
-            "NominalFlow_District": [0.666],
-            "NominalFlow_Building": [0.666],
-            "PressureDrop_Valve": [888],
-            "PressureDrop_HX_Secondary": [999],
-            "PressureDrop_HX_Primary": [999],
-            "SWT_District": [5],
-            "SWT_Building": [7]
-        }
+        # ets model parameters are from the schema.json file, default values only.
+        ets_data = self.check_ets_system_parameters()
+
         # Here comes the Jina2 function: render()
         file_data = ets_template.render(
             ets_data=ets_data
@@ -128,11 +120,6 @@ class ETSTemplate():
         """after we creating the templated ets, we need to test it in Dymola under open loops.
         Here we refactor the example file: CoolingIndirectOpenLoops, to test our templated ets model.
         """
-        # if os.path.exists(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo"):
-        #     print("file exists!")
-        # else:
-        #     print("CoolingIndirectOpenLoops.mo not exist")
-
         file = open(self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo", "r")
         cooling_indirect_filename = "/Examples/CoolingIndirectOpenLoops_Templated.mo"
 
@@ -142,6 +129,7 @@ class ETSTemplate():
 
         # create the modelica example file for Dymola test
         # TODO: Replace this with the ModelicaFile Class -- extend ModelicaFile class if does not support.
+        # Theoretically it is doable using extend clause from Modelica. But we need to change the original ETS model first, in order to extend.
         repl_dict = {}
         from_str = "model CoolingIndirectOpenLoops"
         to_str = "model CoolingIndirectOpenLoops_Templated\n"
