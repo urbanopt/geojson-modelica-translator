@@ -199,8 +199,11 @@ class TeaserConnector(model_connector_base):
                 ]
                 mofile.add_model_object('Buildings.Controls.OBC.CDL.Interfaces.RealOutput', instance, data)
 
-                # update the weaBus connectors
+                # All existing weaDat.weaBus connections need to be updated to simply weaBus
                 mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
+                # Now remove the redundant weaBus -> weaBus connection
+                mofile.remove_connect_string('weaDat.weaBus', 'weaBus')
+
 
                 # add new port connections
                 if self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 1:  # noqa

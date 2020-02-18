@@ -93,7 +93,8 @@ class InputParserTest(unittest.TestCase):
         f1.replace_model_string(
             'Modelica.Blocks.Sources.CombiTimeTable',
             'internalGains',
-            'modelica://Project/B5a6b99ec37f4de7f94020090/B5a6b99ec37f4de7f94020090_Models/InternalGains_B5a6b99ec37f4de7f94020090Floor.mat',  # noqa
+            'modelica://Project/B5a6b99ec37f4de7f94020090/B5a6b99ec37f4de7f94020090_Models/InternalGains_B5a6b99ec37f4de7f94020090Floor.mat',
+            # noqa
             'modelica://a/new/path.mat'
         )
         f1.save_as(new_filename)
@@ -109,7 +110,8 @@ class InputParserTest(unittest.TestCase):
         new_filename = os.path.abspath('tests/modelica/output/test_1_output_5.mo')
         f1 = InputParser(filename)
         data = [
-            'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'  # noqa
+            'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'
+            # noqa
         ]
         f1.add_model_object('Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a', 'port_a', data)
         f1.save_as(new_filename)
@@ -142,6 +144,29 @@ class InputParserTest(unittest.TestCase):
         f1.replace_connect_string('eqAirTemp.TEqAir', 'prescribedTemperature.T', 'NothingOfImportance', None)
         f1.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
         f1.save_as(new_filename)
+
+        f2 = InputParser(new_filename)
+        self.assertFalse(filecmp.cmp(filename, new_filename))
+        index, c = f2.find_connect('weaBus', 'weaBus')
+        # there should exist the new connection
+        self.assertGreaterEqual(index, 0)
+
+        # the old one should not exist
+        index, c = f2.find_connect('weaDat.weaBus', 'weaBus')
+        self.assertIsNone(index)
+
+    def test_remove_connection(self):
+        filename = os.path.abspath('tests/modelica/data/test_1.mo')
+        new_filename = os.path.abspath('tests/modelica/output/test_1_output_8.mo')
+        f1 = InputParser(filename)
+        f1.remove_connect_string('weaDat.weaBus', 'weaBus')
+        f1.save_as(new_filename)
+
+        f2 = InputParser(new_filename)
+        self.assertFalse(filecmp.cmp(filename, new_filename))
+        index, c = f2.find_connect('weaDat.weaBus', 'weaBus')
+        # the connection should no longer exist
+        self.assertIsNone(index)
 
 
 def update_connection(self):
