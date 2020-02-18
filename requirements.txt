@@ -2,12 +2,12 @@
 # Remember to also add them in setup.py
 
 # core libraries
-geojson==2.4.1
+geojson==2.5.0
 jsonschema==3.0.1
 requests==2.22.0
 
 # dependent projects
-BuildingsPy==1.7.0
+BuildingsPy==2.0.0
 # There may be a need to require the MBL. Note this is a large dependency, but needed to assemble the models for running
 #-e git+https://github.com/lbl-srg/modelica-buildings.git@issue1442_loadCoupling#egg=buildings
 
@@ -18,14 +18,14 @@ BuildingsPy==1.7.0
 
 # Test and documentation
 nose==1.3.7
-sphinx==2.1.2
+sphinx==2.4.2
 sphinx_rtd_theme==0.4.3
-pytest==5.0.1
-pytest-cov==2.7.1
-python-coveralls==2.9.2
-autopep8==1.4.4
-flake8==3.7.8
-tox==3.13.2
+pytest==5.3.5
+pytest-cov==2.8.1
+python-coveralls==2.9.3
+autopep8==1.5
+flake8==3.7.9
+tox==3.14.5
 
 # debugging and testing, not used at the moment in the main portion of the code (i.e. not needed in setup.cfg)
 scipy
