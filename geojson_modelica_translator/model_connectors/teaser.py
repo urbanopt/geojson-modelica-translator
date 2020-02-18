@@ -204,7 +204,6 @@ class TeaserConnector(model_connector_base):
                 # Now remove the redundant weaBus -> weaBus connection
                 mofile.remove_connect_string('weaBus', 'weaBus')
 
-
                 # add new port connections
                 if self.system_parameters.get_param('buildings.default.load_model_parameters.rc.order', default=2) == 1:  # noqa
                     data = 'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))'
