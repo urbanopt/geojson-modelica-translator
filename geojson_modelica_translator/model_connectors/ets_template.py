@@ -3,7 +3,6 @@ import os
 
 from jinja2 import FileSystemLoader, Environment
 
-
 # TODO: Class name should be upper camel case, not a mix of camel and snake case.
 class ETSTemplate():
     """This class will template the ETS modelica model."""
@@ -130,6 +129,8 @@ class ETSTemplate():
         # create the modelica example file for Dymola test
         # TODO: Replace this with the ModelicaFile Class -- extend ModelicaFile class if does not support.
         # Theoretically it is doable using extend clause from Modelica. But we need to change the original ETS model first, in order to extend.
+        # This is Michael Wetter suggested approach.
+        # if so, we don't need to template modelica models, but we need to connect the modelica components
         repl_dict = {}
         from_str = "model CoolingIndirectOpenLoops"
         to_str = "model CoolingIndirectOpenLoops_Templated\n"
