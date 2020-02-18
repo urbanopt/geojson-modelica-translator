@@ -202,7 +202,7 @@ class TeaserConnector(model_connector_base):
                 # All existing weaDat.weaBus connections need to be updated to simply weaBus
                 mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
                 # Now remove the redundant weaBus -> weaBus connection
-                mofile.remove_connect_string('weaDat.weaBus', 'weaBus')
+                mofile.remove_connect_string('weaBus', 'weaBus')
 
 
                 # add new port connections
