@@ -11,7 +11,7 @@ BuildingsPy==2.0.0
 # There may be a need to require the MBL. Note this is a large dependency, but needed to assemble the models for running
 #-e git+https://github.com/lbl-srg/modelica-buildings.git@issue1442_loadCoupling#egg=buildings
 
-# Use the core teaser library.
+# Use the core teaser library. Note: if using the github checkout, then it will be saved in the ./src directory if python is system python.
 teaser==0.7.2
 #-e file:../TEASER-urbanopt#egg=teaser
 #-e git+https://github.com/RWTH-EBC/TEASER.git@0.7.2#egg=teaser
