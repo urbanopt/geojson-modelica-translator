@@ -149,7 +149,7 @@ class TeaserConnector(model_connector_base):
             package = PackageParser(os.path.join(root_building_dir, f'B{b}'))
 
             # move the internal gains files to a new resources folder
-            mat_files = glob.glob(os.path.join(root_building_dir, f'B{b}/*.mat'))
+            mat_files = glob.glob(os.path.join(root_building_dir, f'B{b}/*.txt'))
             for f in mat_files:
                 new_file_name = os.path.basename(f).replace(f'B{b}', '')
                 os.rename(f, f'{b_modelica_path.resources_dir}/{new_file_name}')

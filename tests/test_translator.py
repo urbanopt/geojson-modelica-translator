@@ -72,17 +72,16 @@ class GeoJSONTranslatorTest(unittest.TestCase):
         path_checks = [f'{os.path.sep.join(r)}.mo' for r in itertools.product(building_paths, model_names)]
 
         for p in path_checks:
-            # print(p)
-            self.assertTrue(os.path.exists(p))
+            self.assertTrue(os.path.exists(p), f'Path not found {p}')
 
-        # look for resource files
+        # go through the generated buildings and ensure that the resources are created
         resource_names = ['InternalGains_Floor', 'InternalGains_ICT', 'InternalGains_Meeting', 'InternalGains_Office',
                           'InternalGains_Restroom', 'InternalGains_Storage']
-        resource_paths = [os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname) for b in gj.buildings]
-        path_checks = [f'{os.path.sep.join(r)}.mat' for r in itertools.product(resource_paths, resource_names)]
-
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p))
+        for b in gj.buildings:
+            for resource_name in resource_names:
+                # TEASER 0.7.2 used .txt for schedule files
+                path = os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname, f'{resource_name}.txt')
+                self.assertTrue(os.path.exists(path), f'Path not found: {path}')
 
     def test_to_modelica_rc_order_4(self):
         self.results_path = os.path.abspath('tests/output/rc_order_4')
@@ -115,17 +114,15 @@ class GeoJSONTranslatorTest(unittest.TestCase):
         path_checks = [f'{os.path.sep.join(r)}.mo' for r in itertools.product(building_paths, model_names)]
 
         for p in path_checks:
-            # print(p)
-            self.assertTrue(os.path.exists(p))
+            self.assertTrue(os.path.exists(p), f'Path not found: {p}')
 
-        # look for resource files
         resource_names = ['InternalGains_Floor', 'InternalGains_ICT', 'InternalGains_Meeting', 'InternalGains_Office',
                           'InternalGains_Restroom', 'InternalGains_Storage']
-        resource_paths = [os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname) for b in gj.buildings]
-        path_checks = [f'{os.path.sep.join(r)}.mat' for r in itertools.product(resource_paths, resource_names)]
-
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p))
+        for b in gj.buildings:
+            for resource_name in resource_names:
+                # TEASER 0.7.2 used .txt for schedule files
+                path = os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname, f'{resource_name}.txt')
+                self.assertTrue(os.path.exists(path), f'Path not found: {path}')
 
 
 if __name__ == '__main__':
