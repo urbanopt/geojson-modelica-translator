@@ -8,7 +8,7 @@ from ..context import geojson_modelica_translator  # noqa - Do not remove this l
 # TODO: do not mix upper camel case and snake case. Spell out ETS or use ETSModelConnector...
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):  # the first method/member must be setUp
-        base_folder = os.path.join(os.getcwd(), 'geojson_modelica_translator')
+        base_folder = os.path.join(os.getcwd(), "geojson_modelica_translator")
         dest_path = "/geojson/data/schemas/thermal_junction_properties.json"
         self.thermal_junction_properties_geojson = base_folder + dest_path
         dest_path = "/system_parameters/schema.json"
@@ -19,7 +19,7 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         self.ets = ETSTemplate(
             self.thermal_junction_properties_geojson,
             self.system_parameters_geojson,
-            self.ets_from_building_modelica
+            self.ets_from_building_modelica,
         )
         self.assertIsNotNone(self.ets)
 
@@ -42,5 +42,5 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         self.assertIsNotNone(self.ets.templated_ets_openloops_dymola())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

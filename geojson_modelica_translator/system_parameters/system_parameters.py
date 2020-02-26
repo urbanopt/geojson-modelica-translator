@@ -46,14 +46,18 @@ class SystemParameters(object):
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        self.schema = json.load(open(os.path.join(os.path.dirname(__file__), 'schema.json'), 'r'))
+        self.schema = json.load(
+            open(os.path.join(os.path.dirname(__file__), "schema.json"), "r")
+        )
         self.data = {}
 
         if filename:
             if os.path.exists(filename):
-                self.data = json.load(open(filename, 'r'))
+                self.data = json.load(open(filename, "r"))
             else:
-                raise Exception(f"System design parameters file does not exist: {filename}")
+                raise Exception(
+                    f"System design parameters file does not exist: {filename}"
+                )
 
             errors = self.validate()
             if len(errors) != 0:
@@ -90,9 +94,9 @@ class SystemParameters(object):
         if data is None:
             data = self.data
 
-        paths = path.split('.')
+        paths = path.split(".")
         check_path = paths.pop(0)
-        if check_path == '':
+        if check_path == "":
             # no path passed
             return default
         else:
@@ -103,7 +107,7 @@ class SystemParameters(object):
             if len(paths) == 0:
                 return value
             else:
-                return self.get_param('.'.join(paths), data=value, default=default)
+                return self.get_param(".".join(paths), data=value, default=default)
 
     def get_param_by_building_id(self, building_id, path, default=None):
         """
@@ -117,8 +121,8 @@ class SystemParameters(object):
         """
 
         # TODO: return the default value if the building ID is not defined
-        for b in self.data.get('buildings', {}).get('custom', {}):
-            if b.get('geojson_id', None) == building_id:
+        for b in self.data.get("buildings", {}).get("custom", {}):
+            if b.get("geojson_id", None) == building_id:
                 # print(f"Building found for {building_id}")
                 return self.get_param(path, b, default=default)
 

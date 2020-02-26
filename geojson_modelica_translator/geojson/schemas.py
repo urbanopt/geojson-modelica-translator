@@ -42,18 +42,20 @@ class Schemas(object):
     def __init__(self):
         """Load in the schemas"""
         self.schemas = {
-            'building': None,
-            'district_system': None,
-            'electrical_connector': None,
-            'electrical_junction': None,
-            'region': None,
-            'site': None,
-            'thermal_connector': None,
-            'thermal_junction': None,
+            "building": None,
+            "district_system": None,
+            "electrical_connector": None,
+            "electrical_junction": None,
+            "region": None,
+            "site": None,
+            "thermal_connector": None,
+            "thermal_junction": None,
         }
 
         for s in self.schemas.keys():
-            path = os.path.join(os.path.dirname(__file__), "data/schemas/%s_properties.json" % s)
+            path = os.path.join(
+                os.path.dirname(__file__), "data/schemas/%s_properties.json" % s
+            )
             self.schemas[s] = json.load(open(path, "r"))
 
     def retrieve(self, name):
@@ -61,7 +63,7 @@ class Schemas(object):
         if self.schemas.get(name):
             return self.schemas[name]
         else:
-            raise Exception('Schema for %s does not exist' % name)
+            raise Exception("Schema for %s does not exist" % name)
 
     def validate(self, name, instance):
         """

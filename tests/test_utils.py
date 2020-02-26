@@ -37,16 +37,20 @@ from .context import geojson_modelica_translator  # noqa - Do not remove this li
 
 class ModelicaPathTest(unittest.TestCase):
     def test_properties(self):
-        mp = ModelicaPath('Loads', root_dir=None)
-        self.assertEqual(mp.files_dir, 'Loads')
-        self.assertEqual(mp.resources_dir, os.path.join('Resources', 'Data', 'Loads'))
+        mp = ModelicaPath("Loads", root_dir=None)
+        self.assertEqual(mp.files_dir, "Loads")
+        self.assertEqual(mp.resources_dir, os.path.join("Resources", "Data", "Loads"))
 
     def test_scaffold(self):
-        root_dir = os.path.abspath(os.path.join('tests', 'output', 'test_02'))
-        ModelicaPath('RandomContainer', root_dir)
-        self.assertTrue(os.path.exists(os.path.join(root_dir, 'RandomContainer')))
-        self.assertTrue(os.path.exists(os.path.join(root_dir, 'Resources', 'Data', 'RandomContainer')))
+        root_dir = os.path.abspath(os.path.join("tests", "output", "test_02"))
+        ModelicaPath("RandomContainer", root_dir)
+        self.assertTrue(os.path.exists(os.path.join(root_dir, "RandomContainer")))
+        self.assertTrue(
+            os.path.exists(
+                os.path.join(root_dir, "Resources", "Data", "RandomContainer")
+            )
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

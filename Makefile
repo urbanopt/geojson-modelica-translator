@@ -3,4 +3,3 @@ init:
 
 test:
 	py.test
-

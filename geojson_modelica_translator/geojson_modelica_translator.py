@@ -71,7 +71,7 @@ class GeoJsonModelicaTranslator(object):
             klass.buildings = json.buildings
             return klass
         else:
-            raise Exception(f'GeoJSON file does not exist: {filename}')
+            raise Exception(f"GeoJSON file does not exist: {filename}")
 
     def set_system_parameters(self, sys_params):
         """
@@ -91,16 +91,20 @@ class GeoJsonModelicaTranslator(object):
         # TODO: need to be careful with this. If we are mixing load models, then we need to not remove the entire path
         if os.path.exists(root_dir):
             if overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % root_dir)
+                raise Exception(
+                    "Directory already exists and overwrite is false for %s" % root_dir
+                )
             else:
                 shutil.rmtree(root_dir)
 
-        self.loads_path = ModelicaPath('Loads', root_dir=root_dir)
-        self.substations_path = ModelicaPath('Substations', root_dir=root_dir)
-        self.plants_path = ModelicaPath('Plants', root_dir=root_dir)
-        self.districts_path = ModelicaPath('Districts', root_dir=root_dir)
+        self.loads_path = ModelicaPath("Loads", root_dir=root_dir)
+        self.substations_path = ModelicaPath("Substations", root_dir=root_dir)
+        self.plants_path = ModelicaPath("Plants", root_dir=root_dir)
+        self.districts_path = ModelicaPath("Districts", root_dir=root_dir)
 
-    def to_modelica(self, project_name, save_dir, model_connector_str='TeaserConnector'):
+    def to_modelica(
+        self, project_name, save_dir, model_connector_str="TeaserConnector"
+    ):
         """
         Convert the data in the GeoJSON to modelica based-objects
 
@@ -108,29 +112,34 @@ class GeoJsonModelicaTranslator(object):
                               {save_dir}/{project_name}
         :param model_connector_str: str, which model_connector to use
         """
-        prj_dir = f'{save_dir}/{project_name}'
+        prj_dir = f"{save_dir}/{project_name}"
         self.scaffold_directory(prj_dir)
 
         # TODO: Handle other connectors -- create map based on model_connector_str
         import geojson_modelica_translator.model_connectors.teaser
-        mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
+
+        mc_klass = getattr(
+            geojson_modelica_translator.model_connectors.teaser, model_connector_str
+        )
         model_connector = mc_klass(self.system_parameters)
 
-        _log.info('Exporting to Modelica')
+        _log.info("Exporting to Modelica")
         for building in self.buildings:
-            _log.info(f'Adding building to model connector: {mc_klass.__class__}')
+            _log.info(f"Adding building to model connector: {mc_klass.__class__}")
 
             model_connector.add_building(building)
 
-        _log.info(f'Translating building to model {building}')
-        model_connector.to_modelica(project_name, self.loads_path.files_dir, keep_original_models=False)
+        _log.info(f"Translating building to model {building}")
+        model_connector.to_modelica(
+            project_name, self.loads_path.files_dir, keep_original_models=False
+        )
 
         # add in Substations
         # add in Districts
         # add in Plants
 
         # now add in the top level package.
-        pp = PackageParser.new_from_template(prj_dir, project_name, ['Loads'])
+        pp = PackageParser.new_from_template(prj_dir, project_name, ["Loads"])
         pp.save()
 
         # TODO: BuildingModelClass
