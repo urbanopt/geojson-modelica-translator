@@ -37,18 +37,18 @@ from ..context import geojson_modelica_translator  # noqa - Do not remove this l
 class SchemasTest(unittest.TestCase):
     def test_load_schemas(self):
         s = Schemas()
-        data = s.retrieve('building')
-        self.assertEqual(data['title'], 'Building object')
+        data = s.retrieve("building")
+        self.assertEqual(data["title"], "Building object")
 
     def test_invalid_retrieve(self):
         s = Schemas()
         with self.assertRaises(Exception) as context:
-            s.retrieve('judicate')
-        self.assertEqual('Schema for judicate does not exist', str(context.exception))
+            s.retrieve("judicate")
+        self.assertEqual("Schema for judicate does not exist", str(context.exception))
 
     def test_validate_schema(self):
         s = Schemas()
-        s.retrieve('building')
+        s.retrieve("building")
 
         # verify that the schema can validate an instance with simple parameters
         instance = {
@@ -63,17 +63,17 @@ class SchemasTest(unittest.TestCase):
             "number_of_stories_above_ground": 3,
             "building_status": "Proposed",
             "floor_area": 51177,
-            "year_built": 2010
+            "year_built": 2010,
         }
-        res = s.validate('building', instance)
+        res = s.validate("building", instance)
         self.assertEqual(len(res), 0)
 
         # bad system_type
-        instance['type'] = 'MagicBuilding'
-        res = s.validate('building', instance)
+        instance["type"] = "MagicBuilding"
+        res = s.validate("building", instance)
         self.assertIn("'MagicBuilding' is not one of ['Building']", res[0])
         self.assertEqual(len(res), 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

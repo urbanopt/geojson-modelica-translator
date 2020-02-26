@@ -19,25 +19,29 @@ model = "Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID"
 if len(sys.argv) > 1:
     # If the argument is a file, then parse it to a model name
     if os.path.isfile(sys.argv[1]):
-        model = sys.argv[1].replace(os.path.sep, '.')[:-3]
+        model = sys.argv[1].replace(os.path.sep, ".")[:-3]
     else:
         model = sys.argv[1]
 
 
 print("*** Compiling {}".format(model))
 # Increase memory
-pymodelica.environ['JVM_ARGS'] = '-Xmx4096m'
+pymodelica.environ["JVM_ARGS"] = "-Xmx4096m"
 
 
 sys.stdout.flush()
 
 ######################################################################
 # Compile fmu
-fmu_name = compile_fmu(model,
-                       version="2.0",
-                       compiler_log_level='warning',
-                       compiler_options={"generate_html_diagnostics": False,
-                                          "nle_solver_tol_factor": 1e-2})
+fmu_name = compile_fmu(
+    model,
+    version="2.0",
+    compiler_log_level="warning",
+    compiler_options={
+        "generate_html_diagnostics": False,
+        "nle_solver_tol_factor": 1e-2,
+    },
+)
 
 ######################################################################
 # Load model
@@ -48,10 +52,10 @@ mod = load_fmu(fmu_name, log_level=3)
 x_nominal = mod.nominal_continuous_states
 opts = mod.simulate_options()  # Retrieve the default options
 
-opts['solver'] = 'CVode'
-opts['ncp'] = 5000
+opts["solver"] = "CVode"
+opts["ncp"] = 5000
 
-if opts['solver'].lower() == 'cvode':
+if opts["solver"].lower() == "cvode":
     # Set user-specified tolerance if it is smaller than the tolerance in the .mo file
     rtol = 1.0e-6
     x_nominal = mod.nominal_continuous_states
@@ -61,14 +65,18 @@ if opts['solver'].lower() == 'cvode':
     else:
         atol = rtol
 
-    opts['CVode_options'] = {
-        'external_event_detection': False,
-        'maxh': (mod.get_default_experiment_stop_time() - mod.get_default_experiment_stop_time()) / float(opts['ncp']),
-        'iter': 'Newton',
-        'discr': 'BDF',
-        'rtol': rtol,
-        'atol': atol,
-        'store_event_points': True
+    opts["CVode_options"] = {
+        "external_event_detection": False,
+        "maxh": (
+            mod.get_default_experiment_stop_time()
+            - mod.get_default_experiment_stop_time()
+        )
+        / float(opts["ncp"]),
+        "iter": "Newton",
+        "discr": "BDF",
+        "rtol": rtol,
+        "atol": atol,
+        "store_event_points": True,
     }
 
 if debug_solver:
@@ -104,6 +112,7 @@ if os.path.exists(htm_dir):
 if debug_solver:
     # Load the debug information
     from pyfmi.debug import CVodeDebugInformation
+
     debug = CVodeDebugInformation(model.replace(".", "_") + "_debug.txt")
 
     # Below are options to plot the order, error and step-size evolution.

@@ -24,9 +24,9 @@ currently you need python3 and pip3 to install/build the packages.
 
 .. code-block:: bash
 
-    pip3 install -r requirements.txt
-    python3 setup.py build
-    python3 setup.py test
+    pip install -r requirements.txt
+    python setup.py build
+    python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
 
@@ -72,13 +72,13 @@ will automatically run the models without having to follow the steps below.
 
 * Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions.
 * Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
-* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling 
+* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling
     * **Make sure you have git-lfs installed**. You may need to checkout out the library again after install lfs.
     * Please make sure you are in the issue1442_loadCoupling branch.
     * Mac: `brew install git-lfs; git lfs install`
     * Ubuntu: `sudo apt install git-lfs; git lfs install`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
-* Example simulation: 
+* Example simulation:
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
     * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy.

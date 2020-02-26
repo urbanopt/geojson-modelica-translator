@@ -38,55 +38,62 @@ from ..context import geojson_modelica_translator  # noqa - Do not remove this l
 
 class InputParserTest(unittest.TestCase):
     def setUp(self):
-        self.results_path = os.path.abspath('tests/modelica/output')
+        self.results_path = os.path.abspath("tests/modelica/output")
         if not os.path.exists(self.results_path):
             os.mkdir(self.results_path)
 
     def test_missing_file(self):
-        fn = 'non-existent-path'
+        fn = "non-existent-path"
         with self.assertRaises(Exception) as exc:
             InputParser(fn)
-        self.assertEqual(f'Modelica file does not exist: {fn}', str(exc.exception))
+        self.assertEqual(f"Modelica file does not exist: {fn}", str(exc.exception))
 
     def test_roundtrip(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_1.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_1.mo")
         f = InputParser(filename)
         f.save_as(new_filename)
         self.assertTrue(filecmp.cmp(filename, new_filename))
 
     def test_remove_object(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_2.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_2.mo")
         f1 = InputParser(filename)
-        f1.remove_object('ReaderTMY3')
+        f1.remove_object("ReaderTMY3")
         f1.save_as(new_filename)
         self.assertFalse(filecmp.cmp(filename, new_filename))
 
         f1.reload()
         f2 = InputParser(new_filename)
-        self.assertGreater(len(f1.model['objects']), len(f2.model['objects']))
+        self.assertGreater(len(f1.model["objects"]), len(f2.model["objects"]))
         # verify that it exists in f1 but not in f2
-        self.assertGreaterEqual(f1.find_model_object('ReaderTMY3')[0], 0)
-        self.assertIsNone(f2.find_model_object('ReaderTMY3')[0])
+        self.assertGreaterEqual(f1.find_model_object("ReaderTMY3")[0], 0)
+        self.assertIsNone(f2.find_model_object("ReaderTMY3")[0])
 
     def test_gsub_field(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_3.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_3.mo")
         f1 = InputParser(filename)
         # This example is actually updating an annotation object, not a model, but leave it here for now.
-        f1.replace_model_string('Modelica.Blocks.Sources.CombiTimeTable', 'internalGains', 'Internals', 'NotInternals')
+        f1.replace_model_string(
+            "Modelica.Blocks.Sources.CombiTimeTable",
+            "internalGains",
+            "Internals",
+            "NotInternals",
+        )
         f1.save_as(new_filename)
 
         f2 = InputParser(new_filename)
-        index, model = f2.find_model_object('Modelica.Blocks.Sources.CombiTimeTable internalGains')
+        index, model = f2.find_model_object(
+            "Modelica.Blocks.Sources.CombiTimeTable internalGains"
+        )
         self.assertFalse(filecmp.cmp(filename, new_filename))
         # the 5th index is the rotation... non-ideal look up
-        self.assertTrue('NotInternals' in model)
+        self.assertTrue("NotInternals" in model)
 
     def test_rename_filename(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_4.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_4.mo")
         f1 = InputParser(filename)
         # This example is actually updating an annotation object, not a model, but leave it here for now.
         f1.replace_model_string(
@@ -99,49 +106,60 @@ class InputParserTest(unittest.TestCase):
         f1.save_as(new_filename)
 
         f2 = InputParser(new_filename)
-        index, model = f2.find_model_object('Modelica.Blocks.Sources.CombiTimeTable internalGains')
+        index, model = f2.find_model_object(
+            "Modelica.Blocks.Sources.CombiTimeTable internalGains"
+        )
         self.assertFalse(filecmp.cmp(filename, new_filename))
         # the 5th index is the rotation... non-ideal look up
-        self.assertTrue('a/new/path.mat' in model)
+        self.assertTrue("a/new/path.mat" in model)
 
     def test_add_model_obj(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_5.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_5.mo")
         f1 = InputParser(filename)
         data = [
             'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));' # noqa
             # noqa
         ]
-        f1.add_model_object('Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a', 'port_a', data)
+        f1.add_model_object(
+            "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a", data
+        )
         f1.save_as(new_filename)
 
         # verify in the new file that the new model object exists
         f2 = InputParser(new_filename)
-        index, model = f2.find_model_object('Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_a')
+        index, model = f2.find_model_object(
+            "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a port_a"
+        )
         self.assertFalse(filecmp.cmp(filename, new_filename))
         self.assertGreaterEqual(index, 0)
 
     def test_gsub_connect(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_6.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_6.mo")
         f1 = InputParser(filename)
-        f1.add_connect('port_a', 'thermalZoneTwoElements.intGainsConv',
-                       'annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))')
+        f1.add_connect(
+            "port_a",
+            "thermalZoneTwoElements.intGainsConv",
+            "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))",
+        )
         f1.save_as(new_filename)
 
         # verify in the new file that the new model object exists
         f2 = InputParser(new_filename)
         self.assertFalse(filecmp.cmp(filename, new_filename))
-        index, c = f2.find_connect('port_a', 'thermalZoneTwoElements.intGainsConv')
+        index, c = f2.find_connect("port_a", "thermalZoneTwoElements.intGainsConv")
         self.assertGreaterEqual(index, 0)
 
     def test_rename_connection(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_7.mo')
+        filename = os.path.abspath("tests/modelica/data/test_1.mo")
+        new_filename = os.path.abspath("tests/modelica/output/test_1_output_7.mo")
         f1 = InputParser(filename)
         # connect(weaDat.weaBus, HDifTil[3].weaBus)
-        f1.replace_connect_string('eqAirTemp.TEqAir', 'prescribedTemperature.T', 'NothingOfImportance', None)
-        f1.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
+        f1.replace_connect_string(
+            "eqAirTemp.TEqAir", "prescribedTemperature.T", "NothingOfImportance", None
+        )
+        f1.replace_connect_string("weaDat.weaBus", None, "weaBus", None, True)
         f1.save_as(new_filename)
 
         f2 = InputParser(new_filename)
@@ -172,5 +190,5 @@ def update_connection(self):
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -340,23 +340,23 @@ annotation (defaultComponentName="coo",
         coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,160}})),
     Documentation(info="<html>
 <p>
-Indirect cooling energy transfer station (ETS) model that controls 
-the building chilled water supply temperature by modulating a 
-primary control valve on the district supply side. The design is 
-based on a typical district cooling ETS described in ASHRAE's 
+Indirect cooling energy transfer station (ETS) model that controls
+the building chilled water supply temperature by modulating a
+primary control valve on the district supply side. The design is
+based on a typical district cooling ETS described in ASHRAE's
 <a href=\"https://www.ashrae.org/technical-resources/bookstore/district-heating-and-cooling-guides\">
-District Cooling Guide</a>.  
-As shown in the figure below, the building pumping design (constant, 
-variable) is specified on the building side, not within the ETS. 
+District Cooling Guide</a>.
+As shown in the figure below, the building pumping design (constant,
+variable) is specified on the building side, not within the ETS.
 </p>
 <p align=\"center\">
 <img src=\"modelica://Buildings/Resources/Images/Applications/DHC/EnergyTransferStations/CoolingIndirect.png\" alt=\"DHC.ETS.CoolingIndirect\"/>
 </p>
 <h4>Reference</h4>
 <p>
-American Society of Heating, Refrigeration and Air-Conditioning 
-Engineers. (2013). Chapter 5: End User Interface. In 
-<i>District Cooling Guide</i>. 1st Edition. 
+American Society of Heating, Refrigeration and Air-Conditioning
+Engineers. (2013). Chapter 5: End User Interface. In
+<i>District Cooling Guide</i>. 1st Edition.
 </p>
 </html>", revisions="<html>
 <ul>
