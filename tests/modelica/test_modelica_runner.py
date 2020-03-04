@@ -54,7 +54,8 @@ class ModelicaRunnerTest(unittest.TestCase):
             mr = ModelicaRunner()
             self.assertEqual(mr.modelica_lib_path, 'A_PATH/to_something')
         finally:
-            os.environ['MODELICAPATH'] = prev_mod_path
+            if prev_mod_path:
+                os.environ['MODELICAPATH'] = prev_mod_path
         print(mr.jmodelica_py_path)
         self.assertTrue(os.path.exists(mr.jmodelica_py_path))
         self.assertTrue(os.path.exists(mr.jm_ipython_path))
