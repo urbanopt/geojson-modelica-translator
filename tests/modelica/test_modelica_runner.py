@@ -75,6 +75,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         mr.run_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
         mr.cleanup_path(self.run_path)
+        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
+        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'BouncingBall_result.mat')))
 
 
 if __name__ == '__main__':

@@ -57,7 +57,7 @@ class ModelicaRunner(object):
         self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.sh')
 
         # Verify that docker is up and running
-        r = subprocess.call(['docker', 'ps'])
+        r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
     def run_in_docker(self, file_to_run):
