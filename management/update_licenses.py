@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -37,7 +37,7 @@ import re
 PYTHON_REGEX = re.compile(r'^""".\*{100}.*:copyright.*\*{100}."""$', re.MULTILINE | re.DOTALL)
 PYTHON_LICENSE = '''"""
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
