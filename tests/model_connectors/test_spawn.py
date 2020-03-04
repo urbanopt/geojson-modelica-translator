@@ -35,6 +35,7 @@ from ..context import geojson_modelica_translator  # noqa - Do not remove this l
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
 from geojson_modelica_translator.model_connectors.spawn import SpawnConnector
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
 
 class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
@@ -83,5 +84,13 @@ class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
         for b in gj.buildings:
             self.spawn.add_building(b)
 
-    def test_spawn_to_modelica(self):
+    def test_spawn_to_modelica_and_run(self):
         self.spawn.to_modelica('spawn_two_building', 'tests/model_connectors/output')
+
+        # make sure the model can run using the ModelicaRunner class
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            'tests/model_connectors/output/spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo'
+        )
+        exitcode = mr.run_in_docker(file_to_run)
+        self.assertEqual(0, exitcode)

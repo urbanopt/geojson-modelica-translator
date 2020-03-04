@@ -48,8 +48,13 @@ class ModelicaRunnerTest(unittest.TestCase):
                         os.path.join(self.run_path, 'BouncingBall.mo'))
 
     def test_run_setup(self):
-        mr = ModelicaRunner()
-        self.assertEqual(mr.modelica_lib_path, None)
+        prev_mod_path = os.environ.get('MODELICAPATH', None)
+        try:
+            os.environ['MODELICAPATH'] = 'A_PATH/to_something'
+            mr = ModelicaRunner()
+            self.assertEqual(mr.modelica_lib_path, 'A_PATH/to_something')
+        finally:
+            os.environ['MODELICAPATH'] = prev_mod_path
         print(mr.jmodelica_py_path)
         self.assertTrue(os.path.exists(mr.jmodelica_py_path))
         self.assertTrue(os.path.exists(mr.jm_ipython_path))

@@ -26,7 +26,7 @@ model building
     weaName=weaName,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     usePrecompiledFMU=false,
-    fmuName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/EnergyPlus/FMUs/Zones1.fmu"),
+    fmuName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/ThermalZones/EnergyPlus/FMUs/Zones1.fmu"),
     zoneName="{{zone['spawn_object_name']}}") "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{20,40},{60,80}}))); {% endraw %}
   {% endfor %}

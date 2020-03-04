@@ -50,7 +50,12 @@ class ModelicaRunner(object):
 
         :param modelica_lib_path: string, Path to the MBL to run against
         """
-        self.modelica_lib_path = modelica_lib_path
+        # check if the user has defined a MODELICAPATH, is so, then use that.
+        if os.environ['MODELICAPATH']:
+            print('Using predefined MODELICAPATH')
+            self.modelica_lib_path = os.environ['MODELICAPATH']
+        else:
+            self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
         self.jmodelica_py_path = os.path.join(local_path, 'lib', 'runner', 'jmodelica.py')
         self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.sh')
