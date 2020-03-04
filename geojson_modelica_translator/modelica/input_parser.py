@@ -346,6 +346,18 @@ class InputParser(object):
             else:
                 index, c = self.find_connect(a, b)
 
+    def remove_connect_string(self, a, b):
+        """
+        Remove a connection string that matches the a, b.
+
+        :param a: string, existing port a
+        :param b: string, existing port b
+        """
+        # find the connection that matches a, b
+        index, c = self.find_connect(a, b)
+        if index:
+            del self.connections[index]
+
     def serialize(self):
         """
         Serialize the modelica object to a string with line feeds
