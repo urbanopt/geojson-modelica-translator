@@ -53,7 +53,7 @@ The Simulation Mapper Class can operate at mulitple levels:
 2. The Load Model Connection -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
 3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
 
-In some cases, the Level 3 case (transalation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
+In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
 
 Adjacency Matrix
 ++++++++++++++++
@@ -75,7 +75,8 @@ will automatically run the models without having to follow the steps below.
     * Mac: `brew install git-lfs; git lfs install`
     * Ubuntu: `sudo apt install git-lfs; git lfs install`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
-* Example simulation: 
+* Example simulation:
+    * `cp
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
     * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy.

@@ -19,6 +19,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!geojson_modelica_translator/modelica/lib
 lib64/
 parts/
 sdist/
