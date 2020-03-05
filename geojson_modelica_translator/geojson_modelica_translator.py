@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -117,10 +117,12 @@ class GeoJsonModelicaTranslator(object):
 
         # TODO: Handle other connectors -- create map based on model_connector_str
         import geojson_modelica_translator.model_connectors.teaser
+        import geojson_modelica_translator.model_connectors.spawn
 
         mc_klass = getattr(
             geojson_modelica_translator.model_connectors.teaser, model_connector_str
         )
+
         model_connector = mc_klass(self.system_parameters)
 
         _log.info("Exporting to Modelica")

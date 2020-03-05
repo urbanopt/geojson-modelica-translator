@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -235,10 +235,12 @@ class TeaserConnector(model_connector_base):
                     "Buildings.Controls.OBC.CDL.Interfaces.RealOutput", instance, data
                 )
 
-                # update the weaBus connectors
+                # All existing weaDat.weaBus connections need to be updated to simply weaBus
                 mofile.replace_connect_string(
                     "weaDat.weaBus", None, "weaBus", None, True
                 )
+                # Now remove the redundant weaBus -> weaBus connection
+                mofile.remove_connect_string("weaBus", "weaBus")
 
                 # add new port connections
                 if (

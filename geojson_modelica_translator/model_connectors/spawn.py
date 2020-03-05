@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -188,7 +188,7 @@ class SpawnConnector(model_connector_base):
                     )
                 else:
                     raise Exception(
-                        f"Missing epw file for Spawn: {template_data['epw']['epw_filename']}"
+                        f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}"
                     )
 
                 if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
@@ -201,7 +201,7 @@ class SpawnConnector(model_connector_base):
                     )
                 else:
                     raise Exception(
-                        f"Missing mos weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}"
+                        f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}"
                     )
 
                 file_data = spawn_fmu_template.render(

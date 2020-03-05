@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -366,6 +366,18 @@ class InputParser(object):
                 break
             else:
                 index, c = self.find_connect(a, b)
+
+    def remove_connect_string(self, a, b):
+        """
+        Remove a connection string that matches the a, b.
+
+        :param a: string, existing port a
+        :param b: string, existing port b
+        """
+        # find the connection that matches a, b
+        index, c = self.find_connect(a, b)
+        if index:
+            del self.connections[index]
 
     def serialize(self):
         """
