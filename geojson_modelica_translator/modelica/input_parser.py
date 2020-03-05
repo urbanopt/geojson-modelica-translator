@@ -189,7 +189,8 @@ class InputParser(object):
                     for t in tokens:
                         if line.startswith(t):
                             raise Exception(
-                                f"Found other token '{t}' in '{self.modelica_filename}' that is not supported... cannot continue"
+                                f"Found other token '{t}' in '{self.modelica_filename}' that is not supported... \
+                                cannot continue"
                             )  # noqa
 
                 # now store data that is in between these other blocks
