@@ -221,11 +221,13 @@ class ETSTemplate:
 ########################################################################################################################
 #################################           For Local Debugging Purpose Only          ##################################
 ########################################################################################################################
-
-thermal_junction_properties_geojson = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/geojson/data/schemas/thermal_junction_properties.json"
-system_parameters_geojson = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/system_parameters/schema.json"
-ets_from_building_modelica = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
-# print ( "current folder: ", os.getcwd(), "\n")
+folder_mother = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/"
+thermal_junction_properties_geojson = folder_mother + "/geojson/data/schemas/thermal_junction_properties.json"
+system_parameters_geojson = folder_mother +
+"/geojson_modelica_translator/system_parameters/schema.json"
+folder_ets ="/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
+ets_from_building_modelica = folder_mother + folder_ets
+print ( "current folder: ", os.getcwd(), "\n")
 ets = ETSTemplate(
     thermal_junction_properties_geojson,
     system_parameters_geojson,
