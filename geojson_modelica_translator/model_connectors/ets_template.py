@@ -4,6 +4,8 @@ import os
 from jinja2 import FileSystemLoader, Environment
 
 # TODO: Class name should be upper camel case, not a mix of camel and snake case.
+
+
 class ETSTemplate:
     """This class will template the ETS modelica model."""
 
@@ -96,7 +98,7 @@ class ETSTemplate:
 
         ets_parameters = False
         # four levels down to get the ets model description
-        ets_overall = data["definitions"]["building_def"]["properties"]["ets"]
+        # ets_overall = data["definitions"]["building_def"]["properties"]["ets"]
         # three levels down to get the parameters
         ets_parameters = data["definitions"]["ets_parameters"]["properties"]
         # print ("est_parameters are: ", type(ets_parameters) )
@@ -179,7 +181,8 @@ class ETSTemplate:
 
         # create the modelica example file for Dymola test
         # TODO: Replace this with the ModelicaFile Class -- extend ModelicaFile class if does not support.
-        # Theoretically it is doable using extend clause from Modelica. But we need to change the original ETS model first, in order to extend.
+        # Theoretically it is doable using extend clause from Modelica.
+        # But we need to change the original ETS model first, in order to extend.
         # This is Michael Wetter suggested approach.
         # if so, we don't need to template modelica models, but we need to connect the modelica components
         repl_dict = {}
@@ -212,9 +215,9 @@ class ETSTemplate:
     def connect(self):
         """connect ETS-modelica to building-modelica (specifically TEASER modelica).
         This function will be modified in future"""
-        pass
 
 
+"""
 ########################################################################################################################
 #################################           For Local Debugging Purpose Only          ##################################
 ########################################################################################################################
@@ -233,3 +236,4 @@ ets.check_ets_system_parameters()
 ets.check_ets_from_building_modelica()
 ets.to_modelica()
 ets.templated_ets_openloops_dymola()
+"""
