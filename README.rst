@@ -24,9 +24,9 @@ currently you need python3 and pip3 to install/build the packages.
 
 .. code-block:: bash
 
-    pip3 install -r requirements.txt
-    python3 setup.py build
-    python3 setup.py test
+    pip install -r requirements.txt
+    python setup.py build
+    python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
 

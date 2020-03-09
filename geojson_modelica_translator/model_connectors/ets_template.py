@@ -1,7 +1,7 @@
 import json
 import os
 
-from jinja2 import FileSystemLoader, Environment
+from jinja2 import Environment, FileSystemLoader
 
 # TODO: Class name should be upper camel case, not a mix of camel and snake case.
 
@@ -112,12 +112,14 @@ class ETSTemplate:
 
     def to_modelica(self):
         """convert ETS json to modelica"""
-        # Here come the Jinja2 function: get_template(), which will read into the templated_ets model.
-        # CoolingIndirect.mot was manually created as a starting point, by adding stuff following Jinja2.
+        # Here come the Jinja2 function: get_template(), which reads into templated ets model.
+        # CoolingIndirect.mot was manually created as a starting point,
+        # by adding stuff following Jinja2 syntax.
         # it has all the necessary parameters which need to be changed through templating.
         ets_template = self.template_env.get_template("CoolingIndirect.mot")
 
-        # TODO: Seems like the ets_data below should allow defaults from the system parameters JSON file, correct?
+        # TODO: Seems like the ets_data below should allow defaults from
+        #  the system parameters JSON file, correct?
         # ets model parameters are from the schema.json file, default values only.
         ets_data = self.check_ets_system_parameters()
 
@@ -167,7 +169,8 @@ class ETSTemplate:
 
     def templated_ets_openloops_dymola(self):
         """after we creating the templated ets, we need to test it in Dymola under open loops.
-        Here we refactor the example file: CoolingIndirectOpenLoops, to test our templated ets model.
+        Here we refactor the example file: CoolingIndirectOpenLoops,
+        to test our templated ets model.
         """
         file = open(
             self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo",
@@ -180,11 +183,13 @@ class ETSTemplate:
             os.remove(self.directory_modelica_building + cooling_indirect_filename)
 
         # create the modelica example file for Dymola test
-        # TODO: Replace this with the ModelicaFile Class -- extend ModelicaFile class if does not support.
+        # TODO: Replace this with the ModelicaFile Class --
+        #  extend ModelicaFile class if does not support.
         # Theoretically it is doable using extend clause from Modelica.
         # But we need to change the original ETS model first, in order to extend.
         # This is Michael Wetter suggested approach.
-        # if so, we don't need to template modelica models, but we need to connect the modelica components
+        # if so, we don't need to template modelica models,
+        # but we need to connect the modelica components
         repl_dict = {}
         from_str = "model CoolingIndirectOpenLoops"
         to_str = "model CoolingIndirectOpenLoops_Templated\n"
@@ -192,7 +197,8 @@ class ETSTemplate:
         from_str = (
             "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo("
         )
-        to_str = "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated coo("
+        to_str = "Buildings.Applications.DHC.EnergyTransferStations." \
+                 "ets_cooling_indirect_templated coo("
         repl_dict[from_str] = to_str
         from_str = "end CoolingIndirectOpenLoops;"
         to_str = "end CoolingIndirectOpenLoops_Templated;"
@@ -215,27 +221,3 @@ class ETSTemplate:
     def connect(self):
         """connect ETS-modelica to building-modelica (specifically TEASER modelica).
         This function will be modified in future"""
-
-
-"""
-########################################################################################################################
-#################################           For Local Debugging Purpose Only          ##################################
-########################################################################################################################
-folder_mother = "C:/Users/YLI3/Yanfei_Projects/UrbanOPT/geojson-modelica-translator/geojson_modelica_translator/"
-thermal_junction_properties_geojson = folder_mother + "/geojson/data/schemas/thermal_junction_properties.json"
-system_parameters_geojson = folder_mother +
-"/geojson_modelica_translator/system_parameters/schema.json"
-folder_ets ="/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
-ets_from_building_modelica = folder_mother + folder_ets
-print ( "current folder: ", os.getcwd(), "\n")
-ets = ETSTemplate(
-    thermal_junction_properties_geojson,
-    system_parameters_geojson,
-    ets_from_building_modelica,
-)
-ets.check_ets_thermal_junction()
-ets.check_ets_system_parameters()
-ets.check_ets_from_building_modelica()
-ets.to_modelica()
-ets.templated_ets_openloops_dymola()
-"""
