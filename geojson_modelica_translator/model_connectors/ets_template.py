@@ -113,8 +113,7 @@ class ETSTemplate:
     def to_modelica(self):
         """convert ETS json to modelica"""
         # Here come the Jinja2 function: get_template(), which reads into templated ets model.
-        # CoolingIndirect.mot was manually created as a starting point,
-        # by adding stuff following Jinja2 syntax.
+        # CoolingIndirect.mot was manually created as a starting point, by adding stuff following Jinja2 syntax.
         # it has all the necessary parameters which need to be changed through templating.
         ets_template = self.template_env.get_template("CoolingIndirect.mot")
 
@@ -188,8 +187,7 @@ class ETSTemplate:
         # Theoretically it is doable using extend clause from Modelica.
         # But we need to change the original ETS model first, in order to extend.
         # This is Michael Wetter suggested approach.
-        # if so, we don't need to template modelica models,
-        # but we need to connect the modelica components
+        # if so, we don't need to template modelica models, but we need to connect the modelica components
         repl_dict = {}
         from_str = "model CoolingIndirectOpenLoops"
         to_str = "model CoolingIndirectOpenLoops_Templated\n"
@@ -197,8 +195,7 @@ class ETSTemplate:
         from_str = (
             "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo("
         )
-        to_str = "Buildings.Applications.DHC.EnergyTransferStations." \
-                 "ets_cooling_indirect_templated coo("
+        to_str = "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated coo("
         repl_dict[from_str] = to_str
         from_str = "end CoolingIndirectOpenLoops;"
         to_str = "end CoolingIndirectOpenLoops_Templated;"
