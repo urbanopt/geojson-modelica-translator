@@ -39,10 +39,10 @@ class ETSTemplate:
             )
 
         # get the path of modelica-buildings library
-        directory_up_one_levels = os.path.abspath((os.path.join(__file__, "../../")))
-        dest_path = "/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/"
+        # temporarily copied here to reduce repo size
+        directory_up_one_level = os.path.abspath(os.path.join(__file__, "../.."))
         self.directory_modelica_building = os.path.join(
-            directory_up_one_levels + dest_path
+            directory_up_one_level + "/modelica/CoolingIndirect.mo"
         )
         if "\\" in self.directory_modelica_building:
             self.directory_modelica_building = self.directory_modelica_building.replace(
@@ -126,39 +126,39 @@ class ETSTemplate:
         file_data = ets_template.render(ets_data=ets_data)
 
         # write templated ETS back to modelica file , to the tests folder for Dymola test
-        if os.path.exists(
-            os.path.join(
+        path_ets_templated = os.path.join(
                 self.directory_ets_templated, "ets_cooling_indirect_templated.mo"
             )
+
+        if os.path.exists(
+            path_ets_templated
         ):
             os.remove(
-                os.path.join(
-                    self.directory_ets_templated, "ets_cooling_indirect_templated.mo"
-                )
+                path_ets_templated
             )
         with open(
-            os.path.join(
-                self.directory_ets_templated, "ets_cooling_indirect_templated.mo"
-            ),
+            path_ets_templated,
             "w",
         ) as f:
             f.write(file_data)
 
         # write templated ETS back to building-modelica folder for Dymola test
+        path_writtenback = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) + "/modelica/")
+
         if os.path.exists(
             os.path.join(
-                self.directory_modelica_building, "ets_cooling_indirect_templated.mo"
+                path_writtenback, "ets_cooling_indirect_templated.mo"
             )
         ):
             os.remove(
                 os.path.join(
-                    self.directory_modelica_building,
+                    path_writtenback,
                     "ets_cooling_indirect_templated.mo",
                 )
             )
         with open(
             os.path.join(
-                self.directory_modelica_building, "ets_cooling_indirect_templated.mo"
+                path_writtenback, "ets_cooling_indirect_templated.mo"
             ),
             "w",
         ) as f:
@@ -172,14 +172,16 @@ class ETSTemplate:
         to test our templated ets model.
         """
         file = open(
-            self.directory_modelica_building + "/Examples/CoolingIndirectOpenLoops.mo",
+            os.path.join(os.getcwd(), "geojson_modelica_translator") + "/modelica/CoolingIndirectOpenLoops.mo",
             "r",
         )
-        cooling_indirect_filename = "/Examples/CoolingIndirectOpenLoops_Templated.mo"
+        cooling_indirect_filename = "/CoolingIndirectOpenLoops_Templated.mo"
 
         # if the modelica example file is existed, delete it first
-        if os.path.exists(self.directory_modelica_building + cooling_indirect_filename):
-            os.remove(self.directory_modelica_building + cooling_indirect_filename)
+        path_openloops = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) + "/modelica/")
+
+        if os.path.exists(path_openloops + cooling_indirect_filename):
+            os.remove(path_openloops + cooling_indirect_filename)
 
         # create the modelica example file for Dymola test
         # TODO: Replace this with the ModelicaFile Class --
@@ -202,7 +204,7 @@ class ETSTemplate:
         repl_dict[from_str] = to_str
 
         with open(
-            self.directory_modelica_building + cooling_indirect_filename, "w"
+            path_openloops + cooling_indirect_filename, "w"
         ) as examplefile:
             for f in file:
                 fx = f

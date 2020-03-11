@@ -1,11 +1,12 @@
 import os
 import unittest
 
-from geojson_modelica_translator.model_connectors.ets_template import ETSTemplate
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-
+from geojson_modelica_translator.model_connectors.ets_template import \
+    ETSTemplate
 
 # TODO: do not mix upper camel case and snake case. Spell out ETS or use ETSModelConnector...
+
+
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):  # the first method/member must be setUp
         base_folder = os.path.join(os.getcwd(), "geojson_modelica_translator")
@@ -13,7 +14,7 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         self.thermal_junction_properties_geojson = base_folder + dest_path
         dest_path = "/system_parameters/schema.json"
         self.system_parameters_geojson = base_folder + dest_path
-        dest_path = "/modelica/buildingslibrary/Buildings/Applications/DHC/EnergyTransferStations/CoolingIndirect.mo"
+        dest_path = "/modelica/CoolingIndirect.mo"
         self.ets_from_building_modelica = base_folder + dest_path
 
         self.ets = ETSTemplate(
