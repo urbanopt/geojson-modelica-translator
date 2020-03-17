@@ -34,9 +34,7 @@ import glob
 import os
 import re
 
-PYTHON_REGEX = re.compile(
-    r'^""".\*{100}.*:copyright.*\*{100}."""$', re.MULTILINE | re.DOTALL
-)
+PYTHON_REGEX = re.compile(r'^""".\*{100}.*:copyright.*\*{100}."""$', re.MULTILINE | re.DOTALL)
 PYTHON_LICENSE = '''"""
 ****************************************************************************************************
 :copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
@@ -69,11 +67,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 EXCLUDE_FILES = ["__init__.py"]
 PATHS = [
-    {
-        "glob": "geojson_modelica_translator/**/*.py",
-        "license": PYTHON_LICENSE,
-        "REGEX": PYTHON_REGEX,
-    },
+    {"glob": "geojson_modelica_translator/**/*.py", "license": PYTHON_LICENSE, "REGEX": PYTHON_REGEX, },
     {"glob": "management/**/*.py", "license": PYTHON_LICENSE, "REGEX": PYTHON_REGEX},
     {"glob": "tests/**/*.py", "license": PYTHON_LICENSE, "REGEX": PYTHON_REGEX},
     # single files

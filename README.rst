@@ -25,10 +25,27 @@ currently you need python3 and pip3 to install/build the packages.
 .. code-block:: bash
 
     pip install -r requirements.txt
+    # or pip install .
     python setup.py build
     python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
+
+Developers
+**********
+
+This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
+
+.. code-block:: bash
+
+    pip install pre-commit
+    pre-commit install
+
+To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
+
+.. code-block:: bash
+
+    pre-commit run --all-files
 
 Modules
 *******
@@ -142,7 +159,6 @@ Todos
 
 * handle weather in Teaser
 * Create a Script directory in the modelica_path class
-* EBNF parsing
 * Validate remaining schema objects
 * AHU example
 * runnable example

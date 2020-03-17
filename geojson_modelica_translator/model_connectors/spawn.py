@@ -62,23 +62,13 @@ class SpawnConnector(model_connector_base):
         if mapper is None:
             self.buildings.append(
                 {
-                    "area": urbanopt_building.feature.properties["floor_area"]
-                    * 0.092936,  # ft2 -> m2
+                    "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
                     "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties[
-                        "building_type"
-                    ],
-                    "floor_height": urbanopt_building.feature.properties["height"]
-                    * 0.3048,  # ft -> m
-                    "num_stories": urbanopt_building.feature.properties[
-                        "number_of_stories_above_ground"
-                    ],
-                    "num_stories_below_grade": urbanopt_building.feature.properties[
-                        "number_of_stories"
-                    ]
-                    - urbanopt_building.feature.properties[
-                        "number_of_stories_above_ground"
-                    ],
+                    "building_type": urbanopt_building.feature.properties["building_type"],
+                    "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
+                    "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
+                    "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"]
+                                               - urbanopt_building.feature.properties["number_of_stories_above_ground"],
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
             )
@@ -178,23 +168,15 @@ class SpawnConnector(model_connector_base):
                     )
 
                 if os.path.exists(template_data["epw"]["epw_filename"]):
-                    shutil.copy(
-                        template_data["epw"]["epw_filename"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["epw"]["filename"],
-                        ),
-                    )
+                    shutil.copy(template_data["epw"]["epw_filename"],
+                                os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
                 else:
                     raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
 
                 if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
                     shutil.copy(
                         template_data["mos_weather"]["mos_weather_filename"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["mos_weather"]["filename"],
-                        ),
+                        os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
                     )
                 else:
                     raise Exception(
@@ -205,12 +187,7 @@ class SpawnConnector(model_connector_base):
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
-                with open(
-                    os.path.join(
-                        os.path.join(b_modelica_path.files_dir, "building.mo")
-                    ),
-                    "w",
-                ) as f:
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
                 file_data = spawn_mos_template.render(
@@ -218,14 +195,7 @@ class SpawnConnector(model_connector_base):
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
-                with open(
-                    os.path.join(
-                        os.path.join(
-                            b_modelica_path.resources_dir, "RunSpawnBuilding.mos"
-                        )
-                    ),
-                    "w",
-                ) as f:
+                with open(os.path.join(os.path.join(b_modelica_path.resources_dir, "RunSpawnBuilding.mos")), "w") as f:
                     f.write(file_data)
         finally:
             os.chdir(curdir)

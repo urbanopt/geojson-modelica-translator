@@ -1,10 +1,7 @@
 import os
 import unittest
 
-from geojson_modelica_translator.model_connectors.ets_template import \
-    ETSTemplate
-
-# TODO: do not mix upper camel case and snake case. Spell out ETS or use ETSModelConnector...
+from geojson_modelica_translator.model_connectors.ets_template import ETSTemplate
 
 
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):

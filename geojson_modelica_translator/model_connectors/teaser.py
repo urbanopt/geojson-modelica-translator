@@ -55,23 +55,13 @@ class TeaserConnector(model_connector_base):
         if mapper is None:
             self.buildings.append(
                 {
-                    "area": urbanopt_building.feature.properties["floor_area"]
-                    * 0.092936,  # ft2 -> m2
+                    "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
                     "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties[
-                        "building_type"
-                    ],
-                    "floor_height": urbanopt_building.feature.properties["height"]
-                    * 0.3048,  # ft -> m
-                    "num_stories": urbanopt_building.feature.properties[
-                        "number_of_stories_above_ground"
-                    ],
-                    "num_stories_below_grade": urbanopt_building.feature.properties[
-                        "number_of_stories"
-                    ]
-                    - urbanopt_building.feature.properties[
-                        "number_of_stories_above_ground"
-                    ],
+                    "building_type": urbanopt_building.feature.properties["building_type"],
+                    "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
+                    "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
+                    "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"]
+                                               - urbanopt_building.feature.properties["number_of_stories_above_ground"],
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
             )
@@ -137,11 +127,11 @@ class TeaserConnector(model_connector_base):
         )
 
     def post_process(
-        self,
-        project_name,
-        root_building_dir,
-        building_names,
-        keep_original_models=False,
+            self,
+            project_name,
+            root_building_dir,
+            building_names,
+            keep_original_models=False,
     ):
         """
         Cleanup the export of the TEASER files into a format suitable for the district-based analysis. This includes
@@ -191,7 +181,6 @@ class TeaserConnector(model_connector_base):
             # process each of the building models
             mo_files = glob.glob(os.path.join(root_building_dir, f"B{b}/*.mo"))
             for f in mo_files:
-
                 # ignore the package.mo file
                 if os.path.basename(f) == "package.mo":
                     continue
@@ -207,21 +196,14 @@ class TeaserConnector(model_connector_base):
 
                 # updating path to internal loads
                 for s in string_replace_list:
-                    mofile.replace_model_string(
-                        "Modelica.Blocks.Sources.CombiTimeTable",
-                        "internalGains",
-                        s[0],
-                        s[1],
-                    )
+                    mofile.replace_model_string("Modelica.Blocks.Sources.CombiTimeTable", "internalGains", s[0], s[1])
 
                 # add heat port
                 data = [
                     "annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));"  # noqa
                 ]
                 mofile.add_model_object(
-                    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a",
-                    "port_a",
-                    data,
+                    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a", data,
                 )
 
                 # add TAir output
@@ -241,42 +223,24 @@ class TeaserConnector(model_connector_base):
                 mofile.remove_connect_string('weaBus', 'weaBus')
 
                 # add new port connections
-                if (
-                    self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2
-                    )
-                    == 1
-                ):  # noqa
+                if self.system_parameters.get_param(
+                        "buildings.default.load_model_parameters.rc.order", default=2) == 1:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect(
-                        "port_a", "thermalZoneOneElement.intGainsConv", data
-                    )
+                    mofile.add_connect("port_a", "thermalZoneOneElement.intGainsConv", data)
 
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneOneElement.TAir", "TAir", data)
-                elif (
-                    self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2
-                    )
-                    == 2
-                ):  # noqa
+                elif self.system_parameters.get_param(
+                        "buildings.default.load_model_parameters.rc.order", default=2) == 2:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect(
-                        "port_a", "thermalZoneTwoElements.intGainsConv", data
-                    )
+                    mofile.add_connect("port_a", "thermalZoneTwoElements.intGainsConv", data)
 
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneTwoElements.TAir", "TAir", data)
-                elif (
-                    self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2
-                    )
-                    == 4
-                ):  # noqa
+                elif self.system_parameters.get_param(
+                        "buildings.default.load_model_parameters.rc.order", default=2) == 4:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect(
-                        "port_a", "thermalZoneFourElements.intGainsConv", data
-                    )
+                    mofile.add_connect("port_a", "thermalZoneFourElements.intGainsConv", data)
 
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneFourElements.TAir", "TAir", data)
@@ -307,9 +271,6 @@ class TeaserConnector(model_connector_base):
         # files in the Loads directory.
         # add in the silly 'B' before the building names
         package = PackageParser.new_from_template(
-            root_building_dir,
-            "Loads",
-            ["B" + b for b in building_names],
-            within=f"{project_name}",
+            root_building_dir, "Loads", ["B" + b for b in building_names], within=f"{project_name}",
         )
         package.save()

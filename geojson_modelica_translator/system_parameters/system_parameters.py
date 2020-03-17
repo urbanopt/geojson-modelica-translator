@@ -46,9 +46,7 @@ class SystemParameters(object):
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        self.schema = json.load(
-            open(os.path.join(os.path.dirname(__file__), "schema.json"), "r")
-        )
+        self.schema = json.load(open(os.path.join(os.path.dirname(__file__), "schema.json"), "r"))
         self.data = {}
 
         if filename:
