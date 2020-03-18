@@ -33,6 +33,9 @@ import os
 import shutil
 import unittest
 
+# from geojson_modelica_translator.modelica.modelica_runner import (
+#     ModelicaRunner
+# )
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
@@ -166,6 +169,14 @@ class GeoJSONTranslatorTest(unittest.TestCase):
                     f"{resource_name}.txt",
                 )
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+
+        # # make sure the model can run using the ModelicaRunner class
+        # mr = ModelicaRunner()
+        # file_to_run = os.path.abspath(
+        #     f'{self.results_path}/Loads/B5a6b99ec37f4de7f94020090/Office.mo'
+        # )
+        # exitcode = mr.run_in_docker(file_to_run)
+        # self.assertEqual(0, exitcode)
 
 
 if __name__ == "__main__":

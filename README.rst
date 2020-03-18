@@ -72,7 +72,7 @@ The Simulation Mapper Class can operate at mulitple levels:
 2. The Load Model Connection -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
 3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
 
-In some cases, the Level 3 case (transalation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
+In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
 
 Adjacency Matrix
 ++++++++++++++++

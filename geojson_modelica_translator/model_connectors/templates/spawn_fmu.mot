@@ -20,13 +20,13 @@ model building
   Modelica.Blocks.Sources.Constant qLatGai_flow(k=0) "Latent heat gain"
     annotation (Placement(transformation(extent={{-74,-50},{-54,-30}})));{% endraw %}
   {% for zone in data['thermal_zones'] %}
-  Buildings.Experimental.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
+  Buildings.ThermalZones.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium = Medium,
     idfName=idfName,
     weaName=weaName,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     usePrecompiledFMU=false,
-    fmuName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/EnergyPlus/FMUs/Zones1.fmu"),
+    fmuName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/ThermalZones/EnergyPlus/FMUs/Zones1.fmu"),
     zoneName="{{zone['spawn_object_name']}}") "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{20,40},{60,80}}))); {% endraw %}
   {% endfor %}
@@ -59,7 +59,7 @@ First implementation.
 </li>
 </ul>
 </html>"),
- __Dymola_Commands(file="modelica://Buildings/Resources/Scripts/Dymola/Experimental/EnergyPlus/Validation/RefBldgSmallOffice.mos"
+ __Dymola_Commands(file="modelica://Buildings/Resources/Scripts/Dymola/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice.mos"
         "Simulate and plot"),
 experiment(
       StopTime=604800,
