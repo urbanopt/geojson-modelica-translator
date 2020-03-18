@@ -20,13 +20,32 @@ The GeoJSON / Modelica Translator is still in early alpha-phase development and 
 
 If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
 
+currently you need python3 and pip3 to install/build the packages.
+
 .. code-block:: bash
 
     pip install -r requirements.txt
+    # or pip install .
     python setup.py build
-    py.test
+    python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
+
+Developers
+**********
+
+This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
+
+.. code-block:: bash
+
+    pip install pre-commit
+    pre-commit install
+
+To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
+
+.. code-block:: bash
+
+    pre-commit run --all-files
 
 Modules
 *******
@@ -70,12 +89,13 @@ will automatically run the models without having to follow the steps below.
 
 * Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions.
 * Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
-* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling 
+* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1442_loadCoupling
     * **Make sure you have git-lfs installed**. You may need to checkout out the library again after install lfs.
+    * Please make sure you are in the issue1442_loadCoupling branch.
     * Mac: `brew install git-lfs; git lfs install`
     * Ubuntu: `sudo apt install git-lfs; git lfs install`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
-* Example simulation: 
+* Example simulation:
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
     * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy.
@@ -139,7 +159,6 @@ Todos
 
 * handle weather in Teaser
 * Create a Script directory in the modelica_path class
-* EBNF parsing
 * Validate remaining schema objects
 * AHU example
 * runnable example

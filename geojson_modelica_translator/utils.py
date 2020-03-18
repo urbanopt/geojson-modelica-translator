@@ -98,7 +98,7 @@ class ModelicaPath(object):
         strings within modelica files which are relative to the package.
         :return:
         """
-        return os.path.join('Resources', 'Data', self.name)
+        return os.path.join("Resources", "Data", self.name)
 
     @property
     def resources_dir(self):
