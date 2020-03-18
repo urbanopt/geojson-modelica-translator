@@ -31,33 +31,45 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import (
-    UrbanOptGeoJson
+from geojson_modelica_translator.model_connectors.ets_template import (
+    ETSTemplate
 )
 
 
-class GeoJSONTest(unittest.TestCase):
-    def test_load_geojson(self):
-        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
-        json = UrbanOptGeoJson(filename)
-        self.assertIsNotNone(json.data)
-        self.assertEqual(len(json.data.features), 4)
+class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
+    def setUp(self):  # the first method/member must be setUp
+        base_folder = os.path.join(os.getcwd(), "geojson_modelica_translator")
+        dest_path = "/geojson/data/schemas/thermal_junction_properties.json"
+        self.thermal_junction_properties_geojson = base_folder + dest_path
+        dest_path = "/system_parameters/schema.json"
+        self.system_parameters_geojson = base_folder + dest_path
+        dest_path = "/modelica/CoolingIndirect.mo"
+        self.ets_from_building_modelica = base_folder + dest_path
 
-    def test_missing_file(self):
-        fn = "non-existent-path"
-        with self.assertRaises(Exception) as exc:
-            UrbanOptGeoJson(fn)
-        self.assertEqual(
-            f"URBANopt GeoJSON file does not exist: {fn}", str(exc.exception)
+        self.ets = ETSTemplate(
+            self.thermal_junction_properties_geojson,
+            self.system_parameters_geojson,
+            self.ets_from_building_modelica,
         )
+        self.assertIsNotNone(self.ets)
 
-    def test_validate(self):
-        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
-        json = UrbanOptGeoJson(filename)
-        valid, results = json.validate()
-        self.assertFalse(valid)
-        self.assertEqual(len(results["building"]), 3)
-        self.assertEqual(results["building"][0]["id"], "5a6b99ec37f4de7f94020090")
+        return self.ets
+
+    def test_ets_thermal_junction(self):
+        ets_general = self.ets.check_ets_thermal_junction()
+        self.assertTrue(ets_general)
+
+    def test_ets_system_parameters(self):
+        self.assertIsNotNone(self.ets.check_ets_system_parameters())
+
+    def test_ets_from_building_modelica(self):
+        self.assertTrue(self.ets.check_ets_from_building_modelica())
+
+    def test_ets_to_modelica(self):
+        self.assertIsNotNone(self.ets.to_modelica())
+
+    def test_ets_in_dymola(self):
+        self.assertIsNotNone(self.ets.templated_ets_openloops_dymola())
 
 
 if __name__ == "__main__":

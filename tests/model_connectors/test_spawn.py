@@ -31,24 +31,31 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
-from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
 from geojson_modelica_translator.model_connectors.spawn import SpawnConnector
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
 
 
 class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):
-        prj_dir = 'tests/model_connectors/output/spawn_single'
+        prj_dir = "tests/model_connectors/output/spawn_single"
 
         # load in the example geojson with a single offie building
-        filename = os.path.abspath('tests/model_connectors/data/spawn_geojson_ex1.json')
+        filename = os.path.abspath("tests/model_connectors/data/spawn_geojson_ex1.json")
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        gj.scaffold_directory(prj_dir)  # use the GeoJson translator to scaffold out the directory
+        gj.scaffold_directory(
+            prj_dir
+        )  # use the GeoJson translator to scaffold out the directory
 
         # load system parameter data
-        filename = os.path.abspath('tests/model_connectors/data/spawn_system_params_ex1.json')
+        filename = os.path.abspath(
+            "tests/model_connectors/data/spawn_system_params_ex1.json"
+        )
         sys_params = SystemParameters(filename)
 
         # now test the spawn connector (independent of the larger geojson translator
@@ -59,23 +66,30 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def test_spawn_init(self):
         self.assertIsNotNone(self.spawn)
-        self.assertEqual(self.spawn.system_parameters.get_param('buildings.custom')[0]['load_model'], 'Spawn')
+        self.assertEqual(
+            self.spawn.system_parameters.get_param("buildings.custom")[0]["load_model"],
+            "Spawn",
+        )
 
     def test_spawn_to_modelica(self):
-        self.spawn.to_modelica('spawn_single', 'tests/model_connectors/output')
+        self.spawn.to_modelica("spawn_single", "tests/model_connectors/output")
 
 
 class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
     def setUp(self):
-        prj_dir = 'tests/model_connectors/output/spawn_two_building'
+        prj_dir = "tests/model_connectors/output/spawn_two_building"
 
         # load in the example geojson with a single offie building
-        filename = os.path.abspath('tests/model_connectors/data/spawn_geojson_ex2.json')
+        filename = os.path.abspath("tests/model_connectors/data/spawn_geojson_ex2.json")
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        gj.scaffold_directory(prj_dir)  # use the GeoJson translator to scaffold out the directory
+        gj.scaffold_directory(
+            prj_dir
+        )  # use the GeoJson translator to scaffold out the directory
 
         # load system parameter data
-        filename = os.path.abspath('tests/model_connectors/data/spawn_system_params_ex2.json')
+        filename = os.path.abspath(
+            "tests/model_connectors/data/spawn_system_params_ex2.json"
+        )
         sys_params = SystemParameters(filename)
 
         # now test the spawn connector (independent of the larger geojson translator
