@@ -32,7 +32,9 @@ import logging
 import os
 import shutil
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
 

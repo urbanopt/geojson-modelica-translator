@@ -32,7 +32,7 @@ import os
 import unittest
 
 from geojson_modelica_translator.system_parameters.system_parameters import (
-    SystemParameters,
+    SystemParameters
 )
 
 

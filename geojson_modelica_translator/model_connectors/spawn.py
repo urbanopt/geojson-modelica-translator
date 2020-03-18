@@ -67,8 +67,8 @@ class SpawnConnector(model_connector_base):
                     "building_type": urbanopt_building.feature.properties["building_type"],
                     "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
                     "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
-                    "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"]
-                                               - urbanopt_building.feature.properties["number_of_stories_above_ground"],
+                    "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"] -
+                    urbanopt_building.feature.properties["number_of_stories_above_ground"],
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
             )

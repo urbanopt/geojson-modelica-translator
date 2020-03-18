@@ -13,30 +13,30 @@ model ets_cooling_indirect_templated
     Modelica.Media.Interfaces.PartialMedium "Medium in the component";
 
 
-  
+
   // mass flow rates
   parameter Modelica.SIunits.MassFlowRate m1_flow_nominal(
     final min=0,
     start=0.666)
     "Nominal mass flow rate of primary (district) district cooling side";
-  
 
-  
+
+
   parameter Modelica.SIunits.MassFlowRate m2_flow_nominal(
     final min=0,
     start=0.5)
     "Nominal mass flow rate of secondary (building) district cooling side";
-  
 
-  
+
+
   // Primary supply control valve
   parameter Modelica.SIunits.PressureDifference dpValve_nominal(
     final min=0,
     final displayUnit="Pa")=888
     "Nominal pressure drop of fully open control valve";
-  
 
-  
+
+
   // Heat exchanger
   parameter Modelica.SIunits.PressureDifference dp1_nominal(
     final min=0,
@@ -44,33 +44,33 @@ model ets_cooling_indirect_templated
     final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation(Dialog(group="Heat exchanger"));
-  
 
- 
+
+
   parameter Modelica.SIunits.PressureDifference dp2_nominal(
     final min=0,
     start=999,
     final displayUnit="Pa")
     "Nominal pressure difference on secondary side"
     annotation(Dialog(group="Heat exchanger"));
-  
 
-   
+
+
   parameter Boolean use_Q_flow_nominal=true
     "Set to true to specify Q_flow_nominal and temperatures, or to false to specify effectiveness"
     annotation(Dialog(group="Heat exchanger"));
-    
 
-  
+
+
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
     final min=0,
     start=8000)
     "Nominal heat transfer"
     annotation(Dialog(group="Heat exchanger"));
-  
 
 
-  
+
+
   parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
@@ -78,9 +78,9 @@ model ets_cooling_indirect_templated
     final displayUnit="K")
     "Nominal temperature at port a1"
     annotation(Dialog(group="Heat exchanger"));
-   
 
-  
+
+
   parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
@@ -88,17 +88,17 @@ model ets_cooling_indirect_templated
     final displayUnit="K")
     "Nominal temperature at port a2"
     annotation(Dialog(group="Heat exchanger"));
-    
 
- 
+
+
   parameter Modelica.SIunits.Efficiency eta(
     final min=0,
     final max=1)=0.666
     "Constant effectiveness"
     annotation(Dialog(group="Heat exchanger"));
-  
 
-  
+
+
   // Controller parameters
   parameter Modelica.Blocks.Types.SimpleController controllerType=
     Modelica.Blocks.Types.SimpleController.PI

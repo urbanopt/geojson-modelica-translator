@@ -34,12 +34,11 @@ import shutil
 import unittest
 
 from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator,
+    GeoJsonModelicaTranslator
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
-    SystemParameters,
+    SystemParameters
 )
-from .context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class GeoJSONTranslatorTest(unittest.TestCase):

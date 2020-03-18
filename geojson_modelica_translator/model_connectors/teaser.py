@@ -31,13 +31,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import glob
 import os
 import shutil
-from teaser.project import Project
 
-from geojson_modelica_translator.model_connectors.base import (
-    Base as model_connector_base,
+from geojson_modelica_translator.model_connectors.base import \
+    Base as model_connector_base
+from geojson_modelica_translator.modelica.input_parser import (
+    InputParser,
+    PackageParser
 )
-from geojson_modelica_translator.modelica.input_parser import InputParser, PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, copytree
+from teaser.project import Project
 
 
 class TeaserConnector(model_connector_base):
@@ -61,7 +63,7 @@ class TeaserConnector(model_connector_base):
                     "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
                     "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
                     "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"]
-                                               - urbanopt_building.feature.properties["number_of_stories_above_ground"],
+                    - urbanopt_building.feature.properties["number_of_stories_above_ground"],
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
             )

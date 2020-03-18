@@ -33,12 +33,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 from io import BytesIO
-from requests import get
-from setuptools import setup, find_packages
 from zipfile import ZipFile
+
+from setuptools import find_packages, setup
 
 from management.update_licenses import UpdateLicenses
 from management.update_schemas import UpdateSchemas
+from requests import get
 
 with open("README.rst") as f:
     readme = f.read()

@@ -33,7 +33,6 @@ import os
 import unittest
 
 from geojson_modelica_translator.modelica.input_parser import InputParser
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
 
 
 class InputParserTest(unittest.TestCase):
@@ -99,7 +98,7 @@ class InputParserTest(unittest.TestCase):
         f1.replace_model_string(
             'Modelica.Blocks.Sources.CombiTimeTable',
             'internalGains',
-            'modelica://Project/B5a6b99ec37f4de7f94020090/B5a6b99ec37f4de7f94020090_Models/InternalGains_B5a6b99ec37f4de7f94020090Floor.mat', # noqa
+            'modelica://Project/B5a6b99ec37f4de7f94020090/B5a6b99ec37f4de7f94020090_Models/InternalGains_B5a6b99ec37f4de7f94020090Floor.mat',  # noqa
             # noqa
             'modelica://a/new/path.mat'
         )
@@ -118,7 +117,7 @@ class InputParserTest(unittest.TestCase):
         new_filename = os.path.abspath("tests/modelica/output/test_1_output_5.mo")
         f1 = InputParser(filename)
         data = [
-            'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));' # noqa
+            'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'  # noqa
             # noqa
         ]
         f1.add_model_object(

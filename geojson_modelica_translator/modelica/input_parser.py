@@ -30,7 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from jinja2 import FileSystemLoader, Environment
+from jinja2 import Environment, FileSystemLoader
 
 
 class PackageParser(object):
