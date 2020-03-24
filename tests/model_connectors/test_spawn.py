@@ -104,7 +104,7 @@ class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
         file_to_run = os.path.abspath(
-            'tests/model_connectors/output/spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo'
+            'tests/model_connectors/output/spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/coupling.mo'
         )
         exitcode = mr.run_in_docker(file_to_run)
         self.assertEqual(0, exitcode)

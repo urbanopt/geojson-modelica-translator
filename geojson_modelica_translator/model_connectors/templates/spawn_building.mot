@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model BuildingSpawnZ6
+model building
    "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
 
 extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
@@ -214,4 +214,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end BuildingSpawnZ6;
+end building;

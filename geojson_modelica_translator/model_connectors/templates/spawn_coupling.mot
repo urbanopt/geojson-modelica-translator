@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model CouplingSpawnZ6
+model coupling
   "FMU Template for Spawn"
 
  replaceable package MediumW = Buildings.Media.Water
@@ -44,7 +44,7 @@ model CouplingSpawnZ6
       "Chilled water flow rate"
       annotation (Placement(transformation(extent={{-80,-70},{-60,-50}})));
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
-      redeclare package Medium = Medium1,
+      redeclare package Medium = MediumW,
       p=300000,
       nPorts=1) "Sink for heating water" annotation (Placement(transformation(
           extent={{10,-10},{-10,10}},
@@ -132,4 +132,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end CouplingSpawnZ6;
+end coupling;
