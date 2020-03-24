@@ -55,6 +55,8 @@ class TeaserConnector(model_connector_base):
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
+            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+            number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             self.buildings.append(
                 {
                     "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
@@ -62,8 +64,7 @@ class TeaserConnector(model_connector_base):
                     "building_type": urbanopt_building.feature.properties["building_type"],
                     "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
                     "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
-                    "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"]
-                    - urbanopt_building.feature.properties["number_of_stories_above_ground"],
+                    "num_stories_below_grade": number_stories - number_stories_above_ground,
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
             )
@@ -75,13 +76,12 @@ class TeaserConnector(model_connector_base):
             # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
             return "office"
 
-    def to_modelica(self, project_name, root_building_dir, keep_original_models=False):
+    def to_modelica(self, scaffold, keep_original_models=False):
         """
         Save the TEASER representation of the buildings to the filesystem. The path will
-        be root_building_dir.
+        be scaffold.loads_path.files_dir.
 
-        :param project_name: str, Name of the overall project that will be set in the modelica file
-        :param root_building_dir: str, root directory where building model will be exported
+        :param scaffold: Scaffold object, contains all the paths of the project
         :param keep_original_models: boolean, whether or not to remove the models after exporting from Teaser
 
         """
@@ -115,26 +115,13 @@ class TeaserConnector(model_connector_base):
 
             # calculate the properties of all the buildings and export to the Buildings library
             prj.calc_all_buildings()
-            prj.export_ibpsa(
-                library="Buildings", path=os.path.join(curdir, root_building_dir)
-            )
+            prj.export_ibpsa(library="Buildings", path=os.path.join(curdir, scaffold.loads_path.files_dir))
         finally:
             os.chdir(curdir)
 
-        self.post_process(
-            project_name,
-            root_building_dir,
-            building_names,
-            keep_original_models=keep_original_models,
-        )
+        self.post_process(scaffold, building_names, keep_original_models=keep_original_models)
 
-    def post_process(
-            self,
-            project_name,
-            root_building_dir,
-            building_names,
-            keep_original_models=False,
-    ):
+    def post_process(self, scaffold, building_names, keep_original_models=False):
         """
         Cleanup the export of the TEASER files into a format suitable for the district-based analysis. This includes
         the following:
@@ -156,20 +143,20 @@ class TeaserConnector(model_connector_base):
             string_replace_list = []
 
             # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
-            b_modelica_path = ModelicaPath(f"B{b}", root_building_dir, True)
+            b_modelica_path = ModelicaPath(f"B{b}", scaffold.loads_path.files_dir, True)
 
             # copy over the entire model to the new location
             copytree(
-                os.path.join(root_building_dir, f"Project/B{b}/B{b}_Models"),
+                os.path.join(scaffold.loads_path.files_dir, f"Project/B{b}/B{b}_Models"),
                 b_modelica_path.files_dir,
             )
 
             # read in the package to apply the changes as they other files are processed
             # TODO: these should be linked, so a rename method should act across the model and the package.order
-            package = PackageParser(os.path.join(root_building_dir, f"B{b}"))
+            package = PackageParser(os.path.join(scaffold.loads_path.files_dir, f"B{b}"))
 
             # move the internal gains files to a new resources folder
-            mat_files = glob.glob(os.path.join(root_building_dir, f"B{b}/*.txt"))
+            mat_files = glob.glob(os.path.join(scaffold.loads_path.files_dir, f"B{b}/*.txt"))
             for f in mat_files:
                 new_file_name = os.path.basename(f).replace(f"B{b}", "")
                 os.rename(f, f"{b_modelica_path.resources_dir}/{new_file_name}")
@@ -181,7 +168,7 @@ class TeaserConnector(model_connector_base):
                 )
 
             # process each of the building models
-            mo_files = glob.glob(os.path.join(root_building_dir, f"B{b}/*.mo"))
+            mo_files = glob.glob(os.path.join(scaffold.loads_path.files_dir, f"B{b}/*.mo"))
             for f in mo_files:
                 # ignore the package.mo file
                 if os.path.basename(f) == "package.mo":
@@ -191,7 +178,7 @@ class TeaserConnector(model_connector_base):
 
                 # previous paths and replace with the new one.
                 # Make sure to update the names of any resources as well.
-                mofile.replace_within_string(f"{project_name}.Loads.B{b}")
+                mofile.replace_within_string(f"{scaffold.project_name}.Loads.B{b}")
 
                 # remove ReaderTMY3
                 mofile.remove_object("ReaderTMY3")
@@ -202,7 +189,8 @@ class TeaserConnector(model_connector_base):
 
                 # add heat port
                 data = [
-                    "annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));"  # noqa
+                    "annotation (Placement(transformation(extent={{-10,90},{10,110}}), "
+                    "iconTransformation(extent={{-10,90},{10,110}})));"
                 ]
                 mofile.add_model_object(
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a", data,
@@ -254,25 +242,27 @@ class TeaserConnector(model_connector_base):
 
                 # Save as the new filename (without building ID)
                 new_filename = os.path.join(
-                    root_building_dir, f'B{b}/{os.path.basename(f).split("_")[1]}'
+                    scaffold.loads_path.files_dir, f'B{b}/{os.path.basename(f).split("_")[1]}'
                 )
                 mofile.save_as(new_filename)
                 os.remove(f)
 
             # save the updated package.mo and package.order.
             new_package = PackageParser.new_from_template(
-                package.path, f"B{b}", package.order, within=f"{project_name}.Loads"
+                package.path, f"B{b}", package.order, within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 
         # remaining clean up tasks across the entire exported project
         if not keep_original_models:
-            shutil.rmtree(os.path.join(root_building_dir, "Project"))
+            shutil.rmtree(os.path.join(scaffold.loads_path.files_dir, "Project"))
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
         # add in the silly 'B' before the building names
         package = PackageParser.new_from_template(
-            root_building_dir, "Loads", ["B" + b for b in building_names], within=f"{project_name}",
+            scaffold.loads_path.files_dir,
+            "Loads", ["B" + b for b in building_names],
+            within=f"{scaffold.project_name}"
         )
         package.save()

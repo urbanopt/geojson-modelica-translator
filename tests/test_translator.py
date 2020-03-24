@@ -83,7 +83,7 @@ class GeoJSONTranslatorTest(unittest.TestCase):
             "Storage",
         ]
         building_paths = [
-            os.path.join(gj.loads_path.files_dir, b.dirname) for b in gj.buildings
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
         ]
         path_checks = [
             f"{os.path.sep.join(r)}.mo"
@@ -106,7 +106,7 @@ class GeoJSONTranslatorTest(unittest.TestCase):
             for resource_name in resource_names:
                 # TEASER 0.7.2 used .txt for schedule files
                 path = os.path.join(
-                    gj.loads_path.files_dir,
+                    gj.scaffold.loads_path.files_dir,
                     "Resources",
                     "Data",
                     b.dirname,
@@ -140,7 +140,7 @@ class GeoJSONTranslatorTest(unittest.TestCase):
             "Storage",
         ]
         building_paths = [
-            os.path.join(gj.loads_path.files_dir, b.dirname) for b in gj.buildings
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
         ]
         path_checks = [
             f"{os.path.sep.join(r)}.mo"
@@ -162,7 +162,7 @@ class GeoJSONTranslatorTest(unittest.TestCase):
             for resource_name in resource_names:
                 # TEASER 0.7.2 used .txt for schedule files
                 path = os.path.join(
-                    gj.loads_path.files_dir,
+                    gj.scaffold.loads_path.files_dir,
                     "Resources",
                     "Data",
                     b.dirname,

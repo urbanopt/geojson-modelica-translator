@@ -1,6 +1,6 @@
 old_hidden_avoid_double_computation=Hidden.AvoidDoubleComputation;
 Hidden.AvoidDoubleComputation=true;
-simulateModel("spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.Examples.CouplingSpawnZ6",
+simulateModel("{{full_model_name}}",
     method="cvode",
     tolerance=1e-6,
     numberOfIntervals=500,

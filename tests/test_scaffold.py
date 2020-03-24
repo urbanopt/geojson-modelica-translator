@@ -31,20 +31,18 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import unittest
 
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.scaffold import Scaffold
 
 
-class ModelicaPathTest(unittest.TestCase):
-    def test_properties(self):
-        mp = ModelicaPath("Loads", root_dir=None)
-        self.assertEqual(mp.files_dir, "Loads")
-        self.assertEqual(mp.resources_dir, os.path.join("Resources", "Data", "Loads"))
-
-    def test_single_sub_resource(self):
-        root_dir = os.path.abspath(os.path.join("tests", "output", "modelica_path_01"))
-        ModelicaPath("RandomContainer", root_dir, overwrite=True)
-        self.assertTrue(os.path.exists(os.path.join(root_dir, "RandomContainer")))
-        self.assertTrue(os.path.exists(os.path.join(root_dir, "Resources", "Data", "RandomContainer")))
+class ScaffoldTest(unittest.TestCase):
+    def test_scaffold(self):
+        root_dir = os.path.abspath(os.path.join("tests", "output"))
+        scaffold = Scaffold(root_dir, "scaffold_01", overwrite=True)
+        scaffold.create()
+        # self.assertEqual(mp.resources_dir, os.path.join("Resources", "Data", "Loads"))
+        self.assertTrue(
+            os.path.exists(os.path.join(root_dir, "scaffold_01", "Resources", "Scripts", "Loads", "Dymola"))
+        )
 
 
 if __name__ == "__main__":
