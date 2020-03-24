@@ -73,19 +73,6 @@ class SpawnConnector(model_connector_base):
                 }
             )
 
-    def lookup_building_type(self, building_type):
-        """
-        This needs to be updated to decide which building to reference if no IDF is included.
-
-        :param building_type:
-        :return:
-        """
-        if "office" in building_type.lower():
-            return "office"
-        else:
-            # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
-            return "office"
-
     def to_modelica(self, project_name, root_building_dir):
         """
         Create spawn models based on the data in the buildings and geojsons
@@ -95,7 +82,8 @@ class SpawnConnector(model_connector_base):
         """
         curdir = os.getcwd()
         loads_root_path = os.path.join(root_building_dir, project_name, "Loads")
-        spawn_fmu_template = self.template_env.get_template("spawn_fmu.mot")
+        spawn_coupling_template = self.template_env.get_template("spawn_coupling.mot")
+        spawn_building_template = self.template_env.get_template("spawn_building.mot")
         spawn_mos_template = self.template_env.get_template("RunSpawnBuilding.mot")
         building_names = []
         try:
@@ -182,7 +170,7 @@ class SpawnConnector(model_connector_base):
                     raise Exception(
                         f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
 
-                file_data = spawn_fmu_template.render(
+                file_data = spawn_building_template.render(
                     project_name=project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -197,6 +185,15 @@ class SpawnConnector(model_connector_base):
                 )
                 with open(os.path.join(os.path.join(b_modelica_path.resources_dir, "RunSpawnBuilding.mos")), "w") as f:
                     f.write(file_data)
+
+                file_data = spawn_coupling_template.render(
+                    project_name=project_name,
+                    model_name=f"B{building['building_id']}",
+                    data=template_data,
+                )
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")), "w") as f:
+                    f.write(file_data)
+
         finally:
             os.chdir(curdir)
 
@@ -220,7 +217,7 @@ class SpawnConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(loads_root_path, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building"], within=f"{project_name}.Loads"
+                b_modelica_path, b, ["coupling", "building"], within=f"{project_name}.Loads"
             )
             new_package.save()
 

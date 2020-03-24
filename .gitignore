@@ -94,6 +94,7 @@ ENV/
 
 # Test outputs
 tests/output
+tests/output_ets
 tests/modelica/output
 tests/model_connectors/output
 /geojson_modelica_translator/modelica/buildingslibrary/
