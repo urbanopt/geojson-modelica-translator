@@ -179,8 +179,10 @@ class SpawnConnector(model_connector_base):
                     f.write(file_data)
 
                 full_model_name = os.path.join(
-                    scaffold.project_name, scaffold.loads_path.files_relative_dir, f"B{building['building_id']}", 'coupling').replace(
-                    os.path.sep, '.')
+                    scaffold.project_name,
+                    scaffold.loads_path.files_relative_dir,
+                    f"B{building['building_id']}",
+                    "coupling").replace(os.path.sep, '.')
 
                 file_data = spawn_mos_template.render(full_model_name=full_model_name)
                 with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunSpawnBuilding.mos")), "w") as f:
