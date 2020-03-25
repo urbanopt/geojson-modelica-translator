@@ -231,6 +231,6 @@ class SpawnConnector(model_connector_base):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         pp = PackageParser.new_from_template(
-            scaffold.loads_path.files_dir, scaffold.project_name, ["Loads"]
+            scaffold.project_path, scaffold.project_name, ["Loads"]
         )
         pp.save()

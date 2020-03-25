@@ -15,7 +15,7 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
    "Load side medium";
 
   parameter Integer nZon
-   "Number of thermal zones"
+   "Number of thermal zones";
   parameter String idfPat=
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
     "Path of the IDF file";

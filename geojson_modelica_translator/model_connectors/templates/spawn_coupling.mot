@@ -1,6 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
   "FMU Template for Spawn"
+ extends Modelica.Icons.Example;
 
  replaceable package MediumW = Buildings.Media.Water
    "Source side medium";
@@ -80,20 +81,21 @@ equation
 
   // TODO: determine how to handle the "lines"
 {% raw %}
-annotation (Diagram(
-       coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},{160,60}}),
-       graphics={Text(
-         extent={{-46,36},{86,10}},
-         lineColor={28,108,200},
-         textString="")}),
-     __Dymola_Commands(file=
-         "Resources/Scripts/Dymola/SpawnTwoBuildings/CouplingSpawnZ6.mos"
-       "Simulate and plot"),
-      experiment(
-                 StopTime=604800,
-                 Tolerance=1e-06,
-                 __Dymola_Algorithm="Cvode"),
-Documentation (info=
+ annotation (Diagram(
+        coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},{160,60}}),
+        graphics={Text(
+          extent={{-46,36},{86,10}},
+          lineColor={28,108,200},
+          textString="")}),
+{% endraw %}
+        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunSpawnBuilding.mos"
+{% raw %}
+         "Simulate and plot"),
+        experiment(
+            StopTime=604800,
+            Tolerance=1e-06,
+            __Dymola_Algorithm="Cvode"),
+  Documentation(info=
 "<html>
 <p>
 This example illustrates the use of
@@ -126,8 +128,12 @@ revisions=
 "<html>
 <ul>
 <li>
+March 21, 2020, by Nicholas Long:<br/>
+GeoJson-Modelica translator template first implementation.
+</li>
+<li>
 February 21, 2020, by Antoine Gautier:<br/>
-First implementation.
+Model first implementation.
 </li>
 </ul>
 </html>"));
