@@ -14,7 +14,7 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
  replaceable package MediumA = Buildings.Media.Air
    "Load side medium";
 
-  parameter Integer nZon
+  parameter Integer nZon={{data['thermal_zones_count']}}
    "Number of thermal zones";
   parameter String idfPat=
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
@@ -66,7 +66,7 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
  Buildings.Applications.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
    redeclare package Medium1 = MediumW,
    redeclare package Medium2 = MediumA,
-   each facSca=facSca,
+   each facSca=1,
    QHea_flow_nominal={50000,10000,10000,10000,10000,10000},
    QCoo_flow_nominal={-10000,-10000,-10000,-10000,-10000,-10000},
    each T_aLoaHea_nominal=293.15,
@@ -182,8 +182,8 @@ equation
       connect(terUni[i].TSetCoo, maxTSet[i].y)
         {% raw %}annotation (Line(points={{-140.833,12.6667},{-164,12.6667},{-164,30},{-198,30}},{% endraw %}
         color={0,0,127}));
-    end for;
-   {% endfor %}
+  end for;
+{% endfor %}
 
 {% raw %}
 annotation (

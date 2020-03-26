@@ -9,7 +9,7 @@ model coupling
    "Load side medium";
 
 {% raw %}
-  Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingSpawnZ1 bui(
+  building bui(
       nPorts_a=2,
       nPorts_b=2)
       "Building"

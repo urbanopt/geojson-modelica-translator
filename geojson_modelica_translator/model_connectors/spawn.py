@@ -132,6 +132,8 @@ class SpawnConnector(model_connector_base):
                         "path": os.path.dirname(mos_weather_filename),
                     },
                     "thermal_zones": [],
+                    "thermal_zones_count": len(thermal_zones),
+
                 }
                 for tz in thermal_zones:
                     # TODO: method for creating nice zone names for modelica
