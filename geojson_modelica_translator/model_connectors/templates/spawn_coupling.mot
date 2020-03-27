@@ -8,8 +8,10 @@ model coupling
   replaceable package MediumA = Buildings.Media.Air
    "Load side medium";
 
-  {{project_name}}.Loads.B5a6b99ec37f4de7f94020090.building bui(
 {% raw %}
+  // Do not fully qualify the path to building as {{project_name}}.Loads... That does
+  // not work in JModelica.
+  building bui(
       nPorts_b=2,
       nPorts_a=2) "Building spawn model"
       annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
