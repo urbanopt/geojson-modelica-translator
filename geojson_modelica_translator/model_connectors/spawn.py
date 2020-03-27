@@ -60,6 +60,8 @@ class SpawnConnector(model_connector_base):
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
+            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+            number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             self.buildings.append(
                 {
                     "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
@@ -67,36 +69,21 @@ class SpawnConnector(model_connector_base):
                     "building_type": urbanopt_building.feature.properties["building_type"],
                     "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
                     "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
-                    "num_stories_below_grade": urbanopt_building.feature.properties["number_of_stories"] -
-                    urbanopt_building.feature.properties["number_of_stories_above_ground"],
+                    "num_stories_below_grade": number_stories - number_stories_above_ground,
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
             )
 
-    def lookup_building_type(self, building_type):
-        """
-        This needs to be updated to decide which building to reference if no IDF is included.
-
-        :param building_type:
-        :return:
-        """
-        if "office" in building_type.lower():
-            return "office"
-        else:
-            # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
-            return "office"
-
-    def to_modelica(self, project_name, root_building_dir):
+    def to_modelica(self, scaffold):
         """
         Create spawn models based on the data in the buildings and geojsons
 
-        :param project_name: str, Name of the overall project that will be set in the modelica file
-        :param root_building_dir: str, root directory where building model will be exported
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        loads_root_path = os.path.join(root_building_dir, project_name, "Loads")
-        spawn_fmu_template = self.template_env.get_template("spawn_fmu.mot")
-        spawn_mos_template = self.template_env.get_template("RunSpawnBuilding.mot")
+        spawn_coupling_template = self.template_env.get_template("spawn_coupling.mot")
+        spawn_building_template = self.template_env.get_template("spawn_building.mot")
+        spawn_mos_template = self.template_env.get_template("RunSpawnBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -106,7 +93,7 @@ class SpawnConnector(model_connector_base):
                 # Path for building data
                 building_names.append(f"B{building['building_id']}")
                 b_modelica_path = ModelicaPath(
-                    f"B{building['building_id']}", loads_root_path, True
+                    f"B{building['building_id']}", scaffold.loads_path.files_dir, True
                 )
 
                 # grab the data from the system_parameter file for this building id
@@ -145,6 +132,8 @@ class SpawnConnector(model_connector_base):
                         "path": os.path.dirname(mos_weather_filename),
                     },
                     "thermal_zones": [],
+                    "thermal_zones_count": len(thermal_zones),
+
                 }
                 for tz in thermal_zones:
                     # TODO: method for creating nice zone names for modelica
@@ -182,28 +171,40 @@ class SpawnConnector(model_connector_base):
                     raise Exception(
                         f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
 
-                file_data = spawn_fmu_template.render(
-                    project_name=project_name,
+                # Run the templating
+                file_data = spawn_building_template.render(
+                    project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
-                file_data = spawn_mos_template.render(
-                    project_name=project_name,
+                full_model_name = os.path.join(
+                    scaffold.project_name,
+                    scaffold.loads_path.files_relative_dir,
+                    f"B{building['building_id']}",
+                    "coupling").replace(os.path.sep, '.')
+
+                file_data = spawn_mos_template.render(full_model_name=full_model_name)
+                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunSpawnBuilding.mos")), "w") as f:
+                    f.write(file_data)
+
+                file_data = spawn_coupling_template.render(
+                    project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.resources_dir, "RunSpawnBuilding.mos")), "w") as f:
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")), "w") as f:
                     f.write(file_data)
+
         finally:
             os.chdir(curdir)
 
         # run post process to create the remaining project files for this building
-        self.post_process(project_name, root_building_dir, building_names)
+        self.post_process(scaffold, building_names)
 
-    def post_process(self, project_name, root_building_dir, building_names):
+    def post_process(self, scaffold, building_names):
         """
         Cleanup the export of Spawn files into a format suitable for the district-based analysis. This includes
         the following:
@@ -211,29 +212,27 @@ class SpawnConnector(model_connector_base):
             * Add a Loads project
             * Add a project level project
 
-        :param project_name: string, name of the project which will be used to set the package.mo file
-        :param root_building_dir: string, where the project will be ultimately saved
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :param building_names: list, names of the buildings that need to be cleaned up after export
         :return: None
         """
-        loads_root_path = os.path.join(root_building_dir, project_name, "Loads")
         for b in building_names:
-            b_modelica_path = os.path.join(loads_root_path, b)
+            b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building"], within=f"{project_name}.Loads"
+                b_modelica_path, b, ["building", "coupling"], within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
         package = PackageParser.new_from_template(
-            loads_root_path, "Loads", building_names, within=f"{project_name}"
+            scaffold.loads_path.files_dir, "Loads", building_names, within=f"{scaffold.project_name}"
         )
         package.save()
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now for testing.
+        # do it here for now to aid in testing.
         pp = PackageParser.new_from_template(
-            os.path.join(root_building_dir, project_name), project_name, ["Loads"]
+            scaffold.project_path, scaffold.project_name, ["Loads"]
         )
         pp.save()

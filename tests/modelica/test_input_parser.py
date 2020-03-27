@@ -99,7 +99,6 @@ class InputParserTest(unittest.TestCase):
             'Modelica.Blocks.Sources.CombiTimeTable',
             'internalGains',
             'modelica://Project/B5a6b99ec37f4de7f94020090/B5a6b99ec37f4de7f94020090_Models/InternalGains_B5a6b99ec37f4de7f94020090Floor.mat',  # noqa
-            # noqa
             'modelica://a/new/path.mat'
         )
         f1.save_as(new_filename)
@@ -118,7 +117,6 @@ class InputParserTest(unittest.TestCase):
         f1 = InputParser(filename)
         data = [
             'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'  # noqa
-            # noqa
         ]
         f1.add_model_object(
             "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a", data

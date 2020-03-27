@@ -66,6 +66,7 @@ class ETSTemplate:
             self.directory_modelica_building = self.directory_modelica_building.replace("\\", "/")
 
         # go up two levels of directory, to get the path of tests folder for ets
+        # TODO: we shouldn't be writing to the test directory in this file, only in tests.
         directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
         self.directory_ets_templated = os.path.join(
             directory_up_two_levels + "/tests/output_ets"

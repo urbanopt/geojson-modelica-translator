@@ -19,7 +19,7 @@ env:
     - TOX_ENV=flake8
     - TOX_ENV=docs
 before_script:
-  - git clone --single-branch --branch issue1442_loadCoupling https://github.com/lbl-srg/modelica-buildings.git
+  - git clone --single-branch --branch issue1437_district_heating_cooling  https://github.com/lbl-srg/modelica-buildings.git
   - export MODELICAPATH=$(pwd)/modelica-buildings
 script:
   - tox -e $TOX_ENV
