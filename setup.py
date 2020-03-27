@@ -79,7 +79,7 @@ if os.path.exists(save_path):
     shutil.rmtree(save_path)
 if os.path.exists(tmp_save_path):
     shutil.rmtree(tmp_save_path)
-mbl_archive_name = "issue1442_loadCoupling"
+mbl_archive_name = "issue1437_district_heating_cooling"
 r = get(f"https://github.com/lbl-srg/{repo_name}/archive/{mbl_archive_name}.zip")
 with ZipFile(BytesIO(r.content)) as zip:
     files = zip.namelist()
