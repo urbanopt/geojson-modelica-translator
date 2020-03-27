@@ -154,11 +154,11 @@
         },
         "ets": {
           "title": "ets",
-          "description": "ETS connection information",
+          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops",
           "type": "object",
           "properties": {
             "system": {
-              "description": "Type of ETS system that the building is connected to.",
+              "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. ",
               "type": "string",
               "enum": [
                 "Booster Heater",
@@ -283,6 +283,22 @@
         }
       },
       "additionalProperties": false
+    },
+    "ets_parameters": {
+      "description":  "Parameters associated with ETS models",
+      "type": "object",
+      "properties": {
+        "ModelName": "ets_cooling_indirect_templated",
+            "Q_Flow_Nominal": [8000],
+            "Eta_Efficiency": [0.666],
+            "NominalFlow_District": [0.666],
+            "NominalFlow_Building": [0.666],
+            "PressureDrop_Valve": [888],
+            "PressureDrop_HX_Secondary": [999],
+            "PressureDrop_HX_Primary": [999],
+            "SWT_District": [5],
+            "SWT_Building": [7]
+      }
     }
   }
 }
