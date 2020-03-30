@@ -39,6 +39,7 @@ import unittest
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -113,6 +114,14 @@ class GeoJSONTranslatorTest(unittest.TestCase):
                     f"{resource_name}.txt",
                 )
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+
+        # verify that the models run in JModelica
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            os.path.join(gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'Office.mo')
+        )
+        exitcode = mr.run_in_docker(file_to_run)
+        self.assertEqual(0, exitcode)
 
     def test_to_modelica_rc_order_4(self):
         self.results_path = os.path.abspath("tests/output/rc_order_4")
