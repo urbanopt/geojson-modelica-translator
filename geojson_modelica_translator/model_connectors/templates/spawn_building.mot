@@ -16,21 +16,13 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
   parameter Real facSca = 1
     "Scaling factor to be applied to each extensive quantity";
   parameter Integer nZon={{data['thermal_zones_count']}}
-    "Number of thermal zones";
-    // The IDF and MOS file paths may need to be different for Dymola and JModelica.
-  // For Dymola use the paths below:
-  // parameter String idfPat=
-  //  "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
-  //  "Path of the IDF file";
-  // parameter String weaPat=
-  //  "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
-  //  "Path of the weather file";
-  // For JModelica use the paths below:
+   "Number of thermal zones";
+  // TODO: Verify that the paths work in JModelica, Dymola, and in py.tests.
   parameter String idfPat=
-    "../../Resources/Data/{{model_name}}/{{data['idf']['filename']}}"
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
     "Path of the IDF file";
   parameter String weaPat=
-    "../../Resources/Data/{{model_name}}/{{data['mos_weather']['filename']}}"
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
   {% raw %}
@@ -64,8 +56,8 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
   {% raw %}
 
   inner Buildings.ThermalZones.EnergyPlus.Building building(
-       idfName=idfPat,
-       weaName=weaPat,
+       idfName=Modelica.Utilities.Files.loadResource(idfPat),
+       weaName=Modelica.Utilities.Files.loadResource(weaPat),
        showWeatherData=false)
        "Building outer component"
      annotation (Placement(transformation(extent={{40,60},{60,80}})));
