@@ -29,7 +29,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-
 import shutil
 import subprocess
 
@@ -64,7 +63,7 @@ class ModelicaRunner(object):
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
-    def run_in_docker(self, file_to_run):
+    def run_in_docker(self, file_to_run, run_path=None):
         """
         Run the Modelica project in a docker-based environment. Results are saved into the path of the
         file that was selected to run.
@@ -82,7 +81,9 @@ class ModelicaRunner(object):
         if not os.path.isfile(file_to_run):
             raise Exception(f'Expecting to run a file, not a folder in {file_to_run}')
 
-        run_path = os.path.dirname(file_to_run)
+        if not run_path:
+            run_path = os.path.dirname(file_to_run)
+
         new_jm_ipython = os.path.join(run_path, os.path.basename(self.jm_ipython_path))
         shutil.copyfile(self.jm_ipython_path, new_jm_ipython)
         os.chmod(new_jm_ipython, 0o775)
@@ -91,8 +92,12 @@ class ModelicaRunner(object):
         os.chdir(run_path)
         stdout_log = open('stdout.log', 'w')
         try:
+            # get the relative difference between the file to run and the path which everything is running in.
+            # make sure to simulate at a directory above the project directory!
+            run_model = os.path.relpath(file_to_run, run_path)  # .replace(os.sep, '.') Use this if removing .mo file filename
+            # TODO: Create a logger to show more information such as the actual run command being executed.
             p = subprocess.Popen(
-                ['./jm_ipython.sh', 'jmodelica.py', os.path.basename(file_to_run)],
+                ['./jm_ipython.sh', 'jmodelica.py', run_model],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path

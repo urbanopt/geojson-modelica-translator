@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
+from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -77,9 +78,10 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
         file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo')
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
         )
-        exitcode = mr.run_in_docker(file_to_run)
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
         self.assertEqual(0, exitcode)
 
 
@@ -111,7 +113,8 @@ class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
         file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, '5a6b99ec37f4de7f94021950', 'coupling.mo')
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'coupling.mo')
         )
-        exitcode = mr.run_in_docker(file_to_run)
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run,  run_path=run_path)
         self.assertEqual(0, exitcode)
