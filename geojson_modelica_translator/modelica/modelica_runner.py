@@ -94,7 +94,10 @@ class ModelicaRunner(object):
         try:
             # get the relative difference between the file to run and the path which everything is running in.
             # make sure to simulate at a directory above the project directory!
-            run_model = os.path.relpath(file_to_run, run_path)  # .replace(os.sep, '.') Use this if removing .mo file filename
+
+            # Use slashes for now, but can make these periods `.replace(os.sep, '.')` but must strip off
+            # the .mo extension on the model to run
+            run_model = os.path.relpath(file_to_run, run_path)
             # TODO: Create a logger to show more information such as the actual run command being executed.
             p = subprocess.Popen(
                 ['./jm_ipython.sh', 'jmodelica.py', run_model],
