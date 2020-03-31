@@ -109,6 +109,7 @@ class GeoJsonModelicaTranslator(object):
 
         _log.info("Exporting to Modelica")
         for building in self.buildings:
+            # print("Jing2: ", building.feature.properties["type"])
             _log.info(f"Adding building to model connector: {mc_klass.__class__}")
 
             model_connector.add_building(building)

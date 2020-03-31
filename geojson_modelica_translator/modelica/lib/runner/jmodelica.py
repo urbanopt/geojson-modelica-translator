@@ -5,10 +5,10 @@
 # Import the function for compilation of models and the load_fmu method
 
 import os
-
-import pymodelica
 import shutil
 import sys
+
+import pymodelica
 from pyfmi import load_fmu
 from pymodelica import compile_fmu
 
