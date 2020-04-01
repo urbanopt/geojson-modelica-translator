@@ -34,9 +34,6 @@ import unittest
 
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
-from ..context import \
-    geojson_modelica_translator  # noqa - Do not remove this line
-
 
 class ModelicaRunnerTest(unittest.TestCase):
     # create a run directory and copy in a project to test run
