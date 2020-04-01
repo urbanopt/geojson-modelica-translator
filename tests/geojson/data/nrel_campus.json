@@ -52,7 +52,7 @@
         "footprint_perimeter": 228,
         "updated_at": "2017-09-01T21:17:07.590Z",
         "created_at": "2017-09-01T21:16:27.788Z",
-        "height": 6,
+        "floor_height": 6,
         "geometryType": "Polygon"
       }
     },
@@ -107,7 +107,7 @@
         "footprint_perimeter": 245,
         "updated_at": "2017-09-01T21:17:07.507Z",
         "created_at": "2017-09-01T21:16:27.649Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -162,7 +162,7 @@
         "footprint_perimeter": 83,
         "updated_at": "2017-09-01T21:17:07.607Z",
         "created_at": "2017-09-01T21:16:27.805Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -217,7 +217,7 @@
         "footprint_perimeter": 151,
         "updated_at": "2017-09-01T21:17:07.585Z",
         "created_at": "2017-09-01T21:16:27.782Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -272,7 +272,7 @@
         "footprint_perimeter": 192,
         "updated_at": "2017-09-01T21:17:07.612Z",
         "created_at": "2017-09-01T21:16:27.817Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -327,7 +327,7 @@
         "footprint_perimeter": 101,
         "updated_at": "2017-09-01T21:17:07.618Z",
         "created_at": "2017-09-01T21:16:27.829Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -394,7 +394,7 @@
         "footprint_perimeter": 447,
         "updated_at": "2017-09-01T21:17:07.518Z",
         "created_at": "2017-09-01T21:16:27.662Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -457,7 +457,7 @@
         "footprint_perimeter": 464,
         "updated_at": "2017-09-01T21:17:07.524Z",
         "created_at": "2017-09-01T21:16:27.668Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -512,7 +512,7 @@
         "footprint_perimeter": 187,
         "updated_at": "2017-09-01T21:17:07.529Z",
         "created_at": "2017-09-01T21:16:27.674Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -603,7 +603,7 @@
         "footprint_perimeter": 459,
         "updated_at": "2017-09-01T21:17:07.513Z",
         "created_at": "2017-09-01T21:16:27.656Z",
-        "height": 6,
+        "floor_height": 6,
         "geometryType": "Polygon"
       }
     },
@@ -658,7 +658,7 @@
         "footprint_perimeter": 65,
         "updated_at": "2017-09-01T21:17:07.573Z",
         "created_at": "2017-09-01T21:16:27.764Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -713,7 +713,7 @@
         "footprint_perimeter": 84,
         "updated_at": "2017-09-01T21:17:07.602Z",
         "created_at": "2017-09-01T21:16:27.799Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -768,7 +768,7 @@
         "footprint_perimeter": 61,
         "updated_at": "2017-09-01T21:17:07.623Z",
         "created_at": "2017-09-01T21:16:27.835Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -823,7 +823,7 @@
         "footprint_perimeter": 61,
         "updated_at": "2017-09-01T21:17:07.629Z",
         "created_at": "2017-09-01T21:16:27.842Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -878,7 +878,7 @@
         "footprint_perimeter": 74,
         "updated_at": "2017-09-01T21:17:07.635Z",
         "created_at": "2017-09-01T21:16:27.850Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -933,7 +933,7 @@
         "footprint_perimeter": 201,
         "updated_at": "2017-09-01T21:17:07.502Z",
         "created_at": "2017-09-01T21:16:27.643Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -1052,7 +1052,7 @@
         "footprint_perimeter": 2987,
         "updated_at": "2017-09-01T21:17:07.496Z",
         "created_at": "2017-09-01T21:16:27.637Z",
-        "height": 15,
+        "floor_height": 15,
         "geometryType": "Polygon"
       }
     },
@@ -1139,7 +1139,7 @@
         "footprint_perimeter": 519,
         "updated_at": "2017-09-01T21:17:07.484Z",
         "created_at": "2017-09-01T21:16:27.622Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -1242,7 +1242,7 @@
         "footprint_perimeter": 1304,
         "updated_at": "2017-09-01T21:17:07.490Z",
         "created_at": "2017-09-01T21:16:27.629Z",
-        "height": 6,
+        "floor_height": 6,
         "geometryType": "Polygon"
       }
     },
@@ -1381,7 +1381,7 @@
         "footprint_perimeter": 1562,
         "updated_at": "2017-09-01T21:17:07.478Z",
         "created_at": "2017-09-01T21:16:27.616Z",
-        "height": 6,
+        "floor_height": 6,
         "geometryType": "Polygon"
       }
     },
@@ -1436,7 +1436,7 @@
         "footprint_perimeter": 211,
         "updated_at": "2017-09-01T21:17:07.579Z",
         "created_at": "2017-09-01T21:16:27.776Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -1503,7 +1503,7 @@
         "footprint_perimeter": 1422,
         "updated_at": "2017-09-01T21:17:07.640Z",
         "created_at": "2017-09-01T21:16:27.866Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -1662,7 +1662,7 @@
         "footprint_perimeter": 1318,
         "updated_at": "2017-09-01T21:17:07.472Z",
         "created_at": "2017-09-01T21:16:27.607Z",
-        "height": 9,
+        "floor_height": 9,
         "geometryType": "Polygon"
       }
     },
@@ -1813,7 +1813,7 @@
         "footprint_perimeter": 3325,
         "updated_at": "2017-09-01T21:17:07.465Z",
         "created_at": "2017-09-01T21:16:27.599Z",
-        "height": 12,
+        "floor_height": 12,
         "geometryType": "Polygon"
       }
     },
@@ -1940,7 +1940,7 @@
         "footprint_perimeter": 2194,
         "updated_at": "2017-09-01T21:17:07.447Z",
         "created_at": "2017-09-01T21:16:27.579Z",
-        "height": 9,
+        "floor_height": 9,
         "geometryType": "Polygon"
       }
     },
@@ -2019,7 +2019,7 @@
         "footprint_perimeter": 432,
         "updated_at": "2017-09-01T21:17:07.453Z",
         "created_at": "2017-09-01T21:16:27.586Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2098,7 +2098,7 @@
         "footprint_perimeter": 134,
         "updated_at": "2017-09-01T21:17:07.458Z",
         "created_at": "2017-09-01T21:16:27.592Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2161,7 +2161,7 @@
         "footprint_perimeter": 758,
         "updated_at": "2017-09-01T21:17:07.535Z",
         "created_at": "2017-09-01T21:16:27.687Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2216,7 +2216,7 @@
         "footprint_perimeter": 65,
         "updated_at": "2017-09-01T21:17:07.552Z",
         "created_at": "2017-09-01T21:16:27.707Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2271,7 +2271,7 @@
         "footprint_perimeter": 288,
         "updated_at": "2017-09-01T21:17:07.557Z",
         "created_at": "2017-09-01T21:16:27.746Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2326,7 +2326,7 @@
         "footprint_perimeter": 478,
         "updated_at": "2017-09-01T21:17:07.546Z",
         "created_at": "2017-09-01T21:16:27.700Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2381,7 +2381,7 @@
         "footprint_perimeter": 286,
         "updated_at": "2017-09-01T21:17:07.563Z",
         "created_at": "2017-09-01T21:16:27.753Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2500,7 +2500,7 @@
         "footprint_perimeter": 1467,
         "updated_at": "2017-09-01T21:17:07.541Z",
         "created_at": "2017-09-01T21:16:27.693Z",
-        "height": 6,
+        "floor_height": 6,
         "geometryType": "Polygon"
       }
     },
@@ -2555,7 +2555,7 @@
         "footprint_perimeter": 97,
         "updated_at": "2017-09-01T21:17:07.568Z",
         "created_at": "2017-09-01T21:16:27.759Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },
@@ -2610,7 +2610,7 @@
         "footprint_perimeter": 96,
         "updated_at": "2017-09-01T21:17:07.596Z",
         "created_at": "2017-09-01T21:16:27.793Z",
-        "height": 3,
+        "floor_height": 3,
         "geometryType": "Polygon"
       }
     },

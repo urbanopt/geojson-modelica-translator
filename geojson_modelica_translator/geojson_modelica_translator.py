@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -30,11 +30,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
 import os
-import shutil
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.scaffold import Scaffold
 
 _log = logging.getLogger(__name__)
 
@@ -48,11 +49,7 @@ class GeoJsonModelicaTranslator(object):
         self.buildings = []
 
         # directory name member variables. These are set in the scaffold_directory method
-        self.loads_path = None
-        self.substations_path = None
-        self.plants_path = None
-        self.districts_path = None
-
+        self.scaffold = None
         self.system_parameters = None
 
     @classmethod
@@ -71,7 +68,7 @@ class GeoJsonModelicaTranslator(object):
             klass.buildings = json.buildings
             return klass
         else:
-            raise Exception(f'GeoJSON file does not exist: {filename}')
+            raise Exception(f"GeoJSON file does not exist: {filename}")
 
     def set_system_parameters(self, sys_params):
         """
@@ -81,26 +78,19 @@ class GeoJsonModelicaTranslator(object):
         """
         self.system_parameters = sys_params
 
-    def scaffold_directory(self, root_dir, overwrite=False):
+    def scaffold_directory(self, root_dir, project_name, overwrite=False):
         """
         Scaffold out the initial directory and set various helper directories
 
-        :param root_dir: string, absolute path where to save results
-        :return: bool, did the directory get scaffolded
+        :param root_dir: string, absolute path where the project will be scaffolded.
+        :param project_name: string, name of the project that is being created
+        :return: string, path to the scaffold directory
         """
-        # TODO: need to be careful with this. If we are mixing load models, then we need to not remove the entire path
-        if os.path.exists(root_dir):
-            if overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % root_dir)
-            else:
-                shutil.rmtree(root_dir)
+        self.scaffold = Scaffold(root_dir, project_name)
+        self.scaffold.create()
+        return self.scaffold.project_path
 
-        self.loads_path = ModelicaPath('Loads', root_dir=root_dir)
-        self.substations_path = ModelicaPath('Substations', root_dir=root_dir)
-        self.plants_path = ModelicaPath('Plants', root_dir=root_dir)
-        self.districts_path = ModelicaPath('Districts', root_dir=root_dir)
-
-    def to_modelica(self, project_name, save_dir, model_connector_str='TeaserConnector'):
+    def to_modelica(self, project_name, save_dir, model_connector_str="TeaserConnector"):
         """
         Convert the data in the GeoJSON to modelica based-objects
 
@@ -108,29 +98,33 @@ class GeoJsonModelicaTranslator(object):
                               {save_dir}/{project_name}
         :param model_connector_str: str, which model_connector to use
         """
-        prj_dir = f'{save_dir}/{project_name}'
-        self.scaffold_directory(prj_dir)
+        self.scaffold_directory(save_dir, project_name)
 
-        # TODO: Handle other connectors -- create map based on model_connector_str
+        # TODO: Create a map to load the required model_connectors
         import geojson_modelica_translator.model_connectors.teaser
+        import geojson_modelica_translator.model_connectors.spawn
         mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
+
         model_connector = mc_klass(self.system_parameters)
 
-        _log.info('Exporting to Modelica')
+        _log.info("Exporting to Modelica")
         for building in self.buildings:
-            _log.info(f'Adding building to model connector: {mc_klass.__class__}')
+            # print("Jing2: ", building.feature.properties["type"])
+            _log.info(f"Adding building to model connector: {mc_klass.__class__}")
 
             model_connector.add_building(building)
 
-        _log.info(f'Translating building to model {building}')
-        model_connector.to_modelica(project_name, self.loads_path.files_dir, keep_original_models=False)
+            _log.info(f"Translating building to model {building}")
+            model_connector.to_modelica(self.scaffold, keep_original_models=False)
 
         # add in Substations
+        # TODO: YL, where are the substations/ETSs?
+
         # add in Districts
         # add in Plants
 
         # now add in the top level package.
-        pp = PackageParser.new_from_template(prj_dir, project_name, ['Loads'])
+        pp = PackageParser.new_from_template(self.scaffold.project_path, project_name, ["Loads"])
         pp.save()
 
         # TODO: BuildingModelClass

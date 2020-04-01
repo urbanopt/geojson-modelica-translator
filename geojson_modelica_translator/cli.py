@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -32,14 +32,12 @@ import argparse
 import logging
 import sys
 
-
 # Work in progress
+
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description="Parser")
-    parser.set_defaults(log_level=logging.WARNING,
-                        extensions=[],
-                        command=run)
+    parser.set_defaults(log_level=logging.WARNING, extensions=[], command=run)
     opts = vars(parser.parse_args(args))
     return opts
 
@@ -51,7 +49,7 @@ def main(args):
         args ([str]): command line arguments
     """
     opts = parse_args(args)
-    opts['command'](opts)
+    opts["command"](opts)
 
 
 def run():
@@ -59,5 +57,5 @@ def run():
     main(sys.argv[1:])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv[1:])

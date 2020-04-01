@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -29,59 +29,92 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import shutil
 import unittest
+from pathlib import Path
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
-from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
 from geojson_modelica_translator.model_connectors.spawn import SpawnConnector
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
 
 
 class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):
-        prj_dir = 'tests/model_connectors/output/spawn_single'
+        root_dir, project_name = "tests/model_connectors/output", "spawn_single"
+
+        if os.path.exists(os.path.join(root_dir, project_name)):
+            shutil.rmtree(os.path.join(root_dir, project_name))
 
         # load in the example geojson with a single offie building
-        filename = os.path.abspath('tests/model_connectors/data/spawn_geojson_ex1.json')
-        gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        gj.scaffold_directory(prj_dir)  # use the GeoJson translator to scaffold out the directory
+        filename = os.path.abspath("tests/model_connectors/data/spawn_geojson_ex1.json")
+        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj.scaffold_directory(root_dir, project_name)  # use the GeoJson translator to scaffold out the directory
 
         # load system parameter data
-        filename = os.path.abspath('tests/model_connectors/data/spawn_system_params_ex1.json')
+        filename = os.path.abspath("tests/model_connectors/data/spawn_system_params_ex1.json")
         sys_params = SystemParameters(filename)
 
         # now test the spawn connector (independent of the larger geojson translator
         self.spawn = SpawnConnector(sys_params)
 
-        for b in gj.buildings:
+        for b in self.gj.buildings:
             self.spawn.add_building(b)
 
     def test_spawn_init(self):
         self.assertIsNotNone(self.spawn)
-        self.assertEqual(self.spawn.system_parameters.get_param('buildings.custom')[0]['load_model'], 'Spawn')
+        self.assertEqual(self.spawn.system_parameters.get_param("buildings.custom")[0]["load_model"], "Spawn", )
 
     def test_spawn_to_modelica(self):
-        self.spawn.to_modelica('spawn_single', 'tests/model_connectors/output')
+        self.spawn.to_modelica(self.gj.scaffold)
+
+    def test_spawn_to_modelica_and_run(self):
+        self.spawn.to_modelica(self.gj.scaffold)
+
+        # make sure the model can run using the ModelicaRunner class
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
+        )
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
+        self.assertEqual(0, exitcode)
 
 
 class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
     def setUp(self):
-        prj_dir = 'tests/model_connectors/output/spawn_two_building'
+        root_dir, project_name = "tests/model_connectors/output", "spawn_two_building"
+
+        if os.path.exists(os.path.join(root_dir, project_name)):
+            shutil.rmtree(os.path.join(root_dir, project_name))
 
         # load in the example geojson with a single offie building
-        filename = os.path.abspath('tests/model_connectors/data/spawn_geojson_ex2.json')
-        gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        gj.scaffold_directory(prj_dir)  # use the GeoJson translator to scaffold out the directory
+        filename = os.path.abspath("tests/model_connectors/data/spawn_geojson_ex2.json")
+        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj.scaffold_directory(root_dir, project_name)  # use the GeoJson translator to scaffold out the directory
 
         # load system parameter data
-        filename = os.path.abspath('tests/model_connectors/data/spawn_system_params_ex2.json')
+        filename = os.path.abspath("tests/model_connectors/data/spawn_system_params_ex2.json")
         sys_params = SystemParameters(filename)
 
         # now test the spawn connector (independent of the larger geojson translator
         self.spawn = SpawnConnector(sys_params)
 
-        for b in gj.buildings:
+        for b in self.gj.buildings:
             self.spawn.add_building(b)
 
-    def test_spawn_to_modelica(self):
-        self.spawn.to_modelica('spawn_two_building', 'tests/model_connectors/output')
+    def test_spawn_to_modelica_and_run(self):
+        self.spawn.to_modelica(self.gj.scaffold)
+
+        # make sure the model can run using the ModelicaRunner class
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'coupling.mo')
+        )
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run,  run_path=run_path)
+        self.assertEqual(0, exitcode)

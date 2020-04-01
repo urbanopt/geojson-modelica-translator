@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -28,14 +28,20 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+import itertools
 import os
 import shutil
 import unittest
-import itertools
 
-from .context import geojson_modelica_translator  # noqa - Do not remove this line
-from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
-from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
+# from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
+
+# from pathlib import Path
 
 
 class GeoJSONTranslatorTest(unittest.TestCase):
@@ -44,89 +50,187 @@ class GeoJSONTranslatorTest(unittest.TestCase):
         self.assertIsNotNone(gj)
 
     def test_from_geojson(self):
-        filename = os.path.abspath('tests/geojson/data/geojson_1.json')
+        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
         self.assertEqual(len(gj.buildings), 3)
 
     def test_missing_geojson(self):
-        fn = 'non-existent-path'
+        fn = "non-existent-path"
         with self.assertRaises(Exception) as exc:
             GeoJsonModelicaTranslator.from_geojson(fn)
-        self.assertEqual(f'GeoJSON file does not exist: {fn}', str(exc.exception))
+        self.assertEqual(f"GeoJSON file does not exist: {fn}", str(exc.exception))
 
     def test_to_modelica_defaults(self):
-        self.results_path = os.path.abspath('tests/output/geojson_1')
+        self.results_path = os.path.abspath("tests/output/geojson_1")
         if os.path.exists(self.results_path):
             shutil.rmtree(self.results_path)
 
-        filename = os.path.abspath('tests/geojson/data/geojson_1.json')
+        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
         sys_params = SystemParameters()
         gj.set_system_parameters(sys_params)
-        gj.to_modelica('geojson_1', 'tests/output')
+        gj.to_modelica("geojson_1", "tests/output")
 
         # setup what we are going to check
-        model_names = ['Floor', 'ICT', 'Meeting', 'Office', 'package', 'Restroom', 'Storage']
-        building_paths = [os.path.join(gj.loads_path.files_dir, b.dirname) for b in gj.buildings]
-        path_checks = [f'{os.path.sep.join(r)}.mo' for r in itertools.product(building_paths, model_names)]
+        model_names = [
+            "Floor",
+            "ICT",
+            "Meeting",
+            "Office",
+            "package",
+            "Restroom",
+            "Storage",
+        ]
+        building_paths = [
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
+        ]
+        path_checks = [
+            f"{os.path.sep.join(r)}.mo"
+            for r in itertools.product(building_paths, model_names)
+        ]
 
         for p in path_checks:
-            # print(p)
-            self.assertTrue(os.path.exists(p))
+            self.assertTrue(os.path.exists(p), f"Path not found {p}")
 
-        # look for resource files
-        resource_names = ['InternalGains_Floor', 'InternalGains_ICT', 'InternalGains_Meeting', 'InternalGains_Office',
-                          'InternalGains_Restroom', 'InternalGains_Storage']
-        resource_paths = [os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname) for b in gj.buildings]
-        path_checks = [f'{os.path.sep.join(r)}.mat' for r in itertools.product(resource_paths, resource_names)]
+        # go through the generated buildings and ensure that the resources are created
+        resource_names = [
+            "InternalGains_Floor",
+            "InternalGains_ICT",
+            "InternalGains_Meeting",
+            "InternalGains_Office",
+            "InternalGains_Restroom",
+            "InternalGains_Storage",
+        ]
+        for b in gj.buildings:
+            for resource_name in resource_names:
+                # TEASER 0.7.2 used .txt for schedule files
+                path = os.path.join(
+                    gj.scaffold.loads_path.files_dir,
+                    "Resources",
+                    "Data",
+                    b.dirname,
+                    f"{resource_name}.txt",
+                )
+                self.assertTrue(os.path.exists(path), f"Path not found: {path}")
 
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p))
+        # verify that the models run in JModelica -- this is broken!
+        # mr = ModelicaRunner()
+        # file_to_run = os.path.abspath(
+        #     os.path.join(gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'Office.mo')
+        # )
+        # run_path = Path(os.path.abspath(gj.scaffold.project_path)).parent
+        # exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
+        # self.assertEqual(0, exitcode)
 
     def test_to_modelica_rc_order_4(self):
-        self.results_path = os.path.abspath('tests/output/rc_order_4')
+        self.results_path = os.path.abspath("tests/output/rc_order_4")
         if os.path.exists(self.results_path):
             shutil.rmtree(self.results_path)
 
-        filename = os.path.abspath('tests/geojson/data/geojson_1.json')
+        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
         sys_params = SystemParameters.loadd(
-            {
-                "buildings": {
-                    "default": {
-                        "load_model_parameters": {
-                            "rc": {
-                                "order": 4
-                            }
-                        }
-                    }
-                }
-            }
+            {"buildings": {"default": {"load_model_parameters": {"rc": {"order": 4}}}}}
         )
         self.assertEqual(len(sys_params.validate()), 0)
         gj.set_system_parameters(sys_params)
 
-        gj.to_modelica('rc_order_4', 'tests/output')
+        gj.to_modelica("rc_order_4", "tests/output")
 
         # setup what we are going to check
-        model_names = ['Floor', 'ICT', 'Meeting', 'Office', 'package', 'Restroom', 'Storage']
-        building_paths = [os.path.join(gj.loads_path.files_dir, b.dirname) for b in gj.buildings]
-        path_checks = [f'{os.path.sep.join(r)}.mo' for r in itertools.product(building_paths, model_names)]
+        model_names = [
+            "Floor",
+            "ICT",
+            "Meeting",
+            "Office",
+            "package",
+            "Restroom",
+            "Storage",
+        ]
+        building_paths = [
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
+        ]
+        path_checks = [
+            f"{os.path.sep.join(r)}.mo"
+            for r in itertools.product(building_paths, model_names)
+        ]
 
         for p in path_checks:
-            # print(p)
-            self.assertTrue(os.path.exists(p))
+            self.assertTrue(os.path.exists(p), f"Path not found: {p}")
 
-        # look for resource files
-        resource_names = ['InternalGains_Floor', 'InternalGains_ICT', 'InternalGains_Meeting', 'InternalGains_Office',
-                          'InternalGains_Restroom', 'InternalGains_Storage']
-        resource_paths = [os.path.join(gj.loads_path.files_dir, 'Resources', 'Data', b.dirname) for b in gj.buildings]
-        path_checks = [f'{os.path.sep.join(r)}.mat' for r in itertools.product(resource_paths, resource_names)]
+        resource_names = [
+            "InternalGains_Floor",
+            "InternalGains_ICT",
+            "InternalGains_Meeting",
+            "InternalGains_Office",
+            "InternalGains_Restroom",
+            "InternalGains_Storage",
+        ]
+        for b in gj.buildings:
+            for resource_name in resource_names:
+                # TEASER 0.7.2 used .txt for schedule files
+                path = os.path.join(
+                    gj.scaffold.loads_path.files_dir,
+                    "Resources",
+                    "Data",
+                    b.dirname,
+                    f"{resource_name}.txt",
+                )
+                self.assertTrue(os.path.exists(path), f"Path not found: {path}")
 
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p))
+        # # make sure the model can run using the ModelicaRunner class
+        # mr = ModelicaRunner()
+        # file_to_run = os.path.abspath(
+        #     f'{self.results_path}/Loads/B5a6b99ec37f4de7f94020090/Office.mo'
+        # )
+        # exitcode = mr.run_in_docker(file_to_run)
+        # self.assertEqual(0, exitcode)
 
 
-if __name__ == '__main__':
+class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
+    def test_init(self):
+        gj = GeoJSONTranslatorTest()
+        self.assertIsNotNone(gj)
+
+    def test_from_geojson(self):
+        filename = os.path.abspath("tests/geojson/data/example_geojson_13buildings.json")
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
+
+        self.assertEqual(len(gj.buildings), 13)
+
+    def test_to_modelica_defaults(self):
+        self.results_path = os.path.abspath("tests/output/geojson_urbanopt")
+        if os.path.exists(self.results_path):
+            shutil.rmtree(self.results_path)
+
+        filename = os.path.abspath("tests/geojson/data/example_geojson_13buildings.json")
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        sys_params = SystemParameters()
+        gj.set_system_parameters(sys_params)
+        gj.to_modelica("geojson_urbanopt", "tests/output")
+
+        # go through the generated buildings and ensure that the resources are created
+        resource_names = [
+            "InternalGains_Floor",
+            "InternalGains_ICT",
+            "InternalGains_Meeting",
+            "InternalGains_Office",
+            "InternalGains_Restroom",
+            "InternalGains_Storage",
+        ]
+        for b in gj.buildings:
+            for resource_name in resource_names:
+                # TEASER 0.7.2 used .txt for schedule files
+                path = os.path.join(
+                    gj.scaffold.loads_path.files_dir,
+                    "Resources",
+                    "Data",
+                    b.dirname,
+                    f"{resource_name}.txt",
+                )
+                self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+
+
+if __name__ == "__main__":
     unittest.main()
