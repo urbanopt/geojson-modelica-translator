@@ -28,10 +28,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from ..context import geojson_modelica_translator  # noqa - Do not remove this line
-
-import shutil
 import os
+import shutil
 import unittest
 
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner

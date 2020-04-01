@@ -188,5 +188,49 @@ class GeoJSONTranslatorTest(unittest.TestCase):
         # self.assertEqual(0, exitcode)
 
 
+class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
+    def test_init(self):
+        gj = GeoJSONTranslatorTest()
+        self.assertIsNotNone(gj)
+
+    def test_from_geojson(self):
+        filename = os.path.abspath("tests/geojson/data/example_geojson_13buildings.json")
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
+
+        self.assertEqual(len(gj.buildings), 13)
+
+    def test_to_modelica_defaults(self):
+        self.results_path = os.path.abspath("tests/output/geojson_urbanopt")
+        if os.path.exists(self.results_path):
+            shutil.rmtree(self.results_path)
+
+        filename = os.path.abspath("tests/geojson/data/example_geojson_13buildings.json")
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        sys_params = SystemParameters()
+        gj.set_system_parameters(sys_params)
+        gj.to_modelica("geojson_urbanopt", "tests/output")
+
+        # go through the generated buildings and ensure that the resources are created
+        resource_names = [
+            "InternalGains_Floor",
+            "InternalGains_ICT",
+            "InternalGains_Meeting",
+            "InternalGains_Office",
+            "InternalGains_Restroom",
+            "InternalGains_Storage",
+        ]
+        for b in gj.buildings:
+            for resource_name in resource_names:
+                # TEASER 0.7.2 used .txt for schedule files
+                path = os.path.join(
+                    gj.scaffold.loads_path.files_dir,
+                    "Resources",
+                    "Data",
+                    b.dirname,
+                    f"{resource_name}.txt",
+                )
+                self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+
+
 if __name__ == "__main__":
     unittest.main()
