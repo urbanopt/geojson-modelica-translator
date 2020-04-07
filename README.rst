@@ -1,5 +1,5 @@
-GeoJSON / Modelica Translator
-=============================
+GeoJSON to Modelica Translator
+------------------------------
 
 .. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
     :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
@@ -14,7 +14,7 @@ Description
 The GeoJSON / Modelica Translator is a one-way trip from GeoJSON with a well-defined property's schema to a set of Modelica buildings. The project will eventually allow multiple paths to model the loads portion of the building models; however, the initial implementation uses the Teaser library to create the RC models with the appropriate coefficients.
 
 Getting Started
-***************
+---------------
 
 The GeoJSON / Modelica Translator is still in early alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is to run the following
 
@@ -46,6 +46,10 @@ To run pre-commit against the files without calling git commit, then run the fol
 .. code-block:: bash
 
     pre-commit run --all-files
+
+Releasing to PyPi
+-----------------
+
 
 Modules
 *******
@@ -145,20 +149,25 @@ There is managed task to automatically pull updated GeoJSON schemas from the `ur
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
-Templating of Connectivity
-**************************
+
+Updating Licenses
+*****************
+
+To apply the copyright/license to all the files, run the following managed task
+
+.. code-block:: bash
+
+    ./setup.py update_licenses
+
+
+Templating Diagram
+------------------
 .. image:: ./ConnectionTemplate.jpg
-
-
-Updating Copyrights
-*******************
 
 
 Todos
 -----
 
 * handle weather in Teaser
-* Create a Script directory in the modelica_path class
 * Validate remaining schema objects
 * AHU example
-* runnable example

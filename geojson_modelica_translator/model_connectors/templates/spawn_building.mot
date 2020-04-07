@@ -17,8 +17,7 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     "Scaling factor to be applied to each extensive quantity";
   parameter Integer nZon={{data['thermal_zones_count']}}
    "Number of thermal zones";
-  // The IDF and MOS file paths may need to be different for Dymola and JModelica. The below works
-  // for JModelica using Docker.
+  // TODO: Verify that the paths work in JModelica, Dymola, and in py.tests.
   parameter String idfPat=
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
     "Path of the IDF file";
