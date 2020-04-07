@@ -65,7 +65,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """'''
 
-EXCLUDE_FILES = ["__init__.py"]
+EXCLUDE_FILES = ["__init__.py", "jmodelica.py"]
 PATHS = [
     {"glob": "geojson_modelica_translator/**/*.py", "license": PYTHON_LICENSE, "REGEX": PYTHON_REGEX, },
     {"glob": "management/**/*.py", "license": PYTHON_LICENSE, "REGEX": PYTHON_REGEX},
