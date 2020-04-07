@@ -149,6 +149,17 @@ There is managed task to automatically pull updated GeoJSON schemas from the `ur
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
+
+Updating Licenses
+*****************
+
+To apply the copyright/license to all the files, run the following managed task
+
+.. code-block:: bash
+
+    ./setup.py update_licenses
+
+
 Templating Diagram
 ------------------
 .. image:: ./ConnectionTemplate.jpg
