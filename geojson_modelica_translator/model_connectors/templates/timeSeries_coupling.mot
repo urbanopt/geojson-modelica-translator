@@ -1,4 +1,4 @@
-within {{project_name}}.Loads.{{model_name}};
+ within {{project_name}}.Loads.{{model_name}};
 model timeSeries_coupling
 "Example illustrating the coupling of a time series building loads to heating and chilled water loops"
 extends Modelica.Icons.Example;
