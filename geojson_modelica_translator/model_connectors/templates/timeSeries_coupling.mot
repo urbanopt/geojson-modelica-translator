@@ -1,0 +1,128 @@
+within {{project_name}}.Loads.{{model_name}};
+model timeSeries_coupling
+"Example illustrating the coupling of a time series building loads to heating and chilled water loops"
+extends Modelica.Icons.Example;
+package MediumW = Buildings.Media.Water
+  "Source side medium";
+
+{% raw %}
+Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingTimeSeries bui(
+   filPat=
+    "modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
+   nPorts_a=2,
+   nPorts_b=2)
+   "Building"
+  annotation (Placement(transformation(extent={{20,40},{40,60}})));
+Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+   redeclare package Medium = MediumW,
+   p=300000,
+   nPorts=1)
+   "Sink for heating water"
+   annotation (Placement(transformation(
+       extent={{10,-10},{-10,10}},
+       rotation=0,
+       origin={130,80})));
+ Buildings.Fluid.Sources.Boundary_pT sinChiWat(
+   redeclare package Medium = MediumW,
+   p=300000,
+   nPorts=1)
+   "Sink for chilled water"
+   annotation (Placement(transformation(
+       extent={{10,-10},{-10,10}},
+       rotation=0,
+       origin={130,20})));
+ Modelica.Blocks.Sources.RealExpression THeaWatSup(
+   y=bui.terUniHea.T_aHeaWat_nominal)
+     "Heating water supply temperature"
+     annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
+ Modelica.Blocks.Sources.RealExpression TChiWatSup(
+   y=bui.terUniCoo.T_aChiWat_nominal)
+     "Chilled water supply temperature"
+     annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+ Fluid.Sources.Boundary_pT supHeaWat(
+   redeclare package Medium = MediumW,
+   use_T_in=true,
+   nPorts=1) "Heating water supply" annotation (Placement(transformation(
+       extent={{-10,-10},{10,10}},
+       rotation=0,
+       origin={-50,80})));
+ Fluid.Sources.Boundary_pT supChiWat(
+   redeclare package Medium = MediumW,
+   use_T_in=true,
+   nPorts=1) "Chilled water supply" annotation (Placement(transformation(
+       extent={{-10,-10},{10,10}},
+       rotation=0,
+       origin={-50,20})));
+{% endraw %}
+
+equation
+{% raw %}
+  connect(bui.ports_b[1],sinHeaWat. ports[1]) annotation (Line(
+    points={{80,-50},{104,-50},{104,20},{124,20}},
+    color={0,127,255}));
+  connect(bui.ports_b[2],sinChiWat. ports[1]) annotation (Line(
+    points={{80,-46},{104,-46},{104,-40},{124,-40}},
+    color={0,127,255}));
+  connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(
+    points={{-52,24},{-70,24},{-70,20},{-89,20}},
+    color={0,0,127}));
+  connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(
+    points={{-30,20},{-10,20},{-10,-50},{20,-50}},
+    color={0,127,255}));
+  connect(TChiWatSup.y,supChiWat. T_in) annotation (Line(
+    points={{-89,-40},{-70,-40},{-70,-36},{-52,-36}},
+    color={0,0,127}));
+  connect(supChiWat.ports[1], bui.ports_a[2]) annotation (Line(
+    points={{-30,-40},{-10,-40},{-10,-46},{20,-46}},
+    color={0,127,255}));
+{% endraw %}
+
+  // TODO: determine how to handle the "lines"
+{% raw %}
+annotation (Diagram(
+      coordinateSystem(preserveAspectRatio=false,
+                       extent={{-140,-40},{160,140}})),
+{% endraw %}
+        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/CouplingTimeSeries.mos"
+{% raw %}
+         "Simulate and plot"),
+        experiment(
+            StopTime=604800,
+            Tolerance=1e-06),
+  Documentation(info=
+"<html>
+<p>
+This example illustrates the use of
+<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding\">
+Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding</a>,
+<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+and
+<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution\">
+Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution</a>
+in a configuration with:
+</p>
+<ul>
+<li>
+space heating and cooling loads provided as time series,
+</li>
+<li>
+secondary pumps.
+</li>
+</ul>
+</html>",
+revisions=
+"<html>
+<ul>
+<li>
+April 8, 2020, by Nicholas Long:<br/>
+GeoJson-Modelica translator template first implementation.
+</li>
+<li>
+February 21, 2020, by Antoine Gautier:<br/>
+Model first implementation.
+</li>
+</ul>
+</html>"));
+{% endraw %}
+end coupling;
