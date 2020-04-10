@@ -36,16 +36,37 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 )
 
 
-class GeoJSONTest(unittest.TestCase):
+class SystemParametersTest(unittest.TestCase):
+    def setUp(self):
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+
+    def test_expanded_paths(self):
+        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        sdp = SystemParameters(filename)
+        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
+        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model.idf'))
+        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
+        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_weather.mos'))
+        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
+        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_weather.epw'))
+
+        # verify that the second spawn paths resolve too.
+        value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
+        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model_2.idf'))
+        print(f"the value is {value}")
+
     def test_load_system_parameters_1(self):
-        filename = os.path.abspath("tests/system_parameters/data/system_params_1.json")
+        filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
         self.assertEqual(
             sdp.data["buildings"]["default"]["load_model_parameters"]["rc"]["order"], 2
         )
 
     def test_load_system_parameters_2(self):
-        filename = os.path.abspath("tests/system_parameters/data/system_params_2.json")
+        filename = os.path.join(self.data_dir, 'system_params_2.json')
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
@@ -114,12 +135,8 @@ class GeoJSONTest(unittest.TestCase):
         self.assertEqual(value, 2)
 
     def test_get_param_with_building_id(self):
-        filename = os.path.abspath("tests/system_parameters/data/system_params_1.json")
+        filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
 
         value = sdp.get_param_by_building_id("abcd1234", "ets.system")
         self.assertEqual(value, "Booster Heater")
-
-
-if __name__ == "__main__":
-    unittest.main()

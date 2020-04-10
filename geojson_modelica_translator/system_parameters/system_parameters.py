@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import json
 import os
 
+from jsonpath_ng.ext import parse
 from jsonschema.validators import _LATEST_VERSION as LatestValidator
 
 
@@ -38,6 +39,12 @@ class SystemParameters(object):
     """
     Object to hold the system parameter data (and schema).
     """
+
+    PATH_ELEMENTS = [
+        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
+        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
+        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
+    ]
 
     def __init__(self, filename=None):
         """
@@ -48,18 +55,19 @@ class SystemParameters(object):
         # load the schema for validation
         self.schema = json.load(open(os.path.join(os.path.dirname(__file__), "schema.json"), "r"))
         self.data = {}
+        self.filename = filename
 
-        if filename:
-            if os.path.exists(filename):
-                self.data = json.load(open(filename, "r"))
+        if self.filename:
+            if os.path.exists(self.filename):
+                self.data = json.load(open(self.filename, "r"))
             else:
-                raise Exception(
-                    f"System design parameters file does not exist: {filename}"
-                )
+                raise Exception(f"System design parameters file does not exist: {self.filename}")
 
             errors = self.validate()
             if len(errors) != 0:
                 raise Exception(f"Invalid system parameter file. Errors: {errors}")
+
+            self.resolve_paths()
 
     @classmethod
     def loadd(cls, d, validate_on_load=True):
@@ -79,9 +87,24 @@ class SystemParameters(object):
 
         return sp
 
+    def resolve_paths(self):
+        """Resolve the paths in the file to be absolute if they were defined as relative. This method uses
+        the JSONPath (with ext) to find if the value exists in the self.data object. If so, it then uses
+        the set_param which navigates the JSON tree to set the value as needed."""
+        filepath = os.path.abspath(os.path.dirname(self.filename))
+
+        for pe in self.PATH_ELEMENTS:
+            matches = parse(pe["jsonpath"]).find(self.data)
+            for index, match in enumerate(matches):
+                # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
+                new_path = os.path.join(filepath, match.value)
+                parse(str(match.full_path)).update(self.data, new_path)
+
     def get_param(self, path, data=None, default=None):
         """
         return the parameter(s) from the path. This is a recursive function.
+
+        TODO: Replace the path string with JSONPath as we expect to only read these values
 
         :param path: string, period delimeted path of the data to retrieve
         :param data: dict, (optional) the data to parse

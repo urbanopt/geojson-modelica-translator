@@ -1,7 +1,7 @@
 {
 	"buildings": {
 		"default": {
-			"load_model": "ROM/RC",
+			"load_model": "Spawn",
 			"load_model_parameters": {
 				"rc": {
 					"order": 2
@@ -19,6 +19,34 @@
 			{
 				"geojson_id": "defgh2345",
 				"load_model": "ROM/RC"
+			},
+			{
+				"geojson_id": "ijk678",
+				"load_model": "Spawn",
+				"load_model_parameters": {
+					"spawn": {
+						"idf_filename": "example_model.idf",
+						"mos_weather_filename": "example_weather.mos",
+						"epw_filename": "example_weather.epw",
+						"thermal_zone_names": [
+							"Not Real Zones"
+						]
+					}
+				}
+			},
+			{
+				"geojson_id": "lmn000",
+				"load_model": "Spawn",
+				"load_model_parameters": {
+					"spawn": {
+						"idf_filename": "example_model_2.idf",
+						"mos_weather_filename": "example_weather_2.mos",
+						"epw_filename": "example_weather_2.epw",
+						"thermal_zone_names": [
+							"Not Real Zones"
+						]
+					}
+				}
 			}
 		]
 	},
