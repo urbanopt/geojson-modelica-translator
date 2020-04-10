@@ -8,11 +8,11 @@ package MediumW = Buildings.Media.Water
 {% raw %}
 Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingTimeSeries bui(
    filPat=
-    "modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}//{{data['timSer']['filename']}",
    nPorts_a=2,
    nPorts_b=2)
    "Building"
-  annotation (Placement(transformation(extent={{20,40},{40,60}})));
+   annotation (Placement(transformation(extent={{20,40},{40,60}})));
 Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
    redeclare package Medium = MediumW,
    p=300000,
@@ -34,22 +34,24 @@ Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
  Modelica.Blocks.Sources.RealExpression THeaWatSup(
    y=bui.terUniHea.T_aHeaWat_nominal)
      "Heating water supply temperature"
-     annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
+   annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
  Modelica.Blocks.Sources.RealExpression TChiWatSup(
    y=bui.terUniCoo.T_aChiWat_nominal)
      "Chilled water supply temperature"
-     annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+   annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
  Fluid.Sources.Boundary_pT supHeaWat(
    redeclare package Medium = MediumW,
    use_T_in=true,
-   nPorts=1) "Heating water supply" annotation (Placement(transformation(
+   nPorts=1) "Heating water supply"
+   annotation (Placement(transformation(
        extent={{-10,-10},{10,10}},
        rotation=0,
        origin={-50,80})));
  Fluid.Sources.Boundary_pT supChiWat(
    redeclare package Medium = MediumW,
    use_T_in=true,
-   nPorts=1) "Chilled water supply" annotation (Placement(transformation(
+   nPorts=1) "Chilled water supply"
+   annotation (Placement(transformation(
        extent={{-10,-10},{10,10}},
        rotation=0,
        origin={-50,20})));
@@ -83,13 +85,13 @@ annotation (Diagram(
       coordinateSystem(preserveAspectRatio=false,
                        extent={{-140,-40},{160,140}})),
 {% endraw %}
-        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/CouplingTimeSeries.mos"
+        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RuntimeSeriesBuilding.mos"
 {% raw %}
          "Simulate and plot"),
         experiment(
             StopTime=604800,
             Tolerance=1e-06),
-  Documentation(info=
+Documentation(info=
 "<html>
 <p>
 This example illustrates the use of

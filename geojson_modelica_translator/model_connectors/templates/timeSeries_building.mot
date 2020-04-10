@@ -15,9 +15,9 @@ model BuildingTimeSeries
    "Load side medium";
 
   parameter String filPat=
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}//{{data['mos']['filename']}"
-//"modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos
-     "Library path of the file with thermal loads as time series";
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}//{{data['timSer']['filename']}"
+  //"modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos"
+    "Library path of the file with thermal loads as time series";
   parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
     min=273.15, displayUnit="degC") = 273.15 + 40
     "Heating water inlet temperature at nominal conditions"

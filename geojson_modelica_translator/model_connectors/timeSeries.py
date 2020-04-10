@@ -56,9 +56,11 @@ class timeSeriesConnector(model_connector_base):
 
         :param urbanopt_building: an urbanopt_building
         """
+# do we still need this part ( line 64 to 77) at csv building load file?
 
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
+
         if mapper is None:
             number_stories = urbanopt_building.feature.properties["number_of_stories"]
             number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
@@ -102,7 +104,7 @@ class timeSeriesConnector(model_connector_base):
                     building["building_id"], "load_model_parameters.timeSeries.filPat"
                 )
 
-                # construct th dict to pass into the template
+                # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
                     "timSer": {
