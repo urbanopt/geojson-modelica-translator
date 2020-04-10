@@ -58,7 +58,8 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
         # load in the example geojson with a single offie building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        self.gj.scaffold_directory(self.output_dir, project_name)  # use the GeoJson translator to scaffold out the directory
+        # use the GeoJson translator to scaffold out the directory
+        self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "spawn_system_params_ex1.json")
@@ -104,7 +105,8 @@ class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
         # load in the example geojson with a single offie building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex2.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        self.gj.scaffold_directory(self.output_dir, project_name)  # use the GeoJson translator to scaffold out the directory
+        # use the GeoJson translator to scaffold out the directory
+        self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "spawn_system_params_ex2.json")

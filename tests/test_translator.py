@@ -206,6 +206,27 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
         gj.set_system_parameters(sys_params)
         gj.to_modelica("example_geojson_13buildings", self.output_dir)
 
+        # setup what we are going to check
+        model_names = [
+            "Floor",
+            "ICT",
+            "Meeting",
+            "Office",
+            "package",
+            "Restroom",
+            "Storage",
+        ]
+        building_paths = [
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
+        ]
+        path_checks = [
+            f"{os.path.sep.join(r)}.mo"
+            for r in itertools.product(building_paths, model_names)
+        ]
+
+        for p in path_checks:
+            self.assertTrue(os.path.exists(p), f"Path not found: {p}")
+
         # go through the generated buildings and ensure that the resources are created
         resource_names = [
             "InternalGains_Floor",
@@ -215,9 +236,10 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
             "InternalGains_Restroom",
             "InternalGains_Storage",
         ]
+
         for b in gj.buildings:
             for resource_name in resource_names:
                 # TEASER 0.7.2 used .txt for schedule files
                 path = os.path.join(gj.scaffold.loads_path.files_dir, "Resources", "Data",
-                                    f"{resource_name}.txt")
+                                    b.dirname, f"{resource_name}.txt")
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
