@@ -47,6 +47,15 @@ To run pre-commit against the files without calling git commit, then run the fol
 
     pre-commit run --all-files
 
+Running unittests
+---------------
+command line:
+    (1) stay in the root folder: geojson-modelica-translator/
+    (2) command line for all the test cases are: python3 -m unittest tests/test_translator.py
+    (3) command line for specific test case are: py.test tests/model_connectors/test_spawn.py::SpawnModelConnectorTwoBuildingTest::test_spawn_to_modelica_and_run
+
+
+
 Releasing to PyPi
 -----------------
 
