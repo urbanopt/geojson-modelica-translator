@@ -1,20 +1,28 @@
 {
   "buildings": {
+    "default": {
+      "load_model": "ROM/RC",
+      "load_model_parameters": {
+        "rc": {
+          "order": 2
+        }
+      }
+    },
     "custom": [
       {
+        "geojson_id": "abcd1234",
         "ets": {
-          "description": "User input on describing the ETS",
-          "system": "Booster Heater"
-        },
-        "geojson_id": "abcd1234"
+          "system": "Booster Heater",
+          "description": "User input on describing the ETS"
+        }
       },
       {
         "geojson_id": "defgh2345",
         "load_model": "Spawn",
         "load_model_parameters": {
           "spawn": {
-            "epw_filename": "path to a file",
             "idf_filename": "path to a file",
+            "epw_filename": "path to a file",
             "mos_weather_filename": "path to a file",
             "thermal_zone_names": [
               "zone a",
@@ -23,15 +31,7 @@
           }
         }
       }
-    ],
-    "default": {
-      "load_model": "ROM/RC",
-      "load_model_parameters": {
-        "rc": {
-          "order": 2
-        }
-      }
-    }
+    ]
   },
   "connectors": {
     "default": {

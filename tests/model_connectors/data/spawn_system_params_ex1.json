@@ -1,13 +1,16 @@
 {
   "buildings": {
+    "default": {
+      "load_model": "ROM/RC"
+    },
     "custom": [
       {
         "geojson_id": "5a6b99ec37f4de7f94020090",
         "load_model": "Spawn",
         "load_model_parameters": {
           "spawn": {
-            "epw_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
             "idf_filename": "RefBldgSmallOfficeNew2004_Chicago.idf",
+            "epw_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
             "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
             "thermal_zone_names": [
               "Attic",
@@ -20,9 +23,6 @@
           }
         }
       }
-    ],
-    "default": {
-      "load_model": "ROM/RC"
-    }
+    ]
   }
 }
