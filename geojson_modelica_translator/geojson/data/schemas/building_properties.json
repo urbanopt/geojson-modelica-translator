@@ -1,209 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/building_properties.json#",
-  "title": "Building object",
-  "description": "Schema for a Building object",
-  "type": "object",
-  "properties": {
-    "id": {
-      "description": "Unique id used to refer to this feature within this dataset.",
-      "type": "string"
-    },
-    "project_id": {
-      "description": "Project which this feature belongs to.",
-      "type": "string"
-    },
-    "type": {
-      "description": "Type of feature.",
-      "type": "string",
-      "enum": [
-        "Building"
-      ]
-    },
-    "source_name": {
-      "description": "Name of the original data source.",
-      "type": "string"
-    },
-    "source_id": {
-      "description": "Id of the feature in original data source.",
-      "type": "string"
-    },
-    "name": {
-      "description": "Feature name.",
-      "type": "string"
-    },
-    "legal_name": {
-      "description": "Legal name used to identify this feature.",
-      "type": "string"
-    },
-    "address": {
-      "description": "Street address.",
-      "type": "string"
-    },
-    "building_status": {
-      "description": "Building status.",
-      "type": "string",
-      "enum": [
-        "Proposed",
-        "Existing"
-      ]
-    },
-    "detailed_model_filename": {
-      "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
-      "type": "string"
-    },
-    "weather_filename": {
-      "description": "Name of EPW weather file for this building.  Defaults to site's weather_filename.",
-      "type": "string"
-    },
-    "tariff_filename": {
-      "description": "Name of the tariff file for this building.  Defaults to site's tariff_filename. ",
-      "type": "string"
-    },
-    "surface_elevation": {
-      "description": "The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.",
-      "type": "number"
-    },
-    "floor_area": {
-      "description": "Usable floor area (ft^2).",
-      "type": "number"
-    },
-    "number_of_stories": {
-      "description": "The maximum number of building stories, sum of number of above and below ground stories.",
-      "type": "integer"
-    },
-    "number_of_stories_above_ground": {
-      "description": "The number of building stories above ground. Defaults to number_of_stories.",
-      "type": "integer"
-    },
-    "maximum_roof_height": {
-      "description": "Maximum height of the roof relative to surface elevation (ft)",
-      "type": "number"
-    },
-    "roof_type": {
-      "description": "The basic roof geometry. Defaults to flat.",
-      "type": "string",
-      "enum": [
-        "Flat",
-        "Gable",
-        "Hip"
-      ]
-    },
-    "footprint_area": {
-      "description": "Area of the footprint (ft^2).  Calculated on export.",
-      "type": "number"
-    },
-    "footprint_perimeter": {
-      "description": "Perimeter of the footprint (ft). Calculated on export.",
-      "type": "number"
-    },
-    "year_built": {
-      "description": "The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year. ",
-      "type": "integer"
-    },
-    "template": {
-      "$ref": "#/definitions/templateType"
-    },
-    "building_type": {
-      "$ref": "#/definitions/buildingType"
-    },
-    "system_type": {
-      "$ref": "#/definitions/systemType"
-    },
-    "weekday_start_time": {
-      "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
-      "type": "string"
-    },
-    "weekday_duration": {
-      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
-      "type": "string"
-    },
-    "weekend_start_time": {
-      "description": "Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
-      "type": "string"
-    },
-    "weekend_duration": {
-      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
-      "type": "string"
-    },
-    "mixed_type_1": {
-      "$ref": "#/definitions/buildingType"
-    },
-    "mixed_type_1_percentage": {
-      "description": "Percentage of 1st mixed building space type. Only used when building_type is Mixed use.",
-      "type": "number",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "mixed_type_2": {
-      "$ref": "#/definitions/buildingType"
-    },
-    "mixed_type_2_percentage": {
-      "description": "Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.",
-      "type": "number",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "mixed_type_3": {
-      "$ref": "#/definitions/buildingType"
-    },
-    "mixed_type_3_percentage": {
-      "description": "Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.",
-      "type": "number",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "mixed_type_4": {
-      "$ref": "#/definitions/buildingType"
-    },
-    "mixed_type_4_percentage": {
-      "description": "Percentage of 4th mixed building space type. Only used when building_type is Mixed use.",
-      "type": "number",
-      "minimum": 0,
-      "maximum": 100
-    },
-    "number_of_residential_units": {
-      "description": "Total number of residential units in the building. Required for residential buildings or mixed-use buildings with residential use types.",
-      "type": "integer"
-    },
-    "exterior_lighting_zone": {
-      "description": "Choice of exterior lighting zone.",
-      "type": "string",
-      "enum": [
-        "0 - Undeveloped Areas Parks",
-        "1 - Developed Areas Parks",
-        "2 - Neighborhood",
-        "3 - All Other Areas",
-        "4 - High Activity"
-      ]
-    },
-    "onsite_parking_fraction": {
-      "description": "Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.",
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1
-    },
-    "power_factor": {
-      "description": "Ratio of the real power used by building to the apparent power seen by grid.",
-      "type": "number",
-      "minimum": 0
-    },
-    "user_data": {
-      "description": "Arbitrary user data"
-    }
-  },
-  "required": [
-    "type",
-    "floor_area",
-    "number_of_stories",
-    "building_type",
-    "system_type"
-  ],
   "additionalProperties": false,
   "definitions": {
     "buildingType": {
       "description": "Primary building space type.",
-      "type": "string",
       "enum": [
         "Single-Family",
         "Multifamily (2 to 4 units)",
@@ -231,11 +31,11 @@
         "Mixed use",
         "Uncovered Parking",
         "Covered Parking"
-      ]
+      ],
+      "type": "string"
     },
     "systemType": {
       "description": "Building HVAC system type. Should this be part of a mixed type struct?",
-      "type": "string",
       "enum": [
         "Ideal Air Loads",
         "PTAC with hot water heat",
@@ -316,11 +116,11 @@
         "Forced air furnace direct evap cooler",
         "Residential AC with no heat",
         "Residential AC with electric baseboard heat"
-      ]
+      ],
+      "type": "string"
     },
     "templateType": {
       "description": "Standard template applied to building.",
-      "type": "string",
       "enum": [
         "DOE Ref Pre-1980",
         "DOE Ref 1980-2004",
@@ -350,7 +150,207 @@
         "DEER 2065",
         "DEER 2070",
         "DEER 2075"
-      ]
+      ],
+      "type": "string"
     }
-  }
+  },
+  "description": "Schema for a Building object",
+  "id": "http://json-schema.org/openstudio-urban-modeling/building_properties.json#",
+  "properties": {
+    "address": {
+      "description": "Street address.",
+      "type": "string"
+    },
+    "building_status": {
+      "description": "Building status.",
+      "enum": [
+        "Proposed",
+        "Existing"
+      ],
+      "type": "string"
+    },
+    "building_type": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "detailed_model_filename": {
+      "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
+      "type": "string"
+    },
+    "exterior_lighting_zone": {
+      "description": "Choice of exterior lighting zone.",
+      "enum": [
+        "0 - Undeveloped Areas Parks",
+        "1 - Developed Areas Parks",
+        "2 - Neighborhood",
+        "3 - All Other Areas",
+        "4 - High Activity"
+      ],
+      "type": "string"
+    },
+    "floor_area": {
+      "description": "Usable floor area (ft^2).",
+      "type": "number"
+    },
+    "footprint_area": {
+      "description": "Area of the footprint (ft^2).  Calculated on export.",
+      "type": "number"
+    },
+    "footprint_perimeter": {
+      "description": "Perimeter of the footprint (ft). Calculated on export.",
+      "type": "number"
+    },
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "legal_name": {
+      "description": "Legal name used to identify this feature.",
+      "type": "string"
+    },
+    "maximum_roof_height": {
+      "description": "Maximum height of the roof relative to surface elevation (ft)",
+      "type": "number"
+    },
+    "mixed_type_1": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_1_percentage": {
+      "description": "Percentage of 1st mixed building space type. Only used when building_type is Mixed use.",
+      "maximum": 100,
+      "minimum": 0,
+      "type": "number"
+    },
+    "mixed_type_2": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_2_percentage": {
+      "description": "Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.",
+      "maximum": 100,
+      "minimum": 0,
+      "type": "number"
+    },
+    "mixed_type_3": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_3_percentage": {
+      "description": "Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.",
+      "maximum": 100,
+      "minimum": 0,
+      "type": "number"
+    },
+    "mixed_type_4": {
+      "$ref": "#/definitions/buildingType"
+    },
+    "mixed_type_4_percentage": {
+      "description": "Percentage of 4th mixed building space type. Only used when building_type is Mixed use.",
+      "maximum": 100,
+      "minimum": 0,
+      "type": "number"
+    },
+    "name": {
+      "description": "Feature name.",
+      "type": "string"
+    },
+    "number_of_residential_units": {
+      "description": "Total number of residential units in the building. Required for residential buildings or mixed-use buildings with residential use types.",
+      "type": "integer"
+    },
+    "number_of_stories": {
+      "description": "The maximum number of building stories, sum of number of above and below ground stories.",
+      "type": "integer"
+    },
+    "number_of_stories_above_ground": {
+      "description": "The number of building stories above ground. Defaults to number_of_stories.",
+      "type": "integer"
+    },
+    "onsite_parking_fraction": {
+      "description": "Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.",
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "power_factor": {
+      "description": "Ratio of the real power used by building to the apparent power seen by grid.",
+      "minimum": 0,
+      "type": "number"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "roof_type": {
+      "description": "The basic roof geometry. Defaults to flat.",
+      "enum": [
+        "Flat",
+        "Gable",
+        "Hip"
+      ],
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "surface_elevation": {
+      "description": "The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.",
+      "type": "number"
+    },
+    "system_type": {
+      "$ref": "#/definitions/systemType"
+    },
+    "tariff_filename": {
+      "description": "Name of the tariff file for this building.  Defaults to site's tariff_filename. ",
+      "type": "string"
+    },
+    "template": {
+      "$ref": "#/definitions/templateType"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "enum": [
+        "Building"
+      ],
+      "type": "string"
+    },
+    "user_data": {
+      "description": "Arbitrary user data"
+    },
+    "weather_filename": {
+      "description": "Name of EPW weather file for this building.  Defaults to site's weather_filename.",
+      "type": "string"
+    },
+    "weekday_duration": {
+      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
+      "type": "string"
+    },
+    "weekday_start_time": {
+      "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
+      "type": "string"
+    },
+    "weekend_duration": {
+      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
+      "type": "string"
+    },
+    "weekend_start_time": {
+      "description": "Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
+      "type": "string"
+    },
+    "year_built": {
+      "description": "The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year. ",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "type",
+    "floor_area",
+    "number_of_stories",
+    "building_type",
+    "system_type"
+  ],
+  "title": "Building object",
+  "type": "object"
 }

@@ -1,65 +1,90 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "Properties of a District System object",
+  "additionalProperties": false,
+  "definitions": {
+    "FlowDirection": {
+      "enum": [
+        "Supply",
+        "Return"
+      ],
+      "type": "string"
+    },
+    "TemperatureType": {
+      "enum": [
+        "Hot",
+        "Cold",
+        "Ambient"
+      ],
+      "type": "string"
+    },
+    "ThermalConnectorType": {
+      "enum": [
+        "OnePipe",
+        "TwoPipe",
+        "ThreePipe",
+        "FourPipe"
+      ],
+      "type": "string"
+    }
+  },
   "description": "Schema for a District System object",
-  "type": "object",
+  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
   "properties": {
+    "connector_type": {
+      "$ref": "#/definitions/ThermalConnectorType"
+    },
+    "end_junction_id": {
+      "type": "string"
+    },
+    "flow_direction": {
+      "$ref": "#/definitions/FlowDirection",
+      "description": "Charcterization of connector, relative to the central plant"
+    },
+    "fluid_temperature_type": {
+      "$ref": "#/definitions/TemperatureType",
+      "description": "Classification of temperature range of fluid in this connector"
+    },
     "id": {
       "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "lengths": {
+      "description": "Length of each segment in ft, generated on export.",
+      "items": {
+        "type": "number"
+      },
+      "type": "array"
+    },
+    "name": {
+      "description": "Feature name",
       "type": "string"
     },
     "project_id": {
       "description": "Project which this feature belongs to.",
       "type": "string"
     },
-    "type": {
-      "description": "Type of feature.",
-      "type": "string",
-      "enum": [
-        "ThermalConnector"
-      ]
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
     },
     "source_name": {
       "description": "Name of the original data source.",
       "type": "string"
     },
-    "source_id": {
-      "description": "Id of the feature in original data source.",
+    "start_junction_id": {
+      "description": "Id of the junction that this connector starts at.",
       "type": "string"
-    },
-    "name": {
-      "description": "Feature name",
-      "type": "string"
-    },
-    "connector_type": {
-      "$ref": "#/definitions/ThermalConnectorType"
-    },
-    "lengths": {
-      "description": "Length of each segment in ft, generated on export.",
-      "type": "array",
-      "items": {
-        "type": "number"
-      }
     },
     "total_length": {
       "description": "Total length of the connector in ft, generated on export.",
       "type": "number"
     },
-    "start_junction_id": {
-      "description": "Id of the junction that this connector starts at.",
+    "type": {
+      "description": "Type of feature.",
+      "enum": [
+        "ThermalConnector"
+      ],
       "type": "string"
-    },
-    "end_junction_id": {
-      "type": "string"
-    },
-    "fluid_temperature_type": {
-      "description": "Classification of temperature range of fluid in this connector",
-      "$ref": "#/definitions/TemperatureType"
-    },
-    "flow_direction": {
-      "description": "Charcterization of connector, relative to the central plant",
-      "$ref": "#/definitions/FlowDirection"
     },
     "user_data": {
       "description": "Arbitrary user data"
@@ -73,31 +98,6 @@
     "fluid_temperature_type",
     "flow_direction"
   ],
-  "additionalProperties": false,
-  "definitions": {
-    "ThermalConnectorType": {
-      "type": "string",
-      "enum": [
-        "OnePipe",
-        "TwoPipe",
-        "ThreePipe",
-        "FourPipe"
-      ]
-    },
-    "TemperatureType": {
-      "type": "string",
-      "enum": [
-        "Hot",
-        "Cold",
-        "Ambient"
-      ]
-    },
-    "FlowDirection": {
-      "type": "string",
-      "enum": [
-        "Supply",
-        "Return"
-      ]
-    }
-  }
+  "title": "Properties of a District System object",
+  "type": "object"
 }

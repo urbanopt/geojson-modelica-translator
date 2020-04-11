@@ -1,53 +1,69 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "Properties of a District System object",
+  "additionalProperties": false,
+  "definitions": {
+    "ThermalJunctionConnectionType": {
+      "enum": [
+        "Series",
+        "Parallel"
+      ],
+      "type": "string"
+    },
+    "ThermalJunctionType": {
+      "enum": [
+        "DES",
+        "ETS",
+        "Valve"
+      ],
+      "type": "string"
+    }
+  },
   "description": "Schema for a District System object",
-  "type": "object",
+  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
   "properties": {
+    "building_id": {
+      "type": "string"
+    },
+    "connection_type": {
+      "$ref": "#/definitions/ThermalJunctionConnectionType",
+      "description": "Characterize the connection as series or parallel"
+    },
+    "connector_type": {
+      "$ref": "#/definitions/ThermalJunctionType"
+    },
+    "district_system_id": {
+      "type": "string"
+    },
     "id": {
       "description": "Unique id used to refer to this feature within this dataset.",
-      "type": "string"
-    },
-    "project_id": {
-      "description": "Project which this feature belongs to.",
-      "type": "string"
-    },
-    "type": {
-      "description": "Type of feature.",
-      "type": "string",
-      "enum": [
-        "ThermalJunction"
-      ]
-    },
-    "source_name": {
-      "description": "Name of the original data source.",
-      "type": "string"
-    },
-    "source_id": {
-      "description": "Id of the feature in original data source.",
       "type": "string"
     },
     "name": {
       "description": "Feature name",
       "type": "string"
     },
-    "connector_type": {
-      "$ref": "#/definitions/ThermalJunctionType"
-    },
-    "building_id": {
-      "type": "string"
-    },
-    "district_system_id": {
+    "project_id": {
+      "description": "Project which this feature belongs to.",
       "type": "string"
     },
     "pump_presence": {
       "description": "Presence of pump: true if present, false if absent",
       "type": "boolean"
     },
-    "connection_type": {
-      "description": "Characterize the connection as series or parallel",
-      "$ref": "#/definitions/ThermalJunctionConnectionType"
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "enum": [
+        "ThermalJunction"
+      ],
+      "type": "string"
     },
     "user_data": {
       "description": "Arbitrary user data"
@@ -58,22 +74,6 @@
     "connector_type",
     "connection_type"
   ],
-  "additionalProperties": false,
-  "definitions": {
-    "ThermalJunctionType": {
-      "type": "string",
-      "enum": [
-        "DES",
-        "ETS",
-        "Valve"
-      ]
-    },
-    "ThermalJunctionConnectionType": {
-      "type": "string",
-      "enum": [
-        "Series",
-        "Parallel"
-      ]
-    }
-  }
+  "title": "Properties of a District System object",
+  "type": "object"
 }

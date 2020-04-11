@@ -1,200 +1,200 @@
 {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -105.18596629732914,
-              39.79767675062061
-            ],
-            [
-              -105.18596629732914,
-              39.7973830919949
-            ],
-            [
-              -105.18539945823584,
-              39.7973830919949
-            ],
-            [
-              -105.18539945823584,
-              39.79767675062061
-            ],
-            [
-              -105.18596629732914,
-              39.79767675062061
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "5a6b99ec37f4de7f94020090",
-        "type": "Building",
-        "geometryType": "Rectangle",
-        "name": "Medium Office",
-        "footprint_area": 17059,
-        "footprint_perimeter": 533,
-        "project_id": "5a6b8adf37f4de7f94020084",
-        "updated_at": "2018-01-31T20:36:55.936Z",
-        "created_at": "2018-01-26T21:13:16.655Z",
-        "building_type": "Office",
-        "number_of_stories": 3,
-        "floor_height": 9,
-        "number_of_stories_above_ground": 3,
-        "building_status": "Proposed",
-        "include_in_energy_analysis": true,
-        "floor_area": 51177,
-        "year_built": 2010
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -105.1844704687876,
-              39.797675548713926
-            ],
-            [
-              -105.1844704687876,
-              39.79730546858204
-            ],
-            [
-              -105.18511822226465,
-              39.79730546858204
-            ],
-            [
-              -105.18511822226465,
-              39.797675548713926
-            ],
-            [
-              -105.1844704687876,
-              39.797675548713926
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "5a72287837f4de77124f946a",
-        "type": "Building",
-        "geometryType": "Rectangle",
-        "name": "Retail",
-        "footprint_area": 24567,
-        "footprint_perimeter": 634,
-        "project_id": "5a6b8adf37f4de7f94020084",
-        "updated_at": "2018-01-31T20:43:46.815Z",
-        "created_at": "2018-01-31T20:35:04.192Z",
-        "building_type": "Retail other than mall",
-        "number_of_stories": 1,
-        "floor_height": 3,
-        "number_of_stories_above_ground": 1,
-        "floor_area": 24567,
-        "building_status": "Proposed",
-        "include_in_energy_analysis": true,
-        "year_built": 2010
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -105.18500070571815,
-              39.79690662647485
-            ],
-            [
-              -105.18534775500846,
-              39.79690662647485
-            ],
-            [
-              -105.18534775500846,
-              39.797148760221035
-            ],
-            [
-              -105.18500070571815,
-              39.797148760221035
-            ],
-            [
-              -105.18500070571815,
-              39.79690662647485
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "5a7229e737f4de77124f946d",
-        "type": "Building",
-        "geometryType": "Rectangle",
-        "name": "Multi-Family",
-        "footprint_area": 8612,
-        "footprint_perimeter": 372,
-        "project_id": "5a6b8adf37f4de7f94020084",
-        "updated_at": "2018-01-31T20:42:06.981Z",
-        "created_at": "2018-01-31T20:41:11.756Z",
-        "number_of_stories": 4,
-        "floor_height": 12,
-        "floor_area": 34448,
-        "number_of_stories_above_ground": 4,
-        "building_status": "Proposed",
-        "include_in_energy_analysis": true,
-        "year_built": 2010,
-        "building_type": "Multifamily (5 or more units)"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -105.18449640851381,
-              39.79689938151071
-            ],
-            [
-              -105.18449640851381,
-              39.796789161361716
-            ],
-            [
-              -105.18434088230042,
-              39.796789161361716
-            ],
-            [
-              -105.18434088230042,
-              39.79689938151071
-            ],
-            [
-              -105.18449640851381,
-              39.79689938151071
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "5a775f4337f4de1d8bcef255",
-        "type": "District System",
-        "geometryType": "Rectangle",
-        "name": "New District System",
-        "footprint_area": 1757,
-        "footprint_perimeter": 168,
-        "project_id": "5a6b8adf37f4de7f94020084",
-        "updated_at": "2018-02-12T20:08:45.759Z",
-        "created_at": "2018-02-04T19:30:11.649Z",
-        "district_system_type": "Central Chilled Water"
-      }
-    }
-  ],
   "crs": {
-    "type": "name",
     "properties": {
       "name": "EPSG:4326"
+    },
+    "type": "name"
+  },
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -105.18596629732914,
+              39.79767675062061
+            ],
+            [
+              -105.18596629732914,
+              39.7973830919949
+            ],
+            [
+              -105.18539945823584,
+              39.7973830919949
+            ],
+            [
+              -105.18539945823584,
+              39.79767675062061
+            ],
+            [
+              -105.18596629732914,
+              39.79767675062061
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "building_status": "Proposed",
+        "building_type": "Office",
+        "created_at": "2018-01-26T21:13:16.655Z",
+        "floor_area": 51177,
+        "floor_height": 9,
+        "footprint_area": 17059,
+        "footprint_perimeter": 533,
+        "geometryType": "Rectangle",
+        "id": "5a6b99ec37f4de7f94020090",
+        "include_in_energy_analysis": true,
+        "name": "Medium Office",
+        "number_of_stories": 3,
+        "number_of_stories_above_ground": 3,
+        "project_id": "5a6b8adf37f4de7f94020084",
+        "type": "Building",
+        "updated_at": "2018-01-31T20:36:55.936Z",
+        "year_built": 2010
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -105.1844704687876,
+              39.797675548713926
+            ],
+            [
+              -105.1844704687876,
+              39.79730546858204
+            ],
+            [
+              -105.18511822226465,
+              39.79730546858204
+            ],
+            [
+              -105.18511822226465,
+              39.797675548713926
+            ],
+            [
+              -105.1844704687876,
+              39.797675548713926
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "building_status": "Proposed",
+        "building_type": "Retail other than mall",
+        "created_at": "2018-01-31T20:35:04.192Z",
+        "floor_area": 24567,
+        "floor_height": 3,
+        "footprint_area": 24567,
+        "footprint_perimeter": 634,
+        "geometryType": "Rectangle",
+        "id": "5a72287837f4de77124f946a",
+        "include_in_energy_analysis": true,
+        "name": "Retail",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "5a6b8adf37f4de7f94020084",
+        "type": "Building",
+        "updated_at": "2018-01-31T20:43:46.815Z",
+        "year_built": 2010
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -105.18500070571815,
+              39.79690662647485
+            ],
+            [
+              -105.18534775500846,
+              39.79690662647485
+            ],
+            [
+              -105.18534775500846,
+              39.797148760221035
+            ],
+            [
+              -105.18500070571815,
+              39.797148760221035
+            ],
+            [
+              -105.18500070571815,
+              39.79690662647485
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "building_status": "Proposed",
+        "building_type": "Multifamily (5 or more units)",
+        "created_at": "2018-01-31T20:41:11.756Z",
+        "floor_area": 34448,
+        "floor_height": 12,
+        "footprint_area": 8612,
+        "footprint_perimeter": 372,
+        "geometryType": "Rectangle",
+        "id": "5a7229e737f4de77124f946d",
+        "include_in_energy_analysis": true,
+        "name": "Multi-Family",
+        "number_of_stories": 4,
+        "number_of_stories_above_ground": 4,
+        "project_id": "5a6b8adf37f4de7f94020084",
+        "type": "Building",
+        "updated_at": "2018-01-31T20:42:06.981Z",
+        "year_built": 2010
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -105.18449640851381,
+              39.79689938151071
+            ],
+            [
+              -105.18449640851381,
+              39.796789161361716
+            ],
+            [
+              -105.18434088230042,
+              39.796789161361716
+            ],
+            [
+              -105.18434088230042,
+              39.79689938151071
+            ],
+            [
+              -105.18449640851381,
+              39.79689938151071
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "created_at": "2018-02-04T19:30:11.649Z",
+        "district_system_type": "Central Chilled Water",
+        "footprint_area": 1757,
+        "footprint_perimeter": 168,
+        "geometryType": "Rectangle",
+        "id": "5a775f4337f4de1d8bcef255",
+        "name": "New District System",
+        "project_id": "5a6b8adf37f4de7f94020084",
+        "type": "District System",
+        "updated_at": "2018-02-12T20:08:45.759Z"
+      },
+      "type": "Feature"
     }
-  }
+  ],
+  "type": "FeatureCollection"
 }

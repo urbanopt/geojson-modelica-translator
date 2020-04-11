@@ -1,44 +1,51 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "Properties of a District System object",
+  "additionalProperties": false,
+  "definitions": {
+    "ElectricalJunctionType": {
+      "enum": [
+        "ElectricalPanel"
+      ],
+      "type": "string"
+    }
+  },
   "description": "Schema for a District System object",
-  "type": "object",
+  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
   "properties": {
+    "building_id": {
+      "type": "string"
+    },
+    "connector_type": {
+      "$ref": "#/definitions/ElectricalJunctionType"
+    },
+    "district_system_id": {
+      "type": "string"
+    },
     "id": {
       "description": "Unique id used to refer to this feature within this dataset.",
-      "type": "string"
-    },
-    "project_id": {
-      "description": "Project which this feature belongs to.",
-      "type": "string"
-    },
-    "type": {
-      "description": "Type of feature.",
-      "type": "string",
-      "enum": [
-        "ElectricalJunction"
-      ]
-    },
-    "source_name": {
-      "description": "Name of the original data source.",
-      "type": "string"
-    },
-    "source_id": {
-      "description": "Id of the feature in original data source.",
       "type": "string"
     },
     "name": {
       "description": "Feature name",
       "type": "string"
     },
-    "connector_type": {
-      "$ref": "#/definitions/ElectricalJunctionType"
-    },
-    "building_id": {
+    "project_id": {
+      "description": "Project which this feature belongs to.",
       "type": "string"
     },
-    "district_system_id": {
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "enum": [
+        "ElectricalJunction"
+      ],
       "type": "string"
     },
     "user_data": {
@@ -49,13 +56,6 @@
     "type",
     "connector_type"
   ],
-  "additionalProperties": false,
-  "definitions": {
-    "ElectricalJunctionType": {
-      "type": "string",
-      "enum": [
-        "ElectricalPanel"
-      ]
-    }
-  }
+  "title": "Properties of a District System object",
+  "type": "object"
 }

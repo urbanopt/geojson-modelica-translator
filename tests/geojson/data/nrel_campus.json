@@ -1,10 +1,13 @@
 {
-  "type": "FeatureCollection",
+  "crs": {
+    "properties": {
+      "name": "EPSG:4326"
+    },
+    "type": "name"
+  },
   "features": [
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -28,38 +31,38 @@
               39.74200726814212
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d32e",
-        "source_id": "Bridge",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.788Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Bridge",
-        "maximum_roof_height": 20,
         "floor_area": 2634.7594734229788,
-        "number_of_stories": 2,
-        "number_of_stories_above_ground": 2,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 6,
         "footprint_area": 1319,
         "footprint_perimeter": 228,
-        "updated_at": "2017-09-01T21:17:07.590Z",
-        "created_at": "2017-09-01T21:16:27.788Z",
-        "floor_height": 6,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d32e",
+        "maximum_roof_height": 20,
+        "name": "Bridge",
+        "number_of_stories": 2,
+        "number_of_stories_above_ground": 2,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Bridge",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.590Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -83,38 +86,38 @@
               39.74217020021416
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d302",
-        "source_id": "Vehicle Testing and Integration Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.649Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Vehicle Testing and Integration Facility",
-        "maximum_roof_height": 10,
         "floor_area": 3745.419332770663,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 3750,
         "footprint_perimeter": 245,
-        "updated_at": "2017-09-01T21:17:07.507Z",
-        "created_at": "2017-09-01T21:16:27.649Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d302",
+        "maximum_roof_height": 10,
+        "name": "Vehicle Testing and Integration Facility",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Vehicle Testing and Integration Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.507Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -138,38 +141,38 @@
               39.74217484067896
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d334",
-        "source_id": "Unknown East A",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.805Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown East A",
-        "maximum_roof_height": 10,
         "floor_area": 430.5300967424212,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 431,
         "footprint_perimeter": 83,
-        "updated_at": "2017-09-01T21:17:07.607Z",
-        "created_at": "2017-09-01T21:16:27.805Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d334",
+        "maximum_roof_height": 10,
+        "name": "Unknown East A",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown East A",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.607Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -193,38 +196,38 @@
               39.74219907421204
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d32c",
-        "source_id": "Unknown E",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.782Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown E",
-        "maximum_roof_height": 10,
         "floor_area": 1348.1148998492615,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 1350,
         "footprint_perimeter": 151,
-        "updated_at": "2017-09-01T21:17:07.585Z",
-        "created_at": "2017-09-01T21:16:27.782Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d32c",
+        "maximum_roof_height": 10,
+        "name": "Unknown E",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown E",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.585Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -248,38 +251,38 @@
               39.74229291462166
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d338",
-        "source_id": "Unknown East B",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.817Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown East B",
-        "maximum_roof_height": 10,
         "floor_area": 2275.182706273205,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 2278,
         "footprint_perimeter": 192,
-        "updated_at": "2017-09-01T21:17:07.612Z",
-        "created_at": "2017-09-01T21:16:27.817Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d338",
+        "maximum_roof_height": 10,
+        "name": "Unknown East B",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown East B",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.612Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -303,38 +306,38 @@
               39.74320450052181
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d33c",
-        "source_id": "Unknown North A",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.829Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown North A",
-        "maximum_roof_height": 10,
         "floor_area": 496.8163421439877,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 497,
         "footprint_perimeter": 101,
-        "updated_at": "2017-09-01T21:17:07.618Z",
-        "created_at": "2017-09-01T21:16:27.829Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d33c",
+        "maximum_roof_height": 10,
+        "name": "Unknown North A",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown North A",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.618Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -370,38 +373,38 @@
               39.74054292463572
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d306",
-        "source_id": "Thermal Test Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.662Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Thermal Test Facility",
-        "maximum_roof_height": 10,
         "floor_area": 11082.92532453453,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 11097,
         "footprint_perimeter": 447,
-        "updated_at": "2017-09-01T21:17:07.518Z",
-        "created_at": "2017-09-01T21:16:27.662Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d306",
+        "maximum_roof_height": 10,
+        "name": "Thermal Test Facility",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Thermal Test Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.518Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -433,38 +436,38 @@
               39.74227332157966
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d308",
-        "source_id": "Solar Radiation Research Laboratory",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.668Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Solar Radiation Research Laboratory",
-        "maximum_roof_height": 10,
         "floor_area": 7533.319698669211,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 7543,
         "footprint_perimeter": 464,
-        "updated_at": "2017-09-01T21:17:07.524Z",
-        "created_at": "2017-09-01T21:16:27.668Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d308",
+        "maximum_roof_height": 10,
+        "name": "Solar Radiation Research Laboratory",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Solar Radiation Research Laboratory",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.524Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -488,38 +491,38 @@
               39.74274355305013
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d30a",
-        "source_id": "High Flux Solar Furnace",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.674Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "High Flux Solar Furnace",
-        "maximum_roof_height": 10,
         "floor_area": 2033.1901736851844,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 2036,
         "footprint_perimeter": 187,
-        "updated_at": "2017-09-01T21:17:07.529Z",
-        "created_at": "2017-09-01T21:16:27.674Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d30a",
+        "maximum_roof_height": 10,
+        "name": "High Flux Solar Furnace",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "High Flux Solar Furnace",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.529Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -579,38 +582,38 @@
               39.74040061353742
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d304",
-        "source_id": "Outdoor Test Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.656Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Outdoor Test Facility",
-        "maximum_roof_height": 20,
         "floor_area": 22262.837177848254,
-        "number_of_stories": 2,
-        "number_of_stories_above_ground": 2,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 6,
         "footprint_area": 11145,
         "footprint_perimeter": 459,
-        "updated_at": "2017-09-01T21:17:07.513Z",
-        "created_at": "2017-09-01T21:16:27.656Z",
-        "floor_height": 6,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d304",
+        "maximum_roof_height": 20,
+        "name": "Outdoor Test Facility",
+        "number_of_stories": 2,
+        "number_of_stories_above_ground": 2,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Outdoor Test Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.513Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -634,38 +637,38 @@
               39.740657392044994
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d326",
-        "source_id": "Unknown West F",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.764Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown West F",
-        "maximum_roof_height": 10,
         "floor_area": 256.85601735902867,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 257,
         "footprint_perimeter": 65,
-        "updated_at": "2017-09-01T21:17:07.573Z",
-        "created_at": "2017-09-01T21:16:27.764Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d326",
+        "maximum_roof_height": 10,
+        "name": "Unknown West F",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown West F",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.573Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -689,38 +692,38 @@
               39.74086363914935
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d332",
-        "source_id": "Unknown West E",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.799Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown West E",
-        "maximum_roof_height": 10,
         "floor_area": 435.5050531914963,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 436,
         "footprint_perimeter": 84,
-        "updated_at": "2017-09-01T21:17:07.602Z",
-        "created_at": "2017-09-01T21:16:27.799Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d332",
+        "maximum_roof_height": 10,
+        "name": "Unknown West E",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown West E",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.602Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -744,38 +747,38 @@
               39.742583715958574
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d33e",
-        "source_id": "Unknown North B",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.835Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown North B",
-        "maximum_roof_height": 10,
         "floor_area": 223.0543089454484,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 223,
         "footprint_perimeter": 61,
-        "updated_at": "2017-09-01T21:17:07.623Z",
-        "created_at": "2017-09-01T21:16:27.835Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d33e",
+        "maximum_roof_height": 10,
+        "name": "Unknown North B",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown North B",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.623Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -799,38 +802,38 @@
               39.74268374308511
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d340",
-        "source_id": "Unknown North C",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.842Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown North C",
-        "maximum_roof_height": 10,
         "floor_area": 225.7807088469266,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 226,
         "footprint_perimeter": 61,
-        "updated_at": "2017-09-01T21:17:07.629Z",
-        "created_at": "2017-09-01T21:16:27.842Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d340",
+        "maximum_roof_height": 10,
+        "name": "Unknown North C",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown North C",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.629Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -854,38 +857,38 @@
               39.743279778003966
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d342",
-        "source_id": "Unknown North D",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.850Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown North D",
-        "maximum_roof_height": 10,
         "floor_area": 312.36893155319837,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 313,
         "footprint_perimeter": 74,
-        "updated_at": "2017-09-01T21:17:07.635Z",
-        "created_at": "2017-09-01T21:16:27.850Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d342",
+        "maximum_roof_height": 10,
+        "name": "Unknown North D",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown North D",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.635Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -909,38 +912,38 @@
               39.738416477469315
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d300",
-        "source_id": "South Entrance",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Vacant",
+        "created_at": "2017-09-01T21:16:27.643Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "South Entrance",
-        "maximum_roof_height": 10,
         "floor_area": 2186.1813555730605,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Vacant",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 2189,
         "footprint_perimeter": 201,
-        "updated_at": "2017-09-01T21:17:07.502Z",
-        "created_at": "2017-09-01T21:16:27.643Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d300",
+        "maximum_roof_height": 10,
+        "name": "South Entrance",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "South Entrance",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.502Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1028,38 +1031,38 @@
               39.73852579206593
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2fe",
-        "source_id": "NREL Employee Parking Garage",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Vacant",
+        "created_at": "2017-09-01T21:16:27.637Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "NREL Employee Parking Garage",
-        "maximum_roof_height": 50,
         "floor_area": 641495.5237569604,
-        "number_of_stories": 5,
-        "number_of_stories_above_ground": 5,
-        "building_type": "Vacant",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 15,
         "footprint_area": 128457,
         "footprint_perimeter": 2987,
-        "updated_at": "2017-09-01T21:17:07.496Z",
-        "created_at": "2017-09-01T21:16:27.637Z",
-        "floor_height": 15,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2fe",
+        "maximum_roof_height": 50,
+        "name": "NREL Employee Parking Garage",
+        "number_of_stories": 5,
+        "number_of_stories_above_ground": 5,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "NREL Employee Parking Garage",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.496Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1115,38 +1118,38 @@
               39.74028511445897
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2fa",
-        "source_id": "Cafe",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Food service",
+        "created_at": "2017-09-01T21:16:27.622Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Cafe",
-        "maximum_roof_height": 10,
         "floor_area": 10476.075491518066,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Food service",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 10489,
         "footprint_perimeter": 519,
-        "updated_at": "2017-09-01T21:17:07.484Z",
-        "created_at": "2017-09-01T21:16:27.622Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2fa",
+        "maximum_roof_height": 10,
+        "name": "Cafe",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Cafe",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.484Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1218,38 +1221,38 @@
               39.74076567185173
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2fc",
-        "source_id": "Field Test Laboratory Building",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.629Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Field Test Laboratory Building",
-        "maximum_roof_height": 20,
         "floor_area": 150453.497095182,
-        "number_of_stories": 2,
-        "number_of_stories_above_ground": 2,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 6,
         "footprint_area": 75320,
         "footprint_perimeter": 1304,
-        "updated_at": "2017-09-01T21:17:07.490Z",
-        "created_at": "2017-09-01T21:16:27.629Z",
-        "floor_height": 6,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2fc",
+        "maximum_roof_height": 20,
+        "name": "Field Test Laboratory Building",
+        "number_of_stories": 2,
+        "number_of_stories_above_ground": 2,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Field Test Laboratory Building",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.490Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1357,38 +1360,38 @@
               39.741225601325255
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2f8",
-        "source_id": "Solar Energy Research Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.616Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Solar Energy Research Facility",
-        "maximum_roof_height": 20,
         "floor_area": 129822.68155033072,
-        "number_of_stories": 2,
-        "number_of_stories_above_ground": 2,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 6,
         "footprint_area": 64992,
         "footprint_perimeter": 1562,
-        "updated_at": "2017-09-01T21:17:07.478Z",
-        "created_at": "2017-09-01T21:16:27.616Z",
-        "floor_height": 6,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2f8",
+        "maximum_roof_height": 20,
+        "name": "Solar Energy Research Facility",
+        "number_of_stories": 2,
+        "number_of_stories_above_ground": 2,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Solar Energy Research Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.478Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1412,38 +1415,38 @@
               39.74164221640504
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d32a",
-        "source_id": "Unknown D",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.776Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown D",
-        "maximum_roof_height": 10,
         "floor_area": 2512.0969739778943,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 2515,
         "footprint_perimeter": 211,
-        "updated_at": "2017-09-01T21:17:07.579Z",
-        "created_at": "2017-09-01T21:16:27.776Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d32a",
+        "maximum_roof_height": 10,
+        "name": "Unknown D",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown D",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.579Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1479,38 +1482,38 @@
               39.73855879266489
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d346",
-        "source_id": "South Parking",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Vacant",
+        "created_at": "2017-09-01T21:16:27.866Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "South Parking",
-        "maximum_roof_height": 10,
         "floor_area": 128781.11978772243,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Vacant",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 128940,
         "footprint_perimeter": 1422,
-        "updated_at": "2017-09-01T21:17:07.640Z",
-        "created_at": "2017-09-01T21:16:27.866Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d346",
+        "maximum_roof_height": 10,
+        "name": "South Parking",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "South Parking",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.640Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1638,38 +1641,38 @@
               39.74199695597272
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2f6",
-        "source_id": "Science and Technology Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.607Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Science and Technology Facility",
-        "maximum_roof_height": 30,
         "floor_area": 148624.32740708583,
-        "number_of_stories": 3,
-        "number_of_stories_above_ground": 3,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 9,
         "footprint_area": 49603,
         "footprint_perimeter": 1318,
-        "updated_at": "2017-09-01T21:17:07.472Z",
-        "created_at": "2017-09-01T21:16:27.607Z",
-        "floor_height": 9,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2f6",
+        "maximum_roof_height": 30,
+        "name": "Science and Technology Facility",
+        "number_of_stories": 3,
+        "number_of_stories_above_ground": 3,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Science and Technology Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.472Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1789,38 +1792,38 @@
               39.740334614087715
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2f4",
-        "source_id": "Research Support Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.599Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Research Support Facility",
-        "maximum_roof_height": 40,
         "floor_area": 405451.76968951966,
-        "number_of_stories": 4,
-        "number_of_stories_above_ground": 4,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 12,
         "footprint_area": 101488,
         "footprint_perimeter": 3325,
-        "updated_at": "2017-09-01T21:17:07.465Z",
-        "created_at": "2017-09-01T21:16:27.599Z",
-        "floor_height": 12,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2f4",
+        "maximum_roof_height": 40,
+        "name": "Research Support Facility",
+        "number_of_stories": 4,
+        "number_of_stories_above_ground": 4,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Research Support Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.465Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1916,38 +1919,38 @@
               39.743195219730666
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2ee",
-        "source_id": "Energy Systems Integration Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.579Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Energy Systems Integration Facility",
-        "maximum_roof_height": 30,
         "floor_area": 296826.11368011055,
-        "number_of_stories": 3,
-        "number_of_stories_above_ground": 3,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 9,
         "footprint_area": 99064,
         "footprint_perimeter": 2194,
-        "updated_at": "2017-09-01T21:17:07.447Z",
-        "created_at": "2017-09-01T21:16:27.579Z",
-        "floor_height": 9,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2ee",
+        "maximum_roof_height": 30,
+        "name": "Energy Systems Integration Facility",
+        "number_of_stories": 3,
+        "number_of_stories_above_ground": 3,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Energy Systems Integration Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.447Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -1995,38 +1998,38 @@
               39.740837858295066
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2f0",
-        "source_id": "Education Center",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.586Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Education Center",
-        "maximum_roof_height": 10,
         "floor_area": 7012.87258861096,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 7022,
         "footprint_perimeter": 432,
-        "updated_at": "2017-09-01T21:17:07.453Z",
-        "created_at": "2017-09-01T21:16:27.586Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2f0",
+        "maximum_roof_height": 10,
+        "name": "Education Center",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Education Center",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.453Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2074,38 +2077,38 @@
               39.74028717694424
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d2f2",
-        "source_id": "East Entry",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.592Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "East Entry",
-        "maximum_roof_height": 10,
         "floor_area": 869.8921262156657,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 871,
         "footprint_perimeter": 134,
-        "updated_at": "2017-09-01T21:17:07.458Z",
-        "created_at": "2017-09-01T21:16:27.592Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d2f2",
+        "maximum_roof_height": 10,
+        "name": "East Entry",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "East Entry",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.458Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2137,38 +2140,38 @@
               39.740254177173
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d30e",
-        "source_id": "East Parking",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Vacant",
+        "created_at": "2017-09-01T21:16:27.687Z",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "East Parking",
-        "maximum_roof_height": 10,
         "floor_area": 37214.047827625705,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Vacant",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 37260,
         "footprint_perimeter": 758,
-        "updated_at": "2017-09-01T21:17:07.535Z",
-        "created_at": "2017-09-01T21:16:27.687Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d30e",
+        "maximum_roof_height": 10,
+        "name": "East Parking",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "East Parking",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.535Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2192,38 +2195,38 @@
               39.741153415288096
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d314",
-        "source_id": "West Gate Entrance",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.707Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "West Gate Entrance",
-        "maximum_roof_height": 10,
         "floor_area": 255.01065485744144,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 255,
         "footprint_perimeter": 65,
-        "updated_at": "2017-09-01T21:17:07.552Z",
-        "created_at": "2017-09-01T21:16:27.707Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d314",
+        "maximum_roof_height": 10,
+        "name": "West Gate Entrance",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "West Gate Entrance",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.552Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2247,38 +2250,38 @@
               39.741409159764885
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d320",
-        "source_id": "Unknown West A",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.746Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown West A",
-        "maximum_roof_height": 10,
         "floor_area": 4141.329629323334,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 4146,
         "footprint_perimeter": 288,
-        "updated_at": "2017-09-01T21:17:07.557Z",
-        "created_at": "2017-09-01T21:16:27.746Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d320",
+        "maximum_roof_height": 10,
+        "name": "Unknown West A",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown West A",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.557Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2302,38 +2305,38 @@
               39.74077185926416
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d312",
-        "source_id": "Shipping and Receiving Building",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.700Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Shipping and Receiving Building",
-        "maximum_roof_height": 10,
         "floor_area": 13635.809542119712,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 13653,
         "footprint_perimeter": 478,
-        "updated_at": "2017-09-01T21:17:07.546Z",
-        "created_at": "2017-09-01T21:16:27.700Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d312",
+        "maximum_roof_height": 10,
+        "name": "Shipping and Receiving Building",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Shipping and Receiving Building",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.546Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2357,38 +2360,38 @@
               39.74119878937745
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d322",
-        "source_id": "Unknown West B",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.753Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown West B",
-        "maximum_roof_height": 10,
         "floor_area": 4161.764002986851,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 4167,
         "footprint_perimeter": 286,
-        "updated_at": "2017-09-01T21:17:07.563Z",
-        "created_at": "2017-09-01T21:16:27.753Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d322",
+        "maximum_roof_height": 10,
+        "name": "Unknown West B",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown West B",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.563Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2476,38 +2479,38 @@
               39.74037586375124
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d310",
-        "source_id": "Integrated Biorefinery Research Facility",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Office",
+        "created_at": "2017-09-01T21:16:27.693Z",
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "Integrated Biorefinery Research Facility",
-        "maximum_roof_height": 20,
         "floor_area": 77897.95814205545,
-        "number_of_stories": 2,
-        "number_of_stories_above_ground": 2,
-        "building_type": "Office",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 6,
         "footprint_area": 38997,
         "footprint_perimeter": 1467,
-        "updated_at": "2017-09-01T21:17:07.541Z",
-        "created_at": "2017-09-01T21:16:27.693Z",
-        "floor_height": 6,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d310",
+        "maximum_roof_height": 20,
+        "name": "Integrated Biorefinery Research Facility",
+        "number_of_stories": 2,
+        "number_of_stories_above_ground": 2,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Integrated Biorefinery Research Facility",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.541Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2531,93 +2534,93 @@
               39.741117322241195
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d324",
-        "source_id": "Unknown West C",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.759Z",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Unknown West C",
-        "maximum_roof_height": 10,
         "floor_area": 504.35453370360074,
-        "number_of_stories": 1,
-        "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
-        "surface_elevation": 5198,
-        "type": "Building",
+        "floor_height": 3,
         "footprint_area": 505,
         "footprint_perimeter": 97,
-        "updated_at": "2017-09-01T21:17:07.568Z",
-        "created_at": "2017-09-01T21:16:27.759Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -105.18093690276146,
-              39.740990480812
-            ],
-            [
-              -105.18093690276146,
-              39.74105544840245
-            ],
-            [
-              -105.18085107207295,
-              39.74105544840245
-            ],
-            [
-              -105.18085107207295,
-              39.740990480812
-            ],
-            [
-              -105.18093690276146,
-              39.740990480812
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "59a9ce2b42f7d007c059d330",
-        "source_id": "Unknown West D",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
-        "fill": "#ffffff",
-        "fill-opacity": 0.5,
-        "name": "Unknown West D",
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d324",
         "maximum_roof_height": 10,
-        "floor_area": 571.226317848935,
+        "name": "Unknown West C",
         "number_of_stories": 1,
         "number_of_stories_above_ground": 1,
-        "building_type": "Nonrefrigerated warehouse",
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown West C",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
         "surface_elevation": 5198,
         "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.568Z"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -105.18093690276146,
+              39.740990480812
+            ],
+            [
+              -105.18093690276146,
+              39.74105544840245
+            ],
+            [
+              -105.18085107207295,
+              39.74105544840245
+            ],
+            [
+              -105.18085107207295,
+              39.740990480812
+            ],
+            [
+              -105.18093690276146,
+              39.740990480812
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "building_type": "Nonrefrigerated warehouse",
+        "created_at": "2017-09-01T21:16:27.793Z",
+        "fill": "#ffffff",
+        "fill-opacity": 0.5,
+        "floor_area": 571.226317848935,
+        "floor_height": 3,
         "footprint_area": 572,
         "footprint_perimeter": 96,
-        "updated_at": "2017-09-01T21:17:07.596Z",
-        "created_at": "2017-09-01T21:16:27.793Z",
-        "floor_height": 3,
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d330",
+        "maximum_roof_height": 10,
+        "name": "Unknown West D",
+        "number_of_stories": 1,
+        "number_of_stories_above_ground": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Unknown West D",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "Building",
+        "updated_at": "2017-09-01T21:17:07.596Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2641,36 +2644,36 @@
               39.74293329466468
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d344",
-        "source_id": "High Flux PV",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.858Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "High Flux PV",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 436.3290804290652,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 437,
         "footprint_perimeter": 84,
-        "updated_at": "2017-09-01T21:16:27.858Z",
-        "created_at": "2017-09-01T21:16:27.858Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d344",
+        "maximum_roof_height": 10,
+        "name": "High Flux PV",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "High Flux PV",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.858Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2694,36 +2697,36 @@
               39.74304466449945
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d30c",
-        "source_id": "Solar Industrial Mesa Test Area",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.681Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#929292",
         "fill-opacity": 0.5,
-        "name": "Solar Industrial Mesa Test Area",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 2627.031817205871,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 2630,
         "footprint_perimeter": 241,
-        "updated_at": "2017-09-01T21:16:27.681Z",
-        "created_at": "2017-09-01T21:16:27.681Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d30c",
+        "maximum_roof_height": 10,
+        "name": "Solar Industrial Mesa Test Area",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Solar Industrial Mesa Test Area",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.681Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2767,36 +2770,36 @@
               39.74310653655209
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d316",
-        "source_id": "Mesa PV A",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.713Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Mesa PV A",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 52922.98044830567,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 52988,
         "footprint_perimeter": 1096,
-        "updated_at": "2017-09-01T21:16:27.713Z",
-        "created_at": "2017-09-01T21:16:27.713Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d316",
+        "maximum_roof_height": 10,
+        "name": "Mesa PV A",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Mesa PV A",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.713Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2820,36 +2823,36 @@
               39.74351901548337
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d318",
-        "source_id": "Mesa PV B",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.719Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Mesa PV B",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 10852.438843447308,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 10866,
         "footprint_perimeter": 494,
-        "updated_at": "2017-09-01T21:16:27.719Z",
-        "created_at": "2017-09-01T21:16:27.719Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d318",
+        "maximum_roof_height": 10,
+        "name": "Mesa PV B",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Mesa PV B",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.719Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2917,36 +2920,36 @@
               39.74435427775674
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d31a",
-        "source_id": "Mesa PV C",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.726Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Mesa PV C",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 65780.85750992881,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 65862,
         "footprint_perimeter": 1195,
-        "updated_at": "2017-09-01T21:16:27.726Z",
-        "created_at": "2017-09-01T21:16:27.726Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d31a",
+        "maximum_roof_height": 10,
+        "name": "Mesa PV C",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Mesa PV C",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.726Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -2970,36 +2973,36 @@
               39.739653991075954
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d31c",
-        "source_id": "Central PV A",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.732Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Central PV A",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 6245.195154729526,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 6253,
         "footprint_perimeter": 616,
-        "updated_at": "2017-09-01T21:16:27.732Z",
-        "created_at": "2017-09-01T21:16:27.732Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d31c",
+        "maximum_roof_height": 10,
+        "name": "Central PV A",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Central PV A",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.732Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -3027,36 +3030,36 @@
               39.74032430166801
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d31e",
-        "source_id": "Outdoor Test PV",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.738Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Outdoor Test PV",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 30864.504461112538,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 30903,
         "footprint_perimeter": 704,
-        "updated_at": "2017-09-01T21:16:27.738Z",
-        "created_at": "2017-09-01T21:16:27.738Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d31e",
+        "maximum_roof_height": 10,
+        "name": "Outdoor Test PV",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Outdoor Test PV",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.738Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -3080,36 +3083,36 @@
               39.740738859724985
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d328",
-        "source_id": "Outdoor Test PV ",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.770Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Outdoor Test PV B",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 603.1779746426488,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 604,
         "footprint_perimeter": 98,
-        "updated_at": "2017-09-01T21:16:27.770Z",
-        "created_at": "2017-09-01T21:16:27.770Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d328",
+        "maximum_roof_height": 10,
+        "name": "Outdoor Test PV B",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Outdoor Test PV ",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.770Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -3149,36 +3152,36 @@
               39.74230425795923
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d336",
-        "source_id": "Central Chiller",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.811Z",
+        "district_system_type": "Central Hot and Chilled Water",
         "fill": "#ffffff",
         "fill-opacity": 0.5,
-        "name": "Central Chiller",
-        "district_system_type": "Central Hot and Chilled Water",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 3304.607347039266,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 3309,
         "footprint_perimeter": 293,
-        "updated_at": "2017-09-01T21:16:27.811Z",
-        "created_at": "2017-09-01T21:16:27.811Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d336",
+        "maximum_roof_height": 10,
+        "name": "Central Chiller",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Central Chiller",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.811Z"
+      },
+      "type": "Feature"
     },
     {
-      "type": "Feature",
       "geometry": {
-        "type": "Polygon",
         "coordinates": [
           [
             [
@@ -3202,37 +3205,34 @@
               39.74248575110624
             ]
           ]
-        ]
+        ],
+        "type": "Polygon"
       },
       "properties": {
-        "id": "59a9ce2b42f7d007c059d33a",
-        "source_id": "Vehicle Testing PV",
-        "source_name": "NREL_GDS",
-        "project_id": "59a9ccdf42f7d007c059d2ed",
-        "stroke": "#555555",
-        "stroke-width": 2,
-        "stroke-opacity": 1,
+        "created_at": "2017-09-01T21:16:27.823Z",
+        "district_system_type": "Community Photovoltaic",
         "fill": "#ff8000",
         "fill-opacity": 0.5,
-        "name": "Vehicle Testing PV",
-        "district_system_type": "Community Photovoltaic",
-        "surface_elevation": 5198,
-        "type": "District System",
         "floor_area": 770.6689372973642,
-        "number_of_stories": 1,
-        "maximum_roof_height": 10,
         "footprint_area": 772,
         "footprint_perimeter": 111,
-        "updated_at": "2017-09-01T21:16:27.823Z",
-        "created_at": "2017-09-01T21:16:27.823Z",
-        "geometryType": "Polygon"
-      }
+        "geometryType": "Polygon",
+        "id": "59a9ce2b42f7d007c059d33a",
+        "maximum_roof_height": 10,
+        "name": "Vehicle Testing PV",
+        "number_of_stories": 1,
+        "project_id": "59a9ccdf42f7d007c059d2ed",
+        "source_id": "Vehicle Testing PV",
+        "source_name": "NREL_GDS",
+        "stroke": "#555555",
+        "stroke-opacity": 1,
+        "stroke-width": 2,
+        "surface_elevation": 5198,
+        "type": "District System",
+        "updated_at": "2017-09-01T21:16:27.823Z"
+      },
+      "type": "Feature"
     }
   ],
-  "crs": {
-    "type": "name",
-    "properties": {
-      "name": "EPSG:4326"
-    }
-  }
+  "type": "FeatureCollection"
 }

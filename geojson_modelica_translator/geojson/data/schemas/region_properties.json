@@ -1,53 +1,22 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/region_properties.json#",
-  "title": "Region object",
+  "additionalProperties": false,
   "description": "Schema for a Region object",
-  "type": "object",
+  "id": "http://json-schema.org/openstudio-urban-modeling/region_properties.json#",
   "properties": {
-    "id": {
-      "description": "Unique id used to refer to this feature within this dataset.",
-      "type": "string"
-    },
-    "project_id": {
-      "description": "Project which this feature belongs to.",
-      "type": "string"
-    },
-    "type": {
-      "description": "Type of feature.",
-      "type": "string",
-      "enum": [
-        "Region"
-      ]
-    },
-    "region_type": {
-      "type": "string",
-      "enum": [
-        "Taxlot",
-        "Park",
-        "Road",
-        "Lake",
-        "Obstacle"
-      ]
-    },
-    "source_name": {
-      "description": "Name of the original data source.",
-      "type": "string"
-    },
-    "source_id": {
-      "description": "Id of the feature in original data source.",
-      "type": "string"
-    },
-    "name": {
-      "description": "Feature name.",
-      "type": "string"
-    },
-    "legal_name": {
-      "description": "Legal name used to identify this feature.",
-      "type": "string"
-    },
     "address": {
       "description": "Street address.",
+      "type": "string"
+    },
+    "exterior_lighting_zone": {
+      "description": "Choice of exterior lighting zone.",
+      "enum": [
+        "0 - Undeveloped Areas Parks",
+        "1 - Developed Areas Parks",
+        "2 - Neighborhood",
+        "3 - All Other Areas",
+        "4 - High Activity"
+      ],
       "type": "string"
     },
     "footprint_area": {
@@ -58,26 +27,56 @@
       "description": "Perimeter of the footprint (ft). Calculated on export.",
       "type": "number"
     },
-    "exterior_lighting_zone": {
-      "description": "Choice of exterior lighting zone.",
-      "type": "string",
+    "id": {
+      "description": "Unique id used to refer to this feature within this dataset.",
+      "type": "string"
+    },
+    "legal_name": {
+      "description": "Legal name used to identify this feature.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Feature name.",
+      "type": "string"
+    },
+    "project_id": {
+      "description": "Project which this feature belongs to.",
+      "type": "string"
+    },
+    "region_type": {
       "enum": [
-        "0 - Undeveloped Areas Parks",
-        "1 - Developed Areas Parks",
-        "2 - Neighborhood",
-        "3 - All Other Areas",
-        "4 - High Activity"
-      ]
+        "Taxlot",
+        "Park",
+        "Road",
+        "Lake",
+        "Obstacle"
+      ],
+      "type": "string"
+    },
+    "source_id": {
+      "description": "Id of the feature in original data source.",
+      "type": "string"
+    },
+    "source_name": {
+      "description": "Name of the original data source.",
+      "type": "string"
     },
     "taxlot_zoning": {
-      "type": "string",
       "enum": [
         "Vacant",
         "Mixed",
         "Residential",
         "Commercial",
         "OpenSpace"
-      ]
+      ],
+      "type": "string"
+    },
+    "type": {
+      "description": "Type of feature.",
+      "enum": [
+        "Region"
+      ],
+      "type": "string"
     },
     "user_data": {
       "description": "Arbitrary user data"
@@ -87,5 +86,6 @@
     "type",
     "region_type"
   ],
-  "additionalProperties": false
+  "title": "Region object",
+  "type": "object"
 }
