@@ -29,31 +29,37 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import shutil
+import unittest
+
+from geojson_modelica_translator.model_connectors.base import \
+    Base as model_connector_base
+from jinja2 import Template
 
 
-class Base(object):
-    """
-    Base class of the model connectors. The connectors can utilize various methods to create a building (or other
-    feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
-    """
+class TestModelConnectorBase(unittest.TestCase):
+    def setUp(self):
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output', 'templates')
+        if os.path.exists(self.output_dir):
+            shutil.rmtree(self.output_dir)
 
-    def __init__(self, system_parameters):
-        """
-        Base initializer
+        os.makedirs(self.output_dir)
 
-        :param system_parameters: SystemParameters object
-        """
-        self.buildings = []
-        self.system_parameters = system_parameters
-        # extract data out of the urbanopt_building object and store into the base object
+    def test_init(self):
+        mc = model_connector_base(None)
+        self.assertIsNotNone(mc)
 
-    # These methods need to be defined in each of the derived model connectors
-    # def to_modelica(self):
+    def test_template(self):
+        mc = model_connector_base(None)
 
-    def run_template(self, template, save_file_name, **kwargs):
-        """Create an instance from a jinja template"""
-        file_data = template.render(**kwargs)
+        with open(os.path.join(self.data_dir, 'template_ex.tmpl')) as f:
+            template = Template(f.read())
 
-        os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
-        with open(save_file_name, "w") as f:
-            f.write(file_data)
+        mc.run_template(template, os.path.join(self.output_dir, 'template.out'), file_name='test_123')
+        self.assertIsNotNone(mc)
+
+        self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'template.out')))
+        with open(os.path.join(self.output_dir, 'template.out'), 'r') as content_file:
+            content = content_file.read()
+            self.assertEqual(content, 'test_123')
