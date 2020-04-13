@@ -16,7 +16,6 @@ model BuildingTimeSeries
 
   parameter String filPat=
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}//{{data['timSer']['filename']}"
-  //"modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos"
     "Library path of the file with thermal loads as time series";
   parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
     min=273.15, displayUnit="degC") = 273.15 + 40
@@ -201,7 +200,7 @@ and connected to the room model by means of fluid ports.
 </html>", revisions="<html>
 <ul><li>
 April 8, 2020: Nicholas Long<br/>
-Updated implemention and modified the documentation to handle template needed for GeoJSON to Modelica.
+Updated implementation and modified the documentation to handle template needed for GeoJSON to Modelica.
 </li>
 <li>
 February 21, 2020, by Antoine Gautier:<br/>

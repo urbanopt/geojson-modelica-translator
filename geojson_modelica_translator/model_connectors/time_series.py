@@ -38,7 +38,7 @@ from geojson_modelica_translator.utils import ModelicaPath
 from jinja2 import Environment, FileSystemLoader
 
 
-class timeSeriesConnector(model_connector_base):
+class TimeSeriesConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
@@ -56,7 +56,8 @@ class timeSeriesConnector(model_connector_base):
 
         :param urbanopt_building: an urbanopt_building
         """
-# do we still need this part ( line 64 to 77) at csv building load file?
+        # do we still need this part ( line 64 to 77) at csv building load file? - NL: perhaps not, but lets
+        # leave it in there for now.
 
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
@@ -83,9 +84,10 @@ class timeSeriesConnector(model_connector_base):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        timeSeries_coupling_template = self.template_env.get_template("timeSeries_coupling.mot")
-        timeSeries_building_template = self.template_env.get_template("timeSeries_building.mot")
-        timeSeries_mos_template = self.template_env.get_template("timeSeriesBuilding.most")
+
+        time_series_coupling_template = self.template_env.get_template("timeSeries_coupling.mot")
+        time_series_building_template = self.template_env.get_template("timeSeries_building.mot")
+        time_series_mos_template = self.template_env.get_template("timeSeriesBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -112,6 +114,7 @@ class timeSeriesConnector(model_connector_base):
                         "filename": os.path.basename(filPat),
                         "path": os.path.dirname(filPat),
                     }
+                }
 
                 # copy over the resource files for this building
                 # TODO: move some of this over to a validation step
@@ -129,7 +132,7 @@ class timeSeriesConnector(model_connector_base):
                     )
 
                 # Run the templating
-                file_data = timeSeries_building_template.render(
+                file_data = time_series_building_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -143,11 +146,11 @@ class timeSeriesConnector(model_connector_base):
                     f"B{building['building_id']}",
                     "coupling").replace(os.path.sep, '.')
 
-                file_data = timeSeries_mos_template.render(full_model_name=full_model_name)
-                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos")), "w") as f:
+                file_data = time_series_mos_template.render(full_model_name=full_model_name)
+                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos")), "w") as f:  # noqa
                     f.write(file_data)
 
-                file_data = timeSeries_coupling_template.render(
+                file_data = time_series_coupling_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -176,7 +179,8 @@ class timeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["timeSeries_building", "timeSeries_coupling"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["timeSeries_building", "timeSeries_coupling"],
+                within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 
