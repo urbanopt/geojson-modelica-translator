@@ -37,7 +37,7 @@ class SchemasTest(unittest.TestCase):
     def test_load_schemas(self):
         s = Schemas()
         data = s.retrieve("building")
-        self.assertEqual(data["title"], "Building object")
+        self.assertEqual(data["title"], "URBANopt Building")
 
     def test_invalid_retrieve(self):
         s = Schemas()
