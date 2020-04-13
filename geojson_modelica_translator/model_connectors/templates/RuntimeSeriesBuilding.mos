@@ -1,4 +1,4 @@
-simulateModel("TimeSeries.Loads.SwissResidential_20190916.timeSeries_coupling",
+simulateModel("{{full_model_name}}",
 method="cvode",
     tolerance=1e-6,
     numberOfIntervals=500,

@@ -56,9 +56,6 @@ class TimeSeriesConnector(model_connector_base):
 
         :param urbanopt_building: an urbanopt_building
         """
-        # do we still need this part ( line 64 to 77) at csv building load file? - NL: perhaps not, but lets
-        # leave it in there for now.
-
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
 
@@ -87,12 +84,12 @@ class TimeSeriesConnector(model_connector_base):
 
         time_series_coupling_template = self.template_env.get_template("timeSeries_coupling.mot")
         time_series_building_template = self.template_env.get_template("timeSeries_building.mot")
-        time_series_mos_template = self.template_env.get_template("timeSeriesBuilding.most")
+        time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.mos")
         building_names = []
         try:
             for building in self.buildings:
                 # create each timeSeries building and save to the correct directory
-                print(f"Creating timeSeries for building: {building['building_id']}")
+                print(f"Creating time series coupling for building: {building['building_id']}")
 
                 # Path for building data
                 building_names.append(f"B{building['building_id']}")
@@ -102,7 +99,7 @@ class TimeSeriesConnector(model_connector_base):
 
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
-                filPat = self.system_parameters.get_param_by_building_id(
+                time_series_filename = self.system_parameters.get_param_by_building_id(
                     building["building_id"], "load_model_parameters.timeSeries.filPat"
                 )
 
@@ -110,54 +107,46 @@ class TimeSeriesConnector(model_connector_base):
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
                     "timSer": {
-                        "filPat": filPat,
-                        "filename": os.path.basename(filPat),
-                        "path": os.path.dirname(filPat),
+                        "filPat": time_series_filename,
+                        "filename": os.path.basename(time_series_filename),
+                        "path": os.path.dirname(time_series_filename),
                     }
                 }
 
                 # copy over the resource files for this building
                 # TODO: move some of this over to a validation step
                 if os.path.exists(template_data["timSer"]["filPat"]):
-                    shutil.copy(
-                        template_data["timSer"]["filPat"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["timSer"]["filPat"],
-                        ),
-                    )
+                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["timSer"]["filename"])
+                    os.makedirs(os.path.dirname(new_file), exist_ok=True)
+                    shutil.copy(template_data["timSer"]["filPat"], new_file)
                 else:
-                    raise Exception(
-                        f"Missing IDF file for timeSeries: {template_data['timSer']['filPat']}"
-                    )
+                    raise Exception(f"Missing MOS file for time series: {template_data['timSer']['filPat']}")
 
-                # Run the templating
-                file_data = time_series_building_template.render(
+                self.run_template(
+                    time_series_building_template,
+                    os.path.join(b_modelica_path.files_dir, "building.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data,
+                    data=template_data
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "timeSeries_building.mo")), "w") as f:
-                    f.write(file_data)
 
-                full_model_name = os.path.join(
-                    scaffold.project_name,
-                    scaffold.loads_path.files_relative_dir,
-                    f"B{building['building_id']}",
-                    "coupling").replace(os.path.sep, '.')
-
-                file_data = time_series_mos_template.render(full_model_name=full_model_name)
-                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos")), "w") as f:  # noqa
-                    f.write(file_data)
-
-                file_data = time_series_coupling_template.render(
+                self.run_template(
+                    time_series_coupling_template,
+                    os.path.join(b_modelica_path.files_dir, "coupling.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data,
+                    data=template_data
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "timeSeries_coupling.mo")), "w") as f:
-                    f.write(file_data)
 
+                self.run_template(
+                    time_series_mos_template,
+                    os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos"),
+                    full_model_name=os.path.join(
+                        scaffold.project_name,
+                        scaffold.loads_path.files_relative_dir,
+                        f"B{building['building_id']}",
+                        "coupling").replace(os.path.sep, '.')
+                )
         finally:
             os.chdir(curdir)
 
@@ -166,7 +155,7 @@ class TimeSeriesConnector(model_connector_base):
 
     def post_process(self, scaffold, building_names):
         """
-        Cleanup the export of timeSeries files into a format suitable for the district-based analysis. This includes
+        Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project
@@ -179,7 +168,7 @@ class TimeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["timeSeries_building", "timeSeries_coupling"],
+                b_modelica_path, b, ["building", "coupling"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()

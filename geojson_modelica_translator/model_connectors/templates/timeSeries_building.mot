@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model BuildingTimeSeries
+model building
   "Building model with heating and cooling loads provided as time series"
  extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium = MediumW,
@@ -7,7 +7,7 @@ model BuildingTimeSeries
     have_pum=true,
     have_eleHea=false,
     have_eleCoo=false,
-    have_weaBus=false);;
+    have_weaBus=false);
 
  replaceable package MediumW = Buildings.Media.Water
    "Source side medium";
@@ -15,7 +15,7 @@ model BuildingTimeSeries
    "Load side medium";
 
   parameter String filPat=
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}//{{data['timSer']['filename']}"
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['timSer']['filename']}}"
     "Library path of the file with thermal loads as time series";
   parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
     min=273.15, displayUnit="degC") = 273.15 + 40
@@ -119,10 +119,8 @@ model BuildingTimeSeries
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
     k=24 + 273.15) "Maximum temperature setpoint"
     annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
-  {% endraw %}
 
 equation
-{% raw %}
   connect(ports_a[1], disFloHea.port_a) annotation (Line(
     points={{-300,0},{-280,0},{-280,-70},{120,-70}},
     color={0,127,255}));
@@ -181,7 +179,6 @@ equation
     points={{-38,30},{40,30},{40,-9},{69.1667,-9}},
     color={0,0,127}));
 
-{% raw %}
 annotation(
   Diagram(coordinateSystem(extent={{-300,-300},{300,300}})),
   Icon(coordinateSystem(extent={{-100,-100},{100,100}})),
@@ -209,4 +206,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end BuildingTimeSeries;
+end building;

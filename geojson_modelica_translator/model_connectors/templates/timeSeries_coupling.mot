@@ -1,14 +1,14 @@
 within {{project_name}}.Loads.{{model_name}};
-model timeSeries_coupling
+model coupling
 "Example illustrating the coupling of a time series building loads to heating and chilled water loops"
 extends Modelica.Icons.Example;
 package MediumW = Buildings.Media.Water
   "Source side medium";
 
+
+building bui(
+   filPat="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['timSer']['filename']}}",
 {% raw %}
-Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingTimeSeries bui(
-   filPat=
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}//{{data['timSer']['filename']}",
    nPorts_a=2,
    nPorts_b=2)
    "Building"
@@ -55,10 +55,8 @@ Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
        extent={{-10,-10},{10,10}},
        rotation=0,
        origin={-50,20})));
-{% endraw %}
 
 equation
-{% raw %}
   connect(bui.ports_b[1],sinHeaWat. ports[1]) annotation (Line(
     points={{80,-50},{104,-50},{104,20},{124,20}},
     color={0,127,255}));
