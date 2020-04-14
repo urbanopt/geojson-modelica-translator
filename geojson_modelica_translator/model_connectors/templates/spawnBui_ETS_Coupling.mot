@@ -33,7 +33,7 @@ extends Modelica.Icons.Example;
     "Building model integrating multiple spawn thermal zones."
       annotation (Placement(transformation(extent={{0,58},{10,68}})));
 
-  Fluid.Sources.MassFlowSource_T supChiWat(
+  Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
      redeclare package Medium = MediumW,
      m_flow=15,
      use_T_in=false,
@@ -44,7 +44,7 @@ extends Modelica.Icons.Example;
          extent={{-10,-10},{10,10}},
          rotation=0,
          origin={-30,-30})));
-  Fluid.Sources.MassFlowSource_T supHeaWat(
+  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
      redeclare package Medium = MediumW,
      m_flow=35,
      use_T_in=true,
@@ -54,7 +54,7 @@ extends Modelica.Icons.Example;
          extent={{-10,-10},{10,10}},
          rotation=0,
          origin={-50,70})));
-  Fluid.Sources.Boundary_pT sinChiWat(
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
      redeclare package Medium = MediumW,
      p=800000,
      T=287.15,
@@ -64,7 +64,7 @@ extends Modelica.Icons.Example;
          extent={{10,-10},{-10,10}},
          rotation=0,
          origin={50,-10})));
-  Fluid.Sources.Boundary_pT sinHeaWat(
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
      redeclare package Medium =MediumW,
      p=300000,
      nPorts=1)
@@ -81,7 +81,7 @@ extends Modelica.Icons.Example;
       y=max(bui.terUni.T_aHeaWat_nominal))
     "Heating water supply temperature"
       annotation (Placement(transformation(extent={{-100,60},{-80,80}})));
-  Fluid.Movers.FlowControlled_m_flow pumBui(
+  Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=35,
@@ -100,7 +100,7 @@ extends Modelica.Icons.Example;
          extent={{10,-10},{-10,10}},
          rotation=0,
          origin={90,-90})));
-  HydraulicHeader hydHed(
+  geojson_modelica_translator.model_connectors.templates.HydraulicHeader hydHed(
      redeclare package Medium = MediumW,
      m_flow_nominal=35,
      nPorts_a=1,
@@ -144,7 +144,7 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false),
 Documentation(info=
 "<html>
 <p>
-This example illustrates the coubling between the indirect cooling energy transfer station
+This example illustrates the coupling between the indirect cooling energy transfer station
 ETS and spawn building model.
 </p>
 <p>
