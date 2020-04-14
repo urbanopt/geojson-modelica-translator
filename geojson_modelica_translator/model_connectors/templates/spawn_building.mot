@@ -213,7 +213,7 @@ Documentation( info="<html>
 </html>", revisions="<html>
 <ul><li>
 March 12, 2020: Nicholas Long<br/>
-Updated implemention to handle template needed for GeoJSON to Modelica.
+Updated implementation to handle template needed for GeoJSON to Modelica.
 </li>
 <li>
 February 21, 2020, by Antoine Gautier:<br/>
