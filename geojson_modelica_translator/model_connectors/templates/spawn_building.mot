@@ -3,11 +3,11 @@ model building
    "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
 
 extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
-     redeclare package Medium = MediumW,
-     have_eleHea=false,
-     have_eleCoo=false,
-     have_pum=true,
-     have_weaBus=false);
+   redeclare package Medium = MediumW,
+   have_eleHea=false,
+   have_eleCoo=false,
+   have_pum=true,
+   have_weaBus=false);
 
  replaceable package MediumW = Buildings.Media.Water
    "Source side medium";
@@ -55,7 +55,7 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
 
   {% raw %}
 
-  inner Buildings.ThermalZones.EnergyPlus.Building building(
+inner Buildings.ThermalZones.EnergyPlus.Building building(
        idfName=Modelica.Utilities.Files.loadResource(idfPat),
        weaName=Modelica.Utilities.Files.loadResource(weaPat),
        showWeatherData=false)
@@ -182,17 +182,12 @@ end for;
 {% for zone in data['thermal_zones'] %}
     connect(multiplex3_1.y, {{zone['modelica_object_name']}}.qGai_flow)
         {% raw %}annotation (Line(points={{1,138},{20,138},{20,30},{22,30}}, color={0,0,127}));{% endraw %}
-
     connect ({{zone['modelica_object_name']}}.ports[1], terUni[{{loop.index}}].port_aLoa)
         {% raw %} annotation(Line(points={{42,-119.2},{-8,-119.2},{-8,18.1667},{-120,18.1667}},{% endraw %}
         color={0,127,255}));
-
-
     connect ({{zone['modelica_object_name']}}.ports[2], terUni[{{loop.index}}].port_bLoa)
         {% raw %} annotation (Line(points={{-140,18.1667},{-20,18.1667},{-20,-119.2},{46,-119.2}},{% endraw %}
         color={0,127,255}));
-
-
     connect ({{zone['modelica_object_name']}}.TAir, terUni[{{loop.index}}].TSen)
         {% raw %}annotation (Line(points={{81,13.8},{80,13.8},{80,160},{-152,160},{-152,10.8333},{-140.833,10.8333}},{% endraw %}
         color={0,0,127}));
