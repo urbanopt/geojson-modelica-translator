@@ -290,6 +290,19 @@
       },
       "additionalProperties": false
     },
+    "time_series_model_parameters": {
+      "description": "Parameters associated with time series models.",
+      "type": "object",
+      "properties": {
+        "filPat": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "filPat"
+      ],
+      "additionalProperties": false
+    },
     "ets_parameters": {
       "description": "Parameters associated with ETS models",
       "type": "object",
