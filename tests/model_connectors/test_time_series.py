@@ -76,7 +76,8 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def test_spawn_to_modelica_and_run(self):
         self.assertIsNotNone(self.time_series)
-        self.assertEqual("time_series", self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+        self.assertEqual("time_series",
+                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 
         self.time_series.to_modelica(self.gj.scaffold)
 
