@@ -82,8 +82,8 @@ class TimeSeriesConnector(model_connector_base):
         """
         curdir = os.getcwd()
 
-        time_series_coupling_template = self.template_env.get_template("timeSeries_coupling.mot")
-        time_series_building_template = self.template_env.get_template("timeSeries_building.mot")
+        time_series_coupling_template = self.template_env.get_template("time_series_coupling.mot")
+        time_series_building_template = self.template_env.get_template("time_series_building.mot")
         time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.mos")
         building_names = []
         try:
@@ -100,14 +100,14 @@ class TimeSeriesConnector(model_connector_base):
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
                 time_series_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.timeSeries.filPat"
+                    building["building_id"], "load_model_parameters.time_series.filepath"
                 )
 
                 # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
-                    "timSer": {
-                        "filPat": time_series_filename,
+                    "time_series": {
+                        "filepath": time_series_filename,
                         "filename": os.path.basename(time_series_filename),
                         "path": os.path.dirname(time_series_filename),
                     }
@@ -115,12 +115,12 @@ class TimeSeriesConnector(model_connector_base):
 
                 # copy over the resource files for this building
                 # TODO: move some of this over to a validation step
-                if os.path.exists(template_data["timSer"]["filPat"]):
-                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["timSer"]["filename"])
+                if os.path.exists(template_data["time_series"]["filepath"]):
+                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
                     os.makedirs(os.path.dirname(new_file), exist_ok=True)
-                    shutil.copy(template_data["timSer"]["filPat"], new_file)
+                    shutil.copy(template_data["time_series"]["filepath"], new_file)
                 else:
-                    raise Exception(f"Missing MOS file for time series: {template_data['timSer']['filPat']}")
+                    raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
                 self.run_template(
                     time_series_building_template,

@@ -195,7 +195,7 @@
             "rc": {
               "$ref": "#/definitions/rc_model_parameters"
             },
-            "timeSeries": {
+            "time_series": {
               "$ref": "#/definitions/time_series_model_parameters"
             }
           },
@@ -294,12 +294,12 @@
       "description": "Parameters associated with time series models.",
       "type": "object",
       "properties": {
-        "filPat": {
+        "filepath": {
           "type": "string"
         }
       },
       "required": [
-        "filPat"
+        "filepath"
       ],
       "additionalProperties": false
     },
