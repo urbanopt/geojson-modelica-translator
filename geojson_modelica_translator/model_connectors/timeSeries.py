@@ -110,16 +110,14 @@ class timeSeriesConnector(model_connector_base):
                         "filename": os.path.basename(filPat),
                         "path": os.path.dirname(filPat),
                     }
+                }
 
                 # copy over the resource files for this building
                 # TODO: move some of this over to a validation step
                 if os.path.exists(template_data["timSer"]["filPat"]):
                     shutil.copy(
                         template_data["timSer"]["filPat"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["timSer"]["filPat"],
-                        ),
+                        os.path.join(b_modelica_path.resources_dir, template_data["timSer"]["filPat"])
                     )
                 else:
                     raise Exception(
@@ -142,7 +140,8 @@ class timeSeriesConnector(model_connector_base):
                     "coupling").replace(os.path.sep, '.')
 
                 file_data = timeSeries_mos_template.render(full_model_name=full_model_name)
-                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos")), "w") as f:
+                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos")),
+                          "w") as f:
                     f.write(file_data)
 
                 file_data = timeSeries_coupling_template.render(
@@ -174,7 +173,8 @@ class timeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["timeSeries_building", "timeSeries_coupling"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["timeSeries_building", "timeSeries_coupling"],
+                within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 
