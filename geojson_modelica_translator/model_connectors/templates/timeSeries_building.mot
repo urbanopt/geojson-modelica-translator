@@ -100,7 +100,7 @@ model building
     final T_bHeaWat_nominal=T_bHeaWat_nominal,
     final T_aLoaHea_nominal=T_aLoaHea_nominal) "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-24},{90,-4}})));
-  Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
+  Buildings.Applications.DHC.Loads.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
     redeclare package Medium1 = MediumW,
     redeclare package Medium2 = MediumA,
     final QHea_flow_nominal=QHea_flow_nominal,

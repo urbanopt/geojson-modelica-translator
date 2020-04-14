@@ -6,14 +6,14 @@ package MediumW = Buildings.Media.Water
   "Source side medium";
 
 
-building bui(
+ building bui(
    filPat="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['timSer']['filename']}}",
 {% raw %}
    nPorts_a=2,
    nPorts_b=2)
    "Building"
    annotation (Placement(transformation(extent={{20,40},{40,60}})));
-Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+ Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
    redeclare package Medium = MediumW,
    p=300000,
    nPorts=1)
@@ -39,7 +39,7 @@ Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
    y=bui.terUniCoo.T_aChiWat_nominal)
      "Chilled water supply temperature"
    annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
- Fluid.Sources.Boundary_pT supHeaWat(
+ Buildings.Fluid.Sources.Boundary_pT supHeaWat(
    redeclare package Medium = MediumW,
    use_T_in=true,
    nPorts=1) "Heating water supply"
@@ -47,7 +47,7 @@ Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
        extent={{-10,-10},{10,10}},
        rotation=0,
        origin={-50,80})));
- Fluid.Sources.Boundary_pT supChiWat(
+ Buildings.Fluid.Sources.Boundary_pT supChiWat(
    redeclare package Medium = MediumW,
    use_T_in=true,
    nPorts=1) "Chilled water supply"
