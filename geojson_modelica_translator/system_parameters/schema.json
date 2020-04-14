@@ -182,7 +182,7 @@
           "enum": [
             "ROM/RC",
             "ROM/DDM",
-            "CSV",
+            "time_series",
             "Spawn"
           ]
         },
@@ -194,6 +194,9 @@
             },
             "rc": {
               "$ref": "#/definitions/rc_model_parameters"
+            },
+            "timeSeries": {
+              "$ref": "#/definitions/time_series_model_parameters"
             }
           },
           "additionalProperties": false
@@ -202,7 +205,7 @@
       "additionalProperties": false
     },
     "connector_def": {
-      "description": "Parameters associated with the connectors in a distrcit system.",
+      "description": "Parameters associated with the connectors in a district system.",
       "type": "object",
       "properties": {
         "pipe_diameter": {
@@ -282,6 +285,19 @@
           "default": 2
         }
       },
+      "additionalProperties": false
+    },
+    "time_series_model_parameters": {
+      "description": "Parameters associated with time series models.",
+      "type": "object",
+      "properties": {
+        "filPat": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "filPat"
+      ],
       "additionalProperties": false
     },
     "ets_parameters": {
