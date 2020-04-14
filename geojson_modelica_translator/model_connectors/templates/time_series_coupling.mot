@@ -7,7 +7,7 @@ package MediumW = Buildings.Media.Water
 
 
  building bui(
-   filPat="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['timSer']['filename']}}",
+   filPat="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}",
 {% raw %}
    nPorts_a=2,
    nPorts_b=2)

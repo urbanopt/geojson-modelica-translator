@@ -15,7 +15,7 @@ model building
    "Load side medium";
 
   parameter String filPat=
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['timSer']['filename']}}"
+    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     "Library path of the file with thermal loads as time series";
   parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
     min=273.15, displayUnit="degC") = 273.15 + 40

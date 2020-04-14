@@ -8,8 +8,8 @@
         "geojson_id": "5a6b99ec37f4de7f94020090",
         "load_model": "time_series",
         "load_model_parameters": {
-          "timeSeries": {
-            "filPat": "tests/model_connectors/data/time_series_example_data.mos"
+          "time_series": {
+            "filepath": "tests/model_connectors/data/time_series_example_data.mos"
           }
         }
       }
