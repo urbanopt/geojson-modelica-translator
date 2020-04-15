@@ -38,9 +38,10 @@ from geojson_modelica_translator.model_connectors.ets_template import (
 
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):  # the first method/member must be setUp
-        base_folder = os.path.join(os.getcwd(), "geojson_modelica_translator")
+        base_folder = os.path.join(os.path.abspath(os.path.join(__file__, "../../..")), "geojson_modelica_translator")
         dest_path = "/geojson/data/schemas/thermal_junction_properties.json"
         self.thermal_junction_properties_geojson = base_folder + dest_path
+
         dest_path = "/system_parameters/schema.json"
         self.system_parameters_geojson = base_folder + dest_path
         dest_path = "/modelica/CoolingIndirect.mo"
@@ -68,7 +69,7 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
     def test_ets_to_modelica(self):
         self.assertIsNotNone(self.ets.to_modelica())
 
-    def test_ets_in_dymola(self):
+    def test_ets_in_openloops_dymola(self):
         self.assertIsNotNone(self.ets.templated_ets_openloops_dymola())
 
 

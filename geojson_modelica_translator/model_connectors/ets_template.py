@@ -133,6 +133,7 @@ class ETSTemplate:
         # TODO: Seems like the ets_data below should allow defaults from
         #  the system parameters JSON file, correct?
         # ets model parameters are from the schema.json file, default values only.
+        # ets_data is a dictionary here, which the value must be in [], e.g: ets["pressure"]=[1234]
         ets_data = self.check_ets_system_parameters()
 
         # Here comes the Jina2 function: render()
@@ -161,9 +162,8 @@ class ETSTemplate:
         Here we refactor the example file: CoolingIndirectOpenLoops,
         to test our templated ets model.
         """
-        file = open(
-            os.path.join(os.getcwd(), "geojson_modelica_translator") + "/modelica/CoolingIndirectOpenLoops.mo", "r",
-        )
+        src_file = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) + "/modelica/CoolingIndirectOpenLoops.mo")
+        file = open(src_file, "r")
         cooling_indirect_filename = "/CoolingIndirectOpenLoops_Templated.mo"
 
         # if the modelica example file is existed, delete it first
@@ -202,8 +202,3 @@ class ETSTemplate:
                 examplefile.write(fx)
 
         return examplefile
-
-    def connect(self):
-        """connect ETS-modelica to building-modelica (specifically TEASER modelica).
-        This function will be modified in future"""
-        pass

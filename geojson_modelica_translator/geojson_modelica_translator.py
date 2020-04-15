@@ -34,6 +34,13 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
+# from geojson_modelica_translator.model_connectors.ets_template import (
+#    ETSTemplate
+# )
+from geojson_modelica_translator.model_connectors.rc_ets_template import (
+    RCETSTemplate
+)
+from geojson_modelica_translator.model_connectors.rc_template import RCTemplate
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 
@@ -130,3 +137,19 @@ class GeoJsonModelicaTranslator(object):
         # TODO: BuildingModelClass
         # TODO: mapper class
         # TODO: lookup tables / data sets
+
+    def assemble_rc_water_distribution_air_terminal(self, rc_dir, rc_type):
+        """assemble those generated rc models into a complete building model, plus add air-terminal,
+        and water-distribution
+        """
+        for file in os.listdir(rc_dir):
+            if file.startswith("B") and "package" not in file:
+                rc = RCTemplate(file)
+                rc.assemble_rc_water_distribution_and_air_terminal(rc_type)
+
+    def connect_complete_rc_ets(self, rc_dir, rc_type):
+        """connect the compelete building model and ETS model"""
+        for file in os.listdir(rc_dir):
+            if file.startswith("B") and "package" not in file:
+                rc = RCETSTemplate(file)
+                rc.connect_rc_ets(rc_type)

@@ -1,0 +1,278 @@
+
+within {{project_name}}.Loads.{{load_name}};
+
+model {{rc_ets_model_name}}
+  {% raw %}
+  "Example illustrating the coupling of a building model to heating water and chilled water loops"
+  extends Modelica.Icons.Example;
+  {% endraw %}
+  {% raw %}
+  package Medium1 = Buildings.Media.Water "Fluid in the pipes";
+  {% endraw %}
+
+  {% raw %}
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
+    calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
+    computeWetBulbTemperature=false,
+    filNam=Modelica.Utilities.Files.loadResource(
+    "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
+    "Weather data reader"
+    annotation (Placement(transformation(extent={{40,88},{20,108}})));
+  {% endraw %}
+
+
+  {{rc_name}} bui(nPorts_a=2, nPorts_b=2) "Building"
+    {% raw %} annotation (Placement(transformation(extent={{130,-16},{188,58}}))); {% endraw %}
+
+
+  {% raw %}
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(redeclare package Medium =
+        Medium1, nPorts=1) "Sink for heating water" annotation (Placement(
+        transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=0,
+        origin={250,-110})));
+  Modelica.Blocks.Sources.RealExpression THeaWatSup(y=max(bui.terUni.T_aHeaWat_nominal))
+    "Heating water supply temperature"
+    annotation (Placement(transformation(extent={{20,-116},{40,-96}})));
+  Fluid.Sources.Boundary_pT supHeaWat(
+    redeclare package Medium = Medium1,
+    use_T_in=true,
+    nPorts=1) "Heating water supply" annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={90,-110})));
+  Modelica.Blocks.Sources.Constant TSetCHWS(k=273.15 + 7)
+    "Setpoint temperature for building chilled water supply"
+    annotation (Placement(transformation(extent={{-290,-18},{-270,2}})));
+
+    parameter Modelica.SIunits.MassFlowRate m1_flow_nominal = 0.5
+    "Nominal mass flow rate of primary (district) district cooling side";
+  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal = 0.5
+    "Nominal mass flow rate of secondary (building) district cooling side";
+
+  Fluid.Sources.Boundary_pT           sinDis(
+    redeclare package Medium = Medium1,
+    p=300000,
+    T=287.15,
+    nPorts=1)
+    "District-side (primary) sink"
+    annotation (Placement(transformation(extent={{-100,52},{-120,72}})));
+  Fluid.Sources.Boundary_pT           souDis(
+    redeclare package Medium = Medium1,
+    p(displayUnit="Pa") = 300000 + 800,
+    use_T_in=true,
+    T=278.15,
+    nPorts=1)
+    "District (primary) source"
+    annotation (Placement(transformation(extent={{-270,52},{-250,72}})));
+  Fluid.Sources.Boundary_pT           sinBui(
+    redeclare package Medium = Medium1,
+    use_T_in=false,
+    T=280.15,
+    nPorts=1)
+    "Building (secondary) sink (chilled water supply)"
+    annotation (Placement(transformation(extent={{-300,-88},{-280,-68}})));
+  Fluid.Sensors.TemperatureTwoPort           TDisSup(
+    redeclare package Medium = Medium1,
+    m_flow_nominal=m1_flow_nominal,
+    T_start=278.15)
+    "District-side (primary) supply temperature sensor"
+    annotation (Placement(transformation(extent={{-236,52},{-216,72}})));
+  Fluid.Sensors.TemperatureTwoPort           TDisRet(
+    redeclare package Medium = Medium1,
+    m_flow_nominal=m1_flow_nominal,
+    T_start=287.15)
+    "District-side (primary) return temperature sensor"
+    annotation (Placement(transformation(extent={{-160,52},{-140,72}})));
+  Fluid.Sensors.TemperatureTwoPort           TBuiRet(
+    redeclare package Medium = Medium1,
+    m_flow_nominal=m2_flow_nominal,
+    T_start=289.15)
+    "Building-side (secondary) return temperature sensor"
+    annotation (Placement(transformation(extent={{-140,-88},{-160,-68}})));
+  Fluid.Sensors.TemperatureTwoPort           TBuiSup(
+    redeclare package Medium = Medium1,
+    m_flow_nominal=m2_flow_nominal,
+    T_start=280.15)
+    "Building-side (secondary) supply temperature sensor"
+    annotation (Placement(transformation(extent={{-230,-88},{-250,-68}})));
+  {% endraw %}
+
+
+    EnergyTransferStations.{{ets_name}}                            coo(
+    {% raw %}
+    redeclare package Medium = Medium1,
+    m1_flow_nominal=m1_flow_nominal,
+    m2_flow_nominal=m2_flow_nominal,
+    dp1_nominal=500,
+    dp2_nominal=500,
+    Q_flow_nominal=18514,
+    T_a1_nominal=278.15,
+    T_a2_nominal=289.15,
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=0.1,
+    Ti=40,
+    yMax=1,
+    yMin=0,
+    initType=Modelica.Blocks.Types.InitPID.InitialOutput,
+    yCon_start=0,
+    reverseAction=true)
+    "Indirect cooling ETS"
+    annotation (Placement(transformation(extent={{-202,-16},{-162,28}})));
+    {% endraw %}
+
+
+  {% raw %}
+  Fluid.Movers.FlowControlled_m_flow           pumBui(
+    redeclare package Medium = Medium1,
+    m_flow_nominal=m2_flow_nominal,
+    inputType=Buildings.Fluid.Types.InputType.Constant,
+    nominalValuesDefineDefaultPressureCurve=true,
+    dp_nominal=6000)
+    "Building-side (secondary) pump"
+    annotation (Placement(transformation(extent={{-200,-88},{-220,-68}})));
+  Modelica.Blocks.Sources.Trapezoid tra(
+    amplitude=1.5,
+    rising(displayUnit="h") = 10800,
+    width(displayUnit="h") = 10800,
+    falling(displayUnit="h") = 10800,
+    period(displayUnit="h") = 43200,
+    offset=273 + 3.5)
+    "District supply temperature trapezoid signal"
+    annotation (Placement(transformation(extent={{-300,56},{-280,76}})));
+  Modelica.Blocks.Math.Add TApp(k2=-1) "Calculate approach temperature"
+    annotation (Placement(transformation(extent={{-180,102},{-160,122}})));
+  Modelica.Blocks.Math.Add dTDis(k1=-1)
+    "Calculate change in district temperature"
+    annotation (Placement(transformation(extent={{-120,82},{-100,102}})));
+  Modelica.Blocks.Math.Add dTBui(k1=-1)
+    "Calculate change in building temperature"
+    annotation (Placement(transformation(extent={{-98,-40},{-78,-20}})));
+  Fluid.Sources.Boundary_pT           souBui(
+    redeclare package Medium = Medium1,
+    nPorts=1,
+    use_T_in=false,
+    T=289.15)
+    "Building (secondary) source (chilled water return)"
+    annotation (Placement(transformation(extent={{-80,-88},{-100,-68}})));
+  {% endraw %}
+
+  {% raw %}
+equation
+  connect(weaDat.weaBus, bui.weaBus)
+  annotation (Line(
+      points={{20,98},{152,98},{152,47.3933},{159.097,47.3933}},
+      color={255,204,51},
+      thickness=0.5));
+  connect(bui.ports_b[1], sinHeaWat.ports[1]) annotation (Line(points={{188,
+          -3.66667},{222,-3.66667},{222,-110},{240,-110}},
+                                      color={0,127,255}));
+  connect(supHeaWat.T_in, THeaWatSup.y) annotation (Line(points={{78,-106},{41,
+          -106}},           color={0,0,127}));
+  connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{100,
+          -110},{122,-110},{122,-3.66667},{130,-3.66667}},
+                                   color={0,127,255}));
+  connect(coo.port_b2, pumBui.port_a) annotation (Line(points={{-202,-7.2},{-202,
+          -78},{-200,-78}},     color={0,127,255}));
+  connect(tra.y,souDis. T_in)
+    annotation (Line(points={{-279,66},{-272,66}},          color={0,0,127}));
+  connect(TSetCHWS.y,coo. TSet)
+    annotation (Line(points={{-269,-8},{-236,-8},{-236,6},{-206,6}},
+                                              color={0,0,127}));
+  connect(souDis.ports[1],TDisSup. port_a)
+    annotation (Line(points={{-250,62},{-236,62}},
+                                                 color={0,127,255}));
+  connect(TDisSup.port_b,coo. port_a1) annotation (Line(points={{-216,62},{-212,
+          62},{-212,19.2},{-202,19.2}},
+                                color={0,127,255}));
+  connect(coo.port_b1, TDisRet.port_a) annotation (Line(points={{-162,19.2},{-164,
+          19.2},{-164,62},{-160,62}},
+                            color={0,127,255}));
+  connect(TDisRet.port_b,sinDis. ports[1])
+    annotation (Line(points={{-140,62},{-120,62}},
+                                                color={0,127,255}));
+  connect(TBuiSup.T,TApp. u1)
+    annotation (Line(points={{-240,-67},{-240,118},{-182,118}},
+                                                            color={0,0,127}));
+  connect(TDisSup.T,TApp. u2)
+    annotation (Line(points={{-226,73},{-226,106},{-182,106}},
+                                                         color={0,0,127}));
+  connect(TDisRet.T,dTDis. u2)
+    annotation (Line(points={{-150,73},{-150,86},{-122,86}},
+                                                       color={0,0,127}));
+  connect(dTDis.u1,TDisSup. T)
+    annotation (Line(points={{-122,98},{-226,98},{-226,73}},
+                                                         color={0,0,127}));
+  connect(TBuiRet.T,dTBui. u2)
+    annotation (Line(points={{-150,-67},{-150,-36},{-100,-36}},
+                                                          color={0,0,127}));
+  connect(TBuiSup.T,dTBui. u1)
+    annotation (Line(points={{-240,-67},{-240,-24},{-100,-24}},
+                                                            color={0,0,127}));
+  connect(pumBui.port_b,TBuiSup. port_a)
+    annotation (Line(points={{-220,-78},{-230,-78}},
+                                                   color={0,127,255}));
+  connect(TBuiSup.port_b,sinBui. ports[1])
+    annotation (Line(points={{-250,-78},{-280,-78}},color={0,127,255}));
+  connect(coo.port_a2,TBuiRet. port_b) annotation (Line(points={{-162,-7.2},{-164,
+          -7.2},{-164,-78},{-160,-78}},
+                                   color={0,127,255}));
+  connect(TBuiSup.port_b, bui.ports_a[2]) annotation (Line(points={{-250,-78},{
+          -262,-78},{-262,-118},{-20,-118},{-20,1.26667},{130,1.26667}},
+                                                                      color={0,127,
+          255}));
+  connect(TBuiRet.port_a, souBui.ports[1])
+    annotation (Line(points={{-140,-78},{-100,-78}}, color={0,127,255}));
+  connect(bui.ports_b[2], TBuiRet.port_a) annotation (Line(points={{188,1.26667},
+          {210,1.26667},{210,8},{230,8},{230,140},{-56,140},{-56,-102},{-108,
+          -102},{-108,-78},{-140,-78}}, color={0,127,255}));
+{% endraw %}
+
+{% raw %}
+  annotation (
+  Documentation(info="<html>
+<p>
+This example illustrates the use of
+<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding\">
+Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding</a>,
+<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+and
+<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution\">
+Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution</a>
+in a configuration with
+</p>
+<ul>
+<li>
+a six-zone building model based on a two-element reduced order model (from
+GeoJSON export), and
+</li>
+<li>
+secondary pumps.
+</li>
+</ul>
+</html>",
+revisions=
+"<html>
+<ul>
+<li>
+February 21, 2020, by Antoine Gautier:<br/>
+First implementation.
+</li>
+<li> 4/1/2020, templated by Yanfei Li </li>
+</ul>
+</html>"),
+  Diagram(
+    coordinateSystem(preserveAspectRatio=false, extent={{-320,-140},{280,140}})),
+    __Dymola_Commands(file=
+        "Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/CouplingRCZ6.mos"
+        "Simulate and plot"),
+    experiment(
+      StopTime=604800,
+      Tolerance=1e-06),
+    Icon(coordinateSystem(extent={{-320,-140},{280,140}})));
+{% endraw %}
+
+
+end {{rc_ets_model_name}};
