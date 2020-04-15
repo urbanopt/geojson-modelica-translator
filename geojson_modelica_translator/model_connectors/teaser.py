@@ -76,8 +76,40 @@ class TeaserConnector(model_connector_base):
             )
 
     def lookup_building_type(self, building_type):
-        if "office" in building_type.lower():
-            return "office"
+        """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
+        documentation on building types is here: """
+        mapping = {
+            "Single-Family": "SingleFamilyDwelling",
+            "Office": "office"
+        }
+        # "Single-Family",
+        #         "Multifamily (2 to 4 units)",
+        #         "Multifamily (5 or more units)",
+        #         "Mobile Home",
+        #         "Vacant",
+        #         "Office",
+        #         "Laboratory",
+        #         "Nonrefrigerated warehouse",
+        #         "Food sales",
+        #         "Public order and safety",
+        #         "Outpatient health care",
+        #         "Refrigerated warehouse",
+        #         "Religious worship",
+        #         "Public assembly",
+        #         "Education",
+        #         "Food service",
+        #         "Inpatient health care",
+        #         "Nursing",
+        #         "Lodging",
+        #         "Strip shopping mall",
+        #         "Enclosed mall",
+        #         "Retail other than mall",
+        #         "Service",
+        #         "Mixed use",
+        #         "Uncovered Parking",
+        #         "Covered Parking"
+        if building_type in mapping.keys():
+            return mapping[building_type]
         else:
             # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
             return "office"
