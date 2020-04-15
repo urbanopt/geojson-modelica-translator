@@ -81,14 +81,14 @@ Documentation(info="<html>
 <h4>Hydraulic header</h4>
 <p>
 The model represents a header or a common pipe which hydraulically splits
-up the entering flow into the branch circuits attached to it with zero head loss. 
+up the entering flow into the branch circuits attached to it with zero head loss.
 </p>
 </html>",
 revisions="<html>
 <ul>
 <li>
 January 16, 2020 by Antoine Gauitier:<br/>
-Updated the implementation 
+Updated the implementation
 </li>
 <li>
 September 10, 2019 by Hagar Elarga:<br/>
