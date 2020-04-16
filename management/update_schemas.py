@@ -54,7 +54,7 @@ class UpdateSchemas(distutils.cmd.Command):
             "thermal_junction_properties.json",
         ]
         # For now the branch is 'schema' but will need to be moved to develop after it is merged.
-        self.baseurl = "https://raw.githubusercontent.com/urbanopt/urbanopt-geojson-gem/schema/lib/urbanopt/geojson/schema/"  # noqa
+        self.baseurl = "https://raw.githubusercontent.com/urbanopt/urbanopt-geojson-gem/develop/lib/urbanopt/geojson/schema/"  # noqa
 
     def finalize_options(self):
         if self.baseurl is None:

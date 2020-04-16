@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "Properties of a District System object",
-  "description": "Schema for a District System object",
+  "title": "URBANopt Thermal Connector",
+  "description": "Schema for an URBANopt Thermal Connector object",
   "type": "object",
   "properties": {
     "id": {
@@ -51,6 +51,7 @@
       "type": "string"
     },
     "end_junction_id": {
+      "description": "Id of the junction that this connector ends at.",
       "type": "string"
     },
     "fluid_temperature_type": {
@@ -76,6 +77,7 @@
   "additionalProperties": false,
   "definitions": {
     "ThermalConnectorType": {
+      "description": "Type of thermal connector.",
       "type": "string",
       "enum": [
         "OnePipe",
@@ -85,6 +87,7 @@
       ]
     },
     "TemperatureType": {
+      "description": "Temperature of fluid flowing in connector.",
       "type": "string",
       "enum": [
         "Hot",
@@ -93,10 +96,12 @@
       ]
     },
     "FlowDirection": {
+      "description": "Direction of flow from start junction to end junction.",
       "type": "string",
       "enum": [
         "Supply",
-        "Return"
+        "Return",
+        "Unspecified"
       ]
     }
   }
