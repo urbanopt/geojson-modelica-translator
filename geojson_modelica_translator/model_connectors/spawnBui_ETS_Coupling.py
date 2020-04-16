@@ -38,7 +38,7 @@ from geojson_modelica_translator.utils import ModelicaPath
 from jinja2 import Environment, FileSystemLoader
 
 
-class SpawnConnector(model_connector_base):
+class SpawnConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
@@ -81,10 +81,10 @@ class SpawnConnector(model_connector_base):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        spawnBui_ETS_coupling_template = self.template_env.get_template("spawnBui_ETS_coupling.mot")
+        spawn_ets_coupling_template = self.template_env.get_template("spawnBui_ETS_coupling.mot")
         spawn_building_template = self.template_env.get_template("spawn_building.mot")
-        CoolingIndirect_template = self.template_env.get_template("CoolingIndirect.mot")
-        spawnBui_ETS_mos_template = self.template_env.get_template("RunCouplingETS_SpawnBuilding.most")
+        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        spawn_ets_mos_template = self.template_env.get_template("RunCouplingETS_SpawnBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -113,8 +113,8 @@ class SpawnConnector(model_connector_base):
                     building["building_id"],
                     "load_model_parameters.spawn.thermal_zone_names",
                 )
-# this is a dictionary of data, thermal zones is a list []
-# construct th dict to pass into the template
+
+                # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
                     "idf": {
@@ -171,7 +171,8 @@ class SpawnConnector(model_connector_base):
                 else:
                     raise Exception(
                         f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
-# write a file name building.mo, CoolingIndirect.mo and CouplingETS_SpawnBuilding.mo
+
+                # write a file name building.mo, CoolingIndirect.mo and CouplingETS_SpawnBuilding.mo
                 # Run the templating
                 file_data = spawn_building_template.render(
                     project_name=scaffold.project_name,
@@ -181,33 +182,50 @@ class SpawnConnector(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
-                file_data = CoolingIndirect_template.render(
+                # This is a complete hack as the ETS template reads from the schema. For now we need to follow that
+                # same paradigm to make this work.
+                # This relates to this ticket https://github.com/urbanopt/geojson-modelica-translator/issues/64
+                ets_data = {
+                    "ModelName": "ets_cooling_indirect_templated",
+                    "Q_Flow_Nominal": [8000],
+                    "Eta_Efficiency": [0.666],
+                    "NominalFlow_District": [0.666],
+                    "NominalFlow_Building": [0.666],
+                    "PressureDrop_Valve": [888],
+                    "PressureDrop_HX_Secondary": [999],
+                    "PressureDrop_HX_Primary": [999],
+                    "SWT_District": [5],
+                    "SWT_Building": [7]
+                }
+                file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
+                    ets_data=ets_data,
                 )
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
                     f.write(file_data)
 
                 full_model_name = os.path.join(
-                      scaffold.project_name,
-                      scaffold.loads_path.files_relative_dir,  # where files_relative_dir in scaffold.py?
-                      f"B{building['building_id']}",
-                      "CouplingETS_SpawnBuilding").replace(os.path.sep, '.')
+                    scaffold.project_name,
+                    scaffold.loads_path.files_relative_dir,
+                    f"B{building['building_id']}",
+                    "CouplingETS_SpawnBuilding").replace(os.path.sep, '.')
 
-                file_data = spawnBui_ETS_mos_template.render(
-                   full_model_name=full_model_name, model_name="spawnBui_ETS_coupling"
+                file_data = spawn_ets_mos_template.render(
+                    full_model_name=full_model_name, model_name="spawnBui_ETS_coupling"
                 )
 
-                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_SpawnBuilding.mos")), "w") as f:
+                with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_SpawnBuilding.mos"), "w") as f:
                     f.write(file_data)
 
-                file_data = spawnBui_ETS_coupling_template.render(
+                file_data = spawn_ets_coupling_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo")), "w") as f:
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo")),
+                          "w") as f:
                     f.write(file_data)
 
         finally:

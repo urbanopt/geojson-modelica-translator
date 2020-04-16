@@ -113,7 +113,7 @@ class SpawnConnector(model_connector_base):
                     "load_model_parameters.spawn.thermal_zone_names",
                 )
 
-                # construct th dict to pass into the template
+                # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
                     "idf": {
