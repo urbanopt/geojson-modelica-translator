@@ -81,7 +81,7 @@ class SpawnConnectorETS(model_connector_base):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        spawn_ets_coupling_template = self.template_env.get_template("spawnBui_ETS_coupling.mot")
+        spawn_ets_coupling_template = self.template_env.get_template("CouplingETS_SpawnBuilding.mot")
         spawn_building_template = self.template_env.get_template("spawn_building.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         spawn_ets_mos_template = self.template_env.get_template("RunCouplingETS_SpawnBuilding.most")
@@ -213,7 +213,7 @@ class SpawnConnectorETS(model_connector_base):
                     "CouplingETS_SpawnBuilding").replace(os.path.sep, '.')
 
                 file_data = spawn_ets_mos_template.render(
-                    full_model_name=full_model_name, model_name="spawnBui_ETS_coupling"
+                    full_model_name=full_model_name, model_name="CouplingETS_SpawnBuilding"
                 )
 
                 with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_SpawnBuilding.mos"), "w") as f:
@@ -249,7 +249,7 @@ class SpawnConnectorETS(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "CouplingETS_SpawnBuilding"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["building","CoolingIndirect", "CouplingETS_SpawnBuilding"], within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 

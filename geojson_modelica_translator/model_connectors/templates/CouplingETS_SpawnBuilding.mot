@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model spawnBui_ETS_coupling
+model CouplingETS_SpawnBuilding
   "FMU Template for Spawn"
 extends Modelica.Icons.Example;
 
@@ -100,7 +100,7 @@ extends Modelica.Icons.Example;
          extent={{10,-10},{-10,10}},
          rotation=0,
          origin={90,-90})));
-  geojson_modelica_translator.model_connectors.templates.HydraulicHeader hydHed(
+ Buildings.Applications.DHC.EnergyTransferStations.HydraulicHeader hydHed(
      redeclare package Medium = MediumW,
      m_flow_nominal=35,
      nPorts_a=1,
@@ -110,28 +110,27 @@ extends Modelica.Icons.Example;
 {% endraw %}
 equation
 {% raw %}
-connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{
-        -12,-10},{-12,-44},{-10,-44}},color={0,127,255}));
-connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{10,-44},{
-        10,-10},{40,-10}},color={0,127,255}));
-connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{-12,-50},{-16,-50},
-        {-16,-30},{-59,-30}},color={0,0,127}));
-connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-42,54},{-58,
-        54},{-58,30},{-59,30}},color={0,0,127}));
-connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{-20,50},
-        {-20,65},{-14,65}},color={0,127,255}));
-connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{40,50},
-        {30,50},{30,65},{16,65}},color={0,127,255}));
-connect(pumBui.port_b, bui.ports_a[2]) annotation (Line(points={{-80,-70},{
-        -94,-70},{-94,67},{-14,67}},color={0,127,255}));
-connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{40,-70},{-10,
-        -70},{-10,-56}},color={0,127,255}));
-connect(coo.port_b2, hydHed.ports_a[1]) annotation (Line(points={{-10,-56},{
-        -10,-70},{-20,-70}}, color={0,127,255}));
-connect(hydHed.ports_b[1], pumBui.port_a) annotation (Line(points={{-40,-70},{
-        -60,-70}},color={0,127,255}));
-connect(coo.port_a2, bui.ports_b[2]) annotation (Line(points={{10,-56},{12,-56},{
-        12,-50},{80,-50},{80,67},{16,67}}, color={0,127,255}));
+connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{-12,
+          -10},{-12,-66},{2,-66}},    color={0,127,255}));
+connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{22,-66},{22,-10},
+          {40,-10}},      color={0,127,255}));
+connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{0,-72},{-16,-72},{-16,
+          -50},{-39,-50}},   color={0,0,127}));
+connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-62,74},{-68,74},
+          {-68,80},{-77,80}},  color={0,0,127}));
+connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{-40,70},{-40,
+          55},{-10,55}},   color={0,127,255}));
+connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{80,80},{30,
+          80},{30,55},{20,55}},  color={0,127,255}));
+connect(pumBui.port_b, bui.ports_a[2]) annotation (Line(points={{-80,-70},{-94,-70},
+          {-94,57},{-10,57}},color={0,127,255}));
+connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{80,-90},{2,-90},{2,
+          -78}},        color={0,127,255}));
+connect(coo.port_b2, hydHed.ports_a[1]) annotation (Line(points={{2,-78},{-10,-78},
+          {-10,-70},{-20,-70}},color={0,127,255}));
+connect(hydHed.ports_b[1], pumBui.port_a) annotation (Line(points={{-40,-70},{-60,
+          -70}},  color={0,127,255}));
+connect(coo.port_a2, bui.ports_b[2]);
 {% endraw %}
 
 {% raw %}
@@ -164,4 +163,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end spawnBui_ETS_coupling;
+end CouplingETS_SpawnBuilding;
