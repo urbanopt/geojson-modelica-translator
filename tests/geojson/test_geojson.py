@@ -61,11 +61,17 @@ class GeoJSONTest(unittest.TestCase):
             f"URBANopt GeoJSON file does not exist: {fn}", str(exc.exception)
         )
 
-    def test_validate(self):
+    def test_valid_instance(self):
         filename = os.path.join(self.data_dir, "geojson_1.json")
         json = UrbanOptGeoJson(filename)
         valid, results = json.validate()
-        print(results)
+        self.assertTrue(valid)
+        self.assertEqual(len(results["building"]), 0)
+
+    def test_validate(self):
+        filename = os.path.join(self.data_dir, "geojson_1_invalid.json")
+        json = UrbanOptGeoJson(filename)
+        valid, results = json.validate()
         self.assertFalse(valid)
         self.assertEqual(len(results["building"]), 1)
         err = ["'footprint_area' is a required property", "'name' is a required property"]
