@@ -25,14 +25,13 @@ extends Modelica.Icons.Example;
      T_a1_nominal=278.15,
      T_a2_nominal=289.15,
      eta=0.5)
-      annotation (Placement(transformation(extent={{2,-82},{22,-62}})));
+      annotation (Placement(transformation(extent={{-10,-58},{10,-38}})));
   building bui(
      have_pum= false,
      nPorts_a=2,
      nPorts_b=2)
     "Building model integrating multiple spawn thermal zones."
-      annotation (Placement(transformation(extent={{0,58},{10,68}})));
-
+      annotation (Placement(transformation(extent={{-6,78},{4,88}})));
   Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
      redeclare package Medium = MediumW,
      m_flow=15,
@@ -43,7 +42,7 @@ extends Modelica.Icons.Example;
       annotation (Placement(transformation(
          extent={{-10,-10},{10,10}},
          rotation=0,
-         origin={-30,-30})));
+         origin={-30,-10})));
   Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
      redeclare package Medium = MediumW,
      m_flow=35,
@@ -53,7 +52,7 @@ extends Modelica.Icons.Example;
       annotation (Placement(transformation(
          extent={{-10,-10},{10,10}},
          rotation=0,
-         origin={-50,70})));
+         origin={-30,50})));
   Buildings.Fluid.Sources.Boundary_pT sinChiWat(
      redeclare package Medium = MediumW,
      p=800000,
@@ -70,17 +69,17 @@ extends Modelica.Icons.Example;
      nPorts=1)
     "Sink for heating water"
       annotation (Placement(transformation(
-           extent={{10,-10},{-10,10}},
-           rotation=0,
-           origin={88,78})));
+         extent={{10,-10},{-10,10}},
+         rotation=0,
+         origin={50,50})));
   Modelica.Blocks.Sources.RealExpression TChiWatSet(
       y=7 + 273.15)
     "Primary loop chilled water setpoint temperature"
-      annotation (Placement(transformation(extent={{-60,-60},{-40,-40}})));
+      annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
   Modelica.Blocks.Sources.RealExpression THeaWatSup(
       y=max(bui.terUni.T_aHeaWat_nominal))
     "Heating water supply temperature"
-      annotation (Placement(transformation(extent={{-100,60},{-80,80}})));
+      annotation (Placement(transformation(extent={{-80,20},{-60,40}})));
   Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
@@ -90,7 +89,7 @@ extends Modelica.Icons.Example;
     use_inputFilter=false,
     dp_nominal=6000)
     "Building-side (secondary) pump"
-      annotation (Placement(transformation(extent={{-60,-80},{-80,-60}})));
+      annotation (Placement(transformation(extent={{-60,-60},{-80,-40}})));
   Modelica.Fluid.Sources.FixedBoundary pre(
      redeclare package Medium = MediumW,
      p=300000,
@@ -99,40 +98,40 @@ extends Modelica.Icons.Example;
       annotation (Placement(transformation(
          extent={{10,-10},{-10,10}},
          rotation=0,
-         origin={90,-90})));
- Buildings.Applications.DHC.EnergyTransferStations.HydraulicHeader hydHed(
+         origin={50,-70})));
+  Buildings.Applications.DHC.EnergyTransferStations.HydraulicHeader hydHed(
      redeclare package Medium = MediumW,
      m_flow_nominal=35,
      nPorts_a=1,
      nPorts_b=1)
     "Hydraulic decoupler"
-      annotation (Placement(transformation(extent={{-20,-80},{-40,-60}})));
+      annotation (Placement(transformation(extent={{-20,-60},{-40,-40}})));
 {% endraw %}
 equation
 {% raw %}
 connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{-12,
-          -10},{-12,-66},{2,-66}},    color={0,127,255}));
-connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{22,-66},{22,-10},
+          -10},{-12,-42},{-10,-42}},  color={0,127,255}));
+connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{10,-42},{10,-10},
           {40,-10}},      color={0,127,255}));
-connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{0,-72},{-16,-72},{-16,
-          -50},{-39,-50}},   color={0,0,127}));
-connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-62,74},{-68,74},
-          {-68,80},{-77,80}},  color={0,0,127}));
-connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{-40,70},{-40,
-          55},{-10,55}},   color={0,127,255}));
-connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{80,80},{30,
-          80},{30,55},{20,55}},  color={0,127,255}));
-connect(pumBui.port_b, bui.ports_a[2]) annotation (Line(points={{-80,-70},{-94,-70},
-          {-94,57},{-10,57}},color={0,127,255}));
-connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{80,-90},{2,-90},{2,
-          -78}},        color={0,127,255}));
-connect(coo.port_b2, hydHed.ports_a[1]) annotation (Line(points={{2,-78},{-10,-78},
-          {-10,-70},{-20,-70}},color={0,127,255}));
-connect(hydHed.ports_b[1], pumBui.port_a) annotation (Line(points={{-40,-70},{-60,
-          -70}},  color={0,127,255}));
-connect(coo.port_a2, bui.ports_b[2]);
+connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{-12,-48},{-16,-48},{-16,
+          -30},{-59,-30}},   color={0,0,127}));
+connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-42,54},{-44,54},
+          {-44,30},{-59,30}},  color={0,0,127}));
+connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{-20,50},{-20,
+          73},{-16,73}},   color={0,127,255}));
+connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{40,50},{30,
+          50},{30,73},{14,73}},  color={0,127,255}));
+connect(pumBui.port_b, bui.ports_a[2]) annotation (Line(points={{-80,-50},{-94,-50},
+          {-94,75},{-16,75}},color={0,127,255}));
+connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{40,-70},{-10,-70},
+          {-10,-54}},   color={0,127,255}));
+connect(coo.port_b2, hydHed.ports_a[1]) annotation (Line(points={{-10,-54},{-20,
+          -54},{-20,-50}},     color={0,127,255}));
+connect(hydHed.ports_b[1], pumBui.port_a) annotation (Line(points={{-40,-50},{-60,
+          -50}},  color={0,127,255}));
+connect(bui.ports_b[2], coo.port_a2) annotation (Line(points={{14,75},{80,75},{80,
+          -54},{10,-54}}, color={0,127,255}));
 {% endraw %}
-
 {% raw %}
 annotation (Icon(coordinateSystem(preserveAspectRatio=false),
                                    extent={{-100,-100},{100,100}}),
