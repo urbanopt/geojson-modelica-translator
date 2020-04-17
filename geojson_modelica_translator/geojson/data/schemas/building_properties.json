@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/building_properties.json#",
-  "title": "Building object",
-  "description": "Schema for a Building object",
+  "title": "URBANopt Building",
+  "description": "Schema for an URBANopt Building object",
   "type": "object",
   "properties": {
     "id": {
@@ -57,12 +57,34 @@
       "type": "string"
     },
     "tariff_filename": {
-      "description": "Name of the tariff file for this building.  Defaults to site's tariff_filename. ",
+      "description": "Name of the tariff file for this building.  Defaults to site's tariff_filename.",
       "type": "string"
     },
     "surface_elevation": {
       "description": "The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.",
       "type": "number"
+    },
+    "timesteps_per_hour": {
+      "description": "Number of timesteps per hour for energy simulations. Defaults to site's timesteps_per_hour.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 60
+    },
+    "begin_date": {
+      "description": "Date to begin simulation, format YYYY-MM-DD. Defaults to site's begin_date.",
+      "type": "string"
+    },
+    "end_date": {
+      "description": "Date to end simulation, format YYYY-MM-DD. Defaults to site's end_date.",
+      "type": "string"
+    },
+    "climate_zone": {
+      "description": "ASHRAE 169 climate zone. Defaults to site's climate_zone",
+      "type": "string"
+    },
+    "cec_climate_zone": {
+      "description": "CEC Title24 climate zone. Defaults to site's cec_climate_zone",
+      "type": "string"
     },
     "floor_area": {
       "description": "Usable floor area (ft^2).",
@@ -81,7 +103,7 @@
       "type": "number"
     },
     "roof_type": {
-      "description": "The basic roof geometry. Defaults to flat.",
+      "description": "The type of roof. Defaults to flat.",
       "type": "string",
       "enum": [
         "Flat",
@@ -98,7 +120,7 @@
       "type": "number"
     },
     "year_built": {
-      "description": "The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year. ",
+      "description": "The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year.",
       "type": "integer"
     },
     "template": {
@@ -111,7 +133,7 @@
       "$ref": "#/definitions/systemType"
     },
     "weekday_start_time": {
-      "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
+      "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default. Should this be part of a mixed type struct?",
       "type": "string"
     },
     "weekday_duration": {
@@ -119,7 +141,7 @@
       "type": "string"
     },
     "weekend_start_time": {
-      "description": "Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave black to use default. Should this be part of a mixed type struct?",
+      "description": "Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default. Should this be part of a mixed type struct?",
       "type": "string"
     },
     "weekend_duration": {
@@ -193,13 +215,15 @@
     }
   },
   "required": [
+    "id",
     "type",
+    "name",
     "floor_area",
     "number_of_stories",
-    "building_type",
-    "system_type"
+    "footprint_area",
+    "building_type"
   ],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "definitions": {
     "buildingType": {
       "description": "Primary building space type.",
@@ -230,7 +254,8 @@
         "Service",
         "Mixed use",
         "Uncovered Parking",
-        "Covered Parking"
+        "Covered Parking",
+        "null"
       ]
     },
     "systemType": {
@@ -319,7 +344,7 @@
       ]
     },
     "templateType": {
-      "description": "Standard template applied to building.",
+      "description": "Standard template applied to building. Default to site's default_template",
       "type": "string",
       "enum": [
         "DOE Ref Pre-1980",
