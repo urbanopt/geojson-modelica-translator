@@ -1,52 +1,60 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-  "FMU Template for Spawn"
- extends Modelica.Icons.Example;
+   "FMU Template for Spawn"
+extends Modelica.Icons.Example;
 
-  replaceable package MediumW = Buildings.Media.Water
+package MediumW = Buildings.Media.Water
    "Source side medium";
-  replaceable package MediumA = Buildings.Media.Air
+package MediumA = Buildings.Media.Air
    "Load side medium";
-
 {% raw %}
-  // Do not fully qualify the path to building as {{project_name}}.Loads... That does
-  // not work in JModelica.
   building bui(
       nPorts_b=2,
-      nPorts_a=2) "Building spawn model"
+      nPorts_a=2,
+      have_pum=true)
+   "Building spawn model"
       annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
       redeclare package Medium = MediumW,
       nPorts=1)
-     "Sink for heating water"
+   "Sink for heating water"
       annotation (Placement(transformation(
           extent={{10,-10},{-10,10}},
           rotation=0,
           origin={134,20})));
   Buildings.Fluid.Sources.Boundary_pT sinChiWat(
-     redeclare package Medium = MediumW, nPorts=1)
+     redeclare package Medium = MediumW,
+     nPorts=1)
    "Sink for chilled water"
-     annotation (Placement(transformation(
+      annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={134,-40})));
-  Modelica.Blocks.Sources.RealExpression THeaWatSup(y=max(bui.terUni.T_aHeaWat_nominal))
-    "Heating water supply temperature"
-    annotation (Placement(transformation(extent={{-110,10},{-90,30}})));
-  Modelica.Blocks.Sources.RealExpression TChiWatSup(y=min(bui.terUni.T_aChiWat_nominal))
-    "Chilled water supply temperature"
-    annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
+  Modelica.Blocks.Sources.RealExpression THeaWatSup(
+    y=max(bui.terUni.T_aHeaWat_nominal))
+   "Heating water supply temperature"
+      annotation (Placement(transformation(
+      extent={{-110,10},{-90,30}})));
+  Modelica.Blocks.Sources.RealExpression TChiWatSup(
+    y=min(bui.terUni.T_aChiWat_nominal))
+   "Chilled water supply temperature"
+      annotation (Placement(transformation(
+      extent={{-110,-50},{-90,-30}})));
   Buildings.Fluid.Sources.Boundary_pT supHeaWat(
     redeclare package Medium = MediumW,
     use_T_in=true,
-    nPorts=1) "Heating water supply" annotation (Placement(transformation(
+    nPorts=1)
+   "Heating water supply"
+      annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-40,20})));
   Buildings.Fluid.Sources.Boundary_pT supChiWat(
     redeclare package Medium = MediumW,
     use_T_in=true,
-    nPorts=1) "Chilled water supply" annotation (Placement(transformation(
+    nPorts=1)
+   "Chilled water supply"
+      annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-40,-40})));
