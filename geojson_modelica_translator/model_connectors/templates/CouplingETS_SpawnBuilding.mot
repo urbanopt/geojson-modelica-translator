@@ -99,7 +99,7 @@ extends Modelica.Icons.Example;
          extent={{10,-10},{-10,10}},
          rotation=0,
          origin={50,-70})));
-  Buildings.Applications.DHC.EnergyTransferStations.HydraulicHeader hydHed(
+  HydraulicHeader hydHed(
      redeclare package Medium = MediumW,
      m_flow_nominal=35,
      nPorts_a=1,
