@@ -72,7 +72,3 @@ class SchemasTest(unittest.TestCase):
         res = s.validate("building", instance)
         self.assertIn("'MagicBuilding' is not one of ['Building']", res[0])
         self.assertEqual(len(res), 1)
-
-
-if __name__ == "__main__":
-    unittest.main()
