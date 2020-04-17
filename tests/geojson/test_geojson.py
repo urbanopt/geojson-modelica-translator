@@ -37,8 +37,14 @@ from geojson_modelica_translator.geojson.urbanopt_geojson import (
 
 
 class GeoJSONTest(unittest.TestCase):
+    def setUp(self):
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+
     def test_load_geojson(self):
-        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
+        filename = os.path.join(self.data_dir, "geojson_1.json")
         json = UrbanOptGeoJson(filename)
         self.assertIsNotNone(json.data)
         self.assertEqual(len(json.data.features), 4)
@@ -55,16 +61,18 @@ class GeoJSONTest(unittest.TestCase):
             f"URBANopt GeoJSON file does not exist: {fn}", str(exc.exception)
         )
 
-    def test_validate(self):
-        filename = os.path.abspath("tests/geojson/data/geojson_1_invalid.json")
+    def test_valid_instance(self):
+        filename = os.path.join(self.data_dir, "geojson_1.json")
         json = UrbanOptGeoJson(filename)
         valid, results = json.validate()
-        print(results)
+        self.assertTrue(valid)
+        self.assertEqual(len(results["building"]), 0)
+
+    def test_validate(self):
+        filename = os.path.join(self.data_dir, "geojson_1_invalid.json")
+        json = UrbanOptGeoJson(filename)
+        valid, results = json.validate()
         self.assertFalse(valid)
         self.assertEqual(len(results["building"]), 1)
         err = ["'footprint_area' is a required property", "'name' is a required property"]
         self.assertEqual(results["building"][0]["errors"], err)
-
-
-if __name__ == "__main__":
-    unittest.main()

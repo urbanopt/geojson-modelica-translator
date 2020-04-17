@@ -247,13 +247,16 @@
       "type": "object",
       "properties": {
         "idf_filename": {
-          "type": "string"
+          "type": "string",
+          "description": "Absolute path or relative path from location where file instance is saved."
         },
         "epw_filename": {
-          "type": "string"
+          "type": "string",
+          "description": "Absolute path or relative path from location where file instance is saved."
         },
         "mos_weather_filename": {
-          "type": "string"
+          "type": "string",
+          "description": "Absolute path or relative path from location where file instance is saved."
         },
         "thermal_zone_names": {
           "type": "array",
@@ -301,19 +304,37 @@
       "additionalProperties": false
     },
     "ets_parameters": {
-      "description":  "Parameters associated with ETS models",
+      "description": "Parameters associated with ETS models",
       "type": "object",
       "properties": {
         "ModelName": "ets_cooling_indirect_templated",
-            "Q_Flow_Nominal": [8000],
-            "Eta_Efficiency": [0.666],
-            "NominalFlow_District": [0.666],
-            "NominalFlow_Building": [0.666],
-            "PressureDrop_Valve": [888],
-            "PressureDrop_HX_Secondary": [999],
-            "PressureDrop_HX_Primary": [999],
-            "SWT_District": [5],
-            "SWT_Building": [7]
+        "Q_Flow_Nominal": [
+          8000
+        ],
+        "Eta_Efficiency": [
+          0.666
+        ],
+        "NominalFlow_District": [
+          0.666
+        ],
+        "NominalFlow_Building": [
+          0.666
+        ],
+        "PressureDrop_Valve": [
+          888
+        ],
+        "PressureDrop_HX_Secondary": [
+          999
+        ],
+        "PressureDrop_HX_Primary": [
+          999
+        ],
+        "SWT_District": [
+          5
+        ],
+        "SWT_Building": [
+          7
+        ]
       }
     }
   }
