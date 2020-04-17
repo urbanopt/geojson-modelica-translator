@@ -70,7 +70,3 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def test_ets_in_dymola(self):
         self.assertIsNotNone(self.ets.templated_ets_openloops_dymola())
-
-
-if __name__ == "__main__":
-    unittest.main()
