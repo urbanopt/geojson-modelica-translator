@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "Properties of a District System object",
-  "description": "Schema for a District System object",
+  "title": "URBANopt Thermal Junction",
+  "description": "Schema for an URBANopt Thermal Junction object",
   "type": "object",
   "properties": {
     "id": {
@@ -36,9 +36,11 @@
       "$ref": "#/definitions/ThermalJunctionType"
     },
     "building_id": {
+      "description": "Id of building if this junction is inside a building.",
       "type": "string"
     },
     "district_system_id": {
+      "description": "Id of district system if this junction is inside a district system.",
       "type": "string"
     },
     "pump_presence": {
@@ -61,6 +63,7 @@
   "additionalProperties": false,
   "definitions": {
     "ThermalJunctionType": {
+      "description": "Type of thermal junction.",
       "type": "string",
       "enum": [
         "DES",
@@ -69,6 +72,7 @@
       ]
     },
     "ThermalJunctionConnectionType": {
+      "description": "Type of connection for connectors meeting at this junction.",
       "type": "string",
       "enum": [
         "Series",
