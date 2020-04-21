@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/region_properties.json#",
-  "title": "Region object",
-  "description": "Schema for a Region object",
+  "title": "URBANopt Region",
+  "description": "Schema for an URBANopt Region object",
   "type": "object",
   "properties": {
     "id": {
@@ -21,6 +21,7 @@
       ]
     },
     "region_type": {
+      "description": "Type of region.",
       "type": "string",
       "enum": [
         "Taxlot",
@@ -70,6 +71,7 @@
       ]
     },
     "taxlot_zoning": {
+      "description": "Type of zoning if this feature is a taxlot.",
       "type": "string",
       "enum": [
         "Vacant",

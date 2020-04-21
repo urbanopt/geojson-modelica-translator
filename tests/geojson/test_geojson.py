@@ -49,6 +49,10 @@ class GeoJSONTest(unittest.TestCase):
         self.assertIsNotNone(json.data)
         self.assertEqual(len(json.data.features), 4)
 
+        valid, results = json.validate()
+        self.assertTrue(valid)
+        self.assertEqual(len(results["building"]), 0)
+
     def test_missing_file(self):
         fn = "non-existent-path"
         with self.assertRaises(Exception) as exc:
@@ -57,10 +61,18 @@ class GeoJSONTest(unittest.TestCase):
             f"URBANopt GeoJSON file does not exist: {fn}", str(exc.exception)
         )
 
-    def test_validate(self):
+    def test_valid_instance(self):
         filename = os.path.join(self.data_dir, "geojson_1.json")
         json = UrbanOptGeoJson(filename)
         valid, results = json.validate()
+        self.assertTrue(valid)
+        self.assertEqual(len(results["building"]), 0)
+
+    def test_validate(self):
+        filename = os.path.join(self.data_dir, "geojson_1_invalid.json")
+        json = UrbanOptGeoJson(filename)
+        valid, results = json.validate()
         self.assertFalse(valid)
-        self.assertEqual(len(results["building"]), 3)
-        self.assertEqual(results["building"][0]["id"], "5a6b99ec37f4de7f94020090")
+        self.assertEqual(len(results["building"]), 1)
+        err = ["'footprint_area' is a required property", "'name' is a required property"]
+        self.assertEqual(results["building"][0]["errors"], err)
