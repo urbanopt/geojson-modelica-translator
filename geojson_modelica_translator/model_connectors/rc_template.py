@@ -46,7 +46,7 @@ class RCTemplate:
         with open(path_rc_templated, "w") as f:
             f.write(file_data)
 
-        # add generated modelica to the package order
+        # add generated modelica to the package order to be recognized by Dymola
         os.remove(os.path.abspath(tmp_path + "/" + self.rc_folder + "/package.order"))
         modelica_model_list = []
         for file in os.listdir(os.path.abspath(tmp_path + "/" + self.rc_folder)):
