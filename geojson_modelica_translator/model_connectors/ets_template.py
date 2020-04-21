@@ -162,7 +162,8 @@ class ETSTemplate:
         Here we refactor the example file: CoolingIndirectOpenLoops,
         to test our templated ets model.
         """
-        src_file = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) + "/modelica/CoolingIndirectOpenLoops.mo")
+        src_file = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) +
+                                "/modelica/CoolingIndirectOpenLoops.mo")
         file = open(src_file, "r")
         cooling_indirect_filename = "/CoolingIndirectOpenLoops_Templated.mo"
 
