@@ -30,13 +30,13 @@ class RCTemplate:
         # write templated RC back to where building modelica files are: office/meeting/iCT, etc.
         if rc_type == "modelica_default":
             tmp_path = os.path.abspath(
-                os.path.join(__file__, "../../../") + "/tests/output/geojson_urbanopt/Loads")
+                os.path.join(__file__, "../../../") + "/tests/output/example_geojson_13buildings/Loads")
         elif rc_type == "modelica_rc4":
             tmp_path = os.path.abspath(
                 os.path.join(__file__, "../../../") + "/tests/output/geojson_13buildings/rc_order_4/Loads")
         else:
             tmp_path = os.path.abspath(
-                os.path.join(__file__, "../../../") + "/tests/output/geojson_urbanopt/Loads")
+                os.path.join(__file__, "../../../") + "/tests/output/example_geojson_13buildings/Loads")
 
         path_rc_templated = os.path.abspath(tmp_path + "/" + self.rc_folder + "/BuildingRCZ6_Templated.mo")
 

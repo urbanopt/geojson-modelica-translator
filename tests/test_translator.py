@@ -301,12 +301,12 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
 
     def test_assemble_RC_geojson_13buildings(self):
-        rc_dir = os.path.abspath("tests/output/geojson_urbanopt/Loads")
+        rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
         rc_type = "modelica_default"
         GeoJsonModelicaTranslator().assemble_rc_water_distribution_air_terminal(rc_dir, rc_type)
 
     def test_connect_rc_ets(self):
-        rc_dir = os.path.abspath("tests/output/geojson_urbanopt/Loads")
+        rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
         rc_type = "modelica_default"
         GeoJsonModelicaTranslator().connect_complete_rc_ets(rc_dir, rc_type)
 
