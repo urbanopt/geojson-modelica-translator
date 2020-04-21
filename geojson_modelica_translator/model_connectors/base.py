@@ -28,6 +28,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+import os
+
 
 class Base(object):
     """
@@ -47,3 +49,11 @@ class Base(object):
 
     # These methods need to be defined in each of the derived model connectors
     # def to_modelica(self):
+
+    def run_template(self, template, save_file_name, **kwargs):
+        """Create an instance from a jinja template"""
+        file_data = template.render(**kwargs)
+
+        os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
+        with open(save_file_name, "w") as f:
+            f.write(file_data)

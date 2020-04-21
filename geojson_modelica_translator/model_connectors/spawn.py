@@ -80,126 +80,118 @@ class SpawnConnector(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        curdir = os.getcwd()
         spawn_coupling_template = self.template_env.get_template("spawn_coupling.mot")
         spawn_building_template = self.template_env.get_template("spawn_building.mot")
         spawn_mos_template = self.template_env.get_template("RunSpawnBuilding.most")
         building_names = []
-        try:
-            for building in self.buildings:
-                # create each spawn building and save to the correct directory
-                print(f"Creating spawn for building: {building['building_id']}")
+        for building in self.buildings:
+            # create each spawn building and save to the correct directory
+            print(f"Creating spawn for building: {building['building_id']}")
 
-                # Path for building data
-                building_names.append(f"B{building['building_id']}")
-                b_modelica_path = ModelicaPath(
-                    f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+            # Path for building data
+            building_names.append(f"B{building['building_id']}")
+            b_modelica_path = ModelicaPath(
+                f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+            )
+
+            # grab the data from the system_parameter file for this building id
+            # TODO: create method in system_parameter class to make this easier and respect the defaults
+            idf_filename = self.system_parameters.get_param_by_building_id(
+                building["building_id"], "load_model_parameters.spawn.idf_filename"
+            )
+            epw_filename = self.system_parameters.get_param_by_building_id(
+                building["building_id"], "load_model_parameters.spawn.epw_filename"
+            )
+            mos_weather_filename = self.system_parameters.get_param_by_building_id(
+                building["building_id"],
+                "load_model_parameters.spawn.mos_weather_filename",
+            )
+            thermal_zones = self.system_parameters.get_param_by_building_id(
+                building["building_id"],
+                "load_model_parameters.spawn.thermal_zone_names",
+            )
+
+            # construct th dict to pass into the template
+            template_data = {
+                "load_resources_path": b_modelica_path.resources_relative_dir,
+                "idf": {
+                    "idf_filename": idf_filename,
+                    "filename": os.path.basename(idf_filename),
+                    "path": os.path.dirname(idf_filename),
+                },
+                "epw": {
+                    "epw_filename": epw_filename,
+                    "filename": os.path.basename(epw_filename),
+                    "path": os.path.dirname(epw_filename),
+                },
+                "mos_weather": {
+                    "mos_weather_filename": mos_weather_filename,
+                    "filename": os.path.basename(mos_weather_filename),
+                    "path": os.path.dirname(mos_weather_filename),
+                },
+                "thermal_zones": [],
+                "thermal_zones_count": len(thermal_zones),
+
+            }
+            for tz in thermal_zones:
+                # TODO: method for creating nice zone names for modelica
+                template_data["thermal_zones"].append(
+                    {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
                 )
 
-                # grab the data from the system_parameter file for this building id
-                # TODO: create method in system_parameter class to make this easier and respect the defaults
-                idf_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.spawn.idf_filename"
+            # copy over the resource files for this building
+            # TODO: move some of this over to a validation step
+            if os.path.exists(template_data["idf"]["idf_filename"]):
+                shutil.copy(
+                    template_data["idf"]["idf_filename"],
+                    os.path.join(b_modelica_path.resources_dir, template_data["idf"]["filename"]),
                 )
-                epw_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.spawn.epw_filename"
-                )
-                mos_weather_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"],
-                    "load_model_parameters.spawn.mos_weather_filename",
-                )
-                thermal_zones = self.system_parameters.get_param_by_building_id(
-                    building["building_id"],
-                    "load_model_parameters.spawn.thermal_zone_names",
+            else:
+                raise Exception(
+                    f"Missing IDF file for Spawn: {template_data['idf']['idf_filename']}"
                 )
 
-                # construct th dict to pass into the template
-                template_data = {
-                    "load_resources_path": b_modelica_path.resources_relative_dir,
-                    "idf": {
-                        "idf_filename": idf_filename,
-                        "filename": os.path.basename(idf_filename),
-                        "path": os.path.dirname(idf_filename),
-                    },
-                    "epw": {
-                        "epw_filename": epw_filename,
-                        "filename": os.path.basename(epw_filename),
-                        "path": os.path.dirname(epw_filename),
-                    },
-                    "mos_weather": {
-                        "mos_weather_filename": mos_weather_filename,
-                        "filename": os.path.basename(mos_weather_filename),
-                        "path": os.path.dirname(mos_weather_filename),
-                    },
-                    "thermal_zones": [],
-                    "thermal_zones_count": len(thermal_zones),
+            if os.path.exists(template_data["epw"]["epw_filename"]):
+                shutil.copy(template_data["epw"]["epw_filename"],
+                            os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
+            else:
+                raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
 
-                }
-                for tz in thermal_zones:
-                    # TODO: method for creating nice zone names for modelica
-                    template_data["thermal_zones"].append(
-                        {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
-                    )
-
-                # copy over the resource files for this building
-                # TODO: move some of this over to a validation step
-                if os.path.exists(template_data["idf"]["idf_filename"]):
-                    shutil.copy(
-                        template_data["idf"]["idf_filename"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["idf"]["filename"],
-                        ),
-                    )
-                else:
-                    raise Exception(
-                        f"Missing IDF file for Spawn: {template_data['idf']['idf_filename']}"
-                    )
-
-                if os.path.exists(template_data["epw"]["epw_filename"]):
-                    shutil.copy(template_data["epw"]["epw_filename"],
-                                os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
-                else:
-                    raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
-
-                if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
-                    shutil.copy(
-                        template_data["mos_weather"]["mos_weather_filename"],
-                        os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
-                    )
-                else:
-                    raise Exception(
-                        f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
-
-                # Run the templating
-                file_data = spawn_building_template.render(
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
+            if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+                shutil.copy(
+                    template_data["mos_weather"]["mos_weather_filename"],
+                    os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
-                    f.write(file_data)
+            else:
+                raise Exception(
+                    f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
 
-                full_model_name = os.path.join(
-                    scaffold.project_name,
-                    scaffold.loads_path.files_relative_dir,
-                    f"B{building['building_id']}",
-                    "coupling").replace(os.path.sep, '.')
+            # Run the templating
+            file_data = spawn_building_template.render(
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+            )
+            with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
+                f.write(file_data)
 
-                file_data = spawn_mos_template.render(full_model_name=full_model_name)
-                with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunSpawnBuilding.mos")), "w") as f:
-                    f.write(file_data)
+            full_model_name = os.path.join(
+                scaffold.project_name,
+                scaffold.loads_path.files_relative_dir,
+                f"B{building['building_id']}",
+                "coupling").replace(os.path.sep, '.')
 
-                file_data = spawn_coupling_template.render(
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
-                )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")), "w") as f:
-                    f.write(file_data)
+            file_data = spawn_mos_template.render(full_model_name=full_model_name)
+            with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunSpawnBuilding.mos")), "w") as f:
+                f.write(file_data)
 
-        finally:
-            os.chdir(curdir)
+            file_data = spawn_coupling_template.render(
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+            )
+            with open(os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")), "w") as f:
+                f.write(file_data)
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, building_names)

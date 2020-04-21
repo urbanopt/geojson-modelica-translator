@@ -37,8 +37,14 @@ from geojson_modelica_translator.geojson.urbanopt_geojson import (
 
 
 class GeoJSONTest(unittest.TestCase):
+    def setUp(self):
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+
     def test_load_geojson(self):
-        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
+        filename = os.path.join(self.data_dir, "geojson_1.json")
         json = UrbanOptGeoJson(filename)
         self.assertIsNotNone(json.data)
         self.assertEqual(len(json.data.features), 4)
@@ -52,13 +58,9 @@ class GeoJSONTest(unittest.TestCase):
         )
 
     def test_validate(self):
-        filename = os.path.abspath("tests/geojson/data/geojson_1.json")
+        filename = os.path.join(self.data_dir, "geojson_1.json")
         json = UrbanOptGeoJson(filename)
         valid, results = json.validate()
         self.assertFalse(valid)
         self.assertEqual(len(results["building"]), 3)
         self.assertEqual(results["building"][0]["id"], "5a6b99ec37f4de7f94020090")
-
-
-if __name__ == "__main__":
-    unittest.main()
