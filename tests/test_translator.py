@@ -243,7 +243,7 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
                 path = os.path.join(gj.scaffold.loads_path.files_dir, "Resources", "Data",
                                     b.dirname, f"{resource_name}.txt")
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
-
+    """
     def test_to_modelica_rc_order_4(self):
         self.results_path = os.path.abspath("tests/output/geojson_13buildings/rc_order_4")
         if os.path.exists(self.results_path):
@@ -299,12 +299,14 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
                     f"{resource_name}.txt",
                 )
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+    """
 
+    """
     def test_assemble_RC_geojson_13buildings(self):
         rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
         rc_type = "modelica_default"
         GeoJsonModelicaTranslator().assemble_rc_water_distribution_air_terminal(rc_dir, rc_type)
-
+    """
     def test_connect_rc_ets(self):
         rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
         rc_type = "modelica_default"

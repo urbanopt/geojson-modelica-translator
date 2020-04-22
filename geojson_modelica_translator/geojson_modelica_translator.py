@@ -149,7 +149,13 @@ class GeoJsonModelicaTranslator(object):
 
     def connect_complete_rc_ets(self, rc_dir, rc_type):
         """connect the compelete building model and ETS model"""
-        for file in os.listdir(rc_dir):
-            if file.startswith("B") and "package" not in file:
-                rc = RCETSTemplate(file)
-                rc.connect_rc_ets(rc_type)
+        if os.path.exists(rc_dir):
+            for file in os.listdir(rc_dir):
+                if file.startswith("B") and "package" not in file:
+                    # we must assemble them first
+                    self.assemble_rc_water_distribution_air_terminal(rc_dir, rc_type)
+                    # then we connect them
+                    rc_and_ets = RCETSTemplate(file)
+                    rc_and_ets.connect_rc_ets(rc_type)
+        else:
+            print("rc directory has some issue")
