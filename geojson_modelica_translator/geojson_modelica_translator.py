@@ -31,11 +31,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
 import os
 
-from geojson_modelica_translator.district_infiniteSource_nBuildings import (
-    DistrictInfiniteSourceNBuildingsTemplate
-)
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
+)
+from geojson_modelica_translator.model_connectors.district_infiniteSource_nBuildings import (
+    DistrictInfiniteSourceNBuildingsTemplate
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
@@ -134,6 +134,6 @@ class GeoJsonModelicaTranslator(object):
         # TODO: mapper class
         # TODO: lookup tables / data sets
 
-    def district_infiniteSource_nBuildings_to_modelica(self, nBuilding):
+    def district_infinitesource_nbuildings_to_modelica(self, nBuilding):
         district_template = DistrictInfiniteSourceNBuildingsTemplate(nBuilding)
         district_template.to_modelica()

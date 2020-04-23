@@ -254,4 +254,4 @@ class GeoJSONUrbanOptDistrictInfiniteSourceNBuildingsTest(unittest.TestCase):
 
     def test_to_modelica(self):
         nBuilding = 4
-        GeoJSONTranslatorTest().district_infiniteSource_nBuildings_to_modelica(nBuilding)
+        GeoJsonModelicaTranslator().district_infinitesource_nbuildings_to_modelica(nBuilding)
