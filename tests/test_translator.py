@@ -33,9 +33,6 @@ import os
 import shutil
 import unittest
 
-# from geojson_modelica_translator.district_infiniteSource_nBuildings import (
-#    DistrictInfiniteSourceNBuildingsTemplate
-# )
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
@@ -256,4 +253,5 @@ class GeoJSONUrbanOptDistrictInfiniteSourceNBuildingsTest(unittest.TestCase):
             os.makedirs(self.output_dir)
 
     def test_to_modelica(self):
-        pass
+        nBuilding = 4
+        GeoJSONTranslatorTest().district_infiniteSource_nBuildings_to_modelica(nBuilding)
