@@ -138,23 +138,17 @@ class GeoJsonModelicaTranslator(object):
         # TODO: mapper class
         # TODO: lookup tables / data sets
 
-    def assemble_rc_water_distribution_air_terminal(self, rc_dir, rc_type):
-        """assemble those generated rc models into a complete building model, plus add air-terminal,
-        and water-distribution
-        """
-        for file in os.listdir(rc_dir):
-            if file.startswith("B") and "package" not in file:
-                rc = RCTemplate(file)
-                rc.assemble_rc_water_distribution_and_air_terminal(rc_type)
-
     def connect_complete_rc_ets(self, rc_dir, rc_type):
         """connect the compelete building model and ETS model"""
         if not os.path.exists(rc_dir):
-            print("great! rc folder is correct!!!")
+            raise Exception('Hey, the RC models were not generated complete yet!!!')
         for file in os.listdir(rc_dir):
             if file.startswith("B") and "package" not in file:
-                # we must assemble them first
-                self.assemble_rc_water_distribution_air_terminal(rc_dir, rc_type)
+                """assemble those generated rc models into a complete building model, plus add air-terminal,
+                and water-distribution
+                """
+                rc = RCTemplate(file)
+                rc.assemble_rc_water_distribution_and_air_terminal(rc_type)
                 # then we connect them
                 rc_and_ets = RCETSTemplate(file)
                 rc_and_ets.connect_rc_ets(rc_type)

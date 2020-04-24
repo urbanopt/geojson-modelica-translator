@@ -243,71 +243,8 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
                 path = os.path.join(gj.scaffold.loads_path.files_dir, "Resources", "Data",
                                     b.dirname, f"{resource_name}.txt")
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
-    """
-    def test_to_modelica_rc_order_4(self):
-        self.results_path = os.path.abspath("tests/output/geojson_13buildings/rc_order_4")
-        if os.path.exists(self.results_path):
-            shutil.rmtree(self.results_path)
-
-        filename = os.path.abspath("tests/geojson/data/example_geojson_13buildings.json")
-        gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        sys_params = SystemParameters.loadd(
-            {"buildings": {"default": {"load_model_parameters": {"rc": {"order": 4}}}}}
-        )
-        self.assertEqual(len(sys_params.validate()), 0)
-        gj.set_system_parameters(sys_params)
-
-        gj.to_modelica("rc_order_4", "tests/output/geojson_13buildings")
-
-        # setup what we are going to check
-        model_names = [
-            "Floor",
-            "ICT",
-            "Meeting",
-            "Office",
-            "package",
-            "Restroom",
-            "Storage",
-        ]
-        building_paths = [
-            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
-        ]
-        path_checks = [
-            f"{os.path.sep.join(r)}.mo"
-            for r in itertools.product(building_paths, model_names)
-        ]
-
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p), f"Path not found: {p}")
-
-        resource_names = [
-            "InternalGains_Floor",
-            "InternalGains_ICT",
-            "InternalGains_Meeting",
-            "InternalGains_Office",
-            "InternalGains_Restroom",
-            "InternalGains_Storage",
-        ]
-        for b in gj.buildings:
-            for resource_name in resource_names:
-                # TEASER 0.7.2 used .txt for schedule files
-                path = os.path.join(
-                    gj.scaffold.loads_path.files_dir,
-                    "Resources",
-                    "Data",
-                    b.dirname,
-                    f"{resource_name}.txt",
-                )
-                self.assertTrue(os.path.exists(path), f"Path not found: {path}")
-    """
-
-    """
-    def test_assemble_RC_geojson_13buildings(self):
-        rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
-        rc_type = "modelica_default"
-        GeoJsonModelicaTranslator().assemble_rc_water_distribution_air_terminal(rc_dir, rc_type)
-    """
-    def test_connect_rc_ets(self):
+        # connect those generated RC with ETS
+        # because the rc-ets connection is waiting for modelica-rc models to-be-generated first
         rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
         rc_type = "modelica_default"
         GeoJsonModelicaTranslator().connect_complete_rc_ets(rc_dir, rc_type)
