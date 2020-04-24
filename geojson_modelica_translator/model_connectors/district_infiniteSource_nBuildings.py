@@ -11,10 +11,12 @@ class DistrictInfiniteSourceNBuildingsTemplate:
         super().__init__()
 
         self.nBuilding = nBuilding
-        directory_up_one_level = os.path.abspath(os.path.join(__file__, "../../"))
+        directory_up_one_level = os.path.abspath(os.path.join(__file__, "../../.."))
         self.directory_district_nBuildings = os.path.join(
             directory_up_one_level + "/tests/output/district_nBuildings/"
         )
+        if not os.path.exists(self.directory_district_nBuildings):
+            os.makedirs(self.directory_district_nBuildings)
 
         # here comes the Jinja2 function: Environment()
         # it loads all the "*.mot" files into an environment by Jinja2
@@ -34,14 +36,15 @@ class DistrictInfiniteSourceNBuildingsTemplate:
         district_data['rc_buildings_count'] = self.nBuilding
 
         # Here comes the Jina2 function: render()
-        templated_model = district_template.render(distric_data=district_data)
+        templated_model = district_template.render(district_data=district_data)
 
         # write templated ETS back to modelica file , to the tests folder for Dymola test
         path_templated = os.path.join(self.directory_district_nBuildings,
                                       "district_infinite_source_nRCBuildings_templated.mo")
-
+        print("\nJing: ", path_templated)
         if os.path.exists(path_templated):
             os.remove(path_templated)
+        # os.makedirs( self.directory_district_nBuildings )
         with open(path_templated, "w") as f:
             f.write(templated_model)
 

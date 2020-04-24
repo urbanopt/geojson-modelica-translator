@@ -1,7 +1,5 @@
 within Buildings.Applications.DHC.Loads.Examples;
 
-
-
 {% raw %}
 model District_InfiniteSource_nBuildings
   "Example illustrating the coupling of a building model to heating water and chilled water loops"
@@ -23,12 +21,13 @@ model District_InfiniteSource_nBuildings
   parameter Integer nBuilding={{district_data['rc_buildings_count']}};
 
 //set up RC buildings and their asociated components
-for i in 1:nBuilding loop
-  BaseClasses.BuildingRCZ6 bui_i(nPorts_a=2, nPorts_b=2) "Building"
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  BaseClasses.BuildingRCZ6 bui_{{i}}(nPorts_a=2, nPorts_b=2) "Building"
    {% raw %}
     annotation (Placement(transformation(extent={{166,486},{224,560}})));
    {% endraw %}
-  Buildings.Fluid.Sources.Boundary_pT sinHeaWat_i
+
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat_{{i}}
       {% raw %}
       (redeclare package Medium =
         Medium1, nPorts=1) "Sink for heating water" annotation (Placement(
@@ -38,7 +37,7 @@ for i in 1:nBuilding loop
         origin={286,392})));
        {% endraw %}
 
-  Fluid.Sources.Boundary_pT supHeaWat_i
+  Fluid.Sources.Boundary_pT supHeaWat_{{i}}
     {% raw %}
     ( redeclare package Medium = Medium1,
     use_T_in=true,
@@ -48,14 +47,14 @@ for i in 1:nBuilding loop
         origin={126,392})));
     {% endraw %}
 
-  Modelica.Blocks.Sources.RealExpression THeaWatSup_i
+  Modelica.Blocks.Sources.RealExpression THeaWatSup_{{i}}
   {% raw %}
   (y=max(bui.terUni.T_aHeaWat_nominal))
     "Heating water supply temperature"
     annotation (Placement(transformation(extent={{56,386},{76,406}})));
   {% endraw %}
 
-end for;
+{% endfor %}
 
 //set up input to district source
 {% raw %}
@@ -76,7 +75,7 @@ end for;
     redeclare package Medium = Medium1,
     p=300000,
     T=287.15,
-    nPorts={{nBuilding}})
+    nPorts= nBuilding )
     "District-side (primary) sink"
     annotation (Placement(transformation(extent={{516,566},{496,586}})));
 {% endraw %}
@@ -88,12 +87,10 @@ end for;
     p(displayUnit="Pa") = 300000 + 800,
     use_T_in=true,
     T=278.15,
-    nPorts=nBuilding)
+    nPorts= nBuilding )
     "District (primary) source"
     annotation (Placement(transformation(extent={{-518,552},{-498,572}})));
 {% endraw %}
-
-
 
 {% raw %}
 // keep the water massflow rate for both district and building side
@@ -104,11 +101,9 @@ end for;
     "Nominal mass flow rate of secondary (building) district cooling side";
 {% endraw %}
 
-
-
-for i in 1:nBuilding loop
+{% for i in range( district_data['rc_buildings_count'] ) %}
 // set up the ETS and associated components
-  EnergyTransferStations.CoolingIndirect    coo_i
+  EnergyTransferStations.CoolingIndirect    coo_{{i}}
   {% raw %}
   (redeclare package Medium = Medium1,
     m1_flow_nominal=m1_flow_nominal,
@@ -130,14 +125,13 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-166,486},{-126,530}})));
     {% endraw %}
 
-  Modelica.Blocks.Sources.Constant TSetCHWS_i  (k=273.15 + 7)
+  Modelica.Blocks.Sources.Constant TSetCHWS_{{i}}  (k=273.15 + 7)
   {% raw %}
     "Setpoint temperature for building chilled water supply"
-
     annotation (Placement(transformation(extent={{-254,484},{-234,504}})));
   {% endraw %}
 
-  Fluid.Sensors.TemperatureTwoPort           TDisSup_i
+  Fluid.Sensors.TemperatureTwoPort           TDisSup_{{i}}
   {% raw %}
   (redeclare package Medium = Medium1,
     m_flow_nominal=m1_flow_nominal,
@@ -146,7 +140,7 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-200,554},{-180,574}})));
   {% endraw %}
 
-  Fluid.Sensors.TemperatureTwoPort           TDisRet_i
+  Fluid.Sensors.TemperatureTwoPort           TDisRet_{{i}}
   {% raw %}
   ( redeclare package Medium = Medium1,
     m_flow_nominal=m1_flow_nominal,
@@ -155,24 +149,24 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-124,554},{-104,574}})));
   {% endraw %}
 
-  Modelica.Blocks.Math.Add TApp_i(k2=-1) "Calculate approach temperature"
+  Modelica.Blocks.Math.Add TApp_{{i}}(k2=-1) "Calculate approach temperature"
    {% raw %}
     annotation (Placement(transformation(extent={{-144,286},{-124,306}})));
    {% endraw %}
 
-  Modelica.Blocks.Math.Add dTDis_i(k1=-1)
+  Modelica.Blocks.Math.Add dTDis_{{i}}(k1=-1)
    {% raw %}
     "Calculate change in district temperature"
     annotation (Placement(transformation(extent={{-84,266},{-64,286}})));
    {% endraw %}
 
-  Modelica.Blocks.Math.Add dTBui_i(k1=-1)
+  Modelica.Blocks.Math.Add dTBui_{{i}}(k1=-1)
    {% raw %}
     "Calculate change in building temperature"
     annotation (Placement(transformation(extent={{-62,144},{-42,164}})));
    {% endraw %}
 
-  Fluid.Movers.FlowControlled_m_flow           pumBui_i
+  Fluid.Movers.FlowControlled_m_flow           pumBui_{{i}}
   {% raw %}
   ( redeclare package Medium = Medium1,
     m_flow_nominal=m2_flow_nominal,
@@ -183,8 +177,8 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-164,96},{-184,116}})));
   {% endraw %}
 
-  Fluid.Sensors.TemperatureTwoPort           TBuiRet_i
-  { % raw %}
+  Fluid.Sensors.TemperatureTwoPort           TBuiRet_{{i}}
+  {% raw %}
   ( redeclare package Medium = Medium1,
     m_flow_nominal=m2_flow_nominal,
     T_start=289.15)
@@ -192,8 +186,7 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-104,96},{-124,116}})));
   {% endraw %}
 
-
-  Fluid.Sensors.TemperatureTwoPort           TBuiSup_i
+  Fluid.Sensors.TemperatureTwoPort           TBuiSup_{{i}}
   {% raw %}
   ( redeclare package Medium = Medium1,
     m_flow_nominal=m2_flow_nominal,
@@ -202,7 +195,7 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-194,96},{-214,116}})));
   {% endraw %}
 
-  Fluid.Sources.Boundary_pT           souBui_i
+  Fluid.Sources.Boundary_pT           souBui_{{i}}
   {% raw %}
   ( redeclare package Medium = Medium1,
     nPorts=1,
@@ -212,7 +205,7 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-44,96},{-64,116}})));
   {% endraw %}
 
-  Fluid.Sources.Boundary_pT           sinBui_i
+  Fluid.Sources.Boundary_pT           sinBui_{{i}}
   {% raw %}
   ( redeclare package Medium = Medium1,
     use_T_in=false,
@@ -222,204 +215,189 @@ for i in 1:nBuilding loop
     annotation (Placement(transformation(extent={{-264,414},{-244,434}})));
   {% endraw %}
 
-end for;
+{% endfor %}
 
 
-
+{% raw %}
 equation
-
+{% endraw %}
 //connect rc buildings and weather-data
-for i in 1:nBuilding loop
-  connect(weaDat.weaBus, bui_i.weaBus)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(weaDat.weaBus, bui_{{i}}.weaBus)
   {% raw %}
   annotation (Line(
       points={{56,600},{188,600},{188,549.393},{195.097,549.393}},
       color={255,204,51},
       thickness=0.5));
   {% endraw %}
-end for;
-
-
+{% endfor %}
 
 //connect buildings heat ports to infinite heating source/sink (default connection)
 // because current ets only supports cooling. so just keep heating default.
-for i in 1:nBuilding loop
-  connect(supHeaWat_i.T_in, THeaWatSup_i.y)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(supHeaWat_{{i}}.T_in, THeaWatSup_{{i}}.y)
   {% raw %}annotation (Line(points={{114,396},{77, 396}}, color={0,0,127})); {% endraw %}
 
-  connect(supHeaWat_i.ports[1], bui_i.ports_a[1])
+  connect(supHeaWat_{{i}}.ports[1], bui_{{i}}.ports_a[1])
 
   {% raw %}
-  annotation (Line(points={{136,392}, {158,392},{158,498.333},{166,498.333}},
-                                   color={0,127,255}));
+  annotation (Line(points={{136,392}, {158,392},{158,498.333},{166,498.333}},  color={0,127,255}));
   {% endraw %}
 
-  connect(bui_i.ports_b[1], sinHeaWat_i.ports[1])
-  {% raw %} annotation (Line(points={{224, 498.333},{258,498.333},{258,392},{276,392}},
-                                      color={0,127,255}));
+  connect(bui_{{i}}.ports_b[1], sinHeaWat_{{i}}.ports[1])
+  {% raw %}
+  annotation (Line(points={{224, 498.333},{258,498.333},{258,392},{276,392}},  color={0,127,255}));
   {% endraw %}
-end for;
+
+{% endfor %}
 
 //connect building cooling ports to ets-building side
-for i in 1:nBuilding loop
-  connect(TBuiSup_i.port_b, bui_i.ports_a[2])
-  {% raw %}annotation (Line(points={{-214,106},
-          {-226,106},{-226,66},{16,66},{16,185.267},{166,185.267}},
-        color={0,127,255}));
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TBuiSup_{{i}}.port_b, bui_{{i}}.ports_a[2])
+  {% raw %}annotation (Line(points={{-214,106}, {-226,106},{-226,66},{16,66},{16,185.267},{166,185.267}}, color={0,127,255}));
   {% endraw %}
-  connect(bui_i.ports_b[2], TBuiRet_i.port_a)
-  {% raw %}annotation (Line(points={{224,
-          185.267},{246,185.267},{246,192},{266,192},{266,324},{-20,324},{-20,
+  connect(bui_{{i}}.ports_b[2], TBuiRet_{{i}}.port_a)
+  {% raw %}annotation (Line(points={{224, 185.267},{246,185.267},{246,192},{266,192},{266,324},{-20,324},{-20,
           82},{-72,82},{-72,106},{-104,106}},   color={0,127,255}));
   {% endraw %}
-end for;
+{% endfor %}
 
 //keep district input value
 {% raw %}
-  connect(tra.y,souDis. T_in)
-    annotation (Line(points={{-575,568},{-564,568},{-564,566},{-520,566}},
-                                                            color={0,0,127}));
+  connect(tra.y, souDis.T_in)
+    annotation (Line(points={{-575,568},{-564,568},{-564,566},{-520,566}}, color={0,0,127}));
 {% endraw %}
 
-for i in 1:nBuilding loop
+{% for i in range( district_data['rc_buildings_count'] ) %}
 // connect district-source to ETS-district-source-sensor
-  connect(souDis.ports[i], TDisSup_i.port_a)
+  connect(souDis.ports[{{i+1}}], TDisSup_{{i}}.port_a)
     {%raw%}
-    annotation (Line(points={{-498,565},{-232,565},{-232,564},{-200,564}},
-                                                 color={0,127,255}));
+    annotation (Line(points={{-498,565},{-232,565},{-232,564},{-200,564}}, color={0,127,255}));
     {% endraw %}
-endfor;
+{% endfor %}
 
 
 //connect district-sink to ETS-district-sink-sensor
-for i in 1:nBuilding loop
- connect(TDisRet_i.port_b, sinDis.ports[i])
+{% for i in range( district_data['rc_buildings_count'] ) %}
+ connect(TDisRet_{{i}}.port_b, sinDis.ports[{{i+1}}])
     {% raw %}
-    annotation (Line(points={{-104,564},{-84,564},{-84,579},{496,579}},
-                                                color={0,127,255}));
+    annotation (Line(points={{-104,564},{-84,564},{-84,579},{496,579}}, color={0,127,255}));
     {% endraw %}
-endfor;
+{% endfor %}
 
 
 //connect ETS-district-source-sensor to ets-input-port-district-side
-for i  in 1:nBuilding loop
-  connect(TDisSup_i.port_b, coo_i.port_a1)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TDisSup_{{i}}.port_b, coo_{{i}}.port_a1)
   {% raw %} annotation (Line(points={{-180,564},{
           -176,564},{-176,521.2},{-166,521.2}},color={0,127,255}));
   {% endraw %}
-end for;
+{% endfor %}
 
 
 //connect ETS-district-sink-sensor to ets-output-port-district-side
-for i in 1:nBuilding loop
-  connect(coo_i.port_b1, TDisRet_i. port_a)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(coo_{{i}}.port_b1, TDisRet_{{i}}. port_a)
   {% raw %}annotation (Line(points={{-126,521.2},{
           -128,521.2},{-128,564},{-124,564}},color={0,127,255}));
   {% endraw %}
-end for
+{% endfor %}
 
 
 //connect ETS-inlet-port-building-side to inlet-sensor-building-side
-for i in 1:nBuilding loop
-  connect(coo_i.port_a2, TBuiRet_i.port_b)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(coo_{{i}}.port_a2, TBuiRet_{{i}}.port_b)
   {% raw %}annotation (Line(points={{-126,176.8},
           {-128,176.8},{-128,106},{-124,106}},    color={0,127,255}));
   {% endraw %}
+{% endfor %}
 
-end for;
 
 
 //connect ets-inlet-sensor-building-side  to ets-boundary-source
-for i in 1:nBuilding loop
-  connect(TBuiRet_i.port_a, souBui_i.ports[1])
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TBuiRet_{{i}}.port_a, souBui_{{i}}.ports[1])
   {% raw %}
     annotation (Line(points={{-106,-220},{-66,-220}},  color={0,127,255}));
   {% endraw %}
-end for;
+{% endfor %}
 
 
 //connect ETS-outlet-port-building-side to ets-pump
-for i in 1:nBuilding loop
-  connect(coo_i.port_b2, pumBui_i.port_a)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(coo_{{i}}.port_b2, pumBui_{{i}}.port_a)
   {% raw %}
   annotation (Line(points={{-166,494.8},{-166,424},{-164,424}},color={0,127,255}));
   {% endraw %}
+{% endfor %}
 
 //connect ets-pump to ets-outlet-sensor-building-side
-for i in 1:nBuilding loop
-  connect(pumBui_i.port_b, TBuiSup_i.port_a)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(pumBui_{{i}}.port_b, TBuiSup_{{i}}.port_a)
     {% raw %}
     annotation (Line(points={{-184,424},{-194,424}},color={0,127,255}));
     {% endraw %}
-end for
+{% endfor %}
 
 
 
 // connect ets-outlet-sensor-building-side  to ets-boundary-sink
-for i in 1:nBuilding loop
-  connect(TBuiSup_i.port_b, sinBui_i.ports[1])
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TBuiSup_{{i}}.port_b, sinBui_{{i}}.ports[1])
     {% raw %}
     annotation (Line(points={{-214,424},{-244,424}},color={0,127,255}));
     {% endraw %}
-end for
+{% endfor %}
 
 
 // connect ets and ets-setpoint
-for i in 1:nBuilding loop
-  connect(TSetCHWS_i.y, coo_i.TSet)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TSetCHWS_{{i}}.y, coo_{{i}}.TSet)
   {% raw %}
-  annotation (Line(points={{-241,-474},{-208,-474},{-208,-460},{-178,-460}},
-                                    color={0,0,127}));
+  annotation (Line(points={{-241,-474},{-208,-474},{-208,-460},{-178,-460}}, color={0,0,127}));
   {% endraw %}
-end for;
+{% endfor %}
 
 
 //connect district-temperature-difference-checker
-for i in 1:nBuilding loop
-  connect(TDisRet_i.T, dTDis_i.u2)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TDisRet_{{i}}.T, dTDis_{{i}}.u2)
     {% raw %}
     annotation (Line(points={{-114,575},{-114,588},{-86,588}}, color={0,0,127}));
     {% endraw %}
 
-  connect(dTDis_i.u1, TDisSup_i.T)
+  connect(dTDis_{{i}}.u1, TDisSup_{{i}}.T)
     {% raw %}
     annotation (Line(points={{-86,600},{-190,600},{-190,575}}, color={0,0,127}));
     {% endraw %}
 
-end for;
+{% endfor %}
 
 
 //connect approach-temperature-checker
-for i in 1:nBuilding loop
-  connect(TBuiSup_i.T, TApp_i.u1)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TBuiSup_{{i}}.T, TApp_{{i}}.u1)
     {% raw %}
-    annotation (Line(points={{-204,435},{-204,620},{-146,620}},
-                                                            color={0,0,127}));
+    annotation (Line(points={{-204,435},{-204,620},{-146,620}}, color={0,0,127}));
     {% endraw %}
-  connect(TDisSup_i.T, TApp_i.u2)
+  connect(TDisSup_{{i}}.T, TApp_{{i}}.u2)
     {% raw %}
-    annotation (Line(points={{-190,575},{-190,608},{-146,608}},
-                                                         color={0,0,127}));
+    annotation (Line(points={{-190,575},{-190,608},{-146,608}}, color={0,0,127}));
     {% endraw %}
-end for;
+{% endfor %}
 
 
 //connect building-temperature-difference-checker
-for i in 1:nBuilding loop
-  connect(TBuiRet_i.T, dTBui_i.u2)
+{% for i in range( district_data['rc_buildings_count'] ) %}
+  connect(TBuiRet_{{i}}.T, dTBui_{{i}}.u2)
     {% raw %}
-    annotation (Line(points={{-114,435},{-114,466},{-64,466}},
-                                                          color={0,0,127}));
+    annotation (Line(points={{-114,435},{-114,466},{-64,466}}, color={0,0,127}));
     {% endraw %}
-  connect(TBuiSup_i.T, dTBui_i.u1)
+  connect(TBuiSup_{{i}}.T, dTBui_{{i}}.u1)
     {% raw %}
-    annotation (Line(points={{-204,435},{-204,478},{-64,478}},
-                                                            color={0,0,127}));
+    annotation (Line(points={{-204,435},{-204,478},{-64,478}}, color={0,0,127}));
     {% endraw %}
-end for;
-
-
-
+{% endfor %}
 
 {% raw %}
   annotation (
@@ -467,7 +445,6 @@ Templated by Yanfei Li, 4/20/2020.
       Tolerance=1e-06),
     Icon(coordinateSystem(extent={{-320,-140},{280,140}})));
 {% endraw %}
-
 
 {% raw %}
 end District_InfiniteSource_nBuildings;
