@@ -5,7 +5,7 @@ simulateModel("{{full_model_name}}",
     tolerance=1e-6,
     numberOfIntervals=500,
     stopTime=604800.0,
-    resultFile="CouplingSpawnZ6");
+    resultFile="{{model_name}}");
 Hidden.AvoidDoubleComputation=old_hidden_avoid_double_computation;
 createPlot(
     id=1,

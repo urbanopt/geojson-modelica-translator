@@ -29,22 +29,37 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import shutil
 import unittest
 
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.model_connectors.base import \
+    Base as model_connector_base
+from jinja2 import Template
 
 
-class ModelicaPathTest(unittest.TestCase):
+class TestModelConnectorBase(unittest.TestCase):
     def setUp(self):
-        self.output_dir = os.path.join(os.path.dirname(__file__), "output")
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output', 'templates')
+        if os.path.exists(self.output_dir):
+            shutil.rmtree(self.output_dir)
 
-    def test_properties(self):
-        mp = ModelicaPath("Loads", root_dir=None)
-        self.assertEqual(mp.files_dir, "Loads")
-        self.assertEqual(mp.resources_dir, os.path.join("Resources", "Data", "Loads"))
+        os.makedirs(self.output_dir)
 
-    def test_single_sub_resource(self):
-        root_dir = os.path.join(self.output_dir, "modelica_path_01")
-        ModelicaPath("RandomContainer", root_dir, overwrite=True)
-        self.assertTrue(os.path.exists(os.path.join(root_dir, "RandomContainer")))
-        self.assertTrue(os.path.exists(os.path.join(root_dir, "Resources", "Data", "RandomContainer")))
+    def test_init(self):
+        mc = model_connector_base(None)
+        self.assertIsNotNone(mc)
+
+    def test_template(self):
+        mc = model_connector_base(None)
+
+        with open(os.path.join(self.data_dir, 'template_ex.tmpl')) as f:
+            template = Template(f.read())
+
+        mc.run_template(template, os.path.join(self.output_dir, 'template.out'), file_name='test_123')
+        self.assertIsNotNone(mc)
+
+        self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'template.out')))
+        with open(os.path.join(self.output_dir, 'template.out'), 'r') as content_file:
+            content = content_file.read()
+            self.assertEqual(content, 'test_123')
