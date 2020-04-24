@@ -23,9 +23,10 @@ model District_InfiniteSource_nBuildings
 //set up RC buildings and their asociated components
 {% for i in range( district_data['rc_buildings_count'] ) %}
   BaseClasses.BuildingRCZ6 bui_{{i}}(nPorts_a=2, nPorts_b=2) "Building"
-   {% raw %}
-    annotation (Placement(transformation(extent={{166,486},{224,560}})));
-   {% endraw %}
+
+    annotation (Placement(transformation(extent=
+    {%raw%} {{ {%endraw%} {{160+i*0}}, {{480-i*10}} {%raw%} } {%endraw%}, {%raw%} { {%endraw%} {{220+i*0}}, {{560-i*10}} {%raw%} }}  ))); {%endraw%}
+
 
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat_{{i}}
       {% raw %}
@@ -48,8 +49,8 @@ model District_InfiniteSource_nBuildings
     {% endraw %}
 
   Modelica.Blocks.Sources.RealExpression THeaWatSup_{{i}}
+  (y=max(bui_{{i}}.terUni.T_aHeaWat_nominal))
   {% raw %}
-  (y=max(bui.terUni.T_aHeaWat_nominal))
     "Heating water supply temperature"
     annotation (Placement(transformation(extent={{56,386},{76,406}})));
   {% endraw %}
@@ -122,8 +123,9 @@ model District_InfiniteSource_nBuildings
     yCon_start=0,
     reverseAction=true)
     "Indirect cooling ETS"
-    annotation (Placement(transformation(extent={{-166,486},{-126,530}})));
     {% endraw %}
+    annotation (Placement(transformation(extent={%raw%} {{ {%endraw%}
+    {{-160+i*0}}, {{486-i*10}} {%raw%} },{ {%endraw%} {{-126+i*0}}, {{530-i*10}} {%raw%} }}))); {% endraw %}
 
   Modelica.Blocks.Sources.Constant TSetCHWS_{{i}}  (k=273.15 + 7)
   {% raw %}
@@ -174,8 +176,9 @@ model District_InfiniteSource_nBuildings
     nominalValuesDefineDefaultPressureCurve=true,
     dp_nominal=6000)
     "Building-side (secondary) pump"
-    annotation (Placement(transformation(extent={{-164,96},{-184,116}})));
-  {% endraw %}
+    {% endraw %}
+    annotation (Placement(transformation(extent= {%raw%} {{  {%endraw%}
+    {{-164}}, {{96-i*10}}  {%raw%} },{  {%endraw%} {{-184}}, {{116-i*10}}  {%raw%} }}))); {% endraw %}
 
   Fluid.Sensors.TemperatureTwoPort           TBuiRet_{{i}}
   {% raw %}
@@ -202,8 +205,11 @@ model District_InfiniteSource_nBuildings
     use_T_in=false,
     T=289.15)
     "Building (secondary) source (chilled water return)"
-    annotation (Placement(transformation(extent={{-44,96},{-64,116}})));
-  {% endraw %}
+
+    annotation (Placement(transformation(extent=
+    {%raw%} {{ {%endraw%}    {{-44+i*0}}, {{96-i*10}}
+    {%raw%} },{ {%endraw%}  {{-64+i*0}},{{116-i*10}}
+    {%raw%} }}))); {% endraw %}
 
   Fluid.Sources.Boundary_pT           sinBui_{{i}}
   {% raw %}
