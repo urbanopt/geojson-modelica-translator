@@ -191,57 +191,79 @@ class TeaserConnector(model_connector_base):
                 # updating path to internal loads
                 for s in string_replace_list:
                     new_file_path = s[1]
-                    file_name_value = f'''Modelica.Utilities.Files.loadResource(
-  "modelica://{new_file_path}")'''
+                    new_resource_path = f'''Modelica.Utilities.Files.loadResource(
+          "modelica://{new_file_path}")'''
+
+                    old_file_path = s[0]
+                    old_resource_path = f'''Modelica.Utilities.Files.loadResource(
+          "modelica://{old_file_path}")'''
 
                     mofile.update_component_argument(
                         "Modelica.Blocks.Sources.CombiTimeTable",
                         "internalGains",
                         "fileName",
-                        file_name_value)
+                        new_resource_path,
+                        if_value=old_resource_path)
 
                 # add heat port
-                mofile.insert_component(-1,
+                mofile.insert_component(
+                    -1,
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
-                    annotations=["Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}}))"])
+                    annotations=[
+                        "Placement(transformation(extent={{-10,90},{10,110}}), "
+                        + "iconTransformation(extent={{-10,90},{10,110}}))"])
 
                 # add TAir output
-                mofile.insert_component(-1,
+                mofile.insert_component(
+                    -1,
                     "Buildings.Controls.OBC.CDL.Interfaces.RealOutput", "TAir",
                     arguments={
-                        "quantity": "ThermodynamicTemperature",
-                        "unit": "K",
-                        "displayUnit": "degC"
+                        "quantity": '"ThermodynamicTemperature"',
+                        "unit": '"K"',
+                        "displayUnit": '"degC"'
                     },
                     string_comment='Room air temperature',
                     annotations=["Placement(transformation(extent={{100,-10},{120,10}}))"])
 
                 # All existing weaDat.weaBus connections need to be updated to simply weaBus
-                mofile.edit_connect('weaDat.weaBus', '*', new_port_a='weaBus')
-                # Now remove the redundant weaBus -> weaBus connection
-                mofile.remove_connect('weaBus', 'weaBus')
+                # (except for the connections where 'weaBus' is port_b, we will just delete these)
+                mofile.edit_connect('weaDat.weaBus', '!weaBus', new_port_a='weaBus')
+                # Now remove the unnecessary weaDat.weaBus -> weaBus
+                mofile.remove_connect('weaDat.weaBus', 'weaBus')
 
                 # add new port connections
                 if self.system_parameters.get_param(
                         "buildings.default.load_model_parameters.rc.order", default=2) == 1:
-                    mofile.add_connect("port_a", "thermalZoneOneElement.intGainsConv",
+                    mofile.add_connect(
+                        "port_a",
+                        "thermalZoneOneElement.intGainsConv",
                         annotations=["Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0})"])
 
-                    mofile.add_connect("thermalZoneOneElement.TAir", "TAir",
+                    mofile.add_connect(
+                        "thermalZoneOneElement.TAir",
+                        "TAir",
                         annotations=["Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127})"])
                 elif self.system_parameters.get_param(
                         "buildings.default.load_model_parameters.rc.order", default=2) == 2:
-                    mofile.add_connect("port_a", "thermalZoneTwoElements.intGainsConv",
+                    mofile.add_connect(
+                        "port_a",
+                        "thermalZoneTwoElements.intGainsConv",
                         annotations=["Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0})"])
 
-                    mofile.add_connect("thermalZoneTwoElements.TAir", "TAir",
+                    mofile.add_connect(
+                        "thermalZoneTwoElements.TAir",
+                        "TAir",
                         annotations=["Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127})"])
                 elif self.system_parameters.get_param(
                         "buildings.default.load_model_parameters.rc.order", default=2) == 4:
-                    mofile.add_connect("port_a", "thermalZoneFourElements.intGainsConv",
+                    mofile.add_connect(
+                        "port_a",
+                        "thermalZoneFourElements.intGainsConv",
                         annotations=["Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0})"])
 
-                    mofile.add_connect("thermalZoneFourElements.TAir", "TAir",
+                    mofile.add_connect(
+                        "thermalZoneFourElements.TAir",
+                        "TAir",
                         annotations=["Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127})"])
 
                 # change the name of the modelica model to remove the building id, update in package too!
