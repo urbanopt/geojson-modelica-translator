@@ -59,23 +59,23 @@ class ETSTemplate:
         # get the path of modelica-buildings library
         # temporarily copied here to reduce repo size
         directory_up_one_level = os.path.abspath(os.path.join(__file__, "../.."))
-        self.directory_modelica_building = os.path.join(
+        self.folder_modelica_building = os.path.join(
             directory_up_one_level + "/modelica/CoolingIndirect.mo"
         )
-        if "\\" in self.directory_modelica_building:
-            self.directory_modelica_building = self.directory_modelica_building.replace("\\", "/")
+        if "\\" in self.folder_modelica_building:
+            self.folder_modelica_building = self.folder_modelica_building.replace("\\", "/")
 
         # go up two levels of directory, to get the path of tests folder for ets
         # TODO: we shouldn't be writing to the test directory in this file, only in tests.
         directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
-        self.directory_ets_templated = os.path.join(
+        self.folder_ets_templated = os.path.join(
             directory_up_two_levels + "/tests/output_ets"
         )
-        if "\\" in self.directory_ets_templated:
-            self.directory_ets_templated = self.directory_ets_templated.replace("\\", "/")
+        if "\\" in self.folder_ets_templated:
+            self.folder_ets_templated = self.folder_ets_templated.replace("\\", "/")
 
-        if not os.path.isdir(self.directory_ets_templated):
-            os.mkdir(self.directory_ets_templated)
+        if not os.path.isdir(self.folder_ets_templated):
+            os.mkdir(self.folder_ets_templated)
         else:
             pass
 
@@ -132,14 +132,14 @@ class ETSTemplate:
 
         # TODO: Seems like the ets_data below should allow defaults from
         #  the system parameters JSON file, correct?
-        # ets model parameters are from the schema.json file, default values only.
+        # yes, ets model parameters are from the schema.json file, default values only.
         ets_data = self.check_ets_system_parameters()
 
         # Here comes the Jina2 function: render()
         file_data = ets_template.render(ets_data=ets_data)
 
         # write templated ETS back to modelica file , to the tests folder for Dymola test
-        path_ets_templated = os.path.join(self.directory_ets_templated, "ets_cooling_indirect_templated.mo")
+        path_ets_templated = os.path.join(self.folder_ets_templated, "ets_cooling_indirect_templated.mo")
 
         if os.path.exists(path_ets_templated):
             os.remove(path_ets_templated)
@@ -158,52 +158,17 @@ class ETSTemplate:
 
     def templated_ets_openloops_dymola(self):
         """after we creating the templated ets, we need to test it in Dymola under open loops.
-        Here we refactor the example file: CoolingIndirectOpenLoops,
-        to test our templated ets model.
         """
-        file = open(
-            os.path.join(os.getcwd(), "geojson_modelica_translator") + "/modelica/CoolingIndirectOpenLoops.mo", "r",
-        )
-        cooling_indirect_filename = "/CoolingIndirectOpenLoops_Templated.mo"
+        ets_open_template = self.template_env.get_template("CoolingIndirectOpenLoops.mot")
 
-        # if the modelica example file is existed, delete it first
-        path_openloops = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) + "/modelica/")
+        # Here comes the Jina2 function: render()
+        model_name = "CoolingIndirectOpenLoopsTemplated"
+        ets_open_data = {}
+        ets_open_data['ets_name'] = ['ets_cooling']
+        ets_open = ets_open_template.render(model_name=model_name, ets_open_data=ets_open_data)
 
-        if os.path.exists(path_openloops + cooling_indirect_filename):
-            os.remove(path_openloops + cooling_indirect_filename)
-
-        # create the modelica example file for Dymola test
-        # TODO: Replace this with the ModelicaFile Class --
-        #  extend ModelicaFile class if does not support.
-        # Theoretically it is doable using extend clause from Modelica.
-        # But we need to change the original ETS model first, in order to extend.
-        # This is Michael Wetter suggested approach.
-        # if so, we don't need to template modelica models, but we need to connect the modelica components
-        repl_dict = {}
-        from_str = "model CoolingIndirectOpenLoops"
-        to_str = "model CoolingIndirectOpenLoops_Templated\n"
-        repl_dict[from_str] = to_str
-        from_str = (
-            "Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect coo("
-        )
-        to_str = "Buildings.Applications.DHC.EnergyTransferStations.ets_cooling_indirect_templated coo("
-        repl_dict[from_str] = to_str
-        from_str = "end CoolingIndirectOpenLoops;"
-        to_str = "end CoolingIndirectOpenLoops_Templated;"
-        repl_dict[from_str] = to_str
-
-        with open(path_openloops + cooling_indirect_filename, "w") as examplefile:
-            for f in file:
-                fx = f
-                for from_str, to_str in repl_dict.items():
-                    # TODO: f.string() causes errors, check code
-                    if fx.strip() == from_str.strip():
-                        fx = f.replace(from_str, to_str)
-                examplefile.write(fx)
-
-        return examplefile
-
-    def connect(self):
-        """connect ETS-modelica to building-modelica (specifically TEASER modelica).
-        This function will be modified in future"""
-        pass
+        # save to output folder:
+        if os.path.exists(os.path.join(self.folder_ets_templated, model_name+".mo")):
+            os.remove(os.path.join(self.folder_ets_templated, model_name+".mo"))
+        with open(os.path.join(self.folder_ets_templated, model_name+".mo"), "w") as f:
+            f.write(ets_open)
