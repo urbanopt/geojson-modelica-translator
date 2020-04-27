@@ -95,7 +95,7 @@ model {{model_name}}
     yCon_start=0,
     reverseAction=true)
     "Indirect cooling ETS"
-    annotation (Placement(transformation(extent={{-10,-30},{10,-10}})));
+    {% raw %} annotation (Placement(transformation(extent={{-10,-30},{10,-10}}))); {% endraw %}
 {% endfor %}
 
 {% raw %}
@@ -135,16 +135,16 @@ equation
 {% endraw %}
 
 {% for ets_name in ets_open_data['ets_name']%}
-  connect({{ets_name}}.port_b2, pumBui.port_a) annotation (Line(points={{-10,-26},{-16,-26},
-          {-16,-90},{-20,-90}}, color={0,127,255}));
+  connect({{ets_name}}.port_b2, pumBui.port_a)
+  {%raw%} annotation (Line(points={{-10,-26},{-16,-26},{-16,-90},{-20,-90}}, color={0,127,255}));{% endraw %}
   connect(TSetCHWS.y, {{ets_name}}.TSet)
-    annotation (Line(points={{-99,-20},{-12,-20}}, color={0,0,127}));
-  connect(TDisSup.port_b, {{ets_name}}.port_a1) annotation (Line(points={{-20,50},{-16,50},
-          {-16,-14},{-10,-14}}, color={0,127,255}));
-  connect({{ets_name}}.port_b1, TDisRet.port_a) annotation (Line(points={{10,-14},{16,-14},
-          {16,50},{20,50}}, color={0,127,255}));
-  connect({{ets_name}}.port_a2, TBuiRet.port_b) annotation (Line(points={{10,-26},{16,
-          -26},{16,-90},{20,-90}}, color={0,127,255}));
+  {% raw %}  annotation (Line(points={{-99,-20},{-12,-20}}, color={0,0,127})); {% endraw %}
+  connect(TDisSup.port_b, {{ets_name}}.port_a1)
+  {% raw %} annotation (Line(points={{-20,50},{-16,50},{-16,-14},{-10,-14}}, color={0,127,255}));{% endraw %}
+  connect({{ets_name}}.port_b1, TDisRet.port_a)
+  {% raw %} annotation (Line(points={{10,-14},{16,-14},{16,50},{20,50}}, color={0,127,255})); {% endraw %}
+  connect({{ets_name}}.port_a2, TBuiRet.port_b)
+  {% raw %} annotation (Line(points={{10,-26},{16,-26},{16,-90},{20,-90}}, color={0,127,255}));{% endraw %}
 {% endfor %}
 
 {% raw %}

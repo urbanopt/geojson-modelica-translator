@@ -133,6 +133,11 @@
         "Waste Heat Source--Hot Water",
         "Waste Heat Source--Ambient Water"
       ]
+    },
+    "ets_parameters": {
+      "description": "general ets information goes here!!",
+      "type": "string",
+      "enum": []
     }
   }
 }

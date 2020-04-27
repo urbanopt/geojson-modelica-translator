@@ -34,6 +34,9 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
+from geojson_modelica_translator.model_connectors.ets_template import (
+    ETSTemplate
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 
@@ -132,14 +135,19 @@ class GeoJsonModelicaTranslator(object):
         # TODO: lookup tables / data sets
 
     def ets_templating(self):
-        from geojson_modelica_translator.model_connectors.ets_template import ETSTemplate
         folder_tmp = "/geojson/data/schemas/thermal_junction_properties.json"
         thermal_junction_properties_json = os.path.abspath(os.path.join(os.path.join(__file__, "../") + folder_tmp))
         folder_tmp = "/geojson/data/schemas/district_system_properties.json"
         system_parameters_json = os.path.abspath(os.path.join(os.path.join(__file__, "../") + folder_tmp))
         ets = ETSTemplate(thermal_junction_properties_json, system_parameters_json)
-        ets.check_ets_thermal_junction()
-        ets.check_ets_system_parameters()
+        try:
+            ets.check_ets_thermal_junction()
+        except NotImplementedError:
+            print("schema for ets thermal junction has issues!!!")
+        try:
+            ets.check_ets_system_parameters()
+        except NotImplementedError:
+            print("schema for ets system parameters has issues!!!")
         ets.ets_to_modelica()
         ets.ets_openloop_to_modelica()
 

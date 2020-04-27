@@ -65,7 +65,7 @@ class ETSTemplate:
         # TODO: we shouldn't be writing to the test directory in this file, only in tests.
         directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
         self.folder_ets_templated = os.path.join(
-            directory_up_two_levels + "/tests/output_ets"
+            directory_up_two_levels + "/tests/output/ets"
         )
         if "\\" in self.folder_ets_templated:
             self.folder_ets_templated = self.folder_ets_templated.replace("\\", "/")
@@ -109,7 +109,7 @@ class ETSTemplate:
         # four levels down to get the ets model description
         # ets_overall = data["definitions"]["building_def"]["properties"]["ets"]
         # three levels down to get the parameters
-        ets_parameters = data["definitions"]["ets_parameters"]["properties"]
+        ets_parameters = data["definitions"]["ets_parameters"]
         # print ("est_parameters are: ", type(ets_parameters) )
         return ets_parameters
 

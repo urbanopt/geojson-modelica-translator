@@ -247,11 +247,10 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
 
 class GeoJSONTranslatorETSTest(unittest.TestCase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), "geojson", "data")
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output/output_ets/')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output/ets/')
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
     def test_ets_templating(self):
         ets = GeoJsonModelicaTranslator().ets_templating()
-        self.assertInNotNone(ets)
+        self.assertIsNotNone(ets)
