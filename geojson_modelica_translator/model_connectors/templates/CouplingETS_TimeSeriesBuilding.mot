@@ -8,7 +8,7 @@ extends Modelica.Icons.Example;
   package MediumA = Buildings.Media.Air
     "Load side medium";
 {% raw %}
-  parameter Modelica.SIunits.MassFlowRate m1_flow_nominal=6
+  parameter Modelica.SIunits.MassFlowRate m1_flow_nominal=8
     "Nominal mass flow rate of primary (district) district cooling side";
   parameter Modelica.SIunits.MassFlowRate m2_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
@@ -35,7 +35,7 @@ extends Modelica.Icons.Example;
     nPorts_b=2)
     "Building model integrating time series loads."
       annotation (Placement(transformation(extent={{-6,60},{14,80}})));
-  Fluid.Sources.Boundary_pT supChiWat(
+  Buildings.Fluid.Sources.Boundary_pT supChiWat(
     redeclare package Medium = MediumW,
     p=330000,
     use_T_in=false,
@@ -46,7 +46,7 @@ extends Modelica.Icons.Example;
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={-30,-10})));
-  Fluid.Sources.Boundary_pT sinChiWat(
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
     redeclare package Medium = MediumW,
     p=300000,
     nPorts=1)
@@ -62,7 +62,7 @@ extends Modelica.Icons.Example;
   Modelica.Blocks.Sources.RealExpression THeaWatSup(y=max(bui.terUniHea.T_aHeaWat_nominal))
     "Heating water supply temperature"
     annotation (Placement(transformation(extent={{-80,20},{-60,40}})));
-  Fluid.Sources.MassFlowSource_T supHeaWat(
+  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
     redeclare package Medium = MediumW,
     m_flow=bui.terUniHea.mHeaWat_flow_nominal,
     use_T_in=true,
@@ -71,7 +71,7 @@ extends Modelica.Icons.Example;
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-30,30})));
-  Fluid.Sources.Boundary_pT sinHeaWat(
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium =MediumW,
     nPorts=1)
    "Sink for heating water"
@@ -79,7 +79,7 @@ extends Modelica.Icons.Example;
           extent={{10,-10},{-10,10}},
           rotation=0,
           origin={70,30})));
-  Fluid.Movers.FlowControlled_m_flow pumBui(
+  Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal,
@@ -99,15 +99,15 @@ extends Modelica.Icons.Example;
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={70,-70})));
-  Fluid.Sensors.TemperatureTwoPort senTBuiRet(
+  Buildings.Fluid.Sensors.TemperatureTwoPort senTBuiRet(
     redeclare final package Medium = MediumW,
     final m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal)
     annotation (Placement(transformation(extent={{50,-50},{30,-30}})));
-  Fluid.Sensors.TemperatureTwoPort senTBuiSup(
+  Buildings.Fluid.Sensors.TemperatureTwoPort senTBuiSup(
     redeclare final package Medium = MediumW,
     final m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal)
     annotation (Placement(transformation(extent={{-74,60},{-54,80}})));
-  Fluid.Sensors.TemperatureTwoPort disRet(
+  Buildings.Fluid.Sensors.TemperatureTwoPort disRet(
     redeclare final package Medium = MediumW,
     final m_flow_nominal=m1_flow_nominal)
     annotation (Placement(transformation(extent={{30,-20},{50,0}})));
