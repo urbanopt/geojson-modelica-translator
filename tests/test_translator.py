@@ -243,3 +243,15 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
                 path = os.path.join(gj.scaffold.loads_path.files_dir, "Resources", "Data",
                                     b.dirname, f"{resource_name}.txt")
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+
+
+class GeoJSONTranslatorETSTest(unittest.TestCase):
+    def setUp(self):
+        self.data_dir = os.path.join(os.path.dirname(__file__), "geojson", "data")
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output/output_ets/')
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+
+    def test_ets_templating(self):
+        ets = GeoJsonModelicaTranslator().ets_templating()
+        self.assertInNotNone(ets)

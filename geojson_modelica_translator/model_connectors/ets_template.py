@@ -37,7 +37,7 @@ from jinja2 import Environment, FileSystemLoader
 class ETSTemplate:
     """This class will template the ETS modelica model."""
 
-    def __init__(self, thermal_junction_properties_geojson, system_parameters_geojson, ets_from_building_modelica):
+    def __init__(self, thermal_junction_properties_geojson, system_parameters_geojson):
         """
         thermal_junction_properties_geojson contains the ETS at brief and at higher level;
         system_parameters_geojson contains the ETS with details                          ;
@@ -51,10 +51,6 @@ class ETSTemplate:
         self.system_parameters_geojson = system_parameters_geojson
         if "\\" in self.system_parameters_geojson:
             self.system_parameters_geojson = self.system_parameters_geojson.replace("\\", "/")
-
-        self.ets_from_building_modelica = ets_from_building_modelica
-        if "\\" in self.ets_from_building_modelica:
-            self.ets_from_building_modelica = self.ets_from_building_modelica.replace("\\", "/")
 
         # get the path of modelica-buildings library
         # temporarily copied here to reduce repo size
@@ -117,13 +113,7 @@ class ETSTemplate:
         # print ("est_parameters are: ", type(ets_parameters) )
         return ets_parameters
 
-    def check_ets_from_building_modelica(self):
-        """check if ETS-indirectCooling are in modelica building library"""
-        ets_modelica_available = os.path.isfile(self.ets_from_building_modelica)
-
-        return ets_modelica_available
-
-    def to_modelica(self):
+    def ets_to_modelica(self):
         """convert ETS json to modelica"""
         # Here come the Jinja2 function: get_template(), which reads into templated ets model.
         # CoolingIndirect.mot was manually created as a starting point, by adding stuff following Jinja2 syntax.
@@ -156,7 +146,7 @@ class ETSTemplate:
 
         return file_data
 
-    def templated_ets_openloops_dymola(self):
+    def ets_openloop_to_modelica(self):
         """after we creating the templated ets, we need to test it in Dymola under open loops.
         """
         ets_open_template = self.template_env.get_template("CoolingIndirectOpenLoops.mot")
