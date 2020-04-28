@@ -79,17 +79,17 @@ extends Modelica.Icons.Example;
           extent={{10,-10},{-10,10}},
           rotation=0,
           origin={70,30})));
-  Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
+   Fluid.Movers.FlowControlled_m_flow pumBui(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal,
-    inputType=Buildings.Fluid.Types.InputType.Constant,
+    inputType=Buildings.Fluid.Types.InputType.Continuous,
     nominalValuesDefineDefaultPressureCurve=true,
     use_inputFilter=false,
-    dp_nominal=6000)
+    dp_nominal(displayUnit="bar") = 150000)
     "Building-side (secondary) pump"
     annotation (Placement(transformation(extent={{-40,-80},{-60,-60}})));
- Modelica.Fluid.Sources.FixedBoundary pre(
+  Modelica.Fluid.Sources.FixedBoundary pre(
    redeclare package Medium = MediumW,
     p=300000,
     use_T=false,
@@ -111,6 +111,9 @@ extends Modelica.Icons.Example;
     redeclare final package Medium = MediumW,
     final m_flow_nominal=m1_flow_nominal)
     annotation (Placement(transformation(extent={{30,-20},{50,0}})));
+  Modelica.Blocks.Sources.RealExpression masFloRat(y=bui.disFloCoo.mReqTot_flow)
+  "Primary loop chilled water setpoint temperature"
+  annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
 {% endraw %}
 equation
 {% raw %}
@@ -139,7 +142,9 @@ connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{-4,
  connect(supHeaWat.T_in, THeaWatSup.y) annotation (Line(points={{-42,34},{-52,34},
          {-52,30},{-59,30}}, color={0,0,127}));
  connect(disRet.port_b, sinChiWat.ports[1]) annotation (Line(points={{50,-10},
-        {60,-10}}, color={0,127,255}))
+        {60,-10}}, color={0,127,255}));
+ connect(masFloRat.y, pumBui.m_flow_in)
+  annotation (Line(points={{-59,-40},{-50,-40},{-50,-58}}, color={0,0,127}));
 {% endraw %}
 {% raw %}
 annotation (Icon(coordinateSystem(preserveAspectRatio=false),
