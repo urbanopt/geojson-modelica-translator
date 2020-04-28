@@ -60,7 +60,12 @@ model TimeSeries_building
     filNam=Modelica.Utilities.Files.loadResource(filPat))
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Design parameter"));
-
+  parameter Modelica.SIunits.SpecificHeatCapacity cp_air=
+      MediumA.specificHeatCapacityCp(MediumA.setState_pTX(
+        p = MediumA.p_default,
+        T = MediumA.T_default,
+        X = MediumA.X_default))
+      "Specific heat capacity of air at default state";
 {% raw %}
   Modelica.Blocks.Sources.CombiTimeTable loa(
     tableOnFile=true,

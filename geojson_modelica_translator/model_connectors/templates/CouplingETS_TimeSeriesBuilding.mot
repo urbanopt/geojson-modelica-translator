@@ -29,8 +29,8 @@ extends Modelica.Icons.Example;
     have_pum=false,
     filPat=
     "modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
-    mLoaHea_flow_nominal=10,
-    mLoaCoo_flow_nominal=30,
+    mLoaHea_flow_nominal=(bui.QHea_flow_nominal/bui.cp_air/10),
+    mLoaCoo_flow_nominal=(-1*bui.QCoo_flow_nominal/bui.cp_air/10),
     nPorts_a=2,
     nPorts_b=2)
     "Building model integrating time series loads."
