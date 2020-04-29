@@ -82,7 +82,7 @@ class timeSeriesConnectorETS(model_connector_base):
         """
         curdir = os.getcwd()
         timeSeries_ets_coupling_template = self.template_env.get_template("CouplingETS_TimeSeriesBuilding.mot")
-        timeSeries_building_template = self.template_env.get_template("TimeSeries_building.mot")
+        timeSeries_building_template = self.template_env.get_template("timeSeries_building.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         timeSeries_ets_mos_template = self.template_env.get_template("RunCouplingETS_TimeSeriesBuilding.most")
         building_names = []
