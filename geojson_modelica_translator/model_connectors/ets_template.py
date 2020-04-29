@@ -52,15 +52,6 @@ class ETSTemplate:
         if "\\" in self.system_parameters_geojson:
             self.system_parameters_geojson = self.system_parameters_geojson.replace("\\", "/")
 
-        # get the path of modelica-buildings library
-        # temporarily copied here to reduce repo size
-        directory_up_one_level = os.path.abspath(os.path.join(__file__, "../.."))
-        self.folder_modelica_building = os.path.join(
-            directory_up_one_level + "/modelica/CoolingIndirect.mo"
-        )
-        if "\\" in self.folder_modelica_building:
-            self.folder_modelica_building = self.folder_modelica_building.replace("\\", "/")
-
         # go up two levels of directory, to get the path of tests folder for ets
         # TODO: we shouldn't be writing to the test directory in this file, only in tests.
         directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
@@ -162,3 +153,5 @@ class ETSTemplate:
             os.remove(os.path.join(self.folder_ets_templated, model_name+".mo"))
         with open(os.path.join(self.folder_ets_templated, model_name+".mo"), "w") as f:
             f.write(ets_open)
+
+        return ets_open

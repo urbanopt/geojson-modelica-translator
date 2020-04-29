@@ -43,13 +43,10 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         self.thermal_junction_properties_geojson = base_folder + dest_path
         dest_path = "/system_parameters/schema.json"
         self.system_parameters_geojson = base_folder + dest_path
-        dest_path = "/modelica/CoolingIndirect.mo"
-        self.ets_from_building_modelica = base_folder + dest_path
 
         self.ets = ETSTemplate(
             self.thermal_junction_properties_geojson,
             self.system_parameters_geojson,
-            self.ets_from_building_modelica,
         )
         self.assertIsNotNone(self.ets)
 
@@ -62,11 +59,8 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
     def test_ets_system_parameters(self):
         self.assertIsNotNone(self.ets.check_ets_system_parameters())
 
-    def test_ets_from_building_modelica(self):
-        self.assertTrue(self.ets.check_ets_from_building_modelica())
-
     def test_ets_to_modelica(self):
-        self.assertIsNotNone(self.ets.to_modelica())
+        self.assertIsNotNone(self.ets.ets_to_modelica())
 
     def test_ets_in_dymola(self):
-        self.assertIsNotNone(self.ets.templated_ets_openloops_dymola())
+        self.assertIsNotNone(self.ets.ets_openloop_to_modelica())
