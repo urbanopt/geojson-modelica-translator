@@ -54,6 +54,7 @@ class GeoJsonModelicaTranslator(object):
         # directory name member variables. These are set in the scaffold_directory method
         self.scaffold = None
         self.system_parameters = None
+        self.geojson_thermal_junction = None
 
     @classmethod
     def from_geojson(cls, filename):
@@ -72,6 +73,15 @@ class GeoJsonModelicaTranslator(object):
             return klass
         else:
             raise Exception(f"GeoJSON file does not exist: {filename}")
+
+    def from_geojson_thermal_junction(self, geojson_thermal_junction):
+        """get geojson-thermal-junction-properties"""
+        if os.path.exists(geojson_thermal_junction):
+            self.geojson_thermal_junction = geojson_thermal_junction
+        else:
+            raise Exception(f"Geojson-thermal-junction does not exist: {geojson_thermal_junction}")
+
+        return self.geojson_thermal_junction
 
     def set_system_parameters(self, sys_params):
         """
@@ -106,6 +116,7 @@ class GeoJsonModelicaTranslator(object):
         # TODO: Create a map to load the required model_connectors
         import geojson_modelica_translator.model_connectors.teaser
         import geojson_modelica_translator.model_connectors.spawn
+        # getattr is equivalent to: geojson_modelica_translator.model_connectors.teaser.model_connector_str()
         mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
 
         model_connector = mc_klass(self.system_parameters)
@@ -119,6 +130,8 @@ class GeoJsonModelicaTranslator(object):
 
             _log.info(f"Translating building to model {building}")
             model_connector.to_modelica(self.scaffold, keep_original_models=False)
+
+        print("Yanfei check here: ", model_connector)
 
         # add in Substations
         # TODO: YL, where are the substations/ETSs?

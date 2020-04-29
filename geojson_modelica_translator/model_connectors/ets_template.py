@@ -46,11 +46,8 @@ class ETSTemplate:
         super().__init__()
 
         self.thermal_junction_properties_geojson = thermal_junction_properties_geojson
-        self.thermal_junction_properties_geojson = self.thermal_junction_properties_geojson.replace("\\", "/")
 
         self.system_parameters_geojson = system_parameters_geojson
-        if "\\" in self.system_parameters_geojson:
-            self.system_parameters_geojson = self.system_parameters_geojson.replace("\\", "/")
 
         # go up two levels of directory, to get the path of tests folder for ets
         # TODO: we shouldn't be writing to the test directory in this file, only in tests.
@@ -58,8 +55,6 @@ class ETSTemplate:
         self.folder_ets_templated = os.path.join(
             directory_up_two_levels + "/tests/output/ets"
         )
-        if "\\" in self.folder_ets_templated:
-            self.folder_ets_templated = self.folder_ets_templated.replace("\\", "/")
 
         if not os.path.isdir(self.folder_ets_templated):
             os.mkdir(self.folder_ets_templated)
@@ -83,7 +78,7 @@ class ETSTemplate:
         for key, value in data.items():
             if key == "definitions":
                 # three levels down to get the ETS signal
-                junctions = data["definitions"]["ThermalJunctionType"]["enum"]
+                junctions = data["definitions"]["ets_parameters"]["properties"]
                 if "ETS" in junctions:
                     ets_general = True
             else:
