@@ -13,8 +13,6 @@ model TimeSeries_building
   replaceable package MediumA = Buildings.Media.Air
    "Load side medium";
 
-  parameter Boolean have_pum = true
-      "Set to true if pumps consumed power is computed";
   parameter String filPat=
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['timSer']['filename']}}"
     "Library path of the file with thermal loads as time series";
