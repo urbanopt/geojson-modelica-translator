@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model TimeSeries_building
+model timeSeries_building
   "Building model with heating and cooling loads provided as time series"
  extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium = MediumW,
@@ -202,4 +202,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end TimeSeries_building;
+end timeSeries_building;
