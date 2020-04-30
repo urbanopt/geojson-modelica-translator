@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$ref": "#/definitions/system_design_parameter_def",
@@ -661,4 +660,3 @@
     }
   }
 }
->>>>>>> 9f915ef2573f40ce50e21ab8f44db0c9ed3c2fe9
