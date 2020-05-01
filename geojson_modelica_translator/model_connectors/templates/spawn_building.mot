@@ -22,9 +22,6 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
-  parameter Boolean have_pum = true
-    "Set to true if pumps drawn power is computed";
-
   {% raw %}
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     k=fill(20+273.15, nZon))
@@ -70,7 +67,7 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium1 = MediumW,
     redeclare package Medium2 = MediumA,
     each facSca=facSca,
-    QHea_flow_nominal={50000,10000,10000,10000,10000,10000},
+    QHea_flow_nominal={90000,10000,10000,10000,10000,10000},
     QCoo_flow_nominal={-10000,-10000,-10000,-10000,-10000,-10000},
     each T_aLoaHea_nominal=293.15,
     each T_aLoaCoo_nominal=297.15,
@@ -78,8 +75,8 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     each T_bChiWat_nominal=285.15,
     each T_aHeaWat_nominal=313.15,
     each T_aChiWat_nominal=280.15,
-    each mLoaHea_flow_nominal=5,
-    each mLoaCoo_flow_nominal=5)
+    each mLoaHea_flow_nominal=10,
+    each mLoaCoo_flow_nominal=10)
     "Terminal unit"
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
 
