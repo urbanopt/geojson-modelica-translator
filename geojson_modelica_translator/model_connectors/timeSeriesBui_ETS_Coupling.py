@@ -141,15 +141,15 @@ class timeSeriesConnectorETS(model_connector_base):
                 # This relates to this ticket https://github.com/urbanopt/geojson-modelica-translator/issues/64
                 ets_data = {
                     "ModelName": "ets_cooling_indirect_templated",
-                    "Q_Flow_Nominal": [-1*(bui.QCoo_flow_nominal)],
+                    "Q_Flow_Nominal": [8000],
                     "Eta_Efficiency": [0.666],
-                    "NominalFlow_District": [m1_flow_nominal],
-                    "NominalFlow_Building": [m2_flow_nominal],
+                    "NominalFlow_District": [0.6],
+                    "NominalFlow_Building": [0.6],
                     "PressureDrop_Valve": [7000],
                     "PressureDrop_HX_Secondary": [500],
                     "PressureDrop_HX_Primary": [500],
-                    "SWT_District": [12+273.15],
-                    "SWT_Building": [14+273.15]
+                    "SWT_District": [12],
+                    "SWT_Building": [14]
                 }
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,

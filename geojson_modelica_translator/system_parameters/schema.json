@@ -654,8 +654,8 @@
             "PressureDrop_Valve": [7000],
             "PressureDrop_HX_Secondary": [999],
             "PressureDrop_HX_Primary": [999],
-            "SWT_District": [278.15],
-            "SWT_Building": [280.15]
+            "SWT_District": [5],
+            "SWT_Building": [7]
       }
     }
   }
