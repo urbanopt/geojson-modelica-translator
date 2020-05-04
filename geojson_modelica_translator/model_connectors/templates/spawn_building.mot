@@ -11,6 +11,8 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     "Source side medium";
   replaceable package MediumA = Buildings.Media.Air
     "Load side medium";
+  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
+     "Nominal building supply and return chilled water temperature difference";
   parameter Real facSca = 1
     "Scaling factor to be applied to each extensive quantity";
   parameter Integer nZon={{data['thermal_zones_count']}}
@@ -57,7 +59,6 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     weaName=Modelica.Utilities.Files.loadResource(weaPat),
     showWeatherData=false)
     "Building outer component"annotation (Placement(transformation(extent={{40,60},{60,80}})));
-
  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(nin=nZon)
     annotation (Placement(transformation(extent={{260,110},{280,130}})));
  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum3(nin=2) if have_pum
@@ -208,10 +209,6 @@ Documentation( info="<html>
 </p>
 </html>", revisions="<html>
 <ul>
-<li>
-April 1o, 2020: Nicholas Long<br/>
-Propagate the Boolean parameter have_pum to assure model scalability.
-</li>
 <li>
 March 12, 2020: Nicholas Long<br/>
 Updated implemention to handle template needed for GeoJSON to Modelica.
