@@ -194,8 +194,8 @@ class SpawnConnectorETS(model_connector_base):
                     "PressureDrop_Valve": [7000],
                     "PressureDrop_HX_Secondary": [600],
                     "PressureDrop_HX_Primary": [600],
-                    "SWT_District": [283.15],
-                    "SWT_Building": [287.15]
+                    "SWT_District": [5],
+                    "SWT_Building": [7]
                 }
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
