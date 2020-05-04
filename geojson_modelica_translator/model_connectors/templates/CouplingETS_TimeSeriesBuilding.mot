@@ -8,13 +8,19 @@ extends Modelica.Icons.Example;
   package MediumA = Buildings.Media.Air
     "Load side medium";
 {% raw %}
-  parameter Modelica.SIunits.MassFlowRate m1_flow_nominal=8
+  parameter Modelica.SIunits.MassFlowRate m1_flow_nominal=
+    bui.terUniCoo.mChiWat_flow_nominal.*bui.delTBuiCoo/delTDisCoo
     "Nominal mass flow rate of primary (district) district cooling side";
-  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal=
+    bui.terUniCoo.mChiWat_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
+  parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10
+    "Nominal district supply and return water temperature difference";
 
   CoolingIndirect coo(
     redeclare package Medium = MediumW,
+    allowFlowReversal1=false,
+    allowFlowReversal2=false,
     m1_flow_nominal=m1_flow_nominal,
     m2_flow_nominal=m2_flow_nominal,
     dp1_nominal=500,
@@ -22,9 +28,10 @@ extends Modelica.Icons.Example;
     dpValve_nominal=7000,
     use_Q_flow_nominal=true,
     Q_flow_nominal=-1*(bui.QCoo_flow_nominal),
-    T_a1_nominal=273.15 + 12,
+    T_a1_nominal=273.15 + 8,
     T_a2_nominal=273.15 + 19)
-      annotation (Placement(transformation(extent={{-4,-60},{16,-40}})));
+    "Indirect cooling energy transfer station ETS."
+      annotation (Placement(transformation(extent={{-4,-60},{20,-40}})));
   building bui(
     have_pum=false,
     filPat=
@@ -35,116 +42,96 @@ extends Modelica.Icons.Example;
     nPorts_b=2)
     "Building model integrating time series loads."
       annotation (Placement(transformation(extent={{-6,60},{14,80}})));
-  Buildings.Fluid.Sources.Boundary_pT supChiWat(
+  Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
     redeclare package Medium = MediumW,
-    p=330000,
+    use_m_flow_in=true,
     use_T_in=false,
-    T=285.15,
-    nPorts=1)
-    "Chilled water supply"
-      annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=0,
-            origin={-30,-10})));
-  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
-    redeclare package Medium = MediumW,
-    p=300000,
-    nPorts=1)
-     "Sink for chilled water"
-      annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=0,
-            origin={70,-10})));
-  Modelica.Blocks.Sources.RealExpression TChiWatSet(y=14 + 273.15)
-    "Primary loop chilled water setpoint temperature"
-    annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
-
-  Modelica.Blocks.Sources.RealExpression THeaWatSup(y=max(bui.terUniHea.T_aHeaWat_nominal))
-    "Heating water supply temperature"
-    annotation (Placement(transformation(extent={{-80,20},{-60,40}})));
+    T=281.15,
+    nPorts=1) "Chilled water supply (district side)."
+     annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={-30,-30})));
   Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
     redeclare package Medium = MediumW,
     m_flow=bui.terUniHea.mHeaWat_flow_nominal,
     use_T_in=true,
     nPorts=1) "Heating water supply"
-    annotation (Placement(transformation(
+     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-30,30})));
-  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
-    redeclare package Medium =MediumW,
-    nPorts=1)
-   "Sink for heating water"
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
+    redeclare package Medium = MediumW, nPorts=1)
+   "Sink for chilled water"
      annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=0,
+        origin={70,-30})));
+  Modelica.Blocks.Sources.RealExpression TChiWatSet(y=14 + 273.15)
+    "Primary loop (district side) chilled water setpoint temperature."
+     annotation (Placement(transformation(extent={{-80,-20},{-60,0}})));
+  Modelica.Blocks.Sources.RealExpression THeaWatSup(y=max(bui.terUniHea.T_aHeaWat_nominal))
+    "Heating water supply temperature"
+     annotation (Placement(transformation(extent={{-80,20},{-60,40}})));
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+    redeclare package Medium =MediumW, nPorts=1)
+     "Sink for heating water" annotation (Placement(transformation(
           extent={{10,-10},{-10,10}},
           rotation=0,
           origin={70,30})));
-   Fluid.Movers.FlowControlled_m_flow pumBui(
+  Modelica.Blocks.Sources.RealExpression secMasFloRat(
+    y=bui.disFloCoo.mReqTot_flow) "Secondary loop chilled water flow rate."
+     annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
+  Modelica.Blocks.Sources.RealExpression priMasFloRat(
+    y=bui.disFloCoo.mReqTot_flow.* (bui.delTBuiCoo/delTDisCoo))
+    "Primary loop chilled water flow rate."
+     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
+  Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
     redeclare package Medium = MediumW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal,
     inputType=Buildings.Fluid.Types.InputType.Continuous,
     nominalValuesDefineDefaultPressureCurve=true,
     use_inputFilter=false,
-    dp_nominal(displayUnit="bar") = 150000)
-    "Building-side (secondary) pump"
-    annotation (Placement(transformation(extent={{-40,-80},{-60,-60}})));
+    dp_nominal(displayUnit="bar") = 150000) "Building-side (secondary) pump."
+     annotation (Placement(transformation(extent={{-40,-82},{-60,-62}})));
   Modelica.Fluid.Sources.FixedBoundary pre(
-   redeclare package Medium = MediumW,
+    redeclare package Medium = MediumW,
     p=300000,
     use_T=false,
-   nPorts=1)
+    nPorts=1)
     "Pressure source"
-   annotation (Placement(transformation(
+     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=0,
-        origin={70,-70})));
-  Buildings.Fluid.Sensors.TemperatureTwoPort senTBuiRet(
-    redeclare final package Medium = MediumW,
-    final m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal)
-    annotation (Placement(transformation(extent={{50,-50},{30,-30}})));
-  Buildings.Fluid.Sensors.TemperatureTwoPort senTBuiSup(
-    redeclare final package Medium = MediumW,
-    final m_flow_nominal=bui.terUniCoo.mChiWat_flow_nominal)
-    annotation (Placement(transformation(extent={{-74,60},{-54,80}})));
-  Buildings.Fluid.Sensors.TemperatureTwoPort disRet(
-    redeclare final package Medium = MediumW,
-    final m_flow_nominal=m1_flow_nominal)
-    annotation (Placement(transformation(extent={{30,-20},{50,0}})));
-  Modelica.Blocks.Sources.RealExpression masFloRat(y=bui.disFloCoo.mReqTot_flow)
-  "Primary loop chilled water setpoint temperature"
-  annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+        origin={70,-72})));
 {% endraw %}
 equation
 {% raw %}
-connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{-4,
-         -10},{-4,-44}},color={0,127,255}));
- connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{-6,-50},{-54,-50},{-54,
-         -30},{-59,-30}},     color={0,0,127}));
- connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{-20,30},
-         {-20,63.3333},{-6,63.3333}}, color={0,127,255}));
- connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{60,30},{
-         26,30},{26,63.3333},{14,63.3333}},color={0,127,255}));
+ connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{-2,-50},{-48,-50},{-48,
+         -10},{-59,-10}},color={0,0,127}));
+ connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{0,64},{
+          -14,64},{-14,30},{-20,30}},  color={0,127,255}));
+ connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{20,64},
+          {40,64},{40,30},{60,30}}, color={0,127,255}));
  connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{60,-70},{-4,-70},
          {-4,-56}}, color={0,127,255}));
- connect(senTBuiRet.port_b, coo.port_a2) annotation (Line(points={{30,-40},{26,
-         -40},{26,-56},{16,-56}}, color={0,127,255}));
- connect(bui.ports_b[2], senTBuiRet.port_a) annotation (Line(points={{14,64.6667},
-         {86,64.6667},{86,-40},{50,-40}}, color={0,127,255}));
- connect(senTBuiSup.port_b, bui.ports_a[2]) annotation (Line(points={{-54,70},{
-         -20,70},{-20,64.6667},{-6,64.6667}}, color={0,127,255}));
- connect(senTBuiSup.port_a, pumBui.port_b) annotation (Line(points={{-74,70},{-88,
-         70},{-88,-70},{-60,-70}}, color={0,127,255}));
- connect(disRet.port_a, coo.port_b1) annotation (Line(points={{30,-10},{20,-10},
-         {20,-44},{16,-44}}, color={0,127,255}));
+ connect(bui.ports_b[2], coo.port_a2) annotation (Line(points={{20,67},{88,67},
+        {88,-56},{20,-56}}, color={0,127,255}));
  connect(pumBui.port_a, coo.port_b2) annotation (Line(points={{-40,-70},{-4,-70},
-         {-4,-56}}, color={0,127,255}));
+        {-4,-56}}, color={0,127,255}));
+ connect(bui.ports_a[2], pumBui.port_b) annotation (Line(points={{0,67.0667},
+          {-92,67.0667},{-92,-72},{-60,-72}}, color={0,127,255}));
+ connect(coo.port_a1, supChiWat.ports[1]) annotation (Line(points={{0,-44},{-14,
+          -44},{-14,-30},{-20,-30}}, color={0,127,255}));
  connect(supHeaWat.T_in, THeaWatSup.y) annotation (Line(points={{-42,34},{-52,34},
          {-52,30},{-59,30}}, color={0,0,127}));
- connect(disRet.port_b, sinChiWat.ports[1]) annotation (Line(points={{50,-10},
-        {60,-10}}, color={0,127,255}));
- connect(masFloRat.y, pumBui.m_flow_in)
-  annotation (Line(points={{-59,-40},{-50,-40},{-50,-58}}, color={0,0,127}));
+ connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{60,-30},{40,
+          -30},{40,-44},{20,-44}}, color={0,127,255}));
+ connect(secMasFloRat.y, pumBui.m_flow_in) annotation (Line(points={{-59,-30},{-50,-30},{-50,-60}}, color={0,0,127}));
+ connect(supChiWat.m_flow_in, priMasFloRat.y) annotation (Line(points={{-42,-22},
+           {-46,-22},{-46,10},{-59,10}}, color={0,0,127}));
 {% endraw %}
 {% raw %}
 annotation (Icon(coordinateSystem(preserveAspectRatio=false),
