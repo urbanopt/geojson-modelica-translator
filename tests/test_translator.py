@@ -249,6 +249,8 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
         rc_type = "modelica_default"
         GeoJsonModelicaTranslator().connect_complete_rc_ets(rc_dir, rc_type)
 
-
-if __name__ == "__main__":
-    unittest.main()
+        for file in os.listdir(rc_dir):
+            if file.startswith('B') and 'package' not in file and 'Resources' not in file:
+                for template in os.listdir(rc_dir+'/'+file):
+                    to_seek = rc_dir + '/' + file + '/CouplingRCZ6_ETS_Templated.mo'
+                    self.assertTrue(os.path.exists(to_seek), f"Path not found: {to_seek}")
