@@ -53,6 +53,7 @@ class timeSeriesConnectorETS(model_connector_base):
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
+
         :param urbanopt_building: an urbanopt_building
         """
 
@@ -110,7 +111,7 @@ class timeSeriesConnectorETS(model_connector_base):
                         "filename": os.path.basename(filPat),
                         "path": os.path.dirname(filPat),
                     }
-
+                }
 
                 if os.path.exists(template_data["timSer"]["filPat"]):
                     shutil.copy(
