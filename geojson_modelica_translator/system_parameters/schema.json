@@ -1,341 +1,323 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/system_design_parameter_def",
-  "definitions": {
-    "system_design_parameter_def": {
-      "title": "System Design Parameter Schema",
-      "description": "Definition of System Design Parameters. (Version 0.1)",
-      "type": "object",
-      "properties": {
-        "buildings": {
-          "title": "custom",
-          "description": "Parameters for all or individual buildings.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/building_def"
-            },
-            "custom": {
-              "description": "List of individual buildings and their custom parameters.",
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/building_def"
-              }
-            }
-          },
-          "additionalProperties": false
-        },
-        "connectors": {
-          "description": "Parameters related to the connections between objects.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/connector_def"
-            }
-          },
-          "additionalProperties": false
-        },
-        "district_system": {
-          "description": "Parameters associated with district systems.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/district_system_def"
-            }
-          },
-          "additionalProperties": false
-        },
-        "topology": {
-          "title": "defaults",
-          "description": "Parameters associated with district topologies.",
-          "type": "object",
-          "properties": {
-            "topology_parameters": {
-              "description": "Description of topology style",
-              "type": "string",
-              "$ref": "#/definitions/topology_def"
-            },
-            "topology_optimization": {
-              "description": "Perform topology optimization?",
-              "type": "boolean"
-            },
-            "cost_function": {
-              "description": "Cost function to use in topology optimization",
-              "type": "string",
-              "$ref": "#/definitions/cost_function_definition"
-            },
-            "optimization_approach": {
-              "description": "Approach to use for topology optimization",
-              "type": "string",
-              "$ref": "#/definitions/optimization_definition"
-            },
-            "time_period": {
-              "description": "Time horizon for topology optimization.This paramater is used only if LCC is used as the cost function.",
-              "type": "integer"
-            },
-            "discount_rate": {
-              "description": "Discount rate for topology optimization. This paramater is used only if LCC is used as the cost function.",
-              "type": "integer"
-            },
-            "convergence_criteria": {
-              "description": "Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.",
-              "type": "integer"
-            }
-          },
-          "dependencies": {
-            "topology_optimization": [
-              "cost_function",
-              "optimization_approach",
-              "time_period",
-              "discount_rate",
-              "convergence_criteria"
-            ]
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
-    },
-    "topology_def": {
-      "title": "defaults",
-      "description": "Parameters associated with district topologies.",
-      "type": "object",
-      "properties": {
-        "configuration": {
-          "type": "string",
-          "enum": [
-            "Radial",
-            "Ring",
-            "Mesh",
-            "Out and Back"
-          ]
-        }
-      },
-      "additionalProperties": false
-    },
-    "cost_function_definition": {
-      "title": "defaults",
-      "description": "Possible cost functions for the topology optimization problem",
-      "type": "object",
-      "properties": {
-        "cost_function": {
-          "type": "string",
-          "enum": [
-            "Energy",
-            "Life Cycle Cost",
-            "Carbon Emissions"
-          ]
-        }
-      },
-      "additionalProperties": false
-    },
-    "optimization_definition": {
-      "title": "defaults",
-      "description": "Optimization approach for the topology optimization problem",
-      "type": "object",
-      "properties": {
-        "optimization_approach": {
-          "type": "string",
-          "enum": [
-            "Black box",
-            "Gradient-based"
-          ]
-        }
-      },
-      "additionalProperties": false
-    },
-    "building_def": {
-      "description": "The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.",
-      "type": "object",
-      "properties": {
-        "geojson_id": {
-          "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
-          "type": "string"
-        },
-        "ets": {
-          "title": "ets",
-          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops",
-          "type": "object",
-          "properties": {
-            "system": {
-              "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. ",
-              "type": "string",
-              "enum": [
-                "Booster Heater",
-                "Heat Exchanger Only"
-              ]
-            },
-            "description": {
-              "description": "User defined description. Not used in the translation process.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "system",
-            "description"
-          ],
-          "additionalProperties": false
-        },
-        "load_model": {
-          "description": "Type of load model to use for the building.",
-          "type": "string",
-          "enum": [
-            "ROM/RC",
-            "ROM/DDM",
-            "time_series",
-            "Spawn"
-          ]
-        },
-        "load_model_parameters": {
-          "type": "object",
-          "properties": {
-            "spawn": {
-              "$ref": "#/definitions/spawn_model_parameters"
-            },
-            "rc": {
-              "$ref": "#/definitions/rc_model_parameters"
-            },
-            "time_series": {
-              "$ref": "#/definitions/time_series_model_parameters"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
-    },
-    "connector_def": {
-      "description": "Parameters associated with the connectors in a district system.",
-      "type": "object",
-      "properties": {
-        "pipe_diameter": {
-          "description": "Pipe diameter. (inches)",
-          "type": "number"
-        },
-        "pipe_insulation_rvalue": {
-          "description": "Pipe insulation R-Value. (F-ft2-hr/Btu)",
-          "type": "number"
-        },
-        "pipe_location": {
-          "description": "Location of the pipe.",
-          "type": "string",
-          "enum": [
-            "Tunnel",
-            "Buried"
-          ]
-        }
-      },
-      "additionalProperties": false
-    },
-    "district_system_def": {
-      "description": "Parameters associated with the district system.",
-      "type": "object",
-      "properties": {
-        "return_configuration": {
-          "description": "Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.",
-          "type": "string",
-          "enum": [
-            "Direct Return",
-            "Reverse Return"
-          ]
-        }
-      },
-      "additionalProperties": false
-    },
-    "spawn_model_parameters": {
-      "description": "Parameters associated with spawn models.",
-      "type": "object",
-      "properties": {
-        "idf_filename": {
-          "type": "string",
-          "description": "Absolute path or relative path from location where file instance is saved."
-        },
-        "epw_filename": {
-          "type": "string",
-          "description": "Absolute path or relative path from location where file instance is saved."
-        },
-        "mos_weather_filename": {
-          "type": "string",
-          "description": "Absolute path or relative path from location where file instance is saved."
-        },
-        "thermal_zone_names": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "idf_filename",
-        "epw_filename",
-        "mos_weather_filename",
-        "thermal_zone_names"
-      ],
-      "additionalProperties": false
-    },
-    "rc_model_parameters": {
-      "description": "Parameters associated with RC models.",
-      "type": "object",
-      "properties": {
-        "order": {
-          "type": "integer",
-          "enum": [
-            1,
-            2,
-            3,
-            4
-          ],
-          "default": 2
-        }
-      },
-      "additionalProperties": false
-    },
-    "time_series_model_parameters": {
-      "description": "Parameters associated with time series models.",
-      "type": "object",
-      "properties": {
-        "filepath": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "filepath"
-      ],
-      "additionalProperties": false
-    },
-    "ets_parameters": {
-      "description": "Parameters associated with ETS models",
-      "type": "object",
-      "properties": {
-        "ModelName": "ets_cooling_indirect_templated",
-        "Q_Flow_Nominal": [
-          8000
-        ],
-        "Eta_Efficiency": [
-          0.666
-        ],
-        "NominalFlow_District": [
-          0.666
-        ],
-        "NominalFlow_Building": [
-          0.666
-        ],
-        "PressureDrop_Valve": [
-          888
-        ],
-        "PressureDrop_HX_Secondary": [
-          999
-        ],
-        "PressureDrop_HX_Primary": [
-          999
-        ],
-        "SWT_District": [
-          5
-        ],
-        "SWT_Building": [
-          7
-        ]
-      }
-    }
-  }
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"$ref": "#/definitions/system_design_parameter_def",
+	"definitions": {
+		"system_design_parameter_def": {
+			"title": "System Design Parameter Schema",
+			"description": "Definition of System Design Parameters. (Version 0.1)",
+			"type": "object",
+			"properties": {
+				"buildings": {
+					"title": "custom",
+					"description": "Parameters for all or individual buildings.",
+					"type": "object",
+					"properties": {
+						"default": {
+							"$ref": "#/definitions/building_def"
+						},
+						"custom": {
+							"description": "List of individual buildings and their custom parameters.",
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/building_def"
+							}
+						}
+					},
+					"additionalProperties": false
+				},
+				"connectors": {
+					"description": "Parameters related to the connections between objects.",
+					"type": "object",
+					"properties": {
+						"default": {
+							"$ref": "#/definitions/connector_def"
+						}
+					},
+					"additionalProperties": false
+				},
+				"district_system": {
+					"description": "Parameters associated with district systems.",
+					"type": "object",
+					"properties": {
+						"default": {
+							"$ref": "#/definitions/district_system_def"
+						}
+					},
+					"additionalProperties": false
+				},
+				"topology": {
+					"title": "defaults",
+					"description": "Parameters associated with district topologies.",
+					"type": "object",
+					"properties": {
+						"topology_parameters": {
+							"description": "Description of topology style",
+							"type": "string",
+							"$ref": "#/definitions/topology_def"
+						},
+						"topology_optimization": {
+							"description": "Perform topology optimization?",
+							"type": "boolean"
+						},
+						"cost_function": {
+							"description": "Cost function to use in topology optimization",
+							"type": "string",
+							"$ref": "#/definitions/cost_function_definition"
+						},
+						"optimization_approach": {
+							"description": "Approach to use for topology optimization",
+							"type": "string",
+							"$ref": "#/definitions/optimization_definition"
+						},
+						"time_period": {
+							"description": "Time horizon for topology optimization.This paramater is used only if LCC is used as the cost function.",
+							"type": "integer"
+						},
+						"discount_rate": {
+							"description": "Discount rate for topology optimization. This paramater is used only if LCC is used as the cost function.",
+							"type": "integer"
+						},
+						"convergence_criteria": {
+							"description": "Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.",
+							"type": "integer"
+						}
+					},
+					"dependencies": {
+						"topology_optimization": [
+							"cost_function", "optimization_approach", "time_period", "discount_rate", "convergence_criteria"
+						]
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"topology_def": {
+			"title": "defaults",
+			"description": "Parameters associated with district topologies.",
+			"type": "object",
+			"properties": {
+				"configuration": {
+					"type": "string",
+					"enum": [
+						"Radial", "Ring", "Mesh", "Out and Back"
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"cost_function_definition": {
+			"title": "defaults",
+			"description": "Possible cost functions for the topology optimization problem",
+			"type": "object",
+			"properties": {
+				"cost_function": {
+					"type": "string",
+					"enum": [
+						"Energy", "Life Cycle Cost", "Carbon Emissions"
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"optimization_definition": {
+			"title": "defaults",
+			"description": "Optimization approach for the topology optimization problem",
+			"type": "object",
+			"properties": {
+				"optimization_approach": {
+					"type": "string",
+					"enum": [
+						"Black box", "Gradient-based"
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"building_def": {
+			"description": "The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.",
+			"type": "object",
+			"properties": {
+				"geojson_id": {
+					"description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
+					"type": "string"
+				},
+				"ets": {
+					"title": "ets",
+					"description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops",
+					"type": "object",
+					"properties": {
+						"system": {
+							"description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. ",
+							"type": "string",
+							"enum": [
+								"Booster Heater", "Heat Exchanger Only"
+							]
+						},
+						"description": {
+							"description": "User defined description. Not used in the translation process.",
+							"type": "string"
+						}
+					},
+					"required": [
+						"system", "description"
+					],
+					"additionalProperties": false
+				},
+				"load_model": {
+					"description": "Type of load model to use for the building.",
+					"type": "string",
+					"enum": [
+						"ROM/RC", "ROM/DDM", "time_series", "Spawn"
+					]
+				},
+				"load_model_parameters": {
+					"type": "object",
+					"properties": {
+						"spawn": {
+							"$ref": "#/definitions/spawn_model_parameters"
+						},
+						"rc": {
+							"$ref": "#/definitions/rc_model_parameters"
+						},
+						"time_series": {
+							"$ref": "#/definitions/time_series_model_parameters"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"connector_def": {
+			"description": "Parameters associated with the connectors in a district system.",
+			"type": "object",
+			"properties": {
+				"pipe_diameter": {
+					"description": "Pipe diameter. (inches)",
+					"type": "number"
+				},
+				"pipe_insulation_rvalue": {
+					"description": "Pipe insulation R-Value. (F-ft2-hr/Btu)",
+					"type": "number"
+				},
+				"pipe_location": {
+					"description": "Location of the pipe.",
+					"type": "string",
+					"enum": [
+						"Tunnel", "Buried"
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"district_system_def": {
+			"description": "Parameters associated with the district system.",
+			"type": "object",
+			"properties": {
+				"return_configuration": {
+					"description": "Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.",
+					"type": "string",
+					"enum": [
+						"Direct Return", "Reverse Return"
+					]
+				}
+			},
+			"additionalProperties": false
+		},
+		"spawn_model_parameters": {
+			"description": "Parameters associated with spawn models.",
+			"type": "object",
+			"properties": {
+				"idf_filename": {
+					"type": "string",
+					"description": "Absolute path or relative path from location where file instance is saved."
+				},
+				"epw_filename": {
+					"type": "string",
+					"description": "Absolute path or relative path from location where file instance is saved."
+				},
+				"mos_weather_filename": {
+					"type": "string",
+					"description": "Absolute path or relative path from location where file instance is saved."
+				},
+				"thermal_zone_names": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"idf_filename", "epw_filename", "mos_weather_filename", "thermal_zone_names"
+			],
+			"additionalProperties": false
+		},
+		"rc_model_parameters": {
+			"description": "Parameters associated with RC models.",
+			"type": "object",
+			"properties": {
+				"order": {
+					"type": "integer",
+					"enum": [
+						1, 2, 3, 4
+					],
+					"default": 2
+				},
+				"fraction_latent_person": {
+					"description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
+					"type": "number",
+					"default": 1.25
+				}
+			},
+			"additionalProperties": false
+		},
+		"time_series_model_parameters": {
+			"description": "Parameters associated with time series models.",
+			"type": "object",
+			"properties": {
+				"filepath": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"filepath"
+			],
+			"additionalProperties": false
+		},
+		"ets_parameters": {
+			"description": "Parameters associated with ETS models",
+			"type": "object",
+			"properties": {
+				"ModelName": "ets_cooling_indirect_templated",
+				"Q_Flow_Nominal": [
+					8000
+				],
+				"Eta_Efficiency": [
+					0.666
+				],
+				"NominalFlow_District": [
+					0.666
+				],
+				"NominalFlow_Building": [
+					0.666
+				],
+				"PressureDrop_Valve": [
+					888
+				],
+				"PressureDrop_HX_Secondary": [
+					999
+				],
+				"PressureDrop_HX_Primary": [
+					999
+				],
+				"SWT_District": [
+					5
+				],
+				"SWT_Building": [
+					7
+				]
+			}
+		}
+	}
 }

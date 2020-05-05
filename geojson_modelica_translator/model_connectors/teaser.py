@@ -200,16 +200,19 @@ class TeaserConnector(model_connector_base):
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a", data,
                 )
 
-                instance = 'perLatLoa'
-                data = ['(y=internalGains.y[2]*fraLat)',
-                        '"Latent person loads"',
+                fraction_latent_person = self.system_parameters.get_param(
+                    "buildings.default.load_model_parameters.rc.fraction_latent_person", default=1.25
+                )
+
+                # Set the fraction latent person in the template by simply replacing the value
+                instance = f'perLatLoa(y=internalGains.y[2]*{fraction_latent_person})'
+                data = ['"Latent person loads"',
                         "annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));"
                         ]
                 mofile.add_model_object(
                     "Modelica.Blocks.Sources.RealExpression", "perLatLoa", instance, data)
 
                 # add TAir output
-                # TODO: read in the object by name -- parse the parenthetic content
                 instance = 'TAir(\n    quantity="ThermodynamicTemperature", unit="K", displayUnit="degC")'
                 data = [
                     '"Room air temperature"',
@@ -225,8 +228,10 @@ class TeaserConnector(model_connector_base):
                 mofile.remove_connect_string('weaBus', 'weaBus')
 
                 # add new port connections
-                if self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2) == 1:
+                rc_order = self.system_parameters.get_param(
+                    "buildings.default.load_model_parameters.rc.order", default=2
+                )
+                if rc_order == 1:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
                     mofile.add_connect("port_a", "thermalZoneOneElement.intGainsConv", data)
 
@@ -236,8 +241,7 @@ class TeaserConnector(model_connector_base):
                     data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
                     mofile.add_connect("thermalZoneOneElement.QLat_flow", "perLatLoa.y", data)
 
-                elif self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2) == 2:
+                elif rc_order == 2:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
                     mofile.add_connect("port_a", "thermalZoneTwoElements.intGainsConv", data)
 
@@ -247,8 +251,7 @@ class TeaserConnector(model_connector_base):
                     data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
                     mofile.add_connect("thermalZoneTwoElements.QLat_flow", "perLatLoa.y", data)
 
-                elif self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2) == 3:
+                elif rc_order == 3:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
                     mofile.add_connect("port_a", "thermalZoneThreeElements.intGainsConv", data)
 
@@ -258,8 +261,7 @@ class TeaserConnector(model_connector_base):
                     data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
                     mofile.add_connect("thermalZoneThreeElements.QLat_flow", "perLatLoa.y", data)
 
-                elif self.system_parameters.get_param(
-                        "buildings.default.load_model_parameters.rc.order", default=2) == 4:
+                elif rc_order == 4:
                     data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
                     mofile.add_connect("port_a", "thermalZoneFourElements.intGainsConv", data)
 
