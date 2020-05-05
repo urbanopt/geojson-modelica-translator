@@ -203,7 +203,9 @@ class timeSeriesConnectorETS(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building","CoolingIndirect", "CouplingETS_TimeSeriesBuilding"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b,
+                ["building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
+                within=f"{scaffold.project_name}.Loads"    
             )
             new_package.save()
 
