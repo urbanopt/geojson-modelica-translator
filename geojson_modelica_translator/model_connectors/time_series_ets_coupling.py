@@ -38,7 +38,7 @@ from geojson_modelica_translator.utils import ModelicaPath
 from jinja2 import Environment, FileSystemLoader
 
 
-class timeSeriesConnectorETS(model_connector_base):
+class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
@@ -82,7 +82,7 @@ class timeSeriesConnectorETS(model_connector_base):
         """
         curdir = os.getcwd()
         timeSeries_ets_coupling_template = self.template_env.get_template("CouplingETS_TimeSeriesBuilding.mot")
-        timeSeries_building_template = self.template_env.get_template("timeSeries_building.mot")
+        timeSeries_building_template = self.template_env.get_template("time_series_building.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         timeSeries_ets_mos_template = self.template_env.get_template("RunCouplingETS_TimeSeriesBuilding.most")
         building_names = []
@@ -99,40 +99,31 @@ class timeSeriesConnectorETS(model_connector_base):
 
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
-                filPat = self.system_parameters.get_param_by_building_id(
+                time_series_filename = self.system_parameters.get_param_by_building_id(
                     building["building_id"], "load_model_parameters.timeSeries.filPat"
                 )
-
-                # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
-                    "timSer": {
-                        "filPat": filPat,
-                        "filename": os.path.basename(filPat),
-                        "path": os.path.dirname(filPat),
+                    "time_series": {
+                        "filepath": time_series_filename,
+                        "filename": os.path.basename(time_series_filename),
+                        "path": os.path.dirname(time_series_filename),
                     }
                 }
-
-                if os.path.exists(template_data["timSer"]["filPat"]):
-                    shutil.copy(
-                        template_data["timSer"]["filPat"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["timSer"]["filPat"],
-                        ),
-                    )
+        # copy over the resource files for this building
+                if os.path.exists(template_data["time_series"]["filepath"]):
+                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
+                    os.makedirs(os.path.dirname(new_file), exist_ok=True)
+                    shutil.copy(template_data["time_series"]["filepath"], new_file)
                 else:
-                    raise Exception(
-                        f"Missing IDF file for timeSeries: {template_data['timSer']['filPat']}"
-                    )
-
-                # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
-                # Run the templating
+                    raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
+                        # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
+                        # Run the templating
                 file_data = timeSeries_building_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
-                )
+                    )
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
@@ -151,6 +142,7 @@ class timeSeriesConnectorETS(model_connector_base):
                     "SWT_District": [12],
                     "SWT_Building": [14]
                 }
+
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
