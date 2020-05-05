@@ -166,8 +166,6 @@ equation
           {48,23.3333},{69.1667,23.3333}}, color={0,0,127}));
   connect(minTSet.y, terUniHea.TSetHea) annotation (Line(points={{-38,30},{40,30},
           {40,-19},{69.1667,-19}},color={0,0,127}));
-  connect(cooTerUniSup.port_a, disFloCoo.ports_b1[1]) annotation (Line(points={
-          {84,-92},{102,-92},{102,-104},{120,-104}}, color={0,127,255}));
   connect(terUniCoo.port_bChiWat, disFloCoo.ports_a1[1]) annotation (Line(points={
           {90,13.3333},{160,13.3333},{160,-104},{140,-104}}, color={0,127,255}));
   connect(terUniCoo.port_aChiWat, disFloCoo.ports_b1[1]) annotation (Line(points={
