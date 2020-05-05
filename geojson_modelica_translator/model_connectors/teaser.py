@@ -204,9 +204,9 @@ class TeaserConnector(model_connector_base):
                 data = ['(y=internalGains.y[2]*fraLat)',
                         '"Latent person loads"',
                         "annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));"
-                ]
+                        ]
                 mofile.add_model_object(
-                    "Modelica.Blocks.Sources.RealExpression", "perLatLoa",instance, data)
+                    "Modelica.Blocks.Sources.RealExpression", "perLatLoa", instance, data)
 
                 # add TAir output
                 # TODO: read in the object by name -- parse the parenthetic content
@@ -218,7 +218,6 @@ class TeaserConnector(model_connector_base):
                 mofile.add_model_object(
                     "Buildings.Controls.OBC.CDL.Interfaces.RealOutput", instance, data
                 )
-
 
                 # All existing weaDat.weaBus connections need to be updated to simply weaBus
                 mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
