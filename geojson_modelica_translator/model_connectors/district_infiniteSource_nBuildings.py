@@ -37,6 +37,7 @@ class DistrictInfiniteSourceNBuildingsTemplate:
 
         # Here comes the Jina2 function: render()
         templated_model = district_template.render(district_data=district_data)
+        print(templated_model)
 
         # write templated ETS back to modelica file , to the tests folder for Dymola test
         path_templated = os.path.join(self.directory_district_nBuildings,

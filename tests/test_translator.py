@@ -253,5 +253,7 @@ class GeoJSONUrbanOptDistrictInfiniteSourceNBuildingsTest(unittest.TestCase):
 
     def test_to_modelica(self):
         nBuilding = 13
-        district_n_building = GeoJsonModelicaTranslator().district_infinitesource_nbuildings_to_modelica(nBuilding)
-        self.assertIsNotNone(district_n_building)
+        GeoJsonModelicaTranslator().district_infinitesource_nbuildings_to_modelica(nBuilding)
+        tmp = os.path.abspath(os.path.join(__file__, "../"))
+        nbuilding_path = tmp + "/output/district_nBuildings/district_infinite_source_nRCBuildings_templated.mo"
+        self.assertTrue(os.path.exists(nbuilding_path), f"Path not found: {nbuilding_path}")
