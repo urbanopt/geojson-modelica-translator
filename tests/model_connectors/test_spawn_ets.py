@@ -125,5 +125,5 @@ class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
             )
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run,  run_path=run_path)
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
         self.assertEqual(0, exitcode)
