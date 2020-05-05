@@ -20,7 +20,7 @@ The GeoJSON / Modelica Translator is still in early alpha-phase development and 
 
 If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
 
-currently you need python3 and pip3 to install/build the packages. (add python3 to the environment variables)
+currently you need python3 and pip3 to install/build the packages.
 
 .. code-block:: bash
 

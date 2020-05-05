@@ -41,7 +41,6 @@ class DistrictInfiniteSourceNBuildingsTemplate:
         # write templated ETS back to modelica file , to the tests folder for Dymola test
         path_templated = os.path.join(self.directory_district_nBuildings,
                                       "district_infinite_source_nRCBuildings_templated.mo")
-        print("\nJing: ", path_templated)
         if os.path.exists(path_templated):
             os.remove(path_templated)
         # os.makedirs( self.directory_district_nBuildings )

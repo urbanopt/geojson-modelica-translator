@@ -247,11 +247,11 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
 
 class GeoJSONUrbanOptDistrictInfiniteSourceNBuildingsTest(unittest.TestCase):
     def setUp(self):
-        # self.data_dir = os.path.join(os.path.dirname(__file__), "geojson", "data")
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
     def test_to_modelica(self):
         nBuilding = 13
-        GeoJsonModelicaTranslator().district_infinitesource_nbuildings_to_modelica(nBuilding)
+        district_n_building = GeoJsonModelicaTranslator().district_infinitesource_nbuildings_to_modelica(nBuilding)
+        self.assertIsNotNone(district_n_building)
