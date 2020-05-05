@@ -131,8 +131,6 @@ class GeoJsonModelicaTranslator(object):
             _log.info(f"Translating building to model {building}")
             model_connector.to_modelica(self.scaffold, keep_original_models=False)
 
-        print("Yanfei check here: ", model_connector)
-
         # add in Substations
         # TODO: YL, where are the substations/ETSs?
 
@@ -150,7 +148,7 @@ class GeoJsonModelicaTranslator(object):
     def ets_templating(self):
         folder_tmp = "/geojson/data/schemas/thermal_junction_properties.json"
         thermal_junction_properties_json = os.path.abspath(os.path.join(os.path.join(__file__, "../") + folder_tmp))
-        folder_tmp = "/geojson/data/schemas/district_system_properties.json"
+        folder_tmp = "system_parameters/schema.json"
         system_parameters_json = os.path.abspath(os.path.join(os.path.join(__file__, "../") + folder_tmp))
         ets = ETSTemplate(thermal_junction_properties_json, system_parameters_json)
         try:
@@ -162,6 +160,5 @@ class GeoJsonModelicaTranslator(object):
         except NotImplementedError:
             print("schema for ets system parameters has issues!!!")
         ets.ets_to_modelica()
-        ets.ets_openloop_to_modelica()
 
         return ets

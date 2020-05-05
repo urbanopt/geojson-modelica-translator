@@ -50,7 +50,6 @@ class ETSTemplate:
         self.system_parameters_geojson = system_parameters_geojson
 
         # go up two levels of directory, to get the path of tests folder for ets
-        # TODO: we shouldn't be writing to the test directory in this file, only in tests.
         directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
         self.folder_ets_templated = os.path.join(
             directory_up_two_levels + "/tests/output/ets"
@@ -106,8 +105,6 @@ class ETSTemplate:
         # it has all the necessary parameters which need to be changed through templating.
         ets_template = self.template_env.get_template("CoolingIndirect.mot")
 
-        # TODO: Seems like the ets_data below should allow defaults from
-        #  the system parameters JSON file, correct?
         # yes, ets model parameters are from the schema.json file, default values only.
         ets_data = self.check_ets_system_parameters()
 

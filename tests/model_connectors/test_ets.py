@@ -61,6 +61,3 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def test_ets_to_modelica(self):
         self.assertIsNotNone(self.ets.ets_to_modelica())
-
-    def test_ets_in_dymola(self):
-        self.assertIsNotNone(self.ets.ets_openloop_to_modelica())
