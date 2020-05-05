@@ -53,7 +53,6 @@ class timeSeriesConnectorETS(model_connector_base):
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
-
         :param urbanopt_building: an urbanopt_building
         """
 
@@ -205,7 +204,7 @@ class timeSeriesConnectorETS(model_connector_base):
             new_package = PackageParser.new_from_template(
                 b_modelica_path, b,
                 ["building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
-                within=f"{scaffold.project_name}.Loads"    
+                within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 
