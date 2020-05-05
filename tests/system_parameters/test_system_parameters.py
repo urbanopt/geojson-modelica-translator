@@ -138,5 +138,11 @@ class SystemParametersTest(unittest.TestCase):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
 
-        value = sdp.get_param_by_building_id("abcd1234", "ets.system")
-        self.assertEqual(value, "Booster Heater")
+        value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None")
+        self.assertEqual("None", value)
+
+        value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
+        self.assertEqual("None", value)
+
+    def test_get_ets_values(self):
+        pass

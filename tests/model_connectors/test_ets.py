@@ -34,10 +34,18 @@ import unittest
 from geojson_modelica_translator.model_connectors.ets_template import (
     ETSTemplate
 )
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
 
 
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
-    def setUp(self):  # the first method/member must be setUp
+    def setUp(self):
+        # self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        # self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        # if not os.path.exists(self.output_dir):
+        #     os.makedirs(self.output_dir)
+
         base_folder = os.path.join(os.getcwd(), "geojson_modelica_translator")
         dest_path = "/geojson/data/schemas/thermal_junction_properties.json"
         self.thermal_junction_properties_geojson = base_folder + dest_path
@@ -60,7 +68,8 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         self.assertTrue(ets_general)
 
     def test_ets_system_parameters(self):
-        self.assertIsNotNone(self.ets.check_ets_system_parameters())
+        sys_params = SystemParameters(self.system_parameters_geojson)
+        self.assertIsNotNone(sys_params)
 
     def test_ets_from_building_modelica(self):
         self.assertTrue(self.ets.check_ets_from_building_modelica())

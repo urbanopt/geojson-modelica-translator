@@ -152,39 +152,6 @@
           "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
           "type": "string"
         },
-        "ets": {
-          "title": "ets",
-          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops",
-          "type": "object",
-          "properties": {
-            "system": {
-              "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. ",
-              "type": "string",
-              "enum": [
-                "Booster Heater",
-                "Heat Exchanger Only"
-              ]
-            },
-            "description": {
-              "description": "User defined description. Not used in the translation process.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "system",
-            "description"
-          ],
-          "additionalProperties": false
-        },
-        "ets_model_parameters": {
-          "type": "object",
-          "properties": {
-            "indirect_cooling": {
-              "$ref": "#/definitions/ets_indirect_cooling_parameters"
-            }
-          },
-          "additionalProperties": false
-        },
         "load_model": {
           "description": "Type of load model to use for the building.",
           "type": "string",
@@ -206,6 +173,25 @@
             },
             "time_series": {
               "$ref": "#/definitions/time_series_model_parameters"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ets_model": {
+          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops ",
+          "type": "string",
+          "enum": [
+            "None",
+            "Indirect Cooling",
+            "Booster Heater",
+            "Heat Exchanger Only"
+          ]
+        },
+        "ets_model_parameters": {
+          "type": "object",
+          "properties": {
+            "indirect_cooling": {
+              "$ref": "#/definitions/ets_indirect_cooling_parameters"
             }
           },
           "additionalProperties": false
@@ -252,7 +238,7 @@
       "additionalProperties": false
     },
     "ets_indirect_cooling_parameters": {
-      "description": "Parameters associated with indirect cooling ETS",
+      "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. Parameters associated with indirect cooling ETS",
       "type": "object",
       "properties": {
         "Q_Flow_Nominal": {

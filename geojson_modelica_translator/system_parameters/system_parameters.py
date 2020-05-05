@@ -70,6 +70,7 @@ class SystemParameters(object):
                 raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
             self.resolve_paths()
+            # self.resolve_defaults()
 
     @classmethod
     def loadd(cls, d, validate_on_load=True):
@@ -102,13 +103,18 @@ class SystemParameters(object):
                 new_path = os.path.join(filepath, match.value)
                 parse(str(match.full_path)).update(self.data, new_path)
 
+    # def resolve_defaults(self):
+    #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
+    #     specificed in the custom block then that will be used, otherwise the default value will be replaced"""
+    #     pass
+
     def get_param(self, path, data=None, default=None):
         """
         return the parameter(s) from the path. This is a recursive function.
 
         TODO: Replace the path string with JSONPath as we expect to only read these values
 
-        :param path: string, period delimeted path of the data to retrieve
+        :param path: string, period delimited path of the data to retrieve
         :param data: dict, (optional) the data to parse
         :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
@@ -135,10 +141,10 @@ class SystemParameters(object):
     def get_param_by_building_id(self, building_id, path, default=None):
         """
         return a parameter for a specific building_id. This is similar to get_param but allows the user
-        to constrain the data based on the building type.
+        to constrain the data based on the building id.
 
         :param building_id: string, id of the building to look up in the custom section of the system parameters
-        :param path: string, period delimeted path of the data to retrieve
+        :param path: string, period delimited path of the data to retrieve
         :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """

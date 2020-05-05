@@ -186,6 +186,8 @@ class SpawnConnectorETS(model_connector_base):
                 # This is a complete hack as the ETS template reads from the schema. For now we need to follow that
                 # same paradigm to make this work.
                 # This relates to this ticket https://github.com/urbanopt/geojson-modelica-translator/issues/64
+                ets_data = self.system_parameters.get_ets()
+
                 ets_data = {
                     "ModelName": "ets_cooling_indirect_templated",
                     "Q_Flow_Nominal": [8000],
