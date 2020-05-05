@@ -82,6 +82,9 @@ class ModelicaRunnerTest(unittest.TestCase):
     def test_run_in_docker(self):
         mr = ModelicaRunner()
         mr.run_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
-        mr.cleanup_path(self.run_path)
-        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
-        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'BouncingBall_result.mat')))
+
+        results_path = os.path.join(self.run_path, 'BouncingBall_results')
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))
