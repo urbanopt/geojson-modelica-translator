@@ -45,7 +45,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 )
 
 
-class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
+class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
