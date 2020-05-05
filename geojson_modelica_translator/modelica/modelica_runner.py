@@ -125,11 +125,11 @@ class ModelicaRunner(object):
             os.chdir(curdir)
             stdout_log.close()
 
+        # Cleanup all of the temporary files that get created
         self.cleanup_path(run_path)
 
-        # get the filename
+        # get the location of the results path
         results_path = os.path.join(run_path, f'{project_name}_results')
-
         self.move_result_files(run_path, results_path)
         return exitcode
 
