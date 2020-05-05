@@ -238,7 +238,8 @@ class TeaserConnector(model_connector_base):
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneOneElement.TAir", "TAir", data)
 
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
+                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
+                           "color={0, 0,127}));"
                     mofile.add_connect("thermalZoneOneElement.QLat_flow", "perLatLoa.y", data)
 
                 elif rc_order == 2:
@@ -248,7 +249,8 @@ class TeaserConnector(model_connector_base):
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneTwoElements.TAir", "TAir", data)
 
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
+                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
+                           "color={0, 0,127}));"
                     mofile.add_connect("thermalZoneTwoElements.QLat_flow", "perLatLoa.y", data)
 
                 elif rc_order == 3:
@@ -258,7 +260,8 @@ class TeaserConnector(model_connector_base):
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneThreeElements.TAir", "TAir", data)
 
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
+                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
+                           "color={0, 0,127}));"
                     mofile.add_connect("thermalZoneThreeElements.QLat_flow", "perLatLoa.y", data)
 
                 elif rc_order == 4:
@@ -268,7 +271,8 @@ class TeaserConnector(model_connector_base):
                     data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
                     mofile.add_connect("thermalZoneFourElements.TAir", "TAir", data)
 
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127}));"
+                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
+                           "color={0, 0,127}));"
                     mofile.add_connect("thermalZoneFourElements.QLat_flow", "perLatLoa.y", data)
 
                 # change the name of the modelica model to remove the building id, update in package too!
