@@ -87,8 +87,14 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
             os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
         self.assertEqual(0, exitcode)
+
+        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))
+        self.assertTrue(
+            os.path.join(results_path, 'spawn_single_Loads_B5a6b99ec37f4de7f94020090_CouplingETS_SpawnBuilding.fmu')
+        )
 
 
 class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
@@ -127,5 +133,11 @@ class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
             os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'coupling.mo')
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run,  run_path=run_path)
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
         self.assertEqual(0, exitcode)
+
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        self.assertEqual(0, exitcode)
+
+        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))
