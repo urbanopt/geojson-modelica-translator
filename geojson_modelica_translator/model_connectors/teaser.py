@@ -210,7 +210,7 @@ class TeaserConnector(model_connector_base):
                         "annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));"
                         ]
                 mofile.add_model_object(
-                    "Modelica.Blocks.Sources.RealExpression", "perLatLoa", instance, data)
+                    "Modelica.Blocks.Sources.RealExpression", instance, data)
 
                 # add TAir output
                 instance = 'TAir(\n    quantity="ThermodynamicTemperature", unit="K", displayUnit="degC")'
