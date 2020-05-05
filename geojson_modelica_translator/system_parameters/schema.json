@@ -286,6 +286,11 @@
             4
           ],
           "default": 2
+        },
+        "fraction_latent_person": {
+          "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
+          "type": "number",
+          "default": 1.25
         }
       },
       "additionalProperties": false
