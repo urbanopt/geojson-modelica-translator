@@ -131,22 +131,3 @@ class ETSTemplate:
             f.write(file_data)
 
         return file_data
-
-    def ets_openloop_to_modelica(self):
-        """after we creating the templated ets, we need to test it in Dymola under open loops.
-        """
-        ets_open_template = self.template_env.get_template("CoolingIndirectOpenLoops.mot")
-
-        # Here comes the Jina2 function: render()
-        model_name = "CoolingIndirectOpenLoopsTemplated"
-        ets_open_data = {}
-        ets_open_data['ets_name'] = ['ets_cooling']
-        ets_open = ets_open_template.render(model_name=model_name, ets_open_data=ets_open_data)
-
-        # save to output folder:
-        if os.path.exists(os.path.join(self.folder_ets_templated, model_name+".mo")):
-            os.remove(os.path.join(self.folder_ets_templated, model_name+".mo"))
-        with open(os.path.join(self.folder_ets_templated, model_name+".mo"), "w") as f:
-            f.write(ets_open)
-
-        return ets_open
