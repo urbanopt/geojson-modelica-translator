@@ -70,7 +70,7 @@ model building
   Modelica.Blocks.Sources.CombiTimeTable loa(
     tableOnFile=true,
     tableName="tab1",
-    fileName=Modelica.Utilities.Files.loadResource(filNam),
+    fileName=Modelica.Utilities.Files.loadResource(filPat),
     y(each unit="W"),
     columns={2,3,4},
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
@@ -166,14 +166,12 @@ equation
           {48,23.3333},{69.1667,23.3333}}, color={0,0,127}));
   connect(minTSet.y, terUniHea.TSetHea) annotation (Line(points={{-38,30},{40,30},
           {40,-19},{69.1667,-19}},color={0,0,127}));
-  connect(terUniCoo.port_bChiWat, cooTerUniRet.port_a) annotation (Line(points={{90,
-          13.3333},{106,13.3333},{106,14},{120,14}}, color={0,127,255}));
-  connect(cooTerUniRet.port_b, disFloCoo.ports_a1[1]) annotation (Line(points={
-          {140,14},{160,14},{160,-104},{140,-104}}, color={0,127,255}));
   connect(cooTerUniSup.port_a, disFloCoo.ports_b1[1]) annotation (Line(points={
           {84,-92},{102,-92},{102,-104},{120,-104}}, color={0,127,255}));
-  connect(cooTerUniSup.port_b, terUniCoo.port_aChiWat) annotation (Line(points={{64,-92},
-          {56,-92},{56,13.3333},{70,13.3333}},color={0,127,255}));
+  connect(terUniCoo.port_bChiWat, disFloCoo.ports_a1[1]) annotation (Line(points={
+          {90,13.3333},{160,13.3333},{160,-104},{140,-104}}, color={0,127,255}));
+  connect(terUniCoo.port_aChiWat, disFloCoo.ports_b1[1]) annotation (Line(points={
+          {70,13.3333},{62,13.3333},{62,-104},{120,-104}}, color={0,127,255}));
 {% endraw %}
 {% raw %}
 annotation(
@@ -203,4 +201,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end timeSeries_building;
+end building;
