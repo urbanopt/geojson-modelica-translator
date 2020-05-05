@@ -41,9 +41,9 @@ class SystemParameters(object):
     """
 
     PATH_ELEMENTS = [
-        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
-        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
-        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
     ]
 
     def __init__(self, filename=None):
@@ -53,13 +53,15 @@ class SystemParameters(object):
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        self.schema = json.load(open(os.path.join(os.path.dirname(__file__), "schema.json"), "r"))
+        with open(os.path.join(os.path.dirname(__file__), "schema.json"), "r") as f:
+            self.schema = json.load(f)
         self.data = {}
         self.filename = filename
 
         if self.filename:
             if os.path.exists(self.filename):
-                self.data = json.load(open(self.filename, "r"))
+                with open(self.filename, "r") as f:
+                    self.data = json.load(f)
             else:
                 raise Exception(f"System design parameters file does not exist: {self.filename}")
 
@@ -94,7 +96,7 @@ class SystemParameters(object):
         filepath = os.path.abspath(os.path.dirname(self.filename))
 
         for pe in self.PATH_ELEMENTS:
-            matches = parse(pe["jsonpath"]).find(self.data)
+            matches = parse(pe["json_path"]).find(self.data)
             for index, match in enumerate(matches):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
                 new_path = os.path.join(filepath, match.value)
