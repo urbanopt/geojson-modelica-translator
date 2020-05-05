@@ -204,8 +204,12 @@ class TeaserConnector(model_connector_base):
                     "buildings.default.load_model_parameters.rc.fraction_latent_person", default=1.25
                 )
 
+                # create a new parameter for fraction latent person
+                mofile.add_parameter('Real', 'fraLat', fraction_latent_person,
+                                     "Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.")
+
                 # Set the fraction latent person in the template by simply replacing the value
-                instance = f'perLatLoa(y=internalGains.y[2]*{fraction_latent_person})'
+                instance = f'perLatLoa(y=internalGains.y[2]*fraLat)'
                 data = ['"Latent person loads"',
                         "annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));"
                         ]
