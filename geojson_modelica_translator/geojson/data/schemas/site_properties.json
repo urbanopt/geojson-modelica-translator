@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/taxlot_properties.json#",
-  "title": "Taxlot object",
-  "description": "Schema for a Taxlot object",
+  "title": "URBANopt Site",
+  "description": "Schema for an URBANopt Site object",
   "type": "object",
   "properties": {
     "id": {
@@ -34,36 +34,45 @@
       "type": "number"
     },
     "surface_elevation": {
-      "description": "The surface elevation (above NAVD88 datum) of the project (m).  ",
+      "description": "The surface elevation (above NAVD88 datum) of the project (ft).  ",
       "type": "number"
     },
     "import_surrounding_buildings_as_shading": {
+      "description": "If true, import geometry from surrounding buildings when performing energy calculations.",
       "type": "boolean"
     },
     "timesteps_per_hour": {
+      "description": "Number of timesteps per hour for energy simulations.",
       "type": "integer",
       "minimum": 1,
       "maximum": 60
     },
     "begin_date": {
+      "description": "Date to begin simulation, format YYYY-MM-DD.",
       "type": "string"
     },
     "end_date": {
+      "description": "Date to end simulation, format YYYY-MM-DD.",
       "type": "string"
     },
     "climate_zone": {
+      "description": "ASHRAE 169 climate zone.",
       "type": "string"
     },
     "cec_climate_zone": {
+      "description": "CEC Title24 climate zone.",
       "type": "string"
     },
     "default_template": {
+      "description": "Default OpenStudio Standards template.",
       "type": "string"
     },
     "weather_filename": {
+      "description": "Name of weather file in EPW format.",
       "type": "string"
     },
     "tariff_filename": {
+      "description": "Name of utility tariff file in IDF or URDB format.",
       "type": "string"
     },
     "user_data": {

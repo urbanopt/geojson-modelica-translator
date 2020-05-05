@@ -37,7 +37,7 @@ class SchemasTest(unittest.TestCase):
     def test_load_schemas(self):
         s = Schemas()
         data = s.retrieve("building")
-        self.assertEqual(data["title"], "Building object")
+        self.assertEqual(data["title"], "URBANopt Building")
 
     def test_invalid_retrieve(self):
         s = Schemas()
@@ -72,7 +72,3 @@ class SchemasTest(unittest.TestCase):
         res = s.validate("building", instance)
         self.assertIn("'MagicBuilding' is not one of ['Building']", res[0])
         self.assertEqual(len(res), 1)
-
-
-if __name__ == "__main__":
-    unittest.main()

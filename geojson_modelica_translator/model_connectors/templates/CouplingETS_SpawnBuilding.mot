@@ -29,7 +29,7 @@ extends Modelica.Icons.Example;
     T_a2_nominal=273.15 + 19)
     annotation (Placement(transformation(extent={{0,-60},{20,-40}})));
 
-  building bui(
+   building bui(
      have_pum= false,
      nPorts_a=2,
      nPorts_b=2)
@@ -105,6 +105,7 @@ extends Modelica.Icons.Example;
       y=(bui.delTBuiCoo/delTDisCoo).*bui.disFloCoo.mReqTot_flow)
       "Primary loop chilled water mass flow rate."
        annotation (Placement(transformation(extent={{-80,-20},{-60,0}})));
+
 {% endraw %}
 equation
 {% raw %}

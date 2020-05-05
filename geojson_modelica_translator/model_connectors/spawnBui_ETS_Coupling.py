@@ -42,13 +42,14 @@ class SpawnConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
+        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         self.template_env = Environment(
-            loader=FileSystemLoader(
-                searchpath=os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), "templates"
-                )
-            )
+            loader=FileSystemLoader(searchpath=self.template_dir)
         )
+
+        self.required_mo_files = [
+            os.path.join(self.template_dir, 'HydraulicHeader.mo'),
+        ]
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -228,6 +229,10 @@ class SpawnConnectorETS(model_connector_base):
                           "w") as f:
                     f.write(file_data)
 
+                # Copy the required modelica files
+                for f in self.required_mo_files:
+                    shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
+
         finally:
             os.chdir(curdir)
 
@@ -249,7 +254,8 @@ class SpawnConnectorETS(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building","CoolingIndirect", "CouplingETS_SpawnBuilding"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["building", "CoolingIndirect", "CouplingETS_SpawnBuilding"],
+                within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 

@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "Properties of a District System object",
-  "description": "Schema for a District System object",
+  "title": "URBANopt District System",
+  "description": "Schema for an URBANopt District System object",
   "type": "object",
   "properties": {
     "id": {
@@ -47,37 +47,21 @@
       "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
       "type": "string"
     },
-    "equipment_array": {
-      "description": "array of equipment",
+    "weather_filename": {
+      "description": "Name of EPW weather file for this district system. Defaults to site's weather_filename.",
+      "type": "string"
+    },
+    "tariff_filename": {
+      "description": "Name of the tariff file for this district system. Defaults to site's tariff_filename.",
+      "type": "string"
+    },
+    "equipment": {
+      "description": "List of equipment in this plant",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/equipmentType"
+        "$ref": "#/definitions/equipmentType",
+        "type": "string"
       }
-    },
-    "equipment_1": {
-      "description": "First piece of equipment used in this plant",
-      "$ref": "#/definitions/equipmentType",
-      "type": "string"
-    },
-    "equipment_2": {
-      "description": "Second piece of equipment used in this plant",
-      "$ref": "#/definitions/equipmentType",
-      "type": "string"
-    },
-    "equipment_3": {
-      "description": "Third piece of equipment used in this plant",
-      "$ref": "#/definitions/equipmentType",
-      "type": "string"
-    },
-    "equipment_4": {
-      "description": "Fourth piece of equipment used in this plant",
-      "$ref": "#/definitions/equipmentType",
-      "type": "string"
-    },
-    "equipment_5": {
-      "description": "Fifth piece of equipment used in this plant",
-      "$ref": "#/definitions/equipmentType",
-      "type": "string"
     },
     "user_data": {
       "description": "Arbitrary user data"
@@ -90,20 +74,31 @@
   "additionalProperties": false,
   "definitions": {
     "districtSystemType": {
+      "description": "Type of district system.",
       "type": "string",
       "enum": [
-        "District Thermal",
+        "Central Chilled Water",
+        "Central Hot Water",
+        "Central Hot and Chilled Water",
+        "Central Ambient Water",
+        "Central Hot and Cold Water",
         "Community Photovoltaic",
-        "Transformer"
+        "Transformer",
+        "Transformer with Storage",
+        "Capacitor",
+        "Electrical Substation"
       ]
     },
     "equipmentType": {
+      "description": "Type of equipment, listed in order of load served.",
       "type": "string",
       "enum": [
         "Air-Cooled Chiller--Cold Water",
         "Air-Cooled Chiller--Ambient Water",
         "Water-Cooled Chiller--Cold Water",
         "Water-Cooled Chiller---Ambient Water",
+        "Capacitor--150KVAR",
+        "Capacitor--450KVAR",
         "Cooling Tower--Heat Rejection from Chiller, Cold Water",
         "Cooling Tower--Heat Rejection from Chiller, Ambient Water",
         "Cooling Tower--Direct--Chilled Water",
@@ -126,6 +121,15 @@
         "Storage--Hot Water",
         "Storage--Cold Water",
         "Storage--Ambient Water",
+        "Transformer--25KVA CT",
+        "Transformer--50KVA CT",
+        "Transformer--75KVA CT",
+        "Transformer--25KVA PM",
+        "Transformer--50KVA PM",
+        "Transformer--75KVA PM",
+        "Transformer--100KVA PM",
+        "Transformer--150KVA PM",
+        "Transformer--300KVA PM",
         "Waste Heat Source--Hot Water",
         "Waste Heat Source--Ambient Water"
       ]
