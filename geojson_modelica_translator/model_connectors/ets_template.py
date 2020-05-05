@@ -77,7 +77,7 @@ class ETSTemplate:
         for key, value in data.items():
             if key == "definitions":
                 # three levels down to get the ETS signal
-                junctions = data["definitions"]["ets_parameters"]["properties"]
+                junctions = data["definitions"]["ThermalJunctionType"]["enum"]
                 if "ETS" in junctions:
                     ets_general = True
             else:
@@ -94,7 +94,7 @@ class ETSTemplate:
         # four levels down to get the ets model description
         # ets_overall = data["definitions"]["building_def"]["properties"]["ets"]
         # three levels down to get the parameters
-        ets_parameters = data["definitions"]["ets_parameters"]
+        ets_parameters = data["definitions"]["ets_parameters"]["properties"]
         # print ("est_parameters are: ", type(ets_parameters) )
         return ets_parameters
 
