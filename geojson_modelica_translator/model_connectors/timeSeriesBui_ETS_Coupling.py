@@ -101,7 +101,7 @@ class timeSeriesConnectorETS(model_connector_base):
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
                 filPat = self.system_parameters.get_param_by_building_id(
                     building["building_id"], "load_model_parameters.timeSeries.filPat"
-               )
+                )
 
                 # construct the dict to pass into the template
                 template_data = {
