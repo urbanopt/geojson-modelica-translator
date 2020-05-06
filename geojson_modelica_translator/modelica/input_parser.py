@@ -313,6 +313,22 @@ class InputParser(object):
             str += f"    {d}\n"
         self.model["objects"].append(str)
 
+    def add_parameter(self, var_type, var_name, value, description):
+        """Add a new parameter. Will be prepended to the top of the models list
+
+        :param var_type: string, type of Modelica variable, Real, Integer, String, Modelica.SIunits.Area, etc.
+        :param var_name: string, name of the variable. Note that this does not check for conflicts.
+        :param value: variant, value to set the variable name to.
+        :param description: string, description of the parameter
+        """
+        # is the value is a string, then wrap in quotes
+        if isinstance(value, str):
+            value = f'"{value}"'
+
+        # parameter Real fraLat= 0.8 "Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.";
+        new_str = f"  parameter {var_type} {var_name}={value} \"{description}\";\n"
+        self.model["objects"].insert(0, new_str)
+
     def add_connect(self, a, b, annotation):
         """
         Add a new connection of port a to port b. The annotation will be appended on a new line.
