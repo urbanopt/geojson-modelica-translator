@@ -108,9 +108,23 @@ class SystemParameters(object):
     #     specificed in the custom block then that will be used, otherwise the default value will be replaced"""
     #     pass
 
-    def get_param(self, path, data=None, default=None):
+    def get_default(self, path, default=None):
         """
-        return the parameter(s) from the path. This is a recursive function.
+        Return either the default in the system parameter file, or the specified default.
+
+        :param path: string, raw path to what parameter was being requested
+        :param default: variant, default value
+        :return: value
+        """
+        schema_default = self.get_param(path, impute_default=False)
+        return schema_default or default
+
+    def get_param(self, path, data=None, default=None, impute_default=True):
+        """
+        return the parameter(s) from the path. This is a recursive function. If the default is not specified,
+        then will attempt to read the default from the "default" section of the file. If there is no default
+        there, then it will use the value specified as the argument. It is not recommended to use the argument
+        default as those values will not be configurable. Argument-based defaults should be used sparingly.
 
         TODO: Replace the path string with JSONPath as we expect to only read these values
 
@@ -131,7 +145,10 @@ class SystemParameters(object):
         else:
             value = data.get(check_path, None)
             if value is None:
-                return default
+                if impute_default:
+                    return self.get_default(path, default)
+                else:
+                    return default
 
             if len(paths) == 0:
                 return value
@@ -149,13 +166,20 @@ class SystemParameters(object):
         :return: variant, the value from the data
         """
 
-        # TODO: return the default value if the building ID is not defined
+        # This will get reworked after moving to jsonpath. but for now, hack in the default. First return the default
+        # dict from the system parameter file.
+        # Grab first the default data block, then find the path in the default data block.
+        default_data = self.get_param(f'buildings.default', impute_default=False)
+        schema_default = self.get_param(path, default_data, impute_default=False)
+        default = schema_default or default
         for b in self.data.get("buildings", {}).get("custom", {}):
             if b.get("geojson_id", None) == building_id:
-                # print(f"Building found for {building_id}")
                 return self.get_param(path, b, default=default)
-
-        return None
+        else:
+            # if there is no matching building_id, then return the default data.
+            # This may come back to bite us. If the user mistypes the building id, then they may not
+            # realize that they are grabbing the default data
+            return default
 
     def validate(self):
         """

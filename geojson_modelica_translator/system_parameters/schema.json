@@ -287,6 +287,9 @@
           "default": 7
         }
       },
+      "required": [
+        "Q_Flow_Nominal"
+      ],
       "additionalProperties": false
     },
     "spawn_model_parameters": {
