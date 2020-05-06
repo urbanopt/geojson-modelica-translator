@@ -58,7 +58,11 @@ setup(
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
     cmdclass={"update_schemas": UpdateSchemas, "update_licenses": UpdateLicenses},
-    install_requires=["geojson==2.4.1", "jsonschema==3.0.1", "requests==2.22.0"],
+    install_requires=[
+        "geojson==2.5.0",
+        "jsonschema==3.2.0",
+        "requests==2.22.0"
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",

@@ -56,7 +56,8 @@ class Schemas(object):
             path = os.path.join(
                 os.path.dirname(__file__), "data/schemas/%s_properties.json" % s
             )
-            self.schemas[s] = json.load(open(path, "r"))
+            with open(path, "r") as f:
+                self.schemas[s] = json.load(f)
 
     def retrieve(self, name):
         """name of the schema to retrieve"""

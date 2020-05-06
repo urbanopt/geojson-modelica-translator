@@ -1,7 +1,21 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC"
+      "load_model": "ROM/RC",
+      "ets_model": "Indirect Cooling",
+      "ets_model_parameters": {
+        "indirect_cooling": {
+          "Q_Flow_Nominal": 8000,
+          "Eta_Efficiency": 0.666,
+          "NominalFlow_District": 0.666,
+          "NominalFlow_Building": 0.666,
+          "PressureDrop_Valve": 7000,
+          "PressureDrop_HX_Secondary": 600,
+          "PressureDrop_HX_Primary": 600,
+          "SWT_District": 5,
+          "SWT_Building": 7
+        }
+      }
     },
     "custom": [
       {
