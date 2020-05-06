@@ -316,7 +316,7 @@ class InputParser(object):
     def add_parameter(self, var_type, var_name, value, description):
         """Add a new parameter. Will be prepended to the top of the models list
 
-        :param var_type: string, type of Modelica variable, Real, Integer, String.
+        :param var_type: string, type of Modelica variable, Real, Integer, String, Modelica.SIunits.Area, etc.
         :param var_name: string, name of the variable. Note that this does not check for conflicts.
         :param value: variant, value to set the variable name to.
         :param description: string, description of the parameter
