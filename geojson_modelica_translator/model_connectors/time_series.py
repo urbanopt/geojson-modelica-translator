@@ -41,14 +41,11 @@ from jinja2 import Environment, FileSystemLoader
 class TimeSeriesConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-
-        self.template_env = Environment(
-            loader=FileSystemLoader(
-                searchpath=os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), "templates"
-                )
-            )
-        )
+        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
+        self.required_mo_files = [
+            os.path.join(self.template_dir, 'PartialBuilding.mo'),
+        ]
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -96,6 +93,9 @@ class TimeSeriesConnector(model_connector_base):
                 b_modelica_path = ModelicaPath(
                     f"B{building['building_id']}", scaffold.loads_path.files_dir, True
                 )
+
+                for f in self.required_mo_files:
+                    shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
 
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
@@ -147,6 +147,7 @@ class TimeSeriesConnector(model_connector_base):
                         f"B{building['building_id']}",
                         "coupling").replace(os.path.sep, '.')
                 )
+
         finally:
             os.chdir(curdir)
 
