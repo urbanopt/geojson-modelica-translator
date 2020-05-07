@@ -74,8 +74,9 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
 
     def test_timeSeries_init(self):
         self.assertIsNotNone(self.timeSeries)
-        self.assertEqual(self.timeSeries.system_parameters.get_param("buildings.custom")[0]
-                            ["load_model"], "time_series")
+        self.assertEqual(
+            self.timeSeries.system_parameters.get_param("buildings.custom")[0]["load_model"], "time_series"
+        )
 
     def test_time_series_to_modelica_and_run(self):
         self.timeSeries.to_modelica(self.gj.scaffold)
