@@ -100,7 +100,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
                 time_series_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.timeSeries.filPat"
+                    building["building_id"], "load_model_parameters.time_series.filepath"
                 )
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
@@ -152,7 +152,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
                     f.write(file_data)
 
-                full_model_name = os.path.join(
+                full_model_name=os.path.join(
                     scaffold.project_name,
                     scaffold.loads_path.files_relative_dir,
                     f"B{building['building_id']}",
