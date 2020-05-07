@@ -139,6 +139,7 @@ class SystemParameters(object):
 
         paths = path.split(".")
         check_path = paths.pop(0)
+
         if check_path == "":
             # no path passed
             return default
