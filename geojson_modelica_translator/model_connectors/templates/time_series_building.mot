@@ -14,8 +14,7 @@ extends PartialBuilding(
      "Load side medium";
    parameter Boolean show_T= false
      "propagated parameter show_T";
-   parameter String filNam=
-     "modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos"
+   parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
      "Library path of the file with thermal loads as time series";
    parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
      min=273.15, displayUnit="degC") = 273.15 + 40

@@ -6,7 +6,6 @@ package MediumW = Buildings.Media.Water
   "Source side medium";
 
  building bui(
-   filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
 {% raw %}
    nPorts_bCoo=1,
    nPorts_bHea=1,

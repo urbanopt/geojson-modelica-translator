@@ -36,7 +36,6 @@ extends Modelica.Icons.Example;
     have_pum=false,
     have_heaLoa=true,
     have_cooLoa=true,
-    filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
     mLoaHea_flow_nominal=(bui.QHea_flow_nominal/bui.cp_air/10),
     mLoaCoo_flow_nominal=(-1*bui.QCoo_flow_nominal/bui.cp_air/8),
     nPorts_bCoo=1,
