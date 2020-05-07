@@ -44,7 +44,7 @@ class TimeSeriesConnectorETS(model_connector_base):
 
         self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
-        self.required_mo_files =[
+        self.required_mo_files = [
             os.path.join(self.template_dir, 'PartialBuilding.mo'),
         ]
 
@@ -115,13 +115,13 @@ class TimeSeriesConnectorETS(model_connector_base):
                     shutil.copy(template_data["time_series"]["filepath"], new_file)
                 else:
                     raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
-                        # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
-                        # Run the templating
+                    # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
+                    # Run the templating
                 file_data = timeSeries_building_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
-                    )
+                )
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
@@ -150,7 +150,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
                     f.write(file_data)
 
-                full_model_name=os.path.join(
+                full_model_name = os.path.join(
                     scaffold.project_name,
                     scaffold.loads_path.files_relative_dir,
                     f"B{building['building_id']}",
@@ -171,7 +171,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo")),
                           "w") as f:
                     f.write(file_data)
-                #Copy the required modelica files
+                # Copy the required modelica files
                 for f in self.required_mo_files:
                     shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
 
