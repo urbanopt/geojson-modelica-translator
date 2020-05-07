@@ -84,7 +84,6 @@
   },
   "ets": {
     "default": {
-      "model_name": "ets_cooling_indirect_templated",
       "q_flow_nominal": 8000,
       "eta_efficiency": 0.666,
       "nominal_flow_district": 0.666,
