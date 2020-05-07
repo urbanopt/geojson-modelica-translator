@@ -246,7 +246,8 @@ model CoolingIndirect
     final m_flow_nominal=m1_flow_nominal,
     final dpValve_nominal=dpValve_nominal,
     riseTime(displayUnit="s") = 60,
-    y_start=0) "District-side (primary) control valve"
+    y_start=0,
+    l=0.05) "District-side (primary) control valve"
     annotation (Placement(transformation(extent={{-30,70},{-10,50}})));
 
   Modelica.Blocks.Math.Gain cp(final k=cp_default)
