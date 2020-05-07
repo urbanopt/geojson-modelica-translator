@@ -46,6 +46,7 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         dest_path = "/data/ets_system_params.json"
         self.system_parameters_geojson = base_folder + dest_path
 
+    def set_ets(self):
         self.ets = ETSTemplate(
             self.thermal_junction_properties_geojson,
             self.system_parameters_geojson
