@@ -92,6 +92,23 @@
             ]
           },
           "additionalProperties": false
+        },
+        "ets": {
+          "title": "defaults",
+          "description": "Parameters associated with ets systems",
+          "type": "object",
+          "properties": {
+            "ets_parameters": {
+              "description": "some properties here",
+              "type": "string"
+            }
+          },
+          "dependencies": {
+            "data_required": [
+              "building_name"
+            ]
+          },
+          "additionalProperties": true
         }
       },
       "additionalProperties": false
@@ -312,35 +329,59 @@
       "description": "Parameters associated with ETS models",
       "type": "object",
       "properties": {
-        "ModelName": "ets_cooling_indirect_templated",
-        "Q_Flow_Nominal": [
-          8000
-        ],
-        "Eta_Efficiency": [
-          0.666
-        ],
-        "NominalFlow_District": [
-          0.666
-        ],
-        "NominalFlow_Building": [
-          0.666
-        ],
-        "PressureDrop_Valve": [
-          888
-        ],
-        "PressureDrop_HX_Secondary": [
-          999
-        ],
-        "PressureDrop_HX_Primary": [
-          999
-        ],
-        "SWT_District": [
-          5
-        ],
-        "SWT_Building": [
-          7
-        ]
-      }
+        "model_name": {
+          "description": "ETS model name (unit=1).",
+          "type": "string"
+        },
+        "q_flow_nominal": {
+          "description": "Nominal heat flux (unit=Watt).",
+          "type": "number"
+        },
+        "eta_efficiency": {
+          "description": "Heat transfer efficiency (unit=1).",
+          "type": "number"
+        },
+        "nominal_flow_district": {
+          "description": "Nominal water mass flow rate at district side (unit=kg/s).",
+          "type": "number"
+        },
+        "nominal_flow_building": {
+          "description": "Nominal water mass flow rate at building side (unit=kg/s).",
+          "type": "number"
+        },
+        "pressure_drop_valve": {
+          "description": "Pressure drop through valve (unit=Pascal).",
+          "type": "number"
+        },
+        "pressure_drop_hx_secondary": {
+          "description": "Pressure drop through heat-exchanger secondary (building) side (unit=Pascal).",
+          "type": "number"
+        },
+        "pressure_drop_hx_primary": {
+          "description": "Pressure drop through heat-exchanger primary (district) side (unit=Pascal).",
+          "type": "number"
+        },
+        "supply_water_temperature_district": {
+          "description": "Supply water temperature at district side (unit=Celsius-Degree).",
+          "type": "number"
+        },
+        "supply_water_temperature_building": {
+          "description": "Supply water temperature at building side (unit=Celsius-Degree).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "model_name",
+        "q_flow_nominal",
+        "eta_efficiency",
+        "nominal_flow_district",
+        "nominal_flow_building",
+        "pressure_drop_valve",
+        "pressure_drop_hx_secondary",
+        "pressure_drop_hx_primary",
+        "supply_water_temperature_district",
+        "supply_water_temperature_building"
+      ]
     }
   }
 }

@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 //within Buildings.Applications.DHC.EnergyTransferStations;
 
-model CoolingIndirect
+model  {{ets_data['model_name']}}
 
 {% raw %}
   "Indirect cooling energy transfer station for district energy systems"
@@ -13,47 +13,51 @@ model CoolingIndirect
     Modelica.Media.Interfaces.PartialMedium "Medium in the component";
 {% endraw %}
 
-  {% for mflow_district in ets_data["NominalFlow_District"]%}
+{% raw %}
   // mass flow rates
   parameter Modelica.SIunits.MassFlowRate m1_flow_nominal(
-    final min=0,
-    start={{mflow_district}})
+    final min=0, {% endraw %}
+    start={{ ets_data["nominal_flow_district"] }})
+{% raw %}
     "Nominal mass flow rate of primary (district) district cooling side";
-  {% endfor %}
+{% endraw %}
 
-  {% for mflow_building in ets_data["NominalFlow_Building"]%}
+  {% raw %}
   parameter Modelica.SIunits.MassFlowRate m2_flow_nominal(
-    final min=0,
-    start=0.5)
+    final min=0, {% endraw %}
+    start= {{ets_data["nominal_flow_building"]}} )
+    {% raw %}
     "Nominal mass flow rate of secondary (building) district cooling side";
-  {% endfor %}
+  {% endraw %}
 
-  {% for dp in ets_data["PressureDrop_Valve"]%}
+  {% raw %}
   // Primary supply control valve
   parameter Modelica.SIunits.PressureDifference dpValve_nominal(
-    final min=0,
-    final displayUnit="Pa")={{dp}}
-    "Nominal pressure drop of fully open control valve";
-  {% endfor %}
+    final min=0, {% endraw %}
 
-  {% for dp in ets_data["PressureDrop_HX_Primary"]%}
+    final displayUnit="Pa")={{ ets_data["pressure_drop_valve"] }}
+    {% raw %}
+    "Nominal pressure drop of fully open control valve";
+{% endraw %}
+
+  {% raw %}
   // Heat exchanger
   parameter Modelica.SIunits.PressureDifference dp1_nominal(
-    final min=0,
-    start={{dp}},
+    final min=0, {% endraw %}
+    start={{ ets_data["pressure_drop_hx_primary"] }},
     final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation(Dialog(group="Heat exchanger"));
-  {% endfor %}
 
- {% for dp in ets_data["PressureDrop_HX_Secondary"]%}
+
+ {% raw %}
   parameter Modelica.SIunits.PressureDifference dp2_nominal(
-    final min=0,
-    start={{dp}},
+    final min=0, {% endraw %}
+    start={{  ets_data["pressure_drop_hx_secondary"] }},
     final displayUnit="Pa")
     "Nominal pressure difference on secondary side"
     annotation(Dialog(group="Heat exchanger"));
-  {% endfor %}
+
 
    {% raw %}
   parameter Boolean use_Q_flow_nominal=true
@@ -61,44 +65,50 @@ model CoolingIndirect
     annotation(Dialog(group="Heat exchanger"));
     {% endraw %}
 
-  {% for Q_flow in ets_data['Q_Flow_Nominal'] %}
+
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
     final min=0,
-    start={{Q_flow}})
+    start={{ ets_data['q_flow_nominal']  }})
+    {% raw %}
     "Nominal heat transfer"
-    {% raw %}annotation(Dialog(group="Heat exchanger"));{% endraw %}
-  {% endfor %}
+     annotation(Dialog(group="Heat exchanger"));
+     {% endraw %}
 
 
-  {% for supply_water_temp_district in ets_data['SWT_District'] %}
+
+  {% raw %}
   parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
-    start={{supply_water_temp_district}}+273.15,
+    {% endraw %}
+    start={{  ets_data['supply_water_temperature_district']   }}+273.15,
     final displayUnit="K")
     "Nominal temperature at port a1"
     annotation(Dialog(group="Heat exchanger"));
-   {% endfor %}
 
-  {% for supply_water_temp_building in ets_data['SWT_Building'] %}
+
+  {% raw %}
   parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
-    start={{supply_water_temp_building}}+273.15,
+    {% endraw %}
+    start={{ ets_data['supply_water_temperature_building']  }}+273.15,
     final displayUnit="K")
     "Nominal temperature at port a2"
     annotation(Dialog(group="Heat exchanger"));
-    {% endfor %}
 
- {% for efficiency in ets_data['Eta_Efficiency'] %}
+
+ {% raw  %}
   parameter Modelica.SIunits.Efficiency eta(
     final min=0,
-    final max=1)={{efficiency}}
+     {% endraw %}
+    final max=1)={{  ets_data['eta_efficiency']  }}
+    {% raw %}
     "Constant effectiveness"
     annotation(Dialog(group="Heat exchanger"));
-  {% endfor %}
+{% endraw %}
 
-  {%raw%}
+  {% raw %}
   // Controller parameters
   parameter Modelica.Blocks.Types.SimpleController controllerType=
     Modelica.Blocks.Types.SimpleController.PI
@@ -268,7 +278,9 @@ protected
   final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=
     Medium.specificHeatCapacityCp(sta_default)
     "Specific heat capacity of the fluid";
+{% endraw %}
 
+{% raw %}
 equation
 
   connect(hex.port_a2, port_a2) annotation (Line(points={{40,-6},{60,-6},{60,-60},
@@ -312,7 +324,9 @@ equation
     annotation (Line(points={{81,110},{110,110}}, color={0,0,127}));
   connect(Q_flow, cp.y) annotation (Line(points={{110,150},{50,150},{50,110},{41,
           110}}, color={0,0,127}));
+{% endraw %}
 
+{% raw %}
 annotation (defaultComponentName="coo",
     Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
@@ -366,4 +380,4 @@ First implementation. </li>
 <li> 12/15/2020, Yanfei Li, Templating ETS model.</li>
 </ul>
 </html>"));{% endraw %}
-end CoolingIndirect;
+end {{  ets_data['model_name']  }};
