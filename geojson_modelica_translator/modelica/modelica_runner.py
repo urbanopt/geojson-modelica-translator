@@ -39,6 +39,7 @@ class ModelicaRunner(object):
     Class to run Modelica models. This is a very simple implementation of what needs to be
     a full CLI to run Modelica easily. At the moment, this probably only works on Linux/Mac
     and perhaps in Windows with Docker.
+    For Ubuntu, here is the installation instruction: https://docs.docker.com/engine/install/ubuntu/
 
     # TODO: test in windows
     # Document how to install Docker
