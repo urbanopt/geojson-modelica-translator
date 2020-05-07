@@ -10,11 +10,7 @@
     },
     "custom": [
       {
-        "geojson_id": "abcd1234",
-        "ets": {
-          "system": "Booster Heater",
-          "description": "User input on describing the ETS"
-        }
+        "geojson_id": "abcd1234"
       },
       {
         "geojson_id": "defgh2345",
