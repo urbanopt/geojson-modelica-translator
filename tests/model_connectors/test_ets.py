@@ -28,12 +28,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
+# import os
 import unittest
 
-from geojson_modelica_translator.model_connectors.ets_template import (
-    ETSTemplate
-)
+# from geojson_modelica_translator.model_connectors.ets_template import (
+#    ETSTemplate
+# )
 
 # from geojson_modelica_translator.system_parameters.system_parameters import (
 #     SystemParameters
@@ -43,21 +43,23 @@ from geojson_modelica_translator.model_connectors.ets_template import (
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def setUp(self):  # the first method/member must be setUp
-        base_folder = os.path.abspath(os.path.join(__file__, "../.."))
-        dest_path = "/geojson/data/thermal_junction_ex.json"
-        self.thermal_junction_properties_geojson = base_folder + dest_path
-        base_folder = os.path.dirname(os.path.abspath(__file__))
-        dest_path = "/data/ets_system_params.json"
-        self.system_parameters_geojson = base_folder + dest_path
+        # base_folder = os.path.abspath(os.path.join(__file__, "../.."))
+        # dest_path = "/geojson/data/thermal_junction_ex.json"
+        # self.thermal_junction_properties_geojson = base_folder + dest_path
+        # base_folder = os.path.dirname(os.path.abspath(__file__))
+        # dest_path = "/data/ets_system_params.json"
+        # self.system_parameters_geojson = base_folder + dest_path
+        pass
 
     def set_ets(self):
-        self.ets = ETSTemplate(
-            self.thermal_junction_properties_geojson,
-            self.system_parameters_geojson
-        )
-        self.assertIsNotNone(self.ets)
-
-        return self.ets
+        # self.ets = ETSTemplate(
+        #     self.thermal_junction_properties_geojson,
+        #     self.system_parameters_geojson
+        # )
+        # self.assertIsNotNone(self.ets)
+        #
+        # return self.ets
+        pass
 
     def test_ets_thermal_junction(self):
         pass

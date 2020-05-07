@@ -190,9 +190,6 @@ class SpawnConnectorETS(model_connector_base):
                         building["building_id"],
                         "ets_model_parameters.indirect_cooling"
                     )
-                    # this is a complete hack (NL is culprit), do we really need the data in arrays? If so, then we
-                    # would need to update the schema.
-                    # this hack is removed by Yanfei
                 else:
                     raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
 
