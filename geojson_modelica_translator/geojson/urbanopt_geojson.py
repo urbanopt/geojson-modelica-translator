@@ -58,7 +58,8 @@ class UrbanOptGeoJson(object):
 
     def __init__(self, filename):
         if os.path.exists(filename):
-            self.data = geojson.load(open(filename))
+            with open(filename, "r") as f:
+                self.data = geojson.load(f)
         else:
             raise Exception(f"URBANopt GeoJSON file does not exist: {filename}")
 

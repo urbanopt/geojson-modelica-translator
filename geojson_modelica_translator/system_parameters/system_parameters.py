@@ -41,9 +41,9 @@ class SystemParameters(object):
     """
 
     PATH_ELEMENTS = [
-        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
-        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
-        {"jsonpath": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
     ]
 
     def __init__(self, filename=None):
@@ -53,13 +53,15 @@ class SystemParameters(object):
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        self.schema = json.load(open(os.path.join(os.path.dirname(__file__), "schema.json"), "r"))
+        with open(os.path.join(os.path.dirname(__file__), "schema.json"), "r") as f:
+            self.schema = json.load(f)
         self.data = {}
         self.filename = filename
 
         if self.filename:
             if os.path.exists(self.filename):
-                self.data = json.load(open(self.filename, "r"))
+                with open(self.filename, "r") as f:
+                    self.data = json.load(f)
             else:
                 raise Exception(f"System design parameters file does not exist: {self.filename}")
 
@@ -68,6 +70,7 @@ class SystemParameters(object):
                 raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
             self.resolve_paths()
+            # self.resolve_defaults()
 
     @classmethod
     def loadd(cls, d, validate_on_load=True):
@@ -94,19 +97,38 @@ class SystemParameters(object):
         filepath = os.path.abspath(os.path.dirname(self.filename))
 
         for pe in self.PATH_ELEMENTS:
-            matches = parse(pe["jsonpath"]).find(self.data)
+            matches = parse(pe["json_path"]).find(self.data)
             for index, match in enumerate(matches):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
                 new_path = os.path.join(filepath, match.value)
                 parse(str(match.full_path)).update(self.data, new_path)
 
-    def get_param(self, path, data=None, default=None):
+    # def resolve_defaults(self):
+    #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
+    #     specificed in the custom block then that will be used, otherwise the default value will be replaced"""
+    #     pass
+
+    def get_default(self, path, default=None):
         """
-        return the parameter(s) from the path. This is a recursive function.
+        Return either the default in the system parameter file, or the specified default.
+
+        :param path: string, raw path to what parameter was being requested
+        :param default: variant, default value
+        :return: value
+        """
+        schema_default = self.get_param(path, impute_default=False)
+        return schema_default or default
+
+    def get_param(self, path, data=None, default=None, impute_default=True):
+        """
+        return the parameter(s) from the path. This is a recursive function. If the default is not specified,
+        then will attempt to read the default from the "default" section of the file. If there is no default
+        there, then it will use the value specified as the argument. It is not recommended to use the argument
+        default as those values will not be configurable. Argument-based defaults should be used sparingly.
 
         TODO: Replace the path string with JSONPath as we expect to only read these values
 
-        :param path: string, period delimeted path of the data to retrieve
+        :param path: string, period delimited path of the data to retrieve
         :param data: dict, (optional) the data to parse
         :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
@@ -123,7 +145,10 @@ class SystemParameters(object):
         else:
             value = data.get(check_path, None)
             if value is None:
-                return default
+                if impute_default:
+                    return self.get_default(path, default)
+                else:
+                    return default
 
             if len(paths) == 0:
                 return value
@@ -133,21 +158,28 @@ class SystemParameters(object):
     def get_param_by_building_id(self, building_id, path, default=None):
         """
         return a parameter for a specific building_id. This is similar to get_param but allows the user
-        to constrain the data based on the building type.
+        to constrain the data based on the building id.
 
         :param building_id: string, id of the building to look up in the custom section of the system parameters
-        :param path: string, period delimeted path of the data to retrieve
+        :param path: string, period delimited path of the data to retrieve
         :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
 
-        # TODO: return the default value if the building ID is not defined
+        # This will get reworked after moving to jsonpath. but for now, hack in the default. First return the default
+        # dict from the system parameter file.
+        # Grab first the default data block, then find the path in the default data block.
+        default_data = self.get_param(f'buildings.default', impute_default=False)
+        schema_default = self.get_param(path, default_data, impute_default=False)
+        default = schema_default or default
         for b in self.data.get("buildings", {}).get("custom", {}):
             if b.get("geojson_id", None) == building_id:
-                # print(f"Building found for {building_id}")
                 return self.get_param(path, b, default=default)
-
-        return None
+        else:
+            # if there is no matching building_id, then return the default data.
+            # This may come back to bite us. If the user mistypes the building id, then they may not
+            # realize that they are grabbing the default data
+            return default
 
     def validate(self):
         """

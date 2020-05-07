@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 0.1.1 (Unreleased)
+--------------------------
+* Add ETS data for indirect cooling to system parameters schema
+
 Version 0.1.0
 -------------
 

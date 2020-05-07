@@ -38,17 +38,14 @@ from geojson_modelica_translator.utils import ModelicaPath
 from jinja2 import Environment, FileSystemLoader
 
 
-class SpawnConnectorETS(model_connector_base):
+class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
         self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-        self.template_env = Environment(
-            loader=FileSystemLoader(searchpath=self.template_dir)
-        )
-
+        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
         self.required_mo_files = [
-            os.path.join(self.template_dir, 'HydraulicHeader.mo'),
+            os.path.join(self.template_dir, 'PartialBuilding.mo'),
         ]
 
     def add_building(self, urbanopt_building, mapper=None):
@@ -77,20 +74,20 @@ class SpawnConnectorETS(model_connector_base):
 
     def to_modelica(self, scaffold):
         """
-        Create spawn models based on the data in the buildings and geojsons
+        Create TimeSeries models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        spawn_ets_coupling_template = self.template_env.get_template("CouplingETS_SpawnBuilding.mot")
-        spawn_building_template = self.template_env.get_template("spawn_building.mot")
+        timeSeries_ets_coupling_template = self.template_env.get_template("CouplingETS_TimeSeriesBuilding.mot")
+        timeSeries_building_template = self.template_env.get_template("time_series_building.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
-        spawn_ets_mos_template = self.template_env.get_template("RunCouplingETS_SpawnBuilding.most")
+        timeSeries_ets_mos_template = self.template_env.get_template("RunCouplingETS_TimeSeriesBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
-                # create each spawn building and save to the correct directory
-                print(f"Creating spawn for building: {building['building_id']}")
+                # create timeSeries building and save to the correct directory
+                print(f"Creating timeSeries for building: {building['building_id']}")
 
                 # Path for building data
                 building_names.append(f"B{building['building_id']}")
@@ -100,80 +97,27 @@ class SpawnConnectorETS(model_connector_base):
 
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
-                idf_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.spawn.idf_filename"
+                time_series_filename = self.system_parameters.get_param_by_building_id(
+                    building["building_id"], "load_model_parameters.time_series.filepath"
                 )
-                epw_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.spawn.epw_filename"
-                )
-                mos_weather_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.spawn.mos_weather_filename",
-                )
-                thermal_zones = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.spawn.thermal_zone_names",
-                )
-
-                # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
-                    "idf": {
-                        "idf_filename": idf_filename,
-                        "filename": os.path.basename(idf_filename),
-                        "path": os.path.dirname(idf_filename),
-                    },
-                    "epw": {
-                        "epw_filename": epw_filename,
-                        "filename": os.path.basename(epw_filename),
-                        "path": os.path.dirname(epw_filename),
-                    },
-                    "mos_weather": {
-                        "mos_weather_filename": mos_weather_filename,
-                        "filename": os.path.basename(mos_weather_filename),
-                        "path": os.path.dirname(mos_weather_filename),
-                    },
-                    "thermal_zones": [],
-                    "thermal_zones_count": len(thermal_zones),
-
+                    "time_series": {
+                        "filepath": time_series_filename,
+                        "filename": os.path.basename(time_series_filename),
+                        "path": os.path.dirname(time_series_filename),
+                    }
                 }
-                for tz in thermal_zones:
-                    # TODO: method for creating nice zone names for modelica
-                    template_data["thermal_zones"].append(
-                        {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
-                    )
-
-                # copy over the resource files for this building
-                # TODO: move some of this over to a validation step
-                if os.path.exists(template_data["idf"]["idf_filename"]):
-                    shutil.copy(
-                        template_data["idf"]["idf_filename"],
-                        os.path.join(
-                            b_modelica_path.resources_dir,
-                            template_data["idf"]["filename"],
-                        ),
-                    )
+        # copy over the resource files for this building
+                if os.path.exists(template_data["time_series"]["filepath"]):
+                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
+                    os.makedirs(os.path.dirname(new_file), exist_ok=True)
+                    shutil.copy(template_data["time_series"]["filepath"], new_file)
                 else:
-                    raise Exception(
-                        f"Missing IDF file for Spawn: {template_data['idf']['idf_filename']}"
-                    )
-
-                if os.path.exists(template_data["epw"]["epw_filename"]):
-                    shutil.copy(template_data["epw"]["epw_filename"],
-                                os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
-                else:
-                    raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
-
-                if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
-                    shutil.copy(
-                        template_data["mos_weather"]["mos_weather_filename"],
-                        os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
-                    )
-                else:
-                    raise Exception(
-                        f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
-
-                # write a file name building.mo, CoolingIndirect.mo and CouplingETS_SpawnBuilding.mo
-                # Run the templating
-                file_data = spawn_building_template.render(
+                    raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
+                    # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
+                    # Run the templating
+                file_data = timeSeries_building_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -181,21 +125,21 @@ class SpawnConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
-                ets_model_type = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "ets_model"
-                )
-                ets_data = None
-                if ets_model_type == "Indirect Cooling":
-                    ets_data = self.system_parameters.get_param_by_building_id(
-                        building["building_id"],
-                        "ets_model_parameters.indirect_cooling"
-                    )
-                    # this is a complete hack (NL is culprit), do we really need the data in arrays? If so, then we
-                    # would need to update the schema.
-                    for k in ets_data.keys():
-                        ets_data[k] = [ets_data[k]]
-                else:
-                    raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+                # This is a complete hack as the ETS template reads from the schema. For now we need to follow that
+                # same paradigm to make this work.
+                # This relates to this ticket https://github.com/urbanopt/geojson-modelica-translator/issues/64
+                ets_data = {
+                    "ModelName": "ets_cooling_indirect_templated",
+                    "Q_Flow_Nominal": [8000],
+                    "Eta_Efficiency": [0.666],
+                    "NominalFlow_District": [0.6],
+                    "NominalFlow_Building": [0.6],
+                    "PressureDrop_Valve": [7000],
+                    "PressureDrop_HX_Secondary": [500],
+                    "PressureDrop_HX_Primary": [500],
+                    "SWT_District": [12],
+                    "SWT_Building": [14]
+                }
 
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
@@ -210,24 +154,23 @@ class SpawnConnectorETS(model_connector_base):
                     scaffold.project_name,
                     scaffold.loads_path.files_relative_dir,
                     f"B{building['building_id']}",
-                    "CouplingETS_SpawnBuilding").replace(os.path.sep, '.')
+                    "CouplingETS_TimeSeriesBuilding").replace(os.path.sep, '.')
 
-                file_data = spawn_ets_mos_template.render(
-                    full_model_name=full_model_name, model_name="CouplingETS_SpawnBuilding"
+                file_data = timeSeries_ets_mos_template.render(
+                    full_model_name=full_model_name, model_name="CouplingETS_TimeSeriesBuilding"
                 )
 
-                with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_SpawnBuilding.mos"), "w") as f:
+                with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_TimeSeriesBuilding.mos"), "w") as f:
                     f.write(file_data)
 
-                file_data = spawn_ets_coupling_template.render(
+                file_data = timeSeries_ets_coupling_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo")),
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo")),
                           "w") as f:
                     f.write(file_data)
-
                 # Copy the required modelica files
                 for f in self.required_mo_files:
                     shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
@@ -240,7 +183,7 @@ class SpawnConnectorETS(model_connector_base):
 
     def post_process(self, scaffold, building_names):
         """
-        Cleanup the export of Spawn files into a format suitable for the district-based analysis. This includes
+        Cleanup the export of TimeSeries files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project
@@ -253,7 +196,8 @@ class SpawnConnectorETS(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "CoolingIndirect", "CouplingETS_SpawnBuilding"],
+                b_modelica_path, b,
+                ["building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
