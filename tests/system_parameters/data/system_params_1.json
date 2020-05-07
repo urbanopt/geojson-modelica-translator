@@ -6,19 +6,34 @@
         "rc": {
           "order": 2
         }
+      },
+      "ets_model": "Indirect Cooling",
+      "ets_model_parameters": {
+        "indirect_cooling": {
+          "Q_Flow_Nominal": 9999,
+          "SWT_District": 15
+        }
       }
     },
     "custom": [
       {
         "geojson_id": "abcd1234",
-        "ets": {
-          "system": "Booster Heater",
-          "description": "User input on describing the ETS"
-        }
+        "ets_model": "None"
       },
       {
         "geojson_id": "defgh2345",
         "load_model": "ROM/RC"
+      },
+      {
+        "geojson_id": "building_merge_defaults",
+        "load_model": "ROM/RC",
+        "ets_model": "Indirect Cooling",
+        "ets_model_parameters": {
+          "indirect_cooling": {
+            "Q_Flow_Nominal": 10000,
+            "Eta_Efficiency": 0.99
+          }
+        }
       },
       {
         "geojson_id": "ijk678",

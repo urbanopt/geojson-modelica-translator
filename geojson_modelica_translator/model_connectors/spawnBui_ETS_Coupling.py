@@ -107,12 +107,10 @@ class SpawnConnectorETS(model_connector_base):
                     building["building_id"], "load_model_parameters.spawn.epw_filename"
                 )
                 mos_weather_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"],
-                    "load_model_parameters.spawn.mos_weather_filename",
+                    building["building_id"], "load_model_parameters.spawn.mos_weather_filename",
                 )
                 thermal_zones = self.system_parameters.get_param_by_building_id(
-                    building["building_id"],
-                    "load_model_parameters.spawn.thermal_zone_names",
+                    building["building_id"], "load_model_parameters.spawn.thermal_zone_names",
                 )
 
                 # construct the dict to pass into the template
@@ -183,21 +181,22 @@ class SpawnConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
-                # This is a complete hack as the ETS template reads from the schema. For now we need to follow that
-                # same paradigm to make this work.
-                # This relates to this ticket https://github.com/urbanopt/geojson-modelica-translator/issues/64
-                ets_data = {
-                    "ModelName": "ets_cooling_indirect_templated",
-                    "Q_Flow_Nominal": [8000],
-                    "Eta_Efficiency": [0.666],
-                    "NominalFlow_District": [0.666],
-                    "NominalFlow_Building": [0.666],
-                    "PressureDrop_Valve": [7000],
-                    "PressureDrop_HX_Secondary": [600],
-                    "PressureDrop_HX_Primary": [600],
-                    "SWT_District": [5],
-                    "SWT_Building": [7]
-                }
+                ets_model_type = self.system_parameters.get_param_by_building_id(
+                    building["building_id"], "ets_model"
+                )
+                ets_data = None
+                if ets_model_type == "Indirect Cooling":
+                    ets_data = self.system_parameters.get_param_by_building_id(
+                        building["building_id"],
+                        "ets_model_parameters.indirect_cooling"
+                    )
+                    # this is a complete hack (NL is culprit), do we really need the data in arrays? If so, then we
+                    # would need to update the schema.
+                    for k in ets_data.keys():
+                        ets_data[k] = [ets_data[k]]
+                else:
+                    raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",

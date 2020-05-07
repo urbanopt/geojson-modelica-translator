@@ -152,30 +152,6 @@
           "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
           "type": "string"
         },
-        "ets": {
-          "title": "ets",
-          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops",
-          "type": "object",
-          "properties": {
-            "system": {
-              "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. ",
-              "type": "string",
-              "enum": [
-                "Booster Heater",
-                "Heat Exchanger Only"
-              ]
-            },
-            "description": {
-              "description": "User defined description. Not used in the translation process.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "system",
-            "description"
-          ],
-          "additionalProperties": false
-        },
         "load_model": {
           "description": "Type of load model to use for the building.",
           "type": "string",
@@ -197,6 +173,25 @@
             },
             "time_series": {
               "$ref": "#/definitions/time_series_model_parameters"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ets_model": {
+          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops ",
+          "type": "string",
+          "enum": [
+            "None",
+            "Indirect Cooling",
+            "Booster Heater",
+            "Heat Exchanger Only"
+          ]
+        },
+        "ets_model_parameters": {
+          "type": "object",
+          "properties": {
+            "indirect_cooling": {
+              "$ref": "#/definitions/ets_indirect_cooling_parameters"
             }
           },
           "additionalProperties": false
@@ -242,21 +237,76 @@
       },
       "additionalProperties": false
     },
+    "ets_indirect_cooling_parameters": {
+      "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. Parameters associated with indirect cooling ETS",
+      "type": "object",
+      "properties": {
+        "Q_Flow_Nominal": {
+          "description": "Nominal flow rate (m3/s [verify])",
+          "type": "number",
+          "default": 8000
+        },
+        "Eta_Efficiency": {
+          "description": "Heat exchanger efficiency (fraction)",
+          "type": "number",
+          "default": 0.666
+        },
+        "NominalFlow_District": {
+          "description": "District nominal flow rate (as fraction).",
+          "type": "number",
+          "default": 0.666
+        },
+        "NominalFlow_Building": {
+          "description": "Building nominal flow rate (as fraction).",
+          "type": "number",
+          "default": 0.666
+        },
+        "PressureDrop_Valve": {
+          "description": "Valve pressure drop (verify units = pascals)",
+          "type": "number",
+          "default": 888
+        },
+        "PressureDrop_HX_Secondary": {
+          "description": "Heat exchanger secondary side pressure drop (verify units = pascals)",
+          "type": "number",
+          "default": 999
+        },
+        "PressureDrop_HX_Primary": {
+          "description": "Heat exchanger primary side pressure drop (verify units = pascals)",
+          "type": "number",
+          "default": 999
+        },
+        "SWT_District": {
+          "description": "Supply water tempature for district (deg C)",
+          "type": "number",
+          "default": 5
+        },
+        "SWT_Building": {
+          "description": "Supply water tempature for building (deg C)",
+          "type": "number",
+          "default": 7
+        }
+      },
+      "required": [
+        "Q_Flow_Nominal"
+      ],
+      "additionalProperties": false
+    },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
       "type": "object",
       "properties": {
         "idf_filename": {
-          "type": "string",
-          "description": "Absolute path or relative path from location where file instance is saved."
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
         },
         "epw_filename": {
-          "type": "string",
-          "description": "Absolute path or relative path from location where file instance is saved."
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
         },
         "mos_weather_filename": {
-          "type": "string",
-          "description": "Absolute path or relative path from location where file instance is saved."
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
         },
         "thermal_zone_names": {
           "type": "array",
@@ -307,22 +357,6 @@
         "filepath"
       ],
       "additionalProperties": false
-    },
-    "ets_parameters": {
-      "description": "Parameters associated with ETS models",
-      "type": "object",
-      "properties": {
-        "ModelName": "ets_cooling_indirect_templated",
-        "Q_Flow_Nominal": [8000],
-        "Eta_Efficiency": [0.666],
-        "NominalFlow_District": [0.666],
-        "NominalFlow_Building": [0.666],
-        "PressureDrop_Valve": [888],
-        "PressureDrop_HX_Secondary": [999],
-        "PressureDrop_HX_Primary": [999],
-        "SWT_District": [5],
-        "SWT_Building": [7]
-      }
     }
   }
 }
