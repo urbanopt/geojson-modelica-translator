@@ -35,18 +35,5 @@
       "pipe_insulation_rvalue": 5,
       "pipe_location": "Tunnel"
     }
-  },
-  "ets": {
-    "default": {
-      "q_flow_nominal": 8000,
-      "eta_efficiency": 0.666,
-      "nominal_flow_district": 0.666,
-      "nominal_flow_building": 0.666,
-      "pressure_drop_valve": 888,
-      "pressure_drop_hx_secondary": 999,
-      "pressure_drop_hx_primary": 999,
-      "supply_water_temperature_district": 5,
-      "supply_water_temperature_building": 7
-    }
   }
 }
