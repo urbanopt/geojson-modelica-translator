@@ -38,9 +38,10 @@ from geojson_modelica_translator.utils import ModelicaPath
 from jinja2 import Environment, FileSystemLoader
 
 
-class TimeSeriesConnector(model_connector_base):
+class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
+
         self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
         self.required_mo_files = [
@@ -53,9 +54,9 @@ class TimeSeriesConnector(model_connector_base):
 
         :param urbanopt_building: an urbanopt_building
         """
+
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
-
         if mapper is None:
             number_stories = urbanopt_building.feature.properties["number_of_stories"]
             number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
@@ -73,20 +74,20 @@ class TimeSeriesConnector(model_connector_base):
 
     def to_modelica(self, scaffold):
         """
-        Create timeSeries models based on the data in the buildings and geojsons
+        Create TimeSeries models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-
-        time_series_coupling_template = self.template_env.get_template("time_series_coupling.mot")
-        time_series_building_template = self.template_env.get_template("time_series_building.mot")
-        time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.mos")
+        timeSeries_ets_coupling_template = self.template_env.get_template("CouplingETS_TimeSeriesBuilding.mot")
+        timeSeries_building_template = self.template_env.get_template("time_series_building.mot")
+        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        timeSeries_ets_mos_template = self.template_env.get_template("RunCouplingETS_TimeSeriesBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
-                # create each timeSeries building and save to the correct directory
-                print(f"Creating time series coupling for building: {building['building_id']}")
+                # create timeSeries building and save to the correct directory
+                print(f"Creating timeSeries for building: {building['building_id']}")
 
                 # Path for building data
                 building_names.append(f"B{building['building_id']}")
@@ -94,16 +95,11 @@ class TimeSeriesConnector(model_connector_base):
                     f"B{building['building_id']}", scaffold.loads_path.files_dir, True
                 )
 
-                for f in self.required_mo_files:
-                    shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
-
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
                 time_series_filename = self.system_parameters.get_param_by_building_id(
                     building["building_id"], "load_model_parameters.time_series.filepath"
                 )
-
-                # construct the dict to pass into the template
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
                     "time_series": {
@@ -112,41 +108,72 @@ class TimeSeriesConnector(model_connector_base):
                         "path": os.path.dirname(time_series_filename),
                     }
                 }
-
-                # copy over the resource files for this building
-                # TODO: move some of this over to a validation step
+        # copy over the resource files for this building
                 if os.path.exists(template_data["time_series"]["filepath"]):
                     new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
                     os.makedirs(os.path.dirname(new_file), exist_ok=True)
                     shutil.copy(template_data["time_series"]["filepath"], new_file)
                 else:
                     raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
-
-                self.run_template(
-                    time_series_building_template,
-                    os.path.join(b_modelica_path.files_dir, "building.mo"),
+                    # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
+                    # Run the templating
+                file_data = timeSeries_building_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data
+                    data=template_data,
                 )
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
+                    f.write(file_data)
 
-                self.run_template(
-                    time_series_coupling_template,
-                    os.path.join(b_modelica_path.files_dir, "coupling.mo"),
+                # This is a complete hack as the ETS template reads from the schema. For now we need to follow that
+                # same paradigm to make this work.
+                # This relates to this ticket https://github.com/urbanopt/geojson-modelica-translator/issues/64
+                ets_data = {
+                    "ModelName": "ets_cooling_indirect_templated",
+                    "Q_Flow_Nominal": [8000],
+                    "Eta_Efficiency": [0.666],
+                    "NominalFlow_District": [0.6],
+                    "NominalFlow_Building": [0.6],
+                    "PressureDrop_Valve": [7000],
+                    "PressureDrop_HX_Secondary": [500],
+                    "PressureDrop_HX_Primary": [500],
+                    "SWT_District": [12],
+                    "SWT_Building": [14]
+                }
+
+                file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data
+                    data=template_data,
+                    ets_data=ets_data,
+                )
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
+                    f.write(file_data)
+
+                full_model_name = os.path.join(
+                    scaffold.project_name,
+                    scaffold.loads_path.files_relative_dir,
+                    f"B{building['building_id']}",
+                    "CouplingETS_TimeSeriesBuilding").replace(os.path.sep, '.')
+
+                file_data = timeSeries_ets_mos_template.render(
+                    full_model_name=full_model_name, model_name="CouplingETS_TimeSeriesBuilding"
                 )
 
-                self.run_template(
-                    time_series_mos_template,
-                    os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos"),
-                    full_model_name=os.path.join(
-                        scaffold.project_name,
-                        scaffold.loads_path.files_relative_dir,
-                        f"B{building['building_id']}",
-                        "coupling").replace(os.path.sep, '.')
+                with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_TimeSeriesBuilding.mos"), "w") as f:
+                    f.write(file_data)
+
+                file_data = timeSeries_ets_coupling_template.render(
+                    project_name=scaffold.project_name,
+                    model_name=f"B{building['building_id']}",
+                    data=template_data,
                 )
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo")),
+                          "w") as f:
+                    f.write(file_data)
+                # Copy the required modelica files
+                for f in self.required_mo_files:
+                    shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
 
         finally:
             os.chdir(curdir)
@@ -156,7 +183,7 @@ class TimeSeriesConnector(model_connector_base):
 
     def post_process(self, scaffold, building_names):
         """
-        Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
+        Cleanup the export of TimeSeries files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project
@@ -169,7 +196,8 @@ class TimeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "coupling"],
+                b_modelica_path, b,
+                ["building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
