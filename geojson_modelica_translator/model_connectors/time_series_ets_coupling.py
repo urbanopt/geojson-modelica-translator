@@ -42,13 +42,11 @@ class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
-        self.template_env = Environment(
-            loader=FileSystemLoader(
-                searchpath=os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), "templates"
-                )
-            )
-        )
+        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
+        self.required_mo_files =[
+            os.path.join(self.template_dir, 'PartialBuilding.mo'),
+        ]
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -173,6 +171,9 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo")),
                           "w") as f:
                     f.write(file_data)
+                #Copy the required modelica files
+                for f in self.required_mo_files:
+                    shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
 
         finally:
             os.chdir(curdir)
