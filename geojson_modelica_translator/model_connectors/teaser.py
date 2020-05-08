@@ -32,10 +32,11 @@ import glob
 import os
 import shutil
 
+from modelica_builder.model import Model
+
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import (
-    InputParser,
     PackageParser
 )
 from geojson_modelica_translator.utils import ModelicaPath, copytree
@@ -178,26 +179,39 @@ class TeaserConnector(model_connector_base):
                 if os.path.basename(f) == "package.mo":
                     continue
 
-                mofile = InputParser(f)
+                mofile = Model(f)
 
                 # previous paths and replace with the new one.
                 # Make sure to update the names of any resources as well.
-                mofile.replace_within_string(f"{scaffold.project_name}.Loads.B{b}")
+                mofile.set_within_statement(f'{scaffold.project_name}.Loads.B{b}')
 
                 # remove ReaderTMY3
-                mofile.remove_object("ReaderTMY3")
+                mofile.remove_component("Buildings.BoundaryConditions.WeatherData.ReaderTMY3", "weaDat")
 
                 # updating path to internal loads
                 for s in string_replace_list:
-                    mofile.replace_model_string("Modelica.Blocks.Sources.CombiTimeTable", "internalGains", s[0], s[1])
+                    new_file_path = s[1]
+                    new_resource_arg = f'''Modelica.Utilities.Files.loadResource(
+          "modelica://{new_file_path}")'''
+
+                    old_file_path = s[0]
+                    old_resource_arg = f'''Modelica.Utilities.Files.loadResource(
+          "modelica://{old_file_path}")'''
+
+                    mofile.update_component_argument(
+                        "Modelica.Blocks.Sources.CombiTimeTable",
+                        "internalGains",
+                        "fileName",
+                        new_resource_arg,
+                        if_value=old_resource_arg)
 
                 # add heat port
-                data = [
-                    "annotation (Placement(transformation(extent={{-10,90},{10,110}}), "
-                    "iconTransformation(extent={{-10,90},{10,110}})));"
-                ]
-                mofile.add_model_object(
-                    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a", data,
+                mofile.insert_component(
+                    "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
+                    annotations=[
+                        "Placement(transformation(extent={{-10,90},{10,110}}), "
+                        + "iconTransformation(extent={{-10,90},{10,110}}))"
+                    ]
                 )
 
                 fraction_latent_person = self.system_parameters.get_param(
@@ -205,84 +219,77 @@ class TeaserConnector(model_connector_base):
                 )
 
                 # create a new parameter for fraction latent person
-                mofile.add_parameter('Real', 'fraLat', fraction_latent_person,
-                                     "Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.")
+                mofile.add_parameter(
+                    'Real', 'fraLat', assigned_value=fraction_latent_person,
+                    string_comment='Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.'
+                )
 
                 # Set the fraction latent person in the template by simply replacing the value
-                instance = f'perLatLoa(y=internalGains.y[2]*fraLat)'
-                data = ['"Latent person loads"',
-                        "annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));"
-                        ]
-                mofile.add_model_object(
-                    "Modelica.Blocks.Sources.RealExpression", instance, data)
+                mofile.insert_component(
+                    'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
+                    arguments={
+                        'y': 'internalGains.y[2]*fraLat',
+                    },
+                    string_comment='Latent person loads',
+                    annotations=['Placement(transformation(extent={{-80,-60},{-60,-40}}))']
+                )
 
                 # add TAir output
-                instance = 'TAir(\n    quantity="ThermodynamicTemperature", unit="K", displayUnit="degC")'
-                data = [
-                    '"Room air temperature"',
-                    "annotation (Placement(transformation(extent={{100,-10},{120,10}})));",
-                ]
-                mofile.add_model_object(
-                    "Buildings.Controls.OBC.CDL.Interfaces.RealOutput", instance, data
+                mofile.insert_component(
+                    'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
+                    arguments={
+                        'quantity': '"ThermodynamicTemperature"',
+                        'unit': '"K"',
+                        'displayUnit': '"degC"',
+                    },
+                    string_comment='Room air temperature',
+                    annotations=['Placement(transformation(extent={{100,-10},{120,10}}))']
                 )
 
                 # All existing weaDat.weaBus connections need to be updated to simply weaBus
-                mofile.replace_connect_string('weaDat.weaBus', None, 'weaBus', None, True)
-                # Now remove the redundant weaBus -> weaBus connection
-                mofile.remove_connect_string('weaBus', 'weaBus')
+                # (except for the connections where 'weaBus' is port_b, we will just delete these)
+                mofile.edit_connect('weaDat.weaBus', '!weaBus', new_port_a='weaBus')
+                # Now remove the unnecessary weaDat.weaBus -> weaBus connection
+                mofile.remove_connect('weaDat.weaBus', 'weaBus')
 
                 # add new port connections
                 rc_order = self.system_parameters.get_param(
                     "buildings.default.load_model_parameters.rc.order", default=2
                 )
+                thermal_zone_type = None
                 if rc_order == 1:
-                    data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect("port_a", "thermalZoneOneElement.intGainsConv", data)
-
-                    data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
-                    mofile.add_connect("thermalZoneOneElement.TAir", "TAir", data)
-
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
-                           "color={0, 0,127}));"
-                    mofile.add_connect("thermalZoneOneElement.QLat_flow", "perLatLoa.y", data)
-
+                    thermal_zone_type = 'thermalZoneOneElement'
                 elif rc_order == 2:
-                    data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect("port_a", "thermalZoneTwoElements.intGainsConv", data)
-
-                    data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
-                    mofile.add_connect("thermalZoneTwoElements.TAir", "TAir", data)
-
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
-                           "color={0, 0,127}));"
-                    mofile.add_connect("thermalZoneTwoElements.QLat_flow", "perLatLoa.y", data)
-
+                    thermal_zone_type = 'thermalZoneTwoElements'
                 elif rc_order == 3:
-                    data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect("port_a", "thermalZoneThreeElements.intGainsConv", data)
-
-                    data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
-                    mofile.add_connect("thermalZoneThreeElements.TAir", "TAir", data)
-
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
-                           "color={0, 0,127}));"
-                    mofile.add_connect("thermalZoneThreeElements.QLat_flow", "perLatLoa.y", data)
-
+                    thermal_zone_type = 'thermalZoneThreeElements'
                 elif rc_order == 4:
-                    data = "annotation (Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0}))"
-                    mofile.add_connect("port_a", "thermalZoneFourElements.intGainsConv", data)
+                    thermal_zone_type = 'thermalZoneFourElements'
 
-                    data = "annotation (Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127}))"
-                    mofile.add_connect("thermalZoneFourElements.TAir", "TAir", data)
+                if thermal_zone_type is not None:
+                    mofile.add_connect(
+                        'port_a', f'{thermal_zone_type}.intGainsConv',
+                        annotations=['Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0})']
+                    )
 
-                    data = "annotation(Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, " \
-                           "color={0, 0,127}));"
-                    mofile.add_connect("thermalZoneFourElements.QLat_flow", "perLatLoa.y", data)
+                    mofile.add_connect(
+                        f'{thermal_zone_type}.TAir', 'TAir',
+                        annotations=['Line(points={{93,32},{98,32},{98,0},{110,0}}, color={0,0,127})']
+                    )
+
+                    mofile.add_connect(
+                        f'{thermal_zone_type}.QLat_flow', 'perLatLoa.y',
+                        annotations=[
+                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, '
+                            + 'color={0, 0,127})'
+                        ]
+                    )
 
                 # change the name of the modelica model to remove the building id, update in package too!
-                new_model_name = mofile.model["name"].split("_")[1]
-                package.rename_model(mofile.model["name"], new_model_name)
-                mofile.model["name"] = new_model_name
+                original_model_name = mofile.get_name()
+                new_model_name = original_model_name.split("_")[1]
+                package.rename_model(original_model_name, new_model_name)
+                mofile.set_name(new_model_name)
 
                 # Save as the new filename (without building ID)
                 new_filename = os.path.join(

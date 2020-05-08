@@ -11,6 +11,7 @@ jsonpath-ng==1.5.1
 BuildingsPy==2.0.0
 # There may be a need to require the MBL. Note this is a large dependency, but needed to assemble the models for running
 #-e git+https://github.com/lbl-srg/modelica-buildings.git@issue1437_district_heating_cooling #egg=buildings
+-e git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder
 
 # Use the core teaser library. Note: if using the github checkout, then it will be saved in the ./src directory if python is system python.
 teaser==0.7.2
