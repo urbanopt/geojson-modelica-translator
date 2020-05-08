@@ -43,7 +43,8 @@ class SystemParameters(object):
     PATH_ELEMENTS = [
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
-        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"},
+        {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"}
     ]
 
     def __init__(self, filename=None):
@@ -139,6 +140,7 @@ class SystemParameters(object):
 
         paths = path.split(".")
         check_path = paths.pop(0)
+
         if check_path == "":
             # no path passed
             return default
