@@ -43,7 +43,8 @@ class SystemParameters(object):
     PATH_ELEMENTS = [
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
-        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"}
+        {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"},
+        {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"}
     ]
 
     def __init__(self, filename=None):
@@ -102,6 +103,7 @@ class SystemParameters(object):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
                 new_path = os.path.join(filepath, match.value)
                 parse(str(match.full_path)).update(self.data, new_path)
+                print("Yanfei: check path", new_path, "-||-", match)
 
     # def resolve_defaults(self):
     #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is

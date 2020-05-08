@@ -100,9 +100,6 @@ class TimeSeriesConnectorETS(model_connector_base):
                 time_series_filename = self.system_parameters.get_param_by_building_id(
                     building["building_id"], "load_model_parameters.time_series.filepath"
                 )
-                base_folder = os.path.abspath(os.path.join(__file__, "../../.."))
-
-                time_series_filename = base_folder+"/"+time_series_filename
 
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
