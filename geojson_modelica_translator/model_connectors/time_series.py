@@ -105,7 +105,6 @@ class TimeSeriesConnector(model_connector_base):
 
                 # construct the dict to pass into the template
                 base_folder = os.path.abspath(os.path.join(__file__, "../../.."))
-                # print ("Yanfei-tmp: ", base_folder)
                 time_series_filename = base_folder + "/" + time_series_filename
                 template_data = {
                     "load_resources_path": b_modelica_path.resources_relative_dir,
