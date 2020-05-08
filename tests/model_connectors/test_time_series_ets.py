@@ -89,7 +89,7 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
             )
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-
+        # print ("Yanfei-check001: ", file_to_run)
         exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
         self.assertEqual(0, exitcode)
 
