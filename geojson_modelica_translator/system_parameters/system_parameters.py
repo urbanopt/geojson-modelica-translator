@@ -103,7 +103,6 @@ class SystemParameters(object):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
                 new_path = os.path.join(filepath, match.value)
                 parse(str(match.full_path)).update(self.data, new_path)
-                print("Yanfei: check path", new_path, "-||-", match)
 
     # def resolve_defaults(self):
     #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
