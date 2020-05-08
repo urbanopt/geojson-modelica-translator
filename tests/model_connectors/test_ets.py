@@ -31,40 +31,33 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # import os
 import unittest
 
-#
 # from geojson_modelica_translator.model_connectors.ets_template import (
-#     ETSTemplate
+#    ETSTemplate
 # )
+
 # from geojson_modelica_translator.system_parameters.system_parameters import (
 #     SystemParameters
 # )
 
 
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
-    def setUp(self):
-        # self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        # self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        # if not os.path.exists(self.output_dir):
-        #     os.makedirs(self.output_dir)
 
-        # base_folder = os.path.join(os.getcwd(), "geojson_modelica_translator")
-        # # this needs to read from the geojson, not the thermal junction properties definition
-        # dest_path = "/geojson/data/schemas/thermal_junction_properties.json"
+    def setUp(self):  # the first method/member must be setUp
+        # base_folder = os.path.abspath(os.path.join(__file__, "../.."))
+        # dest_path = "/geojson/data/thermal_junction_ex.json"
         # self.thermal_junction_properties_geojson = base_folder + dest_path
-        # # this needs to read a system parameter file, not the schema.
-        # dest_path = "/system_parameters/schema.json"
+        # base_folder = os.path.dirname(os.path.abspath(__file__))
+        # dest_path = "/data/ets_system_params.json"
         # self.system_parameters_geojson = base_folder + dest_path
-        # dest_path = "/modelica/CoolingIndirect.mo"
-        # self.ets_from_building_modelica = base_folder + dest_path
-        #
+        pass
+
+    def set_ets(self):
         # self.ets = ETSTemplate(
         #     self.thermal_junction_properties_geojson,
-        #     self.system_parameters_geojson,
-        #     self.ets_from_building_modelica,
+        #     self.system_parameters_geojson
         # )
         # self.assertIsNotNone(self.ets)
-
-        # I don't think we want setUp to return anything.
+        #
         # return self.ets
         pass
 
@@ -78,14 +71,6 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         # sys_params = SystemParameters(self.system_parameters_geojson)
         # self.assertIsNotNone(sys_params)
 
-    def test_ets_from_building_modelica(self):
-        pass
-        # self.assertTrue(self.ets.check_ets_from_building_modelica())
-
     def test_ets_to_modelica(self):
-        pass
         # self.assertIsNotNone(self.ets.to_modelica())
-
-    def test_ets_in_dymola(self):
         pass
-        # self.assertIsNotNone(self.ets.templated_ets_openloops_dymola())

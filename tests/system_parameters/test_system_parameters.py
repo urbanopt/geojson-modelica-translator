@@ -146,7 +146,16 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
         self.assertEqual("Indirect Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect_cooling': {'Q_Flow_Nominal': 9999, 'SWT_District': 15}}, value)
+        self.assertEqual({'indirect_cooling':
+                          {"q_flow_nominal": 8000,
+                           "eta_efficiency": 0.666,
+                           "nominal_flow_district": 0.666,
+                           "nominal_flow_building": 0.666,
+                           "pressure_drop_valve": 888,
+                           "pressure_drop_hx_secondary": 999,
+                           "pressure_drop_hx_primary": 999,
+                           "supply_water_temperature_district": 5,
+                           "supply_water_temperature_building": 7}}, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
@@ -159,7 +168,17 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
         self.assertEqual("Indirect Cooling", value)
         value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect_cooling': {'Q_Flow_Nominal': 9999, 'SWT_District': 15}}, value)
+        self.assertEqual({'indirect_cooling':
+                         {"q_flow_nominal": 8000,
+                          "eta_efficiency": 0.666,
+                          "nominal_flow_district": 0.666,
+                          "nominal_flow_building": 0.666,
+                          "pressure_drop_valve": 888,
+                          "pressure_drop_hx_secondary": 999,
+                          "pressure_drop_hx_primary": 999,
+                          "supply_water_temperature_district": 5,
+                          "supply_water_temperature_building": 7}
+                          }, value)
 
     # def test_get_param_with_building_id_merge_defaults(self):
     #     """This feature has not been implemented. Is this something we want?"""
