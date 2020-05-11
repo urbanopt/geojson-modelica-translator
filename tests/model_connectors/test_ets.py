@@ -56,5 +56,6 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
         self.assertIsNotNone(sys_params)
 
     def test_ets_to_modelica(self):
+        """after schema reading is correct, i will integrate scaffold here"""
         # self.assertIsNotNone(self.ets.to_modelica())
         pass
