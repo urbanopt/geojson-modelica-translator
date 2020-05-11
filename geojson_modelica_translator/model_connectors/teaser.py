@@ -250,7 +250,7 @@ class TeaserConnector(model_connector_base):
                 )
 
                 nPorts = self.system_parameters.get_param(
-                    "buildings.default.load_model_parameters.rc.nPorts", default= 0
+                    "buildings.default.load_model_parameters.rc.nPorts", default=0
                 )
 
                 # create a new parameter for fraction latent person
@@ -364,7 +364,6 @@ class TeaserConnector(model_connector_base):
                             + 'color={0, 127, 255})'
                         ]
                     )
-
 
                 # change the name of the modelica model to remove the building id, update in package too!
                 original_model_name = mofile.get_name()
