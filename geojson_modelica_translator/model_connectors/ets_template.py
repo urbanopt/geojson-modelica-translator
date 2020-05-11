@@ -35,32 +35,15 @@ from jinja2 import Environment, FileSystemLoader
 
 
 class ETSTemplate:
-    """This class will template the ETS modelica model."""
+    """This class will template the ETS modelica model. It will be used for sizing ETS models."""
 
-    def __init__(self, thermal_junction_properties_geojson, system_parameters_geojson):
+    def __init__(self, system_parameters_geojson):
         """
-        thermal_junction_properties_geojson contains the ETS at brief and at higher level;
         system_parameters_geojson contains the ETS with details                          ;
-        ets_from_building_modelica contains the modelica model of ETS                    ;
         """
         super().__init__()
 
-        self.thermal_junction_properties_geojson = thermal_junction_properties_geojson
-
         self.system_parameters_geojson = system_parameters_geojson
-
-        # go up two levels of directory, to get the path of tests folder for ets
-        # TODO: we shouldn't be writing to the test directory in this file, only in tests.
-        directory_up_two_levels = os.path.abspath(os.path.join(__file__, "../../.."))
-        self.directory_ets_templated = os.path.join(
-            directory_up_two_levels + "/tests/output/ets"
-        )
-
-        if not os.path.isdir(self.directory_ets_templated):
-            os.mkdir(self.directory_ets_templated)
-        else:
-            pass
-
         # here comes the Jinja2 function: Environment()
         # it loads all the "*.mot" files into an environment by Jinja2
         self.template_env = Environment(
@@ -69,38 +52,22 @@ class ETSTemplate:
             )
         )
 
-    def check_ets_thermal_junction(self):
-        """check if ETS info are in thermal-junction-geojson file"""
-        with open(self.thermal_junction_properties_geojson, "r") as f:
-            data = json.load(f)
-
-        ets_general = False
-        for key, value in data.items():
-            if key == "definitions":
-                # three levels down to get the ETS signal
-                junctions = data["definitions"]["ThermalJunctionType"]["enum"]
-                if "ETS" in junctions:
-                    ets_general = True
-            else:
-                pass
-
-        return ets_general
-
     def check_ets_system_parameters(self):
-        """check detailed parameters of ETS"""
+        """read detailed parameters of ETS, from an instance of system-parameters.
+        Later this maybe modified accordingly based project evolve"""
         with open(self.system_parameters_geojson, "r") as f:
             data = json.load(f)
+        # currently ets parameters go with building, here only default values are retrieved.
+        ets_data = data["buildings"]["default"]["ets_model_parameters"]
+        ets_paramters = ets_data["indirect_cooling"]
+        self.ets_parameters = ets_paramters
 
-        ets_parameters = False
-        # four levels down to get the ets model description
-        # ets_overall = data["definitions"]["building_def"]["properties"]["ets"]
-        # three levels down to get the parameters
-        ets_parameters = data["ets"]["default"]
-        # print ("est_parameters are: ", type(ets_parameters) )
-        return ets_parameters
+        return self.ets_parameters
 
+
+"""
     def to_modelica(self):
-        """convert ETS json to modelica"""
+
         # Here come the Jinja2 function: get_template(), which reads into templated ets model.
         # CoolingIndirect.mot was manually created as a starting point, by adding stuff following Jinja2 syntax.
         # it has all the necessary parameters which need to be changed through templating.
@@ -132,3 +99,4 @@ class ETSTemplate:
             f.write(file_data)
 
         return file_data
+"""

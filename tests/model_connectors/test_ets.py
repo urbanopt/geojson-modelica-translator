@@ -28,48 +28,32 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-# import os
+import os
 import unittest
 
-# from geojson_modelica_translator.model_connectors.ets_template import (
-#    ETSTemplate
-# )
+from geojson_modelica_translator.model_connectors.ets_template import (
+    ETSTemplate
+)
 
 # from geojson_modelica_translator.system_parameters.system_parameters import (
-#     SystemParameters
+#    SystemParameters
 # )
 
 
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def setUp(self):  # the first method/member must be setUp
-        # base_folder = os.path.abspath(os.path.join(__file__, "../.."))
-        # dest_path = "/geojson/data/thermal_junction_ex.json"
-        # self.thermal_junction_properties_geojson = base_folder + dest_path
-        # base_folder = os.path.dirname(os.path.abspath(__file__))
-        # dest_path = "/data/ets_system_params.json"
-        # self.system_parameters_geojson = base_folder + dest_path
-        pass
-
-    def set_ets(self):
-        # self.ets = ETSTemplate(
-        #     self.thermal_junction_properties_geojson,
-        #     self.system_parameters_geojson
-        # )
-        # self.assertIsNotNone(self.ets)
-        #
-        # return self.ets
-        pass
-
-    def test_ets_thermal_junction(self):
-        pass
-        # ets_general = self.ets.check_ets_thermal_junction()
-        # self.assertTrue(ets_general)
+        base_folder = os.path.abspath(os.path.join(__file__, "../.."))
+        dest_path = "/system_parameters/data/system_params_1.json"
+        self.system_parameters_geojson = base_folder + dest_path
+        self.ets = ETSTemplate(
+            self.system_parameters_geojson
+        )
 
     def test_ets_system_parameters(self):
-        pass
-        # sys_params = SystemParameters(self.system_parameters_geojson)
-        # self.assertIsNotNone(sys_params)
+        sys_params = self.ets.check_ets_system_parameters()
+
+        self.assertIsNotNone(sys_params)
 
     def test_ets_to_modelica(self):
         # self.assertIsNotNone(self.ets.to_modelica())
