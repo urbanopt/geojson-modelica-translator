@@ -126,7 +126,7 @@ class TeaserConnector(model_connector_base):
 
         self.post_process(scaffold, building_names, keep_original_models=keep_original_models)
 
-    def post_process(self, scaffold, building_names, keep_original_models=False, true=True):
+    def post_process(self, scaffold, building_names, keep_original_models=False):
         """
         Cleanup the export of the TEASER files into a format suitable for the district-based analysis. This includes
         the following:
@@ -210,7 +210,6 @@ class TeaserConnector(model_connector_base):
                         "use_moisture_balance=use_moisture_balance",
                         "nPorts = nPorts"
                     )
-
                 # add heat port convective heat flow.
                 mofile.insert_component(
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
@@ -251,7 +250,7 @@ class TeaserConnector(model_connector_base):
                 )
 
                 nPorts = self.system_parameters.get_param(
-                    "buildings.default.load_model_parameters.rc.nPorts", default='0'
+                    "buildings.default.load_model_parameters.rc.nPorts", default= 0
                 )
 
                 # create a new parameter for fraction latent person
