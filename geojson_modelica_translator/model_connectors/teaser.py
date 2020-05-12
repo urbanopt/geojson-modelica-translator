@@ -261,7 +261,8 @@ class TeaserConnector(model_connector_base):
                 # create a new Boolean parameter to evaluate the persons latent loads.
                 mofile.add_parameter(
                     'Boolean', 'use_moisture_balance', assigned_value=use_moisture_balance,
-                    string_comment='If true, input connector QLat_flow is enabled and room air computes moisture balance.'
+                    string_comment='If true, input connector QLat_flow is enabled and room air computes'
+                                   ' moisture balance.'
                 )
                 # create a integer parameter to evaluate number of connected ports.
                 mofile.add_parameter(
