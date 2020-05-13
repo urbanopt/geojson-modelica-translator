@@ -79,3 +79,5 @@ class ETSConnector(model_connector_base):
         )
         with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
             f.write(file_data_ets)
+
+        return file_data_ets
