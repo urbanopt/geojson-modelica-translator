@@ -119,12 +119,12 @@ class GeoJsonModelicaTranslator(object):
 
         # add in Substations
         # TODO: YL, where are the substations/ETSs?
-        import geojson_modelica_translator.model_connectors.ets_template as ets_template
-        ets_class = getattr(ets_template, "ETSConnector")
-        ets_connector = ets_class(self.system_parameters)
+        # import geojson_modelica_translator.model_connectors.ets_template as ets_template
+        # ets_class = getattr(ets_template, "ETSConnector")
+        # ets_connector = ets_class(self.system_parameters)
 
-        for building in self.buildings:
-            ets_connector.to_modelica(self.scaffold, building)
+        # for building in self.buildings:
+        #    ets_connector.to_modelica(self.scaffold, building)
 
         # add in Districts
         # add in Plants
