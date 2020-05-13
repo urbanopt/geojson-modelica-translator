@@ -28,22 +28,19 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import json
+# import json
 import os
 
+from geojson_modelica_translator.model_connectors.base import \
+    Base as model_connector_base
+from geojson_modelica_translator.utils import ModelicaPath
 from jinja2 import Environment, FileSystemLoader
 
 
-class ETSTemplate:
-    """This class will template the ETS modelica model. It will be used for sizing ETS models."""
-
-    def __init__(self, system_parameters_geojson):
-        """
-        system_parameters_geojson contains the ETS with details                          ;
-        """
-        super().__init__()
-
-        self.system_parameters_geojson = system_parameters_geojson
+class ETSConnector(model_connector_base):
+    def __init__(self, system_parameters):
+        super().__init__(system_parameters)
+        """This class will template the ETS modelica model. It will be used for sizing ETS models."""
         # here comes the Jinja2 function: Environment()
         # it loads all the "*.mot" files into an environment by Jinja2
         self.template_env = Environment(
@@ -52,51 +49,33 @@ class ETSTemplate:
             )
         )
 
-    def check_ets_system_parameters(self):
-        """read detailed parameters of ETS, from an instance of system-parameters.
-        Later this maybe modified accordingly based project evolve"""
-        with open(self.system_parameters_geojson, "r") as f:
-            data = json.load(f)
-        # currently ets parameters go with building, here only default values are retrieved.
-        ets_data = data["buildings"]["default"]["ets_model_parameters"]
-        ets_paramters = ets_data["indirect_cooling"]
-        self.ets_parameters = ets_paramters
-
-        return self.ets_parameters
-
-
-"""
-    def to_modelica(self):
-
+    def to_modelica(self, scaffold, building):
         # Here come the Jinja2 function: get_template(), which reads into templated ets model.
         # CoolingIndirect.mot was manually created as a starting point, by adding stuff following Jinja2 syntax.
         # it has all the necessary parameters which need to be changed through templating.
+        # building is a dict, containing the building geojson properties,
+        # "buidling_id" is needed here within "building" dict.
+
         ets_template = self.template_env.get_template("CoolingIndirect.mot")
+        b_modelica_path = ModelicaPath(
+            f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+        )
+        ets_model_type = self.system_parameters.get_param_by_building_id(
+            building["building_id"], "ets_model"
+        )
+        ets_data = None
+        if ets_model_type == "Indirect Cooling":
+            ets_data = self.system_parameters.get_param_by_building_id(
+                building["building_id"],
+                "ets_model_parameters.indirect_cooling"
+            )
+        else:
+            raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
 
-        # TODO: Seems like the ets_data below should allow defaults from
-        #  the system parameters JSON file, correct?
-        # ets model parameters are from the schema.json file, default values only.
-        ets_data = self.check_ets_system_parameters()
-        project_name = "Building"
-        model_name = "ets_cooling_indirect_templated"
-        # Here comes the Jina2 function: render()
-        file_data = ets_template.render(project_name=project_name, model_name=model_name, ets_data=ets_data)
-
-        # write templated ETS back to modelica file , to the tests folder for Dymola test
-        path_ets_templated = os.path.join(self.directory_ets_templated, "ets_cooling_indirect_templated.mo")
-
-        if os.path.exists(path_ets_templated):
-            os.remove(path_ets_templated)
-        with open(path_ets_templated, "w") as f:
-            f.write(file_data)
-
-        # write templated ETS back to building-modelica folder for Dymola test
-        path_writtenback = os.path.join(os.path.abspath(os.path.join(__file__, "../..")) + "/modelica/")
-
-        if os.path.exists(os.path.join(path_writtenback, "ets_cooling_indirect_templated.mo")):
-            os.remove(os.path.join(path_writtenback, "ets_cooling_indirect_templated.mo"))
-        with open(os.path.join(path_writtenback, "ets_cooling_indirect_templated.mo"), "w") as f:
-            f.write(file_data)
-
-        return file_data
-"""
+        file_data_ets = ets_template.render(
+            project_name=scaffold.project_name,
+            model_name=f"B{building['building_id']}",
+            ets_data=ets_data,
+        )
+        with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
+            f.write(file_data_ets)

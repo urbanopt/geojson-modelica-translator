@@ -109,7 +109,7 @@ class GeoJsonModelicaTranslator(object):
 
         _log.info("Exporting to Modelica")
         for building in self.buildings:
-            # print("Jing2: ", building.feature.properties["type"])
+
             _log.info(f"Adding building to model connector: {mc_klass.__class__}")
 
             model_connector.add_building(building)
@@ -119,6 +119,12 @@ class GeoJsonModelicaTranslator(object):
 
         # add in Substations
         # TODO: YL, where are the substations/ETSs?
+        import geojson_modelica_translator.model_connectors.ets_template as ets_template
+        ets_class = getattr(ets_template, "ETSConnector")
+        ets_connector = ets_class(self.system_parameters)
+
+        for building in self.buildings:
+            ets_connector.to_modelica(self.scaffold, building)
 
         # add in Districts
         # add in Plants
