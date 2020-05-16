@@ -51,11 +51,8 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
 
         project_name = "time_series_ex1"
-
         if os.path.exists(os.path.join(self.output_dir, project_name)):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
 
         # load in the example geojson with a single offie building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
@@ -68,9 +65,9 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
         sys_params = SystemParameters(filename)
 
         # now test the spawn connector (independent of the larger geojson translator
-        self.timeSeries = TimeSeriesConnectorETS(sys_params)
+        self.time_series = TimeSeriesConnectorETS(sys_params)
         for b in self.gj.buildings:
-            self.timeSeries.add_building(b)
+            self.time_series.add_building(b)
 
     def test_timeSeries_init(self):
         self.assertIsNotNone(self.timeSeries)
