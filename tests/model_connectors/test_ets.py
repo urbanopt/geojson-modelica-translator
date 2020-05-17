@@ -44,10 +44,9 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 
 
 class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
-
     def setUp(self):  # the first method/member must be setUp
-        self.data_dir = os.path.join(os.path.dirname(__file__), "data/")
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output/')
+        self.data_dir = os.path.join(os.path.dirname(__file__), "data")
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
 
         project_name = "ets_test"
         if os.path.exists(os.path.join(self.output_dir, project_name)):

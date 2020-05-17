@@ -47,11 +47,8 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
 
         project_name = "spawn_single"
-
         if os.path.exists(os.path.join(self.output_dir, project_name)):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
