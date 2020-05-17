@@ -83,11 +83,17 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
 
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
+        print("\nYanfei-000: ", mr, "######\n")
+
         file_to_run = os.path.abspath(
             os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
         exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        print("\nYanfei-001: ", file_to_run, "######\n")
+        print("\nYanfei-002: ", run_path, "######\n")
+        print("\nYanfei-003: ", self.gj.scaffold.project_name, "######\n")
+        print("\nYanfei-004: ", exitcode, "######\n")
         self.assertEqual(0, exitcode)
 
         results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
