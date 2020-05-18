@@ -378,10 +378,10 @@ Engineers. (2013). Chapter 5: End User Interface. In
 </p>
 </html>", revisions="<html>
 <ul>
+<li> December 15, 2019, Yanfei Li, Templating ETS model.</li>
 <li>
 November 1, 2019, by Kathryn Hinkelman:<br/>
 First implementation. </li>
-<li> 12/15/2020, Yanfei Li, Templating ETS model.</li>
 </ul>
 </html>"));{% endraw %}
 end CoolingIndirect ;

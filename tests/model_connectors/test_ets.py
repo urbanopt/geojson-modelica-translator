@@ -71,7 +71,6 @@ class ETSModelConnectorSingleBuildingTest(unittest.TestCase):
 
     def test_ets_init(self):
         self.assertIsNotNone(self.ets)
-        print("\n Yanfei: ", self.ets.system_parameters.get_param("buildings.custom")[0]["load_model"])
         self.assertEqual(self.ets.system_parameters.get_param("buildings.custom")[0]["load_model"], "Spawn")
 
     def test_to_modelica(self):
