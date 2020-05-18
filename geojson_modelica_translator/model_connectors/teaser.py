@@ -32,6 +32,7 @@ import glob
 import os
 import shutil
 
+from tox.package import builder
 from modelica_builder.model import Model
 
 from geojson_modelica_translator.model_connectors.base import \
@@ -40,6 +41,7 @@ from geojson_modelica_translator.modelica.input_parser import (
     PackageParser
 )
 from geojson_modelica_translator.utils import ModelicaPath, copytree
+
 from teaser.project import Project
 
 
@@ -203,13 +205,23 @@ class TeaserConnector(model_connector_base):
                         "internalGains",
                         "fileName",
                         new_resource_arg,
-                        if_value=old_resource_arg)
+                        if_value=old_resource_arg
+                    )
+
+                    mofile.update_component_argument(
+                         "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
+                         "thermalZoneTwoElement"
+                         "use_moisture_balance=0",
+                         "use_moisture_balance=use_moisture_balance",
+                    )
 
                     mofile.update_component_argument(
                         "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
-                        "use_moisture_balance=use_moisture_balance",
-                        "nPorts = nPorts"
+                        "thermalZoneTwoElement",
+                        "nPorts=0",
+                        "nPorts=nPorts",
                     )
+
                 # add heat port convective heat flow.
                 mofile.insert_component(
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
