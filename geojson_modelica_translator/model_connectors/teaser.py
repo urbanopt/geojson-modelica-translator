@@ -208,18 +208,18 @@ class TeaserConnector(model_connector_base):
                         if_value=old_resource_arg
                     )
 
-                    mofile.update_component_argument(
+                    mofile.update_component_argument(self,
                          "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
                          "thermalZoneTwoElement"
                          "use_moisture_balance=0",
-                         "use_moisture_balance=use_moisture_balance",
+                         "use_moisture_balance=use_moisture_balance"
                     )
 
-                    mofile.update_component_argument(
+                    mofile.update_component_argument(self,
                         "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
                         "thermalZoneTwoElement",
                         "nPorts=0",
-                        "nPorts=nPorts",
+                        "nPorts=nPorts"
                     )
 
                 # add heat port convective heat flow.
@@ -280,7 +280,7 @@ class TeaserConnector(model_connector_base):
                 mofile.add_parameter(
                     'Integer', 'nPorts', assigned_value=nPorts,
                     string_comment='Number of fluid ports.',
-                    annotation=['connectorSizing=true']
+                    annotations=['connectorSizing=true']
                 )
                 # Set the fraction latent person in the template by simply replacing the value
                 mofile.insert_component(
@@ -312,7 +312,7 @@ class TeaserConnector(model_connector_base):
                         'displayUnit': '"degC"',
                     },
                     string_comment='Mean indoor radiation temperature',
-                    annotation=['Placement(transformation(extent={{100,-10},{120,10}})))']
+                    annotations=['Placement(transformation(extent={{100,-10},{120,10}})))']
                 )
 
                 # All existing weaDat.weaBus connections need to be updated to simply weaBus
