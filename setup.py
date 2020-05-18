@@ -83,7 +83,9 @@ if os.path.exists(save_path):
     shutil.rmtree(save_path)
 if os.path.exists(tmp_save_path):
     shutil.rmtree(tmp_save_path)
-mbl_archive_name = "issue1437_district_heating_cooling"
+# mbl_archive_name = "issue1437_district_heating_cooling"
+# Do not use the head of the issue1437 branch as Spawn E+ version doesn't work.
+mbl_archive_name = "2eb417f9ca2a9dce188988f1937bf79253daa9ff"
 r = get(f"https://github.com/lbl-srg/{repo_name}/archive/{mbl_archive_name}.zip")
 with ZipFile(BytesIO(r.content)) as zip:
     files = zip.namelist()

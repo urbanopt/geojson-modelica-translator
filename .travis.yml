@@ -19,11 +19,24 @@ env:
     - TOX_ENV=flake8
     - TOX_ENV=docs
 before_script:
-  - git clone --single-branch --branch issue1437_district_heating_cooling https://github.com/lbl-srg/modelica-buildings.git
   # Use a specific SHA of MBL as the E+ FMU seems to be causing issues in more recent commits
-  - cd modelica-buildings && git checkout 2eb417f9ca2a9dce188988f1937bf79253daa9ff
-  - export MODELICAPATH=$(pwd)/modelica-buildings
+  - |
+    git clone --single-branch --branch issue1437_district_heating_cooling https://github.com/lbl-srg/modelica-buildings.git
+    cd modelica-buildings && git checkout 2eb417f9ca2a9dce188988f1937bf79253daa9ff && cd ..
+    export MODELICAPATH=$(pwd)/modelica-buildings
+    cd $MODELICAPATH
+    echo $(git branch)
 script:
   - tox -e $TOX_ENV
 after_success:
   - coveralls
+after_failure:
+  - echo "Job Failed... Maybe these logs will help?"
+  - free -tm
+  - ls -alt /home/travis/build/urbanopt/geojson-modelica-translator
+  - echo "============================================ stdout.log ========================================="
+  - |
+    find /home/travis/build/urbanopt/geojson-modelica-translator -type f -name 'stdout.log' -print | while read filename; do
+      echo "$filename"
+      cat "$filename"
+    done
