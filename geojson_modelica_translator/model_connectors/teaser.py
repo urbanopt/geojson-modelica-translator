@@ -209,18 +209,18 @@ class TeaserConnector(model_connector_base):
                     )
 
                     mofile.update_component_argument(self,
-                         "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
-                         "thermalZoneTwoElement"
-                         "use_moisture_balance=0",
-                         "use_moisture_balance=use_moisture_balance"
-                    )
+                                                     "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
+                                                     "thermalZoneTwoElement"
+                                                     "use_moisture_balance=0",
+                                                     "use_moisture_balance=use_moisture_balance"
+                                                     )
 
                     mofile.update_component_argument(self,
-                        "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
-                        "thermalZoneTwoElement",
-                        "nPorts=0",
-                        "nPorts=nPorts"
-                    )
+                                                     "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
+                                                     "thermalZoneTwoElement",
+                                                     "nPorts=0",
+                                                     "nPorts=nPorts"
+                                                     )
 
                 # add heat port convective heat flow.
                 mofile.insert_component(
