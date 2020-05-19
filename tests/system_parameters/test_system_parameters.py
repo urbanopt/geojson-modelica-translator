@@ -105,7 +105,8 @@ class SystemParametersTest(unittest.TestCase):
             }
         }
         sp = SystemParameters.loadd(data)
-        value = sp.get_param("buildings.default.load_model_parameters.rc.order")
+        # $.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename
+        value = sp.get_param("$.buildings.default.load_model_parameters.rc.order")
         self.assertEqual(value, 4)
 
         value = sp.get_param("buildings.default.load_model")
@@ -126,16 +127,18 @@ class SystemParametersTest(unittest.TestCase):
     def test_get_param_with_default(self):
         data = {"buildings": {"default": {"load_model": "Spawn"}}}
         sp = SystemParameters.loadd(data)
+        # this path doesn't exist, but there is a default
         value = sp.get_param(
             "buildings.default.load_model_parameters.rc.order", default=2
         )
-        self.assertEqual(value, 2)
+        self.assertEqual(2, value)
 
         value = sp.get_param("not.a.real.path", default=2)
-        self.assertEqual(value, 2)
+        self.assertEqual(2, value)
 
     def test_get_param_with_building_id_defaults(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
+        print(filename)
         sdp = SystemParameters(filename)
 
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
