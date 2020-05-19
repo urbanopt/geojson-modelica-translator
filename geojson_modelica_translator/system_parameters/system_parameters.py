@@ -109,61 +109,62 @@ class SystemParameters(object):
     #     specificed in the custom block then that will be used, otherwise the default value will be replaced"""
     #     pass
 
-    def get_default(self, path, default=None):
-        """
-        Return either the default in the system parameter file, or the specified default.
+    def get_default(self, jsonpath, default=None):
+        """Return either the default in the system parameter file, or the specified default.
 
-        :param path: string, raw path to what parameter was being requested
+        :param jsonpath: string, raw jsonpath to what parameter was being requested
         :param default: variant, default value
         :return: value
         """
-        schema_default = self.get_param(path, impute_default=False)
+        schema_default = self.get_param(jsonpath, impute_default=False)
         return schema_default or default
 
-    def get_param(self, path, data=None, default=None, impute_default=True):
-        """
-        return the parameter(s) from the path. This is a recursive function. If the default is not specified,
-        then will attempt to read the default from the "default" section of the file. If there is no default
-        there, then it will use the value specified as the argument. It is not recommended to use the argument
-        default as those values will not be configurable. Argument-based defaults should be used sparingly.
-
-        TODO: Replace the path string with JSONPath as we expect to only read these values
+    def get_param(self, jsonpath, data=None, default=None, impute_default=True):
+        """Return the parameter(s) from a jsonpath. If the default is not specified, then will attempt to read the
+        default from the "default" section of the file. If there is no default there, then it will use the value
+        specified as the argument. It is not recommended to use the argument default as those values will not be
+        configurable. Argument-based defaults should be used sparingly.
 
         :param path: string, period delimited path of the data to retrieve
         :param data: dict, (optional) the data to parse
         :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
+        if jsonpath is None or jsonpath == "":
+            return None
+
         # If this is the first entry into the method, then set the data to the
-        if data is None:
-            data = self.data
+        data = data or self.data
+        matches = parse(jsonpath).find(data)
 
-        paths = path.split(".")
-        check_path = paths.pop(0)
+        default_value = default
+        if impute_default:
+            default_value = self.get_default(jsonpath, default)
 
-        if check_path == "":
-            # no path passed
-            return default
-        else:
-            value = data.get(check_path, None)
-            if value is None:
-                if impute_default:
-                    return self.get_default(path, default)
-                else:
-                    return default
-
-            if len(paths) == 0:
-                return value
+        results = []
+        for index, match in enumerate(matches):
+            # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
+            if match.value is None:
+                results.append(default_value)
             else:
-                return self.get_param(".".join(paths), data=value, default=default)
+                results.append(match.value)
 
-    def get_param_by_building_id(self, building_id, path, default=None):
+        if len(results) == 1:
+            # If only one value, then return that value and not a list of values
+            results = results[0]
+        elif len(results) == 0:
+            return default_value
+
+        # otherwise return the list of values
+        return results
+
+    def get_param_by_building_id(self, building_id, jsonpath, default=None):
         """
         return a parameter for a specific building_id. This is similar to get_param but allows the user
         to constrain the data based on the building id.
 
         :param building_id: string, id of the building to look up in the custom section of the system parameters
-        :param path: string, period delimited path of the data to retrieve
+        :param jsonpath: string, jsonpath formatted string to return
         :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
@@ -172,12 +173,12 @@ class SystemParameters(object):
         # dict from the system parameter file.
         # Grab first the default data block, then find the path in the default data block.
         # "building.default" might need to reconsider, as it is fixed for flake8 currently.
-        default_data = self.get_param("buildings.default", impute_default=False)
-        schema_default = self.get_param(path, default_data, impute_default=False)
+        default_data = self.get_param("$.buildings.default", impute_default=False)
+        schema_default = self.get_param(jsonpath, default_data, impute_default=False)
         default = schema_default or default
         for b in self.data.get("buildings", {}).get("custom", {}):
             if b.get("geojson_id", None) == building_id:
-                return self.get_param(path, b, default=default)
+                return self.get_param(jsonpath, b, default=default)
         else:
             # if there is no matching building_id, then return the default data.
             # This may come back to bite us. If the user mistypes the building id, then they may not
