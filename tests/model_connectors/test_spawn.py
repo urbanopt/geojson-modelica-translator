@@ -47,11 +47,8 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
 
         project_name = "spawn_single"
-
         if os.path.exists(os.path.join(self.output_dir, project_name)):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
@@ -83,6 +80,7 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
 
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
+
         file_to_run = os.path.abspath(
             os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
         )

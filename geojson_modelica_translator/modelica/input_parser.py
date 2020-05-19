@@ -406,8 +406,8 @@ class InputParser(object):
         str += f"model {self.model['name']}\n"
         str += f"{self.model['comment']}\n\n"
         for o in self.model["objects"]:
-            for l in o:
-                str += l
+            for lx in o:
+                str += lx
         str += "equation\n"
         for c in self.connections:
             str += c

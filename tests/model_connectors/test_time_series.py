@@ -49,10 +49,6 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-
-        os.makedirs(self.output_dir)
 
         project_name = "time_series_ex1"
         if os.path.exists(os.path.join(self.output_dir, project_name)):
@@ -70,7 +66,6 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
 
         # now test the spawn connector (independent of the larger geojson translator
         self.time_series = TimeSeriesConnector(sys_params)
-
         for b in self.gj.buildings:
             self.time_series.add_building(b)
 
