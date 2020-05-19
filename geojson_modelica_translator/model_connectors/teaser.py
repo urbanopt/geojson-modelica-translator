@@ -32,7 +32,6 @@ import glob
 import os
 import shutil
 
-from tox.package import builder
 from modelica_builder.model import Model
 
 from geojson_modelica_translator.model_connectors.base import \
