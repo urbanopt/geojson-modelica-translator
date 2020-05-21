@@ -25,8 +25,8 @@ currently you need python3 and pip3 to install/build the packages. (add python3 
 .. code-block:: bash
 
     pip install -r requirements.txt
-    # or pip install .
     python setup.py build
+    **Follow first 3 major bullets in Running Simulations below
     python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
@@ -91,14 +91,14 @@ Running Simulations
 Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
 will automatically run the models without having to follow the steps below.
 
-* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions.
-* Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
-* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1437_district_heating_cooling
-    * **Make sure you have git-lfs installed**. You may need to checkout out the library again after install lfs.
-    * Please make sure you are in the issue1437_district_heating_cooling branch.
-    * Mac: `brew install git-lfs; git lfs install`
-    * Ubuntu: `sudo apt install git-lfs; git lfs install`
-* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
+* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
+* Clone https://github.com/lbl-srg/modelica-buildings/
+    * Move insde the modelica-buildings repo you just checked out
+    * Pull the correct branch & SHA with: `git checkout 2eb417f9ca2a9dce188988f1937bf79253daa9ff`
+    * Install git-lfs
+        * Mac: `brew install git-lfs; git lfs install`
+        * Ubuntu: `sudo apt install git-lfs; git lfs install`
+* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/github/modelica-buildings).
 * Example simulation:
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
     * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
