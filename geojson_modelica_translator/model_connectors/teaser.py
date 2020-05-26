@@ -32,15 +32,11 @@ import glob
 import os
 import shutil
 
-from modelica_builder.model import Model
-
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
-from geojson_modelica_translator.modelica.input_parser import (
-    PackageParser
-)
+from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, copytree
-
+from modelica_builder.model import Model
 from teaser.project import Project
 
 
@@ -77,34 +73,40 @@ class TeaserConnector(model_connector_base):
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
-        documentation on building types is here: """
+        documentation on building types is here (look into the python files):
+
+            https://github.com/RWTH-EBC/TEASER/tree/development/teaser/logic/archetypebuildings/bmvbs
+        """
+
+        # Also look at using JSON as the input: https://github.com/RWTH-EBC/TEASER/blob/master/teaser/examples/examplefiles/ASHRAE140_600.json  # noqa
         mapping = {
+            # Single Family is not configured right now.
             "Single-Family": "SingleFamilyDwelling",
-            "Office": "office"
+            "Office": "office",
+            "Laboratory": "institute8",
+            "Education": "institute",
+            "Inpatient health care": "institute8",
+            "Outpatient health care": "institute4",
+            "Nursing": "institute4",
+            "Service": "institute4",
+            "Retail other than mall": "office",
+            "Strip shopping mall": "office",
+            "Enclosed mall": "office",
+            "Food sales": "institute4",
+            "Food service": "institute4",
         }
-        # "Single-Family",
+
+        # Other types to map!
         #         "Multifamily (2 to 4 units)",
         #         "Multifamily (5 or more units)",
         #         "Mobile Home",
         #         "Vacant",
-        #         "Office",
-        #         "Laboratory",
         #         "Nonrefrigerated warehouse",
-        #         "Food sales",
         #         "Public order and safety",
-        #         "Outpatient health care",
         #         "Refrigerated warehouse",
         #         "Religious worship",
         #         "Public assembly",
-        #         "Education",
-        #         "Food service",
-        #         "Inpatient health care",
-        #         "Nursing",
         #         "Lodging",
-        #         "Strip shopping mall",
-        #         "Enclosed mall",
-        #         "Retail other than mall",
-        #         "Service",
         #         "Mixed use",
         #         "Uncovered Parking",
         #         "Covered Parking"
@@ -112,7 +114,7 @@ class TeaserConnector(model_connector_base):
             return mapping[building_type]
         else:
             # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
-            return "office"
+            raise Exception(f"Building type of {building_type} not defined in GeoJSON to TEASER mappings")
 
     def to_modelica(self, scaffold, keep_original_models=False):
         """

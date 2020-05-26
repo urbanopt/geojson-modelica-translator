@@ -62,6 +62,22 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         for b in self.gj.buildings:
             self.teaser.add_building(b)
 
+    def test_building_types(self):
+        sys_params = SystemParameters()
+        tc = TeaserConnector(sys_params)
+        self.assertEqual('institute8', tc.lookup_building_type('Laboratory'))
+        self.assertEqual('institute', tc.lookup_building_type('Education'))
+        self.assertEqual('office', tc.lookup_building_type('Office'))
+
+    def test_undefined_building_type(self):
+        sys_params = SystemParameters()
+        tc = TeaserConnector(sys_params)
+
+        with self.assertRaises(Exception) as exc:
+            tc.lookup_building_type('Undefined Building Type')
+        self.assertEqual("Building type of Undefined Building Type not defined in GeoJSON to TEASER mappings",
+                         str(exc.exception))
+
     def test_teaser_rc_default(self):
         """Should result in TEASER models with two element RC models"""
         project_name = 'teaser_rc_default'
@@ -87,10 +103,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         building_paths = [
             os.path.join(self.gj.scaffold.loads_path.files_dir, b.dirname) for b in self.gj.buildings
         ]
-        path_checks = [
-            f"{os.path.sep.join(r)}.mo"
-            for r in itertools.product(building_paths, model_names)
-        ]
+        path_checks = [f"{os.path.sep.join(r)}.mo" for r in itertools.product(building_paths, model_names)]
 
         for p in path_checks:
             self.assertTrue(os.path.exists(p), f"Path not found {p}")

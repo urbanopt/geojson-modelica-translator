@@ -132,7 +132,7 @@
         "id": "5a7229e737f4de77124f946d",
         "type": "Building",
         "geometryType": "Rectangle",
-        "name": "Multi-Family",
+        "name": "School",
         "footprint_area": 8612,
         "footprint_perimeter": 372,
         "project_id": "5a6b8adf37f4de7f94020084",
@@ -145,7 +145,7 @@
         "building_status": "Proposed",
         "include_in_energy_analysis": true,
         "year_built": 2010,
-        "building_type": "Multifamily (5 or more units)"
+        "building_type": "Education"
       }
     },
     {
