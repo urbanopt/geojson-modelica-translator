@@ -56,7 +56,6 @@ class TeaserConnector(model_connector_base):
         # note-2(Yanfei): there is a n1eed to clean the building/district geojson file, before making into modelica
         if mapper is None:
             number_stories = urbanopt_building.feature.properties["number_of_stories"]
-            # print("Jing: ", urbanopt_building.feature.properties.keys())
             number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             self.buildings.append(
                 {
@@ -113,7 +112,6 @@ class TeaserConnector(model_connector_base):
         if building_type in mapping.keys():
             return mapping[building_type]
         else:
-            # TODO: define these mappings 'office', 'institute', 'institute4', institute8'
             raise Exception(f"Building type of {building_type} not defined in GeoJSON to TEASER mappings")
 
     def to_modelica(self, scaffold, keep_original_models=False):
@@ -226,12 +224,9 @@ class TeaserConnector(model_connector_base):
                 # updating path to internal loads
                 for s in string_replace_list:
                     new_file_path = s[1]
-                    new_resource_arg = f'''Modelica.Utilities.Files.loadResource(
-          "modelica://{new_file_path}")'''
-
+                    new_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{new_file_path}")'''
                     old_file_path = s[0]
-                    old_resource_arg = f'''Modelica.Utilities.Files.loadResource(
-          "modelica://{old_file_path}")'''
+                    old_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{old_file_path}")'''
 
                     mofile.update_component_argument(
                         "Modelica.Blocks.Sources.CombiTimeTable",
@@ -241,26 +236,12 @@ class TeaserConnector(model_connector_base):
                         if_value=old_resource_arg
                     )
 
-                    mofile.update_component_argument(self,
-                                                     "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
-                                                     "thermalZoneTwoElement"
-                                                     "use_moisture_balance=0",
-                                                     "use_moisture_balance=use_moisture_balance"
-                                                     )
-
-                    mofile.update_component_argument(self,
-                                                     "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
-                                                     "thermalZoneTwoElement",
-                                                     "nPorts=0",
-                                                     "nPorts=nPorts"
-                                                     )
-
                 # add heat port convective heat flow.
                 mofile.insert_component(
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
                     annotations=[
                         "Placement(transformation(extent={{-10,90},{10,110}}), "
-                        + "iconTransformation(extent={{-10,90},{10,110}}))"
+                        "iconTransformation(extent={{-10,90},{10,110}}))"
                     ]
                 )
                 # add heat port radiative heat flow.
@@ -269,7 +250,7 @@ class TeaserConnector(model_connector_base):
                     string_comment='Heat port for radiative heat flow.',
                     annotations=[
                         "Placement(transformation(extent={{30,-110},{50,-90}}, "
-                        + "iconTransformation(extent={{40,-112},{60,-92}}))"
+                        "iconTransformation(extent={{40,-112},{60,-92}})))"
                     ]
                 )
                 # add fluid ports for the indoor air volume.
@@ -277,12 +258,12 @@ class TeaserConnector(model_connector_base):
                     "Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b", "ports[nPorts]",
                     string_comment='Auxiliary fluid inlets and outlets to indoor air volume.',
                     arguments={
-                        'redeclare each final package Medium': 'Modelica.Media.Air.DryAirNasa'
+                        'redeclare each final package Medium': 'Buildings.Media.Air'
                     },
                     annotations=[
-                        "Placement(transformation(extent={{-30, -8}, {30, 8}},origin={0, -100}),"
-                        + "iconTransformation(extent={{-23.25, -7.25}, {23.25, 7.25}},"
-                        + " origin={-0.75, -98.75}))"
+                        "Placement(transformation(extent={{-30, -8}, {30, 8}},origin={0, -100}), "
+                        "iconTransformation(extent={{-23.25, -7.25}, {23.25, 7.25}},"
+                        "origin={-0.75, -98.75}))"
                     ]
                 )
 
@@ -294,24 +275,27 @@ class TeaserConnector(model_connector_base):
                     "buildings.default.load_model_parameters.rc.use_moisture_balance", default='false'
                 )
 
-                nPorts = self.system_parameters.get_param(
+                n_ports = self.system_parameters.get_param(
                     "buildings.default.load_model_parameters.rc.nPorts", default=0
                 )
 
                 # create a new parameter for fraction latent person
                 mofile.add_parameter(
-                    'Real', 'fraLat', assigned_value=fraction_latent_person,
+                    'Real', 'fraLat',
+                    assigned_value=fraction_latent_person,
                     string_comment='Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.'
                 )
                 # create a new Boolean parameter to evaluate the persons latent loads.
                 mofile.add_parameter(
-                    'Boolean', 'use_moisture_balance', assigned_value=use_moisture_balance,
+                    'Boolean', 'use_moisture_balance',
+                    assigned_value=use_moisture_balance,
                     string_comment='If true, input connector QLat_flow is enabled and room air computes'
                                    ' moisture balance.'
                 )
                 # create a integer parameter to evaluate number of connected ports.
                 mofile.add_parameter(
-                    'Integer', 'nPorts', assigned_value=nPorts,
+                    'Integer', 'nPorts',
+                    assigned_value=n_ports,
                     string_comment='Number of fluid ports.',
                     annotations=['connectorSizing=true']
                 )
@@ -319,8 +303,9 @@ class TeaserConnector(model_connector_base):
                 mofile.insert_component(
                     'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
                     arguments={
-                        'y': 'internalGains.y[2]*fraLat'' if use_moisture_balance',
+                        'y': 'internalGains.y[2]*fraLat',
                     },
+                    conditional='if use_moisture_balance',
                     string_comment='Latent person loads',
                     annotations=['Placement(transformation(extent={{-80,-60},{-60,-40}}))']
                 )
@@ -334,7 +319,7 @@ class TeaserConnector(model_connector_base):
                         'displayUnit': '"degC"',
                     },
                     string_comment='Room air temperature',
-                    annotations=['Placement(transformation(extent={{100,38},{120,58}})));']
+                    annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
                 )
                 # add TRad output
                 mofile.insert_component(
@@ -345,7 +330,7 @@ class TeaserConnector(model_connector_base):
                         'displayUnit': '"degC"',
                     },
                     string_comment='Mean indoor radiation temperature',
-                    annotations=['Placement(transformation(extent={{100,-10},{120,10}})))']
+                    annotations=['Placement(transformation(extent={{100,-10},{120,10}}))']
                 )
 
                 # All existing weaDat.weaBus connections need to be updated to simply weaBus
@@ -358,19 +343,38 @@ class TeaserConnector(model_connector_base):
                 rc_order = self.system_parameters.get_param(
                     "buildings.default.load_model_parameters.rc.order", default=2
                 )
+                thermal_zone_name = None
                 thermal_zone_type = None
                 if rc_order == 1:
-                    thermal_zone_type = 'thermalZoneOneElement'
+                    thermal_zone_type = 'OneElement'
+                    thermal_zone_name = 'thermalZoneOneElement'
                 elif rc_order == 2:
-                    thermal_zone_type = 'thermalZoneTwoElements'
+                    thermal_zone_type = 'TwoElements'
+                    thermal_zone_name = 'thermalZoneTwoElements'
                 elif rc_order == 3:
-                    thermal_zone_type = 'thermalZoneThreeElements'
+                    thermal_zone_type = 'ThreeElements'
+                    thermal_zone_name = 'thermalZoneThreeElements'
                 elif rc_order == 4:
-                    thermal_zone_type = 'thermalZoneFourElements'
+                    thermal_zone_type = 'FourElements'
+                    thermal_zone_name = 'thermalZoneFourElements'
 
-                if thermal_zone_type is not None:
+                if thermal_zone_name is not None and thermal_zone_type is not None:
+                    mofile.update_component_argument(
+                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
+                        thermal_zone_name,
+                        "use_moisture_balance=0",
+                        "use_moisture_balance=use_moisture_balance"
+                    )
+
+                    mofile.update_component_argument(
+                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
+                        thermal_zone_name,
+                        "nPorts=0",
+                        "nPorts=nPorts"
+                    )
+
                     mofile.add_connect(
-                        'port_a', f'{thermal_zone_type}.intGainsConv',
+                        'port_a', f'{thermal_zone_name}.intGainsConv',
                         annotations=[
                             'Line(points={{0,100},{96,100},{96,20},{92,20}}, '
                             + 'color={191,0,0})'
@@ -378,18 +382,18 @@ class TeaserConnector(model_connector_base):
                     )
 
                     mofile.add_connect(
-                        f'{thermal_zone_type}.TAir', 'TAir',
+                        f'{thermal_zone_name}.TAir', 'TAir',
                         annotations=[
                             'Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
                     )
                     mofile.add_connect(
-                        f'{thermal_zone_type}.TRad', 'TRad',
+                        f'{thermal_zone_name}.TRad', 'TRad',
                         annotations=[
                             'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})']
                     )
 
                     mofile.add_connect(
-                        f'{thermal_zone_type}.QLat_flow', 'perLatLoa.y',
+                        f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
                         annotations=[
                             'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, '
                             + 'color={0, 0,127})'
@@ -397,14 +401,14 @@ class TeaserConnector(model_connector_base):
                     )
 
                     mofile.add_connect(
-                        f'{thermal_zone_type}.intGainsRad', 'port_b',
+                        f'{thermal_zone_name}.intGainsRad', 'port_b',
                         annotations=[
                             'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, '
                             + 'color={191, 0, 0})'
                         ]
                     )
                     mofile.add_connect(
-                        f'{thermal_zone_type}.ports', 'ports',
+                        f'{thermal_zone_name}.ports', 'ports',
                         annotations=[
                             'Line(points={{83, -1.95}, {83, -84}, {0, -84}, {0, -100}},'
                             + 'color={0, 127, 255})'
@@ -443,3 +447,10 @@ class TeaserConnector(model_connector_base):
             within=f"{scaffold.project_name}"
         )
         package.save()
+
+        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
+        # do it here for now to aid in testing.
+        pp = PackageParser.new_from_template(
+            scaffold.project_path, scaffold.project_name, ["Loads"]
+        )
+        pp.save()
