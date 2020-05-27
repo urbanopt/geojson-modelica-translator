@@ -30,11 +30,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import itertools
 import os
+from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
 from geojson_modelica_translator.model_connectors.teaser import TeaserConnector
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -91,6 +93,16 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         with open(check_file) as f:
             self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.TwoElements' in f.read())
 
+        # make sure the model can run using the ModelicaRunner class - this is broke for some reason
+        mr = ModelicaRunner()
+
+        file_to_run = os.path.abspath(
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
+        )
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        self.assertEqual(0, exitcode)
+
     def test_teaser_rc_4(self):
         """Models should be 4 element RC models"""
         project_name = 'teaser_rc_4'
@@ -125,17 +137,11 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
 
         # make sure the model can run using the ModelicaRunner class - this is broke for some reason
-        # mr = ModelicaRunner()
-        #
-        # file_to_run = os.path.abspath(
-        #     os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'Office.mo'),
-        # )
-        # run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        # exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
-        # self.assertEqual(0, exitcode)
+        mr = ModelicaRunner()
 
-        # results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
-        # self.assertTrue(os.path.join(results_path, 'stdout.log'))
-        # self.assertTrue(
-        #     os.path.join(results_path, 'spawn_single_Loads_B5a6b99ec37f4de7f94020090_CouplingETS_SpawnBuilding.fmu')
-        # )
+        file_to_run = os.path.abspath(
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'Office.mo'),
+        )
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        self.assertEqual(0, exitcode)

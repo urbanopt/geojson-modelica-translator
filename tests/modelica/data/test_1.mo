@@ -25,7 +25,7 @@ model B5a6b99ec37f4de7f94020090_Floor
     annotation (Placement(transformation(extent={{6,54},{26,74}})));
   Buildings.ThermalZones.ReducedOrder.RC.TwoElements
   thermalZoneTwoElements(
-    redeclare package Medium = Modelica.Media.Air.DryAirNasa,
+    redeclare package Medium = Buildings.Media.Air,
     VAir=3261.7921338576007,
     alphaExt=2.0490178828959134,
     alphaWin=2.7000000000000006,
@@ -85,7 +85,7 @@ model B5a6b99ec37f4de7f94020090_Floor
     annotation (Placement(
     transformation(extent={{-100,-10},{-66,22}}),iconTransformation(
     extent={{-70,-12},{-50,8}})));
-  Modelica.Blocks.Sources.Constant alphaWall(k=25.0*1400.34914915219)
+  Modelica.Blocks.Sources.Constant hConWall(k=25.0*1400.34914915219)
     "Outdoor coefficient of heat transfer for walls"
     annotation (Placement(
     transformation(
@@ -245,7 +245,7 @@ equation
     color={191,0,0}));
   connect(thermalConductorWall.fluid, prescribedTemperature.port)
     annotation (Line(points={{26,1},{24,1},{24,0},{20,0}}, color={191,0,0}));
-  connect(alphaWall.y, thermalConductorWall.Gc)
+  connect(hConWall.y, thermalConductorWall.Gc)
     annotation (Line(points={{30,-11.6},{30,-4},{31,-4}}, color={0,0,127}));
   connect(alphaWin.y, thermalConductorWin.Gc)
     annotation (Line(points={{32,33.6},{32,26},{33,26}}, color={0,0,127}));
