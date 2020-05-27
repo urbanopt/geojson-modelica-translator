@@ -215,14 +215,23 @@ class SpawnConnectorETS(model_connector_base):
                 with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_SpawnBuilding.mos"), "w") as f:
                     f.write(file_data)
 
-                file_data = spawn_ets_coupling_template.render(
+                # file_data = spawn_ets_coupling_template.render(
+                #     project_name=scaffold.project_name,
+                #     model_name=f"B{building['building_id']}",
+                #     data=template_data,
+                # )
+                # with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo")),
+                #           "w") as f:
+                #     f.write(file_data)
+
+                self.run_template(
+                    spawn_ets_coupling_template,
+                    # time_series_building_template,
+                    os.path.join(b_modelica_path.files_dir, "building.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data,
+                    data=template_data
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo")),
-                          "w") as f:
-                    f.write(file_data)
 
                 # Copy the required modelica files
                 for f in self.required_mo_files:
