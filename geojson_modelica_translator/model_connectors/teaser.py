@@ -201,7 +201,7 @@ class TeaserConnector(model_connector_base):
                 string_replace_list.append(
                     (
                         f"Project/B{b}/B{b}_Models/{os.path.basename(f)}",
-                        f"Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}",
+                        f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}",
                     )
                 )
 
