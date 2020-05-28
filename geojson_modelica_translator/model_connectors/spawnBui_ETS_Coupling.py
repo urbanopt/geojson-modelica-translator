@@ -227,7 +227,7 @@ class SpawnConnectorETS(model_connector_base):
                 self.run_template(
                     spawn_ets_coupling_template,
                     # time_series_building_template,
-                    os.path.join(b_modelica_path.files_dir, "building.mo"),
+                    os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data
