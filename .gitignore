@@ -97,10 +97,7 @@ ENV/
 # Test outputs
 tests/output
 tests/output_ets
-tests/modelica/output
-tests/model_connectors/output
-tests/tests_13buildings_modelica/
-tests/tests_13buildings_rc4/
+tests/*/output
 /geojson_modelica_translator/modelica/buildingslibrary/
 # TODO: this file shoud not be writtent out, but it is... fix this eventually
 /geojson_modelica_translator/modelica/ets_cooling_indirect_templated.mo
