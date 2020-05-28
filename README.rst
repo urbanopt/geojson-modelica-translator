@@ -26,7 +26,7 @@ currently you need python3 and pip3 to install/build the packages. (add python3 
 
     pip install -r requirements.txt
     python setup.py build
-    **Follow first 3 major bullets in Running Simulations below
+    **Follow first 3 major bullets in Running Simulations below**
     python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
