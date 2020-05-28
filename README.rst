@@ -98,7 +98,7 @@ will automatically run the models without having to follow the steps below.
     * Install git-lfs
         * Mac: `brew install git-lfs; git lfs install`
         * Ubuntu: `sudo apt install git-lfs; git lfs install`
-* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/github/modelica-buildings).
+* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Example simulation:
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
     * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
