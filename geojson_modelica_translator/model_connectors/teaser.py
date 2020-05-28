@@ -362,15 +362,15 @@ class TeaserConnector(model_connector_base):
                     mofile.update_component_argument(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
-                        "use_moisture_balance=0",
-                        "use_moisture_balance=use_moisture_balance"
+                        "use_moisture_balance",
+                        "use_moisture_balance"
                     )
 
                     mofile.update_component_argument(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
-                        "nPorts=0",
-                        "nPorts=nPorts"
+                        "nPorts",
+                        "nPorts"
                     )
 
                     mofile.add_connect(
