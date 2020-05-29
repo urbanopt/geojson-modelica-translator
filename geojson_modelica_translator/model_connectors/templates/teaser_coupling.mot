@@ -70,6 +70,11 @@ equation
   connect(sinChilWat.ports[1], bui.ports_b[2]) annotation (Line(points={{120,-60},
           {70,-60},{70,-35.3333},{60,-35.3333}}, color={0,127,255}));
   annotation (
+{% endraw %}
+   __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunCouplingETS_TEASERBuilding.mos"
+          "Simulate and plot"),
+          experiment(StopTime=31532400,
+                     Tolerance=1e-06),
   Documentation(info="<html>
 <p>
 This example illustrates the use of
@@ -104,14 +109,5 @@ February 21, 2020, by Antoine Gautier:<br/>
 First implementation.
 </li>
 </ul>
-</html>"),
-  Diagram(
-    coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},{160,60}})),
-    {% endraw %}
-    __Dymola_Commands(file=
-        "Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/CouplingRCZ6.mos"
-        "Simulate and plot"),
-    experiment(
-      StopTime=604800,
-      Tolerance=1e-06));
+</html>"));
 end coupling;
