@@ -47,7 +47,7 @@ class PackageParser(object):
         :param path: string, path to where the package.mo and package.order reside.
         """
         self.path = path
-        self.order_data = None
+        self.order_data = None  # This is stored as a string for now.
         self.package_data = None
         self.load()
 
@@ -78,7 +78,6 @@ class PackageParser(object):
 
         klass.package_data = template.render(within=within, name=name, order=order)
         klass.order_data = "\n".join(order)
-        klass.order_data += "\n"  # trailing line
         return klass
 
     def load(self):
@@ -104,6 +103,7 @@ class PackageParser(object):
 
         with open(os.path.join(os.path.join(self.path, "package.order")), "w") as f:
             f.write(self.order_data)
+            f.write("\n")
 
     @property
     def order(self):
@@ -112,7 +112,10 @@ class PackageParser(object):
 
         :return: list, list of the loaded models in the package.order file
         """
-        return self.order_data.split("\n")
+        data = self.order_data.split("\n")
+        if "" in data:
+            data.remove("")
+        return data
 
     def rename_model(self, old_model, new_model):
         """
@@ -122,6 +125,17 @@ class PackageParser(object):
         :param new_model: string, new name
         """
         self.order_data = self.order_data.replace(old_model, new_model)
+
+    def add_model(self, new_model_name, insert_at=-1):
+        """Insert a new model into the package> Note that the order_data is stored as a string right now,
+        so there is a bit of a hack to get this to work correctly.
+
+        :param new_model_name: string, name of the new model to add to the package order.
+        :param insert_at: int, location to insert package, if 0 at beginning, -1 at end
+        """
+        data = self.order_data.split("\n")
+        data.insert(insert_at, new_model_name)
+        self.order_data = "\n".join(data)
 
 
 class InputParser(object):
