@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
   "Building model with heating and cooling loads provided as time series"
-extends PartialBuilding(
+  extends PartialBuilding(
     redeclare package Medium = MediumW,
     have_fan=false,
     have_eleHea=false,
@@ -130,22 +130,22 @@ extends PartialBuilding(
 {% endraw %}
 {% raw %}
 equation
- if have_heaLoa then
-  connect(disFloHea.port_b, secHeaRet[1]) annotation (Line(points={{140,-70},{240,
+  if have_heaLoa then
+    connect(disFloHea.port_b, secHeaRet[1]) annotation (Line(points={{140,-70},{240,
           -70},{240,32},{300,32}}, color={0,127,255}));
-  connect(disFloHea.port_a, secHeaSup[1]) annotation (Line(points={{120,-70},{-242,
+    connect(disFloHea.port_a, secHeaSup[1]) annotation (Line(points={{120,-70},{-242,
           -70},{-242,32},{-300,32}}, color={0,127,255}));
- end if;
-if have_cooLoa then
-  connect(disFloCoo.port_b, secCooRet[1]) annotation (Line(points={{140,-110},{252,
+  end if;
+  if have_cooLoa then
+    connect(disFloCoo.port_b, secCooRet[1]) annotation (Line(points={{140,-110},{252,
           -110},{252,-30},{300,-30}}, color={0,127,255}));
-  connect(disFloCoo.port_a, secCooSup[1]) annotation (Line(points={{120,-110},{-280,
+    connect(disFloCoo.port_a, secCooSup[1]) annotation (Line(points={{120,-110},{-280,
           -110},{-280,-30},{-300,-30}}, color={0,127,255}));
- end if;
+  end if;
   connect(terUniHea.port_bHeaWat, disFloHea.ports_a1[1]) annotation (Line(
         points={{90,-32.3333},{90,-32},{146,-32},{146,-64},{140,-64}}, color={0,
           127,255}));
-  connect(disFloHea.ports_b1[1],terUniHea. port_aHeaWat) annotation (Line(
+  connect(disFloHea.ports_b1[1],terUniHea.port_aHeaWat) annotation (Line(
         points={{120,-64},{64,-64},{64,-32.3333},{70,-32.3333}}, color={0,127,255}));
   connect(terUniHea.mReqHeaWat_flow, disFloHea.mReq_flow[1]) annotation (Line(
         points={{90.8333,-27.3333},{92,-27.3333},{92,-28},{100,-28},{100,-74},{119,
@@ -198,8 +198,8 @@ if have_cooLoa then
     </p>
    </html>", revisions="<html>
    <ul><li>
-   Aoril 8, 2020: Nicholas Long<br/>
-   Updated implemention and modified the documentation to handle template needed for GeoJSON to Modelica.
+   April 8, 2020: Nicholas Long<br/>
+   Updated implementation and modified the documentation to handle template needed for GeoJSON to Modelica.
    </li>
    <li>
    February 21, 2020, by Antoine Gautier:<br/>

@@ -86,10 +86,6 @@ class TimeSeriesConnectorETS(model_connector_base):
         building_names = []
         try:
             for building in self.buildings:
-                # create timeSeries building and save to the correct directory
-                print(f"Creating timeSeries for building: {building['building_id']}")
-
-                # Path for building data
                 building_names.append(f"B{building['building_id']}")
                 b_modelica_path = ModelicaPath(
                     f"B{building['building_id']}", scaffold.loads_path.files_dir, True
@@ -110,16 +106,15 @@ class TimeSeriesConnectorETS(model_connector_base):
                     }
                 }
 
-        # copy over the resource files for this building
                 if os.path.exists(template_data["time_series"]["filepath"]):
-
                     new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
                     os.makedirs(os.path.dirname(new_file), exist_ok=True)
                     shutil.copy(template_data["time_series"]["filepath"], new_file)
                 else:
                     raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
-                    # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
-                    # Run the templating
+
+                # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
+                # Run the templating
                 file_data = timeSeries_building_template.render(
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
@@ -172,6 +167,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo")),
                           "w") as f:
                     f.write(file_data)
+
                 # Copy the required modelica files
                 for f in self.required_mo_files:
                     shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
@@ -189,6 +185,7 @@ class TimeSeriesConnectorETS(model_connector_base):
 
             * Add a Loads project
             * Add a project level project
+            * Add the PartialBuilding to the package order (this is temporary until PartialBuilding is updated in MBL)
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :param building_names: list, names of the buildings that need to be cleaned up after export
@@ -198,7 +195,7 @@ class TimeSeriesConnectorETS(model_connector_base):
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
                 b_modelica_path, b,
-                ["building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
+                ["PartialBuilding", "building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
