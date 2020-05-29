@@ -41,7 +41,7 @@ from modelica_builder.model import Model
 from teaser.project import Project
 
 
-class TeaserConnector(model_connector_base):
+class TeaserConnectorETS(model_connector_base):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
 
@@ -200,6 +200,8 @@ class TeaserConnector(model_connector_base):
         """
 
         teaser_building = self.template_env.get_template("teaser_building.mot")
+        teaser_ets_coupling = self.template_env.get_template("teaser_coupling.mot")
+        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
 
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
@@ -215,10 +217,6 @@ class TeaserConnector(model_connector_base):
                 os.path.join(scaffold.loads_path.files_dir, f"Project/B{b}/B{b}_Models"),
                 b_modelica_path.files_dir,
             )
-
-            # copy over the required mo files (don't forget to add these to the package later.
-            for f in self.required_mo_files:
-                shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
 
             # read in the package to apply the changes as they other files are processed
             # TODO: these should be linked, so a rename method should act across the model and the package.order
@@ -487,10 +485,41 @@ class TeaserConnector(model_connector_base):
                 data=template_data
             )
 
-            # add the building to the package order
+            ets_model_type = self.system_parameters.get_param_by_building_id(
+                f"B{b}", "ets_model"
+            )
+
+            ets_data = None
+            if ets_model_type == "Indirect Cooling":
+                ets_data = self.system_parameters.get_param_by_building_id(
+                    f"B{b}",
+                    "ets_model_parameters.indirect_cooling"
+                )
+            else:
+                raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+
+            self.run_template(
+                cooling_indirect_template,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")),
+                project_name=scaffold.project_name,
+                model_name=f"B{b}",
+                data=template_data,
+                ets_data=ets_data,
+            )
+
+            self.run_template(
+                teaser_ets_coupling,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
+                project_name=scaffold.project_name,
+                model_name=f"B{b}"
+            )
+
+            # copy over the required mo files and add the other models to the package order
             for f in self.required_mo_files:
+                shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
+            package.add_model('coupling')
 
             # save the updated package.mo and package.order in the Loads.B{} folder
             new_package = PackageParser.new_from_template(

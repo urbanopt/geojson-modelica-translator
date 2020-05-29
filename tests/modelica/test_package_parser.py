@@ -34,6 +34,7 @@ import unittest
 
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 
+
 class PackageParserTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
@@ -68,7 +69,7 @@ class PackageParserTest(unittest.TestCase):
 
         # Read in the package
         package = PackageParser(self.output_dir)
-        self.assertListEqual(package.order, ["model_x", "model_y"] )
+        self.assertListEqual(package.order, ["model_x", "model_y"])
 
     def test_rename_model(self):
         package = PackageParser.new_from_template(
@@ -90,8 +91,3 @@ class PackageParserTest(unittest.TestCase):
         package.add_model('model_alpha', 0)
         self.assertEqual(len(package.order), 4)
         self.assertListEqual(['model_alpha', 'model_beta', 'model_delta', 'model_gamma'], package.order)
-
-
-
-
-
