@@ -34,7 +34,7 @@ from pathlib import Path
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.teaser_ets import (
+from geojson_modelica_translator.model_connectors.teaser_ets_coupling import (
     TeaserConnectorETS
 )
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
@@ -78,11 +78,10 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         with open(check_file) as f:
             self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.FourElements' in f.read())
 
-        # make sure the model can run using the ModelicaRunner class - this is broke for some reason
         mr = ModelicaRunner()
 
         file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling_ets.mo'),
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
         exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)

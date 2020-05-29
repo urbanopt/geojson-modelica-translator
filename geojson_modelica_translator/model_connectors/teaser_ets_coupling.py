@@ -200,7 +200,7 @@ class TeaserConnectorETS(model_connector_base):
         """
 
         teaser_building = self.template_env.get_template("teaser_building.mot")
-        teaser_ets_coupling = self.template_env.get_template("teaser_coupling.mot")
+        teaser_ets_coupling = self.template_env.get_template("teaser_coupling_ets.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         run_coupling_template = self.template_env.get_template("RunCouplingETS_TEASERBuilding.most")
 
@@ -510,7 +510,7 @@ class TeaserConnectorETS(model_connector_base):
 
             self.run_template(
                 teaser_ets_coupling,
-                os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
+                os.path.join(os.path.join(b_modelica_path.files_dir, "coupling_ets.mo")),
                 project_name=scaffold.project_name,
                 model_name=f"B{b}"
             )
@@ -519,13 +519,13 @@ class TeaserConnectorETS(model_connector_base):
                 scaffold.project_name,
                 scaffold.loads_path.files_relative_dir,
                 f"B{b}",
-                "coupling").replace(os.path.sep, '.')
+                "coupling_ets").replace(os.path.sep, '.')
 
             self.run_template(
                 run_coupling_template,
                 os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_TEASERBuilding.mos")),
                 full_model_name=full_model_name,
-                model_name="CouplingETS_TEASERBuilding",
+                model_name="coupling_ets",
             )
 
             # copy over the required mo files and add the other models to the package order
@@ -534,7 +534,7 @@ class TeaserConnectorETS(model_connector_base):
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
             package.add_model('CoolingIndirect')
-            package.add_model('coupling')
+            package.add_model('coupling_ets')
 
             # save the updated package.mo and package.order in the Loads.B{} folder
             new_package = PackageParser.new_from_template(

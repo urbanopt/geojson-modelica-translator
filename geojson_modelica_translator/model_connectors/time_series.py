@@ -81,7 +81,7 @@ class TimeSeriesConnector(model_connector_base):
 
         time_series_coupling_template = self.template_env.get_template("time_series_coupling.mot")
         time_series_building_template = self.template_env.get_template("time_series_building.mot")
-        time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.mos")
+        time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -136,7 +136,7 @@ class TimeSeriesConnector(model_connector_base):
 
                 self.run_template(
                     time_series_mos_template,
-                    os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos"),
+                    os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.most"),
                     full_model_name=os.path.join(
                         scaffold.project_name,
                         scaffold.loads_path.files_relative_dir,
