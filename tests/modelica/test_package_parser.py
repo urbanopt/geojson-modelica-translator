@@ -90,4 +90,4 @@ class PackageParserTest(unittest.TestCase):
         package.add_model('model_delta')
         package.add_model('model_alpha', 0)
         self.assertEqual(len(package.order), 4)
-        self.assertListEqual(['model_alpha', 'model_beta', 'model_delta', 'model_gamma'], package.order)
+        self.assertListEqual(['model_alpha', 'model_beta', 'model_gamma', 'model_delta'], package.order)

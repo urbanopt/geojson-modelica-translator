@@ -134,7 +134,10 @@ class PackageParser(object):
         :param insert_at: int, location to insert package, if 0 at beginning, -1 at end
         """
         data = self.order_data.split("\n")
-        data.insert(insert_at, new_model_name)
+        if insert_at == -1:
+            data.append(new_model_name)
+        else:
+            data.insert(insert_at, new_model_name)
         self.order_data = "\n".join(data)
 
 
