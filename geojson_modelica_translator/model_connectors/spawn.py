@@ -166,15 +166,6 @@ class SpawnConnector(model_connector_base):
                 raise Exception(
                     f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
 
-            # Run the templating
-            # file_data = spawn_building_template.render(
-            #     project_name=scaffold.project_name,
-            #     model_name=f"B{building['building_id']}",
-            #     data=template_data,
-            # )
-            # with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
-            #     f.write(file_data)
-
             self.run_template(
                     spawn_building_template,
                     os.path.join(b_modelica_path.files_dir, "building.mo"),
@@ -192,14 +183,6 @@ class SpawnConnector(model_connector_base):
             file_data = spawn_mos_template.render(full_model_name=full_model_name)
             with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunSpawnBuilding.mos")), "w") as f:
                 f.write(file_data)
-
-            # file_data = spawn_coupling_template.render(
-            #     project_name=scaffold.project_name,
-            #     model_name=f"B{building['building_id']}",
-            #     data=template_data,
-            # )
-            # with open(os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")), "w") as f:
-            #     f.write(file_data)
 
             self.run_template(
                     spawn_coupling_template,
