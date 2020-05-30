@@ -105,7 +105,8 @@ class SystemParametersTest(unittest.TestCase):
             }
         }
         sp = SystemParameters.loadd(data)
-        value = sp.get_param("buildings.default.load_model_parameters.rc.order")
+        # $.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename
+        value = sp.get_param("$.buildings.default.load_model_parameters.rc.order")
         self.assertEqual(value, 4)
 
         value = sp.get_param("buildings.default.load_model")
@@ -126,17 +127,68 @@ class SystemParametersTest(unittest.TestCase):
     def test_get_param_with_default(self):
         data = {"buildings": {"default": {"load_model": "Spawn"}}}
         sp = SystemParameters.loadd(data)
+        # this path doesn't exist, but there is a default
         value = sp.get_param(
             "buildings.default.load_model_parameters.rc.order", default=2
         )
-        self.assertEqual(value, 2)
+        self.assertEqual(2, value)
 
         value = sp.get_param("not.a.real.path", default=2)
-        self.assertEqual(value, 2)
+        self.assertEqual(2, value)
 
-    def test_get_param_with_building_id(self):
+    def test_get_param_with_building_id_defaults(self):
+        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        print(filename)
+        sdp = SystemParameters(filename)
+
+        # ensure the defaults are respected. abcd1234 has NO metamodel defined
+        value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None")
+        self.assertEqual("None", value)
+
+        # grab the schema default
+        value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
+        self.assertEqual("Indirect Cooling", value)
+        value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
+        self.assertEqual({'indirect_cooling':
+                          {"q_flow_nominal": 8000,
+                           "eta_efficiency": 0.666,
+                           "nominal_flow_district": 0.666,
+                           "nominal_flow_building": 0.666,
+                           "pressure_drop_valve": 888,
+                           "pressure_drop_hx_secondary": 999,
+                           "pressure_drop_hx_primary": 999,
+                           "supply_water_temperature_district": 5,
+                           "supply_water_temperature_building": 7}}, value)
+
+        # respect the passed default value
+        value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
+        self.assertEqual(24815, value)
+
+    def test_get_param_with_none_buildign_id(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
 
-        value = sdp.get_param_by_building_id("abcd1234", "ets.system")
-        self.assertEqual(value, "Booster Heater")
+        value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
+        self.assertEqual("Indirect Cooling", value)
+        value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
+        self.assertEqual({'indirect_cooling':
+                          {"q_flow_nominal": 8000,
+                           "eta_efficiency": 0.666,
+                           "nominal_flow_district": 0.666,
+                           "nominal_flow_building": 0.666,
+                           "pressure_drop_valve": 888,
+                           "pressure_drop_hx_secondary": 999,
+                           "pressure_drop_hx_primary": 999,
+                           "supply_water_temperature_district": 5,
+                           "supply_water_temperature_building": 7}
+                          }, value)
+
+    # def test_get_param_with_building_id_merge_defaults(self):
+    #     """This feature has not been implemented. Is this something we want?"""
+    #     filename = os.path.join(self.data_dir, 'system_params_1.json')
+    #     sdp = SystemParameters(filename)
+    #
+    #     # merge in the building defaults
+    #     value = sdp.get_param_by_building_id("building_merge_defaults", "ets_model_parameters.indirect_cooling")
+    #     result = {'Q_Flow_Nominal': 10000, 'Eta_Efficiency': 0.99, "SWT_District": 15}
+    #     self.assertEqual(result, value)

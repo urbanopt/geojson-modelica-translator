@@ -36,6 +36,15 @@
             ]
           }
         }
+      },
+      {
+        "geojson_id": "5a6b99ec37f4de7f94021950",
+        "load_model": "ROM/RC",
+        "load_model_parameters": {
+          "rc": {
+            "order": 3
+          }
+        }
       }
     ]
   }

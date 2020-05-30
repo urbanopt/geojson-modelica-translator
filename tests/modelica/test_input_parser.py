@@ -183,3 +183,21 @@ class InputParserTest(unittest.TestCase):
         index, c = f2.find_connect('weaDat.weaBus', 'weaBus')
         # the connection should no longer exist
         self.assertIsNone(index)
+
+    def test_modelica_parameter(self):
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_9.mo")
+        f1 = InputParser(filename)
+        f1.add_parameter('Real', 'aVarNam', 0.8, "A description where aVarName is 0.8")
+        f1.add_parameter('String', 'aVarNamStr', 'A-string-value', "A description string A-string-value")
+        f1.save_as(new_filename)
+
+        # just read the file and ensure that the string exists
+        test_strs = [
+            'parameter String aVarNamStr="A-string-value" "A description string A-string-value";',
+            'parameter Real aVarNam=0.8 "A description where aVarName is 0.8";'
+        ]
+        with open(new_filename) as f:
+            file_data = f.read()
+            for test_str in test_strs:
+                self.assertIn(test_str, file_data)

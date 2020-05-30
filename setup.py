@@ -58,7 +58,11 @@ setup(
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
     cmdclass={"update_schemas": UpdateSchemas, "update_licenses": UpdateLicenses},
-    install_requires=["geojson==2.4.1", "jsonschema==3.0.1", "requests==2.22.0"],
+    install_requires=[
+        "geojson==2.5.0",
+        "jsonschema==3.2.0",
+        "requests==2.22.0"
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -79,7 +83,9 @@ if os.path.exists(save_path):
     shutil.rmtree(save_path)
 if os.path.exists(tmp_save_path):
     shutil.rmtree(tmp_save_path)
-mbl_archive_name = "issue1437_district_heating_cooling"
+# mbl_archive_name = "issue1437_district_heating_cooling"
+# Do not use the head of the issue1437 branch as Spawn E+ version doesn't work.
+mbl_archive_name = "2eb417f9ca2a9dce188988f1937bf79253daa9ff"
 r = get(f"https://github.com/lbl-srg/{repo_name}/archive/{mbl_archive_name}.zip")
 with ZipFile(BytesIO(r.content)) as zip:
     files = zip.namelist()

@@ -28,56 +28,35 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import json
 import os
+import shutil
+from unittest import TestCase
 
-from jsonschema.validators import _LATEST_VERSION as LatestValidator
+
+class GMTTestCase(TestCase):
+    def setUp(self):
+        # extend as needed to run these methods for all inherited test cases
+        pass
+
+    def tearDown(self):
+        # extend as needed to run these methods for all inherited test cases
+        pass
 
 
-class Schemas(object):
-    """
-    Class to hold the various schemas
-    """
+class TestCaseBase(GMTTestCase):
+    """Base Test Case Class to handle generic configurations"""
 
-    def __init__(self):
-        """Load in the schemas"""
-        self.schemas = {
-            "building": None,
-            "district_system": None,
-            "electrical_connector": None,
-            "electrical_junction": None,
-            "region": None,
-            "site": None,
-            "thermal_connector": None,
-            "thermal_junction": None,
-        }
-
-        for s in self.schemas.keys():
-            path = os.path.join(
-                os.path.dirname(__file__), "data/schemas/%s_properties.json" % s
-            )
-            with open(path, "r") as f:
-                self.schemas[s] = json.load(f)
-
-    def retrieve(self, name):
-        """name of the schema to retrieve"""
-        if self.schemas.get(name):
-            return self.schemas[name]
-        else:
-            raise Exception("Schema for %s does not exist" % name)
-
-    def validate(self, name, instance):
+    def set_up(self, root_folder, project_name):
         """
-        Validate an instance against a loaded schema
 
-        :param name: str, name of the schema to validate against
-        :param instance: dict, instance to validate
+        :param root_folder: Folder where the test is to run. This is also the path where the input data are located.
+        :param project_name: Name of the project folder to create.
         :return:
         """
-        results = []
-        s = self.retrieve(name)
-        v = LatestValidator(s)
-        for error in sorted(v.iter_errors(instance), key=str):
-            results.append(error.message)
+        self.data_dir = os.path.join(root_folder, 'data')
+        self.output_dir = os.path.join(root_folder, 'output')
 
-        return results
+        if os.path.exists(os.path.join(self.output_dir, project_name)):
+            shutil.rmtree(os.path.join(self.output_dir, project_name))
+
+        return self.data_dir, self.output_dir

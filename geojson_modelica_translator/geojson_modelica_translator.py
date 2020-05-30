@@ -107,17 +107,18 @@ class GeoJsonModelicaTranslator(object):
         """
         self.scaffold_directory(save_dir, project_name)
 
-        # TODO: Create a map to load the required model_connectors
-        import geojson_modelica_translator.model_connectors.teaser
-        import geojson_modelica_translator.model_connectors.spawn
-        mc_klass = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
+        # import all of the potential model connectors
+        import geojson_modelica_translator.model_connectors.teaser  # noqa
+        import geojson_modelica_translator.model_connectors.spawn  # noqa
+        import geojson_modelica_translator.model_connectors.time_series  # noqa
+        class_ = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
 
-        model_connector = mc_klass(self.system_parameters)
+        model_connector = class_(self.system_parameters)
 
         _log.info("Exporting to Modelica")
         for building in self.buildings:
-            # print("Jing2: ", building.feature.properties["type"])
-            _log.info(f"Adding building to model connector: {mc_klass.__class__}")
+            # TODO: determine the load model and set it appropriately
+            _log.info(f"Adding building to model connector: {class_.__class__}")
 
             model_connector.add_building(building)
 
@@ -125,7 +126,15 @@ class GeoJsonModelicaTranslator(object):
             model_connector.to_modelica(self.scaffold, keep_original_models=False)
 
         # add in Substations
+        # NL: Presently the ETS models are included in the model_connectors. That may need to be revisited.
+
         # TODO: YL, where are the substations/ETSs?
+        # import geojson_modelica_translator.model_connectors.ets_template as ets_template
+        # ets_class = getattr(ets_template, "ETSConnector")
+        # ets_connector = ets_class(self.system_parameters)
+
+        # for building in self.buildings:
+        #    ets_connector.to_modelica(self.scaffold, building)
 
         # add in Districts
         # add in Plants
