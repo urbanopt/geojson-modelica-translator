@@ -34,13 +34,10 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
-# from geojson_modelica_translator.model_connectors.ets_template import (
-#    ETSTemplate
+# from geojson_modelica_translator.model_connectors.rc_ets_template import (
+#    RCETSConnector
 # )
-from geojson_modelica_translator.model_connectors.rc_ets_template import (
-    RCETSTemplate
-)
-from geojson_modelica_translator.model_connectors.rc_template import RCTemplate
+# from geojson_modelica_translator.model_connectors.rc_template import RCTemplate
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 
@@ -129,6 +126,9 @@ class GeoJsonModelicaTranslator(object):
         # NL: Presently the ETS models are included in the model_connectors. That may need to be revisited.
 
         # TODO: YL, where are the substations/ETSs?
+        # YL: I tried to include the ets here, but it destroyed many building-only tests
+        # instead i put it independently: rc_ets_template.py and test_rc_ets.py
+
         # import geojson_modelica_translator.model_connectors.ets_template as ets_template
         # ets_class = getattr(ets_template, "ETSConnector")
         # ets_connector = ets_class(self.system_parameters)
@@ -146,18 +146,3 @@ class GeoJsonModelicaTranslator(object):
         # TODO: BuildingModelClass
         # TODO: mapper class
         # TODO: lookup tables / data sets
-
-    def connect_complete_rc_ets(self, rc_dir, rc_type):
-        """connect the compelete building model and ETS model"""
-        if not os.path.exists(rc_dir):
-            raise Exception('Hey, the RC models were not generated complete yet!!!')
-        for file in os.listdir(rc_dir):
-            if file.startswith("B") and "package" not in file:
-                """assemble those generated rc models into a complete building model, plus add air-terminal,
-                and water-distribution
-                """
-                rc = RCTemplate(file)
-                rc.assemble_rc_water_distribution_and_air_terminal(rc_type)
-                # then we connect them
-                rc_and_ets = RCETSTemplate(file)
-                rc_and_ets.connect_rc_ets(rc_type)

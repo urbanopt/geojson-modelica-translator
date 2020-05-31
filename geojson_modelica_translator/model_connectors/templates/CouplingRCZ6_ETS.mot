@@ -1,7 +1,7 @@
 
-within {{project_name}}.Loads.{{load_name}};
+within {{project_name}}.Loads.{{model_name}};
 
-model {{rc_ets_model_name}}
+model CouplingRCZ6_ETS
   {% raw %}
   "Example illustrating the coupling of a building model to heating water and chilled water loops"
   extends Modelica.Icons.Example;
@@ -100,7 +100,7 @@ model {{rc_ets_model_name}}
   {% endraw %}
 
 
-    EnergyTransferStations.{{ets_name}}                            coo(
+    {{ets_name}}                            coo(
     {% raw %}
     redeclare package Medium = Medium1,
     m1_flow_nominal=m1_flow_nominal,
@@ -275,4 +275,4 @@ First implementation.
 {% endraw %}
 
 
-end {{rc_ets_model_name}};
+end CouplingRCZ6_ETS;

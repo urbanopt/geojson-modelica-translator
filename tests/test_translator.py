@@ -243,14 +243,3 @@ class GeoJSONUrbanOptExampleFileTranslatorTest(unittest.TestCase):
                 path = os.path.join(gj.scaffold.loads_path.files_dir, "Resources", "Data",
                                     b.dirname, f"{resource_name}.txt")
                 self.assertTrue(os.path.exists(path), f"Path not found: {path}")
-        # connect those generated RC with ETS
-        # because the rc-ets connection is waiting for modelica-rc models to-be-generated first
-        rc_dir = os.path.abspath("tests/output/example_geojson_13buildings/Loads/")
-        rc_type = "modelica_default"
-        GeoJsonModelicaTranslator().connect_complete_rc_ets(rc_dir, rc_type)
-
-        for file in os.listdir(rc_dir):
-            if file.startswith('B') and 'package' not in file and 'Resources' not in file:
-                for template in os.listdir(rc_dir+'/'+file):
-                    to_seek = rc_dir + '/' + file + '/CouplingRCZ6_ETS_Templated.mo'
-                    self.assertTrue(os.path.exists(to_seek), f"Path not found: {to_seek}")
