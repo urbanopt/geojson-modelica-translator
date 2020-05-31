@@ -68,9 +68,10 @@ class RCETSConnectorSingleBuildingTest(unittest.TestCase):
             self.assertTrue(os.path.exists(p), f"Path not found: {p}")
 
         # make sure the model can run using the ModelicaRunner class
-        # YL: currently the coupling-of-rc-ets is not run in doccker, because it needs dependency components
-        # from modelica-building library. I need to talk with Nick to include the whole modelica-building library to run it.
-        # But it is not allowed. It is running good if i copy out to appropriate folder in my Dymola(Windows).
+        # YL: currently the coupling-of-rc-ets is not running in doccker,
+        # because it needs dependency components from modelica-building library.
+        # I need to talk to Nick to include the whole modelica-building library to run it.
+        # It is running good if i copy out to appropriate folder within MBL in my Dymola(Windows).
 
         # mr = ModelicaRunner()
         # file_to_run = os.path.abspath(
@@ -80,7 +81,8 @@ class RCETSConnectorSingleBuildingTest(unittest.TestCase):
         # )
 
         # run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        # exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        # exitcode = mr.run_in_docker(file_to_run, run_path=run_path,
+        #                               project_name=self.gj.scaffold.project_name)
         # self.assertEqual(0, exitcode)
         # results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
         # self.assertTrue(os.path.join(results_path, 'stdout.log'))
