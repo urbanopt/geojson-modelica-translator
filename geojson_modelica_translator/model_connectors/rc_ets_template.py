@@ -22,7 +22,6 @@ class RCETSConnector(model_connector_base):
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
-
         :param urbanopt_building: an urbanopt_building
         """
 
