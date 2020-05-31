@@ -45,13 +45,12 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 )
 
 
-class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
+class SpawnModelConnectorSingleBuildingETSTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
 
         project_name = "spawn_single"
-
         if os.path.exists(os.path.join(self.output_dir, project_name)):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
@@ -85,45 +84,53 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
             )
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run, run_path=run_path)
+
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
         self.assertEqual(0, exitcode)
 
+        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))
 
-class SpawnModelConnectorTwoBuildingTest(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
 
-        project_name = "spawn_two_building"
-
-        if os.path.exists(os.path.join(self.output_dir, project_name)):
-            shutil.rmtree(os.path.join(self.output_dir, project_name))
-
-        # load in the example geojson with a single offie building
-        filename = os.path.join(self.data_dir, "spawn_geojson_ex2.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
-
-        # load system parameter data
-        filename = os.path.join(self.data_dir, "spawn_system_params_ex2.json")
-        sys_params = SystemParameters(filename)
-
-        # now test the spawn connector (independent of the larger geojson translator
-        self.spawn = SpawnConnectorETS(sys_params)
-        for b in self.gj.buildings:
-            self.spawn.add_building(b)
-
-    def test_spawn_to_modelica_and_run(self):
-        self.spawn.to_modelica(self.gj.scaffold)
-
-        # make sure the model can run using the ModelicaRunner class
-        mr = ModelicaRunner()
-        file_to_run = os.path.abspath(
-            os.path.join(
-                self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'CouplingETS_SpawnBuilding.mo'
-            )
-        )
-        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run,  run_path=run_path)
-        self.assertEqual(0, exitcode)
+# Do not run this case as it takes too long on travis.
+# class SpawnModelConnectorTwoBuildingETSTest(unittest.TestCase):
+#     def setUp(self):
+#         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+#         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
+#
+#         project_name = "spawn_two_building"
+#
+#         if os.path.exists(os.path.join(self.output_dir, project_name)):
+#             shutil.rmtree(os.path.join(self.output_dir, project_name))
+#
+#         # load in the example geojson with a single offie building
+#         filename = os.path.join(self.data_dir, "spawn_geojson_ex2.json")
+#         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+#         # use the GeoJson translator to scaffold out the directory
+#         self.gj.scaffold_directory(self.output_dir, project_name)
+#
+#         # load system parameter data
+#         filename = os.path.join(self.data_dir, "spawn_system_params_ex2.json")
+#         sys_params = SystemParameters(filename)
+#
+#         # now test the spawn connector (independent of the larger geojson translator
+#         self.spawn = SpawnConnectorETS(sys_params)
+#         for b in self.gj.buildings:
+#             self.spawn.add_building(b)
+#
+#     def test_spawn_to_modelica_and_run(self):
+#         self.spawn.to_modelica(self.gj.scaffold)
+#
+#         # make sure the model can run using the ModelicaRunner class
+#         mr = ModelicaRunner()
+#         file_to_run = os.path.abspath(
+#             os.path.join(
+#                 self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'CouplingETS_SpawnBuilding.mo'
+#             )
+#         )
+#         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+#         exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+#         self.assertEqual(0, exitcode)
+#
+#         results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+#         self.assertTrue(os.path.join(results_path, 'stdout.log'))

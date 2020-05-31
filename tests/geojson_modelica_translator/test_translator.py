@@ -28,56 +28,44 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import json
 import os
 
-from jsonschema.validators import _LATEST_VERSION as LatestValidator
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
+
+from ..base_test_case import TestCaseBase
 
 
-class Schemas(object):
-    """
-    Class to hold the various schemas
-    """
+class GeoJSONTranslatorTest(TestCaseBase):
+    def setUp(self):
+        self.project_name = 'geojson_1'
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), self.project_name)
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
 
-    def __init__(self):
-        """Load in the schemas"""
-        self.schemas = {
-            "building": None,
-            "district_system": None,
-            "electrical_connector": None,
-            "electrical_junction": None,
-            "region": None,
-            "site": None,
-            "thermal_connector": None,
-            "thermal_junction": None,
-        }
+    def test_init(self):
+        gj = GeoJSONTranslatorTest()
+        self.assertIsNotNone(gj)
 
-        for s in self.schemas.keys():
-            path = os.path.join(
-                os.path.dirname(__file__), "data/schemas/%s_properties.json" % s
-            )
-            with open(path, "r") as f:
-                self.schemas[s] = json.load(f)
+    def test_missing_geojson(self):
+        fn = "non-existent-path"
+        with self.assertRaises(Exception) as exc:
+            GeoJsonModelicaTranslator.from_geojson(fn)
+        self.assertEqual(f"GeoJSON file does not exist: {fn}", str(exc.exception))
 
-    def retrieve(self, name):
-        """name of the schema to retrieve"""
-        if self.schemas.get(name):
-            return self.schemas[name]
-        else:
-            raise Exception("Schema for %s does not exist" % name)
+    def test_translate_to_modelica(self):
+        filename = os.path.join(self.data_dir, "geojson_1.json")
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.assertEqual(len(gj.buildings), 3)
 
-    def validate(self, name, instance):
-        """
-        Validate an instance against a loaded schema
+        # system parameters
+        filename = os.path.join(self.data_dir, "system_parameters_mix_models.json")
+        sys_params = SystemParameters(filename)
+        gj.set_system_parameters(sys_params)
 
-        :param name: str, name of the schema to validate against
-        :param instance: dict, instance to validate
-        :return:
-        """
-        results = []
-        s = self.retrieve(name)
-        v = LatestValidator(s)
-        for error in sorted(v.iter_errors(instance), key=str):
-            results.append(error.message)
-
-        return results
+        gj.to_modelica(self.project_name, self.output_dir)
+        print('here')

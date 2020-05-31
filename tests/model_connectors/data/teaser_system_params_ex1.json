@@ -1,7 +1,12 @@
 {
   "buildings": {
     "default": {
-      "load_model": "time_series",
+      "load_model": "ROM/RC",
+      "load_model_parameters": {
+        "rc": {
+          "order": 4
+        }
+      },
       "ets_model": "Indirect Cooling",
       "ets_model_parameters": {
         "indirect_cooling": {
@@ -16,17 +21,6 @@
           "supply_water_temperature_building": 7
         }
       }
-    },
-    "custom": [
-      {
-        "geojson_id": "5a6b99ec37f4de7f94020090",
-        "load_model": "time_series",
-        "load_model_parameters": {
-          "time_series": {
-            "filepath": "time_series_example_data.mos"
-          }
-        }
-      }
-    ]
+    }
   }
 }
