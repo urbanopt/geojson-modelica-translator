@@ -12,9 +12,9 @@ class DistrictInfiniteSourceNBuildingsTemplate(model_connector_base):
     """This class will template a district with arbitrary number of buildings,
     connected with ets and infinite-cooling.
     """
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, nBuilding):
         super().__init__(system_parameters)
-
+        self.nBuilding = nBuilding
         # here comes the Jinja2 function: Environment()
         # it loads all the "*.mot" files into an environment by Jinja2
         self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
