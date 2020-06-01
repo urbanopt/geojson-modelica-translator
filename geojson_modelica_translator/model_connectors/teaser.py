@@ -199,7 +199,7 @@ class TeaserConnector(model_connector_base):
                     old_resource_arg = f'''Modelica.Utilities.Files.loadResource(
           "modelica://{old_file_path}")'''
 
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         "Modelica.Blocks.Sources.CombiTimeTable",
                         "internalGains",
                         "fileName",
@@ -207,14 +207,14 @@ class TeaserConnector(model_connector_base):
                         if_value=old_resource_arg
                     )
 
-                    mofile.update_component_argument(self,
+                    mofile.update_component_modification(self,
                                                      "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
                                                      "thermalZoneTwoElement"
                                                      "use_moisture_balance=0",
                                                      "use_moisture_balance=use_moisture_balance"
                                                      )
 
-                    mofile.update_component_argument(self,
+                    mofile.update_component_modification(self,
                                                      "Buildings.ThermalZones.ReducedOrder.RC.TwoElements",
                                                      "thermalZoneTwoElement",
                                                      "nPorts=0",
@@ -242,7 +242,7 @@ class TeaserConnector(model_connector_base):
                 mofile.insert_component(
                     "Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b", "ports[nPorts]",
                     string_comment='Auxiliary fluid inlets and outlets to indoor air volume.',
-                    arguments={
+                    modifications={
                         'redeclare each final package Medium': 'Modelica.Media.Air.DryAirNasa'
                     },
                     annotations=[
@@ -284,7 +284,7 @@ class TeaserConnector(model_connector_base):
                 # Set the fraction latent person in the template by simply replacing the value
                 mofile.insert_component(
                     'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
-                    arguments={
+                    modifications={
                         'y': 'internalGains.y[2]*fraLat'' if use_moisture_balance',
                     },
                     string_comment='Latent person loads',
@@ -294,7 +294,7 @@ class TeaserConnector(model_connector_base):
                 # add TAir output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
-                    arguments={
+                    modifications={
                         'quantity': '"ThermodynamicTemperature"',
                         'unit': '"K"',
                         'displayUnit': '"degC"',
@@ -305,7 +305,7 @@ class TeaserConnector(model_connector_base):
                 # add TRad output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TRad',
-                    arguments={
+                    modifications={
                         'quantity': '"ThermodynamicTemperature"',
                         'unit': '"K"',
                         'displayUnit': '"degC"',
