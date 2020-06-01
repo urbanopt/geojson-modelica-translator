@@ -171,15 +171,15 @@ class SpawnConnectorETS(model_connector_base):
                     raise Exception(
                         f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
 
-                # write a file name building.mo, CoolingIndirect.mo and CouplingETS_SpawnBuilding.mo
-                # Run the templating
-                file_data = spawn_building_template.render(
+                self.run_template(
+                    spawn_building_template,
+                    os.path.join(b_modelica_path.files_dir, "building.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data,
+                    data=template_data
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
-                    f.write(file_data)
+                # with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
+                #     f.write(file_data)
 
                 ets_model_type = self.system_parameters.get_param_by_building_id(
                     building["building_id"], "ets_model"
@@ -193,14 +193,13 @@ class SpawnConnectorETS(model_connector_base):
                 else:
                     raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
 
-                file_data = cooling_indirect_template.render(
+                self.run_template(
+                    cooling_indirect_template,
+                    os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data,
-                    ets_data=ets_data,
+                    ets_data=ets_data
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
-                    f.write(file_data)
 
                 full_model_name = os.path.join(
                     scaffold.project_name,
@@ -215,14 +214,13 @@ class SpawnConnectorETS(model_connector_base):
                 with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_SpawnBuilding.mos"), "w") as f:
                     f.write(file_data)
 
-                file_data = spawn_ets_coupling_template.render(
+                self.run_template(
+                    spawn_ets_coupling_template,
+                    os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
-                    data=template_data,
+                    data=template_data
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_SpawnBuilding.mo")),
-                          "w") as f:
-                    f.write(file_data)
 
                 # Copy the required modelica files
                 for f in self.required_mo_files:
