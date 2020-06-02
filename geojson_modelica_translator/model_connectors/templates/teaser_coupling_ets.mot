@@ -82,7 +82,7 @@ model teaser_coupling_ets
             origin={50,40})));
   Modelica.Blocks.Sources.RealExpression mHeaWatSup(y=bui.disFloHea.mReqTot_flow)
       "Heating water supply mass flow rate."
-       annotation (Placement(transformation(extent={{-80,28},{-60,48}})));
+      annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
 
   Modelica.Blocks.Sources.RealExpression secMasFloRat(
     y=bui.disFloCoo.mReqTot_flow) "Secondary loop chilled water flow rate."
