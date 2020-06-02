@@ -1,6 +1,6 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-"Example illustrating the coupling of a time series building loads to heating and chilled water loops"
+"Example illustrating the coupling of a teaser building loads to heating and chilled water loops"
 extends Modelica.Icons.Example;
 package MediumW = Buildings.Media.Water
   "Source side medium";
@@ -99,7 +99,7 @@ in a configuration with:
 </p>
 <ul>
 <li>
-space heating and cooling loads provided as time series,
+building thermal loads implementing teaser zones.
 </li>
 <li>
 secondary pumps.

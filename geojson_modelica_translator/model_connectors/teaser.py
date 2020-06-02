@@ -437,6 +437,7 @@ class TeaserConnector(model_connector_base):
                         ]
                     )
                     mofile.add_connect(
+
                         f'{thermal_zone_name}.ports', 'ports',
                         annotations=[
                             'Line(points={{83, -1.95}, {83, -84}, {0, -84}, {0, -100}}, color={0, 127, 255})'
