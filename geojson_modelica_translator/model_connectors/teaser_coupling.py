@@ -41,7 +41,7 @@ from modelica_builder.model import Model
 from teaser.project import Project
 
 
-class TeaserConnector(model_connector_base):
+class TeaserConnectorETS(model_connector_base):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
 
@@ -434,24 +434,12 @@ class TeaserConnector(model_connector_base):
                             'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})'
                         ]
                     )
-                    # Need to figure out how to add equations to ModBuild. For now put this in for each port
-                    # defined in the system parameters file. Would ideally like to add the following to an
-                    # existing mo file:
-                    #       for i in 1:nPorts loop
-                    #           connect(ports[i], thermalZoneFourElements.ports[i]) annotation (Line(
-                    #           points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}},
-                    #           color={0,127,255},
-                    #           smooth=Smooth.None));
-                    #       end for;
-                    for i in range(n_ports):
-                        mofile.add_connect(
-                            f'ports[{i+1}]', f'thermalZone{thermal_zone_type}.ports[{i+1}]',
-                            annotations=[
-                                'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
-                                'color={0, 127, 255}, '
-                                'smooth=Smooth.None)'
-                            ]
-                        )
+                    mofile.add_connect(
+                        f'{thermal_zone_name}.ports', 'ports',
+                        annotations=[
+                            'Line(points={{83, -1.95}, {83, -84}, {0, -84}, {0, -100}}, color={0, 127, 255})'
+                        ]
+                    )
 
                 # change the name of the modelica model to remove the building id, update in package too!
                 original_model_name = mofile.get_name()

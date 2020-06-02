@@ -1,22 +1,21 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-   "Building Coupling Template for TEASER"
+"Example illustrating the coupling of a teaser building loads to heating and chilled water loops"
 extends Modelica.Icons.Example;
 package MediumW = Buildings.Media.Water
   "Source side medium";
-package MediumA = Buildings.Media.Air
-   "Load side medium";
 
  building bui(
 {% raw %}
-    nPorts_bCoo=1,
-       nPorts_bHea=1,
-       nPorts_aHea=1,
-       nPorts_aCoo=1)
-   "Building with thermal loads as teaser models"
-       annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
+   nPorts_bCoo=1,
+   nPorts_bHea=1,
+   nPorts_aHea=1,
+   nPorts_aCoo=1)
+   "Building with thermal loads as TEASER zones"
+   annotation (Placement(transformation(extent={{20,40},{40,60}})));
  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
    redeclare package Medium = MediumW,
+   p=300000,
    nPorts=1)
    "Sink for heating water"
    annotation (Placement(transformation(
@@ -33,11 +32,11 @@ package MediumA = Buildings.Media.Air
        rotation=0,
        origin={130,20})));
  Modelica.Blocks.Sources.RealExpression THeaWatSup(
-   y=bui.terUniHea.T_aHeaWat_nominal)
+   y=max(bui.terUni.T_aHeaWat_nominal))
    "Heating water supply temperature"
    annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
  Modelica.Blocks.Sources.RealExpression TChiWatSup(
-   y=bui.terUniCoo.T_aChiWat_nominal)
+   y=max(bui.terUni.T_aChiWat_nominal))
    "Chilled water supply temperature"
    annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
  Buildings.Fluid.Sources.Boundary_pT supHeaWat(
@@ -56,9 +55,18 @@ package MediumA = Buildings.Media.Air
        extent={{-10,-10},{10,10}},
        rotation=0,
        origin={-50,20})));
+ Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
+  calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
+  pAtm(displayUnit="Pa") = 101339,
+  filNam=ModelicaServices.ExternalReferences.loadResource("modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"),
+  computeWetBulbTemperature=true)
+  "Weather data reader"
+  annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+      rotation=90,
+      origin={56,96})));
 {% endraw %}
 equation
-{% raw %}
+  {% raw %}
   connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-62,84},{-80,84},
            {-80,80},{-99,80}},color={0,0,127}));
   connect(TChiWatSup.y,supChiWat. T_in) annotation (Line(points={{-99,20},{-80,20},
@@ -71,6 +79,9 @@ equation
            {-10,80},{-10,44},{20,44}}, color={0,127,255}));
   connect(bui.secCooSup[1], supChiWat.ports[1]) annotation (Line(points={{20,47.0667},
            {-10,47.0667},{-10,20},{-40,20}}, color={0,127,255}));
+  connect(weaDat.weaBus, bui.weaBus) annotation (Line(
+                   points={{56,86},{36,86},{36,55.1333},{38.0333,55.1333}},
+                   color={255,204,51}));
 {% endraw %}
 
   // TODO: determine how to handle the "lines"
@@ -100,24 +111,18 @@ in a configuration with:
 </p>
 <ul>
 <li>
-building thermal loads implementing teaser zones.
+building thermal loads integrating teaser zones.
 </li>
 <li>
 secondary pumps.
 </li>
 </ul>
-<p>
-Simulation with Dymola requires minimum version 2020x and setting
-<code>Hidden.AvoidDoubleComputation=true</code>, see
-<a href=\"modelica://Buildings.ThermalZones.EnergyPlus.UsersGuide\">
-Buildings.ThermalZones.EnergyPlus.UsersGuide</a>.
-</p>
 </html>",
 revisions=
 "<html>
 <ul>
 <li>
-June 1, 2020, by Nicholas Long:<br/>
+April 8, 2020, by Nicholas Long:<br/>
 GeoJson-Modelica translator template first implementation.
 </li>
 <li>
