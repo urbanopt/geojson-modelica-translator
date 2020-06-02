@@ -68,4 +68,12 @@ class GeoJSONTranslatorTest(TestCaseBase):
         gj.set_system_parameters(sys_params)
 
         gj.to_modelica(self.project_name, self.output_dir)
-        print('here')
+
+        # verify that there are 3 buildings
+        building_paths = [
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
+        ]
+
+        for b in building_paths:
+            p_check = os.path.join(b, 'Office.mo')
+            self.assertTrue(os.path.exists(p_check), f"Path not found {p_check}")
