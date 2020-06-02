@@ -1,21 +1,22 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-"Example illustrating the coupling of a teaser building loads to heating and chilled water loops"
+   "Building Coupling Template for TEASER"
 extends Modelica.Icons.Example;
 package MediumW = Buildings.Media.Water
   "Source side medium";
+package MediumA = Buildings.Media.Air
+   "Load side medium";
 
  building bui(
 {% raw %}
-   nPorts_bCoo=1,
-   nPorts_bHea=1,
-   nPorts_aHea=1,
-   nPorts_aCoo=1)
-   "Building with thermal loads as time series input file"
-   annotation (Placement(transformation(extent={{20,40},{40,60}})));
+    nPorts_bCoo=1,
+       nPorts_bHea=1,
+       nPorts_aHea=1,
+       nPorts_aCoo=1)
+   "Building with thermal loads as teaser models"
+       annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
    redeclare package Medium = MediumW,
-   p=300000,
    nPorts=1)
    "Sink for heating water"
    annotation (Placement(transformation(
@@ -57,7 +58,7 @@ package MediumW = Buildings.Media.Water
        origin={-50,20})));
 {% endraw %}
 equation
-  {% raw %}
+{% raw %}
   connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-62,84},{-80,84},
            {-80,80},{-99,80}},color={0,0,127}));
   connect(TChiWatSup.y,supChiWat. T_in) annotation (Line(points={{-99,20},{-80,20},
@@ -105,12 +106,18 @@ building thermal loads implementing teaser zones.
 secondary pumps.
 </li>
 </ul>
+<p>
+Simulation with Dymola requires minimum version 2020x and setting
+<code>Hidden.AvoidDoubleComputation=true</code>, see
+<a href=\"modelica://Buildings.ThermalZones.EnergyPlus.UsersGuide\">
+Buildings.ThermalZones.EnergyPlus.UsersGuide</a>.
+</p>
 </html>",
 revisions=
 "<html>
 <ul>
 <li>
-April 8, 2020, by Nicholas Long:<br/>
+June 1, 2020, by Nicholas Long:<br/>
 GeoJson-Modelica translator template first implementation.
 </li>
 <li>
