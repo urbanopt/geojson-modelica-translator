@@ -5,8 +5,7 @@ model building
         redeclare package Medium = MediumW,
         have_fan=false,
         have_eleHea=false,
-        have_eleCoo=false,
-        have_weaBus=false);
+        have_eleCoo=false);
 
   package MediumW = Buildings.Media.Water
        "Source side medium";
@@ -16,6 +15,9 @@ model building
     "Number of thermal zones";
   parameter Integer facSca = 3
     "Scaling factor to be applied to on each extensive quantity";
+  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
+     "Nominal building supply and return chilled water temperature difference";
+
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     k=fill(293.15, nZon),
     y(each final unit="K", each displayUnit="degC"))
@@ -30,13 +32,11 @@ model building
     {% raw %}
     annotation (Placement(transformation(extent={{-290,190},{-270,210}})));
     {% endraw %}
-
   {% for zone in data['thermal_zones'] %}
   {{zone['model_name']}} {{zone['instance_name']}}
     annotation (Placement(transformation(extent={{zone['placement']}})));
   {% endfor %}
-
-  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(nin=2)
+  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(nin=2) if have_pum
     {% raw %}
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
     {% endraw %}
@@ -61,8 +61,8 @@ model building
   Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium = MediumW,
     m_flow_nominal=sum(terUni.mHeaWat_flow_nominal .* terUni.facSca),
-    have_pum=true,
     dp_nominal(displayUnit="Pa")=100000,
+    have_pum=have_pum, 
     nPorts_a1=nZon,
     nPorts_b1=nZon)
     "Heating water distribution system"
@@ -73,8 +73,8 @@ model building
     redeclare package Medium = MediumW,
     m_flow_nominal=sum(terUni.mChiWat_flow_nominal .* terUni.facSca),
     typDis=Buildings.Applications.DHC.Loads.Types.DistributionType.ChilledWater,
-    have_pum=true,
     dp_nominal(displayUnit="Pa")=100000,
+    have_pum=have_pum,
     nPorts_a1=nZon,
     nPorts_b1=nZon)
     "Chilled water distribution system"
@@ -83,27 +83,25 @@ model building
     {% endraw %}
 equation
   {% raw %}
-  if have_heaLoa then
-    connect(disFloHea.port_b, secHeaRet[1])
+  connect(disFloHea.port_b, secHeaRet[1])
       annotation (Line(points={{140,-70},{240,-70},{240,32},{300,32}}, color={0,127,255}));
-    connect(disFloHea.port_a, secHeaSup[1])
+  connect(disFloHea.port_a, secHeaSup[1])
       annotation (Line(points={{120,-70},{-242,-70},{-242,32},{-300,32}}, color={0,127,255}));
-    end if;
-  if have_cooLoa then
-    connect(disFloCoo.port_b, secCooRet[1])
+  connect(disFloCoo.port_b, secCooRet[1])
       annotation (Line(points={{140,-110},{252,-110},{252,-30},{300,-30}}, color={0,127,255}));
-    connect(disFloCoo.port_a, secCooSup[1])
+  connect(disFloCoo.port_a, secCooSup[1])
       annotation (Line(points={{120,-110},{-280,-110},{-280,-30},{-300,-30}}, color={0,127,255}));
-  end if;
-
-  connect(terUni.port_bHeaWat, disFloHea.ports_a1[1])
-    annotation (Line(points={{-180,-58.3333},{-100,-58.3333},{-100,-84},{-120,-84}}, color={0,127,255}));
-  connect(terUni.port_bChiWat, disFloCoo.ports_a1[1])
-    annotation (Line(points={{-180,-56.6667},{-80,-56.6667},{-80,-144},{-120,-144}}, color={0,127,255}));
-  connect(disFloHea.ports_b1[1], terUni.port_aHeaWat)
-    annotation (Line(points={{-140,-84},{-220,-84},{-220,-58.3333},{-200,-58.3333}}, color={0,127,255}));
-  connect(disFloCoo.ports_b1[1], terUni.port_aChiWat)
-    annotation (Line(points={{-140,-144},{-240,-144},{-240,-56.6667},{-200,-56.6667}}, color={0,127,255}));
+  connect(disFloHea.ports_a1, terUni.port_bHeaWat) annotation (Line(points={{-120,
+          -80.6667},{-104,-80.6667},{-104,-58.3333},{-180,-58.3333}},
+          color={0,127,255}));
+  connect(disFloHea.ports_b1, terUni.port_aHeaWat) annotation (Line(points={{-140,
+          -80.6667},{-216,-80.6667},{-216,-58.3333},{-200,-58.3333}},
+         color={0,127,255}));
+  connect(disFloCoo.ports_a1, terUni.port_bChiWat) annotation (Line(points={{-120,
+          -144},{-94,-144},{-94,-56},{-180,-56},{-180,-56.6667}}, color={0,127,255}));
+  connect(disFloCoo.ports_b1, terUni.port_aChiWat) annotation (Line(points={{-140,
+          -144},{-226,-144},{-226,-56.6667},{-200,-56.6667}},
+          color={0,127,255}));
   {% endraw %}
 
   {% for zone in data['thermal_zones'] %}
@@ -111,13 +109,13 @@ equation
       annotation (
         {% raw %}Line(points={{1,300},{0,300},{0,20},{-66,20},{-66,-10.2},{-96,-10.2}}, color={255,204,51},thickness=0.5),
         Text(string="%first",index=-1,extent={{6,3},{6,3}},horizontalAlignment=TextAlignment.Left));{% endraw %}
-  connect(terUni[{{zone['index']}}+1].heaPorCon, {{zone['instance_name']}}.port_a)
+   connect(terUni[{{zone['index']}}+1].heaPorCon, {{zone['instance_name']}}.port_a)
     {% raw %}annotation (Line(points={{-193.333,-50},{-192,-50},{-192,0},{-90,0}}, color={191,0,0}));{% endraw %}
-  connect(terUni[{{zone['index']}}+1].heaPorRad, {{zone['instance_name']}}.port_a)
-    {% raw %}annotation (Line(points={{-186.667,-50},{-90,-50},{-90,0}}, color={191,0,0}));{% endraw %}
+   connect(terUni[{{zone['index']}}+1].heaPorRad, {{zone['instance_name']}}.port_a)
+      {% raw %}annotation (Line(points={{-186.667,-50},{-90,-50},{-90,0}}, color={191,0,0}));{% endraw %}
   {% endfor %}
-
   {% raw %}
+
   connect(terUni.mReqHeaWat_flow, disFloHea.mReq_flow)
     annotation (Line(points={{-179.167,-53.3333},{-179.167,-54},{-170,-54},{-170,-94},{-141,-94}}, color={0,0,127}));
   connect(terUni.mReqChiWat_flow, disFloCoo.mReq_flow)

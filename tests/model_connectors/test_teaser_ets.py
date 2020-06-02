@@ -81,7 +81,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         mr = ModelicaRunner()
 
         file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling_ets.mo'),
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'teaser_coupling_ets.mo'),
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
         exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)

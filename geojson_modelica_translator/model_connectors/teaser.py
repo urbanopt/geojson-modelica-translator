@@ -200,6 +200,8 @@ class TeaserConnector(model_connector_base):
         """
 
         teaser_building = self.template_env.get_template("teaser_building.mot")
+        teaser_coupling = self.template_env.get_template("teaser_coupling.mot")
+        run_coupling_template = self.template_env.get_template("RunTeaserBuilding.most")
 
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
@@ -215,10 +217,6 @@ class TeaserConnector(model_connector_base):
                 os.path.join(scaffold.loads_path.files_dir, f"Project/B{b}/B{b}_Models"),
                 b_modelica_path.files_dir,
             )
-
-            # copy over the required mo files (don't forget to add these to the package later.
-            for f in self.required_mo_files:
-                shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
 
             # read in the package to apply the changes as they other files are processed
             # TODO: these should be linked, so a rename method should act across the model and the package.order
@@ -412,36 +410,43 @@ class TeaserConnector(model_connector_base):
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.TAir', 'TAir',
-                        annotations=[
-                            'Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})'
-                        ]
-                    )
-                    mofile.add_connect(
-                        f'{thermal_zone_name}.TRad', 'TRad',
-                        annotations=[
-                            'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
-                        ]
+                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
                     )
 
                     mofile.add_connect(
+                        f'{thermal_zone_name}.TRad', 'TRad',
+                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
+                    )
+                    mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
-                        annotations=[
-                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
-                        ]
+                        annotations=['Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})']
                     )
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.intGainsRad', 'port_b',
                         annotations=[
-                            'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})'
+                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
                         ]
                     )
-                    mofile.add_connect(
-                        f'{thermal_zone_name}.ports', 'ports',
-                        annotations=[
-                            'Line(points={{83, -1.95}, {83, -84}, {0, -84}, {0, -100}}, color={0, 127, 255})'
-                        ]
-                    )
+
+                    # Need to figure out how to add equations to ModBuild. For now put this in for each port
+                    # defined in the system parameters file. Would ideally like to add the following to an
+                    # existing mo file:
+                    #       for i in 1:nPorts loop
+                    #           connect(ports[i], thermalZoneFourElements.ports[i]) annotation (Line(
+                    #           points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}},
+                    #           color={0,127,255},
+                    #           smooth=Smooth.None));
+                    #       end for;
+                    for i in range(n_ports):
+                        mofile.add_connect(
+                            f'ports[{i + 1}]', f'thermalZone{thermal_zone_type}.ports[{i + 1}]',
+                            annotations=[
+                                'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
+                                'color={0, 127, 255}, '
+                                'smooth=Smooth.None)'
+                            ]
+                        )
 
                 # change the name of the modelica model to remove the building id, update in package too!
                 original_model_name = mofile.get_name()
@@ -487,10 +492,32 @@ class TeaserConnector(model_connector_base):
                 data=template_data
             )
 
-            # add the building to the package order
+            self.run_template(
+                teaser_coupling,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
+                project_name=scaffold.project_name,
+                model_name=f"B{b}"
+            )
+
+            full_model_name = os.path.join(
+                scaffold.project_name,
+                scaffold.loads_path.files_relative_dir,
+                f"B{b}",
+                "coupling").replace(os.path.sep, '.')
+
+            self.run_template(
+                run_coupling_template,
+                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunTeaserBuilding.mos")),
+                full_model_name=full_model_name,
+                model_name="coupling",
+            )
+
+            # copy over the required mo files and add the other models to the package order
             for f in self.required_mo_files:
+                shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
+            package.add_model('coupling')
 
             # save the updated package.mo and package.order in the Loads.B{} folder
             new_package = PackageParser.new_from_template(
