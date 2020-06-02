@@ -28,6 +28,7 @@ src/teaser
 src/modelica-builder
 sdist/
 var/
+src/teaser
 *.egg-info/
 .installed.cfg
 *.egg
