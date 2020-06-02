@@ -28,14 +28,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import itertools
 import os
 from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.teaser import TeaserConnector
+from geojson_modelica_translator.model_connectors.teaser_ets_coupling import (
+    TeaserConnectorETS
+)
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -60,30 +61,14 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         else:
             sys_params = SystemParameters()
 
-        self.teaser = TeaserConnector(sys_params)
+        self.teaser = TeaserConnectorETS(sys_params)
         for b in self.gj.buildings:
             self.teaser.add_building(b)
 
-    def test_building_types(self):
-        sys_params = SystemParameters()
-        tc = TeaserConnector(sys_params)
-        self.assertEqual('institute8', tc.lookup_building_type('Laboratory'))
-        self.assertEqual('institute', tc.lookup_building_type('Education'))
-        self.assertEqual('office', tc.lookup_building_type('Office'))
-
-    def test_undefined_building_type(self):
-        sys_params = SystemParameters()
-        tc = TeaserConnector(sys_params)
-
-        with self.assertRaises(Exception) as exc:
-            tc.lookup_building_type('Undefined Building Type')
-        self.assertEqual("Building type of Undefined Building Type not defined in GeoJSON to TEASER mappings",
-                         str(exc.exception))
-
-    def test_teaser_rc_default(self):
+    def test_teaser_rc_ets(self):
         """Should result in TEASER models with two element RC models"""
-        project_name = 'teaser_rc_default'
-        self.load_project(project_name, "teaser_geojson_ex1.json", None)
+        project_name = 'teaser_rc_ets_default'
+        self.load_project(project_name, "teaser_geojson_ex1.json", "teaser_system_params_ex1.json")
         self.teaser.to_modelica(self.gj.scaffold)
 
         # Check that the created file is two element
@@ -91,46 +76,13 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         self.assertTrue(os.path.exists(check_file))
 
         with open(check_file) as f:
-            self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.TwoElements' in f.read())
+            self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.FourElements' in f.read())
 
         mr = ModelicaRunner()
 
         file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'building.mo'),
+            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'teaser_coupling_ets.mo'),
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
         exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
         self.assertEqual(0, exitcode)
-
-    def test_teaser_rc_4(self):
-        """Models should be 4 element RC models"""
-        project_name = 'teaser_rc_4'
-
-        self.load_project(project_name, "teaser_geojson_ex1.json", "teaser_system_params_ex1.json")
-        self.teaser.to_modelica(self.gj.scaffold)
-
-        # setup what wze are going to check
-        model_names = ["Floor", "ICT", "Meeting", "Office", "package", "Restroom", "Storage", ]
-        building_paths = [
-            os.path.join(self.gj.scaffold.loads_path.files_dir, b.dirname) for b in self.gj.buildings
-        ]
-        path_checks = [f"{os.path.sep.join(r)}.mo" for r in itertools.product(building_paths, model_names)]
-
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p), f"Path not found {p}")
-            if os.path.basename(p) == 'package.mo':
-                continue
-
-            with open(p) as f:
-                self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.FourElements' in f.read(),
-                                "Could not find the correct RC Model Order")
-
-        # go through the generated buildings and ensure that the resources are created
-        resource_names = ["InternalGains_Floor", "InternalGains_ICT", "InternalGains_Meeting",
-                          "InternalGains_Office", "InternalGains_Restroom", "InternalGains_Storage", ]
-        for b in self.gj.buildings:
-            for resource_name in resource_names:
-                # TEASER 0.7.2 used .txt for schedule files
-                path = os.path.join(self.gj.scaffold.loads_path.files_dir, "Resources", "Data",
-                                    b.dirname, f"{resource_name}.txt")
-                self.assertTrue(os.path.exists(path), f"Path not found: {path}")

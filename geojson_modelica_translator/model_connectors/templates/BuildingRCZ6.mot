@@ -46,36 +46,36 @@ model BuildingRCZ6
 
 
   {% raw %}
-  Office office
+  GeojsonExportRC.OfficeBuilding.Office office
       annotation (Placement(transformation(extent={{-100,-20},{-80,0}})));
   {% endraw %}
 
   {% raw %}
-  Floor floor
+  GeojsonExportRC.OfficeBuilding.Floor floor
     annotation (Placement(transformation(extent={{-60,-20},{-40,0}})));
   {% endraw %}
 
 
   {% raw %}
-  Storage storage
+  GeojsonExportRC.OfficeBuilding.Storage storage
     annotation (Placement(transformation(extent={{-20,-20},{0,0}})));
   {% endraw %}
 
 
   {% raw %}
-  Meeting meeting
+  GeojsonExportRC.OfficeBuilding.Meeting meeting
     annotation (Placement(transformation(extent={{20,-20},{40,0}})));
   {% endraw %}
 
 
   {% raw  %}
-  Restroom restroom
+  GeojsonExportRC.OfficeBuilding.Restroom restroom
       annotation (Placement(transformation(extent={{60,-20},{80,0}})));
   {% endraw %}
 
 
   {% raw  %}
-  ICT iCT
+  GeojsonExportRC.OfficeBuilding.ICT iCT
       annotation (Placement(transformation(extent={{100,-20},{120,0}})));
   {% endraw %}
 

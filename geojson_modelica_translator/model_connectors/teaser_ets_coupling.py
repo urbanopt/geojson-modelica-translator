@@ -41,7 +41,7 @@ from modelica_builder.model import Model
 from teaser.project import Project
 
 
-class TeaserConnector(model_connector_base):
+class TeaserConnectorETS(model_connector_base):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
 
@@ -200,8 +200,9 @@ class TeaserConnector(model_connector_base):
         """
 
         teaser_building = self.template_env.get_template("teaser_building.mot")
-        teaser_coupling = self.template_env.get_template("teaser_coupling.mot")
-        run_coupling_template = self.template_env.get_template("RunTeaserBuilding.most")
+        teaser_ets_coupling = self.template_env.get_template("teaser_coupling_ets.mot")
+        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        run_coupling_template = self.template_env.get_template("RunCouplingETS_TEASERBuilding.most")
 
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
@@ -410,25 +411,30 @@ class TeaserConnector(model_connector_base):
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.TAir', 'TAir',
-                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
+                        annotations=[
+                            'Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})'
+                        ]
                     )
-
                     mofile.add_connect(
                         f'{thermal_zone_name}.TRad', 'TRad',
-                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
-                    )
-                    mofile.add_connect(
-                        f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
-                        annotations=['Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})']
+                        annotations=[
+                            'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
+                        ]
                     )
 
                     mofile.add_connect(
-                        f'{thermal_zone_name}.intGainsRad', 'port_b',
+                        f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
                         annotations=[
                             'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
                         ]
                     )
 
+                    mofile.add_connect(
+                        f'{thermal_zone_name}.intGainsRad', 'port_b',
+                        annotations=[
+                            'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})'
+                        ]
+                    )
                     # Need to figure out how to add equations to ModBuild. For now put this in for each port
                     # defined in the system parameters file. Would ideally like to add the following to an
                     # existing mo file:
@@ -440,7 +446,7 @@ class TeaserConnector(model_connector_base):
                     #       end for;
                     for i in range(n_ports):
                         mofile.add_connect(
-                            f'ports[{i + 1}]', f'thermalZone{thermal_zone_type}.ports[{i + 1}]',
+                            f'ports[{i+1}]', f'thermalZone{thermal_zone_type}.ports[{i+1}]',
                             annotations=[
                                 'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
                                 'color={0, 127, 255}, '
@@ -492,9 +498,31 @@ class TeaserConnector(model_connector_base):
                 data=template_data
             )
 
+            ets_model_type = self.system_parameters.get_param_by_building_id(
+                f"B{b}", "ets_model"
+            )
+
+            ets_data = None
+            if ets_model_type == "Indirect Cooling":
+                ets_data = self.system_parameters.get_param_by_building_id(
+                    f"B{b}",
+                    "ets_model_parameters.indirect_cooling"
+                )
+            else:
+                raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+
             self.run_template(
-                teaser_coupling,
-                os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
+                cooling_indirect_template,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")),
+                project_name=scaffold.project_name,
+                model_name=f"B{b}",
+                data=template_data,
+                ets_data=ets_data,
+            )
+
+            self.run_template(
+                teaser_ets_coupling,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "teaser_coupling_ets.mo")),
                 project_name=scaffold.project_name,
                 model_name=f"B{b}"
             )
@@ -503,13 +531,13 @@ class TeaserConnector(model_connector_base):
                 scaffold.project_name,
                 scaffold.loads_path.files_relative_dir,
                 f"B{b}",
-                "coupling").replace(os.path.sep, '.')
+                "teaser_coupling_ets").replace(os.path.sep, '.')
 
             self.run_template(
                 run_coupling_template,
-                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunTeaserBuilding.mos")),
+                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_TEASERBuilding.mos")),
                 full_model_name=full_model_name,
-                model_name="coupling",
+                model_name="teaser_coupling_ets",
             )
 
             # copy over the required mo files and add the other models to the package order
@@ -517,7 +545,8 @@ class TeaserConnector(model_connector_base):
                 shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
-            package.add_model('coupling')
+            package.add_model('CoolingIndirect')
+            package.add_model('teaser_coupling_ets')
 
             # save the updated package.mo and package.order in the Loads.B{} folder
             new_package = PackageParser.new_from_template(

@@ -1,6 +1,7 @@
 # Project files
 .idea
 .DS_Store
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -23,8 +24,11 @@ lib/
 !geojson_modelica_translator/modelica/lib
 lib64/
 parts/
+src/teaser
+src/modelica-builder
 sdist/
 var/
+src/teaser
 *.egg-info/
 .installed.cfg
 *.egg

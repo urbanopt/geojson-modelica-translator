@@ -2,6 +2,7 @@ import itertools
 import os
 import shutil
 import unittest
+from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -9,12 +10,10 @@ from geojson_modelica_translator.geojson_modelica_translator import (
 from geojson_modelica_translator.model_connectors.rc_ets_template import (
     RCETSConnector
 )
-# from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
-
-# from pathlib import Path
 
 
 class RCETSConnectorSingleBuildingTest(unittest.TestCase):
@@ -73,16 +72,15 @@ class RCETSConnectorSingleBuildingTest(unittest.TestCase):
         # I need to talk to Nick to include the whole modelica-building library to run it.
         # It is running good if i copy out to appropriate folder within MBL in my Dymola(Windows).
 
-        # mr = ModelicaRunner()
-        # file_to_run = os.path.abspath(
-        #     os.path.join(
-        #        self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'CouplingRCZ6_ETS.mo'
-        #    )
-        # )
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            os.path.join(
+               self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'CouplingRCZ6_ETS.mo')
+        )
 
-        # run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        # exitcode = mr.run_in_docker(file_to_run, run_path=run_path,
-        #                               project_name=self.gj.scaffold.project_name)
-        # self.assertEqual(0, exitcode)
-        # results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
-        # self.assertTrue(os.path.join(results_path, 'stdout.log'))
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path,
+                                    project_name=self.gj.scaffold.project_name)
+        self.assertEqual(0, exitcode)
+        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))
