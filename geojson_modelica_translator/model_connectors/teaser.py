@@ -410,30 +410,25 @@ class TeaserConnector(model_connector_base):
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.TAir', 'TAir',
-                        annotations=[
-                            'Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})'
-                        ]
-                    )
-                    mofile.add_connect(
-                        f'{thermal_zone_name}.TRad', 'TRad',
-                        annotations=[
-                            'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
-                        ]
+                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
                     )
 
                     mofile.add_connect(
+                        f'{thermal_zone_name}.TRad', 'TRad',
+                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
+                    )
+                    mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
-                        annotations=[
-                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
-                        ]
+                        annotations=['Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})']
                     )
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.intGainsRad', 'port_b',
                         annotations=[
-                            'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})'
+                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
                         ]
                     )
+
                     # Need to figure out how to add equations to ModBuild. For now put this in for each port
                     # defined in the system parameters file. Would ideally like to add the following to an
                     # existing mo file:
@@ -445,7 +440,7 @@ class TeaserConnector(model_connector_base):
                     #       end for;
                     for i in range(n_ports):
                         mofile.add_connect(
-                            f'ports[{i+1}]', f'thermalZone{thermal_zone_type}.ports[{i+1}]',
+                            f'ports[{i + 1}]', f'thermalZone{thermal_zone_type}.ports[{i + 1}]',
                             annotations=[
                                 'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
                                 'color={0, 127, 255}, '
