@@ -30,19 +30,18 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import itertools
 import os
+from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
 from geojson_modelica_translator.model_connectors.teaser import TeaserConnector
-# from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
 
 from ..base_test_case import TestCaseBase
-
-# from pathlib import Path
 
 
 class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
