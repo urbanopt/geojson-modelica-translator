@@ -27,8 +27,8 @@ model B5a6b99ec37f4de7f94020090_Floor
   thermalZoneTwoElements(
     redeclare package Medium = Buildings.Media.Air,
     VAir=3261.7921338576007,
-    alphaExt=2.0490178828959134,
-    alphaWin=2.7000000000000006,
+    hConExt=2.0490178828959134,
+    hConWin=2.7000000000000006,
     gWin=0.6699999999999999,
     ratioWinConRad=0.029999999999999995,
     nExt=1,
