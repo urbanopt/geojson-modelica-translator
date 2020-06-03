@@ -167,12 +167,12 @@ class SpawnConnector(model_connector_base):
                     f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
 
             self.run_template(
-                    spawn_building_template,
-                    os.path.join(b_modelica_path.files_dir, "building.mo"),
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data
-                )
+                spawn_building_template,
+                os.path.join(b_modelica_path.files_dir, "building.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data
+            )
 
             full_model_name = os.path.join(
                 scaffold.project_name,
@@ -185,12 +185,12 @@ class SpawnConnector(model_connector_base):
                 f.write(file_data)
 
             self.run_template(
-                    spawn_coupling_template,
-                    os.path.join(b_modelica_path.files_dir, "coupling.mo"),
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data
-                )
+                spawn_coupling_template,
+                os.path.join(b_modelica_path.files_dir, "coupling.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data
+            )
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, building_names)

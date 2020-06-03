@@ -133,12 +133,12 @@ connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{-2,-50},{-48,-50},{-48
  connect(pumBui.port_b, bui.secCooSup[1]) annotation (Line(points={{-60,-72},{-88,
          -72},{-88,67.0667},{0,67.0667}}, color={0,127,255}));
  connect(coo.port_a2, bui.secCooRet[1]) annotation (Line(points={{20,-56},{92,-56},{92,67},{20,67}}, color={0,127,255}));
-{% endraw %}
-{% raw %}
+
 annotation (Icon(coordinateSystem(preserveAspectRatio=false),
                            extent={{-100,-100},{100,100}}),
             Diagram(coordinateSystem(preserveAspectRatio=false),
                            extent={{-100,-100},{100,100}}),
+{% endraw %}
  __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunCouplingETS_TimeSeriesBuilding.mos"
         "Simulate and plot"),
         experiment(StopTime=31532400,
@@ -158,5 +158,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-{% endraw %}
 end CouplingETS_TimeSeriesBuilding;

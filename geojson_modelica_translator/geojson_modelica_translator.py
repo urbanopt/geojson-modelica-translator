@@ -34,7 +34,6 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 
 _log = logging.getLogger(__name__)
@@ -133,8 +132,9 @@ class GeoJsonModelicaTranslator(object):
         # add in Plants
 
         # now add in the top level package.
-        pp = PackageParser.new_from_template(self.scaffold.project_path, project_name, ["Loads"])
-        pp.save()
+        # Need to decide how to create the top level packages when running this as part of the model_connectors.
+        # pp = PackageParser.new_from_template(self.scaffold.project_path, project_name, ["Loads"])
+        # pp.save()
 
         # TODO: BuildingModelClass
         # TODO: mapper class
