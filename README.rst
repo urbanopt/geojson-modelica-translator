@@ -94,7 +94,7 @@ will automatically run the models without having to follow the steps below.
 * Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
 * Clone https://github.com/lbl-srg/modelica-buildings/
     * Move insde the modelica-buildings repo you just checked out
-    * Pull the correct branch & SHA with: `git checkout 2eb417f9ca2a9dce188988f1937bf79253daa9ff`
+    * Pull the correct branch with: `git checkout issue1437_district_heating_cooling`
     * Install git-lfs
         * Mac: `brew install git-lfs; git lfs install`
         * Ubuntu: `sudo apt install git-lfs; git lfs install`
