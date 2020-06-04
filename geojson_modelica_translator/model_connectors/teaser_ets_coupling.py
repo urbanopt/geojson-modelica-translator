@@ -259,7 +259,7 @@ class TeaserConnectorETS(model_connector_base):
                     old_file_path = s[0]
                     old_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{old_file_path}")'''
 
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         "Modelica.Blocks.Sources.CombiTimeTable",
                         "internalGains",
                         "fileName",
@@ -288,7 +288,7 @@ class TeaserConnectorETS(model_connector_base):
                 mofile.insert_component(
                     "Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b", "ports[nPorts]",
                     string_comment='Auxiliary fluid inlets and outlets to indoor air volume.',
-                    arguments={
+                    modifications={
                         'redeclare each final package Medium': 'Buildings.Media.Air'
                     },
                     annotations=[
@@ -333,7 +333,7 @@ class TeaserConnectorETS(model_connector_base):
                 # Set the fraction latent person in the template by simply replacing the value
                 mofile.insert_component(
                     'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
-                    arguments={
+                    modifications={
                         'y': 'internalGains.y[2]*fraLat',
                     },
                     conditional='if use_moisture_balance',
@@ -344,7 +344,7 @@ class TeaserConnectorETS(model_connector_base):
                 # add TAir output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
-                    arguments={
+                    modifications={
                         'quantity': '"ThermodynamicTemperature"',
                         'unit': '"K"',
                         'displayUnit': '"degC"',
@@ -355,7 +355,7 @@ class TeaserConnectorETS(model_connector_base):
                 # add TRad output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TRad',
-                    arguments={
+                    modifications={
                         'quantity': '"ThermodynamicTemperature"',
                         'unit': '"K"',
                         'displayUnit': '"degC"',
@@ -390,14 +390,14 @@ class TeaserConnectorETS(model_connector_base):
                     thermal_zone_name = 'thermalZoneFourElements'
 
                 if thermal_zone_name is not None and thermal_zone_type is not None:
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
                         "use_moisture_balance",
                         "use_moisture_balance"
                     )
 
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
                         "nPorts",
@@ -446,7 +446,7 @@ class TeaserConnectorETS(model_connector_base):
                     #       end for;
                     for i in range(n_ports):
                         mofile.add_connect(
-                            f'ports[{i+1}]', f'thermalZone{thermal_zone_type}.ports[{i+1}]',
+                            f'ports[{i + 1}]', f'thermalZone{thermal_zone_type}.ports[{i + 1}]',
                             annotations=[
                                 'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
                                 'color={0, 127, 255}, '
