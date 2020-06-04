@@ -61,7 +61,10 @@ setup(
     install_requires=[
         "geojson==2.5.0",
         "jsonschema==3.2.0",
-        "requests==2.22.0"
+        "jsonpath-ng==1.5.1",
+        "requests==2.22.0",
+        'teaser @ git+https://github.com/urbanopt/TEASER.git@rc-argument-names#egg=teaser',
+        'modelica_builder @ git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder',
     ],
     classifiers=[
         "Development Status :: 4 - Beta",
