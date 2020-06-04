@@ -269,6 +269,7 @@ class TeaserConnector(model_connector_base):
                 # add heat port convective heat flow.
                 mofile.insert_component(
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
+                    string_comment='Heat port for convective heat flow.',
                     annotations=[
                         "Placement(transformation(extent={{-10,90},{10,110}}), "
                         "iconTransformation(extent={{-10,90},{10,110}}))"
@@ -326,7 +327,7 @@ class TeaserConnector(model_connector_base):
                 mofile.add_parameter(
                     'Integer', 'nPorts',
                     assigned_value=n_ports,
-                    string_comment='Number of fluid ports.',
+                    string_comment='Number of air ports.',
                     annotations=['connectorSizing=true']
                 )
                 # Set the fraction latent person in the template by simply replacing the value
@@ -417,13 +418,12 @@ class TeaserConnector(model_connector_base):
                     )
                     mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
-                        annotations=['Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})']
+                        annotations=['Line(points={{43,4},{42,4},{42,-28},{-8,-28},{-8,-50},{-59,-50}}, color={0,0,127})']
                     )
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.intGainsRad', 'port_b',
-                        annotations=[
-                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
+                        annotations=['Line(points={{92,24},{98,24},{98,-100},{40,-100}}, color={191,0,0}))'
                         ]
                     )
 
