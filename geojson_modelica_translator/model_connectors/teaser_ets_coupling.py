@@ -288,7 +288,7 @@ class TeaserConnectorETS(model_connector_base):
                 mofile.insert_component(
                     "Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b", "ports[nPorts]",
                     string_comment='Auxiliary fluid inlets and outlets to indoor air volume.',
-                    arguments={
+                    modifications={
                         'redeclare each final package Medium': 'Buildings.Media.Air'
                     },
                     annotations=[
@@ -333,7 +333,7 @@ class TeaserConnectorETS(model_connector_base):
                 # Set the fraction latent person in the template by simply replacing the value
                 mofile.insert_component(
                     'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
-                    arguments={
+                    modifications={
                         'y': 'internalGains.y[2]*fraLat',
                     },
                     conditional='if use_moisture_balance',
@@ -344,7 +344,7 @@ class TeaserConnectorETS(model_connector_base):
                 # add TAir output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
-                    arguments={
+                    modifications={
                         'quantity': '"ThermodynamicTemperature"',
                         'unit': '"K"',
                         'displayUnit': '"degC"',
@@ -355,7 +355,7 @@ class TeaserConnectorETS(model_connector_base):
                 # add TRad output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TRad',
-                    arguments={
+                    modifications={
                         'quantity': '"ThermodynamicTemperature"',
                         'unit': '"K"',
                         'displayUnit': '"degC"',
@@ -446,7 +446,7 @@ class TeaserConnectorETS(model_connector_base):
                     #       end for;
                     for i in range(n_ports):
                         mofile.add_connect(
-                            f'ports[{i+1}]', f'thermalZone{thermal_zone_type}.ports[{i+1}]',
+                            f'ports[{i + 1}]', f'thermalZone{thermal_zone_type}.ports[{i + 1}]',
                             annotations=[
                                 'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
                                 'color={0, 127, 255}, '
