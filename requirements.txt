@@ -11,7 +11,7 @@ jsonpath-ng==1.5.1
 BuildingsPy==2.0.0
 
 # Modelica Builder package (use the local [file:] version if needed for debugging)
--e git+https://github.com/urbanopt/modelica-builder.git@feat/update_component_arguments#egg=modelica_builder
+-e git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder
 #-e file:../modelica-builder#egg=modelica-builder
 
 # Use the core teaser library. Note: if using the github checkout, then it will be saved in the ./src directory if python is system python.
