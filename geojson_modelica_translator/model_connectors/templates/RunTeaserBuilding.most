@@ -37,4 +37,3 @@ createPlot(
         grid=true,
         subPlot=2
     );
-  
