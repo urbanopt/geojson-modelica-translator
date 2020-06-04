@@ -389,14 +389,14 @@ class TeaserConnector(model_connector_base):
                     thermal_zone_name = 'thermalZoneFourElements'
 
                 if thermal_zone_name is not None and thermal_zone_type is not None:
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
                         "use_moisture_balance",
                         "use_moisture_balance"
                     )
 
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
                         "nPorts",

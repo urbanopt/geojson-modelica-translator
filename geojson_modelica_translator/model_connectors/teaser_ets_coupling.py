@@ -259,7 +259,7 @@ class TeaserConnectorETS(model_connector_base):
                     old_file_path = s[0]
                     old_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{old_file_path}")'''
 
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         "Modelica.Blocks.Sources.CombiTimeTable",
                         "internalGains",
                         "fileName",
@@ -390,14 +390,14 @@ class TeaserConnectorETS(model_connector_base):
                     thermal_zone_name = 'thermalZoneFourElements'
 
                 if thermal_zone_name is not None and thermal_zone_type is not None:
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
                         "use_moisture_balance",
                         "use_moisture_balance"
                     )
 
-                    mofile.update_component_argument(
+                    mofile.update_component_modification(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
                         "nPorts",
