@@ -14,7 +14,7 @@ BuildingsPy==2.0.0
 -e git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder
 #-e file:../modelica-builder#egg=modelica-builder
 
-# Use the core teaser library. Note: if using the github checkout, then it will be saved in the ./src directory if python is system python.
+# Use the core teaser library.
 #teaser==0.7.2
 -e git+https://github.com/urbanopt/TEASER.git@rc-argument-names#egg=teaser
 #-e git+https://github.com/RWTH-EBC/TEASER.git@0.7.2#egg=teaser
