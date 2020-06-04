@@ -62,7 +62,7 @@ model building
     redeclare package Medium = MediumW,
     m_flow_nominal=sum(terUni.mHeaWat_flow_nominal .* terUni.facSca),
     dp_nominal(displayUnit="Pa")=100000,
-    have_pum=have_pum, 
+    have_pum=have_pum,
     nPorts_a1=nZon,
     nPorts_b1=nZon)
     "Heating water distribution system"
