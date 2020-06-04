@@ -64,7 +64,7 @@ setup(
         "jsonpath-ng==1.5.1",
         "requests==2.22.0",
         'teaser @ git+https://github.com/urbanopt/TEASER.git@rc-argument-names#egg=teaser',
-        'modelica_builder @ git+https://github.com/urbanopt/modelica-builder.git@100-package-update#egg=modelica_builder',
+        'modelica_builder @ git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder',
     ],
     classifiers=[
         "Development Status :: 4 - Beta",
