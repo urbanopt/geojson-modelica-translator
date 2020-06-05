@@ -424,7 +424,7 @@ class TeaserConnector(model_connector_base):
                     mofile.add_connect(
                         f'{thermal_zone_name}.intGainsRad', 'port_b',
                         annotations=['Line(points={{92,24},{98,24},{98,-100},{40,-100}}, color={191,0,0})'
-                        ]
+                                     ]
                     )
 
                     # Need to figure out how to add equations to ModBuild. For now put this in for each port
