@@ -418,13 +418,15 @@ class TeaserConnector(model_connector_base):
                     )
                     mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
-                        annotations=['Line(points={{43,4},{42,4},{42,-28},{-8,-28},{-8,-50},{-59,-50}}, color={0,0,127})']
+                        annotations=['Line(points={{43,4},{42,4},{42,-28},{-8,-28},{-8,-50},{-59,-50}},'
+                                        'color={0,0,127})'
+                                     ]
                     )
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.intGainsRad', 'port_b',
-                        annotations=['Line(points={{92,24},{98,24},{98,-100},{40,-100}}, color={191,0,0}))'
-                        ]
+                        annotations=['Line(points={{92,24},{98,24},{98,-100},{40,-100}}, color={191,0,0})'
+                                     ]
                     )
 
                     # Need to figure out how to add equations to ModBuild. For now put this in for each port
