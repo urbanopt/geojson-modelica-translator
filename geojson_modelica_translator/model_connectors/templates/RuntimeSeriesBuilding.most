@@ -1,3 +1,5 @@
+old_hidden_avoid_double_computation=Hidden.AvoidDoubleComputation;
+Hidden.AvoidDoubleComputation=true;
 simulateModel("{{full_model_name}}",
 method="cvode",
     tolerance=1e-6,

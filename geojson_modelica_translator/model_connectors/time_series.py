@@ -81,14 +81,10 @@ class TimeSeriesConnector(model_connector_base):
 
         time_series_coupling_template = self.template_env.get_template("time_series_coupling.mot")
         time_series_building_template = self.template_env.get_template("time_series_building.mot")
-        time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.mos")
+        time_series_mos_template = self.template_env.get_template("RuntimeSeriesBuilding.most")
         building_names = []
         try:
             for building in self.buildings:
-                # create each timeSeries building and save to the correct directory
-                print(f"Creating time series coupling for building: {building['building_id']}")
-
-                # Path for building data
                 building_names.append(f"B{building['building_id']}")
                 b_modelica_path = ModelicaPath(
                     f"B{building['building_id']}", scaffold.loads_path.files_dir, True
@@ -140,7 +136,7 @@ class TimeSeriesConnector(model_connector_base):
 
                 self.run_template(
                     time_series_mos_template,
-                    os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.mos"),
+                    os.path.join(b_modelica_path.scripts_dir, "RuntimeSeriesBuilding.most"),
                     full_model_name=os.path.join(
                         scaffold.project_name,
                         scaffold.loads_path.files_relative_dir,
@@ -169,7 +165,7 @@ class TimeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "coupling"],
+                b_modelica_path, b, ["PartialBuilding", "building", "coupling"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
