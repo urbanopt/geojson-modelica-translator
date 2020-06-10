@@ -31,7 +31,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import glob
 import os
 import shutil
-from datetime import datetime
 
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
@@ -69,8 +68,6 @@ class TeaserConnector(model_connector_base):
         # note-2(Yanfei): there is a need to clean the building/district geojson file, before making into modelica
         if mapper is None:
             number_stories = urbanopt_building.feature.properties["number_of_stories"]
-            print("keys from geojson file: ", urbanopt_building.feature.properties.keys())
-            print(f"self.buildings before: {self.buildings}")
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
@@ -84,7 +81,9 @@ class TeaserConnector(model_connector_base):
             try:
                 urbanopt_building.feature.properties["year_built"]
             except KeyError:
-                urbanopt_building.feature.properties["year_built"] = datetime.now().year  # sdk defaults to current year
+                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+                # https://github.com/urbanopt/TEASER/blob/0614a11be16a8a95ef99fc8e763b737ec986013c/teaser/data/input/inputdata/TypeBuildingElements.json#L818  # noqa
+                urbanopt_building.feature.properties["year_built"] = 2015
 
             self.buildings.append(
                 {
@@ -98,10 +97,6 @@ class TeaserConnector(model_connector_base):
 
                 }
             )
-        print(f"self.buildings after: {self.buildings}")
-        variable = "year_built"
-        print(f"{variable} type: {type(self.buildings[0][variable])}")
-        print(self.buildings[0][variable])
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
