@@ -307,7 +307,7 @@ class TeaserConnector(model_connector_base):
                 )
 
                 n_ports = self.system_parameters.get_param(
-                    "buildings.default.load_model_parameters.rc.nPorts", default=0
+                    "buildings.default.load_model_parameters.rc.nPorts", default=2
                 )
 
                 # create a new parameter for fraction latent person
@@ -419,7 +419,7 @@ class TeaserConnector(model_connector_base):
                     mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
                         annotations=['Line(points={{43,4},{42,4},{42,-28},{-8,-28},{-8,-50},{-59,-50}},'
-                                        'color={0,0,127})'
+                                     'color={0,0,127})'
                                      ]
                     )
 
@@ -429,24 +429,17 @@ class TeaserConnector(model_connector_base):
                                      ]
                     )
 
-                    # Need to figure out how to add equations to ModBuild. For now put this in for each port
-                    # defined in the system parameters file. Would ideally like to add the following to an
-                    # existing mo file:
-                    #       for i in 1:nPorts loop
-                    #           connect(ports[i], thermalZoneFourElements.ports[i]) annotation (Line(
-                    #           points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}},
-                    #           color={0,127,255},
-                    #           smooth=Smooth.None));
-                    #       end for;
-                    for i in range(n_ports):
-                        mofile.add_connect(
-                            f'ports[{i + 1}]', f'thermalZone{thermal_zone_type}.ports[{i + 1}]',
-                            annotations=[
-                                'Line(points={{-18,-102},{-18,-84},{83,-84},{83,-1.95}}, '
-                                'color={0, 127, 255}, '
-                                'smooth=Smooth.None)'
-                            ]
-                        )
+                    mofile.insert_equation_for_loop(
+                        index_identifier="i",
+                        expression_raw="1:nPorts",
+                        loop_body_raw_list=[
+                            "connect(ports[i], thermalZoneFourElements.ports[i])",
+                            "\tannotation (Line(",
+                            "\tpoints={{-18,-102},{-18,-84},{83,-84},{83,-1.95}},",
+                            "\tcolor={0,127,255},",
+                            "\tsmooth=Smooth.None));",
+                        ],
+                    )
 
                 # change the name of the modelica model to remove the building id, update in package too!
                 original_model_name = mofile.get_name()
