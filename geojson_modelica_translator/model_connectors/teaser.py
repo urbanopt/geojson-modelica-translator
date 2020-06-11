@@ -307,7 +307,7 @@ class TeaserConnector(model_connector_base):
                 )
 
                 n_ports = self.system_parameters.get_param(
-                    "buildings.default.load_model_parameters.rc.nPorts", default=2
+                    "buildings.default.load_model_parameters.rc.nPorts", default=0
                 )
 
                 # create a new parameter for fraction latent person
