@@ -84,6 +84,8 @@ class TeaserConnector(model_connector_base):
                 # UO SDK defaults to current year, however TEASER only supports up to Year 2015
                 # https://github.com/urbanopt/TEASER/blob/0614a11be16a8a95ef99fc8e763b737ec986013c/teaser/data/input/inputdata/TypeBuildingElements.json#L818  # noqa
                 urbanopt_building.feature.properties["year_built"] = 2015
+            if urbanopt_building.feature.properties["year_built"] > 2015:
+                urbanopt_building.feature.properties["year_built"] = 2015
 
             self.buildings.append(
                 {
@@ -213,8 +215,8 @@ class TeaserConnector(model_connector_base):
             * Wrap the thermal zones into a single model
 
         :param project_name: string, name of the project which will be used to set the package.mo file
-        :param root_building_dir: string, where the project will be ultimately saved
         :param building_names: list, names of the buildings that need to be cleaned up after export
+        :param keep_original_models: boolean, # TODO
         :return: None
         """
 
