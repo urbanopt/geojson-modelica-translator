@@ -179,11 +179,11 @@ class SystemParameters(object):
         for b in self.data.get("buildings", {}).get("custom", {}):
             if b.get("geojson_id", None) == building_id:
                 return self.get_param(jsonpath, b, default=default)
-        else:
-            # if there is no matching building_id, then return the default data.
-            # This may come back to bite us. If the user mistypes the building id, then they may not
-            # realize that they are grabbing the default data
-            return default
+            else:
+                # if there is no matching building_id, then return the default data.
+                # This may come back to bite us. If the user mistypes the building id, then they may not
+                # realize that they are grabbing the default data
+                return default
 
     def validate(self):
         """
