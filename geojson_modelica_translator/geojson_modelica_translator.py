@@ -99,7 +99,7 @@ class GeoJsonModelicaTranslator(object):
         """
         self.scaffold_directory(save_dir, project_name)
 
-        # import all of the potential model connectors
+        # import the model connector
         if model_connector_str == "TeaserConnector":
             import geojson_modelica_translator.model_connectors.teaser as model_con  # noqa
         elif model_connector_str == "SpawnConnector":
