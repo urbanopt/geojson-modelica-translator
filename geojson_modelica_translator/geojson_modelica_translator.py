@@ -89,7 +89,7 @@ class GeoJsonModelicaTranslator(object):
         self.scaffold.create()
         return self.scaffold.project_path
 
-    def to_modelica(self, project_name, save_dir, model_connector_str="SpawnConnector"):
+    def to_modelica(self, project_name, save_dir, model_connector_str="TeaserConnector"):
         """
         Convert the data in the GeoJSON to modelica based-objects
 
