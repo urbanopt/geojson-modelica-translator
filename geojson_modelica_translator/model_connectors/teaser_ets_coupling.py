@@ -61,7 +61,7 @@ class TeaserConnectorETS(model_connector_base):
         """
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # Units are ugly: https://docs.urbanopt.net/urbanopt-geojson-gem/schemas/building-properties.html shows most
-        # units are in feet, while https://github.com/urbanopt/urbanopt-geojson-gem/blob/develop/lib/urbanopt/geojson/building.rb#L114-L117
+        # units are in feet, while https://github.com/urbanopt/urbanopt-geojson-gem/blob/develop/lib/urbanopt/geojson/building.rb#L114-L117  # noqa
         # shows some things get changed to metric. Perhaps user-facing values are in feet while inside it is in metric?
         # TODO: Abstract out the GeoJSON functionality
         # note-1(Yanfei): any building/district geojson file needs to have the following properties.

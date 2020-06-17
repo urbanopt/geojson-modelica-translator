@@ -85,7 +85,7 @@ class SpawnConnector(model_connector_base):
                     "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
                     "building_id": urbanopt_building.feature.properties["id"],
                     "building_type": urbanopt_building.feature.properties["building_type"],
-                    "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric in sdk
+                    "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric in sdk  # noqa
                     "num_stories": urbanopt_building.feature.properties["number_of_stories"],
                     "num_stories_below_grade": number_stories - number_stories_above_ground,
                     "year_built": urbanopt_building.feature.properties["year_built"],
