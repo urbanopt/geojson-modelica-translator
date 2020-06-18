@@ -99,11 +99,17 @@ class GeoJsonModelicaTranslator(object):
         """
         self.scaffold_directory(save_dir, project_name)
 
-        # import all of the potential model connectors
-        import geojson_modelica_translator.model_connectors.teaser  # noqa
-        import geojson_modelica_translator.model_connectors.spawn  # noqa
-        import geojson_modelica_translator.model_connectors.time_series  # noqa
-        class_ = getattr(geojson_modelica_translator.model_connectors.teaser, model_connector_str)
+        # import the model connector
+        if model_connector_str == "TeaserConnector":
+            import geojson_modelica_translator.model_connectors.teaser as model_con  # noqa
+        elif model_connector_str == "SpawnConnector":
+            import geojson_modelica_translator.model_connectors.spawn as model_con  # noqa
+        elif model_connector_str == "TimeSeriesConnector":
+            import geojson_modelica_translator.model_connectors.time_series as model_con  # noqa
+        else:
+            raise SystemExit('"model_connector_str" not recognized. Check for typos')
+
+        class_ = getattr(model_con, model_connector_str)
 
         model_connector = class_(self.system_parameters)
 
@@ -115,7 +121,8 @@ class GeoJsonModelicaTranslator(object):
             model_connector.add_building(building)
 
             _log.info(f"Translating building to model {building}")
-            model_connector.to_modelica(self.scaffold, keep_original_models=False)
+        model_connector.to_modelica(self.scaffold, keep_original_models=False)
+        # Only call to_modelica once all the buildings have been added
 
         # add in Substations
         # NL: Presently the ETS models are included in the model_connectors. That may need to be revisited.

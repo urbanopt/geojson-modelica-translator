@@ -125,8 +125,8 @@ annotation (
 Partial model to be used for modeling the thermal loads on an energy
 transfer station or a dedicated plant.
 Models extending this class are typically used in conjunction with
-<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution\">
-Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution</a>
+<a href=\"modelica://Buildings.Applications.DHC.Loads.FlowDistribution\">
+Buildings.Applications.DHC.Loads.FlowDistribution</a>
 and models extending
 <a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit\">
 Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
