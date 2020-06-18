@@ -58,7 +58,7 @@ model building
     {% raw %}
     annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
     {% endraw %}
-  Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
+  Buildings.Applications.DHC.Loads.FlowDistribution disFloHea(
     redeclare package Medium = MediumW,
     m_flow_nominal=sum(terUni.mHeaWat_flow_nominal .* terUni.facSca),
     dp_nominal(displayUnit="Pa")=100000,
@@ -69,7 +69,7 @@ model building
     {% raw %}
     annotation (Placement(transformation(extent={{-140, -100},{-120,-80}})));
     {% endraw %}
-  Buildings.Applications.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
+  Buildings.Applications.DHC.Loads.FlowDistribution disFloCoo(
     redeclare package Medium = MediumW,
     m_flow_nominal=sum(terUni.mChiWat_flow_nominal .* terUni.facSca),
     typDis=Buildings.Applications.DHC.Loads.Types.DistributionType.ChilledWater,
