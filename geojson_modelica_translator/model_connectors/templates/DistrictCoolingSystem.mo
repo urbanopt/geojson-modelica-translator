@@ -15,9 +15,9 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     annotation (Placement(transformation(extent={{80,40},{100,60}})));
   parameter Integer nBui=3
   "number of coonected buildings";
-  parameter Modelica.SIunits.MassFlowRate mCHW_flow_nominal=cooPla.mulChiSys.per[1].mEva_flow_nominal
-    "Nominal chilled water mass flow rate";                                                           //35
-  parameter Modelica.SIunits.MassFlowRate mCW_flow_nominal=35
+  parameter Modelica.SIunits.MassFlowRate mCHW_flow_nominal=cooPla.numChi*(cooPla.perChi.mEva_flow_nominal)
+    "Nominal chilled water mass flow rate";
+  parameter Modelica.SIunits.MassFlowRate mCW_flow_nominal=cooPla.perChi.mCon_flow_nominal
     "Nominal condenser water mass flow rate";
   parameter Modelica.SIunits.PressureDifference dpCHW_nominal=44.8*1000
     "Nominal chilled water side pressure";
@@ -31,14 +31,14 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   // control settings
   parameter Modelica.SIunits.Pressure dpSetPoi=80000
     "Differential pressure setpoint";
-  parameter Modelica.SIunits.Pressure pumDP=dpCHW_nominal+dpSetPoi+80000;
+  parameter Modelica.SIunits.Pressure pumDP=dpCHW_nominal+dpSetPoi+200000;
   parameter Modelica.SIunits.Temperature TCHWSet=273.15 + 5
     "Chilled water temperature setpoint";
   parameter Modelica.SIunits.Time tWai=30 "Waiting time";
   // pumps
   parameter Buildings.Fluid.Movers.Data.Generic perCHWPum(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow={0,mCHW_flow_nominal}/1000,
+      V_flow={0,mCHW_flow_nominal/cooPla.numChi}/1000,
       dp={pumDP,0}))
     "Performance data for chilled water pumps";
   parameter Buildings.Fluid.Movers.Data.Generic perCWPum(
@@ -105,7 +105,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   Buildings.Applications.DHC.Examples.FifthGeneration.Unidirectional.Networks.UnidirectionalParallel disNet(
     redeclare final package Medium = MediumW,
     final nCon=nBui,
-    iConDpSen=2,
+    iConDpSen=nBui,
     final mDis_flow_nominal=datDes.mDis_flow_nominal,
     final mCon_flow_nominal=datDes.mCon_flow_nominal,
     final lDis=datDes.lDis,
@@ -114,20 +114,12 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     final dhDis=datDes.dhDis,
     final dhCon=datDes.dhCon,
     final dhEnd=datDes.dhEnd,
-    final allowFlowReversal=allowFlowReversal,
-    facEnd=2,
-    fac={2,2,2})
+    final allowFlowReversal=allowFlowReversal)
     "Distribution network."
     annotation (Placement(transformation(extent={{16,20},{44,32}})));
-  Modelica.Blocks.Sources.RealExpression fixme1_sumQAct(y=sum({bui[i].bui.disFloCoo.QActTot_flow
-        for i in 1:nBui}))
-    annotation (Placement(transformation(extent={{34,-36},{54,-16}})));
   Modelica.Blocks.Sources.RealExpression TchiWatSet(y=TCHWSet)
     "Chilled water supply temperature setpoint."
     annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
-  Modelica.Blocks.Sources.RealExpression fixme2_sum_mReq(y=sum({bui[i].port_a2.m_flow
-        for i in 1:nBui}))
-    annotation (Placement(transformation(extent={{36,-60},{56,-40}})));
   Modelica.Blocks.Sources.RealExpression TSetChiWatSup[nBui](y=bui.TChiWatSup_nominal)
     "Chilled water supply temperature set point."
     annotation (Placement(transformation(extent={{-60,40},{-40,60}})));

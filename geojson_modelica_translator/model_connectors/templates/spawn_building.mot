@@ -1,22 +1,40 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
    "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
-extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
-   redeclare package Medium = MediumW,
-   have_eleHea=false,
-   have_eleCoo=false,
-   have_weaBus=false);
+ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
+    redeclare package Medium = Buildings.Media.Water,
+    final have_eleHea=false,
+    final have_eleCoo=false,
+    final have_pum=true,
+    final have_weaBus=false);
 
   replaceable package MediumW = Buildings.Media.Water
     "Source side medium";
   replaceable package MediumA = Buildings.Media.Air
     "Load side medium";
+  parameter Integer nZon={{data['thermal_zones_count']}}-1
+    "Number of conditioned thermal zones";
+  parameter Integer facSca[nZon]=fill(5, nZon)
+    "Scaling factor to be applied to on each extensive quantity";
+  parameter Modelica.SIunits.MassFlowRate mLoa_flow_nominal[nZon]= {(-1*QCoo_flow_nominal[i] * 0.22)/(3500) for i in 1:nZon}
+    "Load side mass flow rate at nominal conditions"
+    annotation(Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
      "Nominal building supply and return chilled water temperature difference";
-  parameter Real facSca = 1
-    "Scaling factor to be applied to each extensive quantity";
-  parameter Integer nZon={{data['thermal_zones_count']}}
-    "Number of thermal zones";
+  parameter Modelica.SIunits.TemperatureDifference delTDisCoo=9
+    "Nominal district supply and return water temperature difference";
+  parameter Modelica.SIunits.Temperature T_aChiWat_nominal
+     "Supply chilled water nominal temperature";
+  parameter Modelica.SIunits.Temperature T_bChiWat_nominal
+     "Return chilled water nominal temperature";
+  parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]=
+      fill(3000, nZon) ./ facSca
+      "Design heating heat flow rate (>=0)"
+      annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal[nZon]=
+      fill(-8750, nZon) ./ facSca
+      "Design cooling heat flow rate (<=0)"
+      annotation (Dialog(group="Nominal condition"));
   parameter String idfPat=
     "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
    "Path of the IDF file";
@@ -64,20 +82,21 @@ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum3(nin=2) if have_pum
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
 
- Buildings.Applications.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
-    redeclare package Medium1 = MediumW,
-    redeclare package Medium2 = MediumA,
-    each facSca=facSca,
-    QHea_flow_nominal={90000,10000,10000,10000,10000,10000},
-    QCoo_flow_nominal={-10000,-10000,-10000,-10000,-10000,-10000},
-    each T_aLoaHea_nominal=293.15,
-    each T_aLoaCoo_nominal=297.15,
-    each T_bHeaWat_nominal=308.15,
-    each T_bChiWat_nominal=285.15,
-    each T_aHeaWat_nominal=313.15,
-    each T_aChiWat_nominal=280.15,
-    each mLoaHea_flow_nominal=10,
-    each mLoaCoo_flow_nominal=10)
+ BaseClasses.FanCoil4Pipe terUni[nZon](
+   T_aChiWat_nominal=T_aChiWat_nominal,
+   T_bChiWat_nominal=T_bChiWat_nominal,
+   redeclare each final package Medium1 = MediumW,
+   redeclare each final package Medium2 = MediumA,
+   fan(show_T=true),
+   final facSca=facSca,
+   final QHea_flow_nominal=QHea_flow_nominal,
+   final QCoo_flow_nominal=QCoo_flow_nominal,
+   each T_aLoaHea_nominal=293.15,
+   each T_aLoaCoo_nominal=297.15,
+   each T_bHeaWat_nominal=308.15,
+   each T_aHeaWat_nominal=313.15,
+   final mLoaHea_flow_nominal=mLoa_flow_nominal,
+   final mLoaCoo_flow_nominal=mLoa_flow_nominal)
     "Terminal unit"
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
 
@@ -179,7 +198,8 @@ end for;
 //----------------Depending on number of thermal zones-----------------
 {% for zone in data['thermal_zones'] %}
     connect(multiplex3_1.y, {{zone['modelica_object_name']}}.qGai_flow)
-        {% raw %}annotation (Line(points={{1,138},{20,138},{20,30},{22,30}}, color={0,0,127}));{% endraw %}
+        {% raw %}annotation (Line(points={{1,138},{20,138},{20,30},{22,30}},{% endraw %}
+        color={0,0,127}));
     connect ({{zone['modelica_object_name']}}.ports[1], terUni[{{loop.index}}].port_aLoa)
         {% raw %} annotation(Line(points={{42,-119.2},{-8,-119.2},{-8,18.1667},{-120,18.1667}},{% endraw %}
         color={0,127,255}));
