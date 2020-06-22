@@ -64,7 +64,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   Modelica.Blocks.Sources.BooleanConstant on "On signal of the plant"
     annotation (Placement(transformation(extent={{-100,0},{-80,20}})));
 
-  Plant cooPla(
+  CentralCoolingPlant cooPla(
     redeclare
       Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Trane_CGWD_207kW_3_99COP_None
       perChi,
