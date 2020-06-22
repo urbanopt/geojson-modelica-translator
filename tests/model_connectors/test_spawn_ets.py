@@ -54,7 +54,7 @@ class SpawnModelConnectorSingleBuildingETSTest(unittest.TestCase):
         if os.path.exists(os.path.join(self.output_dir, project_name)):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
-        # load in the example geojson with a single offie building
+        # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
         # use the GeoJson translator to scaffold out the directory

@@ -121,16 +121,16 @@ class GeoJsonModelicaTranslator(object):
             model_connector.add_building(building)
 
             _log.info(f"Translating building to model {building}")
-        model_connector.to_modelica(self.scaffold, keep_original_models=False)
+
         # Only call to_modelica once all the buildings have been added
 
-        # add in Substations
-        # NL: Presently the ETS models are included in the model_connectors. That may need to be revisited.
-
-        # TODO: YL, where are the substations/ETSs?
         # import geojson_modelica_translator.model_connectors.ets_template as ets_template
         # ets_class = getattr(ets_template, "ETSConnector")
         # ets_connector = ets_class(self.system_parameters)
+
+        # _log.info("Exporting District System")
+
+        model_connector.to_modelica(self.scaffold, keep_original_models=False)
 
         # for building in self.buildings:
         #    ets_connector.to_modelica(self.scaffold, building)

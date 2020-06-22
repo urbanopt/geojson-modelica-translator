@@ -1,15 +1,15 @@
-within geojson_modelica_translator.model_connectors.templates;
+//within geojson_modelica_translator.model_connectors.templates;
 model BuildingSpawnZ6WithCoolingIndirectETS
   "Model of a building (Spawn 6 zones) with an energy transfer station"
   package MediumW = Buildings.Media.Water;
-  extends BaseClasses.PartialBuildingWithCoolingIndirectETS(
+  extends PartialBuildingWithCoolingIndirectETS(
       TChiWatSup_nominal=7 + 273.15,
       m1_flow_nominal=mBui_flow_nominal,
       m2_flow_nominal=mDis_flow_nominal,
       redeclare package Medium1 =MediumW,
       redeclare package Medium2 =MediumW,
       show_T = true,
-    redeclare DHC.Loads.Examples.BaseClasses.BuildingSpawnZ6 bui(
+    redeclare Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingSpawnZ6 bui(
       final idfName=idfName,
       final weaName=weaName,
       T_aChiWat_nominal=7+273.15,

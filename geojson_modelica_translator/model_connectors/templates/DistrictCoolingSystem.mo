@@ -1,9 +1,10 @@
-within geojson_modelica_translator.model_connectors.templates;
+// within geojson_modelica_translator.model_connectors.templates;
+{% raw %}
 model DistrictCoolingSystem "Example to test the district cooling system."
   extends Modelica.Icons.Example;
 
   package MediumW = Buildings.Media.Water "Medium model for water";
-  inner parameter Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Data.DesignDataParallel4GDC datDes(
+  inner parameter DesignDataParallel4GDC datDes(
     nBui=nBui,
     mDis_flow_nominal=sum({bui[i].ets.mDis_flow_nominal for i in 1:nBui})*1.01,
     mCon_flow_nominal={bui[i].ets.mDis_flow_nominal for i in 1:nBui},
@@ -52,12 +53,12 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     "Nominal pressure drop of chilled water pumps";
   parameter Modelica.SIunits.PressureDifference dp_nominal=50000
     "Nominal pressure drop in the distribution line";
-  BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
    final computeWetBulbTemperature=true,
    filNam= Modelica.Utilities.Files.loadResource(
           "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     annotation (Placement(transformation(extent={{-100,-84},{-80,-64}})));
-  BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
+  Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
     annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),
         iconTransformation(extent={{-114,-54},{-94,-34}})));
 
@@ -89,7 +90,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     "District cooling plant."
     annotation (Placement(transformation(extent={{-34,-46},{-14,-26}})));
 
-  Buildings.Applications.DHC.Examples.FifthGeneration.Unidirectional.Loads.BuildingSpawnZ6WithCoolingIndirectETS bui[nBui](
+  BuildingSpawnZ6WithCoolingIndirectETS bui[nBui](
       each dT_nominal=5,
       each TChiWatSup_nominal=7 + 273.15)
     annotation (Placement(transformation(extent={{20,60},{40,80}})));
@@ -102,7 +103,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   Buildings.Fluid.Sources.Boundary_pT heaSin(redeclare package Medium = MediumW,
       nPorts=nBui) "Heating sink"
     annotation (Placement(transformation(extent={{82,72},{62,92}})));
-  Buildings.Applications.DHC.Examples.FifthGeneration.Unidirectional.Networks.UnidirectionalParallel disNet(
+  UnidirectionalParallel disNet(
     redeclare final package Medium = MediumW,
     final nCon=nBui,
     iConDpSen=nBui,
@@ -165,3 +166,4 @@ equation
       Tolerance=1e-06,
       __Dymola_Algorithm="Cvode"));
 end DistrictCoolingSystem;
+{% endraw %}
