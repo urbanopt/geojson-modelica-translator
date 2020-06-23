@@ -48,7 +48,6 @@ class DistrictSystemConnector(model_connector_base):
         # the "package.order" will be in.
         self.required_mo_files = [
             os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'),
-            os.path.join(self.template_dir, 'ChillerStage.mo'),
             os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'),
             os.path.join(self.template_dir, 'CoolingTowerParellel.mo'),
             os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'),
@@ -57,6 +56,9 @@ class DistrictSystemConnector(model_connector_base):
             os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'),
             os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'),
             os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
+            os.path.join(self.template_dir, 'ConnectionParallel.mo'),
+            os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'),
+            os.path.join(self.template_dir, 'PipeDistribution.mo'),
         ]
 
     def to_modelica(self, scaffold):

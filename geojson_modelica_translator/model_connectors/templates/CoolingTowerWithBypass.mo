@@ -159,6 +159,7 @@ model CoolingTowerWithBypass
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=1,
     Ti=60,
+    final reverseActing=true,
     reset=Buildings.Types.Reset.Parameter,
     y_reset=0)
            "Bypass valve controller"
@@ -167,7 +168,7 @@ model CoolingTowerWithBypass
   Buildings.Controls.Continuous.LimPID cooTowSpeCon(
     u_s(unit="K", displayUnit="degC"),
     u_m(unit="K", displayUnit="degC"),
-    final reverseAction=true,
+    final reverseActing=false,
     controllerType=controllerType,
     k=k,
     Ti=Ti) "Cooling tower fan speed controller"

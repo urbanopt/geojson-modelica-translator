@@ -12,8 +12,6 @@ model BuildingSpawnZ6WithCoolingIndirectETS
     redeclare Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingSpawnZ6 bui(
       final idfName=idfName,
       final weaName=weaName,
-      T_aChiWat_nominal=7+273.15,
-      T_bChiWat_nominal=12+273.15,
       nPorts_aHeaWat=1,
       nPorts_bHeaWat=1,
       nPorts_bChiWat=1,

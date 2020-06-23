@@ -1,10 +1,10 @@
 //within Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Networks;
 model UnidirectionalParallel
   "Hydraulic network for unidirectional parallel DHC system"
-  extends Buildings.Applications.DHC.Networks.BaseClasses.PartialDistribution2Pipe(
-    redeclare BaseClasses.ConnectionParallel con[nCon](
+  extends PartialDistribution2Pipe(
+    redeclare ConnectionParallel con[nCon](
       final lDis=lDis, final lCon=lCon, final dhDis=dhDis, final dhCon=dhCon),
-    redeclare model Model_pipDis = BaseClasses.PipeDistribution (
+    redeclare model Model_pipDis = PipeDistribution (
       final dh=dhEnd, final length=2*lEnd));
   parameter Modelica.SIunits.Length lDis[nCon]
     "Length of the distribution pipe before each connection (supply only, not counting return line)";
