@@ -55,6 +55,7 @@ class DistrictSystemConnector(model_connector_base):
             os.path.join(self.template_dir, 'CentralCoolingPlant.mo'),
             os.path.join(self.template_dir, 'PartialBuilding.mo'),
             os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'),
+            os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'),
             os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
         ]
 
