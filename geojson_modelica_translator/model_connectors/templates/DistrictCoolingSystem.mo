@@ -1,8 +1,8 @@
 // within geojson_modelica_translator.model_connectors.templates;
-{% raw %}
+
 model DistrictCoolingSystem "Example to test the district cooling system."
   extends Modelica.Icons.Example;
-
+{% raw %}
   package MediumW = Buildings.Media.Water "Medium model for water";
   inner parameter DesignDataParallel4GDC datDes(
     nBui=nBui,
@@ -67,7 +67,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
 
   CentralCoolingPlant cooPla(
     redeclare
-      Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Trane_CGWD_207kW_3_99COP_None
+      Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Trane_CGWD_207kW_3_99COP_None
       perChi,
     perCHWPum=perCHWPum,
     perCWPum=perCWPum,

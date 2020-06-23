@@ -95,7 +95,7 @@ model CoolingTowerParellel
     "Leaving water temperature"
     annotation (Placement(transformation(extent={{100,20},{120,40}})));
 
-  replaceable Fluid.HeatExchangers.CoolingTowers.Merkel cooTow[num]
+  replaceable Buildings.Fluid.HeatExchangers.CoolingTowers.Merkel cooTow[num]
     constrainedby
     Buildings.Fluid.HeatExchangers.CoolingTowers.BaseClasses.CoolingTower(
      redeclare each final package Medium = Medium,

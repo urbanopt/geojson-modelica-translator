@@ -1,4 +1,4 @@
-within geojson_modelica_translator.model_connectors.templates;
+// within geojson_modelica_translator.model_connectors.templates;
 model CentralCoolingPlant
    "Cooling plant model with two chillers"
 
@@ -141,7 +141,7 @@ model CentralCoolingPlant
     redeclare package Medium2=Medium) "Chillers connected in parallel"
     annotation (Placement(transformation(extent={{10,20},{-10,0}})));
 
-  Buildings.Applications.DHC.CentralPlants.Cooling.Subsystems.CoolingTowerWithBypass cooTowWitByp(
+  CoolingTowerWithBypass cooTowWitByp(
     redeclare package Medium = Medium,
     num=numChi,
     m_flow_nominal=mCW_flow_nominal,
@@ -197,7 +197,7 @@ model CentralCoolingPlant
         rotation=0,
         origin={130,-50})));
 
-  Buildings.Applications.DHC.CentralPlants.Cooling.Controls.ChilledWaterPumpSpeed
+  ChilledWaterPumpSpeed
     CHWPumCon(
     tWai=tWai,
     m_flow_nominal=mCHW_flow_nominal,
@@ -205,7 +205,7 @@ model CentralCoolingPlant
     controllerType=Modelica.Blocks.Types.SimpleController.PI) "Chilled water pump controller"
     annotation (Placement(transformation(extent={{-120,-26},{-100,-6}})));
 
-  Buildings.Applications.DHC.CentralPlants.Cooling.Controls.ChillerStage chiStaCon(
+  ChillerStage chiStaCon(
     tWai=tWai,
     QEva_nominal=QEva_nominal) "Chiller staging controller"
     annotation (Placement(transformation(extent={{-120,46},{-100,66}})));

@@ -36,15 +36,26 @@ from geojson_modelica_translator.model_connectors.base import \
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from jinja2 import Environment, FileSystemLoader
 
+# from modelica_builder.model import Model
+
 
 class DistrictSystemConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
         self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
+        # Note that the order of the required MO files is important as it will be the order that
+        # the "package.order" will be in.
         self.required_mo_files = [
+            os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'),
+            os.path.join(self.template_dir, 'ChillerStage.mo'),
+            os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'),
+            os.path.join(self.template_dir, 'CoolingTowerParellel.mo'),
+            os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'),
+            os.path.join(self.template_dir, 'CentralCoolingPlant.mo'),
             os.path.join(self.template_dir, 'PartialBuilding.mo'),
             os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'),
+            os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
         ]
 
     def to_modelica(self, scaffold):
@@ -66,16 +77,23 @@ class DistrictSystemConnector(model_connector_base):
             }
             self.run_template(
                 district_cooling_system_template,
-                os.path.join(scaffold.districts_path.files_dir, "district_cooling_system.mo"),
+                os.path.join(scaffold.districts_path.files_dir, "DistrictCoolingSystem.mo"),
                 project_name=scaffold.project_name,
                 model_name="SOMEMODELNAME",
                 data=template_data
             )
 
             for f in self.required_mo_files:
-                shutil.copy(f, os.path.join(scaffold.districts_path.files_dir, os.path.basename(f)))
+                new_filename = os.path.join(scaffold.districts_path.files_dir, os.path.basename(f))
+                shutil.copy(f, new_filename)
 
-                # Probably need to adjust the within clauses here
+                # # Fix the within clause
+                # mofile = Model(new_filename)
+                #
+                # # previous paths and replace with the new one.
+                # # Make sure to update the names of any resources as well.
+                # mofile.set_within_statement(f'{scaffold.project_name}.Districts')
+                # mofile.save()
 
         finally:
             os.chdir(curdir)
@@ -93,10 +111,14 @@ class DistrictSystemConnector(model_connector_base):
         :return: None
         """
 
-        # now create the Loads level package. This (for now) will create the package without considering any existing
-        # files in the Loads directory.
+        # now create the Districts level package. This (for now) will create the package without considering any existing
+        # files in the Districts directory.
+        order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
+        order_files.append("DistrictCoolingSystem")
         package = PackageParser.new_from_template(
-            scaffold.districts_path.files_dir, "Districts", order=["district_cooling"], within=f"{scaffold.project_name}"
+            scaffold.districts_path.files_dir, "Districts",
+            order=order_files,
+            within=f"{scaffold.project_name}"
         )
         package.save()
 
