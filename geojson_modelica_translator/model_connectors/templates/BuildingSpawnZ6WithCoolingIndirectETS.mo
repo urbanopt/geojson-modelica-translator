@@ -7,7 +7,7 @@ package MediumW = Buildings.Media.Water;
       redeclare package Medium1 =MediumW,
       redeclare package Medium2 =MediumW,
       show_T = true,
-    redeclare Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingSpawnZ6 bui(
+    redeclare building bui(
       final idfName=idfName,
       final weaName=weaName,
       T_aChiWat_nominal=280.15,
