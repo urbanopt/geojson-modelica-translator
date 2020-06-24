@@ -58,7 +58,7 @@ class DistrictSystemConnector(model_connector_base):
             os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
             os.path.join(self.template_dir, 'ConnectionParallel.mo'),
             os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'),
-            os.path.join(self.template_dir, 'PipeDistribution.mo'),
+            os.path.join(self.template_dir, 'PipeConnection.mo'),
         ]
 
     def to_modelica(self, scaffold):
