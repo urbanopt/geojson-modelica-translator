@@ -35,8 +35,7 @@ from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from jinja2 import Environment, FileSystemLoader
-
-# from modelica_builder.model import Model
+from modelica_builder.model import Model
 
 
 class DistrictSystemConnector(model_connector_base):
@@ -47,18 +46,22 @@ class DistrictSystemConnector(model_connector_base):
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
         self.required_mo_files = [
+            os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'),
+            os.path.join(self.template_dir, 'PartialBuilding.mo'),
+            os.path.join(self.template_dir, 'PartialBuildingETS.mo'),
+            os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'),
+
+            os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'),
+            os.path.join(self.template_dir, 'CentralCoolingPlant.mo'),
             os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'),
-            os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'),
+            os.path.join(self.template_dir, 'ChillerStage.mo'),
+            os.path.join(self.template_dir, 'ConnectionParallel.mo'),
             os.path.join(self.template_dir, 'CoolingTowerParellel.mo'),
             os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'),
-            os.path.join(self.template_dir, 'CentralCoolingPlant.mo'),
-            os.path.join(self.template_dir, 'PartialBuilding.mo'),
-            os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'),
-            os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'),
-            os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
-            os.path.join(self.template_dir, 'ConnectionParallel.mo'),
-            os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'),
+            os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'),
+            # os.path.join(self.template_dir, 'HydraulicHeader.mo'),
             os.path.join(self.template_dir, 'PipeDistribution.mo'),
+            os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
         ]
 
     def to_modelica(self, scaffold):
@@ -74,6 +77,7 @@ class DistrictSystemConnector(model_connector_base):
         try:
             # Convert this to DistrictCoolingSystem.mot
             district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mo")
+            cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
 
             template_data = {
                 "hold": self.system_parameters.get_param("todo")
@@ -86,7 +90,33 @@ class DistrictSystemConnector(model_connector_base):
                 data=template_data
             )
 
+            ets_model_type = self.system_parameters.get_param("$.buildings.default.ets_model")
+            if ets_model_type == "Indirect Cooling":
+                ets_data = self.system_parameters.get_param(
+                    "$.buildings.default.ets_model_parameters.indirect_cooling"
+                )
+                self.run_template(
+                    cooling_indirect_template,
+                    os.path.join(scaffold.districts_path.files_dir, "CoolingIndirect.mo"),
+                    project_name=scaffold.project_name,
+                    model_name="RENAMEME",
+                    ets_data=ets_data
+                )
+                # rename the within clause because this is not too flexible and the ETS needs to be in
+                # a different directory (not districts), but that isn't the case.
+                mofile = Model(os.path.join(scaffold.districts_path.files_dir, "CoolingIndirect.mo"))
+
+                # previous paths and replace with the new one.
+                # Make sure to update the names of any resources as well.
+                mofile.set_within_statement(f'{scaffold.project_name}.Districts')
+                mofile.save()
+            else:
+                raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+
             for f in self.required_mo_files:
+                if not os.path.exists(f):
+                    raise Exception(f"Required MO file not found: {f}")
+
                 new_filename = os.path.join(scaffold.districts_path.files_dir, os.path.basename(f))
                 shutil.copy(f, new_filename)
 
@@ -118,6 +148,7 @@ class DistrictSystemConnector(model_connector_base):
         # files in the Districts directory.
         order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
         order_files.append("DistrictCoolingSystem")
+        order_files.append("CoolingIndirect")
         package = PackageParser.new_from_template(
             scaffold.districts_path.files_dir, "Districts",
             order=order_files,

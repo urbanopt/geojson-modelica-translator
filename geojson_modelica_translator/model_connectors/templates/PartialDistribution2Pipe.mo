@@ -1,8 +1,8 @@
 //within Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Networks;
 partial model PartialDistribution2Pipe
   "Partial model for two-pipe distribution network"
-  extends PartialDistribution;
-  replaceable model Model_pipDis = Fluid.Interfaces.PartialTwoPortInterface (
+  extends Buildings.Applications.DHC.Networks.BaseClasses.PartialDistribution;
+  replaceable model Model_pipDis = Buildings.Fluid.Interfaces.PartialTwoPortInterface (
     redeclare final package Medium = Medium,
     final allowFlowReversal=allowFlowReversal)
     "Model for distribution pipe";
@@ -68,7 +68,7 @@ partial model PartialDistribution2Pipe
       extent={{100,40},{140,80}}),
       iconTransformation(extent={{200,40},{220,60}})));
   // COMPONENTS
-  replaceable BaseClasses.PartialConnection2Pipe con[nCon](
+  replaceable Buildings.Applications.DHC.Networks.BaseClasses.PartialConnection2Pipe con[nCon](
     redeclare each final package Medium = Medium,
     each final show_heaFlo=show_heaFlo,
     final mDis_flow_nominal=mDisCon_flow_nominal,
@@ -82,7 +82,7 @@ partial model PartialDistribution2Pipe
     final m_flow_nominal=mEnd_flow_nominal)
     "Pipe representing the end of the distribution line (after last connection)"
     annotation (Placement(transformation(extent={{60,-10},{80,10}})));
-  Fluid.Sensors.RelativePressure senRelPre(
+  Buildings.Fluid.Sensors.RelativePressure senRelPre(
     redeclare final package Medium = Medium) if iConDpSen == 0
     "Relative pressure sensor"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
