@@ -13,24 +13,6 @@ partial model PartialBuildingWithCoolingIndirectETS
   parameter Boolean allowFlowReversalDis = false
     "Set to true to allow flow reversal on the district side"
     annotation(Dialog(tab="Assumptions"), Evaluate=true);
-  parameter Modelica.SIunits.TemperatureDifference dT_nominal=5
-    "Water temperature drop/increase accross load and source-side HX (always positive)"
-    annotation(Dialog(group="ETS model parameters"));
-  parameter Modelica.SIunits.Temperature TChiWatSup_nominal
-    "Chilled water supply temperature"
-    annotation(Dialog(group="ETS model parameters"));
-  parameter Modelica.SIunits.Temperature TChiWatRet_nominal= TChiWatSup_nominal + dT_nominal
-     "Chilled water return temperature"
-    annotation(Dialog(group="ETS model parameters"));
-  parameter Modelica.SIunits.Temperature THeaWatSup_nominal=273.15 + 40
-    "Heating water supply temperature"
-    annotation(Dialog(group="ETS model parameters"));
-  parameter Modelica.SIunits.Temperature THeaWatRet_nominal= THeaWatSup_nominal - dT_nominal
-     "Heating water return temperature"
-    annotation(Dialog(group="ETS model parameters"));
-  parameter Modelica.SIunits.Pressure dp_nominal=50000
-   "Pressure difference at nominal flow rate (for each flow leg)"
-    annotation(Dialog(group="ETS model parameters"));
 
   // IO CONNECTORS
   Modelica.Blocks.Interfaces.RealInput TSetChiWat
