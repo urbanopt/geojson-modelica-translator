@@ -34,7 +34,7 @@ package MediumW = Buildings.Media.Water;
     "Nominal mass flow rate of secondary (building) district cooling side";
 
 
-  Buildings.Applications.DHC.EnergyTransferStations.CoolingIndirect ets(
+  CoolingIndirect ets(
     redeclare package Medium =MediumW,
     final mDis_flow_nominal=mDis_flow_nominal,
     final mBui_flow_nominal=mBui_flow_nominal,

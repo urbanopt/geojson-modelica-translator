@@ -12,7 +12,7 @@ model building
     "Source side medium";
   replaceable package MediumA = Buildings.Media.Air
     "Load side medium";
-  parameter Integer nZon={{data['thermal_zones_count']}}-1
+  parameter Integer nZon=6-1
     "Number of conditioned thermal zones";
   parameter Integer facSca[nZon]=fill(5, nZon)
     "Scaling factor to be applied to on each extensive quantity";
@@ -61,15 +61,14 @@ model building
     annotation (Placement(transformation(extent={{-66,88},{-46,108}})));
   {% endraw %}
   // TODO: apply a dynamic layout
-    {% for zone in data['thermal_zones'] %}
+  {% for zone in data['thermal_zones'] %}
   Buildings.ThermalZones.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
    redeclare package Medium = MediumA,
    nPorts=2,
    zoneName="{{zone['spawn_object_name']}}")
     "Thermal zone"
-      {% raw %}
-    annotation (Placement(transformation(extent={{40,-20},{80,20}}))); {% endraw %}
-    {% endfor %}
+    {% raw %}  annotation (Placement(transformation(extent={{40,-20},{80,20}}))); {% endraw %}
+  {% endfor %}
 
   {% raw %}
  inner Buildings.ThermalZones.EnergyPlus.Building building(
@@ -82,7 +81,7 @@ model building
  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum3(nin=2) if have_pum
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
 
- BaseClasses.FanCoil4Pipe terUni[nZon](
+ Buildings.Applications.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
    T_aChiWat_nominal=T_aChiWat_nominal,
    T_bChiWat_nominal=T_bChiWat_nominal,
    redeclare each final package Medium1 = MediumW,
@@ -119,7 +118,7 @@ model building
     nPorts_b1=nZon)
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{-160,-230},{-140,-210}})));
-  {% endraw %}
+{% endraw %}
 
 equation
 {% raw %}
@@ -200,13 +199,13 @@ end for;
     connect(multiplex3_1.y, {{zone['modelica_object_name']}}.qGai_flow)
         {% raw %}annotation (Line(points={{1,138},{20,138},{20,30},{22,30}},{% endraw %}
         color={0,0,127}));
-    connect ({{zone['modelica_object_name']}}.ports[1], terUni[{{loop.index}}].port_aLoa)
+    connect({{zone['modelica_object_name']}}.ports[1], terUni[{{loop.index}}].port_aLoa)
         {% raw %} annotation(Line(points={{42,-119.2},{-8,-119.2},{-8,18.1667},{-120,18.1667}},{% endraw %}
         color={0,127,255}));
-    connect ({{zone['modelica_object_name']}}.ports[2], terUni[{{loop.index}}].port_bLoa)
+    connect({{zone['modelica_object_name']}}.ports[2], terUni[{{loop.index}}].port_bLoa)
         {% raw %} annotation (Line(points={{-140,18.1667},{-20,18.1667},{-20,-119.2},{46,-119.2}},{% endraw %}
         color={0,127,255}));
-    connect ({{zone['modelica_object_name']}}.TAir, terUni[{{loop.index}}].TSen)
+    connect({{zone['modelica_object_name']}}.TAir, terUni[{{loop.index}}].TSen)
         {% raw %}annotation (Line(points={{81,13.8},{80,13.8},{80,160},{-152,160},{-152,10.8333},{-140.833,10.8333}},{% endraw %}
         color={0,0,127}));
 {% endfor %}

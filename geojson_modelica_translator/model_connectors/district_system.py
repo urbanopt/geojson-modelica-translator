@@ -81,26 +81,23 @@ class DistrictSystemConnector(model_connector_base):
             district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mo")
             cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
             spawn_building_template = self.template_env.get_template("spawn_building.mot")
-            template_data = {
-                "hold": self.system_parameters.get_param("todo")
-            }
 
-            idf_filename = self.system_parameters.get_param_by_building_id(
-                building["building_id"], "load_model_parameters.spawn.idf_filename"
+            idf_filename = self.system_parameters.get_param(
+                "$.buildings.default.load_model_parameters.spawn.idf_filename"
             )
-            epw_filename = self.system_parameters.get_param_by_building_id(
-                building["building_id"], "load_model_parameters.spawn.epw_filename"
+            epw_filename = self.system_parameters.get_param(
+                "$.buildings.default.load_model_parameters.spawn.epw_filename"
             )
-            mos_weather_filename = self.system_parameters.get_param_by_building_id(
-                building["building_id"], "load_model_parameters.spawn.mos_weather_filename",
+            mos_weather_filename = self.system_parameters.get_param(
+                "$.buildings.default.load_model_parameters.spawn.mos_weather_filename"
             )
-            thermal_zones = self.system_parameters.get_param_by_building_id(
-                building["building_id"], "load_model_parameters.spawn.thermal_zone_names",
+            thermal_zones = self.system_parameters.get_param(
+                "$.buildings.default.load_model_parameters.spawn.thermal_zone_names"
             )
 
             # construct the dict to pass into the template
             template_data = {
-                "load_resources_path": b_modelica_path.resources_relative_dir,
+                "load_resources_path": scaffold.districts_path.resources_relative_dir,
                 "idf": {
                     "idf_filename": idf_filename,
                     "filename": os.path.basename(idf_filename),
@@ -132,7 +129,7 @@ class DistrictSystemConnector(model_connector_base):
                 shutil.copy(
                     template_data["idf"]["idf_filename"],
                     os.path.join(
-                        b_modelica_path.resources_dir,
+                        scaffold.districts_path.resources_dir,
                         template_data["idf"]["filename"],
                     ),
                 )
@@ -143,14 +140,14 @@ class DistrictSystemConnector(model_connector_base):
 
             if os.path.exists(template_data["epw"]["epw_filename"]):
                 shutil.copy(template_data["epw"]["epw_filename"],
-                            os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
+                            os.path.join(scaffold.districts_path.resources_dir, template_data["epw"]["filename"]))
             else:
                 raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
 
             if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
                 shutil.copy(
                     template_data["mos_weather"]["mos_weather_filename"],
-                    os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                    os.path.join(scaffold.districts_path.resources_dir, template_data["mos_weather"]["filename"])
                 )
             else:
                 raise Exception(
@@ -158,11 +155,19 @@ class DistrictSystemConnector(model_connector_base):
 
             self.run_template(
                 spawn_building_template,
-                os.path.join(b_modelica_path.files_dir, "building.mo"),
+                os.path.join(scaffold.districts_path.files_dir, "building.mo"),
                 project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
+                model_name="SOMEMODELNAME",
                 data=template_data
             )
+            # rename the within clause because this is not too flexible and the ETS needs to be in
+            # a different directory (not districts), but that isn't the case.
+            mofile = Model(os.path.join(scaffold.districts_path.files_dir, "building.mo"))
+
+            # previous paths and replace with the new one.
+            # Make sure to update the names of any resources as well.
+            mofile.set_within_statement(f'{scaffold.project_name}.Districts')
+            mofile.save()
 
             self.run_template(
                 district_cooling_system_template,
@@ -231,6 +236,7 @@ class DistrictSystemConnector(model_connector_base):
         order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
         order_files.append("DistrictCoolingSystem")
         order_files.append("CoolingIndirect")
+        order_files.append("building")
         package = PackageParser.new_from_template(
             scaffold.districts_path.files_dir, "Districts",
             order=order_files,

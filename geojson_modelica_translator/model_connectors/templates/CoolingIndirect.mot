@@ -165,8 +165,9 @@ start={{ets_data["nominal_flow_district"]}})
     "Set to true for throttling the water flow rate through a cooling coil controller"
     annotation(Dialog(tab="Controller"));
 
-  Modelica.Blocks.Interfaces.RealInput TSetBuiSup(final quantity=
-        "ThermodynamicTemperature", final unit="K")
+  Modelica.Blocks.Interfaces.RealInput TSetBuiSup(
+    final quantity="ThermodynamicTemperature",
+    final unit="K")
     "Setpoint temperature for building supply"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
 
@@ -267,15 +268,15 @@ protected
     "Specific heat capacity of the fluid";
 {% endraw %}
 
-{% raw %}
-equation
 
-  connect(hex.port_a2, port_a2) annotation (Line(points={{40,-6},{60,-6},{60,-60},
-          {100,-60}}, color={0,127,255}));
-  connect(hex.port_b1, senTDisRet.port_a) annotation (Line(points={{40,6},{60,6},
-          {60,60},{70,60}}, color={0,127,255}));
-  connect(val.port_b, hex.port_a1) annotation (Line(points={{-10,60},{0,60},{0,6},
-          {20,6}},     color={0,127,255}));
+equation
+{% raw %}
+  connect(hex.port_a2, port_a2)
+    annotation (Line(points={{40,-6},{60,-6},{60,-60},{100,-60}}, color={0,127,255}));
+  connect(hex.port_b1, senTDisRet.port_a)
+    annotation (Line(points={{40,6},{60,6},{60,60},{70,60}}, color={0,127,255}));
+  connect(val.port_b, hex.port_a1)
+    annotation (Line(points={{-10,60},{0,60},{0,6},{20,6}}, color={0,127,255}));
   connect(senMasFlo.port_b, val.port_a)
     annotation (Line(points={{-40,60},{-30,60}}, color={0,127,255}));
   connect(port_a1, senTDisSup.port_a)
@@ -292,27 +293,25 @@ equation
     annotation (Line(points={{-80,-12},{-80,-49}}, color={0,0,127}));
   connect(con.y, val.y)
     annotation (Line(points={{-69,0},{-20,0},{-20,48}}, color={0,0,127}));
-  connect(TBuiRet.port_a, hex.port_b2) annotation (Line(points={{-70,-60},{0,-60},
-          {0,-6},{20,-6}}, color={0,127,255}));
+  connect(TBuiRet.port_a, hex.port_b2)
+    annotation (Line(points={{-70,-60},{0,-60},{0,-6},{20,-6}}, color={0,127,255}));
   connect(pro.y, cp.u)
     annotation (Line(points={{1,110},{18,110}}, color={0,0,127}));
   connect(senMasFlo.m_flow, pro.u2)
     annotation (Line(points={{-50,71},{-50,104},{-22,104}}, color={0,0,127}));
   connect(senTDisSup.T, dTDis.u1)
     annotation (Line(points={{-80,71},{-80,122},{-62,122}}, color={0,0,127}));
-  connect(senTDisRet.T, dTDis.u2) annotation (Line(points={{80,71},{80,80},{-70,
-          80},{-70,110},{-62,110}}, color={0,0,127}));
+  connect(senTDisRet.T, dTDis.u2)
+    annotation (Line(points={{80,71},{80,80},{-70,80},{-70,110},{-62,110}}, color={0,0,127}));
   connect(dTDis.y, pro.u1)
     annotation (Line(points={{-39,116},{-22,116}}, color={0,0,127}));
   connect(cp.y, int.u)
     annotation (Line(points={{41,110},{58,110}}, color={0,0,127}));
   connect(int.y, Q)
     annotation (Line(points={{81,110},{110,110}}, color={0,0,127}));
-  connect(Q_flow, cp.y) annotation (Line(points={{110,150},{50,150},{50,110},{41,
-          110}}, color={0,0,127}));
-{% endraw %}
+  connect(Q_flow, cp.y)
+    annotation (Line(points={{110,150},{50,150},{50,110},{41,110}}, color={0,0,127}));
 
-{% raw %}
 annotation (defaultComponentName="coo",
     Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
@@ -398,5 +397,5 @@ TwoWayEqualPercentage</a>.
 November 1, 2019, by Kathryn Hinkelman:<br/>
 First implementation. </li>
 </ul>
-</html>"));
+</html>"));{% endraw %}
 end CoolingIndirect;

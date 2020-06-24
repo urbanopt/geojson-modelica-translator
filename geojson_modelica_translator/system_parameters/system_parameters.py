@@ -41,6 +41,10 @@ class SystemParameters(object):
     """
 
     PATH_ELEMENTS = [
+        {"json_path": "$.buildings.default.load_model_parameters.spawn.idf_filename"},
+        {"json_path": "$.buildings.default.load_model_parameters.spawn.epw_filename"},
+        {"json_path": "$.buildings.default.load_model_parameters.spawn.mos_weather_filename"},
+        {"json_path": "$.buildings.default.load_model_parameters.time_series.filepath"},
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename"},
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.epw_filename"},
         {"json_path": "$.buildings.*[?load_model=Spawn].load_model_parameters.spawn.mos_weather_filename"},

@@ -68,9 +68,6 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
 
     def test_district_to_modelica(self):
         self.assertIsNotNone(self.district)
-        self.assertEqual("Spawn",
-                         self.district.system_parameters.get_param("buildings.custom")[0]["load_model"])
-
         self.district.to_modelica(self.gj.scaffold)
 
     # def test_district_to_modelica_and_run(self):
