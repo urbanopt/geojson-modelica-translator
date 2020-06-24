@@ -1,4 +1,4 @@
-within geojson_modelica_translator.model_connectors.templates;
+// within geojson_modelica_translator.model_connectors.templates;
 model HydraulicHeader "Hydraulic header manifold"
   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
     "Medium model";

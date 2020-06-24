@@ -158,7 +158,7 @@ partial model PartialBuildingWithCoolingIndirectETS
           rotation=90),
         Rectangle(
           extent={{-19,3},{19,-3}},
-          lineColor={0,0,255},S
+          lineColor={0,0,255},
           pattern=LinePattern.None,
           fillColor={0,0,255},
           fillPattern=FillPattern.Solid,
