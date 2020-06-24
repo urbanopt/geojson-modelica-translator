@@ -8,8 +8,8 @@ package MediumW = Buildings.Media.Water;
       redeclare package Medium2 =MediumW,
       show_T = true,
     redeclare building bui(
-      final idfName=idfName,
-      final weaName=weaName,
+      final idfPat=idfName,
+      final weaPat=weaName,
       T_aChiWat_nominal=280.15,
       T_bChiWat_nominal=285.15,
       nPorts_aHeaWat=1,
@@ -68,7 +68,7 @@ equation
           60},{-80,32},{-30,32}}, color={0,127,255}));
   connect(bui.ports_bHeaWat[1], port_b1) annotation (Line(points={{30,32},{80,32},
           {80,60},{100,60}}, color={0,127,255}));
-  connect(TSetChiWat,ets. TSetBuiSup) annotation (Line(points={{-120,20},{-88,20},
+  connect(TSetChiWat,ets.TSetBuiSup) annotation (Line(points={{-120,20},{-88,20},
           {-88,-58},{-34,-58}}, color={0,0,127}));
   connect(ets.port_b1, port_b2) annotation (Line(points={{32,-40},{60,-40},{60,
           0},{-60,0},{-60,-60},{-100,-60}},

@@ -12,7 +12,7 @@ model building
     "Source side medium";
   replaceable package MediumA = Buildings.Media.Air
     "Load side medium";
-  parameter Integer nZon=6-1
+  parameter Integer nZon=6
     "Number of conditioned thermal zones";
   parameter Integer facSca[nZon]=fill(5, nZon)
     "Scaling factor to be applied to on each extensive quantity";
@@ -132,16 +132,16 @@ equation
     connect(qLatGai_flow.y, multiplex3_1.u3[1]) annotation (Line(
        points={{-22,131},{-26,131},{-26,98},{-45,98}},
        color={0,0,127}));
-    connect(disFloHea.port_a,ports_a[1]) annotation (Line(
+    connect(disFloHea.port_a,ports_aHeaWat[1]) annotation (Line(
        points={{-300,0},{-280,0},{-280,-178},{-236,-178}},
        color={0,127,255}));
-    connect(disFloHea.port_b, ports_b[1]) annotation (Line(
+    connect(disFloHea.port_b,ports_bHeaWat[1] ) annotation (Line(
        points={{-216,-178},{260,-178},{260,0},{300,0}},
        color={0,127,255}));
-    connect(disFloCoo.port_a, ports_a[2]) annotation (Line(
+    connect(disFloCoo.port_a, ports_aChiWat[1]) annotation (Line(
        points={{-300,0},{-280,0},{-280,-220},{-160,-220}},
        color={0,127,255}));
-    connect(disFloCoo.port_b, ports_b[2]) annotation (Line(
+    connect(disFloCoo.port_b, ports_bChiWat[1]) annotation (Line(
        points={{-140,-220},{280,-220},{280,0},{300,0}},
        color={0,127,255}));
      connect(mulSum.y, PFan) annotation (Line(
@@ -212,8 +212,8 @@ end for;
 {% raw %}
 annotation (
 Diagram(coordinateSystem(extent={{-300,-300},{300,300}})),
-Icon(coordinateSystem(extent={{-100,-100},{100,100}}), graphics={
-          Bitmap(extent={{-40,-24},{48,22}},
+Icon(coordinateSystem(extent={{-300,-300},{300,300}}), graphics={
+          Bitmap(extent={{-10,-6},{12,5}},
           fileName="modelica://Buildings/Resources/Images/ThermalZones/EnergyPlus/EnergyPlusLogo.png")}),
 Documentation( info="<html>
 <p>
