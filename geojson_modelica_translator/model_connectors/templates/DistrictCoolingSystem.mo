@@ -61,7 +61,6 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
     annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),
         iconTransformation(extent={{-114,-54},{-94,-34}})));
-
   Modelica.Blocks.Sources.BooleanConstant on "On signal of the plant"
     annotation (Placement(transformation(extent={{-100,0},{-80,20}})));
 
@@ -90,19 +89,16 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     "District cooling plant."
     annotation (Placement(transformation(extent={{-34,-46},{-14,-26}})));
 
-  BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
-    m1_flow_nominal=bui_ETS.bui.disFloHea.m_flow_nominal,
-    m2_flow_nominal=datDes.mDis_flow_nominal)
-    annotation (Placement(transformation(extent={{20,60},{40,80}})));
-    annotation (Placement(transformation(extent={{20,60},{40,80}})));
-    //dp_nominal=100000)
+  BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui]
+  annotation (Placement(transformation(extent={{20,60},{40,80}})));
+
   Buildings.Fluid.Sources.Boundary_pT heaSou(
     redeclare package Medium = MediumW,
     T=313.15,
     nPorts=nBui) "Heating source."
     annotation (Placement(transformation(extent={{-42,70},{-22,90}})));
   Buildings.Fluid.Sources.Boundary_pT heaSin(redeclare package Medium = MediumW,
-      nPorts=nBui) "Heating sink"
+    nPorts=nBui) "Heating sink"
     annotation (Placement(transformation(extent={{82,72},{62,92}})));
   UnidirectionalParallel disNet(
     redeclare final package Medium = MediumW,
@@ -122,7 +118,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   Modelica.Blocks.Sources.RealExpression TSetChiWatDis(y=5 + 273.15)
     "Chilled water supply temperature set point on district level."
     annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
-  Modelica.Blocks.Sources.RealExpression TSetChiWatBui[nBui](y=7 + 273.15)
+  Modelica.Blocks.Sources.RealExpression TSetChiWatBui[nBui](each y=7 + 273.15)
     "Chilled water supply temperature set point on building level."
     annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
   Modelica.Blocks.Continuous.FirstOrder firOrdDel(
@@ -164,6 +160,9 @@ equation
                    {0,50},{0,73},{19,73}}, color={0,0,127}));
  connect(firOrdDel.y, cooPla.dpMea) annotation (Line(points={{29,-80},{-46,-80},
           {-46,-39},{-36,-39}}, color={0,0,127}));
+ connect(cooPla.port_b, disNet.port_aDisSup) annotation (Line(points={{-14,-41},
+                    {-6,-41},{-6,26},{16,26}}, color={0,127,255}));
+                    
 annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(

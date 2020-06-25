@@ -30,7 +30,25 @@ partial model PartialBuildingWithCoolingIndirectETS
     final allowFlowReversal=allowFlowReversalBui)
     "Building model "
     annotation (Placement(transformation(extent={{-30,8},{30,68}})));
-    annotation(Dialog(group="ETS model parameters"),
+  replaceable CoolingIndirect ets
+      annotation (Placement(transformation(extent={{-30,-82},{30,-22}})));
+equation
+  connect(TSetChiWat, ets.TSetBuiSup) annotation (Line(points={{-120,20},{-74,20},
+                  {-74,-52},{-36,-52}}, color={0,0,127}));
+  connect(port_b1, bui.ports_bHeaWat[1]) annotation (Line(points={{100,60},{60,60},
+            {60,32},{30,32}}, color={0,127,255}));
+  connect(port_a1, bui.ports_aHeaWat[1]) annotation (Line(points={{-100,60},{-60,
+            60},{-60,32},{-30,32}}, color={0,127,255}));
+  connect(port_a2, ets.port_a1) annotation (Line(points={{100,-60},{80,-60},{80,
+            0},{-60,0},{-60,-34},{-30,-34}}, color={0,127,255}));
+  connect(ets.port_b1, port_b2) annotation (Line(points={{30,-34},{54,-34},{54,-2},
+            {-54,-2},{-54,-60},{-100,-60}}, color={0,127,255}));
+  connect(bui.ports_bChiWat[1], ets.port_a2) annotation (Line(points={{30,20},{60,
+            20},{60,-70},{30,-70}}, color={0,127,255}));
+  connect(bui.ports_aChiWat[1], ets.port_b2) annotation (Line(points={{-30,20},{
+            -66,20},{-66,-70},{-30,-70}}, color={0,127,255}));
+
+annotation(Dialog(group="ETS model parameters"),
     DefaultComponentName="bui",
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
             {100,100}}), graphics={
