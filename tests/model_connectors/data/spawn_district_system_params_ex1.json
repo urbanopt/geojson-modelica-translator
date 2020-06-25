@@ -8,7 +8,6 @@
           "epw_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
           "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
           "thermal_zone_names": [
-            "Attic",
             "Core_ZN",
             "Perimeter_ZN_1",
             "Perimeter_ZN_2",
