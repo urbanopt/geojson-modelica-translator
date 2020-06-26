@@ -40,7 +40,7 @@ extends Modelica.Icons.Example;
 
     "Building model integrating multiple spawn thermal zones."
       annotation (Placement(transformation(extent={{-6,60},{14,80}})));
-      Modelica.Blocks.Sources.RealExpression TChiWatSet(y=14 + 273.15)
+      Modelica.Blocks.Sources.RealExpression TChiWatSet(y=7 + 273.15)
       "Primary loop chilled water setpoint temperature"
       annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
 
