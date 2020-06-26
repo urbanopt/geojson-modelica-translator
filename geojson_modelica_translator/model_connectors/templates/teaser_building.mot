@@ -83,14 +83,15 @@ model building
     {% endraw %}
 equation
   {% raw %}
-  connect(disFloHea.port_b, secHeaRet[1])
-      annotation (Line(points={{140,-70},{240,-70},{240,32},{300,32}}, color={0,127,255}));
-  connect(disFloHea.port_a, secHeaSup[1])
-      annotation (Line(points={{120,-70},{-242,-70},{-242,32},{-300,32}}, color={0,127,255}));
-  connect(disFloCoo.port_b, secCooRet[1])
-      annotation (Line(points={{140,-110},{252,-110},{252,-30},{300,-30}}, color={0,127,255}));
-  connect(disFloCoo.port_a, secCooSup[1])
+
+  connect(disFloHea.port_b, ports_bHeaWat[1]) annotation (Line(points={{-120,-90},
+            {248,-90},{248,-60},{300,-60}}, color={0,127,255}));
+  connect(disFloHea.port_a, ports_aHeaWat[1]) annotation (Line(points={{-140,-90},
+            {-280,-90},{-280,-60},{-300,-60}}, color={0,127,255}));
+  connect(disFloCoo.port_a, ports_aChiWat[1])
       annotation (Line(points={{120,-110},{-280,-110},{-280,-30},{-300,-30}}, color={0,127,255}));
+  connect(disFloCoo.port_b, ports_bChiWat[1]) annotation (Line(points={{-120,-150},
+            {260,-150},{260,-260},{300,-260}}, color={0,127,255}));
   connect(disFloHea.ports_a1, terUni.port_bHeaWat) annotation (Line(points={{-120,
           -80.6667},{-104,-80.6667},{-104,-58.3333},{-180,-58.3333}},
           color={0,127,255}));
@@ -102,6 +103,7 @@ equation
   connect(disFloCoo.ports_b1, terUni.port_aChiWat) annotation (Line(points={{-140,
           -144},{-226,-144},{-226,-56.6667},{-200,-56.6667}},
           color={0,127,255}));
+
   {% endraw %}
 
   {% for zone in data['thermal_zones'] %}

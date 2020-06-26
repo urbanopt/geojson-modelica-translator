@@ -41,7 +41,9 @@ from jinja2 import Environment, FileSystemLoader
 class SpawnConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-
+        self.required_mo_files = [
+             os.path.join(self.template_dir, 'PartialBuilding.mo'),
+        ]
         self.template_env = Environment(
             loader=FileSystemLoader(
                 searchpath=os.path.join(
@@ -229,7 +231,7 @@ class SpawnConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "coupling"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["PartialBuilding","building", "coupling"], within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 

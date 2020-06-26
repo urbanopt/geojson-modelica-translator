@@ -14,7 +14,7 @@ model building
      "Load side medium";
    parameter Boolean show_T= false
      "propagated parameter show_T";
-   parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+   parameter String filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos"
      "Library path of the file with thermal loads as time series";
    parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
      min=273.15, displayUnit="degC") = 273.15 + 40
@@ -131,15 +131,15 @@ model building
 {% raw %}
 equation
   if have_heaLoa then
-    connect(disFloHea.port_b, secHeaRet[1]) annotation (Line(points={{140,-70},{240,
+    connect(disFloHea.port_b,  ports_bHeaWat[1]) annotation (Line(points={{140,-70},{240,
           -70},{240,32},{300,32}}, color={0,127,255}));
-    connect(disFloHea.port_a, secHeaSup[1]) annotation (Line(points={{120,-70},{-242,
+    connect(disFloHea.port_a,  ports_aHeaWat[1]) annotation (Line(points={{120,-70},{-242,
           -70},{-242,32},{-300,32}}, color={0,127,255}));
   end if;
   if have_cooLoa then
-    connect(disFloCoo.port_b, secCooRet[1]) annotation (Line(points={{140,-110},{252,
+    connect(disFloCoo.port_b,  ports_bChiWat[1]) annotation (Line(points={{140,-110},{252,
           -110},{252,-30},{300,-30}}, color={0,127,255}));
-    connect(disFloCoo.port_a, secCooSup[1]) annotation (Line(points={{120,-110},{-280,
+    connect(disFloCoo.port_a, ports_aChiWat[1]) annotation (Line(points={{120,-110},{-280,
           -110},{-280,-30},{-300,-30}}, color={0,127,255}));
   end if;
   connect(terUniHea.port_bHeaWat, disFloHea.ports_a1[1]) annotation (Line(

@@ -133,7 +133,7 @@ start={{ets_data["nominal_flow_district"]}})
     annotation(Dialog(tab="Controller", enable=
           controllerType==Modelica.Blocks.Types.SimpleController.PD or
           controllerType==Modelica.Blocks.Types.SimpleController.PID));
-  parameter Real Ni(min=100*Modelica.Constants.eps) = 0.9
+  parameter Real Ni(min=100*Modelica.Constants.eps) = 0.8
     "Ni*Ti is time constant of anti-windup compensation"
     annotation(Dialog(tab="Controller", enable=
           controllerType==Modelica.Blocks.Types.SimpleController.PI or
