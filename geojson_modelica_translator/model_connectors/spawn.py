@@ -92,9 +92,9 @@ class SpawnConnector(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        spawn_coupling_template = self.template_env.get_template("spawn_coupling.mot")
-        spawn_building_template = self.template_env.get_template("spawn_building.mot")
-        spawn_mos_template = self.template_env.get_template("RunSpawnBuilding.most")
+        spawn_coupling_template = self.template_env.get_template("SpawnCouplingBuilding.mot")
+        spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
+        spawn_mos_template = self.template_env.get_template("RunSpawnCouplingBuilding.most")
         building_names = []
         for building in self.buildings:
             # create each spawn building and save to the correct directory
@@ -196,7 +196,7 @@ class SpawnConnector(model_connector_base):
                 "coupling").replace(os.path.sep, '.')
 
             file_data = spawn_mos_template.render(full_model_name=full_model_name)
-            with open(os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunSpawnBuilding.mos")), "w") as f:
+            with open(os.path.join(b_modelica_path.scripts_dir, "RunSpawnCouplingBuilding.mos"), "w") as f:
                 f.write(file_data)
 
             self.run_template(

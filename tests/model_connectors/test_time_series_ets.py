@@ -82,7 +82,7 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
         mr = ModelicaRunner()
         file_to_run = os.path.abspath(
             os.path.join(
-                self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'CouplingETS_TimeSeriesBuilding.mo'
+                self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'TimeSeriesCouplingETS.mo'
             )
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
@@ -126,7 +126,7 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
 #         mr = ModelicaRunner()
 #         file_to_run = os.path.abspath(
 #             os.path.join(
-#                 self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'CouplingETS_SpawnBuilding.mo'
+#                 self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94021950', 'SpawnCouplingETS.mo'
 #             )
 #         )
 #         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent

@@ -215,9 +215,9 @@ class TeaserConnector(model_connector_base):
         :return: None
         """
 
-        teaser_building = self.template_env.get_template("teaser_building.mot")
-        teaser_coupling = self.template_env.get_template("teaser_coupling.mot")
-        run_coupling_template = self.template_env.get_template("RunTeaserBuilding.most")
+        teaser_building = self.template_env.get_template("TeaserBuilding.mot")
+        teaser_coupling = self.template_env.get_template("TeaserCouplingBuilding.mot")
+        run_coupling_template = self.template_env.get_template("RunTeaserCouplingBuilding.most")
 
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
@@ -516,7 +516,7 @@ class TeaserConnector(model_connector_base):
 
             self.run_template(
                 run_coupling_template,
-                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunTeaserBuilding.mos")),
+                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunTeaserCouplingBuilding.mos")),
                 full_model_name=full_model_name,
                 model_name="coupling",
             )

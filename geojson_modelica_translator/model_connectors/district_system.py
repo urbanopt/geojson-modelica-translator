@@ -74,7 +74,7 @@ class DistrictSystemConnector(model_connector_base):
             # Convert this to DistrictCoolingSystem.mot
             district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mo")
             cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
-            spawn_building_template = self.template_env.get_template("spawn_building.mot")
+            spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
 
             idf_filename = self.system_parameters.get_param(
                 "$.buildings.default.load_model_parameters.spawn.idf_filename"
@@ -194,16 +194,17 @@ class DistrictSystemConnector(model_connector_base):
             else:
                 raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
 
-            mo_files = self.copy_required_mo_files(scaffold.districts_path.files_dir)
-            for f in mo_files:
-                # # Fix the within clause
-                # mofile = Model(new_filename)
-                #
-                # # previous paths and replace with the new one.
-                # # Make sure to update the names of any resources as well.
-                # mofile.set_within_statement(f'{scaffold.project_name}.Districts')
-                # mofile.save()
-                pass
+            self.copy_required_mo_files(scaffold.districts_path.files_dir)
+            # mo_files = self.copy_required_mo_files(scaffold.districts_path.files_dir)
+            # for f in mo_files:
+            # # Fix the within clause
+            # mofile = Model(new_filename)
+            #
+            # # previous paths and replace with the new one.
+            # # Make sure to update the names of any resources as well.
+            # mofile.set_within_statement(f'{scaffold.project_name}.Districts')
+            # mofile.save()
+            # pass
         finally:
             os.chdir(curdir)
 

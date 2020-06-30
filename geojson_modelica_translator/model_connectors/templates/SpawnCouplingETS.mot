@@ -1,6 +1,6 @@
 within {{project_name}}.Loads.{{model_name}};
-model CouplingETS_SpawnBuilding
-  "FMU Template for Spawn"
+model SpawnCouplingETS
+  "Spawn building connected to indirect ETS model"
 extends Modelica.Icons.Example;
 
   package MediumW = Buildings.Media.Water
@@ -146,7 +146,7 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false),
                                    extent={{-100,-100},{100,100}}),
          Diagram(coordinateSystem(preserveAspectRatio=false),
                                    extent={{-100,-100},{100,100}}),
-  __Dymola_Commands(file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/CouplingETS_SpawnBuilding.mos"
+  __Dymola_Commands(file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/SpawnCouplingETS.mos"
         "Simulate and plot"),
         experiment(StopTime=86400,
                    Tolerance=1e-06),
@@ -173,4 +173,4 @@ First implementation as a template for GeoJson-Modelica translator.
 </ul>
 </html>"));
 {% endraw %}
-end CouplingETS_SpawnBuilding;
+end SpawnCouplingETS;
