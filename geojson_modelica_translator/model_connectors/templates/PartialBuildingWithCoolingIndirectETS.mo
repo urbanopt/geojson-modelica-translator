@@ -36,7 +36,9 @@ partial model PartialBuildingWithCoolingIndirectETS
     final linearized=false)
     "Two way modulating valve"
     annotation (Placement(transformation(extent={{10,10},{-10,-10}}, origin={60,-86})));
-
+  Modelica.Fluid.Sources.FixedBoundary preSou(
+    nPorts=1)
+      annotation (Placement(transformation(extent={{-100,-98},{-80,-78}})));
 equation
   connect(TSetChiWat, ets.TSetBuiSup) annotation (Line(points={{-120,20},{-74,20},
                     {-74,-52},{-36,-52}}, color={0,0,127}));
@@ -50,11 +52,12 @@ equation
             {70,-86}}, color={0,127,255}));
   connect(ets.port_b1, port_b2) annotation (Line(points={{30,-34},{46,-34},{46,0},
             {-80,0},{-80,-60},{-100,-60}}, color={0,127,255}));
-  connect(ets.port_b2, bui.ports_aChiWat[1]) annotation (Line(points={{-30,-70},
-            {-60,-70},{-60,20},{-30,20}}, color={0,127,255}));
   connect(ets.port_a2, bui.ports_bChiWat[1]) annotation (Line(points={{30,-70},{
             60,-70},{60,20},{30,20}}, color={0,127,255}));
-
+  connect(ets.port_b2,preSou. ports[1]) annotation (Line(points={{-30,-70},{-62,
+          -70},{-62,-88},{-80,-88}},     color={0,127,255}));
+  connect(ets.port_b2, bui.ports_aChiWat[1]) annotation (Line(points={{-30,-70},
+          {-62,-70},{-62,20},{-30,20}}, color={0,127,255}));
 annotation(Dialog(group="ETS model parameters"),
     DefaultComponentName="bui",
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},

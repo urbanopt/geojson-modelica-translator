@@ -6,6 +6,8 @@ package MediumW = Buildings.Media.Water;
     final m2_flow_nominal=mDis_flow_nominal,
     redeclare final package Medium1 =MediumW,
     redeclare final package Medium2 =MediumW,
+    preSou(
+     redeclare package Medium = MediumW),
     val(
      redeclare package Medium = MediumW,
      m_flow_nominal=mDis_flow_nominal,
@@ -17,7 +19,8 @@ package MediumW = Buildings.Media.Water;
      T_bChiWat_nominal=285.15,
      nPorts_aHeaWat=1,
      nPorts_bHeaWat=1,
-     nPorts_bChiWat=1),
+     nPorts_bChiWat=1,
+     nPorts_aChiWat=1),
    redeclare CoolingIndirect ets(
      redeclare package Medium =MediumW,
      final mDis_flow_nominal=mDis_flow_nominal,
@@ -45,11 +48,8 @@ package MediumW = Buildings.Media.Water;
     "Nominal mass flow rate of secondary (building) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal= bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
-  Modelica.Fluid.Sources.FixedBoundary preSou(
-    redeclare package Medium = MediumW,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{-80,-120},{-60,-100}})));
-    Buildings.Controls.Continuous.LimPID con(
+
+  Buildings.Controls.Continuous.LimPID con(
     final controllerType=Modelica.Blocks.Types.SimpleController.PI,
     final k=1,
     final yMax=1,
@@ -66,8 +66,6 @@ package MediumW = Buildings.Media.Water;
     annotation (Placement(transformation(extent={{-44,-144},{-24,-124}})));
 
 equation
-  connect(ets.port_b2, preSou.ports[1]) annotation (Line(points={{-30,-70},{-66,
-            -70},{-66,-100},{-78,-100}}, color={0,127,255}));
   connect(con.y, val.y) annotation(Line(points={{9,-114},{50,-114},{50,-108}},
                 color={0,0,127}));
   connect(con.u_s, mDis_flowSet.y) annotation (Line(points={{-14,-114},{-23,-114}},
@@ -75,12 +73,9 @@ equation
   connect(mDis_mea.y, con.u_m) annotation (Line(points={{-23,-134},{-2,-134},{-2,-126}},
                 color={0,0,127}));
 
-
-
   annotation (Icon(graphics={
                       Bitmap(extent={{-72,-62},{62,74}},
                       fileName="modelica://Buildings/Resources/Images/ThermalZones/EnergyPlus/EnergyPlusLogo.png")}),
                   Diagram(coordinateSystem(extent={{-100,-140},{100,100}})));
-
 
 end BuildingSpawnZ6WithCoolingIndirectETS;
