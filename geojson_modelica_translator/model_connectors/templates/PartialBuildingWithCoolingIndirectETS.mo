@@ -25,7 +25,7 @@ partial model PartialBuildingWithCoolingIndirectETS
         rotation=0,
         origin={-110,30})));
   // COMPONENTS
-  replaceable Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding bui(
+  replaceable PartialBuilding bui(
     final allowFlowReversal=allowFlowReversalBui)
     "Building model "
     annotation (Placement(transformation(extent={{-30,8},{30,68}})));
