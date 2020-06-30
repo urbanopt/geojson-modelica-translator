@@ -1,6 +1,6 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-"Example illustrating the coupling of Spawn building loads to heating and chilled water infinite supplies with no ETS"
+"Example illustrating the coupling of Spawn building loads infinite cooling and heating sources with no ETS"
 extends Modelica.Icons.Example;
 package MediumW = Buildings.Media.Water
    "Source side medium";
