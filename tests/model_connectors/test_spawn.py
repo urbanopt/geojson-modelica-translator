@@ -91,7 +91,7 @@ class SpawnModelConnectorSingleBuildingTest(unittest.TestCase):
         results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
         self.assertTrue(os.path.join(results_path, 'stdout.log'))
         self.assertTrue(
-            os.path.join(results_path, 'spawn_single_Loads_B5a6b99ec37f4de7f94020090_CouplingETS_SpawnBuilding.fmu')
+            os.path.join(results_path, 'spawn_single_Loads_B5a6b99ec37f4de7f94020090_SpawnCouplingETS.fmu')
         )
 
 

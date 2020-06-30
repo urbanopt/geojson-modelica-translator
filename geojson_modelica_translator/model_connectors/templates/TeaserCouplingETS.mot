@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model teaser_coupling_ets
+model TeaserCouplingETS
     "TEASER building connected to indirect cooling ETS"
   extends Modelica.Icons.Example;
   package MediumW = Buildings.Media.Water
@@ -155,7 +155,7 @@ equation
        connect(mHeaWatSup.y, supHeaWat.m_flow_in) annotation (Line(points={{-59,48},{-42,48}}, color={0,0,127}));
   annotation (
 {% endraw %}
-   __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunCouplingETS_TEASERBuilding.mos"
+   __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunTeaserCouplingETS.mos"
           "Simulate and plot"),
           experiment(StopTime=86400,
                      Tolerance=1e-06),
@@ -194,4 +194,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end teaser_coupling_ets;
+end TeaserCouplingETS;

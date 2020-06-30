@@ -74,10 +74,10 @@ class TimeSeriesConnectorETS(model_connector_base):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        timeSeries_ets_coupling_template = self.template_env.get_template("CouplingETS_TimeSeriesBuilding.mot")
-        timeSeries_building_template = self.template_env.get_template("time_series_building.mot")
+        timeSeries_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
+        timeSeries_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
-        timeSeries_ets_mos_template = self.template_env.get_template("RunCouplingETS_TimeSeriesBuilding.most")
+        timeSeries_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -108,7 +108,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 else:
                     raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
-                # write a file name building.mo, CoolingIndirect.mo and CouplingETS_TimeSeriesBuilding.mo
+                # write a file name building.mo, CoolingIndirect.mo and TimeSeriesCouplingETS.mo
                 # Run the templating
                 file_data = timeSeries_building_template.render(
                     project_name=scaffold.project_name,
@@ -145,18 +145,18 @@ class TimeSeriesConnectorETS(model_connector_base):
                     scaffold.project_name,
                     scaffold.loads_path.files_relative_dir,
                     f"B{building['building_id']}",
-                    "CouplingETS_TimeSeriesBuilding").replace(os.path.sep, '.')
+                    "TimeSeriesCouplingETS").replace(os.path.sep, '.')
 
                 file_data = timeSeries_ets_mos_template.render(
-                    full_model_name=full_model_name, model_name="CouplingETS_TimeSeriesBuilding"
+                    full_model_name=full_model_name, model_name="TimeSeriesCouplingETS"
                 )
 
-                with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_TimeSeriesBuilding.mos"), "w") as f:
+                with open(os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"), "w") as f:
                     f.write(file_data)
 
                 self.run_template(
                     timeSeries_ets_coupling_template,
-                    os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo"),
+                    os.path.join(b_modelica_path.files_dir, "TimeSeriesCouplingETS.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -186,7 +186,7 @@ class TimeSeriesConnectorETS(model_connector_base):
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
                 b_modelica_path, b,
-                ["PartialBuilding", "building", "CoolingIndirect", "CouplingETS_TimeSeriesBuilding"],
+                ["PartialBuilding", "building", "CoolingIndirect", "TimeSeriesCouplingETS"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()

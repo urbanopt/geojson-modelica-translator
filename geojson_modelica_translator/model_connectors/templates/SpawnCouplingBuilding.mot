@@ -1,12 +1,9 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-   "FMU Template for Spawn"
+"Example illustrating the coupling of Spawn building loads to heating and chilled water infinite supplies with no ETS"
 extends Modelica.Icons.Example;
-
 package MediumW = Buildings.Media.Water
    "Source side medium";
-package MediumA = Buildings.Media.Air
-   "Load side medium";
 {% raw %}
   building bui(
       T_aChiWat_nominal=280.15,
@@ -77,10 +74,6 @@ equation
           {-10,20},{-10,-50},{20,-50}},color={0,127,255}));
   connect(supChiWat.ports[1], bui.ports_aChiWat[1]) annotation (Line(points={{-30,-40},
           {-10,-40},{-10,-46},{20,-46}},color={0,127,255}));
-{% endraw %}
-
-  // TODO: determine how to handle the "lines"
-{% raw %}
  annotation (Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},{160,60}}),
         graphics={Text(
@@ -88,7 +81,7 @@ equation
           lineColor={28,108,200},
           textString="")}),
 {% endraw %}
-        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunSpawnBuilding.mos"
+        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunSpawnCouplingBuilding.mos"
 {% raw %}
          "Simulate and plot"),
         experiment(
@@ -128,7 +121,7 @@ revisions=
 <ul>
 <li>
 March 21, 2020, by Nicholas Long:<br/>
-GeoJson-Modelica translator template first implementation.
+GeoJson-Modelica translator template first implementation, infinite source to building (no ETS).
 </li>
 <li>
 February 21, 2020, by Antoine Gautier:<br/>
