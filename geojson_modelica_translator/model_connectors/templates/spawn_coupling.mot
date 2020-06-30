@@ -9,6 +9,8 @@ package MediumA = Buildings.Media.Air
    "Load side medium";
 {% raw %}
   building bui(
+      T_aChiWat_nominal=280.15,
+      T_bChiWat_nominal=285.15,
       nPorts_aHeaWat=1,
       nPorts_bHeaWat=1,
       nPorts_aChiWat=1,
@@ -63,9 +65,9 @@ package MediumA = Buildings.Media.Air
 {% endraw %}
 equation
 {% raw %}
-  connect(bui.ports_bHeaWat[1],sinHeaWat. ports[1]) annotation (Line(points={{80,-50},
+  connect(bui.ports_bHeaWat[1], sinHeaWat.ports[1]) annotation (Line(points={{80,-50},
           {104,-50},{104,20},{124,20}},color={0,127,255}));
-  connect(bui.ports_bChiWat[2],sinChiWat. ports[1]) annotation (Line(points={{80,-46},
+  connect(bui.ports_bChiWat[1], sinChiWat.ports[1]) annotation (Line(points={{80,-46},
           {104,-46},{104,-40},{124,-40}}, color={0,127,255}));
   connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-52,24},{-70,24},
           {-70,20},{-89,20}},color={0,0,127}));
@@ -73,7 +75,7 @@ equation
           {-10,20},{-10,-50},{20,-50}},color={0,127,255}));
   connect(TChiWatSup.y,supChiWat. T_in) annotation (Line(points={{-89,-40},{-70,
           -40},{-70,-36},{-52,-36}}, color={0,0,127}));
-  connect(supChiWat.ports[1], bui.ports_aChiWat[2]) annotation (Line(points={{-30,-40},
+  connect(supChiWat.ports[1], bui.ports_aChiWat[1]) annotation (Line(points={{-30,-40},
           {-10,-40},{-10,-46},{20,-46}},color={0,127,255}));
 {% endraw %}
 
