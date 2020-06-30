@@ -168,7 +168,7 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(
       StartTime=13392000,
-      StopTime=13824000,
+      StopTime=13478400,
       Tolerance=1e-06,
       __Dymola_Algorithm="Cvode"));
 end DistrictCoolingSystem;
