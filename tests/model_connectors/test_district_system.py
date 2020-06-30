@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
+from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -38,6 +39,7 @@ from geojson_modelica_translator.geojson_modelica_translator import (
 from geojson_modelica_translator.model_connectors.district_system import (
     DistrictSystemConnector
 )
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -66,19 +68,18 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
 
         # TODO: the buildings are hard coded right now, need to fix that!
 
-    def test_district_to_modelica(self):
+    def test_district_to_modelica_and_run(self):
         self.assertIsNotNone(self.district)
         self.district.to_modelica(self.gj.scaffold)
 
-    # def test_district_to_modelica_and_run(self):
         # make sure the model can run using the ModelicaRunner class
-        # mr = ModelicaRunner()
-        # file_to_run = os.path.abspath(
-        #     os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
-        # )
-        # run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        # exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
-        # self.assertEqual(0, exitcode)
-        #
-        # results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
-        # self.assertTrue(os.path.join(results_path, 'stdout.log'))
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            os.path.join(self.gj.scaffold.districts_path.files_dir, 'DistrictCoolingSystem.mo'),
+        )
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        self.assertEqual(0, exitcode)
+
+        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))

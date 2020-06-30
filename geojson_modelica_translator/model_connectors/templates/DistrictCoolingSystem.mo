@@ -5,8 +5,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
 {% raw %}
  package MediumW = Buildings.Media.Water "Medium model for water";
   inner parameter
-   Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Data.DesignDataParallel4GDC
-   datDes(
+   DesignDataParallel4GDC datDes(
    nBui=nBui,
    mDis_flow_nominal=sum({bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui})*1.01,
    mCon_flow_nominal={bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui},

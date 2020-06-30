@@ -220,8 +220,8 @@ class DistrictSystemConnector(model_connector_base):
         :return: None
         """
 
-        # now create the Districts level package. This (for now) will create the package without considering any existing
-        # files in the Districts directory.
+        # now create the Districts level package. This (for now) will create the package without
+        # considering any existing files in the Districts directory.
         order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
         order_files.append("DistrictCoolingSystem")
         order_files.append("CoolingIndirect")
