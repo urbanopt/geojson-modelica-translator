@@ -34,37 +34,31 @@ import shutil
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from jinja2 import Environment, FileSystemLoader
 from modelica_builder.model import Model
 
 
 class DistrictSystemConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
-        self.required_mo_files = [
-            os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'),
-            os.path.join(self.template_dir, 'PartialDistribution.mo'),
-            os.path.join(self.template_dir, 'PartialBuilding.mo'),
-            os.path.join(self.template_dir, 'PartialConnection2Pipe.mo'),
-            os.path.join(self.template_dir, 'PartialBuildingETS.mo'),
-            os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'),
-            os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'),
-            os.path.join(self.template_dir, 'CentralCoolingPlant.mo'),
-            os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'),
-            os.path.join(self.template_dir, 'ChillerStage.mo'),
-            os.path.join(self.template_dir, 'ConnectionParallel.mo'),
-            os.path.join(self.template_dir, 'CoolingTowerParellel.mo'),
-            os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'),
-            os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'),
-            # os.path.join(self.template_dir, 'HydraulicHeader.mo'),
-            os.path.join(self.template_dir, 'PipeDistribution.mo'),
-            os.path.join(self.template_dir, 'PipeConnection.mo'),
-            os.path.join(self.template_dir, 'UnidirectionalParallel.mo'),
-        ]
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialDistribution.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialConnection2Pipe.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingETS.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'CentralCoolingPlant.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'ChillerStage.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'ConnectionParallel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParellel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PipeDistribution.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PipeConnection.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'UnidirectionalParallel.mo'))
 
     def to_modelica(self, scaffold):
         """
@@ -200,13 +194,8 @@ class DistrictSystemConnector(model_connector_base):
             else:
                 raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
 
-            for f in self.required_mo_files:
-                if not os.path.exists(f):
-                    raise Exception(f"Required MO file not found: {f}")
-
-                new_filename = os.path.join(scaffold.districts_path.files_dir, os.path.basename(f))
-                shutil.copy(f, new_filename)
-
+            mo_files = self.copy_required_mo_files(scaffold.districts_path.files_dir)
+            for f in mo_files:
                 # # Fix the within clause
                 # mofile = Model(new_filename)
                 #
@@ -214,7 +203,7 @@ class DistrictSystemConnector(model_connector_base):
                 # # Make sure to update the names of any resources as well.
                 # mofile.set_within_statement(f'{scaffold.project_name}.Districts')
                 # mofile.save()
-
+                pass
         finally:
             os.chdir(curdir)
 
