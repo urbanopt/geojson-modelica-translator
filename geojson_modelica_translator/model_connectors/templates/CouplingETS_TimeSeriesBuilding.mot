@@ -31,12 +31,10 @@ model CouplingETS_TimeSeriesBuilding
     eta=0.8)
     "Indirect cooling energy transfer station ETS."
       annotation (Placement(transformation(extent={{12,-64},{36,-44}})));
-  Buildings.Applications.DHC.Loads.Examples.BaseClasses.BuildingTimeSeries bui(
+  building bui(
     filNam=
     "modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
     have_pum=true,
-    facScaHea=10,
-    facScaCoo=40,
     delTBuiCoo=5,
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
