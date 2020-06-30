@@ -1,6 +1,6 @@
 within {{project_name}}.Loads.{{model_name}};
 model SpawnCouplingETS
-  "FMU Template for Spawn"
+  "Spawn building connected to indirect ETS model"
 extends Modelica.Icons.Example;
 
   package MediumW = Buildings.Media.Water
