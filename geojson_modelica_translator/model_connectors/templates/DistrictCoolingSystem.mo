@@ -88,6 +88,10 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     annotation (Placement(transformation(extent={{-34,-46},{-14,-26}})));
 
   BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui]
+  BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
+    idfName="modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/RefBldgSmallOfficeNew2004_Chicago.idf",
+    weaName="modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos")
+   "Vectorized spawn building."
   annotation (Placement(transformation(extent={{20,60},{40,80}})));
 
   Buildings.Fluid.Sources.Boundary_pT heaSou(

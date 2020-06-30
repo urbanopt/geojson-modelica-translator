@@ -174,9 +174,9 @@ model CoolingTowerWithBypass
     Ti=Ti) "Cooling tower fan speed controller"
     annotation (Placement(transformation(extent={{-12,50},{8,70}})));
 
-  Modelica.Blocks.Sources.RealExpression TLvgCooTow(y=cooTowSys.sta_b.T)
-    "Condenser water temperature leaving the towers"
-    annotation (Placement(transformation(extent={{-30,30},{-10,50}})));
+  Modelica.Blocks.Sources.RealExpression TLvgCooTow(y=senTCWSup.T)
+      "Condenser water temperature leaving the towers"
+      annotation (Placement(transformation(extent={{-30,30},{-10,50}})));
 
   Modelica.Blocks.Math.RealToBoolean reaToBoo "Real to boolean signal"
     annotation (Placement(transformation(extent={{-90,-90},{-70,-70}})));
