@@ -40,7 +40,6 @@ class ETSConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
         """This class will template the ETS modelica model. It will be used for sizing ETS models."""
-        # here comes the Jinja2 function: Environment()
         # it loads all the "*.mot" files into an environment by Jinja2
         self.template_env = Environment(
             loader=FileSystemLoader(

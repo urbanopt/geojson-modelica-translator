@@ -8,18 +8,18 @@ extends Modelica.Icons.Example;
   package MediumA = Buildings.Media.Air
    "Air side medium";
 {% raw %}
-  parameter Modelica.SIunits.MassFlowRate m1_flow_nominal=
+  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal=
    (bui.disFloCoo.m_flow_nominal.*(bui.delTBuiCoo/delTDisCoo))
    "Nominal mass flow rate of primary (district) district cooling side";
-  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal= bui.disFloCoo.m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal= bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
   parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10
     "Nominal district supply and return water temperature difference";
 
   CoolingIndirect coo(
    redeclare package Medium = MediumW,
-    m1_flow_nominal=m1_flow_nominal,
-    m2_flow_nominal=m2_flow_nominal,
+    mDis_flow_nominal=mDis_flow_nominal,
+    mBui_flow_nominal=mBui_flow_nominal,
     dp1_nominal=500,
     dp2_nominal=500,
     dpValve_nominal=7000,
@@ -31,11 +31,16 @@ extends Modelica.Icons.Example;
 
    building bui(
      have_pum= false,
-     nPorts_a=2,
-     nPorts_b=2)
+     T_aChiWat_nominal=280.15,
+     T_bChiWat_nominal=285.15,
+     nPorts_aHeaWat=1,
+     nPorts_bHeaWat=1,
+     nPorts_aChiWat=1,
+     nPorts_bChiWat=1)
+
     "Building model integrating multiple spawn thermal zones."
-      annotation (Placement(transformation(extent={{6,66},{12,72}})));
-      Modelica.Blocks.Sources.RealExpression TChiWatSet(y=14 + 273.15)
+      annotation (Placement(transformation(extent={{-6,60},{14,80}})));
+      Modelica.Blocks.Sources.RealExpression TChiWatSet(y=7 + 273.15)
       "Primary loop chilled water setpoint temperature"
       annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
 
@@ -113,24 +118,24 @@ connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{-12
           -10},{-12,-42},{-10,-42}},  color={0,127,255}));
 connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{10,-42},{10,-10},
           {40,-10}},      color={0,127,255}));
-connect(coo.TSet, TChiWatSet.y) annotation (Line(points={{-12,-48},{-16,-48},{-16,
-          -30},{-59,-30}},   color={0,0,127}));
+connect(TChiWatSet.y, coo.TSetBuiSup) annotation (Line(points={{-59,-30},{-18,
+                   -30},{-18,-50},{-2,-50}}, color={0,0,127}));
 connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-42,54},{-44,54},
           {-44,30},{-59,30}},  color={0,0,127}));
 connect(secMasFloRat.y, pumBui.m_flow_in) annotation (Line(points={{-59,-50},{-30,-50}
         ,{-30,-58}}, color={0,0,127}));
-connect(supHeaWat.ports[1], bui.ports_a[1]) annotation (Line(points={{-20,50},{-20,
-          73},{-16,73}},   color={0,127,255}));
-connect(sinHeaWat.ports[1], bui.ports_b[1]) annotation (Line(points={{40,50},{30,
-          50},{30,73},{14,73}},  color={0,127,255}));
-connect(pumBui.port_b, bui.ports_a[2]) annotation (Line(points={{-80,-50},{-94,-50},
-          {-94,75},{-16,75}},color={0,127,255}));
+connect(supHeaWat.ports[1], bui.ports_aHeaWat[1]) annotation (Line(points={{-30,
+                  78},{-20,78},{-20,68},{-6,68}}, color={0,127,255}));
+connect(bui.ports_bHeaWat[1], sinHeaWat.ports[1]) annotation (Line(points={{14,
+        68},{28,68},{28,80},{40,80}}, color={0,127,255}));
+connect(bui.ports_bChiWat[1], coo.port_a2) annotation (Line(points={{14,64},{72,
+        64},{72,-56},{20,-56}}, color={0,127,255}));
+connect(pumBui.port_b, bui.ports_aChiWat[1]) annotation (Line(points={{-40,-70},
+        {-92,-70},{-92,46},{-20,46},{-20,64},{-6,64}}, color={0,127,255}));
 connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{40,-70},{-10,-70},
-          {-10,-54}},   color={0,127,255}));
+          {-10,-54}}, color={0,127,255}));
 connect(pumBui.port_a, coo.port_b2) annotation (Line(points={{-20,-70},{0,-70},
           {0,-56}}, color={0,127,255}));
-connect(bui.ports_b[2], coo.port_a2) annotation (Line(points={{14,75},{80,75},
-          {80,-54},{10,-54}}, color={0,127,255}));
 connect(supChiWat.m_flow_in, disMasFloRat.y) annotation (Line(points={{-42,-2},
                     {-50,-2},{-50,-10},{-59,-10}},color={0,0,127}));
 connect(mHeaWatSup.y, supHeaWat.m_flow_in) annotation (Line(points={{-59,48},
@@ -143,6 +148,8 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false),
                                    extent={{-100,-100},{100,100}}),
   __Dymola_Commands(file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/CouplingETS_SpawnBuilding.mos"
         "Simulate and plot"),
+        experiment(StopTime=86400,
+                   Tolerance=1e-06),
 Documentation(info=
 "<html>
 <p>

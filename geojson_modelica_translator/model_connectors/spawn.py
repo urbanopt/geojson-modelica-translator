@@ -21,7 +21,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
 CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUR
+
+EMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -35,20 +37,12 @@ from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
-from jinja2 import Environment, FileSystemLoader
 
 
 class SpawnConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-
-        self.template_env = Environment(
-            loader=FileSystemLoader(
-                searchpath=os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), "templates"
-                )
-            )
-        )
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -162,7 +156,10 @@ class SpawnConnector(model_connector_base):
             if os.path.exists(template_data["idf"]["idf_filename"]):
                 shutil.copy(
                     template_data["idf"]["idf_filename"],
-                    os.path.join(b_modelica_path.resources_dir, template_data["idf"]["filename"]),
+                    os.path.join(
+                        b_modelica_path.resources_dir,
+                        template_data["idf"]["filename"],
+                    ),
                 )
             else:
                 raise Exception(
@@ -210,6 +207,9 @@ class SpawnConnector(model_connector_base):
                 data=template_data
             )
 
+            # Copy the required modelica files
+            self.copy_required_mo_files(b_modelica_path.files_dir)
+
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, building_names, keep_original_models=keep_original_models)
 
@@ -229,7 +229,7 @@ class SpawnConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "coupling"], within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["PartialBuilding", "building", "coupling"], within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 

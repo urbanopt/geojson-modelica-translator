@@ -7,25 +7,25 @@ model teaser_coupling_ets
   package MediumA = Buildings.Media.Air
     "Load side medium";
 {% raw %}
-  parameter Modelica.SIunits.MassFlowRate m1_flow_nominal=
+  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal=
    (bui.disFloCoo.m_flow_nominal.*(bui.delTBuiCoo/delTDisCoo))
     "Nominal mass flow rate of primary (district) district cooling side";
-  parameter Modelica.SIunits.MassFlowRate m2_flow_nominal= bui.disFloCoo.m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal= bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
   parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10
     "Nominal district supply and return water temperature difference";
 
   CoolingIndirect coo(
    redeclare package Medium = MediumW,
-    m1_flow_nominal=m1_flow_nominal,
-    m2_flow_nominal=m2_flow_nominal,
+    mDis_flow_nominal=mDis_flow_nominal,
+    mBui_flow_nominal=mBui_flow_nominal,
     dp1_nominal=500,
     dp2_nominal=500,
     dpValve_nominal=7000,
     use_Q_flow_nominal=true,
     Q_flow_nominal=-1*(sum(bui.terUni.QCoo_flow_nominal)),
     T_a1_nominal=273.15 + 8,
-    T_a2_nominal=273.15 + 19)
+    T_a2_nominal=273.15 + 12)
     "Indirect cooling energy transfer station ETS."
       annotation (Placement(transformation(extent={{-4,-60},{20,-40}})));
   building bui(
@@ -33,10 +33,10 @@ model teaser_coupling_ets
     have_heaLoa=true,
     have_cooLoa=true,
     have_weaBus=true,
-    nPorts_bCoo=1,
-    nPorts_bHea=1,
-    nPorts_aHea=1,
-    nPorts_aCoo=1)
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1)
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{0,60},{20,80}})));
 
@@ -128,9 +128,8 @@ equation
         points={{40,30},{30,30},{30,-22.8667},{50.0333,-22.8667}},
         color={255,204,51},
         thickness=0.5));
-      connect(coo.TSet, TChiWatSet.y)
-        annotation (Line(points={{-2,-50},{-48,-50},{-48,
-               -10},{-59,-10}}, color={0,0,127}));
+      connect(TChiWatSet.y, coo.TSetBuiSup) annotation (Line(points={{-59,-30},{-18,
+           -30},{-18,-50},{-2,-50}}, color={0,0,127}));
        connect(supHeaWat.T_in, THeaWatSup.y)
         annotation (Line(points={{-42,34},{-46,34},{-46,30},{-59,30}}, color={0,0,127}));
        connect(secMasFloRat.y, pumBui.m_flow_in)
@@ -145,16 +144,15 @@ equation
         annotation (Line(points={{-42,-22},{-46,-22},{-46,10},{-59,10}}, color={0,0,127}));
        connect(sinChiWat.ports[1], coo.port_b1)
         annotation (Line(points={{60,-30},{40,-30},{40,-44},{20,-44}}, color={0,127,255}));
-       connect(supHeaWat.ports[1], bui.secHeaSup[1])
+       connect(supHeaWat.ports[1], bui.ports_aHeaWat[1])
         annotation (Line(points={{-20,30},{-8,30},{-8,64},{0,64}}, color={0,127,255}));
-       connect(sinHeaWat.ports[1], bui.secHeaRet[1])
+       connect(sinHeaWat.ports[1], bui.ports_bHeaWat[1])
         annotation (Line(points={{60,30},{28,30},{28,64},{20,64}}, color={0,127,255}));
-       connect(pumBui.port_b, bui.secCooSup[1])
-        annotation (Line(points={{-60,-72},{-88,-72},{-88,67.0667},{0,67.0667}}, color={0,127,255}));
-       connect(coo.port_a2, bui.secCooRet[1])
-        annotation (Line(points={{20,-56},{92,-56},{92,67},{20,67}}, color={0,127,255}));
-       connect(mHeaWatSup.y, supHeaWat.m_flow_in)
-        annotation (Line(points={{-59,48},{-42,48}}, color={0,0,127}));
+       connect(bui.ports_bChiWat[1], coo.port_a2) annotation (Line(points={{20,64},{88,
+                  64},{88,-56},{20,-56}}, color={0,127,255}));
+       connect(pumBui.port_b, bui.ports_aChiWat[1]) annotation (Line(points={{-60,-72},
+                  {-90,-72},{-90,64},{0,64}}, color={0,127,255}));
+       connect(mHeaWatSup.y, supHeaWat.m_flow_in) annotation (Line(points={{-59,48},{-42,48}}, color={0,0,127}));
   annotation (
 {% endraw %}
    __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunCouplingETS_TEASERBuilding.mos"

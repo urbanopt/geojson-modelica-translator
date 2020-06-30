@@ -35,18 +35,13 @@ from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
-from jinja2 import Environment, FileSystemLoader
 
 
 class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
-        self.required_mo_files = [
-            os.path.join(self.template_dir, 'PartialBuilding.mo'),
-        ]
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -159,19 +154,15 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(b_modelica_path.scripts_dir, "RunCouplingETS_TimeSeriesBuilding.mos"), "w") as f:
                     f.write(file_data)
 
-                file_data = timeSeries_ets_coupling_template.render(
+                self.run_template(
+                    timeSeries_ets_coupling_template,
+                    os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                 )
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CouplingETS_TimeSeriesBuilding.mo")),
-                          "w") as f:
-                    f.write(file_data)
 
-                # Copy the required modelica files
-                for f in self.required_mo_files:
-                    shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
-
+                self.copy_required_mo_files(b_modelica_path.files_dir)
         finally:
             os.chdir(curdir)
 

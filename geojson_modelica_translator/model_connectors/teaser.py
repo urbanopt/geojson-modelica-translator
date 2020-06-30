@@ -36,7 +36,6 @@ from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, copytree
-from jinja2 import Environment, FileSystemLoader
 from modelica_builder.model import Model
 from teaser.project import Project
 
@@ -47,11 +46,7 @@ class TeaserConnector(model_connector_base):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
-        self.required_mo_files = [
-            os.path.join(self.template_dir, 'PartialBuilding.mo'),
-        ]
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -527,8 +522,8 @@ class TeaserConnector(model_connector_base):
             )
 
             # copy over the required mo files and add the other models to the package order
-            for f in self.required_mo_files:
-                shutil.copy(f, os.path.join(b_modelica_path.files_dir, os.path.basename(f)))
+            mo_files = self.copy_required_mo_files(b_modelica_path.files_dir)
+            for f in mo_files:
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
             package.add_model('coupling')

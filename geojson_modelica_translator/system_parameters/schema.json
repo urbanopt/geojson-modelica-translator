@@ -382,6 +382,69 @@
         "filepath"
       ],
       "additionalProperties": false
+    },
+    "central_cooling_plant_parameters": {
+      "description": "Central cooling plant with maximum number of two chillers. Parameters associated with the model",
+      "type": "object",
+      "properties": {
+        "Q_flow_nominal": {
+          "description": "Nominal district cooling load (Watts)",
+          "type": "number",
+          "default": 8000
+        },
+        "mCHW_flow_nominal": {
+          "description": "Nominal chilled water mass flow rate (kg/s).",
+          "type": "number",
+          "default": 10
+        },
+        "mCW_flow_nominal": {
+          "description": "Nominal condenser water mass flow rate (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "dpCHW_nominal": {
+          "description": "Nominal chilled water (evaporator) side pressure drop (Pa).",
+          "type": "number",
+          "default": 10
+        },
+        "dpCW_nominal": {
+          "description": "Nominal cooling water (condenser) side pressure drop (Pa).",
+          "type": "number",
+          "default": 80000
+        },
+        "dpSetPoi": {
+          "description": "The Chilled water circuit pressure drop setpoint (Pa)",
+          "type": "number",
+          "default": 999
+        },
+        "TCHWSet": {
+          "description": "District circuit chilled water temperature setpoint (K)",
+          "type": "number",
+          "default": 278.15
+        },
+        "dpCHWPum_nominal": {
+          "description": "Chiller isolation valve pressure drop(Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "dpCWPum_nominal": {
+          "description": "Cooling tower isolation valve pressure drop(Pa)",
+          "type": "number",
+          "default": 6000
+        }
+      },
+      "required": [
+        "Q_flow_nominal",
+        "mCHW_flow_nominal",
+        "mCW_flow_nominal",
+        "dpCHW_nominal",
+        "dpCW_nominal",
+        "dpSetPoi",
+        "TCHWSet",
+        "dpCHWPum_nominal",
+        "dpCWPum_nominal"
+      ],
+      "additionalProperties": true
     }
   }
 }

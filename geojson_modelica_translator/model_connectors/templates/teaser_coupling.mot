@@ -7,10 +7,10 @@ package MediumW = Buildings.Media.Water
 
  building bui(
 {% raw %}
-   nPorts_bCoo=1,
-   nPorts_bHea=1,
-   nPorts_aHea=1,
-   nPorts_aCoo=1)
+  nPorts_aHeaWat=1,
+  nPorts_bHeaWat=1,
+  nPorts_aChiWat=1,
+  nPorts_bChiWat=1)
    "Building with thermal loads as TEASER zones"
    annotation (Placement(transformation(extent={{20,40},{40,60}})));
  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
@@ -71,14 +71,14 @@ equation
            {-80,80},{-99,80}},color={0,0,127}));
   connect(TChiWatSup.y,supChiWat. T_in) annotation (Line(points={{-99,20},{-80,20},
            {-80,24},{-62,24}},     color={0,0,127}));
-  connect(sinChiWat.ports[1], bui.secCooRet[1]) annotation (Line(points={{120,20},
-           {80,20},{80,47},{40,47}}, color={0,127,255}));
-  connect(sinHeaWat.ports[1], bui.secHeaRet[1]) annotation (Line(points={{120,80},
-           {80,80},{80,44},{40,44}}, color={0,127,255}));
-  connect(supHeaWat.ports[1], bui.secHeaSup[1]) annotation (Line(points={{-40,80},
-           {-10,80},{-10,44},{20,44}}, color={0,127,255}));
-  connect(bui.secCooSup[1], supChiWat.ports[1]) annotation (Line(points={{20,47.0667},
-           {-10,47.0667},{-10,20},{-40,20}}, color={0,127,255}));
+  connect(sinChiWat.ports[1], bui.ports_bChiWat[1]) annotation (Line(points={{120,
+           20},{74,20},{74,44},{40,44}}, color={0,127,255}));
+  connect(bui.ports_bHeaWat[1], sinHeaWat.ports[1]) annotation (Line(points={{40,
+           48},{74,48},{74,80},{120,80}}, color={0,127,255}));
+  connect(supHeaWat.ports[1], bui.ports_aHeaWat[1]) annotation (Line(points={{-40,
+           80},{0,80},{0,48},{20,48}}, color={0,127,255}));
+  connect(supChiWat.ports[1], bui.ports_aChiWat[1]) annotation (Line(points={{-40,
+           20},{0,20},{0,44},{20,44}}, color={0,127,255}));  
   connect(weaDat.weaBus, bui.weaBus) annotation (Line(
                    points={{56,86},{36,86},{36,55.1333},{38.0333,55.1333}},
                    color={255,204,51}));

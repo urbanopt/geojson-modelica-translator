@@ -29,6 +29,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import shutil
+
+from jinja2 import Environment, FileSystemLoader
 
 
 class Base(object):
@@ -45,10 +48,29 @@ class Base(object):
         """
         self.buildings = []
         self.system_parameters = system_parameters
+
+        # initialize the templating framework (Jinja2)
+        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
+
+        # Note that the order of the required MO files is important as it will be the order that
+        # the "package.order" will be in.
+        self.required_mo_files = []
         # extract data out of the urbanopt_building object and store into the base object
 
-    # These methods need to be defined in each of the derived model connectors
-    # def to_modelica(self):
+    def copy_required_mo_files(self, dest_folder):
+        """Copy any required_mo_files to the destination
+
+        :param dest_folder: String, folder to copy the resulting MO files into.
+        """
+        result = []
+        for f in self.required_mo_files:
+            if not os.path.exists(f):
+                raise Exception(f"Required MO file not found: {f}")
+
+            result.append(shutil.copy(f, os.path.join(dest_folder, os.path.basename(f))))
+
+        return result
 
     def run_template(self, template, save_file_name, **kwargs):
         """Create an instance from a jinja template"""
@@ -57,3 +79,6 @@ class Base(object):
         os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
+
+    # These methods need to be defined in each of the derived model connectors
+    # def to_modelica(self):
