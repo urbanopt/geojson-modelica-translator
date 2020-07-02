@@ -2,7 +2,6 @@
 
 model DistrictCoolingSystem "Example to test the district cooling system."
   extends Modelica.Icons.Example;
-{% raw %}
  package MediumW = Buildings.Media.Water "Medium model for water";
   inner parameter
    DesignDataParallel4GDC datDes(
@@ -172,4 +171,3 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
       Tolerance=1e-06,
       __Dymola_Algorithm="Cvode"));
 end DistrictCoolingSystem;
-{% endraw %}
