@@ -1,4 +1,4 @@
-# Run `pip install -r requirements.txt`
+# Run `pip install -r requirements.txt` or `pip install -U --upgrade-strategy eager -r requirements.txt`
 # Remember to also add them in setup.py
 
 # core libraries

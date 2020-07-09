@@ -1,6 +1,6 @@
 //within geojson_modelica_translator.model_connectors.templates;
 
-model CoolingTowerParellel
+model CoolingTowerParallel
   "Multiple identical cooling towers in parallel connection"
   extends Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
      riseTimeValve=30,
@@ -292,4 +292,4 @@ The cooling tower type is replacable.
 </p>
 </html>"),
     __Dymola_Commands);
-end CoolingTowerParellel;
+end CoolingTowerParallel;

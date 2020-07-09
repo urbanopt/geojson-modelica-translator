@@ -53,7 +53,7 @@ class DistrictSystemConnector(model_connector_base):
         self.required_mo_files.append(os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ChillerStage.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ConnectionParallel.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParellel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParallel.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PipeDistribution.mo'))
@@ -71,8 +71,7 @@ class DistrictSystemConnector(model_connector_base):
         curdir = os.getcwd()
 
         try:
-            # Convert this to DistrictCoolingSystem.mot
-            district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mo")
+            district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mot")
             cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
             spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
 

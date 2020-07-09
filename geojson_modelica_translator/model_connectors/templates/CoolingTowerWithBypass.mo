@@ -115,7 +115,7 @@ model CoolingTowerWithBypass
     "Leaving water temperature"
     annotation (Placement(transformation(extent={{100,20},{120,40}})));
 
-  CoolingTowerParellel cooTowSys(
+  CoolingTowerParallel cooTowSys(
     use_inputFilter=true,
     redeclare package Medium = Medium,
     num=num,
