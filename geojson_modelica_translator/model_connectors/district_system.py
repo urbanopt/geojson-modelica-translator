@@ -103,9 +103,11 @@ class DistrictSystemConnector(model_connector_base):
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
                 },
+                "nominal_values": {
+                    "dT": self.system_parameters.get_param("$.district_system.default.cooling_plant.delta_t_nominal")
+                },
                 "thermal_zones": [],
                 "thermal_zones_count": len(thermal_zones),
-
             }
             for tz in thermal_zones:
                 # TODO: method for creating nice zone names for modelica
