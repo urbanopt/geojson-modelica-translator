@@ -19,6 +19,7 @@ model building
      "Nominal building supply and return chilled water temperature difference";
 
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
+    // TODO: Dehardcode
     k=fill(293.15, nZon),
     y(each final unit="K", each displayUnit="degC"))
     "Minimum temperature set point"
@@ -26,6 +27,7 @@ model building
     annotation (Placement(transformation(extent={{-290,230},{-270,250}})));
     {% endraw %}
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
+    // TODO: Dehardcode
     k=fill(297.15, nZon),
     y(each final unit="K",each displayUnit="degC"))
     "Maximum temperature set point"

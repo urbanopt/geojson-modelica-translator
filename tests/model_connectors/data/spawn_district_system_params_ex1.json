@@ -31,5 +31,12 @@
         }
       }
     }
+  },
+  "district_system": {
+    "default": {
+      "cooling_plant": {
+        "delta_t_nominal": 6
+      }
+    }
   }
 }

@@ -107,8 +107,7 @@
             "data_required": [
               "building_name"
             ]
-          },
-          "additionalProperties": true
+          }
         }
       },
       "additionalProperties": false
@@ -250,6 +249,15 @@
             "Direct Return",
             "Reverse Return"
           ]
+        },
+        "cooling_plant": {
+          "type": "object",
+          "properties": {
+            "delta_t_nominal": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -314,8 +322,7 @@
         "pressure_drop_hx_primary",
         "supply_water_temperature_district",
         "supply_water_temperature_building"
-      ],
-      "additionalProperties": true
+      ]
     },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
@@ -443,8 +450,7 @@
         "TCHWSet",
         "dpCHWPum_nominal",
         "dpCWPum_nominal"
-      ],
-      "additionalProperties": true
+      ]
     }
   }
 }

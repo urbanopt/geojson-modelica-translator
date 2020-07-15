@@ -118,11 +118,13 @@ model building
      final T_aLoaCoo_nominal=T_aLoaCoo_nominal) "Cooling terminal unit"
      annotation (Placement(transformation(extent={{70,10},{90,30}})));
    Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
+        // TODO: Dehardcode
       k=20 + 273.15,
       y(unit = "K", displayUnit = "degC"))
     "Minimum temperature setpoint"
      annotation (Placement(transformation(extent={{-60,20},{-40,40}})));
    Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
+        // TODO: Dehardcode
        k=24 + 273.15,
        y(unit="K",displayUnit="degC"))
     "Maximum temperature setpoint"
