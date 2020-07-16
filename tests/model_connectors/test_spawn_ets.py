@@ -50,7 +50,7 @@ class SpawnModelConnectorSingleBuildingETSTest(unittest.TestCase):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
 
-        project_name = "spawn_single"
+        project_name = "spawn_single_ets"
         if os.path.exists(os.path.join(self.output_dir, project_name)):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
