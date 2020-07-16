@@ -36,7 +36,7 @@ from pathlib import Path
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.spawnBui_ETS_Coupling import (
+from geojson_modelica_translator.model_connectors.spawn_ets_coupling import (
     SpawnConnectorETS
 )
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner

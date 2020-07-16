@@ -435,7 +435,6 @@ class TeaserConnectorETS(model_connector_base):
                             'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
                         ]
                     )
-
                     mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
                         annotations=[
