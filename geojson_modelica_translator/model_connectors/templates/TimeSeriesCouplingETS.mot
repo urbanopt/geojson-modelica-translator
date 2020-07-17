@@ -12,7 +12,7 @@ model TimeSeriesCouplingETS
     "Nominal mass flow rate of primary (district) district cooling side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal= bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
-  parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10
+  parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10 //Dehardcode 
     "Nominal district supply and return water temperature difference";
 
   CoolingIndirect coo(
@@ -51,10 +51,10 @@ model TimeSeriesCouplingETS
          extent={{-10,-10},{10,10}},
          rotation=0,
          origin={-30,78})));
-   Modelica.Blocks.Sources.RealExpression TChiWatSet(y=14 + 273.15)
+   Modelica.Blocks.Sources.RealExpression TChiWatSet(y=14 + 273.15) //Dehardcode 
      "Primary loop (district side) chilled water setpoint temperature."
       annotation (Placement(transformation(extent={{-76,-52},{-56,-32}})));
-   Modelica.Blocks.Sources.RealExpression THeaWatSup(y=bui.terUniHea.T_aHeaWat_nominal)
+   Modelica.Blocks.Sources.RealExpression THeaWatSup(y=bui.terUniHea.T_aHeaWat_nominal)  //Dehardcode where this is originally set 
      "Heating water supply temperature"
       annotation (Placement(transformation(extent={{-80,76},{-60,96}})));
    Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
