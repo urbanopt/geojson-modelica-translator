@@ -162,7 +162,7 @@ To apply the copyright/license to all the files, run the following managed task
 
 Templating Diagram
 ------------------
-.. image:: ./ConnectionTemplate.jpg
+.. image:: ./ConnectionTemplate.png
 
 
 Todos

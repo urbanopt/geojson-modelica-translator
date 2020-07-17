@@ -343,7 +343,7 @@ class TeaserConnector(model_connector_base):
                 mofile.add_parameter(
                     'Integer', 'nPorts',
                     assigned_value=n_ports,
-                    string_comment='Number of air ports.',
+                    string_comment='Number of fluid ports.',
                     annotations=['connectorSizing=true']
                 )
                 # Set the fraction latent person in the template by simply replacing the value
@@ -425,26 +425,29 @@ class TeaserConnector(model_connector_base):
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.TAir', 'TAir',
-                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
+                        annotations=[
+                            'Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})'
+                        ]
                     )
-
                     mofile.add_connect(
                         f'{thermal_zone_name}.TRad', 'TRad',
-                        annotations=['Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})']
+                        annotations=[
+                            'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
+                        ]
                     )
                     mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
-                        annotations=['Line(points={{43,4},{42,4},{42,-28},{-8,-28},{-8,-50},{-59,-50}},'
-                                     'color={0,0,127})'
-                                     ]
+                        annotations=[
+                            'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
+                        ]
                     )
 
                     mofile.add_connect(
                         f'{thermal_zone_name}.intGainsRad', 'port_b',
-                        annotations=['Line(points={{92,24},{98,24},{98,-100},{40,-100}}, color={191,0,0})'
-                                     ]
+                        annotations=[
+                            'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})'
+                        ]
                     )
-
                     mofile.insert_equation_for_loop(
                         index_identifier="i",
                         expression_raw="1:nPorts",
