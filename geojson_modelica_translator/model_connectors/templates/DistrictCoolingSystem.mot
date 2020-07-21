@@ -81,7 +81,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     TCW_nominal=308.15,
     dT_nominal={{ data["nominal_values"]["dT"] }},
     TMin=288.15,
-    PFan_nominal=5000, // TODO: dehardcode
+    PFan_nominal={{data["nominal_values"]["PFan"]}},
     dpCHWPum_nominal=dpCHWPum_nominal,
     dpCWPum_nominal=dpCWPum_nominal,
     tWai=tWai,
@@ -96,7 +96,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     {% endraw %}
     idfName="{{data["idf"]["idf_filename"]}}",
     // TODO: Dehardcode
-    weaName="modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw")
+    weaName="{{data["epw"]["epw_filename"]}}")
     {% raw %}
    "Vectorized spawn building."
   annotation (Placement(transformation(extent={{20,60},{40,80}})));
