@@ -35,7 +35,8 @@
   "district_system": {
     "default": {
       "cooling_plant": {
-        "delta_t_nominal": 6
+        "delta_t_nominal": 6,
+        "power_fan_nominal": 5001
       }
     }
   }

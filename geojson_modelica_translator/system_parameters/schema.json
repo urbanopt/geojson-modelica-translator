@@ -255,6 +255,9 @@
           "properties": {
             "delta_t_nominal": {
               "type": "number"
+            },
+            "power_fan_nominal": {
+              "type": "number"
             }
           },
           "additionalProperties": false
