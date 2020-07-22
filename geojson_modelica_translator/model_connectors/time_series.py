@@ -40,7 +40,6 @@ from geojson_modelica_translator.utils import ModelicaPath
 class TimeSeriesConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -159,7 +158,7 @@ class TimeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["PartialBuilding", "building", "coupling"],
+                b_modelica_path, b, ["building", "coupling"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()

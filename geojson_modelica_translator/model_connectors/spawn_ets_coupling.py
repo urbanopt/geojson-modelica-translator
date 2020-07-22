@@ -41,7 +41,6 @@ class SpawnConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
         self.required_mo_files.append(os.path.join(self.template_dir, 'HydraulicHeader.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -251,7 +250,7 @@ class SpawnConnectorETS(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["PartialBuilding", "building", "CoolingIndirect", "SpawnCouplingETS"],
+                b_modelica_path, b, ["building", "CoolingIndirect", "SpawnCouplingETS"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
