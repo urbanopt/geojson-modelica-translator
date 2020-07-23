@@ -112,7 +112,10 @@ class DistrictSystemConnector(model_connector_base):
                         ),
                     "PFan": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.power_fan_nominal"
-                        )
+                        ),
+                    "dpCHWPump": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.dpCHWPump_nominal"
+                    )
                 },
                 "thermal_zones": [],
                 "thermal_zones_count": len(thermal_zones),
