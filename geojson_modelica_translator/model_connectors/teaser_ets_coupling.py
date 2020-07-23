@@ -79,6 +79,8 @@ class TeaserConnectorETS(model_connector_base):
                 # UO SDK defaults to current year, however TEASER only supports up to Year 2015
                 # https://github.com/urbanopt/TEASER/blob/0614a11be16a8a95ef99fc8e763b737ec986013c/teaser/data/input/inputdata/TypeBuildingElements.json#L818  # noqa
                 urbanopt_building.feature.properties["year_built"] = 2015
+            if urbanopt_building.feature.properties["year_built"] > 2015:
+                urbanopt_building.feature.properties["year_built"] = 2015
 
             self.buildings.append(
                 {
@@ -433,7 +435,6 @@ class TeaserConnectorETS(model_connector_base):
                             'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
                         ]
                     )
-
                     mofile.add_connect(
                         f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
                         annotations=[
