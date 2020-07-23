@@ -258,6 +258,9 @@
             },
             "power_fan_nominal": {
               "type": "number"
+            },
+            "dpCHWPump_nominal": {
+              "type": "number"
             }
           },
           "additionalProperties": false
