@@ -34,6 +34,7 @@ import os
 import shutil
 from io import BytesIO
 from zipfile import ZipFile
+from sys import platform ##AA added 
 
 from setuptools import find_packages, setup
 
@@ -86,8 +87,8 @@ if os.path.exists(save_path):
     shutil.rmtree(save_path)
 if os.path.exists(tmp_save_path):
     shutil.rmtree(tmp_save_path)
-mbl_archive_name = "issue1437_district_heating_cooling"
-# mbl_archive_name = "2eb417f9ca2a9dce188988f1937bf79253daa9ff"
+#mbl_archive_name = "issue1437_district_heating_cooling"
+mbl_archive_name = "2eb417f9ca2a9dce188988f1937bf79253daa9ff" ##AA needed to use this in order to avoid an error about a package.order file 
 r = get(f"https://github.com/lbl-srg/{repo_name}/archive/{mbl_archive_name}.zip")
 with ZipFile(BytesIO(r.content)) as zip:
     files = zip.namelist()
@@ -95,11 +96,22 @@ with ZipFile(BytesIO(r.content)) as zip:
         # check if this needs to be extracted by looking into the libs_to_extract list
         for lib_to_extract in libs_to_extract:
             # make the path system independent when searching
-            if os.path.join(lib_to_extract.replace("/", os.path.sep)) in file:
-                print(f"extracting ... {file}")
-                zip.extract(file, path=tmp_save_path)
+            if platform == "win64" or platform == "win32": ##AA added this to resolve an error due to a too-long file path 
+                #if os.path.join(lib_to_extract.replace("/", os.path.sep)) in file:
+                if os.path.join(lib_to_extract) in file:
+                    print(f"extracting ... {file}")
+                    #zip.extract(file, path=tmp_save_path)
+                    zip.extract(file) ##AA replaced this due to file path length 
+                else: #AA added, for non-Windows case 
+                     if os.path.join(lib_to_extract.replace("/", os.path.sep)) in file:
+                        print(f"extracting ... {file}")
+                        zip.extract(file, path=tmp_save_path)
+
 
 # Move the whole directory
-shutil.move(os.path.join(tmp_save_path, f"{repo_name}-{mbl_archive_name}"), save_path)
+if platform == "win64" or platform == "win32":
+   shutil.move(f"{repo_name}-{mbl_archive_name}", save_path) ##AA modified this due to problem with file path length 
+else: ##AA added for non-Windows case
+    shutil.move(os.path.join(tmp_save_path, f"{repo_name}-{mbl_archive_name}"), save_path)
 if os.path.exists(tmp_save_path):
     shutil.rmtree(tmp_save_path)
