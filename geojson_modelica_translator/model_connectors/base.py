@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -79,6 +80,18 @@ class Base(object):
         os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
+
+    def modelica_path(self, filename):
+        """Write a modelica path string for a given filename"""
+        p = Path(filename)
+        if p.suffix == ".idf":
+            # FIXME: Need double slash after "modelica"
+            # TODO: The output path is still awfully brittle. Can we at least rename the parent folder to be the same as the idf filename?
+            outputname = Path(r"modelica://Buildings") / "Resources" / "Data" / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice" / p.name
+        elif p.suffix == ".epw" or p.suffix == ".mos":
+            outputname = f"modelica://Buildings/Resources/weatherdata/{p.name}"
+        # return outputname
+        print(outputname)
 
     # These methods need to be defined in each of the derived model connectors
     # def to_modelica(self):
