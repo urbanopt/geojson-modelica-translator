@@ -107,6 +107,7 @@ class DistrictSystemConnector(model_connector_base):
                     "mos_weather_filename": mos_weather_filename,
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
+                    # TODO: Can we remove "model_connector_base" from this call? Compare line 111 with line 210
                     "modelica_path": model_connector_base.modelica_path(self, mos_weather_filename),
                 },
                 "nominal_values": {
