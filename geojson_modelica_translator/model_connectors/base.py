@@ -87,11 +87,11 @@ class Base(object):
         if p.suffix == ".idf":
             # FIXME: Need double slash after "modelica"
             # TODO: The output path is still awfully brittle. Can we at least rename the parent folder to be the same as the idf filename?
-            outputname = Path(r"modelica://Buildings") / "Resources" / "Data" / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice" / p.name
+            # outputname = Path(r"modelica://Buildings") / "Resources" / "Data" / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice" / p.name
+            outputname = f"modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice{p.name}"
         elif p.suffix == ".epw" or p.suffix == ".mos":
             outputname = f"modelica://Buildings/Resources/weatherdata/{p.name}"
-        # return outputname
-        print(outputname)
+        return outputname
 
     # These methods need to be defined in each of the derived model connectors
     # def to_modelica(self):
