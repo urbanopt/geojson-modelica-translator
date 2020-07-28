@@ -60,7 +60,7 @@ class DistrictSystemConnector(model_connector_base):
         self.required_mo_files.append(os.path.join(self.template_dir, 'PipeConnection.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'UnidirectionalParallel.mo'))
 
-    def to_modelica(self, scaffold):
+    def to_modelica(self, scaffold, model_connector_base):
         """
         # TODO: Need to pass in list of buildings to connect to network.
 
@@ -95,16 +95,19 @@ class DistrictSystemConnector(model_connector_base):
                     "idf_filename": idf_filename,
                     "filename": os.path.basename(idf_filename),
                     "path": os.path.dirname(idf_filename),
+                    "modelica_path": model_connector_base.modelica_path(self, idf_filename),
                 },
                 "epw": {
                     "epw_filename": epw_filename,
                     "filename": os.path.basename(epw_filename),
                     "path": os.path.dirname(epw_filename),
+                    "modelica_path": model_connector_base.modelica_path(self, epw_filename),
                 },
                 "mos_weather": {
                     "mos_weather_filename": mos_weather_filename,
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
+                    "modelica_path": model_connector_base.modelica_path(self, mos_weather_filename),
                 },
                 "nominal_values": {
                     "dT": self.system_parameters.get_param(
