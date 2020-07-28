@@ -52,15 +52,11 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   {% raw %}
    "Nominal pressure drop of chilled water pumps";
   parameter Modelica.SIunits.Pressure dpCWPum_nominal=6000
-   "Nominal pressure drop of chilled water pumps";
+   "Nominal pressure drop of condenser water pumps";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
    final computeWetBulbTemperature=true,
-   {% endraw %}
-   filNam= Modelica.Utilities.Files.loadResource(
-      "{{ data["mos_weather"]["mos_weather_filename"]}}"
-    )
-  )
-  {% raw %}
+  // TODO: Dehardcode
+   filNam= Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
     annotation (Placement(transformation(extent={{-100,-84},{-80,-64}})));
   Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
     annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),
@@ -97,8 +93,8 @@ model DistrictCoolingSystem "Example to test the district cooling system."
 
   BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
     {% endraw %}
-    idfName="{{data["idf"]["idf_filename"]}}",
-    weaName="{{data["epw"]["epw_filename"]}}")
+    idfName="{{data["idf"]["modelica_path"]}}",
+    weaName="{{data["epw"]["modelica_path"]}}")
     {% raw %}
    "Vectorized spawn building."
   annotation (Placement(transformation(extent={{20,60},{40,80}})));
