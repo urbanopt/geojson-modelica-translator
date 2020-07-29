@@ -20,13 +20,15 @@ The GeoJSON / Modelica Translator is still in early alpha-phase development and 
 
 If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
 
-currently you need python3 and pip3 to install/build the packages. (add python3 to the environment variables)
+Currently you need python3 and pip3 to install/build the packages. (add python3 to the environment variables)
+
+Ensure you have sufficient memory in your Docker containers for Modelica simulations. 2Gb is insufficient, 8Gb has worked.
 
 .. code-block:: bash
 
     pip install -r requirements.txt
     python setup.py build
-    **Follow first 3 major bullets in Running Simulations below**
+    Follow first 4 major bullets in :ref:`running-simulations` below
     python setup.py test
 
 The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
@@ -85,6 +87,8 @@ Adjacency Matrix
 Topology Maker
 ++++++++++++++
 
+.. _running-simulations:
+
 Running Simulations
 -------------------
 
@@ -95,9 +99,9 @@ will automatically run the models without having to follow the steps below.
 * Clone https://github.com/lbl-srg/modelica-buildings/
     * Move insde the modelica-buildings repo you just checked out
     * Pull the correct branch with: `git checkout issue1437_district_heating_cooling`
-    * Install git-lfs
-        * Mac: `brew install git-lfs; git lfs install`
-        * Ubuntu: `sudo apt install git-lfs; git lfs install`
+* Install git-lfs
+    * Mac: `brew install git-lfs; git lfs install`
+    * Ubuntu: `sudo apt install git-lfs; git lfs install`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Example simulation:
     * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
