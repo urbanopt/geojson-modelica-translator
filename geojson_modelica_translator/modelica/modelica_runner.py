@@ -32,6 +32,7 @@ import glob
 import os
 import shutil
 import subprocess
+from pathlib import Path
 
 
 class ModelicaRunner(object):
@@ -131,15 +132,17 @@ class ModelicaRunner(object):
 
         # get the location of the results path
         results_path = os.path.join(run_path, f'{project_name}_results')
-        self.move_result_files(run_path, results_path)
+        self.move_results(run_path, results_path, file_to_run)
         return exitcode
 
-    def move_result_files(self, from_path, to_path):
-        """This method aggressively moves the results of the simulation. It is aggressive, because it move any
-        file in the folder `from_path`; therefore, use with caution. This will only move files.
+    def move_results(self, from_path, to_path, file_ran=None):
+        """This method aggressively moves the results of the simulation. It is aggressive, because it moves any
+        file in the folder `from_path`; therefore, use with caution. This method moves all files, plus all folders
+        beginning with the "file_ran" name.
 
         :param from_path: string, where the files will move from
         :param to_path: string, where the files will be saved. Will be created if does not exist.
+        :param file_ran: string, name of modelica file used by run_in_docker method
         :return:
         """
         # if there are results, they will simply be overwritten (for now).
@@ -149,7 +152,7 @@ class ModelicaRunner(object):
         # print(f"Moving simulation results from {from_path} to {to_path}")
         for f in os.listdir(from_path):
             to_move = os.path.join(from_path, f)
-            if os.path.isfile(to_move):
+            if os.path.isfile(to_move) or f.startswith(str(Path(file_ran).stem)):
                 shutil.move(to_move, os.path.join(to_path, f))
 
     def cleanup_path(self, path):
