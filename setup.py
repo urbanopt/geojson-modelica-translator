@@ -102,7 +102,7 @@ setup(
 #         # check if this needs to be extracted by looking into the libs_to_extract list
 #         for lib_to_extract in libs_to_extract:
 #             # make the path system independent when searching
-#             if platform == "win64" or platform == "win32":  # AA added this to resolve an error due to a too-long file path
+#             if platform == "win64" or platform == "win32":  # AA added this to resolve an error due to a too-long file path # noqa
 #                 # if os.path.join(lib_to_extract.replace("/", os.path.sep)) in file:
 #                 if os.path.join(lib_to_extract) in file:
 #                     print(f"extracting ... {file}")
