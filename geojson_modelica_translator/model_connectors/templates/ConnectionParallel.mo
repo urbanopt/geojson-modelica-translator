@@ -1,12 +1,14 @@
-model ConnectionParallel "Model for connecting an agent to the DHC system"
+model ConnectionParallel
+  "Model for connecting an agent to the DHC system"
   extends Buildings.Applications.DHC.Networks.BaseClasses.PartialConnection2Pipe(
-    redeclare model Model_pipDis = PipeDistribution (
-      final dh=dhDis, final length=lDis, final fac=1.1),
-    redeclare model Model_pipCon = PipeConnection (
+    redeclare model Model_pipDis=PipeDistribution(
+      final dh=dhDis,
+      final length=lDis,
+      final fac=1.1),
+    redeclare model Model_pipCon=PipeConnection(
       final fac=1.1,
       final length=2*lCon,
       final dh=dhCon));
-
   parameter Modelica.SIunits.Length lDis
     "Length of the distribution pipe before the connection";
   parameter Modelica.SIunits.Length lCon
