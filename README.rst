@@ -1,5 +1,5 @@
-GeoJSON to Modelica Translator
-------------------------------
+GeoJSON Modelica Translator
+---------------------------
 
 .. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
     :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
@@ -11,28 +11,31 @@ GeoJSON to Modelica Translator
 Description
 -----------
 
-The GeoJSON / Modelica Translator is a one-way trip from GeoJSON with a well-defined property's schema to a set of Modelica buildings. The project will eventually allow multiple paths to model the loads portion of the building models; however, the initial implementation uses the Teaser library to create the RC models with the appropriate coefficients.
+The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON with a well-defined property's schema to a set of Modelica buildings. The project will eventually allow multiple paths to model the loads portion of the building models; however, the initial implementation uses the Teaser library to create the RC models with the appropriate coefficients.
 
 Getting Started
 ---------------
 
-The GeoJSON / Modelica Translator is still in early alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is to run the following
+The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need python3 and pip3 to install/build the packages. Python2 is at end of life and should be avoided.
 
-If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
+* Clone this repo into a working directory
+* (optional/as-needed) Add Python 3 to the environment variables
+* **Follow first 3 major bullets in Running Simulations section below.**
+* Run :code:`pip install -r requirements.txt`
+* Test if everything is installed correctly by running :code:`py.test`
 
-currently you need python3 and pip3 to install/build the packages. (add python3 to the environment variables)
-
-.. code-block:: bash
-
-    pip install -r requirements.txt
-    python setup.py build
-    **Follow first 3 major bullets in Running Simulations below**
-    python setup.py test
-
-The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
+The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder.
 
 Developers
 **********
+
+This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc). Since
+these are included as dependent project using git there may be a need to force an update from the dependent git repos.
+The best way to accomplish this is run the following command:
+
+.. code-block::bash
+
+    pip install -U --upgrade-strategy eager -r requirements.txt
 
 This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
 
@@ -46,13 +49,6 @@ To run pre-commit against the files without calling git commit, then run the fol
 .. code-block:: bash
 
     pre-commit run --all-files
-
-Releasing to PyPi
------------------
-
-
-Modules
-*******
 
 GeoJSON
 +++++++
@@ -94,14 +90,14 @@ will automatically run the models without having to follow the steps below.
 * Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
 * Clone https://github.com/lbl-srg/modelica-buildings/
     * Move insde the modelica-buildings repo you just checked out
-    * Pull the correct branch with: `git checkout issue1437_district_heating_cooling`
+    * Pull the correct branch with: :code:`git checkout issue1437_district_heating_cooling`
     * Install git-lfs
-        * Mac: `brew install git-lfs; git lfs install`
-        * Ubuntu: `sudo apt install git-lfs; git lfs install`
+        * Mac: :code:`brew install git-lfs; git lfs install`
+        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Example simulation:
-    * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
-    * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
+    * :code:`jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
+    * :code:`jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy.
 
     .. code-block:: python
@@ -141,7 +137,7 @@ Managed Tasks
 Updating Schemas
 ****************
 
-There is managed task to automatically pull updated GeoJSON schemas from the `urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
+There is managed task to automatically pull updated GeoJSON schemas from the :code:`urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
 
 .. code-block:: bash
 
