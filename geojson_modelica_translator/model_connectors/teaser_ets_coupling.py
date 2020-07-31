@@ -46,7 +46,6 @@ class TeaserConnectorETS(model_connector_base):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -256,7 +255,7 @@ class TeaserConnectorETS(model_connector_base):
             mo_files = glob.glob(os.path.join(scaffold.loads_path.files_dir, f"B{b}/*.mo"))
             for f in mo_files:
                 # ignore the package.mo file
-                if os.path.basename(f) in ["package.mo", "PartialBuilding.mo"]:
+                if os.path.basename(f) in ["package.mo"]:
                     continue
 
                 mofile = Model(f)
