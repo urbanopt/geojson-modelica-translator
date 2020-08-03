@@ -11,15 +11,17 @@ GeoJSON Modelica Translator
 Description
 -----------
 
-The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON with a well-defined property's schema to a set of Modelica buildings. The project will eventually allow multiple paths to model the loads portion of the building models; however, the initial implementation uses the Teaser library to create the RC models with the appropriate coefficients.
+The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica project with multiple buildings loads, energy transfer stations, district system, and distribution network. The project will eventually allow multiple paths to build up different district heating and cooling system topolologies; however, the initial implementation is limited to 1GDH and 4GDC.
 
 Getting Started
 ---------------
 
-The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need python3 and pip3 to install/build the packages. Python2 is at end of life and should be avoided.
+The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need Python 3 and Pip 3 to install/build the packages. Python 2 is at end of life and should be avoided; however, Python 2 may still be needed to run the models with JModelica (this is actively being evaluated). Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
 
 * Clone this repo into a working directory
 * (optional/as-needed) Add Python 3 to the environment variables
+* Install `Docker https://docs.docker.com/get-docker/`_ for your platform
+* Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
 * **Follow first 3 major bullets in Running Simulations section below.**
 * Run :code:`pip install -r requirements.txt`
 * Test if everything is installed correctly by running :code:`py.test`
@@ -73,13 +75,6 @@ The Simulation Mapper Class can operate at mulitple levels:
 3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
 
 In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
-
-Adjacency Matrix
-++++++++++++++++
-
-
-Topology Maker
-++++++++++++++
 
 Running Simulations
 -------------------
