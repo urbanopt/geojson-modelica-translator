@@ -42,10 +42,7 @@ class DistrictSystemConnector(model_connector_base):
         super().__init__(system_parameters)
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialDistribution2Pipe.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialDistribution.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialConnection2Pipe.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingETS.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'))
