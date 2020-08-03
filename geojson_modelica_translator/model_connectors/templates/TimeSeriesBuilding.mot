@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
   "Building model with heating and cooling loads provided as time series"
-  extends PartialBuilding(
+  extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium = MediumW,
     have_fan=false,
     have_eleHea=false,
