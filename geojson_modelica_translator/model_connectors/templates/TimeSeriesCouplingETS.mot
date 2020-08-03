@@ -122,6 +122,7 @@ annotation (
    __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunTeaserCouplingETS.mos"
           "Simulate and plot"),
           experiment(StopTime=86400,
+                     Interval=3600,
                      Tolerance=1e-06),
   Documentation(info="<html>
 <p>

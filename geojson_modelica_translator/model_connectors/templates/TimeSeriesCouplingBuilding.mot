@@ -83,6 +83,7 @@ annotation (Diagram(
          "Simulate and plot"),
         experiment(
             StopTime=604800,
+            Interval=3600,
             Tolerance=1e-06),
 Documentation(info=
 "<html>
