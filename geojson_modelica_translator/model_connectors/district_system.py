@@ -110,10 +110,10 @@ class DistrictSystemConnector(model_connector_base):
                 "nominal_values": {
                     "dT": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.delta_t_nominal"
-                        ),
+                    ),
                     "PFan": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.power_fan_nominal"
-                        ),
+                    ),
                     "dpCHWPump": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.dpCHWPump_nominal"
                     )
