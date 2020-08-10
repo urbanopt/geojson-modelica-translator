@@ -113,7 +113,7 @@ class ModelicaRunner(object):
             # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
             # but must strip off the .mo extension on the model to run
             run_model = os.path.relpath(file_to_run, run_path)
-            print(f"Running Modelica file {run_model} in {run_path}")
+            print(f"Running Modelica file: {run_model} in: {run_path}")
 
             # TODO: Create a logger to show more information such as the actual run command being executed.
             p = subprocess.Popen(
