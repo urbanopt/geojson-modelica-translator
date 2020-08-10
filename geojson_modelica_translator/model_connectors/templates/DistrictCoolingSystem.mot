@@ -94,7 +94,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
   BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
     {% endraw %}
     idfName="{{data["idf"]["modelica_path"]}}",
-    weaName="{{data["epw"]["modelica_path"]}}")
+    weaName="{{data["mos_weather"]["modelica_path"]}}")
     {% raw %}
    "Vectorized spawn building."
   annotation (Placement(transformation(extent={{20,60},{40,80}})));
