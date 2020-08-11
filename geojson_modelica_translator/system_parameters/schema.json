@@ -388,7 +388,6 @@
         "idf_filename",
         "epw_filename",
         "mos_weather_filename",
-        "mos_wet_bulb_filename",
         "thermal_zone_names"
       ],
       "additionalProperties": false
