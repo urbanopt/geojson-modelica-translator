@@ -148,12 +148,16 @@ class ModelicaRunner(object):
         # if there are results, they will simply be overwritten (for now).
         if not os.path.exists(to_path):
             os.makedirs(to_path)
+        else:
+            shutil.rmtree(to_path)
+            os.makedirs(to_path)
 
         # print(f"Moving simulation results from {from_path} to {to_path}")
         for f in os.listdir(from_path):
             to_move = os.path.join(from_path, f)
-            if os.path.isfile(to_move) or f.startswith(str(Path(file_ran).stem)):
-                shutil.move(to_move, os.path.join(to_path, f))
+            if not to_move == to_path:
+                if os.path.isfile(to_move) or f.startswith(str(Path(file_ran).stem)):
+                    shutil.move(to_move, os.path.join(to_path, f))
 
     def cleanup_path(self, path):
         """
