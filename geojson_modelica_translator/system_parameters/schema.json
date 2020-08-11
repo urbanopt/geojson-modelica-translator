@@ -234,6 +234,14 @@
             "Tunnel",
             "Buried"
           ]
+        },
+        "pipe_material": {
+          "description": "Pipe material (to be used for determining surface roughness) ",
+          "type": "string",
+          "enum": [
+            "Plastic",
+            "Steel"
+          ]
         }
       },
       "additionalProperties": false
@@ -267,6 +275,14 @@
             }
           },
           "additionalProperties": false
+        },
+        "connection_configuration": {
+          "description": "Type of connection of buildings to the loop",
+          "type": "string",
+          "enum": [
+            "Series",
+            "Parallel"
+          ]
         }
       },
       "additionalProperties": false
@@ -319,6 +335,14 @@
           "description": "Supply water temperature for building (deg C)",
           "type": "number",
           "default": 7
+        },
+        "primary_design_delta_t": {
+          "description": "Design temperature differential on the primary side ",
+          "type": "number"
+        },
+        "secondary_design_delta_t": {
+          "description": "Design temperature differential on the secondary side",
+          "type": "number"
         }
       },
       "required": [
