@@ -88,12 +88,12 @@ class Base(object):
             # TODO: The output path is still awfully brittle.
             # FIXME: The f-string is hideous, but at least we can use Pathlib this way
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            outputname = f"modelica://" + str(Path("Buildings") / "Resources" /
-                "Data" / "ThermalZones" / "EnergyPlus" / "Validation" /
-                "RefBldgSmallOffice" / p.name)
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" /
+                "Data" / "ThermalZones" / "EnergyPlus" / "Validation" /  # noqa
+                "RefBldgSmallOffice" / p.name)  # noqa
         elif p.suffix == ".epw" or p.suffix == ".mos":
-            outputname = f"modelica://" + str(Path("Buildings") / "Resources" /
-            "weatherdata" / p.name)
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" /
+                "weatherdata" / p.name)  # noqa
         return outputname
 
     # These methods need to be defined in each of the derived model connectors
