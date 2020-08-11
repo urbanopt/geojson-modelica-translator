@@ -85,15 +85,14 @@ class Base(object):
         """Write a modelica path string for a given filename"""
         p = Path(filename)
         if p.suffix == ".idf":
-            # TODO: The output path is still awfully brittle.
-            # FIXME: The f-string is hideous, but at least we can use Pathlib this way
+            # TODO: The output path is awfully brittle.
+            # FIXME: The string is hideous, but without it Pathlib thinks double slashes are "spurious"
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" /
-                "Data" / "ThermalZones" / "EnergyPlus" / "Validation" /  # noqa
-                "RefBldgSmallOffice" / p.name)  # noqa
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data" /
+                                             "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice" /
+                                             p.name)
         elif p.suffix == ".epw" or p.suffix == ".mos":
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" /
-                "weatherdata" / p.name)  # noqa
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
 
     # These methods need to be defined in each of the derived model connectors
