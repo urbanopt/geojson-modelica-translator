@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
@@ -81,6 +82,9 @@ class DistrictSystemConnector(model_connector_base):
             mos_weather_filename = self.system_parameters.get_param(
                 "$.buildings.default.load_model_parameters.spawn.mos_weather_filename"
             )
+            mos_wet_bulb_filename = self.system_parameters.get_param(
+                "$.buildings.default.load_model_parameters.spawn.mos_wet_bulb_filename"
+            )
             thermal_zones = self.system_parameters.get_param(
                 "$.buildings.default.load_model_parameters.spawn.thermal_zone_names"
             )
@@ -107,6 +111,12 @@ class DistrictSystemConnector(model_connector_base):
                     # TODO: Can we remove "model_connector_base" from this call? Compare line 111 with line 210
                     "modelica_path": model_connector_base.modelica_path(self, mos_weather_filename),
                 },
+                "wet_bulb_calc": {
+                    "mos_wet_bulb_filename": mos_wet_bulb_filename,
+                    "filename": Path(mos_wet_bulb_filename).name,
+                    "path": Path(mos_wet_bulb_filename).parent,
+                    "modelica_path": model_connector_base.modelica_path(self, mos_wet_bulb_filename),
+                },
                 "nominal_values": {
                     "dT": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.delta_t_nominal"
@@ -116,6 +126,9 @@ class DistrictSystemConnector(model_connector_base):
                     ),
                     "dpCHWPump": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.dpCHWPump_nominal"
+                    ),
+                    "dpCWPump": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.dpCWPum_nominal"
                     )
                 },
                 "thermal_zones": [],

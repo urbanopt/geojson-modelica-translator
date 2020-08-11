@@ -49,14 +49,15 @@ model DistrictCoolingSystem "Example to test the district cooling system."
    "Performance data for condenser water pumps";
    {% endraw %}
   parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["dpCHWPump"] }}
-  {% raw %}
+
    "Nominal pressure drop of chilled water pumps";
-  parameter Modelica.SIunits.Pressure dpCWPum_nominal=6000
+  parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["dpCWPump"] }}
    "Nominal pressure drop of condenser water pumps";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
    final computeWetBulbTemperature=true,
-  // TODO: Dehardcode
-   filNam= Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
+
+   filNam= Modelica.Utilities.Files.loadResource("{{data["wet_bulb_calc"]["modelica_path"]}}"))
+   {% raw %}
     annotation (Placement(transformation(extent={{-100,-84},{-80,-64}})));
   Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
     annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),
