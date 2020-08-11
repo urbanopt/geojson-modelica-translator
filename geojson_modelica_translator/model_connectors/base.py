@@ -85,12 +85,15 @@ class Base(object):
         """Write a modelica path string for a given filename"""
         p = Path(filename)
         if p.suffix == ".idf":
-            # FIXME: Need double slash after "modelica"
-            # TODO: The output path is still awfully brittle. Can we at least rename the parent folder to be the same as the idf filename?  # noqa
-            # outputname = Path(r"modelica://Buildings") / "Resources" / "Data" / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice" / p.name  # noqa
-            outputname = f"modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/{p.name}"  # noqa
+            # TODO: The output path is still awfully brittle.
+            # FIXME: The f-string is hideous, but at least we can use Pathlib this way
+            # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" /
+                "Data" / "ThermalZones" / "EnergyPlus" / "Validation" /  # noqa
+                "RefBldgSmallOffice" / p.name)  # noqa
         elif p.suffix == ".epw" or p.suffix == ".mos":
-            outputname = f"modelica://Buildings/Resources/weatherdata/{p.name}"
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" /
+                "weatherdata" / p.name)  # noqa
         return outputname
 
     # These methods need to be defined in each of the derived model connectors
