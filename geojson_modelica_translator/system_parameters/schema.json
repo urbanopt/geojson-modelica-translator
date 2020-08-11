@@ -264,13 +264,13 @@
             "delta_t_nominal": {
               "type": "number"
             },
-            "power_fan_nominal": {
+            "fan_power_nominal": {
               "type": "number"
             },
-            "dpCHWPump_nominal": {
+            "chilled_water_pump_pressure_drop": {
               "type": "number"
             },
-            "dpCWPum_nominal": {
+            "condenser_water_pump_pressure_drop": {
               "type": "number"
             }
           },
