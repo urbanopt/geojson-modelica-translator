@@ -261,6 +261,9 @@
             },
             "dpCHWPump_nominal": {
               "type": "number"
+            },
+            "dpCWPum_nominal": {
+              "type": "number"
             }
           },
           "additionalProperties": false
@@ -346,6 +349,10 @@
           "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
         },
+        "mos_wet_bulb_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
+        },
         "thermal_zone_names": {
           "type": "array",
           "items": {
@@ -357,6 +364,7 @@
         "idf_filename",
         "epw_filename",
         "mos_weather_filename",
+        "mos_wet_bulb_filename",
         "thermal_zone_names"
       ],
       "additionalProperties": false
@@ -389,10 +397,16 @@
       "properties": {
         "filepath": {
           "type": "string"
+        },
+        "delTDisCoo": {
+          "description": "Nominal district supply and return water temperature difference",
+          "type": "number",
+          "default": 10
         }
       },
       "required": [
-        "filepath"
+        "filepath",
+        "delTDisCoo"
       ],
       "additionalProperties": false
     },
