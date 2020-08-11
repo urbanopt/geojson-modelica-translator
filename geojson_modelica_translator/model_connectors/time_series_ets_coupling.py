@@ -96,6 +96,11 @@ class TimeSeriesConnectorETS(model_connector_base):
                         "filepath": time_series_filename,
                         "filename": os.path.basename(time_series_filename),
                         "path": os.path.dirname(time_series_filename),
+                    },
+                    "nominal_values": {
+                        "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                            building["building_id"], "load_model_parameters.time_series.delTDisCoo"
+                        )
                     }
                 }
 

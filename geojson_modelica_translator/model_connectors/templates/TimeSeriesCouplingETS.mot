@@ -12,9 +12,10 @@ model TimeSeriesCouplingETS
     "Nominal mass flow rate of primary (district) district cooling side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal= bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
-  parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10 //Dehardcode
+{% endraw %}
+  parameter Modelica.SIunits.TemperatureDifference delTDisCoo={{ data["nominal_values"]["delTDisCoo"] }}
     "Nominal district supply and return water temperature difference";
-
+{% raw %}
   CoolingIndirect coo(
     redeclare package Medium = MediumW,
     allowFlowReversal1=false,
