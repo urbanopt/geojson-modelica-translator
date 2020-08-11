@@ -37,9 +37,9 @@
     "default": {
       "cooling_plant": {
         "delta_t_nominal": 5.56,
-        "power_fan_nominal": 5000,
-        "dpCHWPump_nominal": 6000,
-        "dpCWPum_nominal": 6000
+        "fan_power_nominal": 5000,
+        "chilled_water_pump_pressure_drop": 6000,
+        "condenser_water_pump_pressure_drop": 6000
       }
     }
   }

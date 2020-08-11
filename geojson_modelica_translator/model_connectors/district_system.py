@@ -108,7 +108,7 @@ class DistrictSystemConnector(model_connector_base):
                     "mos_weather_filename": mos_weather_filename,
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
-                    # TODO: Can we remove "model_connector_base" from this call? Compare line 111 with line 210
+                    # TODO: Should/How/Can we remove "model_connector_base" here? Compare line 112 with line 220
                     "modelica_path": model_connector_base.modelica_path(self, mos_weather_filename),
                 },
                 "wet_bulb_calc": {
@@ -118,17 +118,17 @@ class DistrictSystemConnector(model_connector_base):
                     "modelica_path": model_connector_base.modelica_path(self, mos_wet_bulb_filename),
                 },
                 "nominal_values": {
-                    "dT": self.system_parameters.get_param(
+                    "delta_temp": self.system_parameters.get_param(
                         "$.district_system.default.cooling_plant.delta_t_nominal"
                     ),
-                    "PFan": self.system_parameters.get_param(
-                        "$.district_system.default.cooling_plant.power_fan_nominal"
+                    "fan_power": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.fan_power_nominal"
                     ),
-                    "dpCHWPump": self.system_parameters.get_param(
-                        "$.district_system.default.cooling_plant.dpCHWPump_nominal"
+                    "chilled_water_pump_pressure_drop": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.chilled_water_pump_pressure_drop"
                     ),
-                    "dpCWPump": self.system_parameters.get_param(
-                        "$.district_system.default.cooling_plant.dpCWPum_nominal"
+                    "condenser_water_pump_pressure_drop": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.condenser_water_pump_pressure_drop"
                     )
                 },
                 "thermal_zones": [],

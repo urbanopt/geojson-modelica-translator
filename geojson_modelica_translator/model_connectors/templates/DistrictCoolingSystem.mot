@@ -48,10 +48,10 @@ model DistrictCoolingSystem "Example to test the district cooling system."
      dp=(dpCW_nominal+60000+6000)*{1.2,1.1,1.0,0.6}))
    "Performance data for condenser water pumps";
    {% endraw %}
-  parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["dpCHWPump"] }}
+  parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["chilled_water_pump_pressure_drop"] }}
 
    "Nominal pressure drop of chilled water pumps";
-  parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["dpCWPump"] }}
+  parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["condenser_water_pump_pressure_drop"] }}
    "Nominal pressure drop of condenser water pumps";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
    final computeWetBulbTemperature=true,
@@ -80,9 +80,9 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     dpCW_nominal=dpCW_nominal,
     TAirInWB_nominal=298.7,
     TCW_nominal=308.15,
-    dT_nominal={{ data["nominal_values"]["dT"] }},
+    dT_nominal={{ data["nominal_values"]["delta_temp"] }},
     TMin=288.15,
-    PFan_nominal={{data["nominal_values"]["PFan"]}},
+    PFan_nominal={{data["nominal_values"]["fan_power"]}},
     dpCHWPum_nominal=dpCHWPum_nominal,
     dpCWPum_nominal=dpCWPum_nominal,
     tWai=tWai,
