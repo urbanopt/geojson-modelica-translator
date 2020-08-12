@@ -190,7 +190,6 @@ class DistrictSystemConnector(model_connector_base):
                 district_cooling_system_template,
                 os.path.join(scaffold.districts_path.files_dir, "DistrictCoolingSystem.mo"),
                 project_name=scaffold.project_name,
-                model_name="SOMEMODELNAME",
                 data=template_data
             )
 
@@ -217,17 +216,10 @@ class DistrictSystemConnector(model_connector_base):
             else:
                 raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
 
-            self.copy_required_mo_files(scaffold.districts_path.files_dir)
-            # mo_files = self.copy_required_mo_files(scaffold.districts_path.files_dir)
-            # for f in mo_files:
-            # # Fix the within clause
-            # mofile = Model(new_filename)
-            #
-            # # previous paths and replace with the new one.
-            # # Make sure to update the names of any resources as well.
-            # mofile.set_within_statement(f'{scaffold.project_name}.Districts')
-            # mofile.save()
-            # pass
+            self.copy_required_mo_files(
+                scaffold.districts_path.files_dir, within=f'{scaffold.project_name}.Districts'
+            )
+
         finally:
             os.chdir(curdir)
 
