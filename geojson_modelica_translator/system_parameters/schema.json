@@ -374,7 +374,7 @@
           "type": "string"
         },
         "mos_wet_bulb_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved.",
+          "description": "Absolute path or relative path from location where file instance is saved. This field is not currently used.",
           "type": "string"
         },
         "thermal_zone_names": {
