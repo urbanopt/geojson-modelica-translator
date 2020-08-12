@@ -24,6 +24,7 @@ model TeaserCouplingETS
     dpValve_nominal=7000,
     use_Q_flow_nominal=true,
     Q_flow_nominal=-1*(sum(bui.terUni.QCoo_flow_nominal)),
+    // TODO: Sizing ?
     T_a1_nominal=273.15 + 8,
     T_a2_nominal=273.15 + 12)
     "Indirect cooling energy transfer station ETS."

@@ -36,6 +36,8 @@ from pathlib import Path
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
+from geojson_modelica_translator.model_connectors.base import \
+    Base as model_connector_base
 from geojson_modelica_translator.model_connectors.district_system import (
     DistrictSystemConnector
 )
@@ -70,7 +72,7 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
 
     def test_district_to_modelica_and_run(self):
         self.assertIsNotNone(self.district)
-        self.district.to_modelica(self.gj.scaffold)
+        self.district.to_modelica(self.gj.scaffold, model_connector_base)
 
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()

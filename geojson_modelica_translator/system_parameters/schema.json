@@ -107,8 +107,7 @@
             "data_required": [
               "building_name"
             ]
-          },
-          "additionalProperties": true
+          }
         }
       },
       "additionalProperties": false
@@ -235,6 +234,14 @@
             "Tunnel",
             "Buried"
           ]
+        },
+        "pipe_material": {
+          "description": "Pipe material (to be used for determining surface roughness) ",
+          "type": "string",
+          "enum": [
+            "Plastic",
+            "Steel"
+          ]
         }
       },
       "additionalProperties": false
@@ -249,6 +256,32 @@
           "enum": [
             "Direct Return",
             "Reverse Return"
+          ]
+        },
+        "cooling_plant": {
+          "type": "object",
+          "properties": {
+            "delta_t_nominal": {
+              "type": "number"
+            },
+            "fan_power_nominal": {
+              "type": "number"
+            },
+            "chilled_water_pump_pressure_drop": {
+              "type": "number"
+            },
+            "condenser_water_pump_pressure_drop": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "connection_configuration": {
+          "description": "Type of connection of buildings to the loop",
+          "type": "string",
+          "enum": [
+            "Series",
+            "Parallel"
           ]
         }
       },
@@ -302,6 +335,14 @@
           "description": "Supply water temperature for building (deg C)",
           "type": "number",
           "default": 7
+        },
+        "primary_design_delta_t": {
+          "description": "Design temperature differential on the primary side ",
+          "type": "number"
+        },
+        "secondary_design_delta_t": {
+          "description": "Design temperature differential on the secondary side",
+          "type": "number"
         }
       },
       "required": [
@@ -314,8 +355,7 @@
         "pressure_drop_hx_primary",
         "supply_water_temperature_district",
         "supply_water_temperature_building"
-      ],
-      "additionalProperties": true
+      ]
     },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
@@ -331,6 +371,10 @@
         },
         "mos_weather_filename": {
           "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
+        },
+        "mos_wet_bulb_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved. This field is not currently used.",
           "type": "string"
         },
         "thermal_zone_names": {
@@ -376,10 +420,16 @@
       "properties": {
         "filepath": {
           "type": "string"
+        },
+        "delTDisCoo": {
+          "description": "Nominal district supply and return water temperature difference",
+          "type": "number",
+          "default": 10
         }
       },
       "required": [
-        "filepath"
+        "filepath",
+        "delTDisCoo"
       ],
       "additionalProperties": false
     },
@@ -443,8 +493,7 @@
         "TCHWSet",
         "dpCHWPum_nominal",
         "dpCWPum_nominal"
-      ],
-      "additionalProperties": true
+      ]
     }
   }
 }

@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
@@ -57,7 +58,7 @@ class DistrictSystemConnector(model_connector_base):
         self.required_mo_files.append(os.path.join(self.template_dir, 'PipeConnection.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'UnidirectionalParallel.mo'))
 
-    def to_modelica(self, scaffold):
+    def to_modelica(self, scaffold, model_connector_base):
         """
         # TODO: Need to pass in list of buildings to connect to network.
 
@@ -81,6 +82,9 @@ class DistrictSystemConnector(model_connector_base):
             mos_weather_filename = self.system_parameters.get_param(
                 "$.buildings.default.load_model_parameters.spawn.mos_weather_filename"
             )
+            mos_wet_bulb_filename = self.system_parameters.get_param(
+                "$.buildings.default.load_model_parameters.spawn.mos_wet_bulb_filename"
+            )
             thermal_zones = self.system_parameters.get_param(
                 "$.buildings.default.load_model_parameters.spawn.thermal_zone_names"
             )
@@ -92,20 +96,43 @@ class DistrictSystemConnector(model_connector_base):
                     "idf_filename": idf_filename,
                     "filename": os.path.basename(idf_filename),
                     "path": os.path.dirname(idf_filename),
+                    "modelica_path": model_connector_base.modelica_path(self, idf_filename),
                 },
                 "epw": {
                     "epw_filename": epw_filename,
                     "filename": os.path.basename(epw_filename),
                     "path": os.path.dirname(epw_filename),
+                    "modelica_path": model_connector_base.modelica_path(self, epw_filename),
                 },
                 "mos_weather": {
                     "mos_weather_filename": mos_weather_filename,
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
+                    # TODO: Should/How/Can we remove "model_connector_base" here? Compare line 112 with line 220
+                    "modelica_path": model_connector_base.modelica_path(self, mos_weather_filename),
+                },
+                "wet_bulb_calc": {
+                    "mos_wet_bulb_filename": mos_wet_bulb_filename,
+                    "filename": Path(mos_wet_bulb_filename).name,
+                    "path": Path(mos_wet_bulb_filename).parent,
+                    "modelica_path": model_connector_base.modelica_path(self, mos_wet_bulb_filename),
+                },
+                "nominal_values": {
+                    "delta_temp": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.delta_t_nominal"
+                    ),
+                    "fan_power": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.fan_power_nominal"
+                    ),
+                    "chilled_water_pump_pressure_drop": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.chilled_water_pump_pressure_drop"
+                    ),
+                    "condenser_water_pump_pressure_drop": self.system_parameters.get_param(
+                        "$.district_system.default.cooling_plant.condenser_water_pump_pressure_drop"
+                    )
                 },
                 "thermal_zones": [],
                 "thermal_zones_count": len(thermal_zones),
-
             }
             for tz in thermal_zones:
                 # TODO: method for creating nice zone names for modelica
