@@ -1,4 +1,4 @@
-//within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 record DesignDataParallel4GDC
   "Record with design data for parallel network"
   extends Modelica.Icons.Record;

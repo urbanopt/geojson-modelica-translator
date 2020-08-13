@@ -165,7 +165,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                     data=template_data,
                 )
 
-                self.copy_required_mo_files(b_modelica_path.files_dir)
+                self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
         finally:
             os.chdir(curdir)
 

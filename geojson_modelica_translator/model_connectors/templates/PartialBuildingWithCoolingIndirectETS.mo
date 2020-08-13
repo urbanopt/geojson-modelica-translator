@@ -1,4 +1,4 @@
-//within geojson_modelica_translator.model_connectors.templates
+within geojson_modelica_translator.model_connectors.templates;
 partial model PartialBuildingWithCoolingIndirectETS
   "Partial model of a building with an energy transfer station"
   extends Buildings.Fluid.Interfaces.PartialFourPortInterface(

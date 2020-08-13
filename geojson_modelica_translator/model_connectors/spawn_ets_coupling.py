@@ -230,7 +230,7 @@ class SpawnConnectorETS(model_connector_base):
             )
 
             # Copy the required modelica files
-            self.copy_required_mo_files(b_modelica_path.files_dir)
+            self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, building_names, keep_original_models=keep_original_models)

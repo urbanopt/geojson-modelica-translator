@@ -1,4 +1,4 @@
-//within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 model ChilledWaterPumpSpeed
   "Controller for variable speed chilled water pumps"
   parameter Integer numPum(

@@ -1,5 +1,4 @@
 within {{project_name}}.Loads.{{model_name}};
-
 model CoolingIndirect
 
 {% raw %}

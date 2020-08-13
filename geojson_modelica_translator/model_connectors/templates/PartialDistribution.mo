@@ -1,4 +1,4 @@
-//within Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Networks;
+within geojson_modelica_translator.model_connectors.templates;
 partial model PartialDistribution
   "Partial model for distribution network"
   replaceable package Medium=Modelica.Media.Interfaces.PartialMedium

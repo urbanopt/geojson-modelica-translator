@@ -1,4 +1,4 @@
-//within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 model CoolingTowerWithBypass
   "Cooling tower system with bypass valve"
   replaceable package Medium=Buildings.Media.Water

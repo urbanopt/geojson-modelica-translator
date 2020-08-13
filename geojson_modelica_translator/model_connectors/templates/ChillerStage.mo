@@ -1,4 +1,4 @@
-//within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 model ChillerStage
   "Stage controller for chillers"
   parameter Modelica.SIunits.Time tWai
