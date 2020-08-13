@@ -1,4 +1,4 @@
-//within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 model BuildingSpawnZ6WithCoolingIndirectETS
   package MediumW=Buildings.Media.Water;
   extends PartialBuildingWithCoolingIndirectETS(

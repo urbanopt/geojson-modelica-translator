@@ -1,5 +1,4 @@
-// within geojson_modelica_translator.model_connectors.templates;
-
+within {{project_name}}.Districts;
 model DistrictCoolingSystem "Example to test the district cooling system."
   extends Modelica.Icons.Example;
 {% raw %}

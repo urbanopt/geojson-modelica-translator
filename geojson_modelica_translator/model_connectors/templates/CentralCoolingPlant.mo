@@ -1,4 +1,4 @@
-// within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 model CentralCoolingPlant
   "Cooling plant model with two chillers"
   package Medium=Buildings.Media.Water

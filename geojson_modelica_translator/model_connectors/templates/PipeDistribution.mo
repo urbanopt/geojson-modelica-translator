@@ -1,4 +1,4 @@
-//within Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Networks;
+within geojson_modelica_translator.model_connectors.templates;
 model PipeDistribution
   "DHC distribution pipe"
   extends Buildings.Fluid.FixedResistances.HydraulicDiameter(

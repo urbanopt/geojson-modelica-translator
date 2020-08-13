@@ -84,7 +84,7 @@ class TimeSeriesConnector(model_connector_base):
                     f"B{building['building_id']}", scaffold.loads_path.files_dir, True
                 )
 
-                self.copy_required_mo_files(b_modelica_path.files_dir)
+                self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
 
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults

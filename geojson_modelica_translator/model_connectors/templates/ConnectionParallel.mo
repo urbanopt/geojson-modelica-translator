@@ -1,3 +1,4 @@
+within geojson_modelica_translator.model_connectors.templates;
 model ConnectionParallel
   "Model for connecting an agent to the DHC system"
   extends Buildings.Applications.DHC.Networks.BaseClasses.PartialConnection2Pipe(
