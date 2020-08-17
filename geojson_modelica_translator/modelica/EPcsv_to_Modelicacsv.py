@@ -36,37 +36,39 @@ import pandas as pd
 # read the whole data set
 timeseries_output = pd.read_csv('Mass_Flow_Rates_Temperatures.csv')
 # round the data command
-timeseries_output= timeseries_output.round(2)
+timeseries_output = timeseries_output.round(2)
 # copy the first line
-timeseries_15min= timeseries_output.loc[[0],:]
-timeseries_output = pd.concat([timeseries_output,timeseries_15min]).sort_index()
+timeseries_15min = timeseries_output.loc[[0], :]
+timeseries_output = pd.concat([timeseries_output, timeseries_15min]).sort_index()
 # reset index
 timeseries_output = timeseries_output.reset_index(drop=True)
-#Pick the nominal massFlowRate
-nominalHea_massFloRate=pd.DataFrame({'#heating':['#Nominal heating water mass flow rate'],'#value':[timeseries_output['massFlowRateHeating'].max()]},
-                                        columns=['#heating','#value'])
-nominalCoo_massFloRate=pd.DataFrame({'#cooling':['#Nominal chilled water mass flow rate'],'#value':[timeseries_output['massFlowRateCooling'].max()]},
-                                        columns=['#cooling','#value'])
+# Pick the nominal massFlowRate
+nominalHea_massFloRate = pd.DataFrame({'#heating': ['#Nominal heating water mass flow rate'], '#value': [timeseries_output['massFlowRateHeating'].max()]},
+                                      columns=['#heating', '#value'])
+nominalCoo_massFloRate = pd.DataFrame({'#cooling': ['#Nominal chilled water mass flow rate'], '#value': [timeseries_output['massFlowRateCooling'].max()]},
+                                      columns=['#cooling', '#value'])
+
 
 def timeseries_to_modelica_data(file_path, EnergyPlustimestep, data_type, file_name):
-#Evaluate dimensions of the data frame
+    # Evaluate dimensions of the data frame
     size = timeseries_output.shape
-#Modifiy the index for modelica
-    timeseries_output.index = (timeseries_output.index)*EnergyPlustimestep
+# Modifiy the index for modelica
+    timeseries_output.index = (timeseries_output.index) * EnergyPlustimestep
     timeseries_output.index.name = '#time'
     timeseries_output.drop(['Date/Time'], axis=1, inplace=True)
 # Write to csv for modelica
     file = file_name + '.csv'
-    with open(file,'w') as f:
+    with open(file, 'w') as f:
         line1 = '#1'
-        line2 = data_type + ' ' + file_name + '(' + str(size[0]) + ',' + str(size[1])  + ')'
-        line3 = '#Nominal heating water mass flow rate=' + str(nominalHea_massFloRate.loc[0,'#value'])
-        line4 = '#Nominal chilled water mass flow rate=' + str(nominalCoo_massFloRate.loc[0,'#value'])
-        f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1,line2,line3,line4))
+        line2 = data_type + ' ' + file_name + '(' + str(size[0]) + ',' + str(size[1]) + ')'
+        line3 = '#Nominal heating water mass flow rate=' + str(nominalHea_massFloRate.loc[0, '#value'])
+        line4 = '#Nominal chilled water mass flow rate=' + str(nominalCoo_massFloRate.loc[0, '#value'])
+        f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1, line2, line3, line4))
         timeseries_output.to_csv(f, header=True)
 
+
 file_path = os.path.abspath('Mass_Flow_Rates_Temperatures.csv')
-EnergyPlustimestep =  60*15
+EnergyPlustimestep = 60 * 15
 data_type = 'double'
 file_name = 'modelica'
 timeseries_to_modelica_data(file_path, EnergyPlustimestep, data_type, file_name)
