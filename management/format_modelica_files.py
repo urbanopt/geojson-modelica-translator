@@ -37,7 +37,8 @@ from tempfile import mkstemp
 
 
 class FormatModelicaFiles(distutils.cmd.Command):
-    """Custom comand for applying modelicafmt to modelica files. Note that modelicafmt executable must be available in your $PATH."""
+    """Custom comand for applying modelicafmt to modelica files. Note that modelicafmt executable must be available in
+    your $PATH."""
 
     description = "Formats modelica files"
 
@@ -80,8 +81,8 @@ def apply_formatter(filepath):
     """
     try:
         subprocess.run(["modelicafmt", "-w", filepath], stdout=subprocess.PIPE, check=True)
-    except FileNotFoundError as e:
-        raise FormattingException(f'Failed to run modelicafmt; ensure it can be found in $PATH')
+    except FileNotFoundError:
+        raise FormattingException('Failed to run modelicafmt; ensure it can be found in $PATH')
     except subprocess.CalledProcessError as e:
         raise FormattingException(f'Failed to format filename: {e.stdout}')
 
@@ -90,6 +91,7 @@ class SubMap:
     """
     Class for managing substitutions into modelica template files (ie Jinja templates)
     """
+
     def __init__(self):
         self._cur_id = 1
         self._map = {}
@@ -117,10 +119,13 @@ class SubMap:
         try:
             return self._map[sub]
         except KeyError:
-            raise FormattingException(f'Key "{sub}" was not found in the substitution map, this should never happen... Perhaps the substitution name was a false positive match?')
+            raise FormattingException(f'Key "{sub}" was not found in the substitution map, this should never happen... '
+                                      f'Perhaps the substitution name was a false positive match?')
 
 
 GENERIC_CONTROL_REGEX = re.compile('({%.*?%})')
+
+
 def sub_generic(text, sub_map):
     """
     Substitutes all Jinja control statements, those that look like {% ... %}
@@ -136,7 +141,10 @@ def sub_generic(text, sub_map):
 
     return text
 
+
 EXPRESSION_REGEX = re.compile('({{.*?}})')
+
+
 def sub_expression(text, sub_map):
     """
     Substitutes all Jinja expression statements, those that look like {{ ... }}
@@ -152,8 +160,11 @@ def sub_expression(text, sub_map):
 
     return text
 
+
 COMMENTED_SUB = re.compile(r'/\*(JINJA_SUB_\d\d\d)\*/')
 NORMAL_SUB = re.compile(r'JINJA_SUB_\d\d\d')
+
+
 def reverse_sub(text, sub_map):
     """
     Reverses Jinja substitutions, ie replaces the JINJA_SUB_XXX texts with their
@@ -172,6 +183,7 @@ def reverse_sub(text, sub_map):
     text = NORMAL_SUB.sub(_replace, text)
 
     return text
+
 
 def preprocess_and_format(filename, outfilename=None):
     """
@@ -195,7 +207,7 @@ def preprocess_and_format(filename, outfilename=None):
         #   2. apply modelica formatter to format the file
         #   3. reverse the substitutions, replacing IDs with their original text
         sub_map = SubMap()
-        previous_span = (0,0)
+        previous_span = (0, 0)
         raw_regex = re.compile(r'{% raw %}[\s\S]*?{% endraw %}')
         raw_groups = [m.span() for m in raw_regex.finditer(contents)]
         with open(tmp_fd, 'w') as f:
