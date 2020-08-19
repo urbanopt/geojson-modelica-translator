@@ -33,8 +33,7 @@ import re
 import shutil
 import unittest
 
-import pytest 
-
+import pytest
 from management.format_modelica_files import preprocess_and_format
 
 
