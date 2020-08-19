@@ -33,6 +33,8 @@ import re
 import shutil
 import unittest
 
+import pytest 
+
 from management.format_modelica_files import preprocess_and_format
 
 
@@ -46,6 +48,7 @@ class FormatModelicaFilesTest(unittest.TestCase):
             shutil.rmtree(self.output_dir)
         os.makedirs(self.output_dir)
 
+    @pytest.mark.skipif(shutil.which("modelicafmt") is None, reason="Skipping")
     def test_no_meaningful_diff_when_formatting_mot_files(self):
         """After applying formatter to .mot (Jinja) files, we expect the only differences to be in whitespace"""
         for file_ in os.listdir(self.template_dir):
