@@ -1,11 +1,15 @@
-//within Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Networks;
+within geojson_modelica_translator.model_connectors.templates;
 model UnidirectionalParallel
   "Hydraulic network for unidirectional parallel DHC system"
-  extends PartialDistribution2Pipe(
+  extends Buildings.Applications.DHC.Networks.BaseClasses.PartialDistribution2Pipe(
     redeclare ConnectionParallel con[nCon](
-      final lDis=lDis, final lCon=lCon, final dhDis=dhDis, final dhCon=dhCon),
-    redeclare model Model_pipDis = PipeDistribution (
-      final dh=dhEnd, final length=2*lEnd));
+      final lDis=lDis,
+      final lCon=lCon,
+      final dhDis=dhDis,
+      final dhCon=dhCon),
+    redeclare model Model_pipDis=PipeDistribution(
+      final dh=dhEnd,
+      final length=2*lEnd));
   parameter Modelica.SIunits.Length lDis[nCon]
     "Length of the distribution pipe before each connection (supply only, not counting return line)";
   parameter Modelica.SIunits.Length lCon[nCon]
@@ -16,6 +20,6 @@ model UnidirectionalParallel
     "Hydraulic diameter of the distribution pipe before each connection";
   parameter Modelica.SIunits.Length dhCon[nCon]
     "Hydraulic diameter of each connection pipe";
-  parameter Modelica.SIunits.Length dhEnd = dhDis[nCon]
+  parameter Modelica.SIunits.Length dhEnd=dhDis[nCon]
     "Hydraulic diameter of the end of the distribution line";
 end UnidirectionalParallel;

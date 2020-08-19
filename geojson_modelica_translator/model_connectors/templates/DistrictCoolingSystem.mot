@@ -1,5 +1,4 @@
-// within geojson_modelica_translator.model_connectors.templates;
-
+within {{project_name}}.Districts;
 model DistrictCoolingSystem "Example to test the district cooling system."
   extends Modelica.Icons.Example;
 {% raw %}
@@ -47,14 +46,17 @@ model DistrictCoolingSystem "Example to test the district cooling system."
      V_flow=mCW_flow_nominal/1000*{0.2,0.6,1.0,1.2},
      dp=(dpCW_nominal+60000+6000)*{1.2,1.1,1.0,0.6}))
    "Performance data for condenser water pumps";
-  parameter Modelica.SIunits.Pressure dpCHWPum_nominal=6000
+   {% endraw %}
+  parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["chilled_water_pump_pressure_drop"] }}
+
    "Nominal pressure drop of chilled water pumps";
-  parameter Modelica.SIunits.Pressure dpCWPum_nominal=6000
-   "Nominal pressure drop of chilled water pumps";
+  parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["condenser_water_pump_pressure_drop"] }}
+   "Nominal pressure drop of condenser water pumps";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
    final computeWetBulbTemperature=true,
-   filNam= Modelica.Utilities.Files.loadResource(
-          "modelica://Buildings/Resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"))
+
+   filNam= Modelica.Utilities.Files.loadResource("{{data["wet_bulb_calc"]["modelica_path"]}}"))
+   {% raw %}
     annotation (Placement(transformation(extent={{-100,-84},{-80,-64}})));
   Buildings.BoundaryConditions.WeatherData.Bus weaBus "Weather data bus"
     annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),
@@ -66,6 +68,7 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     redeclare
       Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Trane_CGWD_207kW_3_99COP_None
       perChi,
+      {% endraw %}
     perCHWPum=perCHWPum,
     perCWPum=perCWPum,
     mCHW_flow_nominal=mCHW_flow_nominal,
@@ -76,20 +79,23 @@ model DistrictCoolingSystem "Example to test the district cooling system."
     dpCW_nominal=dpCW_nominal,
     TAirInWB_nominal=298.7,
     TCW_nominal=308.15,
-    dT_nominal=5.56,
+    dT_nominal={{ data["nominal_values"]["delta_temp"] }},
     TMin=288.15,
-    PFan_nominal=5000,
+    PFan_nominal={{data["nominal_values"]["fan_power"]}},
     dpCHWPum_nominal=dpCHWPum_nominal,
     dpCWPum_nominal=dpCWPum_nominal,
     tWai=tWai,
     dpSetPoi=dpSetPoi,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
     "District cooling plant."
+    {% raw %}
     annotation (Placement(transformation(extent={{-34,-46},{-14,-26}})));
 
   BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
-    idfName="modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/RefBldgSmallOfficeNew2004_Chicago.idf",
-    weaName="modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos")
+    {% endraw %}
+    idfName="{{data["idf"]["modelica_path"]}}",
+    weaName="{{data["mos_weather"]["modelica_path"]}}")
+    {% raw %}
    "Vectorized spawn building."
   annotation (Placement(transformation(extent={{20,60},{40,80}})));
 

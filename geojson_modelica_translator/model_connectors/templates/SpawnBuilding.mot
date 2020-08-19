@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
    "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
- extends PartialBuilding(
+ extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium = Buildings.Media.Water,
     final have_eleHea=false,
     final have_eleCoo=false,
@@ -43,10 +43,12 @@ model building
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
   {% raw %}
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
+    // TODO: Dehardcode
     k=fill(20+273.15, nZon))
     "Minimum temperature setpoint"
     annotation (Placement(transformation(extent={{-220,60},{-200,80}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
+    // TODO: Dehardcode
     k=fill(24+273.15, nZon))
     "Maximum temperature setpoint"
     annotation (Placement(transformation(extent={{-220,20},{-200,40}})));

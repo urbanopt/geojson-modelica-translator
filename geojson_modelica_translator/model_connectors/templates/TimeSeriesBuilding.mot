@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
   "Building model with heating and cooling loads provided as time series"
-  extends PartialBuilding(
+  extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium = MediumW,
     have_fan=false,
     have_eleHea=false,
@@ -118,11 +118,13 @@ model building
      final T_aLoaCoo_nominal=T_aLoaCoo_nominal) "Cooling terminal unit"
      annotation (Placement(transformation(extent={{70,10},{90,30}})));
    Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
+        // TODO: Dehardcode
       k=20 + 273.15,
       y(unit = "K", displayUnit = "degC"))
     "Minimum temperature setpoint"
      annotation (Placement(transformation(extent={{-60,20},{-40,40}})));
    Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
+        // TODO: Dehardcode
        k=24 + 273.15,
        y(unit="K",displayUnit="degC"))
     "Maximum temperature setpoint"

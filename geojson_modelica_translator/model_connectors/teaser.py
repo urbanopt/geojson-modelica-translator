@@ -46,7 +46,6 @@ class TeaserConnector(model_connector_base):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
 
     def add_building(self, urbanopt_building, mapper=None):
         """
@@ -255,7 +254,7 @@ class TeaserConnector(model_connector_base):
             mo_files = glob.glob(os.path.join(scaffold.loads_path.files_dir, f"B{b}/*.mo"))
             for f in mo_files:
                 # ignore the package.mo file
-                if os.path.basename(f) in ["package.mo", "PartialBuilding.mo"]:
+                if os.path.basename(f) in ["package.mo"]:
                     continue
 
                 mofile = Model(f)
@@ -525,7 +524,7 @@ class TeaserConnector(model_connector_base):
             )
 
             # copy over the required mo files and add the other models to the package order
-            mo_files = self.copy_required_mo_files(b_modelica_path.files_dir)
+            mo_files = self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
             for f in mo_files:
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')

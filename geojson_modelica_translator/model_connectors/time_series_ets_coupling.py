@@ -41,8 +41,6 @@ class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
-
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
@@ -98,6 +96,11 @@ class TimeSeriesConnectorETS(model_connector_base):
                         "filepath": time_series_filename,
                         "filename": os.path.basename(time_series_filename),
                         "path": os.path.dirname(time_series_filename),
+                    },
+                    "nominal_values": {
+                        "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                            building["building_id"], "load_model_parameters.time_series.delTDisCoo"
+                        )
                     }
                 }
 
@@ -162,7 +165,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                     data=template_data,
                 )
 
-                self.copy_required_mo_files(b_modelica_path.files_dir)
+                self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
         finally:
             os.chdir(curdir)
 
@@ -176,7 +179,6 @@ class TimeSeriesConnectorETS(model_connector_base):
 
             * Add a Loads project
             * Add a project level project
-            * Add the PartialBuilding to the package order (this is temporary until PartialBuilding is updated in MBL)
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :param building_names: list, names of the buildings that need to be cleaned up after export
@@ -186,7 +188,7 @@ class TimeSeriesConnectorETS(model_connector_base):
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
                 b_modelica_path, b,
-                ["PartialBuilding", "building", "CoolingIndirect", "TimeSeriesCouplingETS"],
+                ["building", "CoolingIndirect", "TimeSeriesCouplingETS"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
