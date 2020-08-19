@@ -60,6 +60,48 @@ class Base(object):
         self.required_mo_files = []
         # extract data out of the urbanopt_building object and store into the base object
 
+    def add_building(self, urbanopt_building, mapper=None):
+        """
+        Add building to the translator.
+
+        :param urbanopt_building: an urbanopt_building
+        """
+        pass
+        # TODO: Need to convert units, these should exist on the urbanopt_building object
+        # TODO: Abstract out the GeoJSON functionality
+        if mapper is None:
+            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+            try:
+                number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
+            except KeyError:
+                number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories"]
+
+            try:
+                urbanopt_building.feature.properties["floor_height"]
+            except KeyError:
+                urbanopt_building.feature.properties["floor_height"] = 3  # Default height in meters from sdk
+
+            try:
+                urbanopt_building.feature.properties["year_built"]
+            except KeyError:
+                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+                # https://github.com/urbanopt/TEASER/blob/0614a11be16a8a95ef99fc8e763b737ec986013c/teaser/data/input/inputdata/TypeBuildingElements.json#L818  # noqa
+                urbanopt_building.feature.properties["year_built"] = 2015
+            if urbanopt_building.feature.properties["year_built"] > 2015:
+                urbanopt_building.feature.properties["year_built"] = 2015
+
+            self.buildings.append(
+                {
+                    "area": float(urbanopt_building.feature.properties["floor_area"]) * 0.092936,  # ft2 -> m2
+                    "building_id": urbanopt_building.feature.properties["id"],
+                    "building_type": urbanopt_building.feature.properties["building_type"],
+                    "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric
+                    "num_stories": urbanopt_building.feature.properties["number_of_stories"],
+                    "num_stories_below_grade": number_stories - number_stories_above_ground,
+                    "year_built": urbanopt_building.feature.properties["year_built"],
+                }
+            )
+
     def copy_required_mo_files(self, dest_folder, within=None):
         """Copy any required_mo_files to the destination and update the within clause if defined
 
