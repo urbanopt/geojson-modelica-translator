@@ -38,7 +38,9 @@ from management.format_modelica_files import preprocess_and_format
 
 class FormatModelicaFilesTest(unittest.TestCase):
     def setUp(self):
-        self.template_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'geojson_modelica_translator', 'model_connectors', 'templates')
+        self.template_dir = os.path.join(
+            os.path.dirname(__file__), '..', '..', 'geojson_modelica_translator', 'model_connectors', 'templates'
+        )
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
         if os.path.exists(self.output_dir):
             shutil.rmtree(self.output_dir)
@@ -59,4 +61,5 @@ class FormatModelicaFilesTest(unittest.TestCase):
             with open(filepath, 'r') as orig, open(outfilepath, 'r') as new:
                 orig_stripped = re.sub(r'\s', '', orig.read())
                 new_stripped = re.sub(r'\s', '', new.read())
-                self.assertEqual(orig_stripped, new_stripped, 'Original and formatted files should have the same content')
+                self.assertEqual(orig_stripped, new_stripped,
+                                 'Original and formatted files should have the same content')
