@@ -546,7 +546,7 @@ class TeaserConnectorETS(model_connector_base):
             )
 
             # copy over the required mo files and add the other models to the package order
-            mo_files = self.copy_required_mo_files(b_modelica_path.files_dir)
+            mo_files = self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
             for f in mo_files:
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
