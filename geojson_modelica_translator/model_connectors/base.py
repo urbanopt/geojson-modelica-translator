@@ -83,11 +83,11 @@ class Base(object):
 
             try:
                 urbanopt_building.feature.properties["year_built"]
+                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+                # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
                 if urbanopt_building.feature.properties["year_built"] > 2015:
                     urbanopt_building.feature.properties["year_built"] = 2015
             except KeyError:
-                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-                # https://github.com/urbanopt/TEASER/blob/0614a11be16a8a95ef99fc8e763b737ec986013c/teaser/data/input/inputdata/TypeBuildingElements.json#L818  # noqa
                 urbanopt_building.feature.properties["year_built"] = 2015
 
             self.buildings.append(
