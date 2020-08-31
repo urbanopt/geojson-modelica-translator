@@ -109,11 +109,11 @@
                   "type": "number"
                 },
                 "nominal_flow_district": {
-                  "description": "District water nominal flow rate (m3/s)",
+                  "description": "District water nominal mass flow rate (kg/s)",
                   "type": "number"
                 },
                 "nominal_flow_building": {
-                  "description": "Building water nominal flow rate (m3/s)",
+                  "description": "Building water nominal mass flow rate (kg/s)",
                   "type": "number"
                 },
                 "pressure_drop_valve": {
@@ -137,10 +137,11 @@
                   "type": "number"
                 },
                 "primary_design_delta_t": {
-                  "description": "Primary side design temperature differential",
+                  "description": "Primary side design temperature differential (deg C) ",
                   "type": "number"
                 },
-                "secondary_design delta_t": {
+                "secondary_design_delta_t": {
+                  "description": "Secondary side design temperature differential (deg C) ",
                   "type": "number"
                 },
                 "booster_heater": {
@@ -345,76 +346,6 @@
         }
       },
       "additionalProperties": false
-    },
-    "ets_indirect_cooling_parameters": {
-      "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. Parameters associated with indirect cooling ETS",
-      "type": "object",
-      "properties": {
-        "q_flow_nominal": {
-          "description": "Nominal heat flux ( Watts )",
-          "type": "number",
-          "default": 8000
-        },
-        "eta_efficiency": {
-          "description": "Heat exchanger efficiency (fraction)",
-          "type": "number",
-          "default": 0.666
-        },
-        "nominal_flow_district": {
-          "description": "District water nominal flow rate (m3/s).",
-          "type": "number",
-          "default": 0.666
-        },
-        "nominal_flow_building": {
-          "description": "Building water nominal flow rate (m3/s).",
-          "type": "number",
-          "default": 0.666
-        },
-        "pressure_drop_valve": {
-          "description": "Valve pressure drop (Pascals)",
-          "type": "number",
-          "default": 888
-        },
-        "pressure_drop_hx_secondary": {
-          "description": "Heat exchanger secondary side pressure drop (Pascals)",
-          "type": "number",
-          "default": 999
-        },
-        "pressure_drop_hx_primary": {
-          "description": "Heat exchanger primary side pressure drop (Pascals)",
-          "type": "number",
-          "default": 999
-        },
-        "supply_water_temperature_district": {
-          "description": "Supply water temperature for district (deg C)",
-          "type": "number",
-          "default": 5
-        },
-        "supply_water_temperature_building": {
-          "description": "Supply water temperature for building (deg C)",
-          "type": "number",
-          "default": 7
-        },
-        "primary_design_delta_t": {
-          "description": "Design temperature differential on the primary side ",
-          "type": "number"
-        },
-        "secondary_design_delta_t": {
-          "description": "Design temperature differential on the secondary side",
-          "type": "number"
-        }
-      },
-      "required": [
-        "q_flow_nominal",
-        "eta_efficiency",
-        "nominal_flow_district",
-        "nominal_flow_building",
-        "pressure_drop_valve",
-        "pressure_drop_hx_secondary",
-        "pressure_drop_hx_primary",
-        "supply_water_temperature_district",
-        "supply_water_temperature_building"
-      ]
     },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
