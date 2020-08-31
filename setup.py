@@ -33,6 +33,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from setuptools import find_packages, setup
 
+from management.format_modelica_files import FormatModelicaFiles
 from management.update_licenses import UpdateLicenses
 from management.update_schemas import UpdateSchemas
 
@@ -61,7 +62,11 @@ setup(
     url="https://github.com/urbanopt/geojson_modelica_translator",
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
-    cmdclass={"update_schemas": UpdateSchemas, "update_licenses": UpdateLicenses},
+    cmdclass={
+        "update_schemas": UpdateSchemas,
+        "update_licenses": UpdateLicenses,
+        "format_modelica_files": FormatModelicaFiles,
+    },
     install_requires=[
         "geojson==2.5.0",
         "jsonschema==3.2.0",
