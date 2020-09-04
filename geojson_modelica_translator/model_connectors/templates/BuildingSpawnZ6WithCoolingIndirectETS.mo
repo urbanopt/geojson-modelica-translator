@@ -37,7 +37,7 @@ model BuildingSpawnZ6WithCoolingIndirectETS
   parameter String idfName="modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/RefBldgSmallOfficeNew2004_Chicago.idf"
     "Name of the IDF file"
     annotation (Dialog(group="Building model parameters"));
-  parameter String weaName="modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
+  parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Name of the weather file"
     annotation (Dialog(group="Building model parameters"));
   parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal=bui.disFloCoo.m_flow_nominal*(bui.delTBuiCoo/bui.delTDisCoo)
