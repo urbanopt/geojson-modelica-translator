@@ -41,30 +41,6 @@ class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
-    def add_building(self, urbanopt_building, mapper=None):
-        """
-        Add building to the translator.
-
-        :param urbanopt_building: an urbanopt_building
-        """
-
-        # TODO: Need to convert units, these should exist on the urbanopt_building object
-        # TODO: Abstract out the GeoJSON functionality
-        if mapper is None:
-            number_stories = urbanopt_building.feature.properties["number_of_stories"]
-            number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
-            self.buildings.append(
-                {
-                    "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
-                    "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties["building_type"],
-                    "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
-                    "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
-                    "num_stories_below_grade": number_stories - number_stories_above_ground,
-                    "year_built": urbanopt_building.feature.properties["year_built"],
-                }
-            )
-
     def to_modelica(self, scaffold):
         """
         Create TimeSeries models based on the data in the buildings and geojsons
