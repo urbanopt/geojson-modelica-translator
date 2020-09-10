@@ -406,12 +406,16 @@
           ],
           "default": 2
         },
+        "mos_weather_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
+        },
         "fraction_latent_person": {
           "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
           "type": "number",
           "default": 1.25
         }
-      },
+		},
       "additionalProperties": false
     },
     "time_series_model_parameters": {

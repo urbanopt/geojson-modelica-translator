@@ -150,10 +150,23 @@ class TeaserConnectorETS(model_connector_base):
         # Teaser changes the current dir, so make sure to reset it back to where we started
         building_names = []
         curdir = os.getcwd()
+        print(os.path.dirname(mos_weather_filename))
         try:
             prj = Project(load_data=True)
             for building in self.buildings:
                 building_name = building["building_id"]
+                b_modelica_path = ModelicaPath(
+                   f"B{building['building_id']}", scaffold.loads_path.files_dir, True)
+                mos_weather_filename = self.system_parameters.get_param_by_building_id(building["building_id"], "load_model_parameters.rc.mos_weather_filename",)
+                print(os.path.dirname(mos_weather_filename))
+                template_data = {   ##AA added this section, 9/8 
+                    "load_resources_path": b_modelica_path.resources_relative_dir,
+                    "mos_weather": {
+                    "mos_weather_filename": mos_weather_filename,
+                    "filename": os.path.basename(mos_weather_filename),
+                    "path": os.path.dirname(mos_weather_filename),
+                    }
+                }
                 prj.add_non_residential(
                     method="bmvbs",
                     usage=self.lookup_building_type(building["building_type"]),
