@@ -32,7 +32,14 @@ import os
 import shutil
 import unittest
 
+from geojson_modelica_translator.model_connectors.base import \
+    Base as building_base
 from geojson_modelica_translator.scaffold import Scaffold
+
+
+class FakeConnector(building_base):
+    def to_modelica(self):
+        pass
 
 
 class ScaffoldTest(unittest.TestCase):
@@ -49,3 +56,13 @@ class ScaffoldTest(unittest.TestCase):
         self.assertTrue(
             os.path.exists(os.path.join(self.output_dir, "scaffold_01", "Resources", "Scripts", "Loads", "Dymola"))
         )
+
+    def test_add_building(self):
+        scaffold = Scaffold(self.output_dir, "scaffold_02", overwrite=True)
+        load_1 = FakeConnector(None)
+        self.assertIsInstance(load_1, building_base)
+        scaffold.loads.append(load_1)
+        scaffold.create()
+
+        r = scaffold.to_modelica()
+        self.assertTrue(r)
