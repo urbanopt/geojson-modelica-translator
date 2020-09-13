@@ -15,9 +15,12 @@ model building
     "Number of conditioned thermal zones";
   parameter Integer facSca[nZon]=fill(5, nZon)
     "Scaling factor to be applied to on each extensive quantity";
-  parameter Modelica.SIunits.MassFlowRate mLoa_flow_nominal[nZon]= {(-1*QCoo_flow_nominal[i] * 0.22)/(3500) for i in 1:nZon}
-    "Load side mass flow rate at nominal conditions"
-    annotation(Dialog(group="Nominal condition"));
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[nZon]= {(-1*QCoo_flow_nominal[i] *(0.06)/1000) for i in 1:nZon}
+     "Load side mass flow rate at cooling nominal conditions"
+     annotation(Dialog(group="Nominal condition"));
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[nZon]= {(QHea_flow_nominal[i]*(0.04)/1000) for i in 1:nZon}
+     "Load side mass flow rate at heating nominal conditions"
+     annotation(Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
      "Nominal building supply and return chilled water temperature difference";
   parameter Modelica.SIunits.TemperatureDifference delTDisCoo=9
@@ -93,8 +96,8 @@ model building
    each T_aLoaCoo_nominal=297.15,
    each T_bHeaWat_nominal=308.15,
    each T_aHeaWat_nominal=313.15,
-   final mLoaHea_flow_nominal=mLoa_flow_nominal,
-   final mLoaCoo_flow_nominal=mLoa_flow_nominal)
+   final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
+   final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
     "Terminal unit"
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
 
