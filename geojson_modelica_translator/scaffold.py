@@ -37,10 +37,6 @@ from geojson_modelica_translator.utils import ModelicaPath
 _log = logging.getLogger(__name__)
 
 
-class LoadsList(list):
-    pass
-
-
 class Scaffold(object):
     """Scaffold to hold the entire directory structure for the project. The purpose of this class is to
     allow a developer/user to easily access the various paths of the project without having to
@@ -79,8 +75,6 @@ class Scaffold(object):
             else:
                 shutil.rmtree(self.project_path)
 
-        self.loads = LoadsList()
-
     def create(self):
         """run the scaffolding"""
 
@@ -99,13 +93,3 @@ class Scaffold(object):
         os.makedirs(path, exist_ok=True)
 
         return path
-
-    def to_modelica(self):
-        """
-        Convert the stored objects to a Modelica and persist to the file system
-        :return:
-        """
-        for l in self.loads:
-            l.to_modelica()
-
-        return True
