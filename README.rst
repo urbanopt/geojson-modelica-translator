@@ -46,6 +46,8 @@ This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consist
     pip install pre-commit
     pre-commit install
 
+Make sure to install `modelica-fmt <https://github.com/urbanopt/modelica-fmt/releases>`_ in order for pre-commit to run code cleanup on Modelica files. The latest prerelease or release is recommended. Once you download the package, place the modelicafmt binary into a folder that is in your path.
+
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
 
 .. code-block:: bash
