@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+      "load_model": "rc",
       "load_model_parameters": {
         "rc": {
           "order": 2
@@ -14,7 +14,7 @@
       },
       {
         "geojson_id": "defgh2345",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "path to a file",

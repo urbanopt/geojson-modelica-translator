@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+      "load_model": "rc",
       "load_model_parameters": {
         "rc": {
           "order": 4

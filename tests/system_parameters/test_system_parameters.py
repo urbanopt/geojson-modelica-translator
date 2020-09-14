@@ -82,7 +82,7 @@ class SystemParametersTest(unittest.TestCase):
         data = {
             "buildings": {
                 "default": {
-                    "load_model": "ROM/RC",
+                    "load_model": "rc",
                     "load_model_parameters": {"rc": {"order": 6}},
                 }
             }
@@ -99,23 +99,23 @@ class SystemParametersTest(unittest.TestCase):
         data = {
             "buildings": {
                 "default": {
-                    "load_model": "ROM/RC",
+                    "load_model": "rc",
                     "load_model_parameters": {"rc": {"order": 4}},
                 }
             }
         }
         sp = SystemParameters.loadd(data)
-        # $.buildings.*[?load_model=Spawn].load_model_parameters.spawn.idf_filename
+        # $.buildings.*[?load_model=spawn].load_model_parameters.spawn.idf_filename
         value = sp.get_param("$.buildings.default.load_model_parameters.rc.order")
         self.assertEqual(value, 4)
 
         value = sp.get_param("buildings.default.load_model")
-        self.assertEqual(value, "ROM/RC")
+        self.assertEqual(value, "rc")
 
         value = sp.get_param("buildings.default")
         self.assertDictEqual(
             value,
-            {"load_model": "ROM/RC", "load_model_parameters": {"rc": {"order": 4}}},
+            {"load_model": "rc", "load_model_parameters": {"rc": {"order": 4}}},
         )
 
         value = sp.get_param("")
@@ -125,7 +125,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIsNone(value)
 
     def test_get_param_with_default(self):
-        data = {"buildings": {"default": {"load_model": "Spawn"}}}
+        data = {"buildings": {"default": {"load_model": "spawn"}}}
         sp = SystemParameters.loadd(data)
         # this path doesn't exist, but there is a default
         value = sp.get_param(

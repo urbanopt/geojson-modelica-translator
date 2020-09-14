@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+      "load_model": "rc",
       "ets_model": "Indirect Cooling",
       "ets_model_parameters": {
         "indirect_cooling": {
@@ -20,7 +20,7 @@
     "custom": [
       {
         "geojson_id": "5a6b99ec37f4de7f94020090",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "RefBldgSmallOfficeNew2004_Chicago.idf",

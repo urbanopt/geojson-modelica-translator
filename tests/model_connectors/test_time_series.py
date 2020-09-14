@@ -66,7 +66,7 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
 
         # now test the spawn connector (independent of the larger geojson translator
         self.time_series = TimeSeriesConnector(sys_params)
-        for b in self.gj.buildings:
+        for b in self.gj.json_loads:
             self.time_series.add_building(b)
 
     def test_time_series_to_modelica_and_run(self):

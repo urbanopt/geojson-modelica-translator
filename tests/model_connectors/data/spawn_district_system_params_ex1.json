@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "Spawn",
+      "load_model": "spawn",
       "load_model_parameters": {
         "spawn": {
           "idf_filename": "RefBldgSmallOfficeNew2004_Chicago.idf",

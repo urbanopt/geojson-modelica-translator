@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+      "load_model": "rc",
       "ets_model": "Indirect Cooling",
       "ets_model_parameters": {
         "indirect_cooling": {
@@ -20,12 +20,12 @@
     "custom": [
       {
         "geojson_id": "5a6b99ec37f4de7f94020090",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
-            "idf_filename": "RefBldgSmallOfficeNew2004_Chicago.idf",
-            "epw_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
-            "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "idf_filename": "../../model_connectors/data/RefBldgSmallOfficeNew2004_Chicago.idf",
+            "epw_filename": "../../model_connectors/data/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
+            "mos_weather_filename": "../../model_connectors/data/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
             "thermal_zone_names": [
               "Core_ZN",
               "Perimeter_ZN_1",
@@ -37,11 +37,12 @@
         }
       },
       {
-        "geojson_id": "5a6b99ec37f4de7f94021950",
-        "load_model": "ROM/RC",
+        "geojson_id": "5a72287837f4de77124f946a",
+        "load_model": "time_series",
         "load_model_parameters": {
-          "rc": {
-            "order": 3
+          "time_series": {
+            "filepath": "../../model_connectors/data/time_series_example_data.mos",
+            "delTDisCoo": 10
           }
         }
       }

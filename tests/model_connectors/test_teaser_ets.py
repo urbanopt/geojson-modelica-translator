@@ -62,7 +62,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
             sys_params = SystemParameters()
 
         self.teaser = TeaserConnectorETS(sys_params)
-        for b in self.gj.buildings:
+        for b in self.gj.json_loads:
             self.teaser.add_building(b)
 
     def test_teaser_rc_ets(self):

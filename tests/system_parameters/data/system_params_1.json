@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+      "load_model": "rc",
       "load_model_parameters": {
         "rc": {
           "order": 2
@@ -29,11 +29,11 @@
       },
       {
         "geojson_id": "defgh2345",
-        "load_model": "ROM/RC"
+        "load_model": "rc"
       },
       {
         "geojson_id": "building_merge_defaults",
-        "load_model": "ROM/RC",
+        "load_model": "rc",
         "ets_model": "Indirect Cooling",
         "ets_model_parameters": {
           "indirect_cooling": {
@@ -51,7 +51,7 @@
       },
       {
         "geojson_id": "ijk678",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "example_model.idf",
@@ -65,7 +65,7 @@
       },
       {
         "geojson_id": "lmn000",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "example_model_2.idf",

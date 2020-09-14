@@ -61,7 +61,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
             sys_params = SystemParameters()
 
         self.teaser = TeaserConnector(sys_params)
-        for b in self.gj.buildings:
+        for b in self.gj.json_loads:
             self.teaser.add_building(b)
 
     def test_building_types(self):
@@ -112,7 +112,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         # setup what wze are going to check
         model_names = ["Floor", "ICT", "Meeting", "Office", "package", "Restroom", "Storage", ]
         building_paths = [
-            os.path.join(self.gj.scaffold.loads_path.files_dir, b.dirname) for b in self.gj.buildings
+            os.path.join(self.gj.scaffold.loads_path.files_dir, b.dirname) for b in self.gj.json_loads
         ]
         path_checks = [f"{os.path.sep.join(r)}.mo" for r in itertools.product(building_paths, model_names)]
 
@@ -128,7 +128,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         # go through the generated buildings and ensure that the resources are created
         resource_names = ["InternalGains_Floor", "InternalGains_ICT", "InternalGains_Meeting",
                           "InternalGains_Office", "InternalGains_Restroom", "InternalGains_Storage", ]
-        for b in self.gj.buildings:
+        for b in self.gj.json_loads:
             for resource_name in resource_names:
                 # TEASER 0.7.2 used .txt for schedule files
                 path = os.path.join(self.gj.scaffold.loads_path.files_dir, "Resources", "Data",
