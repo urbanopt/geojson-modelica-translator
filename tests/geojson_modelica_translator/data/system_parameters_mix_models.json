@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+     "load_model": "ROM/RC", 
 	  "load_model_parameters": {
           "rc": {
             "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
@@ -47,7 +47,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 3,
-			"mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
+            "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
           }
         }
       }
