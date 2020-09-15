@@ -56,7 +56,6 @@ class SystemParametersTest(unittest.TestCase):
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
         self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model_2.idf'))
-        print(f"the value is {value}")
 
     def test_load_system_parameters_1(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
