@@ -1,29 +1,34 @@
-// within geojson_modelica_translator.model_connectors.templates;
+within geojson_modelica_translator.model_connectors.templates;
 partial model PartialPlantParallel
   "Partial source plant model with associated valves"
   extends PartialPlantParallelInterface;
   extends ValveParameters(
-    final deltaM= 0.1,
-    rhoStd = Medium.density_pTX(Medium.p_default, 273.15+50, Medium.X_default));
-  extends
-    Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
+    final deltaM=0.1,
+    rhoStd=Medium.density_pTX(
+      Medium.p_default,
+      273.15+50,
+      Medium.X_default));
+  extends Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
     final numFil=num);
-
-  constant Boolean homotopyInitialization = true "= true, use homotopy method"
-    annotation(HideResult=true);
-
+  constant Boolean homotopyInitialization=true
+    "= true, use homotopy method"
+    annotation (HideResult=true);
   // Isolation valve parameters
-  parameter Real l( min=1e-10, max=1) = 0.0001
+  parameter Real l(
+    min=1e-10,
+    max=1)=0.0001
     "Valve leakage, l=Kv(y=0)/Kv(y=1)"
-    annotation(Dialog(group="Two-way valve"));
-  parameter Real kFixed(unit="", min=0)= m_flow_nominal ./ sqrt( dp_nominal)
+    annotation (Dialog(group="Two-way valve"));
+  parameter Real kFixed(
+    unit="",
+    min=0)=m_flow_nominal ./ sqrt(
+    dp_nominal)
     "Flow coefficient of fixed resistance that may be in series with valve 1, k=m_flow/sqrt(dp), with unit=(kg.m)^(1/2)."
-   annotation(Dialog(group="Two-way valve"));
-   parameter Integer num=2
+    annotation (Dialog(group="Two-way valve"));
+  parameter Integer num=2
     "Number of equipment";
-
   Buildings.Fluid.Actuators.Valves.TwoWayLinear val[num](
-    redeclare each package Medium = Medium,
+    redeclare each package Medium=Medium,
     each final allowFlowReversal=allowFlowReversal,
     each final m_flow_nominal=m_flow_nominal,
     each final deltaM=deltaM,
@@ -40,33 +45,32 @@ partial model PartialPlantParallel
     each final CvData=Buildings.Fluid.Types.CvTypes.OpPoint,
     each final from_dp=from_dp,
     each final linearized=linearizeFlowResistance,
-    each final rhoStd=rhoStd) "Isolation valves for on/off use" annotation (
-      Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={46,0})));
-
+    each final rhoStd=rhoStd)
+    "Isolation valves for on/off use"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={46,0})));
   replaceable Heater_T boi[num](
-    redeclare each final package Medium = Medium,
+    redeclare each final package Medium=Medium,
     each from_dp=true,
     each T_start=293.15)
     "Hot water boiler"
     annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
-
 initial equation
-  assert(homotopyInitialization, "In " + getInstanceName() +
-    ": The constant homotopyInitialization has been modified from its default value. This constant will be removed in future releases.",
-    level = AssertionLevel.warning);
-
+  assert(
+    homotopyInitialization,
+    "In "+getInstanceName()+": The constant homotopyInitialization has been modified from its default value. This constant will be removed in future releases.",
+    level=AssertionLevel.warning);
 equation
-  connect(y_actual, val.y)
-    annotation (Line(points={{-20,74},{46,74},{46,12}}, color={0,0,127}));
-annotation (Documentation(info="<html>
+  connect(y_actual,val.y)
+    annotation (Line(points={{-20,74},{46,74},{46,12}},color={0,0,127}));
+  annotation (
+    Documentation(
+      info="<html>
 <p>
 A partial model of parallel connected heating water boilers. Each boiler is isolated
 with an on/off two way valve.
 </p>
-</html>",revisions="<html>
+</html>",
+      revisions="<html>
 <ul>
 <li>
 August 20, 2020, by Hagar Elarga:<br/>
