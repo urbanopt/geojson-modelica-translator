@@ -11,17 +11,11 @@ partial model PartialBuildingWithIndirectETS
     annotation (Dialog(tab="Assumptions"),Evaluate=true);
   parameter Boolean allowFlowReversalDis=false
     "Set to true to allow flow reversal on the district side"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
-
+    annotation (Dialog(tab="Assumptions"),Evaluate=true);
   // IO CONNECTORS
   Modelica.Blocks.Interfaces.RealInput TSetWat
-    "Chilled/Heating water set point." annotation (Placement(transformation(
-        extent={{-20,-20},{20,20}},
-        rotation=0,
-        origin={-120,20}), iconTransformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-110,30})));
+    "Chilled/Heating water set point."
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,20}),iconTransformation(extent={{-10,-10},{10,10}},rotation=0,origin={-110,30})));
   // COMPONENTS
   replaceable Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding bui(
     final allowFlowReversal=allowFlowReversalBui)
@@ -35,7 +29,9 @@ partial model PartialBuildingWithIndirectETS
   Modelica.Fluid.Sources.FixedBoundary preSou(
     nPorts=1)
     annotation (Placement(transformation(extent={{-80,-98},{-60,-78}})));
- annotation(Dialog(group="ETS model parameters"),
+  annotation (
+    Dialog(
+      group="ETS model parameters"),
     DefaultComponentName="bui",
     Icon(
       coordinateSystem(
@@ -155,6 +151,8 @@ partial model PartialBuildingWithIndirectETS
           fillColor={0,0,255},
           fillPattern=FillPattern.Solid,
           origin={57,-13},
-          rotation=90)}),                                        Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+          rotation=90)}),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)));
 end PartialBuildingWithIndirectETS;
