@@ -6,11 +6,10 @@ partial model PartialBuildingWithIndirectETS
     final m2_flow_small=1E-4*m2_flow_nominal,
     final allowFlowReversal1=allowFlowReversalDis,
     final allowFlowReversal2=allowFlowReversalBui);
-
-  parameter Boolean allowFlowReversalBui = false
+  parameter Boolean allowFlowReversalBui=false
     "Set to true to allow flow reversal on the building side"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
-  parameter Boolean allowFlowReversalDis = false
+    annotation (Dialog(tab="Assumptions"),Evaluate=true);
+  parameter Boolean allowFlowReversalDis=false
     "Set to true to allow flow reversal on the district side"
     annotation(Dialog(tab="Assumptions"), Evaluate=true);
 
@@ -38,8 +37,11 @@ partial model PartialBuildingWithIndirectETS
     annotation (Placement(transformation(extent={{-80,-98},{-60,-78}})));
  annotation(Dialog(group="ETS model parameters"),
     DefaultComponentName="bui",
-    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-            {100,100}}), graphics={
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-100,-100},{100,100}}),
+      graphics={
         Rectangle(
           extent={{-60,-34},{0,-28}},
           lineColor={0,0,255},
@@ -88,38 +90,40 @@ partial model PartialBuildingWithIndirectETS
           pattern=LinePattern.None,
           fillColor={255,0,0},
           fillPattern=FillPattern.Solid),
-      Polygon(
-        points={{0,80},{-40,60},{40,60},{0,80}},
-        lineColor={95,95,95},
-        smooth=Smooth.None,
-        fillPattern=FillPattern.Solid,
-        fillColor={95,95,95}),
-      Rectangle(
+        Polygon(
+          points={{0,80},{-40,60},{40,60},{0,80}},
+          lineColor={95,95,95},
+          smooth=Smooth.None,
+          fillPattern=FillPattern.Solid,
+          fillColor={95,95,95}),
+        Rectangle(
           extent={{-40,60},{40,-40}},
           lineColor={150,150,150},
           fillPattern=FillPattern.Sphere,
           fillColor={255,255,255}),
-      Rectangle(
-        extent={{-30,30},{-10,50}},
-        lineColor={255,255,255},
-        fillColor={255,255,255},
-        fillPattern=FillPattern.Solid),
-      Rectangle(
-        extent={{10,30},{30,50}},
-        lineColor={255,255,255},
-        fillColor={255,255,255},
-        fillPattern=FillPattern.Solid),
-      Rectangle(
-        extent={{-30,-10},{-10,10}},
-        lineColor={255,255,255},
-        fillColor={255,255,255},
-        fillPattern=FillPattern.Solid),
-      Rectangle(
-        extent={{10,-10},{30,10}},
-        lineColor={255,255,255},
-        fillColor={255,255,255},
-        fillPattern=FillPattern.Solid),
-        Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0}),
+        Rectangle(
+          extent={{-30,30},{-10,50}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{10,30},{30,50}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-30,-10},{-10,10}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{10,-10},{30,10}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-100,100},{100,-100}},
+          lineColor={0,0,0}),
         Rectangle(
           extent={{-20,-3},{20,3}},
           lineColor={0,0,255},

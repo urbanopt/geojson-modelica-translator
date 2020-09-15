@@ -40,31 +40,6 @@ from geojson_modelica_translator.utils import ModelicaPath
 class TimeSeriesConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuilding.mo'))
-
-    def add_building(self, urbanopt_building, mapper=None):
-        """
-        Add building to the translator.
-
-        :param urbanopt_building: an urbanopt_building
-        """
-        # TODO: Need to convert units, these should exist on the urbanopt_building object
-        # TODO: Abstract out the GeoJSON functionality
-
-        if mapper is None:
-            number_stories = urbanopt_building.feature.properties["number_of_stories"]
-            number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
-            self.buildings.append(
-                {
-                    "area": urbanopt_building.feature.properties["floor_area"] * 0.092936,  # ft2 -> m2
-                    "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties["building_type"],
-                    "floor_height": urbanopt_building.feature.properties["height"] * 0.3048,  # ft -> m
-                    "num_stories": urbanopt_building.feature.properties["number_of_stories_above_ground"],
-                    "num_stories_below_grade": number_stories - number_stories_above_ground,
-                    "year_built": urbanopt_building.feature.properties["year_built"],
-                }
-            )
 
     def to_modelica(self, scaffold):
         """
@@ -85,7 +60,7 @@ class TimeSeriesConnector(model_connector_base):
                     f"B{building['building_id']}", scaffold.loads_path.files_dir, True
                 )
 
-                self.copy_required_mo_files(b_modelica_path.files_dir)
+                self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
 
                 # grab the data from the system_parameter file for this building id
                 # TODO: create method in system_parameter class to make this easier and respect the defaults
@@ -159,7 +134,7 @@ class TimeSeriesConnector(model_connector_base):
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["PartialBuilding", "building", "coupling"],
+                b_modelica_path, b, ["building", "coupling"],
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()

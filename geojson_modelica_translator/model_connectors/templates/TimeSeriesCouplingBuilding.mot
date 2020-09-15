@@ -1,91 +1,75 @@
 within {{project_name}}.Loads.{{model_name}};
 model coupling
-"Example illustrating the coupling of a time series building loads to heating and chilled water loops"
-extends Modelica.Icons.Example;
-package MediumW = Buildings.Media.Water
-  "Source side medium";
-
- building bui(
-{% raw %}
-   nPorts_aHeaWat=1,
-   nPorts_bHeaWat=1,
-   nPorts_aChiWat=1,
-   nPorts_bChiWat=1)
-   "Building with thermal loads as time series input file"
-   annotation (Placement(transformation(extent={{20,40},{40,60}})));
- Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
-   redeclare package Medium = MediumW,
-   p=300000,
-   nPorts=1)
-   "Sink for heating water"
-   annotation (Placement(transformation(
-       extent={{10,-10},{-10,10}},
-       rotation=0,
-       origin={130,80})));
- Buildings.Fluid.Sources.Boundary_pT sinChiWat(
-   redeclare package Medium = MediumW,
-   p=300000,
-   nPorts=1)
-   "Sink for chilled water"
-   annotation (Placement(transformation(
-       extent={{10,-10},{-10,10}},
-       rotation=0,
-       origin={130,20})));
- Modelica.Blocks.Sources.RealExpression THeaWatSup(
-   y=bui.terUniHea.T_aHeaWat_nominal)
-   "Heating water supply temperature"
-   annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
- Modelica.Blocks.Sources.RealExpression TChiWatSup(
-   y=bui.terUniCoo.T_aChiWat_nominal)
-   "Chilled water supply temperature"
-   annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
- Buildings.Fluid.Sources.Boundary_pT supHeaWat(
-   redeclare package Medium = MediumW,
-   use_T_in=true,
-   nPorts=1) "Heating water supply"
-   annotation (Placement(transformation(
-       extent={{-10,-10},{10,10}},
-       rotation=0,
-       origin={-50,80})));
- Buildings.Fluid.Sources.Boundary_pT supChiWat(
-   redeclare package Medium = MediumW,
-   use_T_in=true,
-   nPorts=1) "Chilled water supply"
-   annotation (Placement(transformation(
-       extent={{-10,-10},{10,10}},
-       rotation=0,
-       origin={-50,20})));
-{% endraw %}
-equation
-  {% raw %}
-  connect(supHeaWat.T_in,THeaWatSup.y) annotation (Line(points={{-62,84},{-80,84},
-           {-80,80},{-99,80}},color={0,0,127}));
-  connect(TChiWatSup.y,supChiWat. T_in) annotation (Line(points={{-99,20},{-80,20},
-           {-80,24},{-62,24}},     color={0,0,127}));
-  connect(sinChiWat.ports[1], bui.ports_bChiWat[1]) annotation (Line(points={{120,20},
-           {80,20},{80,47},{40,47}}, color={0,127,255}));
-  connect(sinHeaWat.ports[1], bui.ports_bHeaWat[1]) annotation (Line(points={{120,80},
-           {80,80},{80,44},{40,44}}, color={0,127,255}));
-  connect(supHeaWat.ports[1], bui.ports_aHeaWat[1]) annotation (Line(points={{-40,80},
-           {-10,80},{-10,44},{20,44}}, color={0,127,255}));
-  connect(bui.ports_aChiWat[1], supChiWat.ports[1]) annotation (Line(points={{20,47.0667},
-           {-10,47.0667},{-10,20},{-40,20}}, color={0,127,255}));
-{% endraw %}
-
-  // TODO: determine how to handle the "lines"
-{% raw %}
-annotation (Diagram(
-      coordinateSystem(preserveAspectRatio=false,
-                       extent={{-140,-40},{160,140}})),
-{% endraw %}
-        __Dymola_Commands(file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunTimeSeriesBuilding.mos"
-{% raw %}
-         "Simulate and plot"),
-        experiment(
-            StopTime=604800,
-            Tolerance=1e-06),
-Documentation(info=
-"<html>
+  "Example illustrating the coupling of a time series building loads to heating and chilled water loops"
+  extends Modelica.Icons.Example;
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  building bui(
+    {% raw %}nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1)
+    "Building with thermal loads as time series input file"
+    annotation (Placement(transformation(extent={{20,40},{40,60}})));
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+    redeclare package Medium=MediumW,
+    p=300000,
+    nPorts=1)
+    "Sink for heating water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={130,80})));
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
+    redeclare package Medium=MediumW,
+    p=300000,
+    nPorts=1)
+    "Sink for chilled water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={130,20})));
+  Modelica.Blocks.Sources.RealExpression THeaWatSup(
+    y=bui.terUniHea.T_aHeaWat_nominal)
+    "Heating water supply temperature"
+    annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
+  Modelica.Blocks.Sources.RealExpression TChiWatSup(
+    y=bui.terUniCoo.T_aChiWat_nominal)
+    "Chilled water supply temperature"
+    annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+  Buildings.Fluid.Sources.Boundary_pT supHeaWat(
+    redeclare package Medium=MediumW,
+    use_T_in=true,
+    nPorts=1)
+    "Heating water supply"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-50,80})));
+  Buildings.Fluid.Sources.Boundary_pT supChiWat(
+    redeclare package Medium=MediumW,
+    use_T_in=true,
+    nPorts=1)
+    "Chilled water supply"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-50,20})));
+{% endraw %}equation
+  {% raw %} connect(supHeaWat.T_in,THeaWatSup.y)
+    annotation (Line(points={{-62,84},{-80,84},{-80,80},{-99,80}},color={0,0,127}));
+  connect(TChiWatSup.y,supChiWat.T_in)
+    annotation (Line(points={{-99,20},{-80,20},{-80,24},{-62,24}},color={0,0,127}));
+  connect(sinChiWat.ports[1],bui.ports_bChiWat[1])
+    annotation (Line(points={{120,20},{80,20},{80,47},{40,47}},color={0,127,255}));
+  connect(sinHeaWat.ports[1],bui.ports_bHeaWat[1])
+    annotation (Line(points={{120,80},{80,80},{80,44},{40,44}},color={0,127,255}));
+  connect(supHeaWat.ports[1],bui.ports_aHeaWat[1])
+    annotation (Line(points={{-40,80},{-10,80},{-10,44},{20,44}},color={0,127,255}));
+  connect(bui.ports_aChiWat[1],supChiWat.ports[1])
+    annotation (Line(points={{20,47.0667},{-10,47.0667},{-10,20},{-40,20}},color={0,127,255}));
+  {% endraw %}// TODO: determine how to handle the "lines"
+  {% raw %}annotation (
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-140,-40},{160,140}})),
+    {% endraw %}__Dymola_Commands(
+      file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunTimeSeriesBuilding.mos" {% raw %} "Simulate and plot"),
+    experiment(
+      StopTime=604800,
+      Interval=3600,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
 <p>
 This example illustrates the use of
 <a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding\">
@@ -106,8 +90,7 @@ secondary pumps.
 </li>
 </ul>
 </html>",
-revisions=
-"<html>
+      revisions="<html>
 <ul>
 <li>
 April 8, 2020, by Nicholas Long:<br/>
@@ -119,5 +102,4 @@ Model first implementation.
 </li>
 </ul>
 </html>"));
-{% endraw %}
-end coupling;
+{% endraw %}end coupling;

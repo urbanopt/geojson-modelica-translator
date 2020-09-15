@@ -1,157 +1,146 @@
 within {{project_name}}.Loads.{{model_name}};
 model SpawnCouplingETS
   "Spawn building connected to indirect ETS model"
-extends Modelica.Icons.Example;
-
-  package MediumW = Buildings.Media.Water
-   "Water side medium";
-  package MediumA = Buildings.Media.Air
-   "Air side medium";
-{% raw %}
-  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal=
-   (bui.disFloCoo.m_flow_nominal.*(bui.delTBuiCoo/delTDisCoo))
-   "Nominal mass flow rate of primary (district) district cooling side";
-  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal= bui.disFloCoo.m_flow_nominal
+  extends Modelica.Icons.Example;
+  package MediumW=Buildings.Media.Water
+    "Water side medium";
+  package MediumA=Buildings.Media.Air
+    "Air side medium";
+  {% raw %}parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal=(bui.disFloCoo.m_flow_nominal .*(bui.delTBuiCoo/delTDisCoo))
+    "Nominal mass flow rate of primary (district) district cooling side";
+  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal=bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
   parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10
     "Nominal district supply and return water temperature difference";
-
   CoolingIndirect coo(
-   redeclare package Medium = MediumW,
+    redeclare package Medium=MediumW,
     mDis_flow_nominal=mDis_flow_nominal,
     mBui_flow_nominal=mBui_flow_nominal,
     dp1_nominal=500,
     dp2_nominal=500,
     dpValve_nominal=7000,
     use_Q_flow_nominal=true,
-    Q_flow_nominal=-1*(sum(bui.terUni.QCoo_flow_nominal)),
-    T_a1_nominal=273.15 + 8,
-    T_a2_nominal=273.15 + 19)
+    Q_flow_nominal=-1*(sum(
+      bui.terUni.QCoo_flow_nominal)),
+    T_a1_nominal=273.15+8,
+    T_a2_nominal=273.15+19)
     annotation (Placement(transformation(extent={{0,-60},{20,-40}})));
-
-   building bui(
-     have_pum= false,
-     T_aChiWat_nominal=280.15,
-     T_bChiWat_nominal=285.15,
-     nPorts_aHeaWat=1,
-     nPorts_bHeaWat=1,
-     nPorts_aChiWat=1,
-     nPorts_bChiWat=1)
-
+  building bui(
+    have_pum=false,
+    T_aChiWat_nominal=280.15,
+    T_bChiWat_nominal=285.15,
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1)
     "Building model integrating multiple spawn thermal zones."
-      annotation (Placement(transformation(extent={{-6,60},{14,80}})));
-      Modelica.Blocks.Sources.RealExpression TChiWatSet(y=7 + 273.15)
-      "Primary loop chilled water setpoint temperature"
-      annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
-
-    Modelica.Blocks.Sources.RealExpression THeaWatSup(y=max(
-       bui.terUni.T_aHeaWat_nominal)) "Heating water supply temperature"
-      annotation (Placement(transformation(extent={{-80,20},{-60,40}})));
-    Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
-      redeclare package Medium = MediumW,
-      use_m_flow_in=true,
-      use_T_in=true,
-      nPorts=1) "Heating water supply" annotation (Placement(transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-30,50})));
-    Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
-      redeclare package Medium =MediumW,
-      nPorts=1)
-       "Sink for heating water" annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=0,
-            origin={50,50})));
-    Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
-      redeclare package Medium = MediumW,
-      energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-      m_flow_nominal=sum(bui.terUni.mChiWat_flow_nominal .* bui.terUni.facSca),
-      inputType=Buildings.Fluid.Types.InputType.Continuous,
-      nominalValuesDefineDefaultPressureCurve=true,
-      use_inputFilter=false,
-      dp_nominal=6000)
-      "Building-side (secondary) pump"
-      annotation (Placement(transformation(extent={{-20,-80},{-40,-60}})));
-    Modelica.Fluid.Sources.FixedBoundary pre(
-      redeclare package Medium = MediumW,
-      p=300000,
-      nPorts=1)
-      "Pressure source"
-      annotation (Placement(transformation(
-          extent={{10,-10},{-10,10}},
-          rotation=0,
-          origin={50,-70})));
-    Modelica.Blocks.Sources.RealExpression secMasFloRat(
-      y=bui.disFloCoo.mReqTot_flow)
-      "Secondary loop 'building side' mass flow rate."
-       annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));
-    Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
-      redeclare package Medium = MediumW,
-      use_m_flow_in=true,
-      use_T_in=false,
-      T=281.15,
-      nPorts=1) "Chilled water supply" annotation (Placement(transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-30,-10})));
-    Buildings.Fluid.Sources.Boundary_pT sinChiWat(
-      redeclare package Medium = MediumW,
-      nPorts=1)
-     "Sink for chilled water"
-       annotation (Placement(transformation(
-          extent={{10,-10},{-10,10}},
-          rotation=0,
-          origin={50,-10})));
-    Modelica.Blocks.Sources.RealExpression mHeaWatSup(
-      y=bui.disFloHea.mReqTot_flow)
-      "Heating water supply mass flow rate."
-       annotation (Placement(transformation(extent={{-80,38},{-60,58}})));
-    Modelica.Blocks.Sources.RealExpression disMasFloRat(
-      y=(bui.delTBuiCoo/delTDisCoo).*bui.disFloCoo.mReqTot_flow)
-      "Primary loop chilled water mass flow rate."
-       annotation (Placement(transformation(extent={{-80,-20},{-60,0}})));
-
-{% endraw %}
-equation
-{% raw %}
-connect(supChiWat.ports[1], coo.port_a1) annotation (Line(points={{-20,-10},{-12,
-          -10},{-12,-42},{-10,-42}},  color={0,127,255}));
-connect(coo.port_b1, sinChiWat.ports[1]) annotation (Line(points={{10,-42},{10,-10},
-          {40,-10}},      color={0,127,255}));
-connect(TChiWatSet.y, coo.TSetBuiSup) annotation (Line(points={{-59,-30},{-18,
-                   -30},{-18,-50},{-2,-50}}, color={0,0,127}));
-connect(supHeaWat.T_in,THeaWatSup. y) annotation (Line(points={{-42,54},{-44,54},
-          {-44,30},{-59,30}},  color={0,0,127}));
-connect(secMasFloRat.y, pumBui.m_flow_in) annotation (Line(points={{-59,-50},{-30,-50}
-        ,{-30,-58}}, color={0,0,127}));
-connect(supHeaWat.ports[1], bui.ports_aHeaWat[1]) annotation (Line(points={{-30,
-                  78},{-20,78},{-20,68},{-6,68}}, color={0,127,255}));
-connect(bui.ports_bHeaWat[1], sinHeaWat.ports[1]) annotation (Line(points={{14,
-        68},{28,68},{28,80},{40,80}}, color={0,127,255}));
-connect(bui.ports_bChiWat[1], coo.port_a2) annotation (Line(points={{14,64},{72,
-        64},{72,-56},{20,-56}}, color={0,127,255}));
-connect(pumBui.port_b, bui.ports_aChiWat[1]) annotation (Line(points={{-40,-70},
-        {-92,-70},{-92,46},{-20,46},{-20,64},{-6,64}}, color={0,127,255}));
-connect(pre.ports[1], coo.port_b2)  annotation (Line(points={{40,-70},{-10,-70},
-          {-10,-54}}, color={0,127,255}));
-connect(pumBui.port_a, coo.port_b2) annotation (Line(points={{-20,-70},{0,-70},
-          {0,-56}}, color={0,127,255}));
-connect(supChiWat.m_flow_in, disMasFloRat.y) annotation (Line(points={{-42,-2},
-                    {-50,-2},{-50,-10},{-59,-10}},color={0,0,127}));
-connect(mHeaWatSup.y, supHeaWat.m_flow_in) annotation (Line(points={{-59,48},
-                            {-54,48},{-54,58},{-42,58}}, color={0,0,127}));
-{% endraw %}
-{% raw %}
-annotation (Icon(coordinateSystem(preserveAspectRatio=false),
-                                   extent={{-100,-100},{100,100}}),
-         Diagram(coordinateSystem(preserveAspectRatio=false),
-                                   extent={{-100,-100},{100,100}}),
-  __Dymola_Commands(file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/SpawnCouplingETS.mos"
-        "Simulate and plot"),
-        experiment(StopTime=86400,
-                   Tolerance=1e-06),
-Documentation(info=
-"<html>
+    annotation (Placement(transformation(extent={{-6,60},{14,80}})));
+  Modelica.Blocks.Sources.RealExpression TChiWatSet(
+    y=7+273.15)
+    "Primary loop chilled water setpoint temperature"
+    annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
+  Modelica.Blocks.Sources.RealExpression THeaWatSup(
+    y=max(
+      bui.terUni.T_aHeaWat_nominal))
+    "Heating water supply temperature"
+    annotation (Placement(transformation(extent={{-80,20},{-60,40}})));
+  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
+    redeclare package Medium=MediumW,
+    use_m_flow_in=true,
+    use_T_in=true,
+    nPorts=1)
+    "Heating water supply"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-30,50})));
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+    redeclare package Medium=MediumW,
+    nPorts=1)
+    "Sink for heating water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={50,50})));
+  Buildings.Fluid.Movers.FlowControlled_m_flow pumBui(
+    redeclare package Medium=MediumW,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    m_flow_nominal=sum(
+      bui.terUni.mChiWat_flow_nominal .* bui.terUni.facSca),
+    inputType=Buildings.Fluid.Types.InputType.Continuous,
+    nominalValuesDefineDefaultPressureCurve=true,
+    use_inputFilter=false,
+    dp_nominal=6000)
+    "Building-side (secondary) pump"
+    annotation (Placement(transformation(extent={{-20,-80},{-40,-60}})));
+  Modelica.Fluid.Sources.FixedBoundary pre(
+    redeclare package Medium=MediumW,
+    p=300000,
+    nPorts=1)
+    "Pressure source"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={50,-70})));
+  Modelica.Blocks.Sources.RealExpression secMasFloRat(
+    y=bui.disFloCoo.mReqTot_flow)
+    "Secondary loop 'building side' mass flow rate."
+    annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));
+  Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
+    redeclare package Medium=MediumW,
+    use_m_flow_in=true,
+    use_T_in=false,
+    T=281.15,
+    nPorts=1)
+    "Chilled water supply"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-30,-10})));
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
+    redeclare package Medium=MediumW,
+    nPorts=1)
+    "Sink for chilled water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={50,-10})));
+  Modelica.Blocks.Sources.RealExpression mHeaWatSup(
+    y=bui.disFloHea.mReqTot_flow)
+    "Heating water supply mass flow rate."
+    annotation (Placement(transformation(extent={{-80,38},{-60,58}})));
+  Modelica.Blocks.Sources.RealExpression disMasFloRat(
+    y=(bui.delTBuiCoo/delTDisCoo) .* bui.disFloCoo.mReqTot_flow)
+    "Primary loop chilled water mass flow rate."
+    annotation (Placement(transformation(extent={{-80,-20},{-60,0}})));
+{% endraw %}equation
+  {% raw %} connect(supChiWat.ports[1],coo.port_a1)
+    annotation (Line(points={{-20,-10},{-12,-10},{-12,-42},{-10,-42}},color={0,127,255}));
+  connect(coo.port_b1,sinChiWat.ports[1])
+    annotation (Line(points={{10,-42},{10,-10},{40,-10}},color={0,127,255}));
+  connect(TChiWatSet.y,coo.TSetBuiSup)
+    annotation (Line(points={{-59,-30},{-18,-30},{-18,-50},{-2,-50}},color={0,0,127}));
+  connect(supHeaWat.T_in,THeaWatSup.y)
+    annotation (Line(points={{-42,54},{-44,54},{-44,30},{-59,30}},color={0,0,127}));
+  connect(secMasFloRat.y,pumBui.m_flow_in)
+    annotation (Line(points={{-59,-50},{-30,-50},{-30,-58}},color={0,0,127}));
+  connect(supHeaWat.ports[1],bui.ports_aHeaWat[1])
+    annotation (Line(points={{-30,78},{-20,78},{-20,68},{-6,68}},color={0,127,255}));
+  connect(bui.ports_bHeaWat[1],sinHeaWat.ports[1])
+    annotation (Line(points={{14,68},{28,68},{28,80},{40,80}},color={0,127,255}));
+  connect(bui.ports_bChiWat[1],coo.port_a2)
+    annotation (Line(points={{14,64},{72,64},{72,-56},{20,-56}},color={0,127,255}));
+  connect(pumBui.port_b,bui.ports_aChiWat[1])
+    annotation (Line(points={{-40,-70},{-92,-70},{-92,46},{-20,46},{-20,64},{-6,64}},color={0,127,255}));
+  connect(pre.ports[1],coo.port_b2)
+    annotation (Line(points={{40,-70},{-10,-70},{-10,-54}},color={0,127,255}));
+  connect(pumBui.port_a,coo.port_b2)
+    annotation (Line(points={{-20,-70},{0,-70},{0,-56}},color={0,127,255}));
+  connect(supChiWat.m_flow_in,disMasFloRat.y)
+    annotation (Line(points={{-42,-2},{-50,-2},{-50,-10},{-59,-10}},color={0,0,127}));
+  connect(mHeaWatSup.y,supHeaWat.m_flow_in)
+    annotation (Line(points={{-59,48},{-54,48},{-54,58},{-42,58}},color={0,0,127}));
+  {% endraw %}{% raw %}annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false),
+      extent={{-100,-100},{100,100}}),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false),
+      extent={{-100,-100},{100,100}}),
+    __Dymola_Commands(
+      file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/SpawnCouplingETS.mos" "Simulate and plot"),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
 <p>
 This example illustrates the coupling between the indirect cooling energy transfer station
 ETS and spawn building model.
@@ -163,8 +152,7 @@ Simulation with Dymola requires minimum version 2020x and setting
 Buildings.ThermalZones.EnergyPlus.UsersGuide</a>.
 </p>
 </html>",
-revisions=
-"<html>
+      revisions="<html>
 <ul>
 <li>
 March 30, 2020, by Nicholas Long:<br/>
@@ -172,5 +160,4 @@ First implementation as a template for GeoJson-Modelica translator.
 </li>
 </ul>
 </html>"));
-{% endraw %}
-end SpawnCouplingETS;
+{% endraw %}end SpawnCouplingETS;
