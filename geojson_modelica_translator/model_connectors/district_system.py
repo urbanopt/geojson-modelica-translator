@@ -70,7 +70,7 @@ class DistrictSystemConnector(model_connector_base):
 
         try:
             district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mot")
-            district_heating_system_template = self.template_env.get_template("DistrictHeatingSystem.mot")
+            # district_heating_system_template = self.template_env.get_template("DistrictHeatingSystem.mot")
             cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
             heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
             spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
@@ -195,12 +195,12 @@ class DistrictSystemConnector(model_connector_base):
                 data=template_data
             )
 
-            self.run_template(
-                district_heating_system_template,
-                os.path.join(scaffold.districts_path.files_dir, "DistrictHeatingSystem.mo"),
-                project_name=scaffold.project_name,
-                data=template_data
-            )
+            # self.run_template(
+            #     district_heating_system_template,
+            #     os.path.join(scaffold.districts_path.files_dir, "DistrictHeatingSystem.mo"),
+            #     project_name=scaffold.project_name,
+            #     data=template_data
+            # )
 
             ets_model_type = self.system_parameters.get_param("$.buildings.default.ets_model")
             ets_data = self.system_parameters.get_param(
@@ -270,7 +270,7 @@ class DistrictSystemConnector(model_connector_base):
         # considering any existing files in the Districts directory.
         order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
         order_files.append("DistrictCoolingSystem")
-        order_files.append("DistrictHeatingSystem")
+        # order_files.append("DistrictHeatingSystem")
         order_files.append("HeatingIndirect")
         order_files.append("CoolingIndirect")
         order_files.append("building")
