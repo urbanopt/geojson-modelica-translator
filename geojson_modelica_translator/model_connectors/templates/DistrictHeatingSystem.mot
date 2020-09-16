@@ -1,7 +1,6 @@
 within {{project_name}}.Districts;
   package MediumW = Buildings.Media.Water "Medium model for water";
-  inner parameter DesignDataParallel4GDC
-    datDes(
+  inner parameter DesignDataParallel4GDC datDes(
     nBui=nBui,
     mDis_flow_nominal=sum({bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui}),
     mCon_flow_nominal={bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui},
