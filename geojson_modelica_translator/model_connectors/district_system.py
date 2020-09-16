@@ -70,6 +70,7 @@ class DistrictSystemConnector(model_connector_base):
 
         try:
             district_cooling_system_template = self.template_env.get_template("DistrictCoolingSystem.mot")
+            district_heating_system_template = self.template_env.get_template("DistrictHeatingSystem.mot")
             cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
             heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
             spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
@@ -194,6 +195,13 @@ class DistrictSystemConnector(model_connector_base):
                 data=template_data
             )
 
+            self.run_template(
+                district_heating_system_template,
+                os.path.join(scaffold.districts_path.files_dir, "DistrictHeatingSystem.mo"),
+                project_name=scaffold.project_name,
+                data=template_data
+            )
+
             ets_model_type = self.system_parameters.get_param("$.buildings.default.ets_model")
             ets_data = self.system_parameters.get_param(
                     "$.buildings.default.ets_model_parameters.indirect"
@@ -211,18 +219,6 @@ class DistrictSystemConnector(model_connector_base):
                 mofile = Model(os.path.join(scaffold.districts_path.files_dir, "CoolingIndirect.mo"))
 
                 # TODO: DRY up this if statement and rearrange the whole DistrictSystemConnector class
-            elif "Heating" in ets_model_type:
-                self.run_template(
-                    heating_indirect_template,
-                    os.path.join(scaffold.districts_path.files_dir, "HeatingIndirect.mo"),
-                    project_name=scaffold.project_name,
-                    model_name="RENAMEME",
-                    ets_data=ets_data
-                )
-                # rename the within clause because this is not too flexible and the ETS needs to be in
-                # a different directory (not districts), but that isn't the case.
-                mofile = Model(os.path.join(scaffold.districts_path.files_dir, "HeatingIndirect.mo"))
-
             else:
                 raise Exception("Only ETS Model of type 'Indirect Cooling' or 'Indirect Heating' type enabled currently")
 
@@ -234,6 +230,25 @@ class DistrictSystemConnector(model_connector_base):
             self.copy_required_mo_files(
                 scaffold.districts_path.files_dir, within=f'{scaffold.project_name}.Districts'
             )
+
+            if "Heating" in ets_model_type:
+                self.run_template(
+                    heating_indirect_template,
+                    os.path.join(scaffold.districts_path.files_dir, "HeatingIndirect.mo"),
+                    project_name=scaffold.project_name,
+                    model_name="RENAMEME",
+                    ets_data=ets_data
+                )
+                # rename the within clause because this is not too flexible and the ETS needs to be in
+                # a different directory (not districts), but that isn't the case.
+                mofile = Model(os.path.join(scaffold.districts_path.files_dir, "HeatingIndirect.mo"))
+            else:
+                raise Exception("Only ETS Model of type 'Indirect Cooling' or 'Indirect Heating' type enabled currently")
+
+            # previous paths and replace with the new one.
+            # Make sure to update the names of any resources as well.
+            mofile.set_within_statement(f'{scaffold.project_name}.Districts')
+            mofile.save()
 
         finally:
             os.chdir(curdir)
@@ -255,6 +270,8 @@ class DistrictSystemConnector(model_connector_base):
         # considering any existing files in the Districts directory.
         order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
         order_files.append("DistrictCoolingSystem")
+        order_files.append("DistrictHeatingSystem")
+        order_files.append("HeatingIndirect")
         order_files.append("CoolingIndirect")
         order_files.append("building")
         package = PackageParser.new_from_template(
