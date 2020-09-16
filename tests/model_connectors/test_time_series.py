@@ -81,9 +81,9 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        self.test_run_in_docker(os.path.join(root_path, 'coupling.mo'),
-                                project_path=self.gj.scaffold.project_path,
-                                project_name=self.gj.scaffold.project_name)
+        self.run_and_assert_in_docker(os.path.join(root_path, 'coupling.mo'),
+                                      project_path=self.gj.scaffold.project_path,
+                                      project_name=self.gj.scaffold.project_name)
 
     def test_ets_and_run(self):
         project_name = "time_series_ets"
@@ -123,6 +123,6 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        self.test_run_in_docker(os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
-                                project_path=self.gj.scaffold.project_path,
-                                project_name=self.gj.scaffold.project_name)
+        self.run_and_assert_in_docker(os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
+                                      project_path=self.gj.scaffold.project_path,
+                                      project_name=self.gj.scaffold.project_name)

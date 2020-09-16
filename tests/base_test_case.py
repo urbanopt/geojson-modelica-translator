@@ -64,7 +64,7 @@ class TestCaseBase(GMTTestCase):
 
         return self.data_dir, self.output_dir
 
-    def test_run_in_docker(self, file_to_run, project_path, project_name):
+    def run_and_assert_in_docker(self, file_to_run, project_path, project_name):
         """
         Run the test in docker.
 
