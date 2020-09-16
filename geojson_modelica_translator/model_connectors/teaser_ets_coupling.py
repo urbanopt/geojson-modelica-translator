@@ -39,8 +39,6 @@ from geojson_modelica_translator.utils import ModelicaPath, copytree
 from modelica_builder.model import Model
 from teaser.project import Project
 
-#global template_data #AA added 9/14
-#template_data={} #AA added 9/15
 class TeaserConnectorETS(model_connector_base):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
@@ -157,16 +155,6 @@ class TeaserConnectorETS(model_connector_base):
                 building_name = building["building_id"]
                 b_modelica_path = ModelicaPath(
                    f"B{building['building_id']}", scaffold.loads_path.files_dir, True)
-                mos_weather_filename = self.system_parameters.get_param_by_building_id(building["building_id"], "load_model_parameters.rc.mos_weather_filename",)
-                #print(os.path.dirname(mos_weather_filename))
-                # template_data = {   ##AA added this section, 9/8 
-                    # "load_resources_path": b_modelica_path.resources_relative_dir,
-                    # "mos_weather": {
-                    # "mos_weather_filename": mos_weather_filename,
-                    # "filename": os.path.basename(mos_weather_filename),
-                    # "path": os.path.dirname(mos_weather_filename),
-                    # }
-                # }
                 prj.add_non_residential(
                     method="bmvbs",
                     usage=self.lookup_building_type(building["building_type"]),
@@ -187,14 +175,6 @@ class TeaserConnectorETS(model_connector_base):
                     "buildings.default.load_model_parameters.rc.order", default=2
                 )
                 prj.merge_windows_calc = False
-                # if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]): ##AA added this 9/10 
-                    # shutil.copy(
-                    # template_data["mos_weather"]["mos_weather_filename"],
-                    # os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
-                  # )
-                # else: #(also part of what AA added 9/10) 
-                    # raise Exception(
-                        # f"Missing MOS weather file for Teaser: {template_data['mos_weather']['mos_weather_filename']}")
 
             # calculate the properties of all the buildings and export to the Buildings library
             prj.calc_all_buildings()
