@@ -47,79 +47,147 @@ class TimeSeriesConnector(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        curdir = os.getcwd()
-
-        time_series_coupling_template = self.template_env.get_template("TimeSeriesCouplingBuilding.mot")
+        # The list of MOT files are conditional, but for now just include them all so that they exist as
+        # needed.
+        # Building Load
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
+
+        # Building Only Coupling
+        time_series_coupling_template = self.template_env.get_template("TimeSeriesCouplingBuilding.mot")
         time_series_mos_template = self.template_env.get_template("RunTimeSeriesBuilding.most")
-        building_names = []
-        try:
-            for building in self.buildings:
-                building_names.append(f"B{building['building_id']}")
-                b_modelica_path = ModelicaPath(
-                    f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+
+        # ETS Models
+        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        time_series_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
+        time_series_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
+
+        # We should move to a LoadConnector only acting on a single building. Note thought that a single building/load
+        # can have multiple thermalzones/models. For now, assert that only a single building exists per
+        # this connector. Move these validation methods to the base class (eventually)
+        if len(self.buildings) == 0:
+            raise Exception("No load to translate")
+
+        if len(self.buildings) > 1:
+            raise Exception("The TimeSeriesConnector is expecting only one building per connector")
+
+        building = self.buildings[0]
+        building_name = f"B{building['building_id']}"
+
+        b_modelica_path = ModelicaPath(
+            f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+        )
+
+        self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
+
+        # Note that the system_parameters object when accessing filepaths will fully resolve the
+        # location of the file.
+        time_series_filename = self.system_parameters.get_param_by_building_id(
+            building["building_id"], "load_model_parameters.time_series.filepath"
+        )
+
+        if os.path.splitext(time_series_filename)[1].lower() == '.csv':
+            raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
+        elif not os.path.exists(time_series_filename):
+            raise Exception(f"Missing MOS file for time series: {time_series_filename}")
+
+        # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
+        # used. The `nominal_values` are only used when the time series is coupled to an ETS system.
+        template_data = {
+            "load_resources_path": b_modelica_path.resources_relative_dir,
+            "time_series": {
+                "filepath": time_series_filename,
+                "filename": os.path.basename(time_series_filename),
+                "path": os.path.dirname(time_series_filename),
+            },
+            "nominal_values": {
+                "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                    building["building_id"], "load_model_parameters.time_series.delTDisCoo"
                 )
+            }
+        }
 
-                self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
+        # copy over the resource files for this building
+        # TODO: move some of this over to a validation step
+        new_file = os.path.join(b_modelica_path.resources_dir, os.path.basename(time_series_filename))
+        os.makedirs(os.path.dirname(new_file), exist_ok=True)
+        shutil.copy(time_series_filename, new_file)
 
-                # grab the data from the system_parameter file for this building id
-                # TODO: create method in system_parameter class to make this easier and respect the defaults
-                time_series_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.filepath"
-                )
+        self.run_template(
+            time_series_building_template,
+            os.path.join(b_modelica_path.files_dir, "building.mo"),
+            project_name=scaffold.project_name,
+            model_name=f"B{building['building_id']}",
+            data=template_data
+        )
 
-                # construct the dict to pass into the template
-                template_data = {
-                    "load_resources_path": b_modelica_path.resources_relative_dir,
-                    "time_series": {
-                        "filepath": time_series_filename,
-                        "filename": os.path.basename(time_series_filename),
-                        "path": os.path.dirname(time_series_filename),
-                    }
-                }
+        # Now switch between the building if it has only coupling vs when it has an ETS
+        ets_model_type = self.system_parameters.get_param_by_building_id(
+            building["building_id"], "ets_model"
+        )
 
-                # copy over the resource files for this building
-                # TODO: move some of this over to a validation step
-                if os.path.exists(template_data["time_series"]["filepath"]):
-                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
-                    os.makedirs(os.path.dirname(new_file), exist_ok=True)
-                    shutil.copy(template_data["time_series"]["filepath"], new_file)
-                else:
-                    raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
+        print(f'my ETS model is {ets_model_type}')
+        if ets_model_type == "None":
+            self.run_template(
+                time_series_coupling_template,
+                os.path.join(b_modelica_path.files_dir, "coupling.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data
+            )
 
-                self.run_template(
-                    time_series_building_template,
-                    os.path.join(b_modelica_path.files_dir, "building.mo"),
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data
-                )
+            self.run_template(
+                time_series_mos_template,
+                os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesBuilding.most"),
+                full_model_name=os.path.join(
+                    scaffold.project_name,
+                    scaffold.loads_path.files_relative_dir,
+                    f"B{building['building_id']}",
+                    "coupling").replace(os.path.sep, '.')
+            )
+        # TODO: Need to update this to include items other than Indirect Cooling, should just be indirect.
+        elif ets_model_type == "Indirect Cooling":
+            # The ETS model is Indirect Cooling. If this model is to be connected to a district, then
+            # somehow we need to know that context and remove the "TimeSeriesCouplingETS.mo file" and connect
+            # the system to the distribution network.
+            ets_data = self.system_parameters.get_param_by_building_id(
+                building["building_id"],
+                "ets_model_parameters.indirect_cooling"
+            )
 
-                self.run_template(
-                    time_series_coupling_template,
-                    os.path.join(b_modelica_path.files_dir, "coupling.mo"),
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data
-                )
+            self.run_template(
+                cooling_indirect_template,
+                os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
 
-                self.run_template(
-                    time_series_mos_template,
-                    os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesBuilding.most"),
-                    full_model_name=os.path.join(
-                        scaffold.project_name,
-                        scaffold.loads_path.files_relative_dir,
-                        f"B{building['building_id']}",
-                        "coupling").replace(os.path.sep, '.')
-                )
+            self.run_template(
+                time_series_ets_coupling_template,
+                os.path.join(b_modelica_path.files_dir, "TimeSeriesCouplingETS.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+            )
 
-        finally:
-            os.chdir(curdir)
+            file_data = time_series_ets_mos_template.render(
+                full_model_name=os.path.join(
+                    scaffold.project_name,
+                    scaffold.loads_path.files_relative_dir,
+                    f"B{building['building_id']}", "TimeSeriesCouplingETS").replace(os.path.sep, '.'),
+                model_name="TimeSeriesCouplingETS"
+            )
+
+            with open(os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"), "w") as f:
+                f.write(file_data)
+        else:
+            raise Exception("Only ETS Model of type 'Indirect Cooling' and 'None' type enabled currently")
 
         # run post process to create the remaining project files for this building
-        self.post_process(scaffold, building_names)
+        self.post_process(scaffold, building_name)
 
-    def post_process(self, scaffold, building_names):
+    def post_process(self, scaffold, building_name):
         """
         Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
         the following:
@@ -131,18 +199,18 @@ class TimeSeriesConnector(model_connector_base):
         :param building_names: list, names of the buildings that need to be cleaned up after export
         :return: None
         """
-        for b in building_names:
-            b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
-            new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "coupling"],
-                within=f"{scaffold.project_name}.Loads"
-            )
-            new_package.save()
+        b_modelica_path = os.path.join(scaffold.loads_path.files_dir, building_name)
+        new_package = PackageParser.new_from_template(
+            b_modelica_path, building_name, ["building", "coupling"],
+            within=f"{scaffold.project_name}.Loads"
+        )
+        new_package.save()
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
+        # TODO: Chaeck if the package.order and package.mo file exists, if so then just append
         package = PackageParser.new_from_template(
-            scaffold.loads_path.files_dir, "Loads", building_names, within=f"{scaffold.project_name}"
+            scaffold.loads_path.files_dir, "Loads", [building_name], within=f"{scaffold.project_name}"
         )
         package.save()
 

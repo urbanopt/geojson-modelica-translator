@@ -29,9 +29,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import shutil
-import unittest
-from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -39,20 +36,17 @@ from geojson_modelica_translator.geojson_modelica_translator import (
 from geojson_modelica_translator.model_connectors.time_series import (
     TimeSeriesConnector
 )
-from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
 
+from ..base_test_case import TestCaseBase
 
-class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
 
-        project_name = "time_series_ex1"
-        if os.path.exists(os.path.join(self.output_dir, project_name)):
-            shutil.rmtree(os.path.join(self.output_dir, project_name))
+class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
+    def test_no_ets_and_run(self):
+        project_name = "time_series_no_ets"
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single offie building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
@@ -61,29 +55,74 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
         self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ex1.json")
+        filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
         sys_params = SystemParameters(filename)
 
-        # now test the spawn connector (independent of the larger geojson translator
+        # now test the connector (independent of the larger geojson translator)
         self.time_series = TimeSeriesConnector(sys_params)
         for b in self.gj.json_loads:
+            # will only add a single building
             self.time_series.add_building(b)
 
-    def test_time_series_to_modelica_and_run(self):
         self.assertIsNotNone(self.time_series)
+        self.assertEqual(len(self.time_series.buildings), 1)
         self.assertEqual("time_series",
                          self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 
         self.time_series.to_modelica(self.gj.scaffold)
 
-        # make sure the model can run using the ModelicaRunner class
-        mr = ModelicaRunner()
-        file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
-        )
-        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
-        self.assertEqual(0, exitcode)
+        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
+        files = [
+            os.path.join(root_path, 'building.mo'),
+            os.path.join(root_path, 'coupling.mo'),
+        ]
 
-        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
-        self.assertTrue(os.path.join(results_path, 'stdout.log'))
+        # verify that there are only 2 files that matter (coupling and building)
+        for file in files:
+            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
+
+        self.run_and_assert_in_docker(os.path.join(root_path, 'coupling.mo'),
+                                      project_path=self.gj.scaffold.project_path,
+                                      project_name=self.gj.scaffold.project_name)
+
+    def test_ets_and_run(self):
+        project_name = "time_series_ets"
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
+
+        # load in the example geojson with a single offie building
+        filename = os.path.join(self.data_dir, "time_series_ex1.json")
+        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        # use the GeoJson translator to scaffold out the directory
+        self.gj.scaffold_directory(self.output_dir, project_name)
+
+        # load system parameter data
+        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
+        sys_params = SystemParameters(filename)
+
+        # now test the connector (independent of the larger geojson translator)
+        self.time_series = TimeSeriesConnector(sys_params)
+        for b in self.gj.json_loads:
+            # will only add a single building
+            self.time_series.add_building(b)
+
+        self.assertIsNotNone(self.time_series)
+        self.assertEqual(len(self.time_series.buildings), 1)
+        self.assertEqual("time_series",
+                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+
+        self.time_series.to_modelica(self.gj.scaffold)
+
+        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
+        files = [
+            os.path.join(root_path, 'building.mo'),
+            os.path.join(root_path, 'CoolingIndirect.mo'),
+            os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
+        ]
+
+        # verify that there are only 2 files that matter (coupling and building)
+        for file in files:
+            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
+
+        self.run_and_assert_in_docker(os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
+                                      project_path=self.gj.scaffold.project_path,
+                                      project_name=self.gj.scaffold.project_name)

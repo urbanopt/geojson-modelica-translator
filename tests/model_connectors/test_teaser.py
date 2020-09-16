@@ -30,13 +30,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import itertools
 import os
-from pathlib import Path
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
 from geojson_modelica_translator.model_connectors.teaser import TeaserConnector
-from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -93,14 +91,12 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         with open(check_file) as f:
             self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.TwoElements' in f.read())
 
-        mr = ModelicaRunner()
-
         file_to_run = os.path.abspath(
             os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
         )
-        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
-        self.assertEqual(0, exitcode)
+        self.run_and_assert_in_docker(
+            file_to_run, project_path=self.gj.scaffold.project_path, project_name=self.gj.scaffold.project_name
+        )
 
     def test_teaser_rc_4(self):
         """Models should be 4 element RC models"""
