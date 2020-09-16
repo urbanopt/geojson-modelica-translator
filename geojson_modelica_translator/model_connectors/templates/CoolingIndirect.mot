@@ -47,14 +47,14 @@ model CoolingIndirect
   {% endraw %}{% raw %}parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{  ets_data['supply_water_temperature_district']   }}+273.15,
+    {% endraw %}start={{  ets_data['cooling_supply_water_temperature_district']   }}+273.15,
     final displayUnit="K")
     "Nominal temperature at port a1"
     annotation (Dialog(group="Heat exchanger"));
   {% raw %}parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{ ets_data['supply_water_temperature_building']  }}+273.15,
+    {% endraw %}start={{ ets_data['cooling_supply_water_temperature_building']  }}+273.15,
     final displayUnit="K")
     "Nominal temperature at port a2"
     annotation (Dialog(group="Heat exchanger"));
