@@ -103,7 +103,9 @@ class Base(object):
             )
 
     def copy_required_mo_files(self, dest_folder, within=None):
-        """Copy any required_mo_files to the destination and update the within clause if defined
+        """Copy any required_mo_files to the destination and update the within clause if defined. The required mo
+        files need to be added as full paths to the required_mo_files member variable in the connectors derived
+        classes.
 
         :param dest_folder: String, folder to copy the resulting MO files into.
         :param within: String, within clause to be replaced in the .mo file. Note that the original MO file needs to
