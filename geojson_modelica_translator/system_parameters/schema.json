@@ -288,7 +288,7 @@
       "additionalProperties": false
     },
     "ets_indirect_parameters": {
-      "description": "Indirect ETS. The energy transfer is implemented through nondirect contact of water loops. Parameters associated with indirect ETS",
+      "description": "Indirect ETS. The energy transfer is implemented through nondirect contact of water loops (heat exchanger). Parameters associated with indirect ETS",
       "type": "object",
       "properties": {
         "q_flow_nominal": {
