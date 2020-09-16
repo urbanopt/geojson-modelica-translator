@@ -4,8 +4,7 @@ model DistrictHeatingSystem "Example to test the 4G district heating system."
   extends Modelica.Icons.Example;
 {% raw %}
   package MediumW = Buildings.Media.Water "Medium model for water";
-  inner parameter
-    Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Data.DesignDataParallel4GDC
+  inner parameter DesignDataParallel4GDC
     datDes(
     nBui=nBui,
     mDis_flow_nominal=sum({bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui}),
