@@ -204,8 +204,8 @@ class DistrictSystemConnector(model_connector_base):
 
             ets_model_type = self.system_parameters.get_param("$.buildings.default.ets_model")
             ets_data = self.system_parameters.get_param(
-                    "$.buildings.default.ets_model_parameters.indirect"
-                )
+                "$.buildings.default.ets_model_parameters.indirect"
+            )
             if "Cooling" in ets_model_type:
                 self.run_template(
                     cooling_indirect_template,
