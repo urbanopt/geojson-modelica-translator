@@ -70,7 +70,7 @@ model HeatingIndirect
     min=0+273,
     max=100+273.15,
     {% endraw %}
-    start={{  ets_data['supply_water_temperature_district']  }}+273.15,
+    start={{  ets_data['heating_supply_water_temperature_district']  }}+273.15,
     {% raw %}
     final displayUnit="K")
     "Nominal temperature at port a1"
@@ -80,7 +80,7 @@ model HeatingIndirect
     min=0+273,
     max=100+273.15,
     {% endraw %}
-    start={{ ets_data['supply_water_temperature_building']  }}+273.15,
+    start={{ ets_data['heating_supply_water_temperature_building']  }}+273.15,
     {% raw  %}
     final displayUnit="K")
     "Nominal temperature at port a2"
@@ -377,6 +377,6 @@ annotation (defaultComponentName="coo",
           fillColor={0,0,255},
           fillPattern=FillPattern.Solid)}),
        Diagram(
-        coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,160}}));
+        coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,160}})));
 {% endraw %}
 end HeatingIndirect;
