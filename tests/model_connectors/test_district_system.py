@@ -85,19 +85,3 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(unittest.TestCase):
 
         results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
         self.assertTrue(os.path.join(results_path, 'stdout.log'))
-
-    # def test_district_heating_to_modelica_and_run(self):
-    #     self.assertIsNotNone(self.district)
-    #     self.district.to_modelica(self.gj.scaffold, model_connector_base)
-
-    #     # make sure the model can run using the ModelicaRunner class
-    #     mr = ModelicaRunner()
-    #     heating_file_to_run = os.path.abspath(
-    #         os.path.join(self.gj.scaffold.districts_path.files_dir, 'DistrictHeatingSystem.mo'),
-    #     )
-    #     run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
-    #     exitcode = mr.run_in_docker(heating_file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
-    #     self.assertEqual(0, exitcode)
-
-    #     results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_heating_results")
-    #     self.assertTrue(os.path.join(results_path, 'stdout.log'))
