@@ -27,53 +27,91 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-#!/usr/bin/env python
+# !/usr/bin/env python
 # coding: utf-8
 
 import os
+
 import pandas as pd
+
 
 class CSVModelica(object):
 
-   def __init__(self,scaffold,res_dir, input_csv_file_name):
-        self.scaffold= scaffold
-        self.res_dir = scaffold.load_path.resources_dir
+    def __init__(self, input_csv_file_path):
+        """
+        Convert a CSV file into the format required by Modelica. This is specific to the Mass Flow Rate file
+        only as the header of the file adds in the nominal heating and cooling flow rates. Note that the columns
+        of the CSV file need to be massFlorRateHeating
+
+        :param input_csv_file_path: string, path to file to convert.
+        """
+
+        if not os.path.exists(input_csv_file_path):
+            raise Exception(f"Unable to convert CSV file because it does not exist: {input_csv_file_path}")
+
         # read the whole data set
-        timeseries_output = pd.read_csv(input_csv_file_name)
-        # round the data command
-        timeseries_output= timeseries_output.round(2)
-        # copy the first line
-        timeseries_15min= timeseries_output.loc[[0],:]
-        timeseries_output = pd.concat([timeseries_output,timeseries_15min]).sort_index()
+        self.timeseries_output = pd.read_csv(input_csv_file_path)
+        # round the data command since energyplus reports too many sigfigs.
+        self.timeseries_output = self.timeseries_output.round(2)
+        # copy the first line since Dymola wants to have time start at zero.
+        timeseries_15min = self.timeseries_output.loc[[0], :]
+        self.timeseries_output = pd.concat([self.timeseries_output, timeseries_15min]).sort_index()
         # reset index
-        timeseries_output = timeseries_output.reset_index(drop=True)
-        #Nominal massFlowRate
-        nominalHea_massFloRate=pd.DataFrame({'#heating':['#Nominal heating water mass flow rate'],'#value':    [timeseries_output['massFlowRateHeating'].max()]},
-                                                columns=['#heating','#value'])
-        nominalCoo_massFloRate=pd.DataFrame({'#cooling':['#Nominal chilled water mass flow rate'],'#value':[timeseries_output['massFlowRateCooling'].max()]},
-                                                columns=['#cooling','#value'])
+        self.timeseries_output = self.timeseries_output.reset_index(drop=True)
 
-    def timeseries_to_modelica_data(file_path, EnergyPlustimestep, data_type, output_modelica_file_name):
-# evaluate dimensions of the matrix
-        size = timeseries_output.shape
-# modifiy the index for modelica mos
-        timeseries_output.index = (timeseries_output.index)*EnergyPlustimestep
-        timeseries_output.index.name = '#time'
-        timeseries_output.drop(['Date/Time'], axis=1, inplace=True)
-# write to csv for modelica
-        file = file_name + '.csv'
-        with open(file,'w') as f:
+        # Note that the file that is in this test repo does not have the column you are looking for (massFlowRateHeating),
+        # It only contains (print(self.timeseries_output.columns) -- 'NODE 62:System Node Temperature[C]',
+        #        'NODE 67:System Node Temperature[C]',
+        #        'NODE 70:System Node Temperature[C]',
+        #        'NODE 98:System Node Temperature[C]',
+        #        'NODE 62:System Node Mass Flow Rate[kg/s]',
+        #        'NODE 67:System Node Mass Flow Rate[kg/s]',
+        #        'NODE 70:System Node Mass Flow Rate[kg/s]',
+        #        'NODE 98:System Node Mass Flow Rate[kg/s]',
+
+        # Nominal massFlowRate.
+        self.nominal_heating_mass_flow_rate = pd.DataFrame(
+            {'#heating': ['#Nominal heating water mass flow rate'],
+             '#value': [self.timeseries_output['massFlowRateHeating'].max()]},
+            columns=['#heating', '#value']
+        )
+        self.nominal_cooling_mass_flow_rate = pd.DataFrame(
+            {'#cooling': ['#Nominal chilled water mass flow rate'],
+             '#value': [self.timeseries_output['massFlowRateCooling'].max()]},
+            columns=['#cooling', '#value']
+        )
+
+    def timeseries_to_modelica_data(self, output_modelica_file_name, energyplus_timestep=15, data_type='double', overwrite=True):
+        """
+        Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
+        rate and the nominal cooling water mass flow rate into the header.
+
+        :param output_modelica_file_name: string, The name of the outputfile. The extension is automatically added.
+        :param energyplus_timestep: int, EnergyPlus timestep, defaults to 15
+        :param data_type: string, data type being converted, defaults to double
+        :param overwrite: boolean, if the resulting file exists, then overwrite, defaults to True.
+        :return:
+        """
+        # evaluate dimensions of the matrix
+        size = self.timeseries_output.shape
+        print(size)
+        print(self.timeseries_output.index)
+        # modify the index for modelica mos
+        self.timeseries_output.index = self.timeseries_output.index * energyplus_timestep
+        self.timeseries_output.index.name = '#time'
+        # Date
+        self.timeseries_output.drop(['Date/Time'], axis=1, inplace=True)
+        # write to csv for modelica
+        output_modelica_file_name_full = f'{output_modelica_file_name}.csv'
+        if os.path.exists(output_modelica_file_name_full) and not overwrite:
+            raise Exception(f"Output file already exists and overwrite is False: {output_modelica_file_name}")
+
+        print(output_modelica_file_name)
+        print(os.path.basename(output_modelica_file_name))
+        with open(output_modelica_file_name_full, 'w') as f:
             line1 = '#1'
-            line2 = data_type + ' ' + file_name + '(' + str(size[0]) + ',' + str(size[1])  + ')'
-            line3 = '#Nominal heating water mass flow rate=' + str(nominalHea_massFloRate.loc[0,'#value'])
-            line4 = '#Nominal chilled water mass flow rate=' + str(nominalCoo_massFloRate.loc[0,'#value'])
-            f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1,line2,line3,line4))
-            timeseries_output.to_csv(f, header=True)
-
-
-file_path = os.path.abspath('Mass_Flow_Rates_Temperatures.csv')
-energyPlus_timestep =  60*15
-data_type = 'double'
-output_modelica_file_name = 'modelica'
-obj= CSVModelica(None,file_path)
-obj.timeseries_to_modelica_data(file_path, EnergyPlustimestep, data_type, output_modelica_file_name)
+            line2 = f"{data_type} {os.path.basename(output_modelica_file_name)}({size[0]}, {size[1]})"
+            line3 = '#Nominal heating water mass flow rate=' + str(self.nominal_heating_mass_flow_rate.loc[0, '#value'])
+            line4 = '#Nominal chilled water mass flow rate=' + str(self.nominal_cooling_mass_flow_rate.loc[0, '#value'])
+            f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1, line2, line3, line4))
+            self.timeseries_output.to_csv(f, header=True)
