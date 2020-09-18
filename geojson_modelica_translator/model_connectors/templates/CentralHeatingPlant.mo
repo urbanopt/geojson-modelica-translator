@@ -1,5 +1,5 @@
 within geojson_modelica_translator.model_connectors.templates;
-model PlantHeatingNewBoiler
+model CentralHeatingPlant
   "Central heating plant."
   package Medium=Buildings.Media.Water
     "MediumW model";
@@ -314,4 +314,4 @@ equation
           extent={{-149,-114},{151,-154}},
           lineColor={0,0,255},
           textString="%name")}));
-end PlantHeatingNewBoiler;
+end CentralHeatingPlant;
