@@ -147,9 +147,9 @@ class SystemParametersTest(unittest.TestCase):
 
         # grab the schema default
         value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
-        self.assertEqual("Indirect Cooling", value)
+        self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect_cooling':
+        self.assertEqual({'indirect':
                           {"q_flow_nominal": 8000,
                            "eta_efficiency": 0.666,
                            "nominal_flow_district": 0.666,
@@ -157,8 +157,11 @@ class SystemParametersTest(unittest.TestCase):
                            "pressure_drop_valve": 888,
                            "pressure_drop_hx_secondary": 999,
                            "pressure_drop_hx_primary": 999,
-                           "supply_water_temperature_district": 5,
-                           "supply_water_temperature_building": 7}}, value)
+                           "cooling_supply_water_temperature_district": 5,
+                           "cooling_supply_water_temperature_building": 7,
+                           "heating_supply_water_temperature_district": 55,
+                           "heating_supply_water_temperature_building": 50}
+                          }, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
@@ -169,9 +172,9 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
 
         value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
-        self.assertEqual("Indirect Cooling", value)
+        self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect_cooling':
+        self.assertEqual({'indirect':
                           {"q_flow_nominal": 8000,
                            "eta_efficiency": 0.666,
                            "nominal_flow_district": 0.666,
@@ -179,8 +182,10 @@ class SystemParametersTest(unittest.TestCase):
                            "pressure_drop_valve": 888,
                            "pressure_drop_hx_secondary": 999,
                            "pressure_drop_hx_primary": 999,
-                           "supply_water_temperature_district": 5,
-                           "supply_water_temperature_building": 7}
+                           "cooling_supply_water_temperature_district": 5,
+                           "cooling_supply_water_temperature_building": 7,
+                           "heating_supply_water_temperature_district": 55,
+                           "heating_supply_water_temperature_building": 50}
                           }, value)
 
     # def test_get_param_with_building_id_merge_defaults(self):
@@ -189,6 +194,6 @@ class SystemParametersTest(unittest.TestCase):
     #     sdp = SystemParameters(filename)
     #
     #     # merge in the building defaults
-    #     value = sdp.get_param_by_building_id("building_merge_defaults", "ets_model_parameters.indirect_cooling")
+    #     value = sdp.get_param_by_building_id("building_merge_defaults", "ets_model_parameters.indirect")
     #     result = {'Q_Flow_Nominal': 10000, 'Eta_Efficiency': 0.99, "SWT_District": 15}
     #     self.assertEqual(result, value)

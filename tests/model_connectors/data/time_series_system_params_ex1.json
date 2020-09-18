@@ -2,9 +2,9 @@
   "buildings": {
     "default": {
       "load_model": "time_series",
-      "ets_model": "Indirect Cooling",
+      "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
-        "indirect_cooling": {
+        "indirect": {
           "q_flow_nominal": 8888,
           "eta_efficiency": 0.9,
           "nominal_flow_district": 0.5,
@@ -12,8 +12,10 @@
           "pressure_drop_valve": 1000,
           "pressure_drop_hx_secondary": 1500,
           "pressure_drop_hx_primary": 1500,
-          "supply_water_temperature_district": 5,
-          "supply_water_temperature_building": 7
+          "cooling_supply_water_temperature_district": 5,
+          "cooling_supply_water_temperature_building": 7,
+          "heating_supply_water_temperature_district": 55,
+          "heating_supply_water_temperature_building": 50
         }
       }
     },
