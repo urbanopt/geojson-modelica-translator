@@ -1,4 +1,6 @@
 within geojson_modelica_translator.model_connectors.templates;
+model DistrictHeatingSystem
+    extends Modelica.Icons.Example;
 {% raw %}  package MediumW = Buildings.Media.Water "Medium model for water";
   inner parameter DesignDataParallel4GDC datDes(
     nBui=nBui,
