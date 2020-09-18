@@ -1,5 +1,5 @@
-within {{project_name}}.Districts;
-  package MediumW = Buildings.Media.Water "Medium model for water";
+within geojson_modelica_translator.model_connectors.templates;
+{% raw %}  package MediumW = Buildings.Media.Water "Medium model for water";
   inner parameter DesignDataParallel4GDC datDes(
     nBui=nBui,
     mDis_flow_nominal=sum({bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui}),
@@ -45,6 +45,7 @@ within {{project_name}}.Districts;
     "Performance data for heating water pumps";
 
   CentralHeatingPlant heaPla(
+   {% endraw %}perHWPum=perHWPum,
     mHW_flow_nominal= mHW_flow_nominal,
     dpHW_nominal=dpHW_nominal,
     QBoi_flow_nominal=QBoi_nominal,
@@ -52,15 +53,16 @@ within {{project_name}}.Districts;
     mBoi_flow_nominal=mBoi_flow_nominal,
     dpBoi_nominal=10000,
     delT_nominal(displayUnit="degC")=10,
-    perHWPum=perHWPum,
     tWai=tWai,
     dpSetPoi=dpSetPoi,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
-    "District heating plant."
+  {% raw %}  "District heating plant."
     annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
  BuildingSpawnZ6WithHeatingIndirectETS bui_ETS[nBui](
+{% endraw %}idfName="{{data["idf"]["modelica_path"]}}",
+            weaName="{{data["mos_weather"]["modelica_path"]}}",
     yMax={0.65,1},
-    yMin={0,0})
+    yMin={0,0})   {% raw %} "Vectorized spawn building."
     annotation (Placement(transformation(extent={{20,60},{40,80}})));
   Buildings.Fluid.Sources.Boundary_pT cooSou(
     redeclare package Medium = MediumW,
