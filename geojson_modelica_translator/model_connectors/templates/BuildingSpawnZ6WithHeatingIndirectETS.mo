@@ -6,7 +6,7 @@ model BuildingSpawnZ6WithCoolingIndirectETS
     final m2_flow_nominal=mBuiCoo_flow_nominal,
     redeclare final package Medium1=MediumW,
     redeclare final package Medium2=MediumW,
-    redeclare DHC.Loads.Examples.BaseClasses.BuildingSpawnZ6 bui(
+    redeclare building bui(
       final have_pum=true,
       final idfName=idfName,
       final weaName=weaName,
