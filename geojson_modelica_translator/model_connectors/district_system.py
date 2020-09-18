@@ -45,18 +45,26 @@ class DistrictSystemConnector(model_connector_base):
         # the "package.order" will be in.
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialDistribution.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingETS.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingWithIndirectETS.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallel.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialBuildingWithCoolingIndirectETS.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'BuildingSpawnZ6WithCoolingIndirectETS.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CentralCoolingPlant.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'CentralHeatingPlant.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'HeatingWaterPumpSpeed.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ChilledWaterPumpSpeed.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ChillerStage.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'BoilerStage.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ConnectionParallel.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParallel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'Boiler_TParallel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'Heater_T.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'DesignDataParallel4GDC.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PipeDistribution.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PipeConnection.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'UnidirectionalParallel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'ValveParameters.mo'))
 
     def to_modelica(self, scaffold, model_connector_base):
         """
