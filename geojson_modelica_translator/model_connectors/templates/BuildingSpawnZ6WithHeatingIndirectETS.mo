@@ -34,6 +34,7 @@ model BuildingSpawnZ6WithCoolingIndirectETS
       eta=0.8,
       xi_start=0),
     preSou(
+<<<<<<< HEAD
       redeclare package Medium =MediumW));
 
   parameter String idfName=
@@ -78,3 +79,7 @@ equation
           fileName="modelica://Buildings/Resources/Images/ThermalZones/EnergyPlus/EnergyPlusLogo.png")}),
       Diagram(coordinateSystem(extent={{-100,-100},{100,100}})));
 end BuildingSpawnZ6WithHeatingIndirectETS;
+=======
+      redeclare package Medium=MediumW));
+;
+>>>>>>> c181ba2cab52286dbb1a1c9344bcfc49b196da5a
