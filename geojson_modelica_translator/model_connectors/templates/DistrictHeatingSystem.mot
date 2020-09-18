@@ -1,11 +1,6 @@
-// within geojson_modelica_translator.model_connectors.templates;
-
-model DistrictHeatingSystem "Example to test the 4G district heating system."
-  extends Modelica.Icons.Example;
-{% raw %}
+within {{project_name}}.Districts;
   package MediumW = Buildings.Media.Water "Medium model for water";
-  inner parameter DesignDataParallel4GDC
-    datDes(
+  inner parameter DesignDataParallel4GDC datDes(
     nBui=nBui,
     mDis_flow_nominal=sum({bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui}),
     mCon_flow_nominal={bui_ETS[i].ets.mDis_flow_nominal for i in 1:nBui},
@@ -63,7 +58,7 @@ model DistrictHeatingSystem "Example to test the 4G district heating system."
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
     "District heating plant."
     annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
-  Buildings.Applications.DHC.Examples.FifthGeneration.Unidirectional.Loads.BuildingSpawnZ6WithHeatingIndirectETS bui_ETS[nBui](
+ BuildingSpawnZ6WithHeatingIndirectETS bui_ETS[nBui](
     yMax={0.65,1},
     yMin={0,0})
     annotation (Placement(transformation(extent={{20,60},{40,80}})));
