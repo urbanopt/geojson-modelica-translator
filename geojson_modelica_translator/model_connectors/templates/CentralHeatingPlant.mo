@@ -122,7 +122,7 @@ model CentralHeatingPlant
     m_flow_nominal=mHW_flow_nominal)
     "Heating water return temperature"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={104,50})));
-  DataCenters.ChillerCooled.Equipment.FlowMachine_y pumHW(
+  Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_y pumHW(
     rhoStd=Medium.density_pTX(
       Medium.p_default,
       Medium.T_default,

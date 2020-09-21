@@ -1,7 +1,7 @@
 within geojson_modelica_translator.model_connectors.templates;
-model BuildingSpawnZ6WithCoolingIndirectETS
+model BuildingSpawnZ6WithHeatingIndirectETS
   package MediumW=Buildings.Media.Water;
-  extends PartialBuildingWithCoolingIndirectETS(
+  extends PartialBuildingWithIndirectETS(
     final m1_flow_nominal=mBuiHea_flow_nominal,
     final m2_flow_nominal=mBuiCoo_flow_nominal,
     redeclare final package Medium1=MediumW,

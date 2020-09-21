@@ -1,4 +1,5 @@
-within geojson_modelica_translator.model_connectors.templates;
+//within geojson_modelica_translator.model_connectors.templates;
+within {{project_name}}.Districts;
 model DistrictHeatingSystem
   extends Modelica.Icons.Example;
   {% raw %}package MediumW=Buildings.Media.Water

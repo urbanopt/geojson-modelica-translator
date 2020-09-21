@@ -73,4 +73,4 @@ First implementation.
         Rectangle(
           extent={{-54,54},{54,-54}},
           lineColor={102,44,145})}));
-end Boiler_TParaller;
+end Boiler_TParallel;
