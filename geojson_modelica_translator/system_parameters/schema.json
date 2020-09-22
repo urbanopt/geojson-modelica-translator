@@ -89,28 +89,40 @@
                 "type": "string"
               }
             },
-            "ets_type_heating": {
+            "ets_heating_generation": {
               "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
               "type": "string",
               "enum": [
-                "1G Indirect",
-                "1G Direct",
-                "2/3 G Direct",
-                "2/3 G Indirect",
-                "4/5 G Direct",
-                "4/5 G Indirect"
+                "First Generation",
+                "Second/Third Generation",
+                "Fourth Generation",
+                "Fifth Generation"
               ]
             },
-            "ets_type_cooling": {
-              "description": "Energy transfer station model for cooling, one side is connected with district water loops, and the other side is connected with building water loops ",
+			 "ets_heating_connection_type": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
               "type": "string",
               "enum": [
-                "1G Indirect",
-                "1G Direct",
-                "2/3 G Direct",
-                "2/3 G Indirect",
-                "4/5 G Direct",
-                "4/5 G Indirect"
+                "Direct",
+                "Indirect"
+              ]
+            },
+		    "ets_cooling_generation": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
+              "type": "string",
+              "enum": [
+                "First Generation",
+                "Second/Third Generation",
+                "Fourth Generation",
+                "Fifth Generation"
+              ]
+            },
+			 "ets_cooling_connection_type": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
+              "type": "string",
+              "enum": [
+                "Direct",
+                "Indirect"
               ]
             }
           },
