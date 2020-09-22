@@ -26,10 +26,19 @@ model building
     "Nominal building supply and return chilled water temperature difference";
   parameter Modelica.SIunits.TemperatureDifference delTDisCoo=9
     "Nominal district supply and return water temperature difference";
+  parameter Modelica.SIunits.TemperatureDifference delTBuiHea=8
+    "Nominal building supply and return water temperature difference";
+  parameter Modelica.SIunits.TemperatureDifference delTDisHea=10
+    "Nominal district supply and return water temperature difference";
   parameter Modelica.SIunits.Temperature T_aChiWat_nominal
     "Supply chilled water nominal temperature";
   parameter Modelica.SIunits.Temperature T_bChiWat_nominal
     "Return chilled water nominal temperature";
+  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal
+    "Supply heating water nominal temperature";
+  parameter Modelica.SIunits.Temperature T_bHeaWat_nominal
+    "Return heating water nominal temperature";
+
   parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]=fill(
     3000,
     nZon) ./ facSca
@@ -106,8 +115,8 @@ model building
     final QCoo_flow_nominal=QCoo_flow_nominal,
     each T_aLoaHea_nominal=293.15,
     each T_aLoaCoo_nominal=297.15,
-    each T_bHeaWat_nominal=308.15,
-    each T_aHeaWat_nominal=313.15,
+    each T_bHeaWat_nominal=T_bHeaWat_nominal,
+    each T_aHeaWat_nominal=T_aHeaWat_nominal,
     final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
     final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
     "Terminal unit"

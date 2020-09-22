@@ -8,15 +8,13 @@ model BuildingSpawnZ6WithCoolingIndirectETS
     redeclare final package Medium2=MediumW,
     preSou(
       redeclare package Medium=MediumW),
-    val(
-      redeclare package Medium=MediumW,
-      m_flow_nominal=mDis_flow_nominal,
-      dpValve_nominal=7000),
     redeclare building bui(
       final idfName=idfName,
       final weaName=weaName,
       T_aChiWat_nominal=280.15,
       T_bChiWat_nominal=285.15,
+      T_aHeaWat_nominal=40+273.15,
+      T_bHeaWat_nominal=35+273.15,
       nPorts_aHeaWat=1,
       nPorts_bHeaWat=1,
       nPorts_bChiWat=1,
@@ -46,30 +44,24 @@ model BuildingSpawnZ6WithCoolingIndirectETS
     "Nominal mass flow rate of secondary (building) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal=bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
-  Buildings.Controls.Continuous.LimPID con(
-    final controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    final k=1,
-    final yMax=1,
-    final yMin=0.1,
-    final Ti=300,
-    final initType=Modelica.Blocks.Types.InitPID.InitialOutput,
-    final y_start=1,
-    final reverseActing=true)
-    "Controller"
-    annotation (Placement(transformation(extent={{-12,-124},{8,-104}})));
-  Modelica.Blocks.Sources.RealExpression mDis_flowSet(
-    y=0.6)
-    annotation (Placement(transformation(extent={{-44,-124},{-24,-104}})));
-  Modelica.Blocks.Sources.RealExpression mDis_mea(
-    y=port_a2.m_flow)
-    annotation (Placement(transformation(extent={{-44,-144},{-24,-124}})));
+
 equation
-  connect(con.y,val.y)
-    annotation (Line(points={{9,-114},{50,-114},{50,-108}},color={0,0,127}));
-  connect(con.u_s,mDis_flowSet.y)
-    annotation (Line(points={{-14,-114},{-23,-114}},color={0,0,127}));
-  connect(mDis_mea.y,con.u_m)
-    annotation (Line(points={{-23,-134},{-2,-134},{-2,-126}},color={0,0,127}));
+  connect(preSou.ports[1], ets.port_b2) annotation (Line(points={{-60,-88},{-28,
+          -88},{-28,-72}}, color={0,127,255}));
+  connect(TSetWat, ets.TSetBuiSup) annotation (Line(points={{-120,20},{-80,20},{
+          -80,-54},{-34,-54}}, color={0,0,127}));
+  connect(ets.port_b2, bui.ports_aChiWat[1]) annotation (Line(points={{-28,-72},
+          {-60,-72},{-60,22},{-30,22},{-30,20}}, color={0,127,255}));
+  connect(bui.ports_bChiWat[1], ets.port_a2) annotation (Line(points={{30,20},{60,
+          20},{60,-72},{32,-72}}, color={0,127,255}));
+  connect(port_a2, ets.port_a1) annotation (Line(points={{100,-60},{60,-60},{60,
+          0},{-60,0},{-60,-36},{-28,-36}}, color={0,127,255}));
+  connect(ets.port_b1, port_b2) annotation (Line(points={{32,-36},{60,-36},{60,0},
+          {-60,0},{-60,-60},{-100,-60}}, color={0,127,255}));
+  connect(port_a1, bui.ports_aHeaWat[1]) annotation (Line(points={{-100,60},{-60,
+          60},{-60,32},{-30,32}}, color={0,127,255}));
+  connect(bui.ports_bHeaWat[1], port_b1) annotation (Line(points={{30,32},{60,32},
+          {60,60},{100,60}}, color={0,127,255}));
   annotation (
     Icon(
       graphics={

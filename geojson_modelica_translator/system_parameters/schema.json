@@ -299,7 +299,7 @@
         "eta_efficiency": {
           "description": "Heat exchanger efficiency (fraction)",
           "type": "number",
-          "default": 0.666
+          "default": 0.8
         },
         "nominal_flow_district": {
           "description": "District water nominal flow rate (m3/s).",

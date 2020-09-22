@@ -94,8 +94,8 @@ model DistrictCoolingSystem
     "District cooling plant."
     {% raw %} annotation (Placement(transformation(extent={{-34,-46},{-14,-26}})));
   BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
-    {% endraw %}idfName="{{data["idf"]["modelica_path"]}}",
-    weaName="{{data["mos_weather"]["modelica_path"]}}")
+    {% endraw %} each idfName="{{data["idf"]["modelica_path"]}}",
+    each weaName="{{data["mos_weather"]["modelica_path"]}}")
     {% raw %} "Vectorized spawn building."
     annotation (Placement(transformation(extent={{20,60},{40,80}})));
   Buildings.Fluid.Sources.Boundary_pT heaSou(
@@ -132,12 +132,6 @@ model DistrictCoolingSystem
     each y=7+273.15)
     "Chilled water supply temperature set point on building level."
     annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
-  Modelica.Blocks.Continuous.FirstOrder firOrdDel(
-    T=60,
-    initType=Modelica.Blocks.Types.Init.InitialOutput,
-    y_start=80000)
-    "First order delay"
-    annotation (Placement(transformation(extent={{50,-70},{30,-90}})));
 equation
   connect(weaDat.weaBus,weaBus)
     annotation (Line(points={{-80,-74},{-60,-74},{-60,-44},{-104,-44}},color={255,204,51},thickness=0.5));
@@ -163,13 +157,11 @@ equation
     connect(disNet.ports_aCon[i],bui_ETS[i].port_b2)
       annotation (Line(points={{38.4,32},{38.4,40},{8,40},{8,64},{20,64}},color={0,127,255}));
   end for;
-  connect(firOrdDel.y,cooPla.dpMea)
-    annotation (Line(points={{29,-80},{-48,-80},{-48,-39},{-36,-39}},color={0,0,127}));
-  connect(disNet.dp,firOrdDel.u)
-    annotation (Line(points={{44.7,27.8},{80,27.8},{80,-80},{52,-80}},color={0,0,127}));
-  connect(TSetChiWatBui.y,bui_ETS.TSetChiWat)
-    annotation (Line(points={{-61,50},{0,50},{0,73},{19,73}},color={0,0,127}));
-  annotation (
+    connect(TSetChiWatBui.y, bui_ETS.TSetWat) annotation (Line(points={{-39,50},{-6,
+         50},{-6,73},{19,73}}, color={0,0,127}));
+    connect(disNet.dp, cooPla.dpMea) annotation (Line(points={{44.7,27.8},{80,27.8},
+         {80,-80},{-46,-80},{-46,-39},{-36,-39}}, color={0,0,127}));
+annotation (
     Icon(
       coordinateSystem(
         preserveAspectRatio=false)),

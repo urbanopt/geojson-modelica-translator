@@ -18,7 +18,7 @@ model BuildingSpawnZ6WithHeatingIndirectETS
       nPorts_bChiWat=1,
       nPorts_bHeaWat=1,
       nPorts_aHeaWat=1),
-    redeclare HeatingIndirect ets(
+    ets(
       redeclare package Medium=MediumW,
       final mDis_flow_nominal=mDisHea_flow_nominal,
       final mBui_flow_nominal=mBuiHea_flow_nominal,
@@ -30,9 +30,7 @@ model BuildingSpawnZ6WithHeatingIndirectETS
       Q_flow_nominal=(sum(
         bui.terUni.QHea_flow_nominal)),
       T_a1_nominal=328.15,
-      T_a2_nominal=323.15,
-      eta=0.8,
-      xi_start=0),
+      T_a2_nominal=323.15),
     preSou(
       redeclare package Medium=MediumW));
   parameter String idfName="modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/RefBldgSmallOfficeNew2004_Chicago.idf"
