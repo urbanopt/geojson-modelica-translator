@@ -25,113 +25,6 @@
           },
           "additionalProperties": false
         },
-        "ets": {
-          "title": "defaults",
-          "description": "Parameters associated with ets systems",
-          "type": "object",
-          "properties": {
-            "ets_properties": {
-              "properties": {
-                "q_flow_nominal": {
-                  "description": "Nominal heat flux (Watts)",
-                  "type": "number"
-                },
-                "eta_efficiency": {
-                  "description": "Heat exchanger efficiency (fraction)",
-                  "type": "number"
-                },
-                "nominal_flow_district": {
-                  "description": "District water nominal mass flow rate (kg/s)",
-                  "type": "number"
-                },
-                "nominal_flow_building": {
-                  "description": "Building water nominal mass flow rate (kg/s)",
-                  "type": "number"
-                },
-                "pressure_drop_valve": {
-                  "description": "Valve pressure drop (pascals)",
-                  "type": "number"
-                },
-                "supply_water_temperature_district": {
-                  "description": "Supply water temperature for district (deg C)",
-                  "type": "number"
-                },
-                "supply_water_temperature_building": {
-                  "description": "Supply water temperature for building (deg C)",
-                  "type": "number"
-                },
-                "pressure_drop_hx_secondary": {
-                  "description": "Heat exchanger secondary side pressure drop (Pascals)",
-                  "type": "number"
-                },
-                "pressure_drop_hx_primary": {
-                  "description": "Heat exchanger primary side pressure drop (Pascals)",
-                  "type": "number"
-                },
-                "primary_design_delta_t": {
-                  "description": "Primary side design temperature differential (deg C) ",
-                  "type": "number"
-                },
-                "secondary_design_delta_t": {
-                  "description": "Secondary side design temperature differential (deg C) ",
-                  "type": "number"
-                },
-                "booster_heater": {
-                  "type": "boolean"
-                }
-              },
-              "dependencies": {
-                "data_required": [
-                  "ets_name"
-                ]
-              },
-              "additionalProperties": {
-                "type": "string"
-              }
-            },
-            "ets_heating_generation": {
-              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-              "type": "string",
-              "enum": [
-                "First Generation",
-                "Second/Third Generation",
-                "Fourth Generation",
-                "Fifth Generation"
-              ]
-            },
-			 "ets_heating_connection_type": {
-              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-              "type": "string",
-              "enum": [
-                "Direct",
-                "Indirect"
-              ]
-            },
-		    "ets_cooling_generation": {
-              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-              "type": "string",
-              "enum": [
-                "First Generation",
-                "Second/Third Generation",
-                "Fourth Generation",
-                "Fifth Generation"
-              ]
-            },
-			 "ets_cooling_connection_type": {
-              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-              "type": "string",
-              "enum": [
-                "Direct",
-                "Indirect"
-              ]
-            }
-          },
-          "dependencies": {
-            "data_required": [
-              "building_name"
-            ]
-          }
-        },
         "connectors": {
           "description": "Parameters related to the connections between objects.",
           "type": "object",
@@ -283,6 +176,113 @@
             }
           },
           "additionalProperties": false
+        },
+        "ets": {
+          "title": "defaults",
+          "description": "Parameters associated with ets systems",
+          "type": "object",
+          "properties": {
+            "ets_properties": {
+              "properties": {
+                "q_flow_nominal": {
+                  "description": "Nominal heat flux (Watts)",
+                  "type": "number"
+                },
+                "eta_efficiency": {
+                  "description": "Heat exchanger efficiency (fraction)",
+                  "type": "number"
+                },
+                "nominal_flow_district": {
+                  "description": "District water nominal mass flow rate (kg/s)",
+                  "type": "number"
+                },
+                "nominal_flow_building": {
+                  "description": "Building water nominal mass flow rate (kg/s)",
+                  "type": "number"
+                },
+                "pressure_drop_valve": {
+                  "description": "Valve pressure drop (pascals)",
+                  "type": "number"
+                },
+                "supply_water_temperature_district": {
+                  "description": "Supply water temperature for district (deg C)",
+                  "type": "number"
+                },
+                "supply_water_temperature_building": {
+                  "description": "Supply water temperature for building (deg C)",
+                  "type": "number"
+                },
+                "pressure_drop_hx_secondary": {
+                  "description": "Heat exchanger secondary side pressure drop (Pascals)",
+                  "type": "number"
+                },
+                "pressure_drop_hx_primary": {
+                  "description": "Heat exchanger primary side pressure drop (Pascals)",
+                  "type": "number"
+                },
+                "primary_design_delta_t": {
+                  "description": "Primary side design temperature differential (deg C) ",
+                  "type": "number"
+                },
+                "secondary_design_delta_t": {
+                  "description": "Secondary side design temperature differential (deg C) ",
+                  "type": "number"
+                },
+                "booster_heater": {
+                  "type": "boolean"
+                }
+              },
+              "dependencies": {
+                "data_required": [
+                  "ets_name"
+                ]
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "ets_heating_generation": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
+              "type": "string",
+              "enum": [
+                "First Generation",
+                "Second/Third Generation",
+                "Fourth Generation",
+                "Fifth Generation"
+              ]
+            },
+            "ets_heating_connection_type": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
+              "type": "string",
+              "enum": [
+                "Direct",
+                "Indirect"
+              ]
+            },
+            "ets_cooling_generation": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
+              "type": "string",
+              "enum": [
+                "First Generation",
+                "Second/Third Generation",
+                "Fourth Generation",
+                "Fifth Generation"
+              ]
+            },
+            "ets_cooling_connection_type": {
+              "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
+              "type": "string",
+              "enum": [
+                "Direct",
+                "Indirect"
+              ]
+            }
+          },
+          "dependencies": {
+            "data_required": [
+              "building_name"
+            ]
+          }
         }
       },
       "additionalProperties": false
