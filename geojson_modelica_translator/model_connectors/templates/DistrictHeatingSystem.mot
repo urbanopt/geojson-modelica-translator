@@ -78,6 +78,7 @@ model DistrictHeatingSystem
     {% raw %} "District heating plant."
     annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
   BuildingSpawnZ6WithHeatingIndirectETS bui_ETS[nBui](
+    redeclare package Medium = MediumW,
     {% endraw %} each idfName="{{data["idf"]["modelica_path"]}}",
     each weaName="{{data["mos_weather"]["modelica_path"]}}",
     yMax={0.65,1},

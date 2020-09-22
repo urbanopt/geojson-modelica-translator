@@ -6,9 +6,9 @@ model building
     final have_eleHea=false,
     final have_eleCoo=false,
     final have_weaBus=false);
-  replaceable package MediumW=Buildings.Media.Water
+  package MediumW=Buildings.Media.Water
     "Source side medium";
-  replaceable package MediumA=Buildings.Media.Air
+  package MediumA=Buildings.Media.Air
     "Load side medium";
   parameter Integer nZon=5
     "Number of conditioned thermal zones";
