@@ -31,8 +31,9 @@
         "geojson_id": "abcd1234",
 		 "ets": {
           "ets_properties_cooling": {
-            "present": false
+            "Present": false
       }
+	  }
 	  },
       {
         "geojson_id": "defgh2345",
