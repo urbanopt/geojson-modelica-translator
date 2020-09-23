@@ -16,7 +16,7 @@
             "secondary_design_delta_t": 3,
             "booster_heater": false,
             "ets_generation": "Fifth Generation",
-            "ets_connection_type": "Direct"
+            "ets_connection_type": "Indirect"
           },
           "ets_properties_cooling": {
             "q_flow_nominal": 10000,
@@ -32,7 +32,7 @@
             "secondary_design_delta_t": 3,
             "booster_heater": false,
             "ets_generation": "Fifth Generation",
-            "ets_connection_type": "Direct"
+            "ets_connection_type": "Indirect"
           }
         }
     },
