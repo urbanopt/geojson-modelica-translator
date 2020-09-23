@@ -143,8 +143,9 @@ class SystemParametersTest(unittest.TestCase):
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
         #value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None") ##AA revised this 
         value = sdp.get_param_by_building_id("abcd1234", "ets.ets_properties_cooling.present") ##AA added this 
-        #self.assertEqual("None", value)
-        self.assertEqual("false", value) ##AA revised this 
+        print(value) 
+        self.assertEqual("None", value)
+ 
 
         # grab the schema default
         value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
