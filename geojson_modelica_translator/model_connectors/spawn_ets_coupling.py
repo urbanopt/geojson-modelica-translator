@@ -149,7 +149,7 @@ class SpawnConnectorETS(model_connector_base):
             # ets_model_type = self.system_parameters.get_param_by_building_id(
                 # building["building_id"], "ets_model" ##AA revised this
             #)
-			 ets_model_type = self.system_parameters.get_param_by_building_id(
+              ets_model_type = self.system_parameters.get_param_by_building_id(
                  building["building_id"], "ets.ets_properties_cooling.ets_connection_type" ##AA added this 
             )
             ets_data = None
