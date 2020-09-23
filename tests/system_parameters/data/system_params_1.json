@@ -6,12 +6,45 @@
         "rc": {
           "order": 2
         }
-      }
+      },
+	  "ets": {
+          "ets_properties_heating": {
+            "q_flow_nominal": 10000,
+            "eta_efficiency": 0.9,
+            "nominal_flow_district": 5000,
+            "nominal_flow_building": 200,
+            "pressure_drop_valve": 3,
+            "supply_water_temperature_district":80,
+            "supply_water_temperature_building": 75,
+            "pressure_drop_hx_secondary": 3,
+            "pressure_drop_hx_primary": 5,
+            "primary_design_delta_t": 3,
+            "secondary_design_delta_t": 3,
+            "booster_heater": false,
+            "ets_generation": "Fifth Generation",
+            "ets_connection_type": "Direct"
+          },
+          "ets_properties_cooling": {
+            "q_flow_nominal": 10000,
+            "eta_efficiency": 0.9,
+            "nominal_flow_district": 5000,
+            "nominal_flow_building": 200,
+            "pressure_drop_valve": 3,
+            "supply_water_temperature_district":7,
+            "supply_water_temperature_building": 8,
+            "pressure_drop_hx_secondary": 3,
+            "pressure_drop_hx_primary": 5,
+            "primary_design_delta_t": 3,
+            "secondary_design_delta_t": 3,
+            "booster_heater": false,
+            "ets_generation": "Fifth Generation",
+            "ets_connection_type": "Direct"
+          }
+        }
     },
     "custom": [
       {
-        "geojson_id": "abcd1234",
-        "ets_model": "None"
+        "geojson_id": "abcd1234"
       },
       {
         "geojson_id": "defgh2345",
@@ -50,20 +83,6 @@
         }
       }
     ]
-  },
-  "ets": {
-    "ets_type_cooling": "4/5 G Indirect",
-    "ets_properties": {
-      "q_flow_nominal": 8000,
-      "eta_efficiency": 0.666,
-      "nominal_flow_district": 0.666,
-      "nominal_flow_building": 0.666,
-      "pressure_drop_valve": 888,
-      "pressure_drop_hx_secondary": 999,
-      "pressure_drop_hx_primary": 999,
-      "supply_water_temperature_district": 5,
-      "supply_water_temperature_building": 7
-    }
   },
   "connectors": {
     "default": {
