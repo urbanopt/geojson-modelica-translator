@@ -144,7 +144,8 @@ class SystemParametersTest(unittest.TestCase):
         #value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None") ##AA revised this 
         value = sdp.get_param_by_building_id("abcd1234", "ets.ets_properties_cooling.present") ##AA added this 
         print(value) 
-        self.assertEqual("None", value)
+        #self.assertEqual("None", value) ##AA revised this 
+        self.assertEqual("None", str(value))
  
 
         # grab the schema default
