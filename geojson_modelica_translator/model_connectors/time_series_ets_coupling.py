@@ -98,17 +98,17 @@ class TimeSeriesConnectorETS(model_connector_base):
                     f.write(file_data)
 
                 ets_model_type = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "ets_model"
+                    building["building_id"], "ets.ets_properties_cooling.ets_connection_type"
                 )
 
                 ets_data = None
-                if ets_model_type == "Indirect Cooling":
+                if ets_model_type == "Indirect":
                     ets_data = self.system_parameters.get_param_by_building_id(
                         building["building_id"],
-                        "ets_model_parameters.indirect_cooling"
+                        "ets.ets_properties_cooling"
                     )
                 else:
-                    raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+                    raise Exception("Only ETS Model of type 'Indirect' type enabled currently")
 
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,

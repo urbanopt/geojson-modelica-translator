@@ -156,7 +156,7 @@ class SpawnConnectorETS(model_connector_base):
             if ets_model_type == "Indirect":
                 ets_data = self.system_parameters.get_param_by_building_id(
                     building["building_id"],
-                    "ets_model_parameters.indirect_cooling"
+                    "ets.ets_properties_cooling"  
                 )
             else:
                 raise Exception("Only ETS Model of type 'Indirect' type enabled currently") ##AA revised this 

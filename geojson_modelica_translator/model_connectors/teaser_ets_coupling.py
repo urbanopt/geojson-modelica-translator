@@ -456,18 +456,21 @@ class TeaserConnectorETS(model_connector_base):
                 data=template_data
             )
 
+            # ets_model_type = self.system_parameters.get_param_by_building_id(
+                # f"B{b}", "ets_model"
+            # )
             ets_model_type = self.system_parameters.get_param_by_building_id(
-                f"B{b}", "ets_model"
+                f"B{b}", "ets.ets_properties_cooling.ets_connection_type" 
             )
-
             ets_data = None
-            if ets_model_type == "Indirect Cooling":
+            print(ets_model_type) 
+            if ets_model_type == "Indirect":
                 ets_data = self.system_parameters.get_param_by_building_id(
                     f"B{b}",
-                    "ets_model_parameters.indirect_cooling"
+                    "ets.ets_properties_cooling"
                 )
             else:
-                raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+                raise Exception("Only ETS Model of type 'Indirect' type enabled currently")
 
             self.run_template(
                 cooling_indirect_template,
