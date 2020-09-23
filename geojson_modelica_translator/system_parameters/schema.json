@@ -248,24 +248,11 @@
                     "Direct",
                     "Indirect"
                   ]
+                },
+                "Present": {
+                  "type": "boolean"
                 }
               },
-              "required": [
-                "q_flow_nominal",
-                "eta_efficiency",
-                "nominal_flow_district",
-                "nominal_flow_building",
-                "pressure_drop_valve",
-                "supply_water_temperature_district",
-                "supply_water_temperature_building",
-                "pressure_drop_hx_secondary",
-                "pressure_drop_hx_primary",
-                "primary_design_delta_t",
-                "secondary_design_delta_t",
-                "booster_heater",
-                "ets_generation",
-                "ets_connection_type"
-              ],
               "dependencies": {
                 "data_required": [
                   "ets_name"
@@ -341,24 +328,11 @@
                     "Direct",
                     "Indirect"
                   ]
+                },
+                "Present": {
+                  "type": "boolean"
                 }
               },
-              "required": [
-                "q_flow_nominal",
-                "eta_efficiency",
-                "nominal_flow_district",
-                "nominal_flow_building",
-                "pressure_drop_valve",
-                "supply_water_temperature_district",
-                "supply_water_temperature_building",
-                "pressure_drop_hx_secondary",
-                "pressure_drop_hx_primary",
-                "primary_design_delta_t",
-                "secondary_design_delta_t",
-                "booster_heater",
-                "ets_generation",
-                "ets_connection_type"
-              ],
               "dependencies": {
                 "data_required": [
                   "ets_name"
