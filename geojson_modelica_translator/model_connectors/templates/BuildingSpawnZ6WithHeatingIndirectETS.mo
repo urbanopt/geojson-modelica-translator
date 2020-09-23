@@ -2,7 +2,7 @@ within geojson_modelica_translator.model_connectors.templates;
 model BuildingSpawnZ6WithHeatingIndirectETS
   package MediumW=Buildings.Media.Water;
   extends PartialBuildingWithIndirectETS(
-    final m1_flow_nominal=mBuiHea_flow_nominal,
+    final m1_flow_nominal=mDisHea_flow_nominal,
     final m2_flow_nominal=mBuiCoo_flow_nominal,
     redeclare final package Medium1=MediumW,
     redeclare final package Medium2=MediumW,
@@ -10,6 +10,8 @@ model BuildingSpawnZ6WithHeatingIndirectETS
       final have_pum=true,
       final idfName=idfName,
       final weaName=weaName,
+      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+      mLoaHea_flow_nominal=mLoaHea_flow_nominal,
       T_aChiWat_nominal=280.15,
       T_bChiWat_nominal=285.15,
       T_aHeaWat_nominal=323.15,
@@ -53,6 +55,8 @@ protected
     "Nominal mass flow rate of secondary (building) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBuiCoo_flow_nominal=bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon] = {(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon] = {(bui.QHea_flow_nominal[i]*(0.04)/1000) for i in 1:bui.nZon};
 
 equation
   connect(TSetWat,ets.TSetBuiSup)

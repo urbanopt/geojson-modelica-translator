@@ -16,10 +16,10 @@ model building
     5,
     nZon)
     "Scaling factor to be applied to on each extensive quantity";
-  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[nZon]={(-1*QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:nZon}
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[nZon]
     "Load side mass flow rate at cooling nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[nZon]={(QHea_flow_nominal[i]*(0.04)/1000) for i in 1:nZon}
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[nZon]
     "Load side mass flow rate at heating nominal conditions"
     annotation (Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5

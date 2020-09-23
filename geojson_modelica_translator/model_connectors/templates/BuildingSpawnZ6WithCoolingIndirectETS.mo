@@ -3,7 +3,7 @@ model BuildingSpawnZ6WithCoolingIndirectETS
   package MediumW=Buildings.Media.Water;
   extends PartialBuildingWithIndirectETS(
     final m1_flow_nominal=mBuiHea_flow_nominal,
-    final m2_flow_nominal=mDis_flow_nominal,
+    final m2_flow_nominal=mDisCoo_flow_nominal,
     redeclare final package Medium1=MediumW,
     redeclare final package Medium2=MediumW,
     preSou(
@@ -11,6 +11,8 @@ model BuildingSpawnZ6WithCoolingIndirectETS
     redeclare building bui(
       final idfName=idfName,
       final weaName=weaName,
+      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+      mLoaHea_flow_nominal=mLoaHea_flow_nominal,
       T_aChiWat_nominal=280.15,
       T_bChiWat_nominal=285.15,
       T_aHeaWat_nominal=40+273.15,
@@ -21,8 +23,8 @@ model BuildingSpawnZ6WithCoolingIndirectETS
       nPorts_aChiWat=1),
     redeclare CoolingIndirect ets(
       redeclare package Medium=MediumW,
-      final mDis_flow_nominal=mDis_flow_nominal,
-      final mBui_flow_nominal=mBui_flow_nominal,
+      final mDis_flow_nominal=mDisCoo_flow_nominal,
+      final mBui_flow_nominal=mBuiCoo_flow_nominal,
       dp1_nominal=500,
       dp2_nominal=500,
       use_Q_flow_nominal=true,
@@ -38,11 +40,13 @@ model BuildingSpawnZ6WithCoolingIndirectETS
   parameter String weaName="modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
     "Name of the weather file"
     annotation (Dialog(group="Building model parameters"));
-  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal=bui.disFloCoo.m_flow_nominal*(bui.delTBuiCoo/bui.delTDisCoo)
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon] = {(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon] = {(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mDisCoo_flow_nominal=bui.disFloCoo.m_flow_nominal*(bui.delTBuiCoo/bui.delTDisCoo)
     "Nominal mass flow rate of primary (district) district cooling side";
   parameter Modelica.SIunits.MassFlowRate mBuiHea_flow_nominal=bui.disFloHea.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district heating side";
-  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal=bui.disFloCoo.m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate mBuiCoo_flow_nominal=bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
 
 equation
