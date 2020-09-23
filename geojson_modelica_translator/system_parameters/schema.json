@@ -357,8 +357,7 @@
                 "secondary_design_delta_t",
                 "booster_heater",
                 "ets_generation",
-                "ets_connection_type",
-                "data_required"
+                "ets_connection_type"
               ],
               "dependencies": {
                 "data_required": [
