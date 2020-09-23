@@ -8,6 +8,7 @@
         }
       },
 	  "ets": {
+	      "building_name": 'test', 
           "ets_properties_heating": {
             "q_flow_nominal": 10000,
             "eta_efficiency": 0.9,
