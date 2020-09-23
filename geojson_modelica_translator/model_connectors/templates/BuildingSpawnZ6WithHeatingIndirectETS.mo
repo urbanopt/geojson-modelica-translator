@@ -40,10 +40,10 @@ model BuildingSpawnZ6WithHeatingIndirectETS
     "Name of the weather file"
     annotation (Dialog(group="Building model parameters"));
   parameter Real yMax(
-      start=1)=1
-      "Upper limit of the ETS two-way valve control output";
+    start=1)=1
+    "Upper limit of the ETS two-way valve control output";
   parameter Real yMin=0
-      "Lower limit of the ETS two-way valve control output";
+    "Lower limit of the ETS two-way valve control output";
 protected
   parameter Modelica.SIunits.MassFlowRate mDisHea_flow_nominal=bui.disFloHea.m_flow_nominal*(bui.delTBuiHea/bui.delTDisHea)
     "Nominal mass flow rate of primary (district) district heating side";
@@ -53,7 +53,6 @@ protected
     "Nominal mass flow rate of secondary (building) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBuiCoo_flow_nominal=bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
-
 equation
   connect(TSetWat,ets.TSetBuiSup)
     annotation (Line(points={{-120,20},{-88,20},{-88,-54},{-34,-54}},color={0,0,127}));

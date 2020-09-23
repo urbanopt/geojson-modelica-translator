@@ -44,24 +44,23 @@ model BuildingSpawnZ6WithCoolingIndirectETS
     "Nominal mass flow rate of secondary (building) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal=bui.disFloCoo.m_flow_nominal
     "Nominal mass flow rate of secondary (building) district cooling side";
-
 equation
-  connect(preSou.ports[1], ets.port_b2) annotation (Line(points={{-60,-88},{-28,
-          -88},{-28,-72}}, color={0,127,255}));
-  connect(TSetWat, ets.TSetBuiSup) annotation (Line(points={{-120,20},{-80,20},{
-          -80,-54},{-34,-54}}, color={0,0,127}));
-  connect(ets.port_b2, bui.ports_aChiWat[1]) annotation (Line(points={{-28,-72},
-          {-60,-72},{-60,22},{-30,22},{-30,20}}, color={0,127,255}));
-  connect(bui.ports_bChiWat[1], ets.port_a2) annotation (Line(points={{30,20},{60,
-          20},{60,-72},{32,-72}}, color={0,127,255}));
-  connect(port_a2, ets.port_a1) annotation (Line(points={{100,-60},{60,-60},{60,
-          0},{-60,0},{-60,-36},{-28,-36}}, color={0,127,255}));
-  connect(ets.port_b1, port_b2) annotation (Line(points={{32,-36},{60,-36},{60,0},
-          {-60,0},{-60,-60},{-100,-60}}, color={0,127,255}));
-  connect(port_a1, bui.ports_aHeaWat[1]) annotation (Line(points={{-100,60},{-60,
-          60},{-60,32},{-30,32}}, color={0,127,255}));
-  connect(bui.ports_bHeaWat[1], port_b1) annotation (Line(points={{30,32},{60,32},
-          {60,60},{100,60}}, color={0,127,255}));
+  connect(preSou.ports[1],ets.port_b2)
+    annotation (Line(points={{-60,-88},{-28,-88},{-28,-72}},color={0,127,255}));
+  connect(TSetWat,ets.TSetBuiSup)
+    annotation (Line(points={{-120,20},{-80,20},{-80,-54},{-34,-54}},color={0,0,127}));
+  connect(ets.port_b2,bui.ports_aChiWat[1])
+    annotation (Line(points={{-28,-72},{-60,-72},{-60,22},{-30,22},{-30,20}},color={0,127,255}));
+  connect(bui.ports_bChiWat[1],ets.port_a2)
+    annotation (Line(points={{30,20},{60,20},{60,-72},{32,-72}},color={0,127,255}));
+  connect(port_a2,ets.port_a1)
+    annotation (Line(points={{100,-60},{60,-60},{60,0},{-60,0},{-60,-36},{-28,-36}},color={0,127,255}));
+  connect(ets.port_b1,port_b2)
+    annotation (Line(points={{32,-36},{60,-36},{60,0},{-60,0},{-60,-60},{-100,-60}},color={0,127,255}));
+  connect(port_a1,bui.ports_aHeaWat[1])
+    annotation (Line(points={{-100,60},{-60,60},{-60,32},{-30,32}},color={0,127,255}));
+  connect(bui.ports_bHeaWat[1],port_b1)
+    annotation (Line(points={{30,32},{60,32},{60,60},{100,60}},color={0,127,255}));
   annotation (
     Icon(
       graphics={
