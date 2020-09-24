@@ -5,8 +5,12 @@ model coupling
   package MediumW=Buildings.Media.Water
     "Source side medium";
   {% raw %}building bui(
+    mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+    mLoaHea_flow_nominal=mLoaHea_flow_nominal,
     T_aChiWat_nominal=280.15,
     T_bChiWat_nominal=285.15,
+    T_aHeaWat_nominal=40+273.15,
+    T_bHeaWat_nominal=35+273.15,
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
@@ -14,6 +18,11 @@ model coupling
     have_pum=true)
     "Building spawn model"
     annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon] =
+    {(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon] =
+    {(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
+
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium=MediumW,
     nPorts=1)
