@@ -58,6 +58,8 @@ class TimeSeriesConnectorETS(model_connector_base):
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
         timeSeries_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
+        timeSeries_mft_template = self.template_env.get_template("MassFlowTemperaturesTimeSeries.mot")
+        timeSeries_ets_mft_mos_template = self.template_env.get_template("RunTimeSeries_MassFlow_Temperature.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -158,6 +160,24 @@ class TimeSeriesConnectorETS(model_connector_base):
                     data=template_data,
                 )
 
+                self.run_template(
+                    template=timeSeries_mft_template,
+                    save_file_name=Path(b_modelica_path.files_dir) / "MassFlowTemperaturesTimeSeries.mo",
+                    project_name=scaffold.project_name,
+                    model_name=f"B{building['building_id']}",
+                    data=template_data,
+                    ets_data=ets_data,
+                )
+
+                self.run_template(
+                    template=timeSeries_ets_mft_mos_template,
+                    save_file_name=Path(b_modelica_path.files_dir) / "RunTimeSeries_MassFlow_Temperature.mos",
+                    project_name=scaffold.project_name,
+                    model_name=f"B{building['building_id']}",
+                    data=template_data,
+                    ets_data=ets_data,
+                )
+
                 self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
         finally:
             os.chdir(curdir)
@@ -178,23 +198,26 @@ class TimeSeriesConnectorETS(model_connector_base):
         :return: None
         """
         for b in building_names:
-            order_files = [Path(mo).stem for mo in self.required_mo_files]
-            order_files.append("TimeSeriesCouplingETS")
-            order_files.append("CoolingIndirect")
-            order_files.append("building")
             b_modelica_path = Path(scaffold.loads_path.files_dir) / b
             new_package = PackageParser.new_from_template(
                 path=b_modelica_path,
                 name=b,
-                order=order_files,
-                within=f"{scaffold.project_name}.Loads"
+                order=building_names,
+                within=f"{scaffold.project_name}"
             )
             new_package.save()
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
+        order_files = [Path(mo).stem for mo in self.required_mo_files]
+        order_files.append("TimeSeriesCouplingETS")
+        order_files.append("CoolingIndirect")
+        order_files.append("building")
         package = PackageParser.new_from_template(
-            scaffold.loads_path.files_dir, "Loads", building_names, within=f"{scaffold.project_name}"
+            path=scaffold.loads_path.files_dir,
+            name="Loads",
+            order=order_files,
+            within=f"{scaffold.project_name}"
         )
         package.save()
 
