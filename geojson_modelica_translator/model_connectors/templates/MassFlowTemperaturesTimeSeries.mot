@@ -6,7 +6,7 @@ extends Modelica.Icons.Example;
 
  package MediumW = Buildings.Media.Water;
 
- parameter String filNam = "modelica.mos";
+ parameter String filNam = "modelica://modelica.mos";
 
  parameter Modelica.SIunits.MassFlowRate mChW_flow_nominal=
    getPeakMassFlowRate(
