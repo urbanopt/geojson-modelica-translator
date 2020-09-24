@@ -499,6 +499,16 @@ class TeaserConnector(model_connector_base):
                 package.path, f"B{b}", package.order, within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
+            ##AA added this 9/24
+            if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+                shutil.copy(
+                    template_data["mos_weather"]["mos_weather_filename"],
+                    os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                )
+            else:
+                raise Exception(
+                    f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+            #end of what AA added 9/24
 
         # remaining clean up tasks across the entire exported project
         if not keep_original_models:
