@@ -27,6 +27,8 @@ model BuildingSpawnZ6WithCoolingIndirectETS
       final mBui_flow_nominal=mBuiCoo_flow_nominal,
       dp1_nominal=500,
       dp2_nominal=500,
+      yMax=yMax,
+      yMin=yMin)
       use_Q_flow_nominal=true,
       Q_flow_nominal=-1*(sum(
         bui.terUni.QCoo_flow_nominal)),
@@ -40,6 +42,10 @@ model BuildingSpawnZ6WithCoolingIndirectETS
   parameter String weaName="modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
     "Name of the weather file"
     annotation (Dialog(group="Building model parameters"));
+  parameter Real yMax(start=1)=1
+     "Upper limit of the ETS two-way valve control output";
+  parameter Real yMin=0
+    "Lower limit of the ETS two-way valve control output";
   parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon] = {(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
   parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon] = {(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
   parameter Modelica.SIunits.MassFlowRate mDisCoo_flow_nominal=bui.disFloCoo.m_flow_nominal*(bui.delTBuiCoo/bui.delTDisCoo)
