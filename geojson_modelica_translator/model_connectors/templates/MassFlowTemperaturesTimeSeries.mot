@@ -4,7 +4,7 @@ model MassFlowTemperaturesTimeSeries
   loads generated from Energy PLus."
   extends Modelica.Icons.Example;
   {% raw %}package MediumW=Buildings.Media.Water;
-  parameter String filNam="modelica://Buildings/Resources/Data/Applications/DHC/Examples/FourthGeneration/modelica.mos";
+  parameter String filNam="modelica.mos";
   parameter Modelica.SIunits.MassFlowRate mChW_flow_nominal=getPeakMassFlowRate(
     string="#Nominal chilled water mass flow rate",
     filNam=Modelica.Utilities.Files.loadResource(filNam))

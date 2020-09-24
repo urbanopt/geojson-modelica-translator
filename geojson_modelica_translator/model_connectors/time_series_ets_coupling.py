@@ -45,6 +45,7 @@ class TimeSeriesConnectorETS(model_connector_base):
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
         self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'modelica.mos'))
 
     def to_modelica(self, scaffold):
         """
@@ -198,25 +199,27 @@ class TimeSeriesConnectorETS(model_connector_base):
         :return: None
         """
         for b in building_names:
+            order_files = [Path(mo).stem for mo in self.required_mo_files]
+            order_files.append("MassFlowTemperaturesTimeSeries")
+            order_files.append("TimeSeriesCouplingETS")
+            order_files.append("CoolingIndirect")
+            order_files.append("building")
             b_modelica_path = Path(scaffold.loads_path.files_dir) / b
             new_package = PackageParser.new_from_template(
                 path=b_modelica_path,
                 name=b,
-                order=building_names,
+                order=order_files,
                 within=f"{scaffold.project_name}"
             )
             new_package.save()
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
-        order_files = [Path(mo).stem for mo in self.required_mo_files]
-        order_files.append("TimeSeriesCouplingETS")
-        order_files.append("CoolingIndirect")
-        order_files.append("building")
+
         package = PackageParser.new_from_template(
             path=scaffold.loads_path.files_dir,
             name="Loads",
-            order=order_files,
+            order=building_names,
             within=f"{scaffold.project_name}"
         )
         package.save()
