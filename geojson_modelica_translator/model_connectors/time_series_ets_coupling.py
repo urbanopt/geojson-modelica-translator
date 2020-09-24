@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.base import \
     Base as model_connector_base
@@ -40,6 +41,10 @@ from geojson_modelica_translator.utils import ModelicaPath
 class TimeSeriesConnectorETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
+
+        # Note that the order of the required MO files is important as it will be the order that
+        # the "package.order" will be in.
+        self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
 
     def to_modelica(self, scaffold):
         """
@@ -111,25 +116,23 @@ class TimeSeriesConnectorETS(model_connector_base):
                 else:
                     raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
-                file_data = cooling_indirect_template.render(
+                self.run_template(
+                    template=cooling_indirect_template,
+                    save_file_name=os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                     ets_data=ets_data,
                 )
 
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
-                    f.write(file_data)
-
-                file_data = heating_indirect_template.render(
+                self.run_template(
+                    template=heating_indirect_template,
+                    save_file_name=os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
                     ets_data=ets_data,
                 )
-
-                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo")), "w") as f:
-                    f.write(file_data)
 
                 full_model_name = os.path.join(
                     scaffold.project_name,
@@ -137,12 +140,15 @@ class TimeSeriesConnectorETS(model_connector_base):
                     f"B{building['building_id']}",
                     "TimeSeriesCouplingETS").replace(os.path.sep, '.')
 
-                file_data = timeSeries_ets_mos_template.render(
-                    full_model_name=full_model_name, model_name="TimeSeriesCouplingETS"
+                self.run_template(
+                    template=timeSeries_ets_mos_template,
+                    save_file_name=os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"),
+                    full_model_name=full_model_name,
+                    project_name=scaffold.project_name,
+                    model_name=f"B{building['building_id']}",
+                    data=template_data,
+                    ets_data=ets_data,
                 )
-
-                with open(os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"), "w") as f:
-                    f.write(file_data)
 
                 self.run_template(
                     timeSeries_ets_coupling_template,
@@ -172,10 +178,15 @@ class TimeSeriesConnectorETS(model_connector_base):
         :return: None
         """
         for b in building_names:
-            b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
+            order_files = [Path(mo).stem for mo in self.required_mo_files]
+            order_files.append("TimeSeriesCouplingETS")
+            order_files.append("CoolingIndirect")
+            order_files.append("building")
+            b_modelica_path = Path(scaffold.loads_path.files_dir) / b
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b,
-                ["building", "CoolingIndirect", "TimeSeriesCouplingETS"],
+                path=b_modelica_path,
+                name=b,
+                order=order_files,
                 within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
