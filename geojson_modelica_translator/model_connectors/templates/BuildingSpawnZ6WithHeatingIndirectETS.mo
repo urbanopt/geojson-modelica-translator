@@ -34,7 +34,8 @@ model BuildingSpawnZ6WithHeatingIndirectETS
       T_a1_nominal=328.15,
       T_a2_nominal=323.15),
     preSou(
-      redeclare package Medium=MediumW));
+      redeclare package Medium=MediumW)
+      "Spawn building connected to the indirect heating ETS model");
   parameter String idfName="modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/RefBldgSmallOfficeNew2004_Chicago.idf"
     "Name of the IDF file"
     annotation (Dialog(group="Building model parameters"));
