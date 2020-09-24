@@ -4,7 +4,6 @@
       "load_model": "ROM/RC",
       "load_model_parameters": {
         "rc": {
-          "order": 2,
           "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
         }
       },
@@ -20,9 +19,8 @@
           "pressure_drop_hx_primary": 1500,
           "supply_water_temperature_district": 5,
           "supply_water_temperature_building": 7
-		  }
-		  }
-		  }
+        }
       }
+    }
   }
-
+}
