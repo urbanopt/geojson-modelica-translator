@@ -28,13 +28,13 @@ model BuildingSpawnZ6WithCoolingIndirectETS
       dp1_nominal=500,
       dp2_nominal=500,
       yMax=yMax,
-      yMin=yMin)
+      yMin=yMin,
       use_Q_flow_nominal=true,
       Q_flow_nominal=-1*(sum(
         bui.terUni.QCoo_flow_nominal)),
       T_a1_nominal=273.15+5,
       T_a2_nominal=273.15+12,
-      eta=0.8)
+      eta=0.8))
       "Spawn building connected to the indirect cooling ETS model");
   parameter String idfName="modelica://Buildings/Resources/Data/ThermalZones/EnergyPlus/Validation/RefBldgSmallOffice/RefBldgSmallOfficeNew2004_Chicago.idf"
     "Name of the IDF file"
