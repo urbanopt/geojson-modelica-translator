@@ -18,11 +18,8 @@ model coupling
     have_pum=true)
     "Building spawn model"
     annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
-  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon] =
-    {(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
-  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon] =
-    {(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
-
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon]={(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon]={(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium=MediumW,
     nPorts=1)

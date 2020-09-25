@@ -12,9 +12,8 @@ model SpawnCouplingETS
     "Nominal mass flow rate of secondary (building) district cooling side";
   parameter Modelica.SIunits.TemperatureDifference delTDisCoo=10
     "Nominal district supply and return water temperature difference";
-  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon] = {(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
-  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon] = {(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
-
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon]={(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon]={(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
   CoolingIndirect coo(
     redeclare package Medium=MediumW,
     mDis_flow_nominal=mDis_flow_nominal,

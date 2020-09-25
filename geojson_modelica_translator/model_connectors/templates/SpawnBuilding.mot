@@ -38,7 +38,6 @@ model building
     "Supply heating water nominal temperature";
   parameter Modelica.SIunits.Temperature T_bHeaWat_nominal
     "Return heating water nominal temperature";
-
   parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]=fill(
     3000,
     nZon) ./ facSca

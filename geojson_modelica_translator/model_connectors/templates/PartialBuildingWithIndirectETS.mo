@@ -1,8 +1,8 @@
 //within geojson_modelica_translator.model_connectors.templates
 partial model PartialBuildingWithIndirectETS
   "Partial model of a building with an energy transfer station"
-  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-      "Source medium (heating or chilled water)";
+  replaceable package Medium=Modelica.Media.Interfaces.PartialMedium
+    "Source medium (heating or chilled water)";
   extends Buildings.Fluid.Interfaces.PartialFourPortInterface(
     final m1_flow_small=1E-4*m1_flow_nominal,
     final m2_flow_small=1E-4*m2_flow_nominal,
@@ -30,7 +30,7 @@ partial model PartialBuildingWithIndirectETS
     "Energy transfer station model"
     annotation (Placement(transformation(extent={{-28,-84},{32,-24}})));
   Modelica.Fluid.Sources.FixedBoundary preSou(
-  redeclare package Medium=Medium,
+    redeclare package Medium=Medium,
     nPorts=1)
     annotation (Placement(transformation(extent={{-80,-98},{-60,-78}})));
   annotation (
