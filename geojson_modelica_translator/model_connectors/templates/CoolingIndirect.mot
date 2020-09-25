@@ -186,7 +186,8 @@ model CoolingIndirect
     annotation (Placement(transformation(extent={{-60,50},{-40,70}})));
   Buildings.Fluid.Sensors.TemperatureTwoPort senTBuiSup(
     redeclare final package Medium=Medium,
-    final m_flow_nominal=mBui_flow_nominal)
+    final m_flow_nominal=mBui_flow_nominal,
+    tau=10)
     "Building-side (secondary) supply temperature"
     annotation (Placement(transformation(extent={{-70,-70},{-90,-50}})));
     Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage val(
@@ -194,7 +195,8 @@ model CoolingIndirect
      final m_flow_nominal=mDis_flow_nominal,
      final dpValve_nominal=dpValve_nominal,
      riseTime(displayUnit="s")=60,
-     y_start=0)
+     y_start=0,
+     l=0.005)
     "District-side (primary) control valve"
     annotation (Placement(transformation(extent={{-30,70},{-10,50}})));
   Modelica.Blocks.Math.Gain cp(

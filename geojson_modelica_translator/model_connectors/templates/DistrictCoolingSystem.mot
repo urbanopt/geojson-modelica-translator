@@ -15,13 +15,13 @@ model DistrictCoolingSystem
     lCon=fill(
       20,
       nBui),
-    dhDis={0.125,0.125,0.1,0.085,0.08,0.075,0.06,0.05},
+    dhDis={0.06,0.05},
     dhCon=fill(
       0.05,
       nBui))
     "Design data"
     annotation (Placement(transformation(extent={{80,40},{100,60}})));
-  parameter Integer nBui=8
+  parameter Integer nBui=2
     "number of coonected buildings";
   parameter Modelica.SIunits.MassFlowRate mCHW_flow_nominal=cooPla.numChi*(cooPla.perChi.mEva_flow_nominal)
     "Nominal chilled water mass flow rate";
@@ -96,7 +96,7 @@ model DistrictCoolingSystem
   BuildingSpawnZ6WithCoolingIndirectETS bui_ETS[nBui](
     {% endraw %} each idfName="{{data["idf"]["modelica_path"]}}",
     each weaName="{{data["mos_weather"]["modelica_path"]}}",
-    yMax={0.55,0.56,0.57,0.58,0.59,0.6,0.65,1},
+    yMax={0.65,1},
     yMin=fill(0,nBui))
     {% raw %} "Vectorized spawn building."
     annotation (Placement(transformation(extent={{20,60},{40,80}})));
