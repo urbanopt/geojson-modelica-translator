@@ -51,7 +51,8 @@ model coupling
     calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
     pAtm(
       displayUnit="Pa")=101339,
-    filNam=Modelica.Utilities.Files.loadResource(weaName),
+    filNam=Modelica.Utilities.Files.loadResource(
+      weaName),
     computeWetBulbTemperature=true)
     "Weather data reader"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));

@@ -5,7 +5,7 @@
       "load_model_parameters": {
         "rc": {
           "order": 2,
-		  "mos_weather_filename": "example_weather_2.mos"
+          "mos_weather_filename": "example_weather_2.mos"
         }
       },
       "ets_model": "Indirect Cooling",

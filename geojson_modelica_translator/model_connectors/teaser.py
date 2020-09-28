@@ -39,6 +39,7 @@ from geojson_modelica_translator.utils import ModelicaPath, copytree
 from modelica_builder.model import Model
 from teaser.project import Project
 
+
 class TeaserConnector(model_connector_base):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
@@ -105,10 +106,7 @@ class TeaserConnector(model_connector_base):
         try:
             prj = Project(load_data=True)
             for building in self.buildings:
-                print("in buildings loop") 
                 building_name = building["building_id"]
-                b_modelica_path = ModelicaPath(
-                   f"B{building['building_id']}", scaffold.loads_path.files_dir, True)
                 prj.add_non_residential(
                     method="bmvbs",
                     usage=self.lookup_building_type(building["building_type"]),
@@ -169,7 +167,7 @@ class TeaserConnector(model_connector_base):
         :param keep_original_models: boolean, # TODO
         :return: None
         """
-        
+
         teaser_building = self.template_env.get_template("TeaserBuilding.mot")
         teaser_coupling = self.template_env.get_template("TeaserCouplingBuilding.mot")
         run_coupling_template = self.template_env.get_template("RunTeaserCouplingBuilding.most")
@@ -179,8 +177,8 @@ class TeaserConnector(model_connector_base):
         for b in building_names:
             # create a list of strings that we need to replace in all the file as we go along
             string_replace_list = []
-            mos_weather_filename = self.system_parameters.get_param_by_building_id(b, "load_model_parameters.rc.mos_weather_filename",)##AA added this 9/15 
-            print("mos weather filename") 
+            mos_weather_filename = self.system_parameters.get_param_by_building_id(
+                b, "load_model_parameters.rc.mos_weather_filename")
             # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
             b_modelica_path = ModelicaPath(f"B{b}", scaffold.loads_path.files_dir, True)
 
@@ -445,19 +443,19 @@ class TeaserConnector(model_connector_base):
                     "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
                 })
 
-            # TODO: Read nominal flows from system parameter file
-                template_data = { ##AA added this, 9/11  
-                "thermal_zones": zone_list,
-                "nominal_heat_flow": [10000] * len(zone_list),
-                "nominal_cool_flow": [-10000] * len(zone_list),
-                "load_resources_path": b_modelica_path.resources_relative_dir, ##AA added 9/15 
-                "mos_weather": {
-                "mos_weather_filename": mos_weather_filename,
-                "filename": os.path.basename(mos_weather_filename),
-                "path": os.path.dirname(mos_weather_filename), 
-                      } ##last line of what AA added 9/15
+                # TODO: Read nominal flows from system parameter file
+                template_data = {
+                    "thermal_zones": zone_list,
+                    "nominal_heat_flow": [10000] * len(zone_list),
+                    "nominal_cool_flow": [-10000] * len(zone_list),
+                    "load_resources_path": b_modelica_path.resources_relative_dir,
+                    "mos_weather": {
+                        "mos_weather_filename": mos_weather_filename,
+                        "filename": os.path.basename(mos_weather_filename),
+                        "path": os.path.dirname(mos_weather_filename),
+                    }
                 }
-            print(template_data) 
+
             self.run_template(
                 teaser_building,
                 os.path.join(b_modelica_path.files_dir, "building.mo"),
@@ -470,8 +468,8 @@ class TeaserConnector(model_connector_base):
                 teaser_coupling,
                 os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
                 project_name=scaffold.project_name,
-                model_name=f"B{b}", 
-				data=template_data ##AA added 9/14 
+                model_name=f"B{b}",
+                data=template_data  # AA added 9/14
             )
 
             full_model_name = os.path.join(
@@ -499,7 +497,7 @@ class TeaserConnector(model_connector_base):
                 package.path, f"B{b}", package.order, within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
-            ##AA added this 9/24
+            # AA added this 9/24
             if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
                 shutil.copy(
                     template_data["mos_weather"]["mos_weather_filename"],
@@ -508,7 +506,7 @@ class TeaserConnector(model_connector_base):
             else:
                 raise Exception(
                     f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
-            #end of what AA added 9/24
+            # end of what AA added 9/24
 
         # remaining clean up tasks across the entire exported project
         if not keep_original_models:

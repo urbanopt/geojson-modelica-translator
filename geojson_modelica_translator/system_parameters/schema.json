@@ -415,7 +415,7 @@
           "type": "number",
           "default": 1.25
         }
-		},
+      },
       "additionalProperties": false
     },
     "time_series_model_parameters": {

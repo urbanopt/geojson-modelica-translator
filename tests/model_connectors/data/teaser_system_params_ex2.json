@@ -4,7 +4,7 @@
       "load_model": "ROM/RC",
       "load_model_parameters": {
         "rc": {
-          "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
+          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
         }
       },
       "ets_model": "Indirect Cooling",

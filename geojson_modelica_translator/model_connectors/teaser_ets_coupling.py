@@ -39,6 +39,7 @@ from geojson_modelica_translator.utils import ModelicaPath, copytree
 from modelica_builder.model import Model
 from teaser.project import Project
 
+
 class TeaserConnectorETS(model_connector_base):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
@@ -106,8 +107,6 @@ class TeaserConnectorETS(model_connector_base):
             prj = Project(load_data=True)
             for building in self.buildings:
                 building_name = building["building_id"]
-                b_modelica_path = ModelicaPath(
-                   f"B{building['building_id']}", scaffold.loads_path.files_dir, True)
                 prj.add_non_residential(
                     method="bmvbs",
                     usage=self.lookup_building_type(building["building_type"]),
@@ -176,7 +175,8 @@ class TeaserConnectorETS(model_connector_base):
         # Need to investigate moving this into a more testable location.
         for b in building_names:
             # create a list of strings that we need to replace in all the file as we go along
-            mos_weather_filename = self.system_parameters.get_param_by_building_id(b, "load_model_parameters.rc.mos_weather_filename",)##AA added this 9/15 
+            mos_weather_filename = self.system_parameters.get_param_by_building_id(
+                b, "load_model_parameters.rc.mos_weather_filename")
             string_replace_list = []
 
             # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
@@ -443,19 +443,17 @@ class TeaserConnectorETS(model_connector_base):
                 })
 
             # TODO: Read nominal flows from system parameter file
-            template_data = { ##AA added this, 9/11 
-            "thermal_zones": zone_list,
-            "nominal_heat_flow": [10000] * len(zone_list),
-            "nominal_cool_flow": [-10000] * len(zone_list),
-            "load_resources_path": b_modelica_path.resources_relative_dir, ##AA added 9/15 
-            "mos_weather": {
-            "mos_weather_filename": mos_weather_filename,
-            "filename": os.path.basename(mos_weather_filename),
-            "path": os.path.dirname(mos_weather_filename), 
-            } ##last line of what AA added 9/15
+            template_data = {
+                "thermal_zones": zone_list,
+                "nominal_heat_flow": [10000] * len(zone_list),
+                "nominal_cool_flow": [-10000] * len(zone_list),
+                "load_resources_path": b_modelica_path.resources_relative_dir,  # AA added 9/15
+                "mos_weather": {
+                    "mos_weather_filename": mos_weather_filename,
+                    "filename": os.path.basename(mos_weather_filename),
+                    "path": os.path.dirname(mos_weather_filename),
+                }
             }
-            print(template_data)
-			
 
             self.run_template(
                 teaser_building,
@@ -491,8 +489,8 @@ class TeaserConnectorETS(model_connector_base):
                 teaser_ets_coupling,
                 os.path.join(os.path.join(b_modelica_path.files_dir, "TeaserCouplingETS.mo")),
                 project_name=scaffold.project_name,
-                model_name=f"B{b}", 
-				data=template_data, ##AA added 9/14
+                model_name=f"B{b}",
+                data=template_data,  # AA added 9/14
             )
 
             full_model_name = os.path.join(
