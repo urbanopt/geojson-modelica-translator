@@ -45,6 +45,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 )
 
 
+# FIXME: mft test should be inside the main ts_ets test class. This is literally just a duplicate of that
 class TimeSeriesModelConnectorSingleBuildingETSMFTTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
@@ -55,14 +56,14 @@ class TimeSeriesModelConnectorSingleBuildingETSMFTTest(unittest.TestCase):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
         # load in the example geojson with a single offie building
-        filename = os.path.join(self.data_dir, "time_series_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        feature_file = os.path.join(self.data_dir, "time_series_ex1.json")
+        self.gj = GeoJsonModelicaTranslator.from_geojson(feature_file)
         # use the GeoJson translator to scaffold out the directory
         self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ex1.json")
-        sys_params = SystemParameters(filename)
+        sys_params_file = os.path.join(self.data_dir, "time_series_system_params_ex1.json")
+        sys_params = SystemParameters(sys_params_file)
 
         # now test the spawn connector (independent of the larger geojson translator
         self.time_series = TimeSeriesConnectorETS(sys_params)
@@ -71,8 +72,9 @@ class TimeSeriesModelConnectorSingleBuildingETSMFTTest(unittest.TestCase):
 
     def test_timeSeries_init(self):
         self.assertIsNotNone(self.time_series)
+        # FIXME: Better way of looking up mft data than index position 1
         self.assertEqual(
-            self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"], "time_series"
+            self.time_series.system_parameters.get_param("buildings.custom")[1]["load_model"], "time_series"
         )
 
     def test_mft_time_series_to_modelica_and_run(self):
