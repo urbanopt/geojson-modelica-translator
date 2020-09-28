@@ -39,9 +39,17 @@ class CSVModelica(object):
 
     def __init__(self, input_csv_file_path):
         """
-        Convert a CSV file into the format required by Modelica. This is specific to the Mass Flow Rate file
-        only as the header of the file adds in the nominal heating and cooling flow rates. Note that the columns
-        of the CSV file need to be massFlorRateHeating
+        Convert a CSV file into the format required by Modelica. This is specific to the Mass Flow Rate file only
+        and requires the file format to contain the following headers in this order.
+
+        0: Date/Time, string, not used, but must be date/time.
+        1: THWR, double, Temperature hot water return, degC
+        2: THWSET, double, Temperature hot water setpoint, degC
+        3: TChWR, double, Temperature chilled water return, degC
+        4: TChWSET, double, Temperature chilled water setpoint, degC
+        5: massFlowRateHeating, double, heating water mass flow rate, must be named massFlowRateHeating, kg/s
+        6: massFlowRateCooling, double, cooling water mass flow rate, must be named massFlowRateCooling, kg/s
+
 
         :param input_csv_file_path: string, path to file to convert.
         """
@@ -59,17 +67,14 @@ class CSVModelica(object):
         # reset index
         self.timeseries_output = self.timeseries_output.reset_index(drop=True)
 
-        # Note that the file that is in this test repo does not have the column you are looking for (massFlowRateHeating),
-        # It only contains (print(self.timeseries_output.columns) -- 'NODE 62:System Node Temperature[C]',
-        #        'NODE 67:System Node Temperature[C]',
-        #        'NODE 70:System Node Temperature[C]',
-        #        'NODE 98:System Node Temperature[C]',
-        #        'NODE 62:System Node Mass Flow Rate[kg/s]',
-        #        'NODE 67:System Node Mass Flow Rate[kg/s]',
-        #        'NODE 70:System Node Mass Flow Rate[kg/s]',
-        #        'NODE 98:System Node Mass Flow Rate[kg/s]',
+        # verify that the columns are valid
+        if 'massFlowRateHeating' not in self.timeseries_output.columns:
+            raise Exception(f'massFlowRateHeating column not found in file and is required: {input_csv_file_path}')
 
-        # Nominal massFlowRate.
+        if 'massFlowRateCooling' not in self.timeseries_output.columns:
+            raise Exception(f'massFlowRateCooling column not found in file and is required: {input_csv_file_path}')
+
+        # Extract the nominal flow rates from the file
         self.nominal_heating_mass_flow_rate = pd.DataFrame(
             {'#heating': ['#Nominal heating water mass flow rate'],
              '#value': [self.timeseries_output['massFlowRateHeating'].max()]},
@@ -99,8 +104,9 @@ class CSVModelica(object):
         # modify the index for modelica mos
         self.timeseries_output.index = self.timeseries_output.index * energyplus_timestep
         self.timeseries_output.index.name = '#time'
-        # Date
-        self.timeseries_output.drop(['Date/Time'], axis=1, inplace=True)
+
+        # Remove the first column, which is the date/time (regardless of the name)
+        self.timeseries_output.drop(self.timeseries_output.columns[0], axis=1, inplace=True)
         # write to csv for modelica
         output_modelica_file_name_full = f'{output_modelica_file_name}.csv'
         if os.path.exists(output_modelica_file_name_full) and not overwrite:
