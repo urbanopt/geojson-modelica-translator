@@ -170,6 +170,7 @@ class TeaserConnectorETS(model_connector_base):
         teaser_building = self.template_env.get_template("TeaserBuilding.mot")
         teaser_ets_coupling = self.template_env.get_template("TeaserCouplingETS.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
         run_coupling_template = self.template_env.get_template("RunTeaserCouplingETS.most")
 
         # This for loop does *a lot* of work to make the models compatible for the project structure.
@@ -461,17 +462,26 @@ class TeaserConnectorETS(model_connector_base):
             )
 
             ets_data = None
-            if ets_model_type == "Indirect Cooling":
+            if ets_model_type == "Indirect Heating and Cooling":
                 ets_data = self.system_parameters.get_param_by_building_id(
                     f"B{b}",
-                    "ets_model_parameters.indirect_cooling"
+                    "ets_model_parameters.indirect"
                 )
             else:
-                raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+                raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
             self.run_template(
                 cooling_indirect_template,
                 os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")),
+                project_name=scaffold.project_name,
+                model_name=f"B{b}",
+                data=template_data,
+                ets_data=ets_data,
+            )
+
+            self.run_template(
+                heating_indirect_template,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo")),
                 project_name=scaffold.project_name,
                 model_name=f"B{b}",
                 data=template_data,
