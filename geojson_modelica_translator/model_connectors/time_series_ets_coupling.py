@@ -45,7 +45,6 @@ class TimeSeriesConnectorETS(model_connector_base):
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
         self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'modelica.mos'))
 
     def to_modelica(self, scaffold):
         """
@@ -203,6 +202,7 @@ class TimeSeriesConnectorETS(model_connector_base):
             order_files.append("MassFlowTemperaturesTimeSeries")
             order_files.append("TimeSeriesCouplingETS")
             order_files.append("CoolingIndirect")
+            order_files.append("HeatingIndirect")
             order_files.append("building")
             b_modelica_path = Path(scaffold.loads_path.files_dir) / b
             new_package = PackageParser.new_from_template(
