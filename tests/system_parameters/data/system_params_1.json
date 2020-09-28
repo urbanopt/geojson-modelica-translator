@@ -7,9 +7,9 @@
           "order": 2
         }
       },
-      "ets_model": "Indirect Cooling",
+      "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
-        "indirect_cooling": {
+        "indirect": {
           "q_flow_nominal": 8000,
           "eta_efficiency": 0.666,
           "nominal_flow_district": 0.666,
@@ -17,8 +17,10 @@
           "pressure_drop_valve": 888,
           "pressure_drop_hx_secondary": 999,
           "pressure_drop_hx_primary": 999,
-          "supply_water_temperature_district": 5,
-          "supply_water_temperature_building": 7
+          "cooling_supply_water_temperature_district": 5,
+          "cooling_supply_water_temperature_building": 7,
+          "heating_supply_water_temperature_district": 55,
+          "heating_supply_water_temperature_building": 50
         }
       }
     },
@@ -34,9 +36,9 @@
       {
         "geojson_id": "building_merge_defaults",
         "load_model": "ROM/RC",
-        "ets_model": "Indirect Cooling",
+        "ets_model": "Indirect Heating and Cooling",
         "ets_model_parameters": {
-          "indirect_cooling": {
+          "indirect": {
             "q_flow_nominal": 8000,
             "eta_efficiency": 0.666,
             "nominal_flow_district": 0.666,
@@ -44,8 +46,10 @@
             "pressure_drop_valve": 888,
             "pressure_drop_hx_secondary": 999,
             "pressure_drop_hx_primary": 999,
-            "supply_water_temperature_district": 5,
-            "supply_water_temperature_building": 7
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50
           }
         }
       },

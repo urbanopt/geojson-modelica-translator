@@ -51,6 +51,7 @@ class TimeSeriesConnectorETS(model_connector_base):
         timeSeries_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
         timeSeries_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
         timeSeries_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
         building_names = []
         try:
@@ -102,13 +103,13 @@ class TimeSeriesConnectorETS(model_connector_base):
                 )
 
                 ets_data = None
-                if ets_model_type == "Indirect Cooling":
+                if ets_model_type == "Indirect Heating and Cooling":
                     ets_data = self.system_parameters.get_param_by_building_id(
                         building["building_id"],
-                        "ets_model_parameters.indirect_cooling"
+                        "ets_model_parameters.indirect"
                     )
                 else:
-                    raise Exception("Only ETS Model of type 'Indirect Cooling' type enabled currently")
+                    raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
                 file_data = cooling_indirect_template.render(
                     project_name=scaffold.project_name,
@@ -118,6 +119,16 @@ class TimeSeriesConnectorETS(model_connector_base):
                 )
 
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")), "w") as f:
+                    f.write(file_data)
+
+                file_data = heating_indirect_template.render(
+                    project_name=scaffold.project_name,
+                    model_name=f"B{building['building_id']}",
+                    data=template_data,
+                    ets_data=ets_data,
+                )
+
+                with open(os.path.join(os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo")), "w") as f:
                     f.write(file_data)
 
                 full_model_name = os.path.join(
