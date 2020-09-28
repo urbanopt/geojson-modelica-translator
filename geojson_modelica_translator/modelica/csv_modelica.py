@@ -42,7 +42,7 @@ class CSVModelica(object):
         Convert a CSV file into the format required by Modelica. This is specific to the Mass Flow Rate file only
         and requires the file format to contain the following headers in this order.
 
-        0: Date/Time, string, not used, but must be date/time.
+        0: Date/Time, string, date time. This column isn't used and will be removed upon writing out.
         1: THWR, double, Temperature hot water return, degC
         2: THWSET, double, Temperature hot water setpoint, degC
         3: TChWR, double, Temperature chilled water return, degC
