@@ -29,6 +29,16 @@
             "delTDisCoo": 10
           }
         }
+      },
+      {
+        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "load_model": "time_series",
+        "load_model_parameters": {
+          "time_series": {
+            "filepath": "ts_mft_ets_example_data.mos",
+            "delTDisCoo": 10
+          }
+        }
       }
     ]
   }
