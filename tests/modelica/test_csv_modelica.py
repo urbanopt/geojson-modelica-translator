@@ -58,3 +58,9 @@ class CsvModelicaTest(unittest.TestCase):
         # save the updated time series to the output directory of the test folder
         csv_converter.timeseries_to_modelica_data(output_modelica_file_name, energyplus_timestep, 'double')
         self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'modelica.csv')))
+
+        # check if a string is in there
+        with open(os.path.join(self.output_dir, 'modelica.csv'), 'r') as f:
+            data = f.read()
+            self.assertTrue('12600,42.25,55.0,15.73,6.67,8.58,0.19' in data)
+            self.assertTrue('29700000,39.32,55.0,15.75,6.67,2.08,0.29' in data)
