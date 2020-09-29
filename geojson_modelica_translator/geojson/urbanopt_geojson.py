@@ -39,15 +39,24 @@ _log = logging.getLogger(__name__)
 
 
 # TODO: Inherit from GeoJSON Feature class, move to its own file
-class UrbanOptBuilding(object):
+class UrbanOptLoad(object):
     """
-    An UrbanOptBuilding is a container for holding Building-related data in a dictionary.
+    An UrbanOptLoad is a container for holding Building-related data in a dictionary. This object
+    does not do much work on the GeoJSON definition of the data at the moment, rather it creates
+    an isolation layer between the GeoJSON data and the GMT.
     """
 
     def __init__(self, feature):
         self.feature = feature
-        self.id = feature.get("properties", {}).get("id", "NO ID")
+        self.id = feature.get("properties", {}).get("id", None)
         self.dirname = f"B{self.id}"
+
+        # do some validation
+        if self.id is None:
+            raise Exception("GeoJSON feature requires an ID property but value was null")
+
+    def __str__(self):
+        return f"ID: {self.id}"
 
 
 class UrbanOptGeoJson(object):
@@ -70,7 +79,10 @@ class UrbanOptGeoJson(object):
         self.buildings = []
         for f in self.data.features:
             if f["properties"]["type"] == "Building":
-                self.buildings.append(UrbanOptBuilding(f))
+                self.buildings.append(UrbanOptLoad(f))
+            elif f["properties"]["type"] == "District System":
+                print('Found district system, not parsing yet')
+                pass
 
     def validate(self):
         """

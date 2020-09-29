@@ -52,97 +52,94 @@ class TimeSeriesConnectorMFTETS(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        curdir = os.getcwd()
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
-        timeSeries_mft_template = self.template_env.get_template("MassFlowTemperaturesTimeSeries.mot")
-        timeSeries_ets_mft_mos_template = self.template_env.get_template("RunTimeSeries_MassFlow_Temperature.most")
+        time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
+        time_series_ets_mft_mos_template = self.template_env.get_template("RunTimeSeries_MassFlow_Temperature.most")
         building_names = []
-        try:
-            for building in self.buildings:
-                building_names.append(f"B{building['building_id']}")
-                b_modelica_path = ModelicaPath(
-                    f"B{building['building_id']}", scaffold.loads_path.files_dir, True
-                )
+        for building in self.buildings:
+            building_names.append(f"B{building['building_id']}")
+            b_modelica_path = ModelicaPath(
+                f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+            )
 
-                # grab the data from the system_parameter file for this building id
-                # TODO: create method in system_parameter class to make this easier and respect the defaults
-                time_series_filename = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.filepath"
-                )
+            # grab the data from the system_parameter file for this building id
+            # TODO: create method in system_parameter class to make this easier and respect the defaults
+            time_series_filename = self.system_parameters.get_param_by_building_id(
+                building["building_id"], "load_model_parameters.time_series.filepath"
+            )
 
-                template_data = {
-                    "load_resources_path": b_modelica_path.resources_relative_dir,
-                    "time_series": {
-                        "filepath": time_series_filename,
-                        "filename": os.path.basename(time_series_filename),
-                        "path": os.path.dirname(time_series_filename),
-                    },
-                    "nominal_values": {
-                        "delTDisCoo": self.system_parameters.get_param_by_building_id(
-                            building["building_id"], "load_model_parameters.time_series.delTDisCoo"
-                        )
-                    }
-                }
-
-                if os.path.exists(template_data["time_series"]["filepath"]):
-                    new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
-                    os.makedirs(os.path.dirname(new_file), exist_ok=True)
-                    shutil.copy(template_data["time_series"]["filepath"], new_file)
-                else:
-                    raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
-
-                # Run templates to write actual Modelica models
-                ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
-
-                ets_data = None
-                if ets_model_type == "Indirect Heating and Cooling":
-                    ets_data = self.system_parameters.get_param_by_building_id(
-                        building["building_id"],
-                        "ets_model_parameters.indirect"
+            template_data = {
+                "load_resources_path": b_modelica_path.resources_relative_dir,
+                "time_series": {
+                    "filepath": time_series_filename,
+                    "filename": os.path.basename(time_series_filename),
+                    "path": os.path.dirname(time_series_filename),
+                },
+                "nominal_values": {
+                    "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                        building["building_id"], "load_model_parameters.time_series.delTDisCoo"
                     )
-                else:
-                    raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
+                }
+            }
 
-                self.run_template(
-                    template=cooling_indirect_template,
-                    save_file_name=Path(b_modelica_path.files_dir) / "CoolingIndirect.mo",
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
-                    ets_data=ets_data,
+            if os.path.exists(template_data["time_series"]["filepath"]):
+                new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
+                os.makedirs(os.path.dirname(new_file), exist_ok=True)
+                shutil.copy(template_data["time_series"]["filepath"], new_file)
+            else:
+                raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
+
+            # Run templates to write actual Modelica models
+            ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
+
+            ets_data = None
+            if ets_model_type == "Indirect Heating and Cooling":
+                ets_data = self.system_parameters.get_param_by_building_id(
+                    building["building_id"],
+                    "ets_model_parameters.indirect"
                 )
+            else:
+                raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
-                self.run_template(
-                    template=heating_indirect_template,
-                    save_file_name=Path(b_modelica_path.files_dir) / "HeatingIndirect.mo",
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
-                    ets_data=ets_data,
-                )
+            self.run_template(
+                template=cooling_indirect_template,
+                save_file_name=Path(b_modelica_path.files_dir) / "CoolingIndirect.mo",
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
 
-                self.run_template(
-                    template=timeSeries_mft_template,
-                    save_file_name=Path(b_modelica_path.files_dir) / "MassFlowTemperaturesTimeSeries.mo",
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
-                    ets_data=ets_data,
-                )
+            self.run_template(
+                template=heating_indirect_template,
+                save_file_name=Path(b_modelica_path.files_dir) / "HeatingIndirect.mo",
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
 
-                self.run_template(
-                    template=timeSeries_ets_mft_mos_template,
-                    save_file_name=Path(b_modelica_path.files_dir) / "RunTimeSeries_MassFlow_Temperature.mos",
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
-                    ets_data=ets_data,
-                )
+            self.run_template(
+                template=time_series_mft_template,
+                save_file_name=Path(b_modelica_path.files_dir) / "TimeSeriesMassFlowTemperatures.mo",
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
 
-                self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
-        finally:
-            os.chdir(curdir)
+            self.run_template(
+                template=time_series_ets_mft_mos_template,
+                save_file_name=Path(b_modelica_path.files_dir) / "RunTimeSeries_MassFlow_Temperature.mos",
+                do_not_add_to_list=True,
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
+
+            self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
 
         # Run post process to create the remaining project files for this building
         self.post_process(scaffold, building_names)
@@ -161,9 +158,7 @@ class TimeSeriesConnectorMFTETS(model_connector_base):
         """
         for b in building_names:
             order_files = [Path(mo).stem for mo in self.required_mo_files]
-            order_files.append("MassFlowTemperaturesTimeSeries")
-            order_files.append("CoolingIndirect")
-            order_files.append("HeatingIndirect")
+            order_files += self.template_files_to_include
             b_modelica_path = Path(scaffold.loads_path.files_dir) / b
             new_package = PackageParser.new_from_template(
                 path=b_modelica_path,

@@ -55,6 +55,9 @@ class Base(object):
         self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
+        # store a list of the templated files to include when building the package
+        self.template_files_to_include = []
+
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
         self.required_mo_files = []
@@ -82,7 +85,6 @@ class Base(object):
                 urbanopt_building.feature.properties["floor_height"] = 3  # Default height in meters from sdk
 
             try:
-                urbanopt_building.feature.properties["year_built"]
                 # UO SDK defaults to current year, however TEASER only supports up to Year 2015
                 # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
                 if urbanopt_building.feature.properties["year_built"] > 2015:
@@ -103,7 +105,9 @@ class Base(object):
             )
 
     def copy_required_mo_files(self, dest_folder, within=None):
-        """Copy any required_mo_files to the destination and update the within clause if defined
+        """Copy any required_mo_files to the destination and update the within clause if defined. The required mo
+        files need to be added as full paths to the required_mo_files member variable in the connectors derived
+        classes.
 
         :param dest_folder: String, folder to copy the resulting MO files into.
         :param within: String, within clause to be replaced in the .mo file. Note that the original MO file needs to
@@ -126,13 +130,26 @@ class Base(object):
 
         return result
 
-    def run_template(self, template, save_file_name, **kwargs):
-        """Create an instance from a jinja template"""
+    def run_template(self, template, save_file_name, do_not_add_to_list=False, **kwargs):
+        """
+        Helper method to create the file from Jinja2's templating framework.
+
+        :param template: object, Jinja template from the `template_env.get_template()` command.
+        :param save_file_name: string, fully qualified path to save the rendered template to.
+        :param do_not_add_to_list: boolean, set to true if you do not want the file to be added to the package.order
+        :param kwargs: These are the arguments that need to be passed to the template.
+
+        :return: None
+        """
         file_data = template.render(**kwargs)
 
         os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
+
+        # add to the list of files to include in the package
+        if not do_not_add_to_list:
+            self.template_files_to_include.append(Path(save_file_name).stem)
 
     def modelica_path(self, filename):
         """Write a modelica path string for a given filename"""

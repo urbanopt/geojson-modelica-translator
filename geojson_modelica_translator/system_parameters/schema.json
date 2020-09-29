@@ -172,10 +172,10 @@
           "description": "Type of load model to use for the building.",
           "type": "string",
           "enum": [
-            "ROM/RC",
-            "ROM/DDM",
+            "rc",
+            "ddm",
             "time_series",
-            "Spawn"
+            "spawn"
           ]
         },
         "load_model_parameters": {

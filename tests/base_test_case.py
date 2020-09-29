@@ -30,7 +30,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 from unittest import TestCase
+
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
 
 class GMTTestCase(TestCase):
@@ -60,3 +63,25 @@ class TestCaseBase(GMTTestCase):
             shutil.rmtree(os.path.join(self.output_dir, project_name))
 
         return self.data_dir, self.output_dir
+
+    def run_and_assert_in_docker(self, file_to_run, project_path, project_name):
+        """
+        Run the test in docker.
+
+        :param file_to_run: Full path to the file to run. Typically this is the .mo file of interest (e.g., coupling.mo)
+        :param project_path: Full path to the location oft he project to run. This is typically the the full path to
+        where the directory named with the `project_name` comes come from.
+        :param project_name: The name of the project that is running. This is the directory where the root package.mo
+        lives.
+        :return: None
+        """
+        mr = ModelicaRunner()
+        run_path = Path(os.path.abspath(project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
+        # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
+        # Look at the stdout.log if this is non-zero.
+        self.assertEqual(0, exitcode)
+
+        # make sure that the results log exist
+        results_path = os.path.join(run_path, f"{project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))

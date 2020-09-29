@@ -9,61 +9,61 @@ model CoolingIndirect
     show_T=true);
   replaceable package Medium=Modelica.Media.Interfaces.PartialMedium
     "Medium in the component";
-  {% endraw %}{% raw %}// mass flow rates
+  // mass flow rates
   parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal(
     final min=0,
     {% endraw %}start={{ets_data["nominal_flow_district"]}})
-    {% raw %} "Nominal mass flow rate of primary (district) district cooling side";
-  {% endraw %}{% raw %}parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal(
+    {% raw %} "Nominal mass flow rate of primary (district) cooling side";
+  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal(
     final min=0,
     {% endraw %}start={{ets_data["nominal_flow_building"]}})
-    {% raw %} "Nominal mass flow rate of secondary (building) district cooling side";
-  {% endraw %}{% raw %}// Primary supply control valve
+    {% raw %} "Nominal mass flow rate of secondary (building) cooling side";
+  // Primary supply control valve
   parameter Modelica.SIunits.PressureDifference dpValve_nominal(
     final min=0,
     {% endraw %}final displayUnit="Pa")={{ ets_data["pressure_drop_valve"] }}
     {% raw %} "Nominal pressure drop of fully open control valve";
-  {% endraw %}{% raw %}// Heat exchanger
+  // Heat exchanger
   parameter Modelica.SIunits.PressureDifference dp1_nominal(
     final min=0,
     {% endraw %}start={{ ets_data["pressure_drop_hx_primary"] }},
-    final displayUnit="Pa")
+    {% raw %}final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation (Dialog(group="Heat exchanger"));
-  {% raw %}parameter Modelica.SIunits.PressureDifference dp2_nominal(
+  parameter Modelica.SIunits.PressureDifference dp2_nominal(
     final min=0,
     {% endraw %}start={{  ets_data["pressure_drop_hx_secondary"] }},
-    final displayUnit="Pa")
+    {% raw %}final displayUnit="Pa")
     "Nominal pressure difference on secondary side"
     annotation (Dialog(group="Heat exchanger"));
-  {% raw %}parameter Boolean use_Q_flow_nominal=true
+  parameter Boolean use_Q_flow_nominal=true
     "Set to true to specify Q_flow_nominal and temperatures, or to false to specify effectiveness"
     annotation (Dialog(group="Heat exchanger"));
-  {% endraw %}parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
     final min=0,
-    start={{ ets_data['q_flow_nominal']  }})
+    {% endraw %}start={{ ets_data['q_flow_nominal']  }})
     {% raw %} "Nominal heat transfer"
     annotation (Dialog(group="Heat exchanger"));
-  {% endraw %}{% raw %}parameter Modelica.SIunits.Temperature T_a1_nominal(
+  parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{  ets_data['cooling_supply_water_temperature_district']   }}+273.15,
-    final displayUnit="K")
+    {% endraw %}start={{ets_data['cooling_supply_water_temperature_district']}}+273.15,
+    {% raw %}final displayUnit="K")
     "Nominal temperature at port a1"
     annotation (Dialog(group="Heat exchanger"));
-  {% raw %}parameter Modelica.SIunits.Temperature T_a2_nominal(
+  parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{ ets_data['cooling_supply_water_temperature_building']  }}+273.15,
-    final displayUnit="K")
+    {% endraw %}start={{ets_data['cooling_supply_water_temperature_building']}}+273.15,
+    {% raw  %}final displayUnit="K")
     "Nominal temperature at port a2"
     annotation (Dialog(group="Heat exchanger"));
-  {% raw  %}parameter Modelica.SIunits.Efficiency eta(
+  parameter Modelica.SIunits.Efficiency eta(
     final min=0,
     {% endraw %}final max=0.8)={{  ets_data['eta_efficiency']  }}
     {% raw %} "Constant effectiveness"
     annotation (Dialog(group="Heat exchanger"));
-  {% endraw %}{% raw %}// Controller parameters
+  // Controller parameters
   parameter Modelica.Blocks.Types.SimpleController controllerType=Modelica.Blocks.Types.SimpleController.PI
     "Type of controller"
     annotation (Dialog(tab="Controller"));
@@ -263,7 +263,7 @@ protected
   connect(port_b2,senTBuiSup.port_b)
     annotation (Line(points={{-100,-60},{-90,-60}},color={0,127,255}));
   annotation (
-    defaultComponentName="coo",
+    defaultComponentName="cooEts",
     Icon(
       coordinateSystem(
         preserveAspectRatio=false),
