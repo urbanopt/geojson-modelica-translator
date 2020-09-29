@@ -22,10 +22,10 @@ echo "Checking out gh-pages branch into ${PUBLISH_DIR}l"
 git worktree add -B gh-pages ${PUBLISH_DIR} origin/gh-pages
 
 echo "Generating site"
-cd ${DOCS_DIR} && make html
+cd ${DOCS_DIR} && make html && touch ${PUBLISH_DIR}/.nojekyll
 
 echo "Updating gh-pages branch"
-cd ${PUBLISH_DIR} && git add --all && git commit -m "docs: updated repo documentation"
+cd ${PUBLISH_DIR} && git add --all && git commit -m "docs: updated repo documentation" --no-verify
 
 echo "Pushing to github"
 cd ${PUBLISH_DIR} && git push
