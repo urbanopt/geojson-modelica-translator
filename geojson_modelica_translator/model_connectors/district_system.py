@@ -291,23 +291,6 @@ class DistrictSystemConnector(model_connector_base):
         )
         package.save()
 
-        # base_files = [Path(mo).stem for mo in self.required_mo_files if mo.startswith('Partial')]
-        # base_package = PackageParser.new_from_template(
-        #     path=Path(scaffold.districts_path.files_dir),
-        #     name="Base",
-        #     order=base_files,
-        #     within=f"{scaffold.project_name}"
-        # )
-        # base_package.save()
-
-        # run_files = [Path(mo).stem for mo in self.required_mo_files if mo.startswith('Partial')]
-        # run_package = PackageParser.new_from_template(
-        #     path=Path(scaffold.districts_path.files_dir),
-        #     name="Run",
-        #     order=run_files,
-        #     within=f"{scaffold.project_name}"
-        # )
-        # run_package.save()
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         pp = PackageParser.new_from_template(
