@@ -98,9 +98,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 with open(os.path.join(os.path.join(b_modelica_path.files_dir, "building.mo")), "w") as f:
                     f.write(file_data)
 
-                ets_model_type = self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "ets_model"
-                )
+                ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
 
                 ets_data = None
                 if ets_model_type == "Indirect Heating and Cooling":
