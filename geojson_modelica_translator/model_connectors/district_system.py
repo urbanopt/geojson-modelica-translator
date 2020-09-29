@@ -277,14 +277,15 @@ class DistrictSystemConnector(model_connector_base):
 
         # now create the Districts level package. This (for now) will create the package without
         # considering any existing files in the Districts directory.
-        order_files = [os.path.splitext(os.path.basename(mo))[0] for mo in self.required_mo_files]
+        order_files = [Path(mo).stem for mo in self.required_mo_files]
         order_files.append("DistrictCoolingSystem")
         order_files.append("DistrictHeatingSystem")
         order_files.append("HeatingIndirect")
         order_files.append("CoolingIndirect")
         order_files.append("building")
         package = PackageParser.new_from_template(
-            scaffold.districts_path.files_dir, "Districts",
+            path=scaffold.districts_path.files_dir,
+            name="Districts",
             order=order_files,
             within=f"{scaffold.project_name}"
         )
@@ -293,6 +294,9 @@ class DistrictSystemConnector(model_connector_base):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Districts"]
+            path=scaffold.project_path,
+            name=scaffold.project_name,
+            order=["Districts"],
+            within=None
         )
         pp.save()

@@ -164,7 +164,7 @@ class SystemParametersTest(unittest.TestCase):
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50
-          }}, value)
+        }}, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)

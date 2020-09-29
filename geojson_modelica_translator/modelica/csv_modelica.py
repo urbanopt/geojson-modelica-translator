@@ -86,7 +86,12 @@ class CSVModelica(object):
             columns=['#cooling', '#value']
         )
 
-    def timeseries_to_modelica_data(self, output_modelica_file_name, energyplus_timestep=15, data_type='double', overwrite=True):
+    def timeseries_to_modelica_data(
+            self,
+            output_modelica_file_name,
+            energyplus_timestep=15,
+            data_type='double',
+            overwrite=True):
         """
         Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
         rate and the nominal cooling water mass flow rate into the header.
