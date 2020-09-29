@@ -7,6 +7,27 @@
           "order": 2,
           "mos_weather_filename": "path to a file"
         }
+      },
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_model_parameters": {
+        "indirect": {
+          "q_flow_nominal": 10000,
+          "eta_efficiency": 0.9,
+          "nominal_flow_district": 5000,
+          "nominal_flow_building": 200,
+          "pressure_drop_valve": 3,
+          "pressure_drop_hx_secondary": 3,
+          "pressure_drop_hx_primary": 3,
+          "cooling_supply_water_temperature_district": 5,
+          "cooling_supply_water_temperature_building": 7,
+          "heating_supply_water_temperature_district": 80,
+          "heating_supply_water_temperature_building": 75,
+          "booster_heater": false,
+          "ets_generation": "Fifth Generation",
+          "ets_connection_type": "Indirect",
+          "primary_design_delta_t": 3,
+          "secondary_design_delta_t": 3
+        }
       }
     },
     "custom": [

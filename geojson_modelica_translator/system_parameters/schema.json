@@ -199,7 +199,6 @@
           "enum": [
             "None",
             "Indirect Heating and Cooling",
-            "Booster Heater",
             "Heat Exchanger Only"
           ]
         },
@@ -419,7 +418,7 @@
           "default": 2
         },
         "mos_weather_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved.",
+          "description": "Relative path from location where file instance is saved.",
           "type": "string"
         },
         "fraction_latent_person": {
@@ -428,6 +427,9 @@
           "default": 1.25
         }
       },
+      "required": [
+        "mos_weather_filename"
+      ],
       "additionalProperties": false
     },
     "time_series_model_parameters": {
@@ -510,6 +512,7 @@
         "dpCHWPum_nominal",
         "dpCWPum_nominal"
       ]
-    }
+    },
+    "NewDefinition": {}
   }
 }

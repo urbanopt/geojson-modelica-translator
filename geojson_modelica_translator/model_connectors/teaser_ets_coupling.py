@@ -464,10 +464,7 @@ class TeaserConnectorETS(model_connector_base):
                 data=template_data
             )
 
-            ets_model_type = self.system_parameters.get_param_by_building_id(
-                f"B{b}", "ets_model"
-            )
-
+            ets_model_type = self.system_parameters.get_param_by_building_id(f"B{b}", "ets_model")
             ets_data = None
             if ets_model_type == "Indirect Heating and Cooling":
                 ets_data = self.system_parameters.get_param_by_building_id(
