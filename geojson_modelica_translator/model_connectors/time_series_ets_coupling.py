@@ -118,7 +118,7 @@ class TimeSeriesConnectorETS(model_connector_base):
 
                 self.run_template(
                     template=cooling_indirect_template,
-                    save_file_name=os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
+                    save_file_name=Path(b_modelica_path.files_dir) / "CoolingIndirect.mo",
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -127,7 +127,7 @@ class TimeSeriesConnectorETS(model_connector_base):
 
                 self.run_template(
                     template=heating_indirect_template,
-                    save_file_name=os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
+                    save_file_name=Path(b_modelica_path.files_dir) / "HeatingIndirect.mo",
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -142,7 +142,7 @@ class TimeSeriesConnectorETS(model_connector_base):
 
                 self.run_template(
                     template=timeSeries_ets_mos_template,
-                    save_file_name=os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"),
+                    save_file_name=Path(b_modelica_path.scripts_dir) / "RunTimeSeriesCouplingETS.mos",
                     full_model_name=full_model_name,
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
@@ -151,8 +151,8 @@ class TimeSeriesConnectorETS(model_connector_base):
                 )
 
                 self.run_template(
-                    timeSeries_ets_coupling_template,
-                    os.path.join(b_modelica_path.files_dir, "TimeSeriesCouplingETS.mo"),
+                    template=timeSeries_ets_coupling_template,
+                    save_file_name=Path(b_modelica_path.files_dir) / "TimeSeriesCouplingETS.mo",
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
