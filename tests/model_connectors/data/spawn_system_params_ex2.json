@@ -1,46 +1,12 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
-      "ets": {
-        "ets_properties_heating": {
-          "q_flow_nominal": 10000,
-          "eta_efficiency": 0.9,
-          "nominal_flow_district": 5000,
-          "nominal_flow_building": 200,
-          "pressure_drop_valve": 3,
-          "supply_water_temperature_district": 80,
-          "supply_water_temperature_building": 75,
-          "pressure_drop_hx_secondary": 3,
-          "pressure_drop_hx_primary": 5,
-          "primary_design_delta_t": 3,
-          "secondary_design_delta_t": 3,
-          "booster_heater": false,
-          "ets_generation": "Fifth Generation",
-          "ets_connection_type": "Indirect"
-        },
-        "ets_properties_cooling": {
-          "q_flow_nominal": 10000,
-          "eta_efficiency": 0.9,
-          "nominal_flow_district": 5000,
-          "nominal_flow_building": 200,
-          "pressure_drop_valve": 3,
-          "supply_water_temperature_district": 7,
-          "supply_water_temperature_building": 8,
-          "pressure_drop_hx_secondary": 3,
-          "pressure_drop_hx_primary": 5,
-          "primary_design_delta_t": 3,
-          "secondary_design_delta_t": 3,
-          "booster_heater": false,
-          "ets_generation": "Fifth Generation",
-          "ets_connection_type": "Indirect"
-        }
-      }
+      "load_model": "rc"
     },
     "custom": [
       {
         "geojson_id": "5a6b99ec37f4de7f94020090",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
@@ -58,7 +24,7 @@
       },
       {
         "geojson_id": "5a6b99ec37f4de7f94021950",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",

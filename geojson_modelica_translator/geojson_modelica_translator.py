@@ -34,9 +34,26 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
+from geojson_modelica_translator.model_connectors.spawn import \
+    SpawnConnector as spawn_load
+from geojson_modelica_translator.model_connectors.teaser import \
+    TeaserConnector as teaser_load
+from geojson_modelica_translator.model_connectors.time_series import \
+    TimeSeriesConnector as timeseries_load
 from geojson_modelica_translator.scaffold import Scaffold
 
 _log = logging.getLogger(__name__)
+
+
+load_mapper = {
+    "spawn": spawn_load,
+    "rc": teaser_load,
+    "time_series": timeseries_load
+}
+
+
+class LoadsList(list):
+    pass
 
 
 class GeoJsonModelicaTranslator(object):
@@ -45,11 +62,17 @@ class GeoJsonModelicaTranslator(object):
     """
 
     def __init__(self):
-        self.buildings = []
+        # self.json = None
+        # These objects should be removed eventually and used as helpers to
+        # translate the geojson to iterators for processing in this class.
+        self.json_loads = []
 
         # directory name member variables. These are set in the scaffold_directory method
         self.scaffold = None
         self.system_parameters = None
+
+        self.loads = LoadsList()
+        # self.district_systems = DistrictSystemsList()
 
     @classmethod
     def from_geojson(cls, filename):
@@ -61,13 +84,38 @@ class GeoJsonModelicaTranslator(object):
         """
 
         if os.path.exists(filename):
-            json = UrbanOptGeoJson(filename)
-
             klass = GeoJsonModelicaTranslator()
-            klass.buildings = json.buildings
+            json = UrbanOptGeoJson(filename)
+            klass.json_loads = json.buildings
+
+            # load in the building loads
             return klass
         else:
             raise Exception(f"GeoJSON file does not exist: {filename}")
+
+    def process_loads(self, sys_params):
+        """
+        Process the loads of the GeoJSON file. This combines the GeoJSON object
+        with the sys_params object. Each building object contains all the data
+        it needs to generate the resulting model.
+
+        :param sys_params: ...
+        :return:
+        """
+        for load in self.json_loads:
+            # Read in the load and determine if the model is RC, CSV, or Spawn
+            _log.debug(load)
+            model_con = sys_params.get_param_by_building_id(load.id, "load_model")
+            try:
+                # Also handle the load as if it is connected to the ETS or not
+                class_ = load_mapper[model_con]
+            except KeyError:
+                raise SystemExit(f'Model of type {model_con} not recognized. Verify sysparam file')
+
+            _log.info(f"Adding building to load model: {class_.__class__}")
+            model_connector = class_(self.system_parameters)
+            model_connector.add_building(load)
+            self.loads.append(model_connector)
 
     def set_system_parameters(self, sys_params):
         """
@@ -89,7 +137,7 @@ class GeoJsonModelicaTranslator(object):
         self.scaffold.create()
         return self.scaffold.project_path
 
-    def to_modelica(self, project_name, save_dir, model_connector_str="TeaserConnector"):
+    def to_modelica(self, project_name, save_dir):
         """
         Convert the data in the GeoJSON to modelica based-objects
 
@@ -99,30 +147,9 @@ class GeoJsonModelicaTranslator(object):
         """
         self.scaffold_directory(save_dir, project_name)
 
-        # import the model connector
-        if model_connector_str == "TeaserConnector":
-            import geojson_modelica_translator.model_connectors.teaser as model_con  # noqa
-        elif model_connector_str == "SpawnConnector":
-            import geojson_modelica_translator.model_connectors.spawn as model_con  # noqa
-        elif model_connector_str == "TimeSeriesConnector":
-            import geojson_modelica_translator.model_connectors.time_series as model_con  # noqa
-        else:
-            raise SystemExit('"model_connector_str" not recognized. Check for typos')
-
-        class_ = getattr(model_con, model_connector_str)
-
-        model_connector = class_(self.system_parameters)
-
-        _log.info("Exporting to Modelica")
-        for building in self.buildings:
-            # TODO: determine the load model and set it appropriately
-            _log.info(f"Adding building to model connector: {class_.__class__}")
-
-            model_connector.add_building(building)
-
-            _log.info(f"Translating building to model {building}")
-
         # Only call to_modelica once all the buildings have been added
+        for load in self.loads:
+            load.to_modelica(self.scaffold)  # , keep_original_models=False)
 
         # import geojson_modelica_translator.model_connectors.ets_template as ets_template
         # ets_class = getattr(ets_template, "ETSConnector")
@@ -130,7 +157,7 @@ class GeoJsonModelicaTranslator(object):
 
         # _log.info("Exporting District System")
 
-        model_connector.to_modelica(self.scaffold, keep_original_models=False)
+        # model_connector.to_modelica(self.scaffold, keep_original_models=False)
 
         # for building in self.buildings:
         #    ets_connector.to_modelica(self.scaffold, building)

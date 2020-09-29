@@ -33,6 +33,12 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
+from geojson_modelica_translator.model_connectors.spawn import \
+    SpawnConnector as spawn_load
+from geojson_modelica_translator.model_connectors.teaser import \
+    TeaserConnector as teaser_load
+from geojson_modelica_translator.model_connectors.time_series import \
+    TimeSeriesConnector as timeseries_load
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -59,21 +65,25 @@ class GeoJSONTranslatorTest(TestCaseBase):
 
     def test_translate_to_modelica(self):
         filename = os.path.join(self.data_dir, "geojson_1.json")
-        gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        self.assertEqual(len(gj.buildings), 3)
 
-        # system parameters
+        gj = GeoJsonModelicaTranslator.from_geojson(filename)
         filename = os.path.join(self.data_dir, "system_parameters_mix_models.json")
         sys_params = SystemParameters(filename)
         gj.set_system_parameters(sys_params)
 
+        gj.process_loads(sys_params)
+        self.assertEqual(len(gj.loads), 3)
         gj.to_modelica(self.project_name, self.output_dir)
 
-        # verify that there are 3 buildings
+        # verify that there are 3 buildings, one of each type
+        self.assertIsInstance(gj.loads[0], spawn_load)
+        self.assertIsInstance(gj.loads[1], timeseries_load)
+        self.assertIsInstance(gj.loads[2], teaser_load)
+
         building_paths = [
-            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.buildings
+            os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.json_loads
         ]
 
         for b in building_paths:
-            p_check = os.path.join(b, 'Office.mo')
+            p_check = os.path.join(b, 'building.mo')
             self.assertTrue(os.path.exists(p_check), f"Path not found {p_check}")

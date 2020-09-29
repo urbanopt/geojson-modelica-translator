@@ -1,13 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "rc",
-      "load_model_parameters": {
-        "rc": {
-          "order": 4,
-          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
-        }
-      },
+      "load_model": "time_series",
       "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "indirect": {
@@ -21,9 +15,23 @@
           "cooling_supply_water_temperature_district": 5,
           "cooling_supply_water_temperature_building": 7,
           "heating_supply_water_temperature_district": 55,
-          "heating_supply_water_temperature_building": 50
+          "heating_supply_water_temperature_building": 50,
+          "booster_heater": false,
+          "ets_generation": "Fourth Generation"
         }
       }
-    }
+    },
+    "custom": [
+      {
+        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "load_model": "time_series",
+        "load_model_parameters": {
+          "time_series": {
+            "filepath": "time_series_example_data.mos",
+            "delTDisCoo": 10
+          }
+        }
+      }
+    ]
   }
 }

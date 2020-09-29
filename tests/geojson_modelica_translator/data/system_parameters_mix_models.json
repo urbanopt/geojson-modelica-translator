@@ -1,7 +1,7 @@
 {
   "buildings": {
     "default": {
-      "load_model": "ROM/RC",
+      "load_model": "rc",
       "load_model_parameters": {
         "rc": {
           "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
@@ -27,7 +27,7 @@
     "custom": [
       {
         "geojson_id": "5a6b99ec37f4de7f94020090",
-        "load_model": "Spawn",
+        "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
@@ -44,12 +44,12 @@
         }
       },
       {
-        "geojson_id": "5a6b99ec37f4de7f94021950",
-        "load_model": "ROM/RC",
+        "geojson_id": "5a72287837f4de77124f946a",
+        "load_model": "time_series",
         "load_model_parameters": {
-          "rc": {
-            "order": 3,
-            "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
+          "time_series": {
+            "filepath": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "delTDisCoo": 10
           }
         }
       }
