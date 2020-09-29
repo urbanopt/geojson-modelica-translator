@@ -1,6 +1,8 @@
-within geojson_modelica_translator.model_connectors.templates;
-partial model PartialBuildingWithCoolingIndirectETS
+//within geojson_modelica_translator.model_connectors.templates
+partial model PartialBuildingWithIndirectETS
   "Partial model of a building with an energy transfer station"
+  replaceable package Medium=Modelica.Media.Interfaces.PartialMedium
+    "Source medium (heating or chilled water)";
   extends Buildings.Fluid.Interfaces.PartialFourPortInterface(
     final m1_flow_small=1E-4*m1_flow_nominal,
     final m2_flow_small=1E-4*m2_flow_nominal,
@@ -13,43 +15,24 @@ partial model PartialBuildingWithCoolingIndirectETS
     "Set to true to allow flow reversal on the district side"
     annotation (Dialog(tab="Assumptions"),Evaluate=true);
   // IO CONNECTORS
-  Modelica.Blocks.Interfaces.RealInput TSetChiWat
-    "Chilled water set point"
+  Modelica.Blocks.Interfaces.RealInput TSetWat
+    "Chilled/Heating water set point."
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,20}),iconTransformation(extent={{-10,-10},{10,10}},rotation=0,origin={-110,30})));
   // COMPONENTS
   replaceable Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding bui(
     final allowFlowReversal=allowFlowReversalBui)
     "Building model "
     annotation (Placement(transformation(extent={{-30,8},{30,68}})));
-  replaceable CoolingIndirect ets
-    annotation (Placement(transformation(extent={{-30,-82},{30,-22}})));
-  Buildings.Fluid.Actuators.Valves.TwoWayLinear val(
-    use_inputFilter=false,
-    final linearized=false)
-    "Two way modulating valve"
-    annotation (Placement(transformation(extent={{10,10},{-10,-10}},origin={60,-86})));
+  replaceable HeatingIndirect ets(
+    redeclare package Medium=Medium,
+    allowFlowReversal1=false,
+    allowFlowReversal2=false)
+    "Energy transfer station model"
+    annotation (Placement(transformation(extent={{-28,-84},{32,-24}})));
   Modelica.Fluid.Sources.FixedBoundary preSou(
+    redeclare package Medium=Medium,
     nPorts=1)
-    annotation (Placement(transformation(extent={{-100,-98},{-80,-78}})));
-equation
-  connect(TSetChiWat,ets.TSetBuiSup)
-    annotation (Line(points={{-120,20},{-74,20},{-74,-52},{-36,-52}},color={0,0,127}));
-  connect(port_b1,bui.ports_bHeaWat[1])
-    annotation (Line(points={{100,60},{60,60},{60,32},{30,32}},color={0,127,255}));
-  connect(port_a1,bui.ports_aHeaWat[1])
-    annotation (Line(points={{-100,60},{-60,60},{-60,32},{-30,32}},color={0,127,255}));
-  connect(val.port_b,ets.port_a1)
-    annotation (Line(points={{50,-86},{-54,-86},{-54,-34},{-30,-34}},color={0,127,255}));
-  connect(port_a2,val.port_a)
-    annotation (Line(points={{100,-60},{76,-60},{76,-86},{70,-86}},color={0,127,255}));
-  connect(ets.port_b1,port_b2)
-    annotation (Line(points={{30,-34},{46,-34},{46,0},{-80,0},{-80,-60},{-100,-60}},color={0,127,255}));
-  connect(ets.port_a2,bui.ports_bChiWat[1])
-    annotation (Line(points={{30,-70},{60,-70},{60,20},{30,20}},color={0,127,255}));
-  connect(ets.port_b2,preSou.ports[1])
-    annotation (Line(points={{-30,-70},{-62,-70},{-62,-88},{-80,-88}},color={0,127,255}));
-  connect(ets.port_b2,bui.ports_aChiWat[1])
-    annotation (Line(points={{-30,-70},{-62,-70},{-62,20},{-30,20}},color={0,127,255}));
+    annotation (Placement(transformation(extent={{-80,-98},{-60,-78}})));
   annotation (
     Dialog(
       group="ETS model parameters"),
@@ -176,4 +159,4 @@ equation
     Diagram(
       coordinateSystem(
         preserveAspectRatio=false)));
-end PartialBuildingWithCoolingIndirectETS;
+end PartialBuildingWithIndirectETS;

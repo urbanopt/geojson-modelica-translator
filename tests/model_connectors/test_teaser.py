@@ -81,7 +81,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
     def test_teaser_rc_default(self):
         """Should result in TEASER models with two element RC models"""
         project_name = 'teaser_rc_default'
-        self.load_project(project_name, "teaser_geojson_ex1.json", None)
+        self.load_project(project_name, "teaser_geojson_ex1.json", "teaser_system_params_ex2.json")
         self.teaser.to_modelica(self.gj.scaffold)
 
         # Check that the created file is two element

@@ -4,10 +4,10 @@
       "load_model": "spawn",
       "load_model_parameters": {
         "spawn": {
-          "idf_filename": "RefBldgSmallOfficeNew2004_Chicago.idf",
-          "epw_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
-          "mos_weather_filename": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
-          "mos_wet_bulb_filename": "USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+          "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
+          "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
+          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+          "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
           "thermal_zone_names": [
             "Core_ZN",
             "Perimeter_ZN_1",
@@ -17,9 +17,9 @@
           ]
         }
       },
-      "ets_model": "Indirect Cooling",
+      "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
-        "indirect_cooling": {
+        "indirect": {
           "q_flow_nominal": 8888,
           "eta_efficiency": 0.9,
           "nominal_flow_district": 0.5,
@@ -27,8 +27,10 @@
           "pressure_drop_valve": 1000,
           "pressure_drop_hx_secondary": 1500,
           "pressure_drop_hx_primary": 1500,
-          "supply_water_temperature_district": 5,
-          "supply_water_temperature_building": 7
+          "cooling_supply_water_temperature_district": 5,
+          "cooling_supply_water_temperature_building": 7,
+          "heating_supply_water_temperature_district": 55,
+          "heating_supply_water_temperature_building": 50
         }
       }
     }

@@ -58,6 +58,7 @@ class TimeSeriesConnector(model_connector_base):
 
         # ETS Models
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
         time_series_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
         time_series_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
 
@@ -85,10 +86,10 @@ class TimeSeriesConnector(model_connector_base):
             building["building_id"], "load_model_parameters.time_series.filepath"
         )
 
-        if os.path.splitext(time_series_filename)[1].lower() == '.csv':
-            raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
-        elif not os.path.exists(time_series_filename):
+        if not os.path.exists(time_series_filename):
             raise Exception(f"Missing MOS file for time series: {time_series_filename}")
+        elif os.path.splitext(time_series_filename)[1].lower() == '.csv':
+            raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
 
         # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
         # used. The `nominal_values` are only used when the time series is coupled to an ETS system.
@@ -125,7 +126,6 @@ class TimeSeriesConnector(model_connector_base):
             building["building_id"], "ets_model"
         )
 
-        print(f'my ETS model is {ets_model_type}')
         if ets_model_type == "None":
             self.run_template(
                 time_series_coupling_template,
@@ -144,19 +144,27 @@ class TimeSeriesConnector(model_connector_base):
                     f"B{building['building_id']}",
                     "coupling").replace(os.path.sep, '.')
             )
-        # TODO: Need to update this to include items other than Indirect Cooling, should just be indirect.
-        elif ets_model_type == "Indirect Cooling":
+        elif ets_model_type == "Indirect Heating and Cooling":
             # The ETS model is Indirect Cooling. If this model is to be connected to a district, then
             # somehow we need to know that context and remove the "TimeSeriesCouplingETS.mo file" and connect
             # the system to the distribution network.
             ets_data = self.system_parameters.get_param_by_building_id(
                 building["building_id"],
-                "ets_model_parameters.indirect_cooling"
+                "ets_model_parameters.indirect"
             )
 
             self.run_template(
                 cooling_indirect_template,
                 os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
+
+            self.run_template(
+                heating_indirect_template,
+                os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data,
@@ -182,7 +190,7 @@ class TimeSeriesConnector(model_connector_base):
             with open(os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"), "w") as f:
                 f.write(file_data)
         else:
-            raise Exception("Only ETS Model of type 'Indirect Cooling' and 'None' type enabled currently")
+            raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' and 'None' type enabled currently")
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, building_name)

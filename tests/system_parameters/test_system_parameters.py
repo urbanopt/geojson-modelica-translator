@@ -56,7 +56,6 @@ class SystemParametersTest(unittest.TestCase):
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
         self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model_2.idf'))
-        print(f"the value is {value}")
 
     def test_load_system_parameters_1(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
@@ -93,14 +92,15 @@ class SystemParametersTest(unittest.TestCase):
         self.assertRegex(str(exc.exception), "Invalid system parameter file.*")
 
         sp = SystemParameters.loadd(data, validate_on_load=False)
-        self.assertEqual(sp.validate()[0], "6 is not one of [1, 2, 3, 4]")
+        self.assertEqual(sp.validate()[0], "'mos_weather_filename' is a required property")
+        self.assertEqual(sp.validate()[1], "6 is not one of [1, 2, 3, 4]")
 
     def test_get_param(self):
         data = {
             "buildings": {
                 "default": {
                     "load_model": "rc",
-                    "load_model_parameters": {"rc": {"order": 4}},
+                    "load_model_parameters": {"rc": {"order": 4, "mos_weather_filename": "path-to-file"}},
                 }
             }
         }
@@ -115,7 +115,11 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("buildings.default")
         self.assertDictEqual(
             value,
-            {"load_model": "rc", "load_model_parameters": {"rc": {"order": 4}}},
+            {
+                "load_model": "rc",
+                "load_model_parameters": {
+                    "rc": {"order": 4, "mos_weather_filename": "path-to-file"}}
+            }
         )
 
         value = sp.get_param("")
@@ -138,7 +142,6 @@ class SystemParametersTest(unittest.TestCase):
 
     def test_get_param_with_building_id_defaults(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
-        print(filename)
         sdp = SystemParameters(filename)
 
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
@@ -147,48 +150,48 @@ class SystemParametersTest(unittest.TestCase):
 
         # grab the schema default
         value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
-        self.assertEqual("Indirect Cooling", value)
+        self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect_cooling':
-                          {"q_flow_nominal": 8000,
-                           "eta_efficiency": 0.666,
-                           "nominal_flow_district": 0.666,
-                           "nominal_flow_building": 0.666,
-                           "pressure_drop_valve": 888,
-                           "pressure_drop_hx_secondary": 999,
-                           "pressure_drop_hx_primary": 999,
-                           "supply_water_temperature_district": 5,
-                           "supply_water_temperature_building": 7}}, value)
+        self.assertEqual({"indirect": {
+            "q_flow_nominal": 8000,
+            "eta_efficiency": 0.666,
+            "nominal_flow_district": 0.666,
+            "nominal_flow_building": 0.666,
+            "pressure_drop_valve": 888,
+            "pressure_drop_hx_secondary": 999,
+            "pressure_drop_hx_primary": 999,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50
+          }}, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
         self.assertEqual(24815, value)
 
-    def test_get_param_with_none_buildign_id(self):
+    def test_get_param_with_none_building_id(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
-
+        self.maxDiff = None
         value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
-        self.assertEqual("Indirect Cooling", value)
+        self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect_cooling':
-                          {"q_flow_nominal": 8000,
-                           "eta_efficiency": 0.666,
-                           "nominal_flow_district": 0.666,
-                           "nominal_flow_building": 0.666,
-                           "pressure_drop_valve": 888,
-                           "pressure_drop_hx_secondary": 999,
-                           "pressure_drop_hx_primary": 999,
-                           "supply_water_temperature_district": 5,
-                           "supply_water_temperature_building": 7}
-                          }, value)
-
-    # def test_get_param_with_building_id_merge_defaults(self):
-    #     """This feature has not been implemented. Is this something we want?"""
-    #     filename = os.path.join(self.data_dir, 'system_params_1.json')
-    #     sdp = SystemParameters(filename)
-    #
-    #     # merge in the building defaults
-    #     value = sdp.get_param_by_building_id("building_merge_defaults", "ets_model_parameters.indirect_cooling")
-    #     result = {'Q_Flow_Nominal': 10000, 'Eta_Efficiency': 0.99, "SWT_District": 15}
-    #     self.assertEqual(result, value)
+        self.assertEqual({'indirect': {
+            "q_flow_nominal": 10000,
+            "eta_efficiency": 0.9,
+            "nominal_flow_district": 5000,
+            "nominal_flow_building": 200,
+            "pressure_drop_valve": 3,
+            "pressure_drop_hx_secondary": 3,
+            "pressure_drop_hx_primary": 3,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50,
+            "booster_heater": False,
+            "ets_generation": "Fifth Generation",
+            "ets_connection_type": "Indirect",
+            "primary_design_delta_t": 3,
+            "secondary_design_delta_t": 3
+        }}, value)

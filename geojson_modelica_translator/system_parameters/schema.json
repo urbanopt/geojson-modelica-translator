@@ -198,16 +198,15 @@
           "type": "string",
           "enum": [
             "None",
-            "Indirect Cooling",
-            "Booster Heater",
+            "Indirect Heating and Cooling",
             "Heat Exchanger Only"
           ]
         },
         "ets_model_parameters": {
           "type": "object",
           "properties": {
-            "indirect_cooling": {
-              "$ref": "#/definitions/ets_indirect_cooling_parameters"
+            "indirect": {
+              "$ref": "#/definitions/ets_indirect_parameters"
             }
           },
           "additionalProperties": false
@@ -287,8 +286,8 @@
       },
       "additionalProperties": false
     },
-    "ets_indirect_cooling_parameters": {
-      "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. Parameters associated with indirect cooling ETS",
+    "ets_indirect_parameters": {
+      "description": "Indirect ETS. The energy transfer is implemented through nondirect contact of water loops (heat exchanger). Parameters associated with indirect ETS",
       "type": "object",
       "properties": {
         "q_flow_nominal": {
@@ -299,7 +298,7 @@
         "eta_efficiency": {
           "description": "Heat exchanger efficiency (fraction)",
           "type": "number",
-          "default": 0.666
+          "default": 0.8
         },
         "nominal_flow_district": {
           "description": "District water nominal flow rate (m3/s).",
@@ -326,15 +325,25 @@
           "type": "number",
           "default": 999
         },
-        "supply_water_temperature_district": {
-          "description": "Supply water temperature for district (deg C)",
+        "cooling_supply_water_temperature_district": {
+          "description": "Cooling supply water temperature for district (deg C)",
           "type": "number",
           "default": 5
         },
-        "supply_water_temperature_building": {
-          "description": "Supply water temperature for building (deg C)",
+        "cooling_supply_water_temperature_building": {
+          "description": "Cooling supply water temperature for building (deg C)",
           "type": "number",
           "default": 7
+        },
+        "heating_supply_water_temperature_district": {
+          "description": "Heating supply water temperature for district (deg C)",
+          "type": "number",
+          "default": 55
+        },
+        "heating_supply_water_temperature_building": {
+          "description": "Heating supply water temperature for building (deg C)",
+          "type": "number",
+          "default": 50
         },
         "primary_design_delta_t": {
           "description": "Design temperature differential on the primary side ",
@@ -353,8 +362,10 @@
         "pressure_drop_valve",
         "pressure_drop_hx_secondary",
         "pressure_drop_hx_primary",
-        "supply_water_temperature_district",
-        "supply_water_temperature_building"
+        "cooling_supply_water_temperature_district",
+        "cooling_supply_water_temperature_building",
+        "heating_supply_water_temperature_district",
+        "heating_supply_water_temperature_building"
       ]
     },
     "spawn_model_parameters": {
@@ -406,12 +417,19 @@
           ],
           "default": 2
         },
+        "mos_weather_filename": {
+          "description": "Relative path from location where file instance is saved.",
+          "type": "string"
+        },
         "fraction_latent_person": {
           "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
           "type": "number",
           "default": 1.25
         }
       },
+      "required": [
+        "mos_weather_filename"
+      ],
       "additionalProperties": false
     },
     "time_series_model_parameters": {
@@ -494,6 +512,7 @@
         "dpCHWPum_nominal",
         "dpCWPum_nominal"
       ]
-    }
+    },
+    "NewDefinition": {}
   }
 }
