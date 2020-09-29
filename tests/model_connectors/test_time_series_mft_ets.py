@@ -36,8 +36,8 @@ from pathlib import Path
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.time_series_ets_coupling import (
-    TimeSeriesConnectorETS
+from geojson_modelica_translator.model_connectors.time_series_mft_ets_coupling import (
+    TimeSeriesConnectorMFTETS
 )
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
@@ -45,7 +45,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 )
 
 
-class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
+class TimeSeriesModelConnectorSingleBuildingMFTETSTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
@@ -65,24 +65,24 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
         sys_params = SystemParameters(filename)
 
         # now test the spawn connector (independent of the larger geojson translator
-        self.time_series = TimeSeriesConnectorETS(sys_params)
+        self.time_series = TimeSeriesConnectorMFTETS(sys_params)
         for b in self.gj.buildings:
             self.time_series.add_building(b)
 
-    def test_timeSeries_init(self):
+    def test_mft_timeSeries_init(self):
         self.assertIsNotNone(self.time_series)
+        # FIXME: Better way of looking up mft data from sys_params than index position 1
         self.assertEqual(
-            self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"], "time_series"
+            self.time_series.system_parameters.get_param("buildings.custom")[1]["load_model"], "time_series"
         )
 
-    def test_time_series_to_modelica_and_run(self):
+    def test_mft_time_series_to_modelica_and_run(self):
         self.time_series.to_modelica(self.gj.scaffold)
 
-        # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
         file_to_run = os.path.abspath(
             os.path.join(
-                self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'TimeSeriesCouplingETS.mo'
+                self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020091', 'MassFlowTemperaturesTimeSeries.mo'
             )
         )
         run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent

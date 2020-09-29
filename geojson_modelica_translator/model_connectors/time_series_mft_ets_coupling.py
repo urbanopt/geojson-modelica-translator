@@ -38,9 +38,13 @@ from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
 
 
-class TimeSeriesConnectorETS(model_connector_base):
+class TimeSeriesConnectorMFTETS(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
+
+        # Note that the order of the required MO files is important as it will be the order that
+        # the "package.order" will be in.
+        self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
 
     def to_modelica(self, scaffold):
         """
@@ -49,12 +53,10 @@ class TimeSeriesConnectorETS(model_connector_base):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         curdir = os.getcwd()
-        timeSeries_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
-        timeSeries_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
-        timeSeries_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
-
+        timeSeries_mft_template = self.template_env.get_template("MassFlowTemperaturesTimeSeries.mot")
+        timeSeries_ets_mft_mos_template = self.template_env.get_template("RunTimeSeries_MassFlow_Temperature.most")
         building_names = []
         try:
             for building in self.buildings:
@@ -90,17 +92,7 @@ class TimeSeriesConnectorETS(model_connector_base):
                 else:
                     raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
-                # write a file name building.mo, CoolingIndirect.mo and TimeSeriesCouplingETS.mo
-                # Run the templating
-
-                self.run_template(
-                    template=timeSeries_building_template,
-                    save_file_name=Path(b_modelica_path.files_dir) / "building.mo",
-                    project_name=scaffold.project_name,
-                    model_name=f"B{building['building_id']}",
-                    data=template_data,
-                )
-
+                # Run templates to write actual Modelica models
                 ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
 
                 ets_data = None
@@ -130,16 +122,9 @@ class TimeSeriesConnectorETS(model_connector_base):
                     ets_data=ets_data,
                 )
 
-                full_model_name = os.path.join(
-                    scaffold.project_name,
-                    scaffold.loads_path.files_relative_dir,
-                    f"B{building['building_id']}",
-                    "TimeSeriesCouplingETS").replace(os.path.sep, '.')
-
                 self.run_template(
-                    template=timeSeries_ets_mos_template,
-                    save_file_name=Path(b_modelica_path.scripts_dir) / "RunTimeSeriesCouplingETS.mos",
-                    full_model_name=full_model_name,
+                    template=timeSeries_mft_template,
+                    save_file_name=Path(b_modelica_path.files_dir) / "MassFlowTemperaturesTimeSeries.mo",
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
@@ -147,11 +132,12 @@ class TimeSeriesConnectorETS(model_connector_base):
                 )
 
                 self.run_template(
-                    template=timeSeries_ets_coupling_template,
-                    save_file_name=Path(b_modelica_path.files_dir) / "TimeSeriesCouplingETS.mo",
+                    template=timeSeries_ets_mft_mos_template,
+                    save_file_name=Path(b_modelica_path.files_dir) / "RunTimeSeries_MassFlow_Temperature.mos",
                     project_name=scaffold.project_name,
                     model_name=f"B{building['building_id']}",
                     data=template_data,
+                    ets_data=ets_data,
                 )
 
                 self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
@@ -175,10 +161,9 @@ class TimeSeriesConnectorETS(model_connector_base):
         """
         for b in building_names:
             order_files = [Path(mo).stem for mo in self.required_mo_files]
-            order_files.append("TimeSeriesCouplingETS")
+            order_files.append("MassFlowTemperaturesTimeSeries")
             order_files.append("CoolingIndirect")
             order_files.append("HeatingIndirect")
-            order_files.append("building")
             b_modelica_path = Path(scaffold.loads_path.files_dir) / b
             new_package = PackageParser.new_from_template(
                 path=b_modelica_path,
