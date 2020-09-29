@@ -92,6 +92,22 @@
             ]
           },
           "additionalProperties": false
+        },
+        "ets": {
+          "title": "defaults",
+          "description": "Parameters associated with ets systems",
+          "type": "object",
+          "properties": {
+            "ets_parameters": {
+              "description": "some properties here",
+              "type": "string"
+            }
+          },
+          "dependencies": {
+            "data_required": [
+              "building_name"
+            ]
+          }
         }
       },
       "additionalProperties": false
@@ -177,177 +193,23 @@
           },
           "additionalProperties": false
         },
-        "ets": {
-          "title": "defaults",
-          "description": "Parameters associated with ets systems",
+        "ets_model": {
+          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops ",
+          "type": "string",
+          "enum": [
+            "None",
+            "Indirect Heating and Cooling",
+            "Heat Exchanger Only"
+          ]
+        },
+        "ets_model_parameters": {
           "type": "object",
           "properties": {
-            "ets_properties_heating": {
-              "properties": {
-                "q_flow_nominal": {
-                  "description": "Nominal heat flux (Watts)",
-                  "type": "number"
-                },
-                "eta_efficiency": {
-                  "description": "Heat exchanger efficiency (fraction)",
-                  "type": "number"
-                },
-                "nominal_flow_district": {
-                  "description": "District water nominal mass flow rate (kg/s)",
-                  "type": "number"
-                },
-                "nominal_flow_building": {
-                  "description": "Building water nominal mass flow rate (kg/s)",
-                  "type": "number"
-                },
-                "pressure_drop_valve": {
-                  "description": "Valve pressure drop (pascals)",
-                  "type": "number"
-                },
-                "supply_water_temperature_district": {
-                  "description": "Supply water temperature for district (deg C)",
-                  "type": "number"
-                },
-                "supply_water_temperature_building": {
-                  "description": "Supply water temperature for building (deg C)",
-                  "type": "number"
-                },
-                "pressure_drop_hx_secondary": {
-                  "description": "Heat exchanger secondary side pressure drop (Pascals)",
-                  "type": "number"
-                },
-                "pressure_drop_hx_primary": {
-                  "description": "Heat exchanger primary side pressure drop (Pascals)",
-                  "type": "number"
-                },
-                "primary_design_delta_t": {
-                  "description": "Primary side design temperature differential (deg C) ",
-                  "type": "number"
-                },
-                "secondary_design_delta_t": {
-                  "description": "Secondary side design temperature differential (deg C) ",
-                  "type": "number"
-                },
-                "booster_heater": {
-                  "type": "boolean"
-                },
-                "ets_generation": {
-                  "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-                  "type": "string",
-                  "enum": [
-                    "First Generation",
-                    "Second/Third Generation",
-                    "Fourth Generation",
-                    "Fifth Generation"
-                  ]
-                },
-                "ets_connection_type": {
-                  "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-                  "type": "string",
-                  "enum": [
-                    "Direct",
-                    "Indirect"
-                  ]
-                },
-                "Present": {
-                  "type": "boolean"
-                }
-              },
-              "dependencies": {
-                "data_required": [
-                  "ets_name"
-                ]
-              },
-              "additionalProperties": {
-                "type": "string"
-              }
-            },
-            "ets_properties_cooling": {
-              "properties": {
-                "q_flow_nominal": {
-                  "description": "Nominal heat flux (Watts)",
-                  "type": "number"
-                },
-                "eta_efficiency": {
-                  "description": "Heat exchanger efficiency (fraction)",
-                  "type": "number"
-                },
-                "nominal_flow_district": {
-                  "description": "District water nominal mass flow rate (kg/s)",
-                  "type": "number"
-                },
-                "nominal_flow_building": {
-                  "description": "Building water nominal mass flow rate (kg/s)",
-                  "type": "number"
-                },
-                "pressure_drop_valve": {
-                  "description": "Valve pressure drop (pascals)",
-                  "type": "number"
-                },
-                "supply_water_temperature_district": {
-                  "description": "Supply water temperature for district (deg C)",
-                  "type": "number"
-                },
-                "supply_water_temperature_building": {
-                  "description": "Supply water temperature for building (deg C)",
-                  "type": "number"
-                },
-                "pressure_drop_hx_secondary": {
-                  "description": "Heat exchanger secondary side pressure drop (Pascals)",
-                  "type": "number"
-                },
-                "pressure_drop_hx_primary": {
-                  "description": "Heat exchanger primary side pressure drop (Pascals)",
-                  "type": "number"
-                },
-                "primary_design_delta_t": {
-                  "description": "Primary side design temperature differential (deg C) ",
-                  "type": "number"
-                },
-                "secondary_design_delta_t": {
-                  "description": "Secondary side design temperature differential (deg C) ",
-                  "type": "number"
-                },
-                "booster_heater": {
-                  "type": "boolean"
-                },
-                "ets_generation": {
-                  "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-                  "type": "string",
-                  "enum": [
-                    "First Generation",
-                    "Second/Third Generation",
-                    "Fourth Generation",
-                    "Fifth Generation"
-                  ]
-                },
-                "ets_connection_type": {
-                  "description": "Energy transfer station model for heating, one side is connected with district water loops, and the other side is connected with building water loops",
-                  "type": "string",
-                  "enum": [
-                    "Direct",
-                    "Indirect"
-                  ]
-                },
-                "Present": {
-                  "type": "boolean"
-                }
-              },
-              "dependencies": {
-                "data_required": [
-                  "ets_name"
-                ]
-              },
-              "additionalProperties": {
-                "type": "string"
-              }
+            "indirect": {
+              "$ref": "#/definitions/ets_indirect_parameters"
             }
           },
-          "dependencies": {
-            "data_required": [
-              "building_name"
-            ]
-          }
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -424,6 +286,88 @@
       },
       "additionalProperties": false
     },
+    "ets_indirect_parameters": {
+      "description": "Indirect ETS. The energy transfer is implemented through nondirect contact of water loops (heat exchanger). Parameters associated with indirect ETS",
+      "type": "object",
+      "properties": {
+        "q_flow_nominal": {
+          "description": "Nominal heat flux ( Watts )",
+          "type": "number",
+          "default": 8000
+        },
+        "eta_efficiency": {
+          "description": "Heat exchanger efficiency (fraction)",
+          "type": "number",
+          "default": 0.8
+        },
+        "nominal_flow_district": {
+          "description": "District water nominal flow rate (m3/s).",
+          "type": "number",
+          "default": 0.666
+        },
+        "nominal_flow_building": {
+          "description": "Building water nominal flow rate (m3/s).",
+          "type": "number",
+          "default": 0.666
+        },
+        "pressure_drop_valve": {
+          "description": "Valve pressure drop (Pascals)",
+          "type": "number",
+          "default": 888
+        },
+        "pressure_drop_hx_secondary": {
+          "description": "Heat exchanger secondary side pressure drop (Pascals)",
+          "type": "number",
+          "default": 999
+        },
+        "pressure_drop_hx_primary": {
+          "description": "Heat exchanger primary side pressure drop (Pascals)",
+          "type": "number",
+          "default": 999
+        },
+        "cooling_supply_water_temperature_district": {
+          "description": "Cooling supply water temperature for district (deg C)",
+          "type": "number",
+          "default": 5
+        },
+        "cooling_supply_water_temperature_building": {
+          "description": "Cooling supply water temperature for building (deg C)",
+          "type": "number",
+          "default": 7
+        },
+        "heating_supply_water_temperature_district": {
+          "description": "Heating supply water temperature for district (deg C)",
+          "type": "number",
+          "default": 55
+        },
+        "heating_supply_water_temperature_building": {
+          "description": "Heating supply water temperature for building (deg C)",
+          "type": "number",
+          "default": 50
+        },
+        "primary_design_delta_t": {
+          "description": "Design temperature differential on the primary side ",
+          "type": "number"
+        },
+        "secondary_design_delta_t": {
+          "description": "Design temperature differential on the secondary side",
+          "type": "number"
+        }
+      },
+      "required": [
+        "q_flow_nominal",
+        "eta_efficiency",
+        "nominal_flow_district",
+        "nominal_flow_building",
+        "pressure_drop_valve",
+        "pressure_drop_hx_secondary",
+        "pressure_drop_hx_primary",
+        "cooling_supply_water_temperature_district",
+        "cooling_supply_water_temperature_building",
+        "heating_supply_water_temperature_district",
+        "heating_supply_water_temperature_building"
+      ]
+    },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
       "type": "object",
@@ -473,12 +417,19 @@
           ],
           "default": 2
         },
+        "mos_weather_filename": {
+          "description": "Relative path from location where file instance is saved.",
+          "type": "string"
+        },
         "fraction_latent_person": {
           "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
           "type": "number",
           "default": 1.25
         }
       },
+      "required": [
+        "mos_weather_filename"
+      ],
       "additionalProperties": false
     },
     "time_series_model_parameters": {
@@ -561,6 +512,7 @@
         "dpCHWPum_nominal",
         "dpCWPum_nominal"
       ]
-    }
+    },
+    "NewDefinition": {}
   }
 }

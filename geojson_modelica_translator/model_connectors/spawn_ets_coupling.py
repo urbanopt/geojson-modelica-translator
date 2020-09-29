@@ -51,6 +51,7 @@ class SpawnConnectorETS(model_connector_base):
         spawn_ets_coupling_template = self.template_env.get_template("SpawnCouplingETS.mot")
         spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
+        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
         spawn_ets_mos_template = self.template_env.get_template("RunSpawnCouplingETS.most")
         building_names = []
         for building in self.buildings:
@@ -146,24 +147,27 @@ class SpawnConnectorETS(model_connector_base):
                 data=template_data
             )
 
-            # ets_model_type = self.system_parameters.get_param_by_building_id(
-                # building["building_id"], "ets_model" ##AA revised this
-            #)
-            ets_model_type = self.system_parameters.get_param_by_building_id(
-                 building["building_id"], "ets.ets_properties_cooling.ets_connection_type" ##AA added this 
-            )
+            ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
             ets_data = None
-            if ets_model_type == "Indirect":
+            if ets_model_type == "Indirect Heating and Cooling":
                 ets_data = self.system_parameters.get_param_by_building_id(
                     building["building_id"],
-                    "ets.ets_properties_cooling"  
+                    "ets_model_parameters.indirect"
                 )
             else:
-                raise Exception("Only ETS Model of type 'Indirect' type enabled currently") ##AA revised this 
+                raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
             self.run_template(
                 cooling_indirect_template,
                 os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                ets_data=ets_data
+            )
+
+            self.run_template(
+                heating_indirect_template,
+                os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 ets_data=ets_data
