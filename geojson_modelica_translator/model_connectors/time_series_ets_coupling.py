@@ -180,7 +180,7 @@ class TimeSeriesConnectorETS(model_connector_base):
         finally:
             os.chdir(curdir)
 
-        # run post process to create the remaining project files for this building
+        # Run post process to create the remaining project files for this building
         self.post_process(scaffold, building_names)
 
     def post_process(self, scaffold, building_names):
