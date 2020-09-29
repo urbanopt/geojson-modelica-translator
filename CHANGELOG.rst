@@ -1,11 +1,16 @@
 Change Log
 ==========
 
-Version 0.1.1 (Unreleased)
+Version 0.2.0
 --------------------------
 * Add ETS data for indirect cooling to system parameters schema
 * Add district system example
+* Add time series model using massflow rates and temperatures
+* Add district heating (1GDH and 4GDH) and heating indirect ETS
+* Add district cooling (4GDC) and cooling indirect ETS
+* Add distribution network
 * Update scaffolding to allow for mixed models
+* Create initial documentation
 
 Version 0.1.0
 -------------
