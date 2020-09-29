@@ -138,7 +138,6 @@ class SystemParametersTest(unittest.TestCase):
 
     def test_get_param_with_building_id_defaults(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
-        print(filename)
         sdp = SystemParameters(filename)
 
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
