@@ -27,7 +27,7 @@
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "time_series_example_data.mos",
+            "filepath": "ts_mft_ets_example_data.mos",
             "delTDisCoo": 10
           }
         }

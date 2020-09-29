@@ -1,5 +1,5 @@
 within {{project_name}}.Districts;
-model MassFlowTemperaturesTimeSeries
+model TimeSeriesMassFlowTemperatures
   "Time series water mass flow rates and temperatures for a building thermal
   loads generated from Energy PLus."
   extends Modelica.Icons.Example;
@@ -216,5 +216,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end MassFlowTemperaturesTimeSeries;
+end TimeSeriesMassFlowTemperatures;
 {% endraw %}

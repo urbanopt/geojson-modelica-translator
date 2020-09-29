@@ -47,8 +47,8 @@ class TimeSeriesConnector(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        # The list of MOT files are conditional, but for now just include them all so that they exist as
-        # needed.
+        # The list of MOT files are conditional, but for now just include them all so that they exist as needed.
+
         # Building Load
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
 
@@ -62,8 +62,8 @@ class TimeSeriesConnector(model_connector_base):
         time_series_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
         time_series_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
 
-        # We should move to a LoadConnector only acting on a single building. Note thought that a single building/load
-        # can have multiple thermalzones/models. For now, assert that only a single building exists per
+        # We should move to a LoadConnector only acting on a single building. Originally hought that a single
+        # building/load can have multiple thermalzones/models. For now, assert that only a single building exists per
         # this connector. Move these validation methods to the base class (eventually)
         if len(self.buildings) == 0:
             raise Exception("No load to translate")
@@ -209,14 +209,14 @@ class TimeSeriesConnector(model_connector_base):
         """
         b_modelica_path = os.path.join(scaffold.loads_path.files_dir, building_name)
         new_package = PackageParser.new_from_template(
-            b_modelica_path, building_name, ["building", "coupling"],
+            b_modelica_path, building_name, self.template_files_to_include,
             within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
         # now create the Loads level package. This (for now) will create the package without considering any existing
         # files in the Loads directory.
-        # TODO: Chaeck if the package.order and package.mo file exists, if so then just append
+        # TODO: Check if the package.order and package.mo file exists, if so then just append
         package = PackageParser.new_from_template(
             scaffold.loads_path.files_dir, "Loads", [building_name], within=f"{scaffold.project_name}"
         )

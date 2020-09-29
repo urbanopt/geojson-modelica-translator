@@ -48,7 +48,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         project_name = "time_series_no_ets"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        # load in the example geojson with a single offie building
+        # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
         # use the GeoJson translator to scaffold out the directory
