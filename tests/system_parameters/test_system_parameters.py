@@ -149,24 +149,19 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect': {
-            "q_flow_nominal": 10000,
-            "eta_efficiency": 0.9,
-            "nominal_flow_district": 5000,
-            "nominal_flow_building": 200,
-            "pressure_drop_valve": 3,
-            "pressure_drop_hx_secondary": 3,
-            "pressure_drop_hx_primary": 3,
+        self.assertEqual({"indirect": {
+            "q_flow_nominal": 8000,
+            "eta_efficiency": 0.666,
+            "nominal_flow_district": 0.666,
+            "nominal_flow_building": 0.666,
+            "pressure_drop_valve": 888,
+            "pressure_drop_hx_secondary": 999,
+            "pressure_drop_hx_primary": 999,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50,
-            "booster_heater": False,
-            "ets_generation": "Fifth Generation",
-            "ets_connection_type": "Indirect",
-            "primary_design_delta_t": 3,
-            "secondary_design_delta_t": 3
-        }}, value)
+            "heating_supply_water_temperature_building": 50
+          }}, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
