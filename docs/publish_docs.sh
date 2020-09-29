@@ -28,4 +28,4 @@ echo "Updating gh-pages branch"
 cd ${PUBLISH_DIR} && git add --all && git commit -m "docs: updated repo documentation"
 
 echo "Pushing to github"
-git push --all
+cd ${PUBLISH_DIR} && git push
