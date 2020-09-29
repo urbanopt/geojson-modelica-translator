@@ -54,7 +54,7 @@ with open("LICENSE") as f:
 
 setup(
     name="GeoJSON Modelica Translator",
-    version="0.1.0",
+    version="0.2.0",
     description="Package for converting GeoJSON to Modelica models for Urban Scale Analyses.",
     long_description="Package for converting GeoJSON to Modelica models for Urban Scale Analyses.",
     author="Nicholas Long",
