@@ -92,6 +92,29 @@ class TimeSeriesModelConnectorSingleBuildingETSTest(unittest.TestCase):
         results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
         self.assertTrue(os.path.join(results_path, 'stdout.log'))
 
+    def test_mft_timeSeries_init(self):
+        self.assertIsNotNone(self.time_series)
+        # FIXME: Better way of looking up mft data from sys_params than index position 1
+        self.assertEqual(
+            self.time_series.system_parameters.get_param("buildings.custom")[1]["load_model"], "time_series"
+        )
+
+    def test_mft_time_series_to_modelica_and_run(self):
+        self.time_series.to_modelica(self.gj.scaffold)
+
+        mr = ModelicaRunner()
+        file_to_run = os.path.abspath(
+            os.path.join(
+                self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020091', 'MassFlowTemperaturesTimeSeries.mo'
+            )
+        )
+        run_path = Path(os.path.abspath(self.gj.scaffold.project_path)).parent
+        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=self.gj.scaffold.project_name)
+        self.assertEqual(0, exitcode)
+
+        results_path = os.path.join(run_path, f"{self.gj.scaffold.project_name}_results")
+        self.assertTrue(os.path.join(results_path, 'stdout.log'))
+
 
 # Do not run this case as it takes too long on travis.
 # class SpawnModelConnectorTwoBuildingETSTest(unittest.TestCase):
