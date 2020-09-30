@@ -116,7 +116,9 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         files = [
             os.path.join(root_path, 'building.mo'),
             os.path.join(root_path, 'CoolingIndirect.mo'),
+            os.path.join(root_path, 'HeatingIndirect.mo'),
             os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
+            os.path.join(root_path, 'TimeSeriesMassFlowTemperaturesCentralPlants.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
