@@ -93,19 +93,21 @@ class GeoJsonModelicaTranslator(object):
         else:
             raise Exception(f"GeoJSON file does not exist: {filename}")
 
-    def process_loads(self, sys_params):
+    def process_loads(self):
         """
         Process the loads of the GeoJSON file. This combines the GeoJSON object
         with the sys_params object. Each building object contains all the data
         it needs to generate the resulting model.
 
-        :param sys_params: ...
-        :return:
+        :return: None
         """
+        if self.system_parameters is None:
+            raise Exception("Must set the system parameter file first. Use gj.set_system_parameters")
+
         for load in self.json_loads:
             # Read in the load and determine if the model is RC, CSV, or Spawn
             _log.debug(load)
-            model_con = sys_params.get_param_by_building_id(load.id, "load_model")
+            model_con = self.system_parameters.get_param_by_building_id(load.id, "load_model")
             try:
                 # Also handle the load as if it is connected to the ETS or not
                 class_ = load_mapper[model_con]
