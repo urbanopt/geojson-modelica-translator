@@ -1,7 +1,80 @@
 dl.field-list > dt {
     background-color: #e2e2e2;
 }
+dt:target, span.highlighted {
+    background-color: #c3f3dd;
+}
 
 .document {
     min-height: 90vh;
+}
+
+code, pre {
+    font-family: "Source Code Pro", Monaco, monospace;
+}
+
+div.section p {
+    margin: 0 0 0.5em;
+    line-height: 1.4em;
+    font-size: 16px;
+}
+
+div.sphinxsidebar ul, div.sphinxsidebar ul ul {
+    padding: 4px 1px 0;
+    list-style: none;
+    list-style-position: initial;
+    list-style-image: initial;
+    list-style-type: none;
+}
+
+div.footer, div.footer a {
+    color: #2c3e50;
+}
+
+/* The following has been copied and modified from the /urbanopt-geojson-gem repo */
+:link, :visited {
+    color: #3eaf7c;
+}
+:link:hover  {
+    border-bottom: 1px solid #3eaf7c;
+}
+body {
+    background-color: #fff !important;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+main h1, main h2, main h3, main h4, main h5, main h6 {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h3 a, div.sphinxsidebar h4 {
+    color: #999 !important;
+    font-weight: 700 !important;
+    background-color: #fff !important;
+    text-align: left !important;
+}
+div.sphinxsidebar h3 a {
+    font-size: 1.1em !important;
+}
+div.sphinxsidebar a {
+    display: inline-block;
+    font-weight: 400;
+    color: #2c3e50;
+    border-left: .25rem solid transparent;
+    padding: .35rem 1rem .35rem .5rem;
+    line-height: 1.4;
+    width: 100%;
+    box-sizing: border-box;
+}
+div.sphinxsidebar a:hover, div.sphinxsidebar :link:hover {
+    color: #3eaf7c;
+    border-bottom: none;
 }
