@@ -68,10 +68,9 @@ class GeoJSONTranslatorTest(TestCaseBase):
 
         gj = GeoJsonModelicaTranslator.from_geojson(filename)
         filename = os.path.join(self.data_dir, "system_parameters_mix_models.json")
-        sys_params = SystemParameters(filename)
-        gj.set_system_parameters(sys_params)
+        gj.set_system_parameters(SystemParameters(filename))
 
-        gj.process_loads(sys_params)
+        gj.process_loads()
         self.assertEqual(len(gj.loads), 3)
         gj.to_modelica(self.project_name, self.output_dir)
 
