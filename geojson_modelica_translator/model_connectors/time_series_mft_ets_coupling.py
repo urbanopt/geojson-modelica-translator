@@ -52,10 +52,15 @@ class TimeSeriesConnectorMFTETS(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
+
+        # MassFlowrate Temperature models
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
         heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
         time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
         time_series_ets_mft_mos_template = self.template_env.get_template("RunTimeSeries_MassFlow_Temperature.most")
+        time_series_mft_central_plant = self.template_env.get_template(
+            "TimeSeriesMassFlowTemperaturesCentralPlants.mot")
+
         building_names = []
         for building in self.buildings:
             building_names.append(f"B{building['building_id']}")
@@ -133,6 +138,17 @@ class TimeSeriesConnectorMFTETS(model_connector_base):
                 template=time_series_ets_mft_mos_template,
                 save_file_name=Path(b_modelica_path.files_dir) / "RunTimeSeries_MassFlow_Temperature.mos",
                 do_not_add_to_list=True,
+                project_name=scaffold.project_name,
+                model_name=f"B{building['building_id']}",
+                data=template_data,
+                ets_data=ets_data,
+            )
+
+            self.run_template(
+                template=time_series_mft_central_plant,
+                save_file_name=os.path.join(
+                    b_modelica_path.files_dir,
+                    "TimeSeriesMassFlowTemperaturesCentralPlants.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data,

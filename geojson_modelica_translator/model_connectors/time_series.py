@@ -62,9 +62,9 @@ class TimeSeriesConnector(model_connector_base):
         time_series_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
         time_series_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
 
-        # We should move to a LoadConnector only acting on a single building. Originally hought that a single
+        # We should move to a LoadConnector only acting on a single building. Originally thought that a single
         # building/load can have multiple thermalzones/models. For now, assert that only a single building exists per
-        # this connector. Move these validation methods to the base class (eventually)
+        # this connector. Move these validation methods to the base class (eventually).
         if len(self.buildings) == 0:
             raise Exception("No load to translate")
 
@@ -114,8 +114,8 @@ class TimeSeriesConnector(model_connector_base):
         shutil.copy(time_series_filename, new_file)
 
         self.run_template(
-            time_series_building_template,
-            os.path.join(b_modelica_path.files_dir, "building.mo"),
+            template=time_series_building_template,
+            save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=f"B{building['building_id']}",
             data=template_data
@@ -128,16 +128,16 @@ class TimeSeriesConnector(model_connector_base):
 
         if ets_model_type == "None":
             self.run_template(
-                time_series_coupling_template,
-                os.path.join(b_modelica_path.files_dir, "coupling.mo"),
+                template=time_series_coupling_template,
+                save_file_name=os.path.join(b_modelica_path.files_dir, "coupling.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data
             )
 
             self.run_template(
-                time_series_mos_template,
-                os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesBuilding.most"),
+                template=time_series_mos_template,
+                save_file_name=os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesBuilding.most"),
                 full_model_name=os.path.join(
                     scaffold.project_name,
                     scaffold.loads_path.files_relative_dir,
@@ -154,8 +154,8 @@ class TimeSeriesConnector(model_connector_base):
             )
 
             self.run_template(
-                cooling_indirect_template,
-                os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
+                template=cooling_indirect_template,
+                save_file_name=os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data,
@@ -163,8 +163,8 @@ class TimeSeriesConnector(model_connector_base):
             )
 
             self.run_template(
-                heating_indirect_template,
-                os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
+                template=heating_indirect_template,
+                save_file_name=os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data,
@@ -172,8 +172,8 @@ class TimeSeriesConnector(model_connector_base):
             )
 
             self.run_template(
-                time_series_ets_coupling_template,
-                os.path.join(b_modelica_path.files_dir, "TimeSeriesCouplingETS.mo"),
+                template=time_series_ets_coupling_template,
+                save_file_name=os.path.join(b_modelica_path.files_dir, "TimeSeriesCouplingETS.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data,
