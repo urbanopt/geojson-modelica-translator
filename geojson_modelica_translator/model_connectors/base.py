@@ -158,9 +158,9 @@ class Base(object):
             # TODO: The output path is awfully brittle.
             # FIXME: The string is hideous, but without it Pathlib thinks double slashes are "spurious"
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data" /
-                                             "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice" /
-                                             p.name)
+            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
+                                             / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
+                                             / p.name)
         elif p.suffix == ".epw" or p.suffix == ".mos":
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
