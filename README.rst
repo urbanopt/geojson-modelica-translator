@@ -1,5 +1,5 @@
-GeoJSON to Modelica Translator
-------------------------------
+GeoJSON Modelica Translator
+---------------------------
 
 .. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
     :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
@@ -11,28 +11,33 @@ GeoJSON to Modelica Translator
 Description
 -----------
 
-The GeoJSON / Modelica Translator is a one-way trip from GeoJSON with a well-defined property's schema to a set of Modelica buildings. The project will eventually allow multiple paths to model the loads portion of the building models; however, the initial implementation uses the Teaser library to create the RC models with the appropriate coefficients.
+The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica project with multiple buildings loads, energy transfer stations, district system, and distribution network. The project will eventually allow multiple paths to build up different district heating and cooling system topolologies; however, the initial implementation is limited to 1GDH and 4GDC.
 
 Getting Started
 ---------------
 
-The GeoJSON / Modelica Translator is still in early alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is to run the following
+The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need Python 3 and Pip 3 to install/build the packages. Python 2 is at end of life and should be avoided; however, Python 2 may still be needed to run the models with JModelica (this is actively being evaluated). Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
 
-If installing this package for development then you must run the `setup.py build` command in order to install the MBL in the right location.
+* Clone this repo into a working directory
+* (optional/as-needed) Add Python 3 to the environment variables
+* Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
+* Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
+* **Follow first 3 major bullets in Running Simulations section below.**
+* Run :code:`pip install -r requirements.txt`
+* Test if everything is installed correctly by running :code:`py.test`
 
-currently you need python3 and pip3 to install/build the packages.
-
-.. code-block:: bash
-
-    pip install -r requirements.txt
-    # or pip install .
-    python setup.py build
-    python setup.py test
-
-The py.test tests should all pass assuming the libraries are installed correctly on your development computer. Also, there will be a set of Modelica models that are created and persisted into the `tests/output` folder.
+The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder.
 
 Developers
 **********
+
+This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc). Since
+these are included as dependent project using git there may be a need to force an update from the dependent git repos.
+The best way to accomplish this is run the following command:
+
+.. code-block::bash
+
+    pip install -U --upgrade-strategy eager -r requirements.txt
 
 This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
 
@@ -41,18 +46,13 @@ This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consist
     pip install pre-commit
     pre-commit install
 
+Make sure to install `modelica-fmt <https://github.com/urbanopt/modelica-fmt/releases>`_ in order for pre-commit to run code cleanup on Modelica files. The latest prerelease or release is recommended. Once you download the package, place the modelicafmt binary into a folder that is in your path.
+
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
 
 .. code-block:: bash
 
     pre-commit run --all-files
-
-Releasing to PyPi
------------------
-
-
-Modules
-*******
 
 GeoJSON
 +++++++
@@ -78,30 +78,23 @@ The Simulation Mapper Class can operate at mulitple levels:
 
 In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
 
-Adjacency Matrix
-++++++++++++++++
-
-
-Topology Maker
-++++++++++++++
-
 Running Simulations
 -------------------
 
 Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
 will automatically run the models without having to follow the steps below.
 
-* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions.
-* Copy jmodelica.py (from docker-ubuntu-jmodelica) to root of project where you will simulate (e.g., geojson-modelica-translator/tests/model_connectors/output)
-* Pull https://github.com/lbl-srg/modelica-buildings/tree/issue1437_district_heating_cooling
-    * **Make sure you have git-lfs installed**. You may need to checkout out the library again after install lfs.
-    * Please make sure you are in the issue1437_district_heating_cooling branch.
-    * Mac: `brew install git-lfs; git lfs install`
-    * Ubuntu: `sudo apt install git-lfs; git lfs install`
-* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:/home/<user>/github/modelica-buildings).
+* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
+* Clone https://github.com/lbl-srg/modelica-buildings/
+    * Move insde the modelica-buildings repo you just checked out
+    * Pull the correct branch with: :code:`git checkout issue1437_district_heating_cooling`
+    * Install git-lfs
+        * Mac: :code:`brew install git-lfs; git lfs install`
+        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
+* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Example simulation:
-    * `jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
-    * `jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
+    * :code:`jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
+    * :code:`jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy.
 
     .. code-block:: python
@@ -141,7 +134,7 @@ Managed Tasks
 Updating Schemas
 ****************
 
-There is managed task to automatically pull updated GeoJSON schemas from the `urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
+There is managed task to automatically pull updated GeoJSON schemas from the :code:`urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
 
 .. code-block:: bash
 
@@ -149,14 +142,56 @@ There is managed task to automatically pull updated GeoJSON schemas from the `ur
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
+
+Updating Licenses
+*****************
+
+To apply the copyright/license to all the files, run the following managed task
+
+.. code-block:: bash
+
+    ./setup.py update_licenses
+
+
 Templating Diagram
 ------------------
-.. image:: ./ConnectionTemplate.jpg
+.. image:: ConnectionTemplate.png
 
+Release Instructions
+--------------------
 
-Todos
------
+* Bump version to <NEW_VERSION> in setup.cfg (use semantic versioning as much as possible).
+* Run `autopep8` to nicely format the code (or run `pre-commit --all-files`).
+* Create a PR against develop into main.
+* After main branch passes, then merge and checkout the main branch. Build the distribution using the following code:
 
-* handle weather in Teaser
-* Validate remaining schema objects
-* AHU example
+.. code-block:: bash
+
+    # Remove old dist packages
+    rm -rf dist/*
+    python setup.py sdist
+
+* Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag`.)
+* Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
+* Run the following to release
+
+.. code-block:: bash
+
+    pip install twine
+    twine upload dist/*
+
+* Build and release the documentation
+
+.. code-block:: bash
+
+    # Build and verify with the following
+    python setup.py build_sphinx
+
+    # release using
+    ./docs/publish_docs.sh
+
+* Push the tag to GitHub after everything is published to PyPi, then go to GitHub and add in the CHANGELOG.rst notes into the tagged release and officially release.
+
+.. code-block:: bash
+
+    git push origin <NEW_VERSION>

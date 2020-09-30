@@ -1,0 +1,20 @@
+{
+  "buildings": {
+    "default": {
+      "load_model": "time_series"
+    },
+    "custom": [
+      {
+        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "ets_model": "None",
+        "load_model": "time_series",
+        "load_model_parameters": {
+          "time_series": {
+            "filepath": "time_series_example_data.mos",
+            "delTDisCoo": 10
+          }
+        }
+      }
+    ]
+  }
+}

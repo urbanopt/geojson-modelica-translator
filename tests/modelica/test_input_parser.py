@@ -37,9 +37,10 @@ from geojson_modelica_translator.modelica.input_parser import InputParser
 
 class InputParserTest(unittest.TestCase):
     def setUp(self):
-        self.results_path = os.path.abspath("tests/modelica/output")
-        if not os.path.exists(self.results_path):
-            os.mkdir(self.results_path)
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
 
     def test_missing_file(self):
         fn = "non-existent-path"
@@ -48,15 +49,16 @@ class InputParserTest(unittest.TestCase):
         self.assertEqual(f"Modelica file does not exist: {fn}", str(exc.exception))
 
     def test_roundtrip(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_1.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_1.mo")
         f = InputParser(filename)
         f.save_as(new_filename)
+        # Previous file should be the same as the updated file
         self.assertTrue(filecmp.cmp(filename, new_filename))
 
     def test_remove_object(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_2.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_2.mo")
         f1 = InputParser(filename)
         f1.remove_object("ReaderTMY3")
         f1.save_as(new_filename)
@@ -70,8 +72,8 @@ class InputParserTest(unittest.TestCase):
         self.assertIsNone(f2.find_model_object("ReaderTMY3")[0])
 
     def test_gsub_field(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_3.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_3.mo")
         f1 = InputParser(filename)
         # This example is actually updating an annotation object, not a model, but leave it here for now.
         f1.replace_model_string(
@@ -91,8 +93,8 @@ class InputParserTest(unittest.TestCase):
         self.assertTrue("NotInternals" in model)
 
     def test_rename_filename(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_4.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_4.mo")
         f1 = InputParser(filename)
         # This example is actually updating an annotation object, not a model, but leave it here for now.
         f1.replace_model_string(
@@ -112,8 +114,8 @@ class InputParserTest(unittest.TestCase):
         self.assertTrue("a/new/path.mat" in model)
 
     def test_add_model_obj(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_5.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_5.mo")
         f1 = InputParser(filename)
         data = [
             'annotation (Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}})));'  # noqa
@@ -132,8 +134,8 @@ class InputParserTest(unittest.TestCase):
         self.assertGreaterEqual(index, 0)
 
     def test_gsub_connect(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_6.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_6.mo")
         f1 = InputParser(filename)
         f1.add_connect(
             "port_a",
@@ -149,8 +151,8 @@ class InputParserTest(unittest.TestCase):
         self.assertGreaterEqual(index, 0)
 
     def test_rename_connection(self):
-        filename = os.path.abspath("tests/modelica/data/test_1.mo")
-        new_filename = os.path.abspath("tests/modelica/output/test_1_output_7.mo")
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_7.mo")
         f1 = InputParser(filename)
         # connect(weaDat.weaBus, HDifTil[3].weaBus)
         f1.replace_connect_string(
@@ -170,8 +172,8 @@ class InputParserTest(unittest.TestCase):
         self.assertIsNone(index)
 
     def test_remove_connection(self):
-        filename = os.path.abspath('tests/modelica/data/test_1.mo')
-        new_filename = os.path.abspath('tests/modelica/output/test_1_output_8.mo')
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_8.mo")
         f1 = InputParser(filename)
         f1.remove_connect_string('weaDat.weaBus', 'weaBus')
         f1.save_as(new_filename)
@@ -182,10 +184,20 @@ class InputParserTest(unittest.TestCase):
         # the connection should no longer exist
         self.assertIsNone(index)
 
+    def test_modelica_parameter(self):
+        filename = os.path.join(self.data_dir, "test_1.mo")
+        new_filename = os.path.join(self.output_dir, "test_1_output_9.mo")
+        f1 = InputParser(filename)
+        f1.add_parameter('Real', 'aVarNam', 0.8, "A description where aVarName is 0.8")
+        f1.add_parameter('String', 'aVarNamStr', 'A-string-value', "A description string A-string-value")
+        f1.save_as(new_filename)
 
-def update_connection(self):
-    pass
-
-
-if __name__ == "__main__":
-    unittest.main()
+        # just read the file and ensure that the string exists
+        test_strs = [
+            'parameter String aVarNamStr="A-string-value" "A description string A-string-value";',
+            'parameter Real aVarNam=0.8 "A description where aVarName is 0.8";'
+        ]
+        with open(new_filename) as f:
+            file_data = f.read()
+            for test_str in test_strs:
+                self.assertIn(test_str, file_data)

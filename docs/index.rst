@@ -1,7 +1,7 @@
+:tocdepth: 2
+
 GeoJSON Modelica Translator Documentation
 =========================================
-
-Contents:
 
 .. toctree::
    :maxdepth: 2
@@ -10,10 +10,11 @@ Contents:
    Authors <authors>
    Changelog <changelog>
 
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
 
-Indices and tables
-==================
+   geojson_modelica_translator
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. _readme:
+.. include:: ../README.rst

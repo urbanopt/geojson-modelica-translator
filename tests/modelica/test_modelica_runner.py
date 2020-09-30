@@ -36,14 +36,19 @@ from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
 
 class ModelicaRunnerTest(unittest.TestCase):
-    # create a run directory and copy in a project to test run
     def setUp(self):
-        self.run_path = os.path.abspath('tests/modelica/output/simdir')
-        if not os.path.exists(self.run_path):
-            os.mkdir(self.run_path)
+        # create a run directory and copy in a project to test run
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
+        self.run_path = os.path.join(os.path.dirname(__file__), 'output', 'simdir')
+        if os.path.exists(self.run_path):
+            shutil.rmtree(self.run_path)
+        os.makedirs(self.run_path)
+
         # copy in the test modelica file (teaser model)
-        shutil.copyfile(os.path.abspath('tests/modelica/data/BouncingBall.mo'),
-                        os.path.join(self.run_path, 'BouncingBall.mo'))
+        shutil.copyfile(
+            os.path.join(self.data_dir, 'BouncingBall.mo'),
+            os.path.join(self.run_path, 'BouncingBall.mo')
+        )
 
     def test_run_setup(self):
         prev_mod_path = os.environ.get('MODELICAPATH', None)
@@ -54,7 +59,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         finally:
             if prev_mod_path:
                 os.environ['MODELICAPATH'] = prev_mod_path
-        print(mr.jmodelica_py_path)
+        # print(mr.jmodelica_py_path)
         self.assertTrue(os.path.exists(mr.jmodelica_py_path))
         self.assertTrue(os.path.exists(mr.jm_ipython_path))
 
@@ -77,10 +82,9 @@ class ModelicaRunnerTest(unittest.TestCase):
     def test_run_in_docker(self):
         mr = ModelicaRunner()
         mr.run_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
-        mr.cleanup_path(self.run_path)
-        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
-        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'BouncingBall_result.mat')))
 
-
-if __name__ == '__main__':
-    unittest.main()
+        results_path = os.path.join(self.run_path, 'BouncingBall_results')
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))

@@ -47,7 +47,7 @@ class PackageParser(object):
         :param path: string, path to where the package.mo and package.order reside.
         """
         self.path = path
-        self.order_data = None
+        self.order_data = None  # This is stored as a string for now.
         self.package_data = None
         self.load()
 
@@ -78,7 +78,6 @@ class PackageParser(object):
 
         klass.package_data = template.render(within=within, name=name, order=order)
         klass.order_data = "\n".join(order)
-        klass.order_data += "\n"  # trailing line
         return klass
 
     def load(self):
@@ -104,6 +103,7 @@ class PackageParser(object):
 
         with open(os.path.join(os.path.join(self.path, "package.order")), "w") as f:
             f.write(self.order_data)
+            f.write("\n")
 
     @property
     def order(self):
@@ -112,7 +112,10 @@ class PackageParser(object):
 
         :return: list, list of the loaded models in the package.order file
         """
-        return self.order_data.split("\n")
+        data = self.order_data.split("\n")
+        if "" in data:
+            data.remove("")
+        return data
 
     def rename_model(self, old_model, new_model):
         """
@@ -122,6 +125,20 @@ class PackageParser(object):
         :param new_model: string, new name
         """
         self.order_data = self.order_data.replace(old_model, new_model)
+
+    def add_model(self, new_model_name, insert_at=-1):
+        """Insert a new model into the package> Note that the order_data is stored as a string right now,
+        so there is a bit of a hack to get this to work correctly.
+
+        :param new_model_name: string, name of the new model to add to the package order.
+        :param insert_at: int, location to insert package, if 0 at beginning, -1 at end
+        """
+        data = self.order_data.split("\n")
+        if insert_at == -1:
+            data.append(new_model_name)
+        else:
+            data.insert(insert_at, new_model_name)
+        self.order_data = "\n".join(data)
 
 
 class InputParser(object):
@@ -313,6 +330,22 @@ class InputParser(object):
             str += f"    {d}\n"
         self.model["objects"].append(str)
 
+    def add_parameter(self, var_type, var_name, value, description):
+        """Add a new parameter. Will be prepended to the top of the models list
+
+        :param var_type: string, type of Modelica variable, Real, Integer, String, Modelica.SIunits.Area, etc.
+        :param var_name: string, name of the variable. Note that this does not check for conflicts.
+        :param value: variant, value to set the variable name to.
+        :param description: string, description of the parameter
+        """
+        # is the value is a string, then wrap in quotes
+        if isinstance(value, str):
+            value = f'"{value}"'
+
+        # parameter Real fraLat= 0.8 "Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.";
+        new_str = f"  parameter {var_type} {var_name}={value} \"{description}\";\n"
+        self.model["objects"].insert(0, new_str)
+
     def add_connect(self, a, b, annotation):
         """
         Add a new connection of port a to port b. The annotation will be appended on a new line.
@@ -390,8 +423,8 @@ class InputParser(object):
         str += f"model {self.model['name']}\n"
         str += f"{self.model['comment']}\n\n"
         for o in self.model["objects"]:
-            for l in o:
-                str += l
+            for lx in o:
+                str += lx
         str += "equation\n"
         for c in self.connections:
             str += c

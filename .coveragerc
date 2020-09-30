@@ -11,6 +11,8 @@ source =
 [report]
 omit =
     geojson_modelica_translator/cli.py
+    geojson_modelica_translator/model_connectors/templates/*
+    geojson_modelica_translator/modelica/lib/runner/jmodelica.py
 
 # Regexes for lines to exclude from consideration
 exclude_lines =

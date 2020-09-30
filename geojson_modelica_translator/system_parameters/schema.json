@@ -92,6 +92,22 @@
             ]
           },
           "additionalProperties": false
+        },
+        "ets": {
+          "title": "defaults",
+          "description": "Parameters associated with ets systems",
+          "type": "object",
+          "properties": {
+            "ets_parameters": {
+              "description": "some properties here",
+              "type": "string"
+            }
+          },
+          "dependencies": {
+            "data_required": [
+              "building_name"
+            ]
+          }
         }
       },
       "additionalProperties": false
@@ -152,38 +168,14 @@
           "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
           "type": "string"
         },
-        "ets": {
-          "title": "ets",
-          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops",
-          "type": "object",
-          "properties": {
-            "system": {
-              "description": "Indirect cooling ETS. The energy transfer is implemented through nondirect contact of water loops. ",
-              "type": "string",
-              "enum": [
-                "Booster Heater",
-                "Heat Exchanger Only"
-              ]
-            },
-            "description": {
-              "description": "User defined description. Not used in the translation process.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "system",
-            "description"
-          ],
-          "additionalProperties": false
-        },
         "load_model": {
           "description": "Type of load model to use for the building.",
           "type": "string",
           "enum": [
-            "ROM/RC",
-            "ROM/DDM",
-            "CSV",
-            "Spawn"
+            "rc",
+            "ddm",
+            "time_series",
+            "spawn"
           ]
         },
         "load_model_parameters": {
@@ -194,6 +186,27 @@
             },
             "rc": {
               "$ref": "#/definitions/rc_model_parameters"
+            },
+            "time_series": {
+              "$ref": "#/definitions/time_series_model_parameters"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ets_model": {
+          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops ",
+          "type": "string",
+          "enum": [
+            "None",
+            "Indirect Heating and Cooling",
+            "Heat Exchanger Only"
+          ]
+        },
+        "ets_model_parameters": {
+          "type": "object",
+          "properties": {
+            "indirect": {
+              "$ref": "#/definitions/ets_indirect_parameters"
             }
           },
           "additionalProperties": false
@@ -202,7 +215,7 @@
       "additionalProperties": false
     },
     "connector_def": {
-      "description": "Parameters associated with the connectors in a distrcit system.",
+      "description": "Parameters associated with the connectors in a district system.",
       "type": "object",
       "properties": {
         "pipe_diameter": {
@@ -220,6 +233,14 @@
             "Tunnel",
             "Buried"
           ]
+        },
+        "pipe_material": {
+          "description": "Pipe material (to be used for determining surface roughness) ",
+          "type": "string",
+          "enum": [
+            "Plastic",
+            "Steel"
+          ]
         }
       },
       "additionalProperties": false
@@ -235,21 +256,136 @@
             "Direct Return",
             "Reverse Return"
           ]
+        },
+        "cooling_plant": {
+          "type": "object",
+          "properties": {
+            "delta_t_nominal": {
+              "type": "number"
+            },
+            "fan_power_nominal": {
+              "type": "number"
+            },
+            "chilled_water_pump_pressure_drop": {
+              "type": "number"
+            },
+            "condenser_water_pump_pressure_drop": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "connection_configuration": {
+          "description": "Type of connection of buildings to the loop",
+          "type": "string",
+          "enum": [
+            "Series",
+            "Parallel"
+          ]
         }
       },
       "additionalProperties": false
+    },
+    "ets_indirect_parameters": {
+      "description": "Indirect ETS. The energy transfer is implemented through nondirect contact of water loops (heat exchanger). Parameters associated with indirect ETS",
+      "type": "object",
+      "properties": {
+        "q_flow_nominal": {
+          "description": "Nominal heat flux ( Watts )",
+          "type": "number",
+          "default": 8000
+        },
+        "eta_efficiency": {
+          "description": "Heat exchanger efficiency (fraction)",
+          "type": "number",
+          "default": 0.8
+        },
+        "nominal_flow_district": {
+          "description": "District water nominal flow rate (m3/s).",
+          "type": "number",
+          "default": 0.666
+        },
+        "nominal_flow_building": {
+          "description": "Building water nominal flow rate (m3/s).",
+          "type": "number",
+          "default": 0.666
+        },
+        "pressure_drop_valve": {
+          "description": "Valve pressure drop (Pascals)",
+          "type": "number",
+          "default": 888
+        },
+        "pressure_drop_hx_secondary": {
+          "description": "Heat exchanger secondary side pressure drop (Pascals)",
+          "type": "number",
+          "default": 999
+        },
+        "pressure_drop_hx_primary": {
+          "description": "Heat exchanger primary side pressure drop (Pascals)",
+          "type": "number",
+          "default": 999
+        },
+        "cooling_supply_water_temperature_district": {
+          "description": "Cooling supply water temperature for district (deg C)",
+          "type": "number",
+          "default": 5
+        },
+        "cooling_supply_water_temperature_building": {
+          "description": "Cooling supply water temperature for building (deg C)",
+          "type": "number",
+          "default": 7
+        },
+        "heating_supply_water_temperature_district": {
+          "description": "Heating supply water temperature for district (deg C)",
+          "type": "number",
+          "default": 55
+        },
+        "heating_supply_water_temperature_building": {
+          "description": "Heating supply water temperature for building (deg C)",
+          "type": "number",
+          "default": 50
+        },
+        "primary_design_delta_t": {
+          "description": "Design temperature differential on the primary side ",
+          "type": "number"
+        },
+        "secondary_design_delta_t": {
+          "description": "Design temperature differential on the secondary side",
+          "type": "number"
+        }
+      },
+      "required": [
+        "q_flow_nominal",
+        "eta_efficiency",
+        "nominal_flow_district",
+        "nominal_flow_building",
+        "pressure_drop_valve",
+        "pressure_drop_hx_secondary",
+        "pressure_drop_hx_primary",
+        "cooling_supply_water_temperature_district",
+        "cooling_supply_water_temperature_building",
+        "heating_supply_water_temperature_district",
+        "heating_supply_water_temperature_building"
+      ]
     },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
       "type": "object",
       "properties": {
         "idf_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
         },
         "epw_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
         },
         "mos_weather_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
+        },
+        "mos_wet_bulb_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved. This field is not currently used.",
           "type": "string"
         },
         "thermal_zone_names": {
@@ -280,25 +416,103 @@
             4
           ],
           "default": 2
+        },
+        "mos_weather_filename": {
+          "description": "Relative path from location where file instance is saved.",
+          "type": "string"
+        },
+        "fraction_latent_person": {
+          "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
+          "type": "number",
+          "default": 1.25
         }
       },
+      "required": [
+        "mos_weather_filename"
+      ],
       "additionalProperties": false
     },
-    "ets_parameters": {
-      "description":  "Parameters associated with ETS models",
+    "time_series_model_parameters": {
+      "description": "Parameters associated with time series models.",
       "type": "object",
       "properties": {
-        "ModelName": "ets_cooling_indirect_templated",
-            "Q_Flow_Nominal": [8000],
-            "Eta_Efficiency": [0.666],
-            "NominalFlow_District": [0.666],
-            "NominalFlow_Building": [0.666],
-            "PressureDrop_Valve": [888],
-            "PressureDrop_HX_Secondary": [999],
-            "PressureDrop_HX_Primary": [999],
-            "SWT_District": [5],
-            "SWT_Building": [7]
-      }
-    }
+        "filepath": {
+          "type": "string"
+        },
+        "delTDisCoo": {
+          "description": "Nominal district supply and return water temperature difference",
+          "type": "number",
+          "default": 10
+        }
+      },
+      "required": [
+        "filepath",
+        "delTDisCoo"
+      ],
+      "additionalProperties": false
+    },
+    "central_cooling_plant_parameters": {
+      "description": "Central cooling plant with maximum number of two chillers. Parameters associated with the model",
+      "type": "object",
+      "properties": {
+        "Q_flow_nominal": {
+          "description": "Nominal district cooling load (Watts)",
+          "type": "number",
+          "default": 8000
+        },
+        "mCHW_flow_nominal": {
+          "description": "Nominal chilled water mass flow rate (kg/s).",
+          "type": "number",
+          "default": 10
+        },
+        "mCW_flow_nominal": {
+          "description": "Nominal condenser water mass flow rate (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "dpCHW_nominal": {
+          "description": "Nominal chilled water (evaporator) side pressure drop (Pa).",
+          "type": "number",
+          "default": 10
+        },
+        "dpCW_nominal": {
+          "description": "Nominal cooling water (condenser) side pressure drop (Pa).",
+          "type": "number",
+          "default": 80000
+        },
+        "dpSetPoi": {
+          "description": "The Chilled water circuit pressure drop setpoint (Pa)",
+          "type": "number",
+          "default": 999
+        },
+        "TCHWSet": {
+          "description": "District circuit chilled water temperature setpoint (K)",
+          "type": "number",
+          "default": 278.15
+        },
+        "dpCHWPum_nominal": {
+          "description": "Chiller isolation valve pressure drop(Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "dpCWPum_nominal": {
+          "description": "Cooling tower isolation valve pressure drop(Pa)",
+          "type": "number",
+          "default": 6000
+        }
+      },
+      "required": [
+        "Q_flow_nominal",
+        "mCHW_flow_nominal",
+        "mCW_flow_nominal",
+        "dpCHW_nominal",
+        "dpCW_nominal",
+        "dpSetPoi",
+        "TCHWSet",
+        "dpCHWPum_nominal",
+        "dpCWPum_nominal"
+      ]
+    },
+    "NewDefinition": {}
   }
 }
