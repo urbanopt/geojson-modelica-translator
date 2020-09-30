@@ -155,12 +155,21 @@ To apply the copyright/license to all the files, run the following managed task
 
 Templating Diagram
 ------------------
+
 .. image:: ./ConnectionTemplate.png
 
+Release Instructions
+--------------------
 
-Todos
------
+* Bump version in setup.cfg (use semantic versioning as much as possible).
+* Run `autopep8` to nicely format the code (or run `pre-commit --all-files`).
+* Create a PR against develop into main.
+* After main branch passes, then merge and run the release command from the main branch.
 
-* handle weather in Teaser
-* Validate remaining schema objects
-* AHU example
+.. code-block:: bash
+
+    pip install twine
+    python setup.py sdist
+    twine upload dist/*
+
+* Tag the release on GitHub and add in the CHANGELOG.rst notes into the tagged release.
