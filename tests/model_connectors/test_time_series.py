@@ -116,6 +116,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         files = [
             os.path.join(root_path, 'building.mo'),
             os.path.join(root_path, 'CoolingIndirect.mo'),
+            os.path.join(root_path, 'HeatingIndirect.mo'),
             os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
         ]
 
