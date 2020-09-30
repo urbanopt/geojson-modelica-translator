@@ -17,3 +17,13 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Package
+=======
+
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geojson_modelica_translator
