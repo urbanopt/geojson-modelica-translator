@@ -99,8 +99,7 @@ class GeoJsonModelicaTranslator(object):
         with the sys_params object. Each building object contains all the data
         it needs to generate the resulting model.
 
-        :param sys_params: ...
-        :return:
+        :return: None
         """
         if self.system_parameters is None:
             raise Exception("Must set the system parameter file first. Use gj.set_system_parameters")
