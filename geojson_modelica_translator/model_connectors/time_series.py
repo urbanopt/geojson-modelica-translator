@@ -62,10 +62,6 @@ class TimeSeriesConnector(model_connector_base):
         time_series_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
         time_series_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
 
-        # Central Plant
-        time_series_mft_central_plant = self.template_env.get_template(
-            "TimeSeriesMassFlowTemperaturesCentralPlants.mot")
-
         # We should move to a LoadConnector only acting on a single building. Originally thought that a single
         # building/load can have multiple thermalzones/models. For now, assert that only a single building exists per
         # this connector. Move these validation methods to the base class (eventually).
@@ -181,17 +177,6 @@ class TimeSeriesConnector(model_connector_base):
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data,
-            )
-
-            self.run_template(
-                template=time_series_mft_central_plant,
-                save_file_name=os.path.join(
-                    b_modelica_path.files_dir,
-                    "TimeSeriesMassFlowTemperaturesCentralPlants.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                data=template_data,
-                ets_data=ets_data,
             )
 
             file_data = time_series_ets_mos_template.render(
