@@ -160,7 +160,7 @@ Templating Diagram
 Release Instructions
 --------------------
 
-* Bump version to <NEW_VERSION> in setup.cfg (use semantic versioning as much as possible).
+* Bump version to <NEW_VERSION> in setup.py (use semantic versioning as much as possible).
 * Run `autopep8` to nicely format the code (or run `pre-commit --all-files`).
 * Create a PR against develop into main.
 * After main branch passes, then merge and checkout the main branch. Build the distribution using the following code:
@@ -171,7 +171,7 @@ Release Instructions
     rm -rf dist/*
     python setup.py sdist
 
-* Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag`.)
+* Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag.)
 * Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
 * Run the following to release
 
