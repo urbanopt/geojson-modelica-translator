@@ -71,6 +71,7 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
             os.path.join(root_path, 'CoolingIndirect.mo'),
             os.path.join(root_path, 'HeatingIndirect.mo'),
             os.path.join(root_path, 'TimeSeriesMassFlowTemperatures.mo'),
+            os.path.join(root_path, 'TimeSeriesMassFlowTemperaturesCentralPlants.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
