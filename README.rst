@@ -161,15 +161,38 @@ Templating Diagram
 Release Instructions
 --------------------
 
-* Bump version in setup.cfg (use semantic versioning as much as possible).
+* Bump version to <NEW_VERSION> in setup.cfg (use semantic versioning as much as possible).
 * Run `autopep8` to nicely format the code (or run `pre-commit --all-files`).
 * Create a PR against develop into main.
-* After main branch passes, then merge and run the release command from the main branch.
+* After main branch passes, then merge and checkout the main branch. Build the distribution using the following code:
+
+.. code-block:: bash
+
+    # Remove old dist packages
+    rm -rf dist/*
+    python setup.py sdist
+
+* Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag`.)
+* Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
+* Run the following to release
 
 .. code-block:: bash
 
     pip install twine
-    python setup.py sdist
     twine upload dist/*
 
-* Tag the release on GitHub and add in the CHANGELOG.rst notes into the tagged release.
+* Build and release the documentation
+
+.. code-block:: bash
+
+    # Build and verify with the following
+    python setup.py build_sphinx
+
+    # release using
+    ./docs/publish_docs.sh
+
+* Push the tag to GitHub after everything is published to PyPi, then go to GitHub and add in the CHANGELOG.rst notes into the tagged release and officially release.
+
+.. code-block:: bash
+
+    git push origin <NEW_VERSION>
