@@ -20,7 +20,7 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
 
 * Clone this repo into a working directory
 * (optional/as-needed) Add Python 3 to the environment variables
-* Install `Docker https://docs.docker.com/get-docker/`_ for your platform
+* Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
 * Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
 * **Follow first 3 major bullets in Running Simulations section below.**
 * Run :code:`pip install -r requirements.txt`
@@ -155,8 +155,7 @@ To apply the copyright/license to all the files, run the following managed task
 
 Templating Diagram
 ------------------
-
-.. image:: ./ConnectionTemplate.png
+.. image:: ConnectionTemplate.png
 
 Release Instructions
 --------------------
