@@ -86,11 +86,11 @@ will automatically run the models without having to follow the steps below.
 
 * Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
 * Clone https://github.com/lbl-srg/modelica-buildings/
-    * Move insde the modelica-buildings repo you just checked out
-    * Pull the correct branch with: :code:`git checkout issue1437_district_heating_cooling`
+    * Change the directory inside the modelica-buildings repo you just checked out
     * Install git-lfs
         * Mac: :code:`brew install git-lfs; git lfs install`
         * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
+    * Pull the correct branch with: :code:`git checkout issue1437_district_heating_cooling`
 * Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Example simulation:
     * :code:`jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
