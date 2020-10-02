@@ -11,13 +11,13 @@ jsonpath-ng==1.5.2
 BuildingsPy==2.0.0
 
 # Modelica Builder package (use the local [file:] version if needed for debugging)
-# -e git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder
+#-e git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder
 #-e file:../modelica-builder#egg=modelica-builder
 modelica-builder==0.1.0
 
-# Use the core teaser library.
+# TEASER: Wait until the next release after June 2020 which contains the required updates.
 #teaser==0.7.2
--e git+https://github.com/urbanopt/TEASER.git@rc-argument-names#egg=teaser
+-e git+https://github.com/urbanopt/TEASER.git@development#egg=teaser
 #-e git+https://github.com/RWTH-EBC/TEASER.git@0.7.2#egg=teaser
 #-e file:../TEASER-UO#egg=teaser
 
@@ -34,6 +34,6 @@ sphinx_rtd_theme==0.5.0
 tox==3.20.0
 
 # debugging and testing, not used at the moment in the main portion of the code (i.e. not needed in setup.cfg)
-scipy
-jupyter
-numpy
+scipy==1.5.2
+jupyter==1.0.0
+numpy==1.19.2
