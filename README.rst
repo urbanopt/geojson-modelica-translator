@@ -84,7 +84,6 @@ Running Simulations
 Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
 will automatically run the models without having to follow the steps below.
 
-* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
 * Clone https://github.com/lbl-srg/modelica-buildings/
     * Change the directory inside the modelica-buildings repo you just checked out
     * Install git-lfs
