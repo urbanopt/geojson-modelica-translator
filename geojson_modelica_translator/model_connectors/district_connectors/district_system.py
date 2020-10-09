@@ -32,13 +32,13 @@ import os
 import shutil
 from pathlib import Path
 
-from geojson_modelica_translator.model_connectors.load_connectors.base import \
-    Base as model_connector_base
+from geojson_modelica_translator.model_connectors.district_connectors.base import \
+    Base as district_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from modelica_builder.model import Model
 
 
-class DistrictSystemConnector(model_connector_base):
+class DistrictSystemConnector(district_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
         # Note that the order of the required MO files is important as it will be the order that
@@ -69,7 +69,7 @@ class DistrictSystemConnector(model_connector_base):
         self.required_mo_files.append(os.path.join(self.template_dir, 'UnidirectionalParallel.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ValveParameters.mo'))
 
-    def to_modelica(self, scaffold, model_connector_base):
+    def to_modelica(self, scaffold, district_connector_base):
         """
         # TODO: Need to pass in list of buildings to connect to network.
 
@@ -109,26 +109,26 @@ class DistrictSystemConnector(model_connector_base):
                     "idf_filename": idf_filename,
                     "filename": os.path.basename(idf_filename),
                     "path": os.path.dirname(idf_filename),
-                    "modelica_path": model_connector_base.modelica_path(self, idf_filename),
+                    "modelica_path": district_connector_base.modelica_path(self, idf_filename),
                 },
                 "epw": {
                     "epw_filename": epw_filename,
                     "filename": os.path.basename(epw_filename),
                     "path": os.path.dirname(epw_filename),
-                    "modelica_path": model_connector_base.modelica_path(self, epw_filename),
+                    "modelica_path": district_connector_base.modelica_path(self, epw_filename),
                 },
                 "mos_weather": {
                     "mos_weather_filename": mos_weather_filename,
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
-                    # TODO: Should/How/Can we remove "model_connector_base" here? Compare line 112 with line 220
-                    "modelica_path": model_connector_base.modelica_path(self, mos_weather_filename),
+                    # TODO: Should/How/Can we remove "district_connector_base" here? Compare line 112 with line 220
+                    "modelica_path": district_connector_base.modelica_path(self, mos_weather_filename),
                 },
                 "wet_bulb_calc": {
                     "mos_wet_bulb_filename": mos_wet_bulb_filename,
                     "filename": Path(mos_wet_bulb_filename).name,
                     "path": Path(mos_wet_bulb_filename).parent,
-                    "modelica_path": model_connector_base.modelica_path(self, mos_wet_bulb_filename),
+                    "modelica_path": district_connector_base.modelica_path(self, mos_wet_bulb_filename),
                 },
                 "nominal_values": {
                     "delta_temp": self.system_parameters.get_param(

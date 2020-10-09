@@ -37,8 +37,8 @@ from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
 from geojson_modelica_translator.model_connectors.load_connectors.base import \
-    Base as model_connector_base
-from geojson_modelica_translator.model_connectors.district_system import (
+    Base as district_connector_base
+from geojson_modelica_translator.model_connectors.district_connectors.district_system import (
     DistrictSystemConnector
 )
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
@@ -72,7 +72,7 @@ class SpawnModelConnectorSingleBuildingTimeSeriesHeatingTest(unittest.TestCase):
 
     def test_district_heating_to_modelica_and_run(self):
         self.assertIsNotNone(self.district)
-        self.district.to_modelica(self.gj.scaffold, model_connector_base)
+        self.district.to_modelica(self.gj.scaffold, district_connector_base)
 
         # make sure the model can run using the ModelicaRunner class
         mr = ModelicaRunner()
