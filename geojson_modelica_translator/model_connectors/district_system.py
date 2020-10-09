@@ -32,7 +32,7 @@ import os
 import shutil
 from pathlib import Path
 
-from geojson_modelica_translator.model_connectors.base import \
+from geojson_modelica_translator.model_connectors.load_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from modelica_builder.model import Model
