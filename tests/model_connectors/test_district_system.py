@@ -33,9 +33,9 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.base import \
-    Base as model_connector_base
-from geojson_modelica_translator.model_connectors.district_system import (
+from geojson_modelica_translator.model_connectors.district_connectors.base import \
+    Base as district_connector_base
+from geojson_modelica_translator.model_connectors.district_connectors.district_system import (
     DistrictSystemConnector
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
@@ -66,7 +66,7 @@ class SpawnModelConnectorSingleBuildingTimeSeriesTest(TestCaseBase):
 
     def test_district_cooling_to_modelica_and_run(self):
         self.assertIsNotNone(self.district)
-        self.district.to_modelica(self.gj.scaffold, model_connector_base)
+        self.district.to_modelica(self.gj.scaffold, district_connector_base)
 
         file_to_run = os.path.abspath(
             os.path.join(self.gj.scaffold.districts_path.files_dir, 'DistrictCoolingSystem.mo'),

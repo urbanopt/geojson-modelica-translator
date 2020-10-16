@@ -38,8 +38,8 @@ from modelica_builder.model import Model
 
 class Base(object):
     """
-    Base class of the model connectors. The connectors can utilize various methods to create a building (or other
-    feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
+    Base class of the district connectors. The connectors can utilize various methods to create a building (or other
+    feature) to a detailed Modelica connection.
     """
 
     def __init__(self, system_parameters):
@@ -52,7 +52,7 @@ class Base(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "templates")
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
         # store a list of the templated files to include when building the package
@@ -69,7 +69,6 @@ class Base(object):
 
         :param urbanopt_building: an urbanopt_building
         """
-        pass
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
