@@ -28,7 +28,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 import shutil
 from pathlib import Path
 
@@ -52,7 +51,7 @@ class Base(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "templates")
+        self.template_dir = Path(__file__).parent.parent / "templates"
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
         # store a list of the templated files to include when building the package
@@ -72,20 +71,27 @@ class Base(object):
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
-            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+            try:
+                building_id = urbanopt_building.feature.properties["id"]
+                building_type = urbanopt_building.feature.properties["building_type"]
+                number_stories = urbanopt_building.feature.properties["number_of_stories"]
+                building_floor_area_ft2 = float(urbanopt_building.feature.properties["floor_area"])
+            except KeyError as ke:
+                raise SystemExit(f'Missing property {ke} in geojson feature file')
+
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
-                number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories"]
+                number_stories_above_ground = number_stories
 
             try:
                 urbanopt_building.feature.properties["floor_height"]
             except KeyError:
                 urbanopt_building.feature.properties["floor_height"] = 3  # Default height in meters from sdk
 
+            # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+            # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
             try:
-                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-                # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
                 if urbanopt_building.feature.properties["year_built"] > 2015:
                     urbanopt_building.feature.properties["year_built"] = 2015
             except KeyError:
@@ -93,11 +99,11 @@ class Base(object):
 
             self.buildings.append(
                 {
-                    "area": float(urbanopt_building.feature.properties["floor_area"]) * 0.092936,  # ft2 -> m2
-                    "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties["building_type"],
+                    "area": building_floor_area_ft2 * 0.092936,  # ft2 -> m2
+                    "building_id": building_id,
+                    "building_type": building_type,
                     "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric
-                    "num_stories": urbanopt_building.feature.properties["number_of_stories"],
+                    "num_stories": number_stories,
                     "num_stories_below_grade": number_stories - number_stories_above_ground,
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
@@ -114,15 +120,15 @@ class Base(object):
         """
         result = []
         for f in self.required_mo_files:
-            if not os.path.exists(f):
+            if not Path(f).exists():
                 raise Exception(f"Required MO file not found: {f}")
 
-            new_filename = os.path.join(dest_folder, os.path.basename(f))
+            new_filename = Path(dest_folder) / Path(f).name
             if within:
                 mofile = Model(f)
                 mofile.set_within_statement(within)
                 mofile.save_as(new_filename)
-                result.append(os.path.join(dest_folder, os.path.basename(f)))
+                result.append(Path(dest_folder) / Path(f).name)
             else:
                 # simply copy the file over if no need to update within
                 result.append(shutil.copy(f, new_filename))
@@ -142,7 +148,7 @@ class Base(object):
         """
         file_data = template.render(**kwargs)
 
-        os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
+        Path(save_file_name).parent.mkdir(parents=True, exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
 
