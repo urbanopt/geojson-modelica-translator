@@ -72,20 +72,27 @@ class Base(object):
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
-            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+            try:
+                building_id = urbanopt_building.feature.properties["id"]
+                building_type = urbanopt_building.feature.properties["building_type"]
+                number_stories = urbanopt_building.feature.properties["number_of_stories"]
+                building_floor_area_ft2 = float(urbanopt_building.feature.properties["floor_area"])
+            except KeyError as ke:
+                raise SystemExit(f'Missing property {ke} in geojson feature file')
+
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
-                number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories"]
+                number_stories_above_ground = number_stories
 
             try:
                 urbanopt_building.feature.properties["floor_height"]
             except KeyError:
                 urbanopt_building.feature.properties["floor_height"] = 3  # Default height in meters from sdk
 
+            # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+            # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
             try:
-                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-                # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
                 if urbanopt_building.feature.properties["year_built"] > 2015:
                     urbanopt_building.feature.properties["year_built"] = 2015
             except KeyError:
@@ -93,11 +100,11 @@ class Base(object):
 
             self.buildings.append(
                 {
-                    "area": float(urbanopt_building.feature.properties["floor_area"]) * 0.092936,  # ft2 -> m2
-                    "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties["building_type"],
+                    "area": building_floor_area_ft2 * 0.092936,  # ft2 -> m2
+                    "building_id": building_id,
+                    "building_type": building_type,
                     "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric
-                    "num_stories": urbanopt_building.feature.properties["number_of_stories"],
+                    "num_stories": number_stories,
                     "num_stories_below_grade": number_stories - number_stories_above_ground,
                     "year_built": urbanopt_building.feature.properties["year_built"],
                 }
