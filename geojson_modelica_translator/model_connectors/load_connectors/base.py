@@ -51,7 +51,7 @@ class Base(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = Path(__file__).parent.absolute() / "templates"
+        self.template_dir = Path(__file__).parent.parent / "templates"
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
         # store a list of the templated files to include when building the package
