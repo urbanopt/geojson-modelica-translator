@@ -32,7 +32,7 @@ import os
 import shutil
 import unittest
 
-from geojson_modelica_translator.model_connectors.base import \
+from geojson_modelica_translator.model_connectors.load_connectors.base import \
     Base as model_connector_base
 from jinja2 import Template
 

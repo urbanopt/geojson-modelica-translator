@@ -21,7 +21,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
 CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUR
+
+EMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -31,16 +33,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 
-from geojson_modelica_translator.model_connectors.base import \
+from geojson_modelica_translator.model_connectors.load_connectors.base import \
     Base as model_connector_base
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
 
 
-class SpawnConnectorETS(model_connector_base):
+class SpawnConnector(model_connector_base):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.required_mo_files.append(os.path.join(self.template_dir, 'HydraulicHeader.mo'))
 
     def to_modelica(self, scaffold, keep_original_models=False):
         """
@@ -48,11 +49,9 @@ class SpawnConnectorETS(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        spawn_ets_coupling_template = self.template_env.get_template("SpawnCouplingETS.mot")
+        spawn_coupling_template = self.template_env.get_template("SpawnCouplingBuilding.mot")
         spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
-        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
-        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
-        spawn_ets_mos_template = self.template_env.get_template("RunSpawnCouplingETS.most")
+        spawn_mos_template = self.template_env.get_template("RunSpawnCouplingBuilding.most")
         building_names = []
         for building in self.buildings:
             # create each spawn building and save to the correct directory
@@ -147,48 +146,19 @@ class SpawnConnectorETS(model_connector_base):
                 data=template_data
             )
 
-            ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
-            ets_data = None
-            if ets_model_type == "Indirect Heating and Cooling":
-                ets_data = self.system_parameters.get_param_by_building_id(
-                    building["building_id"],
-                    "ets_model_parameters.indirect"
-                )
-            else:
-                raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
-
-            self.run_template(
-                cooling_indirect_template,
-                os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                ets_data=ets_data
-            )
-
-            self.run_template(
-                heating_indirect_template,
-                os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                ets_data=ets_data
-            )
-
             full_model_name = os.path.join(
                 scaffold.project_name,
                 scaffold.loads_path.files_relative_dir,
                 f"B{building['building_id']}",
-                "SpawnCouplingETS").replace(os.path.sep, '.')
+                "coupling").replace(os.path.sep, '.')
 
-            file_data = spawn_ets_mos_template.render(
-                full_model_name=full_model_name, model_name="SpawnCouplingETS"
-            )
-
-            with open(os.path.join(b_modelica_path.scripts_dir, "RunSpawnCouplingETS.mos"), "w") as f:
+            file_data = spawn_mos_template.render(full_model_name=full_model_name)
+            with open(os.path.join(b_modelica_path.scripts_dir, "RunSpawnCouplingBuilding.mos"), "w") as f:
                 f.write(file_data)
 
             self.run_template(
-                spawn_ets_coupling_template,
-                os.path.join(b_modelica_path.files_dir, "SpawnCouplingETS.mo"),
+                spawn_coupling_template,
+                os.path.join(b_modelica_path.files_dir, "coupling.mo"),
                 project_name=scaffold.project_name,
                 model_name=f"B{building['building_id']}",
                 data=template_data
@@ -210,13 +180,13 @@ class SpawnConnectorETS(model_connector_base):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :param building_names: list, names of the buildings that need to be cleaned up after export
+        :param keep_original_models: boolean, # TODO
         :return: None
         """
         for b in building_names:
             b_modelica_path = os.path.join(scaffold.loads_path.files_dir, b)
             new_package = PackageParser.new_from_template(
-                b_modelica_path, b, ["building", "CoolingIndirect", "SpawnCouplingETS"],
-                within=f"{scaffold.project_name}.Loads"
+                b_modelica_path, b, ["building", "coupling"], within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
 
