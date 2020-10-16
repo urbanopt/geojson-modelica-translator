@@ -28,7 +28,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 import shutil
 from pathlib import Path
 
@@ -52,7 +51,7 @@ class Base(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        self.template_dir = Path(__file__).parent.absolute() / "templates"
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
         # store a list of the templated files to include when building the package
@@ -115,15 +114,15 @@ class Base(object):
         """
         result = []
         for f in self.required_mo_files:
-            if not os.path.exists(f):
+            if not Path(f).exists():
                 raise Exception(f"Required MO file not found: {f}")
 
-            new_filename = os.path.join(dest_folder, os.path.basename(f))
+            new_filename = Path(dest_folder) / Path(f).name
             if within:
                 mofile = Model(f)
                 mofile.set_within_statement(within)
                 mofile.save_as(new_filename)
-                result.append(os.path.join(dest_folder, os.path.basename(f)))
+                result.append(Path(dest_folder) / Path(f).name)
             else:
                 # simply copy the file over if no need to update within
                 result.append(shutil.copy(f, new_filename))
@@ -143,7 +142,7 @@ class Base(object):
         """
         file_data = template.render(**kwargs)
 
-        os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
+        Path(save_file_name).parent.mkdir(parents=True, exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
 
