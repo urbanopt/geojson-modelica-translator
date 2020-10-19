@@ -1,4 +1,4 @@
-within {{project_name}}.Substations.{{model_name}};
+within {{project_name}}.Substations;
 model CoolingIndirect
   {% raw %} "Indirect cooling energy transfer station for district energy systems"
   extends Buildings.Fluid.Interfaces.PartialFourPortInterface(

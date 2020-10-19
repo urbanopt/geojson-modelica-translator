@@ -56,7 +56,6 @@ class CoolingIndirectConnector(ModelBase):
             template=cooling_indirect_template,
             save_file_name=os.path.join(scaffold.project_path, "Substations", "CoolingIndirect.mo"),
             project_name=scaffold.project_name,
-            model_name=f"TemporaryID",
             ets_data=ets_data,
         )
 
@@ -72,4 +71,4 @@ class CoolingIndirectConnector(ModelBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Substations.TemporaryID.CoolingIndirect'
+        return f'{scaffold.project_name}.Substations.CoolingIndirect'
