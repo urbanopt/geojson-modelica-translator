@@ -39,6 +39,7 @@ from geojson_modelica_translator.model_connectors.energy_transfer_connectors.coo
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
+from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 from ..base_test_case import TestCaseBase
 
@@ -58,6 +59,9 @@ class CoolingIndirectTest(TestCaseBase):
         filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
 
+        # currently we must setup the root project before we can run to_modelica
+        package = PackageParser.new_from_template(self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
+        package.save()
         # now test the connector (independent of the larger geojson translator)
         self.cooling_indirect = CoolingIndirectConnector(sys_params)
         self.cooling_indirect.to_modelica(self.gj.scaffold)
