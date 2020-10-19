@@ -45,6 +45,34 @@ class ModelBase(object):
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
 
+    # TODO: make ports... better? ie don't use string keys...
+    # _ports is a dictionary of ports defined on a component and should be overridden
+    # in a subclass.
+    #
+    # Each key is the name of a port, and the value is a dict of x and y offsets,
+    # as percentages of the icon width, from the origin of the icon. For example:
+    #
+    # {
+    #     'ports_aChiWat': {
+    #         'pct_x_offset': -.5,
+    #         'pct_y_offset': .3,
+    #     },
+    #     'ports_bChiWat': {
+    #         'pct_x_offset': .5,
+    #         'pct_y_offset': .3,
+    #     },
+    #     'ports_aHeaWat': {
+    #         'pct_x_offset': -.5,
+    #         'pct_y_offset': .1,
+    #     },
+    #     'ports_bHeaWat': {
+    #         'pct_x_offset': .5,
+    #         'pct_y_offset': .1,
+    #     }
+    # }
+    #
+    _ports = {}
+
     def __init__(self, system_parameters):
         """
         Base initializer
@@ -170,6 +198,9 @@ class ModelBase(object):
 
     def as_component(self, identifier):
         return Component(identifier, self)
+
+    def get_port_offsets(self, port_name):
+        return self._ports.get(port_name, None)
 
     # TODO: this should be implemented here, not in individual classes 
     # def get_modelica_type(self, scaffold)

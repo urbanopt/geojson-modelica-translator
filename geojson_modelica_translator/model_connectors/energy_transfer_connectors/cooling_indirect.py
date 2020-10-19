@@ -31,12 +31,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 
-from geojson_modelica_translator.model_connectors.model_base import ModelBase
+from geojson_modelica_translator.model_connectors.energy_transfer_connectors.energy_transfer_base import EnergyTransferBase
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
 
 
-class CoolingIndirectConnector(ModelBase):
+class CoolingIndirectConnector(EnergyTransferBase):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 

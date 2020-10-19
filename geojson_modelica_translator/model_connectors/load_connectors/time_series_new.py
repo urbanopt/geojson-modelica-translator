@@ -31,12 +31,12 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 
-from geojson_modelica_translator.model_connectors.model_base import ModelBase
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
 
 
-class TimeSeriesConnector(ModelBase):
+class TimeSeriesConnector(LoadBase):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
 
