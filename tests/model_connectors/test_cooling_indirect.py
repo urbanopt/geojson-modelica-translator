@@ -66,7 +66,7 @@ class CoolingIndirectTest(TestCaseBase):
         self.cooling_indirect = CoolingIndirectConnector(sys_params)
         self.cooling_indirect.to_modelica(self.gj.scaffold)
 
-        root_path = os.path.abspath(os.path.join(self.gj.scaffold.substations_path.files_dir, 'TemporaryID'))
+        root_path = os.path.abspath(os.path.join(self.gj.scaffold.substations_path.files_dir))
         files = [
             os.path.join(root_path, 'CoolingIndirect.mo'),
         ]

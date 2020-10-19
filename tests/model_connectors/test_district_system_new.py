@@ -69,8 +69,8 @@ class DistrictSystemTest(TestCaseBase):
         # create the energy transfer system
         cooling_indirect_system = CoolingIndirectConnector(sys_params)
 
-        ts_load_id = 'timSerLoa.ports_bChiWat'
-        cooling_id = 'cooIndSys.port_b1'
+        ts_load_id = 'timSerLoa'
+        cooling_id = 'cooIndSys'
         district = District(
             root_dir=self.output_dir,
             project_name=project_name,
@@ -80,7 +80,7 @@ class DistrictSystemTest(TestCaseBase):
                 cooling_indirect_system.as_component(cooling_id)
             ],
             connections=[
-                (ts_load_id, cooling_id),
+                (ts_load_id + ".ports_bChiWat", cooling_id + ".port_b1"),
             ])
 
         district.to_modelica()
