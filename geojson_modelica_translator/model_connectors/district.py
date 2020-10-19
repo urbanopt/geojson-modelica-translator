@@ -84,11 +84,20 @@ class District(object):
         district_builder = ModBuilderModel(district_source)
         district_builder.set_within_statement(f'{self._scaffold.project_name}.Districts')
 
+        component_x = -50
+        COMPONENT_Y = 0
+        COMPONENT_HALF_WIDTH = 10
+        COMPONENT_PADDING = 20
         for component in self._components:
             district_builder.insert_component(
                 type_=component.model.get_modelica_type(self._scaffold),
                 identifier=component.identifier,
+                annotations=[
+                    "Placement(transformation(extent={{-10,-10},{10,10}},"
+                    "origin={" + f"{component_x},{COMPONENT_Y}" + "}))"
+                ]
             )
+            component_x += COMPONENT_PADDING + (COMPONENT_HALF_WIDTH * 2)
 
         # make all required connections in the district modelica file
         for connection in self._connections:
@@ -96,7 +105,10 @@ class District(object):
 
         district_builder.save_as(f'{self._scaffold.districts_path.files_dir}/DistrictEnergySystem.mo')
 
-        package = PackageParser.new_from_template(
+        districts_package = PackageParser.new_from_template(
             self._scaffold.districts_path.files_dir, "Districts", ['DistrictEnergySystem'], within=f"{self._scaffold.project_name}"
         )
-        package.save()
+        districts_package.save()
+        root_package = PackageParser(self._scaffold.project_path)
+        root_package.add_model('Districts')
+        root_package.save()
