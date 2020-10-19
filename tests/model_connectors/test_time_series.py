@@ -33,12 +33,13 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
+from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
     TimeSeriesConnector
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
+from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 from ..base_test_case import TestCaseBase
 
@@ -69,61 +70,20 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.assertEqual("time_series",
                          self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 
+        # currently we must setup the root project before we can run to_modelica
+        package = PackageParser.new_from_template(self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
+        package.save()
         self.time_series.to_modelica(self.gj.scaffold)
 
         root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
             os.path.join(root_path, 'building.mo'),
-            os.path.join(root_path, 'coupling.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        self.run_and_assert_in_docker(os.path.join(root_path, 'coupling.mo'),
-                                      project_path=self.gj.scaffold.project_path,
-                                      project_name=self.gj.scaffold.project_name)
-
-    def test_ets_and_run(self):
-        project_name = "time_series_ets"
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
-
-        # load in the example geojson with a single offie building
-        filename = os.path.join(self.data_dir, "time_series_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
-
-        # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
-        sys_params = SystemParameters(filename)
-
-        # now test the connector (independent of the larger geojson translator)
-        self.time_series = TimeSeriesConnector(sys_params)
-        for b in self.gj.json_loads:
-            # will only add a single building
-            self.time_series.add_building(b)
-
-        self.assertIsNotNone(self.time_series)
-        self.assertEqual(len(self.time_series.buildings), 1)
-        self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
-
-        self.time_series.to_modelica(self.gj.scaffold)
-
-        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
-        files = [
-            os.path.join(root_path, 'building.mo'),
-            os.path.join(root_path, 'CoolingIndirect.mo'),
-            os.path.join(root_path, 'HeatingIndirect.mo'),
-            os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
-        ]
-
-        # verify that there are only 2 files that matter (coupling and building)
-        for file in files:
-            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
-
-        self.run_and_assert_in_docker(os.path.join(root_path, 'TimeSeriesCouplingETS.mo'),
-                                      project_path=self.gj.scaffold.project_path,
-                                      project_name=self.gj.scaffold.project_name)
+        # self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
+        #                               project_path=self.gj.scaffold.project_path,
+        #                               project_name=self.gj.scaffold.project_name)
