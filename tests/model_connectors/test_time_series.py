@@ -36,10 +36,10 @@ from geojson_modelica_translator.geojson_modelica_translator import (
 from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
     TimeSeriesConnector
 )
+from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 from ..base_test_case import TestCaseBase
 

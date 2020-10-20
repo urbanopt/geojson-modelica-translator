@@ -30,7 +30,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
 from geojson_modelica_translator.model_connectors.district import District
 from geojson_modelica_translator.model_connectors.energy_transfer_connectors.cooling_indirect import (
     CoolingIndirectConnector

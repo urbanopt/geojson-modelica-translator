@@ -2,7 +2,7 @@ within somePackage;
 model DistrictEnergySystem
   extends Modelica.Icons.Example;
 equation
-  annotation(
+  annotation (
     experiment(
       StopTime=86400,
       Interval=3600,

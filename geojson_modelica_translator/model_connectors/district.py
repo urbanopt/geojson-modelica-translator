@@ -27,14 +27,12 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-from collections import namedtuple
 import os
+from collections import namedtuple
 
-from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-
+from geojson_modelica_translator.scaffold import Scaffold
 from modelica_builder.model import Model as ModBuilderModel
-
 
 Component = namedtuple('Component', ['identifier', 'model'])
 
@@ -43,7 +41,7 @@ class District(object):
     """
     Class for modeling entire district energy systems
     """
-    
+
     def __init__(self, root_dir, project_name, system_parameters, components, connections):
         self._scaffold = Scaffold(root_dir, project_name)
 
@@ -99,7 +97,6 @@ class District(object):
         current_x = -50
         COMPONENT_Y = 0
         COMPONENT_WIDTH = 20
-        COMPONENT_HALF_WIDTH = COMPONENT_WIDTH / 2
         COMPONENT_PADDING = 20
         component_positions = {}
         for component in self._components:
@@ -137,7 +134,8 @@ class District(object):
         for connection in self._connections:
             a_x, a_y = _get_port_position(connection[0])
             b_x, b_y = _get_port_position(connection[1])
-            district_builder.add_connect(connection[0], connection[1],
+            district_builder.add_connect(
+                connection[0], connection[1],
                 annotations=[
                     'Line(points={{' + f'{a_x},{a_y}' + '},{' + f'{b_x},{b_y}' + '}},'
                     'color={191,0,0})'

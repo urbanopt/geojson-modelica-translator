@@ -33,7 +33,6 @@ import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.district import Component
-
 from jinja2 import Environment, FileSystemLoader
 from modelica_builder.model import Model as ModBuilderModel
 
@@ -202,7 +201,7 @@ class ModelBase(object):
     def get_port_offsets(self, port_name):
         return self._ports.get(port_name, None)
 
-    # TODO: this should be implemented here, not in individual classes 
+    # TODO: this should be implemented here, not in individual classes
     # def get_modelica_type(self, scaffold)
 
     # These methods need to be defined in each of the derived model connectors

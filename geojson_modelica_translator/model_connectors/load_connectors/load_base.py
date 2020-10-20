@@ -29,6 +29,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
+
 class LoadBase(ModelBase):
     """
     Base class of the load connectors.
