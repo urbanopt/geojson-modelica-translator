@@ -82,7 +82,8 @@ class DistrictSystemTest(TestCaseBase):
                 cooling_indirect_system.as_component(cooling_id)
             ],
             connections=[
-                (ts_load_id + ".ports_bChiWat", cooling_id + ".port_b1"),
+                (ts_load_id + ".ports_bChiWat[1]", cooling_id + ".port_b1"),
+                (ts_load_id + ".ports_aChiWat[1]", cooling_id + ".port_b2"),
             ])
 
         district.to_modelica()

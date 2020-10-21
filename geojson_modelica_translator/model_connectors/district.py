@@ -28,6 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 import os
+import re
 from collections import namedtuple
 
 from geojson_modelica_translator.modelica.input_parser import PackageParser
@@ -41,6 +42,18 @@ class District(object):
     """
     Class for modeling entire district energy systems
     """
+
+    def _parse_port(self, port):
+        """Returns component identifier and port path. Note that it removes indexing at the end
+
+        E.g. input: "component.port_a[1]"; output: "component", "port_a"
+
+        :param port: str, fully qualified port path
+        :return: tuple, component id, port path
+        """
+        identifier, port_path = port.split('.', maxsplit=1)
+        port_path = re.sub(r'\[\d+\]$', '', port_path)
+        return identifier, port_path
 
     def __init__(self, root_dir, project_name, system_parameters, components, connections):
         self._scaffold = Scaffold(root_dir, project_name)
@@ -66,8 +79,8 @@ class District(object):
 
         # validate connections
         for a, b in connections:
-            a_identifier, a_port = a.split('.', maxsplit=1)
-            b_identifier, b_port = b.split('.', maxsplit=1)
+            a_identifier, a_port = self._parse_port(a)
+            b_identifier, b_port = self._parse_port(b)
             if a_identifier not in self._components_by_id or b_identifier not in self._components_by_id:
                 raise Exception(f'Connection ({a}, {b}) references a missing identifier.')
             if self._components_by_id[a_identifier].model.get_port_offsets(a_port) is None:
@@ -121,7 +134,7 @@ class District(object):
             :param port_string: str, string of full port e.g. myComponent.port_a
             :returns: tuple, x and y respectively
             """
-            component_id, port_name = port_string.split('.', maxsplit=1)
+            component_id, port_name = self._parse_port(port_string)
             component_pos = component_positions[component_id]
             port_offsets = self._components_by_id[component_id].model.get_port_offsets(port_name)
             assert port_offsets is not None
