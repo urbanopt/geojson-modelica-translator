@@ -5,7 +5,7 @@
       "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "indirect": {
-          "q_flow_nominal": 8888,
+          "q_flow_nominal": 8888,  // <project_folder>/run/<scenario_name>/<feature_name>/eplusssz.csv
           "eta_efficiency": 0.9,
           "nominal_flow_district": 0.5,
           "nominal_flow_building": 0.5,
@@ -21,14 +21,14 @@
     },
     "custom": [
       {
-        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "geojson_id": "5a6b99ec37f4de7f94020090",  // example_project.json[features[properties[id[]]]]
         "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
-            "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
-            "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
-            "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
-            "thermal_zone_names": [
+            "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",  // <project_folder>/.bundle/install/ruby/2.5.0/gems/openstudio-common-measures-0.2.0/lib/measures/ImportEnvelopeAndInternalLoadsFromIdf/measure.xml[files[file[filename[]]]] (several "file" fields can exist)
+            "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",  // example_project.json[project[weather_filename[]]]
+            "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",  // manually generate from weather file
+            "thermal_zone_names": [  // <project_folder>/.bundle/install/ruby/<ruby-version when run, eg: 2.5.0>/gems/<os standards version when run, eg: openstudio-standards-0.2.11>/data/geometry/<reference building, eg: DOERefSmallOffice.json> [<n>]['space_types']
               "Core_ZN",
               "Perimeter_ZN_1",
               "Perimeter_ZN_2",
