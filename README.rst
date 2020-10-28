@@ -1,5 +1,5 @@
-GeoJSON Modelica Translator
----------------------------
+GeoJSON Modelica Translator (GMT)
+---------------------------------
 
 .. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
     :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
@@ -22,8 +22,15 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
 * (optional/as-needed) Add Python 3 to the environment variables
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
 * Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
-* **Follow first 3 major bullets in Running Simulations section below.**
-* Run :code:`pip install -r requirements.txt`
+* Install the Modelica Buildings Library from GitHub
+    * Clone https://github.com/lbl-srg/modelica-buildings/ into a working directory outside of the GMT directory
+    * Change the directory inside the modelica-buildings repo you just checked out
+    * Install git-lfs
+        * Mac: :code:`brew install git-lfs; git lfs install`
+        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
+    * Pull the correct staging branch for this project with: :code:`git checkout issue1437_district_heating_cooling`
+    * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
+* Return to the GMT directory and run :code:`pip install -r requirements.txt`
 * Test if everything is installed correctly by running :code:`py.test`
 
 The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder.
@@ -31,7 +38,7 @@ The py.test tests should all pass assuming the libraries are installed correctly
 Developers
 **********
 
-This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc). Since
+This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc.). Since
 these are included as dependent project using git there may be a need to force an update from the dependent git repos.
 The best way to accomplish this is run the following command:
 
@@ -81,20 +88,19 @@ In some cases, the Level 3 case (translation to Modelica) is a blackbox method (
 Running Simulations
 -------------------
 
-Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
-will automatically run the models without having to follow the steps below.
+The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. It is recommended
+to use this method in a python script if needed as it will copy the required files into the correct location. If
+desired, a user can run the simulations manually using JModelica (via Docker). Follow the step below to configure
+the runner to work locally.
 
-* Clone https://github.com/lbl-srg/modelica-buildings/
-    * Change the directory inside the modelica-buildings repo you just checked out
-    * Install git-lfs
-        * Mac: :code:`brew install git-lfs; git lfs install`
-        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-    * Pull the correct branch with: :code:`git checkout issue1437_district_heating_cooling`
-* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
-* Example simulation:
-    * :code:`jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
-    * :code:`jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
-* Visualize the results by inspecting the resulting mat file using BuildingsPy.
+* Make sure jm_ipython.sh is in your local path.
+* After running the :code:`py.test` go into the :code:`tests/model_connectors/output` directory
+* Copy jmodelica.py to path :copy:`cp cp ../../../geojson_modelica_translator/modelica/lib/runner/jmodelica.py .`
+* Run examples using either of the the following:
+    * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
+    * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
+* Install matplotlib package. :code:`pip install matplotlib`
+* Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.
 
     .. code-block:: python
 
@@ -105,15 +111,15 @@ will automatically run the models without having to follow the steps below.
         from buildingspy.io.outputfile import Reader
 
         mat = Reader(os.path.join(
-            "tests", "model_connectors", "output", "spawn_two_building_Loads_B5a6b99ec37f4de7f94020090_building_result.mat"),
+            "tests", "model_connectors", "output", "spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat"),
             "dymola"
         )
         # List off all the variables
         for var in mat.varNames():
             print(var)
 
-        (time1, zn_1_temp) = mat.values("znPerimeter_ZN_1.vol.T")
-        (_time1, zn_4_temp) = mat.values("znPerimeter_ZN_4.vol.T")
+        (time1, zn_1_temp) = mat.values("bui.znPerimeter_ZN_3.TAir")
+        (_time1, zn_4_temp) = mat.values("bui.znPerimeter_ZN_4.TAir")
         plt.style.use('seaborn-whitegrid')
 
         fig = plt.figure(figsize=(16, 8))
@@ -126,6 +132,7 @@ will automatically run the models without having to follow the steps below.
         ax.set_xlim([0, 168])
         ax.legend()
         ax.grid(True)
+        fig.savefig('indoor_temp_example.png')
 
 Managed Tasks
 -------------
