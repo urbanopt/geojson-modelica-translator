@@ -95,7 +95,7 @@ the runner to work locally.
 
 * Make sure jm_ipython.sh is in your local path.
 * After running the :code:`py.test` go into the :code:`tests/model_connectors/output` directory
-* Copy jmodelica.py to path :copy:`cp ../../../geojson_modelica_translator/modelica/lib/runner/jmodelica.py .`
+* Copy jmodelica.py to path :code:`cp ../../../geojson_modelica_translator/modelica/lib/runner/jmodelica.py .`
 * Run examples using either of the the following:
     * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
     * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
