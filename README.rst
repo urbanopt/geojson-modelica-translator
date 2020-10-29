@@ -24,7 +24,7 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
 * Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
 * Install the Modelica Buildings Library from GitHub
     * Clone https://github.com/lbl-srg/modelica-buildings/ into a working directory outside of the GMT directory
-    * Change the directory inside the modelica-buildings repo you just checked out
+    * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
     * Install git-lfs
         * Mac: :code:`brew install git-lfs; git lfs install`
         * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
@@ -95,10 +95,11 @@ the runner to work locally.
 
 * Make sure jm_ipython.sh is in your local path.
 * After running the :code:`py.test` go into the :code:`tests/model_connectors/output` directory
-* Copy jmodelica.py to path :copy:`cp cp ../../../geojson_modelica_translator/modelica/lib/runner/jmodelica.py .`
+* Copy jmodelica.py to path :copy:`cp ../../../geojson_modelica_translator/modelica/lib/runner/jmodelica.py .`
 * Run examples using either of the the following:
     * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
     * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
+    * The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.
 * Install matplotlib package. :code:`pip install matplotlib`
 * Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.
 
