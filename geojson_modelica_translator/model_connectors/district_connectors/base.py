@@ -62,12 +62,21 @@ class Base(object):
         self.required_mo_files = []
         # extract data out of the urbanopt_building object and store into the base object
 
+    def ft2_to_m2(self, area_in_ft2: float) -> float:
+        """
+        Converts square feet to square meters
+
+        :param area_in_ft2: Area in square feet to be converted to square meters
+        """
+        return area_in_ft2 * 0.092936
+
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
 
         :param urbanopt_building: an urbanopt_building
         """
+
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
@@ -75,7 +84,7 @@ class Base(object):
                 building_id = urbanopt_building.feature.properties["id"]
                 building_type = urbanopt_building.feature.properties["building_type"]
                 number_stories = urbanopt_building.feature.properties["number_of_stories"]
-                building_floor_area_ft2 = float(urbanopt_building.feature.properties["floor_area"])
+                building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
             except KeyError as ke:
                 raise SystemExit(f'Missing property {ke} in geojson feature file')
 
@@ -83,29 +92,35 @@ class Base(object):
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
                 number_stories_above_ground = number_stories
+                print("Assuming all building levels are above ground for building_id: {building_id}")
 
             try:
-                urbanopt_building.feature.properties["floor_height"]
+                floor_height = urbanopt_building.feature.properties["floor_height"]
             except KeyError:
-                urbanopt_building.feature.properties["floor_height"] = 3  # Default height in meters from sdk
+                floor_height = 3  # Default height in meters from sdk
+                print(
+                    "No floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
 
             # UO SDK defaults to current year, however TEASER only supports up to Year 2015
             # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
             try:
+                year_built = urbanopt_building.feature.properties["year_built"]
                 if urbanopt_building.feature.properties["year_built"] > 2015:
-                    urbanopt_building.feature.properties["year_built"] = 2015
+                    year_built = 2015
             except KeyError:
-                urbanopt_building.feature.properties["year_built"] = 2015
+                year_built = 2015
+                print(
+                    "No year_built found in geojson feature file for building {building_id}. Using default value of {year_built}")
 
             self.buildings.append(
                 {
-                    "area": building_floor_area_ft2 * 0.092936,  # ft2 -> m2
+                    "area": building_floor_area_m2,
                     "building_id": building_id,
                     "building_type": building_type,
-                    "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric
+                    "floor_height": floor_height,  # Already converted to metric
                     "num_stories": number_stories,
                     "num_stories_below_grade": number_stories - number_stories_above_ground,
-                    "year_built": urbanopt_building.feature.properties["year_built"],
+                    "year_built": year_built,
                 }
             )
 
@@ -160,8 +175,8 @@ class Base(object):
         """Write a modelica path string for a given filename"""
         p = Path(filename)
         if p.suffix == ".idf":
-            # TODO: The output path is awfully brittle.
-            # FIXME: The string is hideous, but without it Pathlib thinks double slashes are "spurious"
+            # TODO: This sucks. Not sucking would be good.
+            # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
                                              / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
@@ -169,6 +184,3 @@ class Base(object):
         elif p.suffix == ".epw" or p.suffix == ".mos":
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
-
-    # These methods need to be defined in each of the derived model connectors
-    # def to_modelica(self):
