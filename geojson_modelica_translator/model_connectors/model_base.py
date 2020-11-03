@@ -176,10 +176,8 @@ class ModelBase(object):
         template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         template_env = Environment(
             loader=FileSystemLoader(searchpath=template_dir),
-            undefined=StrictUndefined,
-            variable_start_string="<<",
-            variable_end_string=">>")
-        template = template_env.get_template(f'{self.model_name}_Instance.mot')
+            undefined=StrictUndefined)
+        template = template_env.get_template(f'{self.model_name}_Instance.mopt')
         return template.render(template_params)
 
     # TODO: this should be implemented here, not in individual classes

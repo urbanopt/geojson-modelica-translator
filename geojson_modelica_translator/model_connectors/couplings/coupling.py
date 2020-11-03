@@ -43,8 +43,8 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined, meta
 
 
 class Coupling(object):
-    _template_component_definitions = 'ComponentDefinitions.mot'
-    _template_connect_statements = 'ConnectStatements.mot'
+    _template_component_definitions = 'ComponentDefinitions.mopt'
+    _template_connect_statements = 'ConnectStatements.mopt'
 
     def __init__(self, model_a, model_b):
         model_a, model_b = self._sort_models(model_a, model_b)
@@ -58,9 +58,7 @@ class Coupling(object):
 
         self._template_env = Environment(
             loader=FileSystemLoader(searchpath=template_dir),
-            undefined=StrictUndefined,
-            variable_start_string="<<",
-            variable_end_string=">>")
+            undefined=StrictUndefined)
 
     def _get_model_superclass(self, model):
         valid_superclasses = [LoadBase, EnergyTransferBase, NetworkBase]

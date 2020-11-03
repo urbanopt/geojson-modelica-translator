@@ -1,7 +1,0 @@
-  // Cooling indirect, Chilled water stub connections
-  connect(<< secMasFloRat_id >>.y, supChiWat.m_flow_in)
-    annotation (Line(points={{-53,-10},{-42,-10},{-42,-26},{-26,-26}},color={0,0,127}));
-  connect(<< ets_id >>.port_a1,supChiWat.ports[1])
-    annotation (Line(points={{12,-48},{2,-48},{2,-34},{-4,-34}},color={0,127,255}));
-  connect(sinChiWat1.ports[1],<< ets_id >>.port_b1)
-    annotation (Line(points={{76,-34},{56,-34},{56,-48},{36,-48}},color={0,127,255}));

@@ -39,9 +39,7 @@ def render_template(template_name, template_params):
     template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
     template_env = Environment(
         loader=FileSystemLoader(searchpath=template_dir),
-        undefined=StrictUndefined,
-        variable_start_string="<<",
-        variable_end_string=">>")
+        undefined=StrictUndefined)
     template = template_env.get_template(template_name)
     return template.render(template_params)
 

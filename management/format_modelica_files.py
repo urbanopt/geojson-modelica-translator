@@ -53,6 +53,7 @@ class FormatModelicaFiles(distutils.cmd.Command):
         pass
 
     def run(self):
+        skip_files = ['DistrictEnergySystem.mot']
         template_dir = "geojson_modelica_translator/model_connectors/templates/"
         if self.file is not None:
             files = [self.file]
@@ -60,6 +61,8 @@ class FormatModelicaFiles(distutils.cmd.Command):
             files = [os.path.join(template_dir, file_) for file_ in os.listdir(template_dir)]
 
         for filepath in files:
+            if os.path.basename(filepath) in skip_files:
+                continue
             try:
                 if filepath.endswith(".mot"):
                     preprocess_and_format(filepath)
