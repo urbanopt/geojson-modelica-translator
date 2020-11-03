@@ -27,15 +27,26 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-from geojson_modelica_translator.model_connectors.model_base import ModelBase
+
+from geojson_modelica_translator.model_connectors.networks.network_base import (
+    NetworkBase
+)
 
 
-class LoadBase(ModelBase):
-    """
-    Base class of the load connectors.
-    """
+class NetworkChilledWaterStub(NetworkBase):
+    model_name = 'NetworkChilledWaterStub'
 
-    def __init__(self, geojson_load, system_parameters):
+    def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        # TODO: remove add_building (there should only ever be a single load for a model)
-        self.add_building(geojson_load)
+        self.identifier = 'MyNetworkChilledWaterStub'
+
+    def to_modelica(self, scaffold):
+        """
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
+        """
+        # this stub has no model to generate, its fully implemented in the coupling currently
+        pass
+
+    def get_modelica_type(self, scaffold):
+        # this stub has no model, so there's no type
+        return 'UNIMPLEMENTED'

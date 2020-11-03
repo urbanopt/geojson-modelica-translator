@@ -1,0 +1,9 @@
+  // cooling indirect, timeseries coupling connections
+  connect(<< load_id >>.ports_bChiWat[1], << ets_id >>.port_a2)
+    annotation (Line(points={{20,64},{66,64},{66,-60},{36,-60}},color={0,127,255}));
+  connect(<< ets_id >>.port_b2,<< load_id >>.ports_aChiWat[1])
+    annotation (Line(points={{12,-60},{-88,-60},{-88,64},{0,64}},color={0,127,255}));
+  connect(<< pressure_source_id >>.ports[1], << ets_id >>.port_b2)
+    annotation (Line(points={{38,-78},{12,-78},{12,-60}},color={0,127,255}));
+  connect(<< TChiWatSet_id >>.y,<< ets_id >>.TSetBuiSup)
+    annotation (Line(points={{-55,-42},{-46,-42},{-46,-54},{9.6,-54}},color={0,0,127}));

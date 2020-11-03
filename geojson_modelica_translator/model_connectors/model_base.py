@@ -32,8 +32,7 @@ import os
 import shutil
 from pathlib import Path
 
-from geojson_modelica_translator.model_connectors.district import Component
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from modelica_builder.model import Model as ModBuilderModel
 
 
@@ -43,34 +42,8 @@ class ModelBase(object):
     Base class of the model connectors. The connectors can utilize various methods to create a building (or other
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
-
-    # TODO: make ports... better? ie don't use string keys...
-    # _ports is a dictionary of ports defined on a component and should be overridden
-    # in a subclass.
-    #
-    # Each key is the name of a port, and the value is a dict of x and y offsets,
-    # as percentages of the icon width, from the origin of the icon. For example:
-    #
-    # {
-    #     'ports_aChiWat': {
-    #         'pct_x_offset': -.5,
-    #         'pct_y_offset': .3,
-    #     },
-    #     'ports_bChiWat': {
-    #         'pct_x_offset': .5,
-    #         'pct_y_offset': .3,
-    #     },
-    #     'ports_aHeaWat': {
-    #         'pct_x_offset': -.5,
-    #         'pct_y_offset': .1,
-    #     },
-    #     'ports_bHeaWat': {
-    #         'pct_x_offset': .5,
-    #         'pct_y_offset': .1,
-    #     }
-    # }
-    #
-    _ports = {}
+    # model_name must be overridden in subclass
+    model_name = None
 
     def __init__(self, system_parameters):
         """
@@ -195,11 +168,19 @@ class ModelBase(object):
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
 
-    def as_component(self, identifier):
-        return Component(identifier, self)
-
-    def get_port_offsets(self, port_name):
-        return self._ports.get(port_name, None)
+    def render_instance(self, template_params):
+        # TODO: both to_modelica and render_instance should use the same template environment
+        # This should be fixed once all of the template files have the same variable substitution delimiters
+        # TODO: move templates into specific model directories and have subclass override template_dir and template_env
+        # This should be done once both to_modelica and render_instance can use the same environment
+        template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        template_env = Environment(
+            loader=FileSystemLoader(searchpath=template_dir),
+            undefined=StrictUndefined,
+            variable_start_string="<<",
+            variable_end_string=">>")
+        template = template_env.get_template(f'{self.model_name}_Instance.mot')
+        return template.render(template_params)
 
     # TODO: this should be implemented here, not in individual classes
     # def get_modelica_type(self, scaffold)

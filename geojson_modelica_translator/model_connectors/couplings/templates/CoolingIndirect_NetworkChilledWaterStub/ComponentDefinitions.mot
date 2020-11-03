@@ -1,0 +1,4 @@
+  Modelica.Blocks.Sources.RealExpression << secMasFloRat_id >>(
+    y=MyTimeSeriesLoad.disFloCoo.mReqTot_flow) // TODO: don't hardcode load ID, move this into CoolingIndirect so we can grab from there
+    "Secondary loop chilled water flow rate."
+    annotation (Placement(transformation(extent={{-74,-20},{-54,0}})));

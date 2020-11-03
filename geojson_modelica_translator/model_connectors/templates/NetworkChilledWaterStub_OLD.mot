@@ -1,0 +1,21 @@
+within {{ project_name }}.Networks;
+{% raw %}model NetworkChilledWaterStub
+  "A simple source and sink for chilled water"
+  extends Modelica.Icons.Example;
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
+    redeclare package Medium=MediumW,
+    use_m_flow_in=true,
+    use_T_in=false,
+    T=281.15,
+    nPorts=1)
+    "Chilled water supply (district side)."
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-14,-34})));
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat1(
+    redeclare package Medium=MediumW,
+    nPorts=1)
+    "Sink for chilled water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={86,-34})));
+end NetworkChilledWaterStub;
+{% endraw %}

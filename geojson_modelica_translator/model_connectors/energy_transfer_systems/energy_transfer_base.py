@@ -30,12 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
-class LoadBase(ModelBase):
+class EnergyTransferBase(ModelBase):
     """
-    Base class of the load connectors.
+    Base class of the energy transfer connectors.
     """
-
-    def __init__(self, geojson_load, system_parameters):
-        super().__init__(system_parameters)
-        # TODO: remove add_building (there should only ever be a single load for a model)
-        self.add_building(geojson_load)

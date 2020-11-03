@@ -33,12 +33,21 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
+from geojson_modelica_translator.model_connectors.couplings.coupling import (
+    Coupling
+)
 from geojson_modelica_translator.model_connectors.district import District
-from geojson_modelica_translator.model_connectors.energy_transfer_connectors.cooling_indirect import (
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
     CoolingIndirectConnector
 )
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
+    EtsHotWaterStub
+)
 from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
-    TimeSeriesConnector
+    TimeSeries
+)
+from geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub import (
+    NetworkChilledWaterStub
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -55,35 +64,37 @@ class DistrictSystemTest(TestCaseBase):
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        # self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
 
-        # Create the time series load
-        time_series_load = TimeSeriesConnector(sys_params)
-        for b in self.gj.json_loads:
-            # will only add a single building
-            time_series_load.add_building(b)
-
-        # create the energy transfer system
+        # Create the time series load, ets and their coupling
+        time_series_load = TimeSeries(self.gj.json_loads[0], sys_params)
         cooling_indirect_system = CoolingIndirectConnector(sys_params)
+        ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
 
-        ts_load_id = 'timSerLoa'
-        cooling_id = 'cooIndSys'
+        # create chilled water stub for the ets
+        chilled_water_stub = NetworkChilledWaterStub(sys_params)
+        ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
+
+        #  create hot water stub for the load
+        hot_water_stub = EtsHotWaterStub(sys_params)
+        ts_hw_coupling = Coupling(time_series_load, hot_water_stub)
+
         district = District(
             root_dir=self.output_dir,
             project_name=project_name,
             system_parameters=sys_params,
-            components=[
-                time_series_load.as_component(ts_load_id),
-                cooling_indirect_system.as_component(cooling_id)
-            ],
-            connections=[
-                (ts_load_id + ".ports_bChiWat[1]", cooling_id + ".port_b1"),
-                (ts_load_id + ".ports_aChiWat[1]", cooling_id + ".port_b2"),
-            ])
-
+            couplings=[
+                ts_ci_coupling,
+                ci_cw_coupling,
+                ts_hw_coupling,
+            ]
+        )
         district.to_modelica()
+
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)

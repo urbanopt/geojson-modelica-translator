@@ -27,15 +27,29 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-from geojson_modelica_translator.model_connectors.model_base import ModelBase
+
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
+    EnergyTransferBase
+)
 
 
-class LoadBase(ModelBase):
-    """
-    Base class of the load connectors.
-    """
+class EtsHotWaterStub(EnergyTransferBase):
+    model_name = 'EtsHotWaterStub'
 
-    def __init__(self, geojson_load, system_parameters):
+    def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        # TODO: remove add_building (there should only ever be a single load for a model)
-        self.add_building(geojson_load)
+        self.identifier = 'MyEtsHotWaterStub'
+
+    def to_modelica(self, scaffold):
+        """
+        Create indirect cooling models based on the data in the buildings and geojsons
+
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
+        """
+        # this stub does not have any modelica files to generate as it's not its own model
+        # It's contained within the coupling files
+        pass
+
+    def get_modelica_type(self, scaffold):
+        # this stub does not have a type as it's not packaged into its own model currently
+        return 'UNIMPLEMENTED'

@@ -1,0 +1,5 @@
+  Modelica.Blocks.Sources.RealExpression << THeaWatSup_id >>(
+    y=<< load_id >>.terUniHea.T_aHeaWat_nominal)
+    //Dehardcode where this is originally set
+    "Heating water supply temperature"
+    annotation (Placement(transformation(extent={{-80,76},{-60,96}})));

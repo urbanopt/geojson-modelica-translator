@@ -30,26 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
-class EnergyTransferBase(ModelBase):
+class NetworkBase(ModelBase):
     """
-    Base class of the energy transfer connectors.
+    Base class of the network connectors.
     """
-
-    _ports = {
-        'port_a1': {
-            'pct_x_offset': -.5,
-            'pct_y_offset': -.3,
-        },
-        'port_b1': {
-            'pct_x_offset': .5,
-            'pct_y_offset': -.3,
-        },
-        'port_a2': {
-            'pct_x_offset': .5,
-            'pct_y_offset': .3,
-        },
-        'port_b2': {
-            'pct_x_offset': -.5,
-            'pct_y_offset': .3,
-        },
-    }

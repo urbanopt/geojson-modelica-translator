@@ -33,7 +33,7 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.energy_transfer_connectors.cooling_indirect import (
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
     CoolingIndirectConnector
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser

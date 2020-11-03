@@ -30,15 +30,18 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.model_connectors.energy_transfer_connectors.energy_transfer_base import (
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 
 class CoolingIndirectConnector(EnergyTransferBase):
+    model_name = 'CoolingIndirect'
+
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
+        self.identifier = 'MyCoolingIndirect'
 
     def to_modelica(self, scaffold):
         """

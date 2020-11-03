@@ -38,9 +38,12 @@ from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath
 
 
-class TimeSeriesConnector(LoadBase):
-    def __init__(self, system_parameters):
-        super().__init__(system_parameters)
+class TimeSeries(LoadBase):
+    model_name = 'TimeSeries'
+
+    def __init__(self, geojson_load, system_parameters):
+        super().__init__(geojson_load, system_parameters)
+        self.identifier = 'MyTimeSeriesLoad'
 
     def to_modelica(self, scaffold):
         """
