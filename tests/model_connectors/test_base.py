@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
+from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.load_connectors.base import \
     Base as model_connector_base
@@ -49,6 +50,9 @@ class TestModelConnectorBase(unittest.TestCase):
     def test_init(self):
         mc = model_connector_base(None)
         self.assertIsNotNone(mc)
+
+    def test_ft2_to_m2(self):
+        self.assertEqual(model_connector_base.ft2_to_m2(self, area_in_ft2=1000), 92.936)
 
     def test_template(self):
         mc = model_connector_base(None)
