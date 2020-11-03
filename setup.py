@@ -72,7 +72,7 @@ setup(
         "jsonschema==3.2.0",
         "jsonpath-ng==1.5.2",
         "requests==2.24.0",
-        'teaser @ git+https://github.com/urbanopt/TEASER.git@rc-argument-names#egg=teaser',
+        'teaser @ git+https://github.com/urbanopt/TEASER.git@development#egg=teaser',
         "modelica-builder==0.1.0",
         # 'modelica_builder @ git+https://github.com/urbanopt/modelica-builder.git@develop#egg=modelica_builder',
     ],
