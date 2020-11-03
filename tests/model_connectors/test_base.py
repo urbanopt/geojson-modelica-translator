@@ -31,7 +31,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
-from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.load_connectors.base import \
     Base as model_connector_base
