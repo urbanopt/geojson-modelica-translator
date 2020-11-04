@@ -36,7 +36,7 @@ from pathlib import Path
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.district_connectors.district_system import (
+from geojson_modelica_translator.model_connectors.districts.district_system import (
     DistrictSystemConnector
 )
 from geojson_modelica_translator.model_connectors.load_connectors.base import \
