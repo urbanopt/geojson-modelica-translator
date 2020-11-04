@@ -43,6 +43,9 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined, meta
 
 
 class Coupling(object):
+    """A Coupling represents a connection/relationship between two models (e.g. a load and ets).
+    More specifically, is used to create the required components and connections between two models.
+    """
     _template_component_definitions = 'ComponentDefinitions.mopt'
     _template_connect_statements = 'ConnectStatements.mopt'
 
@@ -110,6 +113,8 @@ class Coupling(object):
 
         updated_template_params = {}
         updated_template_params.update(template_params)
+        # NOTE: we're assuming that model_a and model_b are of different types
+        # For example, we assume that conencting a load to another load is not possible
         updated_template_params[_get_model_id(self._model_a)] = self._model_a.identifier
         updated_template_params[_get_model_id(self._model_b)] = self._model_b.identifier
 
@@ -121,12 +126,25 @@ class Coupling(object):
                     if param.endswith('_id'):
                         generated_params[param] = f'{param}_{str(uuid4()).split("-")[0]}'
                     else:
-                        raise Exception(f'Missing required parameter that\'s not an id: "{param}". Append _id if it should be generated.')
+                        raise Exception(f'Missing required parameter that\'s not an identifier: "{param}".'
+                                        'Append _id to the variable name if it should be generated.')
             updated_template_params.update(generated_params)
 
         return template.render(updated_template_params), generated_params
 
     def render_templates(self, template_params):
+        """Renders the shared components and connect statements for the coupling.
+        It also generates names for jinja variables that serve as identifiers.
+        For an identifier to be generated, it must:
+          1. be referenced in the coupling's ComponentDefinitions.mopt file
+          2. the variable name must end with `_id`
+
+        Generated IDs are passed to the connect statements template, so they can
+        be referenced there as well.
+
+        :param template_params: dict, parameters for the templates
+        :return: dict, contains key, values: component_definitions, string; connect_statements, string; generated_params, dict
+        """
         component_result, generated_params = self._render_template(self._template_component_definitions, template_params)
         updated_params = {}
         updated_params.update(**template_params, **generated_params)
