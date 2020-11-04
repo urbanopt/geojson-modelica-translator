@@ -36,6 +36,12 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 
 def render_template(template_name, template_params):
+    """Helper for rendering a template
+
+    :param template_name: string, name of template (relative to templates directory)
+    :param template_params: dict, template parameters
+    :return: string, templated result
+    """
     template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "templates")
     template_env = Environment(
         loader=FileSystemLoader(searchpath=template_dir),
@@ -54,6 +60,8 @@ class District(object):
 
         self.system_parameters = system_parameters
 
+        if len(couplings) == 0:
+            raise Exception('At least one coupling must be provided')
         self._couplings = couplings
 
         self._models_by_id = {}
@@ -64,7 +72,7 @@ class District(object):
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
-        the entire system.
+        the entire district system.
         """
         self._scaffold.create()
         # create the root package
@@ -102,10 +110,7 @@ class District(object):
                 'unique_id': identifier,
                 'type_path': model.get_modelica_type(self._scaffold)
             }
-            template_params.update(model_params[identifier])
-            template_params.update(common_template_params)
-            # result = render_template(f'{model.model_name}_Instance.mot', template_params)
-            # district_template_params['models'].append(result)
+            template_params.update(**model_params[identifier], **common_template_params)
             result = model.render_instance(template_params)
             district_template_params['models'].append(result)
 
