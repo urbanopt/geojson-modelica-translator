@@ -33,7 +33,7 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.load_connectors.spawn_ets_coupling import (
+from geojson_modelica_translator.model_connectors.loads.spawn_ets_coupling import (
     SpawnConnectorETS
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (

@@ -31,7 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 
-from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
+from geojson_modelica_translator.model_connectors.loads.load_base import (
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser

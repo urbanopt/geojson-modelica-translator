@@ -34,11 +34,11 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
-from geojson_modelica_translator.model_connectors.load_connectors.spawn import \
+from geojson_modelica_translator.model_connectors.loads.spawn import \
     SpawnConnector as spawn_load
-from geojson_modelica_translator.model_connectors.load_connectors.teaser import \
+from geojson_modelica_translator.model_connectors.loads.teaser import \
     TeaserConnector as teaser_load
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import \
+from geojson_modelica_translator.model_connectors.loads.time_series import \
     TimeSeriesConnector as timeseries_load
 from geojson_modelica_translator.scaffold import Scaffold
 
@@ -153,7 +153,7 @@ class GeoJsonModelicaTranslator(object):
         for load in self.loads:
             load.to_modelica(self.scaffold)  # , keep_original_models=False)
 
-        # import geojson_modelica_translator.model_connectors.load_connectors.ets_template as ets_template
+        # import geojson_modelica_translator.model_connectors.loads.ets_template as ets_template
         # ets_class = getattr(ets_template, "ETSConnector")
         # ets_connector = ets_class(self.system_parameters)
 
