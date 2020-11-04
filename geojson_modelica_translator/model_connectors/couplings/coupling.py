@@ -137,20 +137,3 @@ class Coupling(object):
             'connect_statements': connect_result,
             'generated_params': generated_params
         }
-
-    def component_definitions(self, template_params):
-        """Return templated component definitions partial.
-
-        :param template_params: dict
-        :return: string, dict, the templated result and generated variables
-        """
-        return self._render_template(self._template_component_definitions, template_params)
-
-    def connect_statements(self, template_params):
-        """Return templated connect statements partial.
-
-        :param template_params: dict
-        :return: string, the templated result
-        """
-        result, _ = self._render_template(self._template_connect_statements, template_params, generate_missing=False)
-        return result
