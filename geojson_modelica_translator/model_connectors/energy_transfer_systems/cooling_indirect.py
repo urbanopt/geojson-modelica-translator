@@ -36,7 +36,7 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 
-class CoolingIndirectConnector(EnergyTransferBase):
+class CoolingIndirect(EnergyTransferBase):
     model_name = 'CoolingIndirect'
 
     def __init__(self, system_parameters):

@@ -36,9 +36,11 @@ from geojson_modelica_translator.geojson_modelica_translator import (
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
 )
-from geojson_modelica_translator.model_connectors.district import District
+from geojson_modelica_translator.model_connectors.districts.district import (
+    District
+)
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
-    CoolingIndirectConnector
+    CoolingIndirect
 )
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
     EtsHotWaterStub
@@ -71,7 +73,7 @@ class DistrictSystemTest(TestCaseBase):
 
         # Create the time series load, ets and their coupling
         time_series_load = TimeSeries(self.gj.json_loads[0], sys_params)
-        cooling_indirect_system = CoolingIndirectConnector(sys_params)
+        cooling_indirect_system = CoolingIndirect(sys_params)
         ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
 
         # create chilled water stub for the ets

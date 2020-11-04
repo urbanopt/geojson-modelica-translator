@@ -34,7 +34,7 @@ from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
 from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
-    TimeSeriesConnector
+    TimeSeries
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.system_parameters.system_parameters import (
@@ -60,10 +60,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         sys_params = SystemParameters(filename)
 
         # now test the connector (independent of the larger geojson translator)
-        self.time_series = TimeSeriesConnector(sys_params)
-        for b in self.gj.json_loads:
-            # will only add a single building
-            self.time_series.add_building(b)
+        self.time_series = TimeSeries(self.gj.json_loads[0], sys_params)
 
         self.assertIsNotNone(self.time_series)
         self.assertEqual(len(self.time_series.buildings), 1)

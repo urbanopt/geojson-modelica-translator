@@ -36,7 +36,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 
 def render_template(template_name, template_params):
-    template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+    template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "templates")
     template_env = Environment(
         loader=FileSystemLoader(searchpath=template_dir),
         undefined=StrictUndefined)
