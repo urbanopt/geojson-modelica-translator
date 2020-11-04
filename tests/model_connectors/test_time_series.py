@@ -33,7 +33,7 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.loads.time_series_new import (
+from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
     TimeSeriesConnector
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser

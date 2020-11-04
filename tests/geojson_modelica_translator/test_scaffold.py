@@ -34,7 +34,7 @@ import unittest
 
 from geojson_modelica_translator.scaffold import Scaffold
 
-# from geojson_modelica_translator.model_connectors.loads.base import Base as building_base
+# from geojson_modelica_translator.model_connectors.load_connectors.base import Base as building_base
 # class FakeConnector(building_base):
 #     def to_modelica(self):
 #         pass

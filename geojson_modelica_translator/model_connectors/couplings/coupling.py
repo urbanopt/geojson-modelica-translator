@@ -33,7 +33,7 @@ from uuid import uuid4
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
 )
-from geojson_modelica_translator.model_connectors.loads.load_base import (
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
 from geojson_modelica_translator.model_connectors.networks.network_base import (
