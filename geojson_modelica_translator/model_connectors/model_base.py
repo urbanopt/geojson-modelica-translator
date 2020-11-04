@@ -28,17 +28,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 import shutil
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
-from modelica_builder.model import Model as ModBuilderModel
+from modelica_builder.model import Model
 
 
 class ModelBase(object):
     """
-    TODO: use this as the base class for all modelica components (ie Loads, Substations, etc)
     Base class of the model connectors. The connectors can utilize various methods to create a building (or other
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
@@ -55,7 +53,7 @@ class ModelBase(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        self.template_dir = Path(__file__) / "templates"
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
         # store a list of the templated files to include when building the package
@@ -66,44 +64,65 @@ class ModelBase(object):
         self.required_mo_files = []
         # extract data out of the urbanopt_building object and store into the base object
 
+    def ft2_to_m2(self, area_in_ft2: float) -> float:
+        """
+        Converts square feet to square meters
+
+        :param area_in_ft2: Area in square feet to be converted to square meters
+        """
+        return area_in_ft2 * 0.092936
+
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the translator.
 
         :param urbanopt_building: an urbanopt_building
         """
-        pass
+
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
-            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+            try:
+                building_id = urbanopt_building.feature.properties["id"]
+                building_type = urbanopt_building.feature.properties["building_type"]
+                number_stories = urbanopt_building.feature.properties["number_of_stories"]
+                building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
+            except KeyError as ke:
+                raise SystemExit(f'Missing property {ke} in geojson feature file')
+
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
-                number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories"]
+                number_stories_above_ground = number_stories
+                print("Assuming all building levels are above ground for building_id: {building_id}")
 
             try:
-                urbanopt_building.feature.properties["floor_height"]
+                floor_height = urbanopt_building.feature.properties["floor_height"]
             except KeyError:
-                urbanopt_building.feature.properties["floor_height"] = 3  # Default height in meters from sdk
+                floor_height = 3  # Default height in meters from sdk
+                print(
+                    "No floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
 
+            # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+            # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
             try:
-                # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-                # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
+                year_built = urbanopt_building.feature.properties["year_built"]
                 if urbanopt_building.feature.properties["year_built"] > 2015:
-                    urbanopt_building.feature.properties["year_built"] = 2015
+                    year_built = 2015
             except KeyError:
-                urbanopt_building.feature.properties["year_built"] = 2015
+                year_built = 2015
+                print(
+                    "No year_built found in geojson feature file for building {building_id}. Using default value of {year_built}")
 
             self.buildings.append(
                 {
-                    "area": float(urbanopt_building.feature.properties["floor_area"]) * 0.092936,  # ft2 -> m2
-                    "building_id": urbanopt_building.feature.properties["id"],
-                    "building_type": urbanopt_building.feature.properties["building_type"],
-                    "floor_height": urbanopt_building.feature.properties["floor_height"],  # Already converted to metric
-                    "num_stories": urbanopt_building.feature.properties["number_of_stories"],
+                    "area": building_floor_area_m2,
+                    "building_id": building_id,
+                    "building_type": building_type,
+                    "floor_height": floor_height,
+                    "num_stories": number_stories,
                     "num_stories_below_grade": number_stories - number_stories_above_ground,
-                    "year_built": urbanopt_building.feature.properties["year_built"],
+                    "year_built": year_built,
                 }
             )
 
@@ -118,15 +137,15 @@ class ModelBase(object):
         """
         result = []
         for f in self.required_mo_files:
-            if not os.path.exists(f):
+            if not Path(f).exists():
                 raise Exception(f"Required MO file not found: {f}")
 
-            new_filename = os.path.join(dest_folder, os.path.basename(f))
+            new_filename = Path(dest_folder) / Path(f).name
             if within:
-                mofile = ModBuilderModel(f)
+                mofile = Model(f)
                 mofile.set_within_statement(within)
                 mofile.save_as(new_filename)
-                result.append(os.path.join(dest_folder, os.path.basename(f)))
+                result.append(Path(dest_folder) / Path(f).name)
             else:
                 # simply copy the file over if no need to update within
                 result.append(shutil.copy(f, new_filename))
@@ -146,7 +165,7 @@ class ModelBase(object):
         """
         file_data = template.render(**kwargs)
 
-        os.makedirs(os.path.dirname(save_file_name), exist_ok=True)
+        Path(save_file_name).parent.mkdir(parents=True, exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
 
@@ -158,8 +177,8 @@ class ModelBase(object):
         """Write a modelica path string for a given filename"""
         p = Path(filename)
         if p.suffix == ".idf":
-            # TODO: The output path is awfully brittle.
-            # FIXME: The string is hideous, but without it Pathlib thinks double slashes are "spurious"
+            # TODO: This sucks. Not sucking would be good.
+            # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
                                              / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
@@ -173,9 +192,8 @@ class ModelBase(object):
         # This should be fixed once all of the template files have the same variable substitution delimiters
         # TODO: move templates into specific model directories and have subclass override template_dir and template_env
         # This should be done once both to_modelica and render_instance can use the same environment
-        template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
         template_env = Environment(
-            loader=FileSystemLoader(searchpath=template_dir),
+            loader=FileSystemLoader(searchpath=self.template_dir),
             undefined=StrictUndefined)
         template = template_env.get_template(f'{self.model_name}_Instance.mopt')
         return template.render(template_params)
