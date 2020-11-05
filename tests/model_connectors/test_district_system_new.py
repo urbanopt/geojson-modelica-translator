@@ -72,7 +72,7 @@ class DistrictSystemTest(TestCaseBase):
         sys_params = SystemParameters(filename)
 
         # Create the time series load, ets and their coupling
-        time_series_load = TimeSeries(self.gj.json_loads[0], sys_params)
+        time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
         cooling_indirect_system = CoolingIndirect(sys_params)
         ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
 

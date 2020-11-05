@@ -33,11 +33,11 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.districts.base import \
-    Base as district_connector_base
 from geojson_modelica_translator.model_connectors.districts.district_system import (
     DistrictSystemConnector
 )
+from geojson_modelica_translator.model_connectors.model_base import \
+    ModelBase as district_connector_base
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )

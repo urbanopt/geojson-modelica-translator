@@ -35,7 +35,8 @@ class LoadBase(ModelBase):
     Base class of the load connectors.
     """
 
-    def __init__(self, geojson_load, system_parameters):
+    def __init__(self, system_parameters, geojson_load=None):
         super().__init__(system_parameters)
-        # TODO: remove add_building (there should only ever be a single load for a model)
-        self.add_building(geojson_load)
+        # TODO: remove add_building and remove default value for geojson_load (there should only ever be a single load for a model)
+        if geojson_load is not None:
+            self.add_building(geojson_load)

@@ -32,13 +32,13 @@ import os
 import shutil
 from pathlib import Path
 
-from geojson_modelica_translator.model_connectors.districts.base import \
-    Base as district_connector_base
+from geojson_modelica_translator.model_connectors.model_base import ModelBase
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from modelica_builder.model import Model
 
 
-class DistrictSystemConnector(district_connector_base):
+class DistrictSystemConnector(ModelBase):
+    # TODO: This class should be deprecated
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
         # Note that the order of the required MO files is important as it will be the order that

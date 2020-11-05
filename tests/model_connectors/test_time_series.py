@@ -60,7 +60,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         sys_params = SystemParameters(filename)
 
         # now test the connector (independent of the larger geojson translator)
-        self.time_series = TimeSeries(self.gj.json_loads[0], sys_params)
+        self.time_series = TimeSeries(sys_params, self.gj.json_loads[0])
 
         self.assertIsNotNone(self.time_series)
         self.assertEqual(len(self.time_series.buildings), 1)
