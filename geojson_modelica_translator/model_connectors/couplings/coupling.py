@@ -63,6 +63,31 @@ class Coupling(object):
             loader=FileSystemLoader(searchpath=template_dir),
             undefined=StrictUndefined)
 
+        self._id = str(uuid4()).split("-")[0]
+
+    def to_dict(self):
+        return {
+            'id': self._id,
+            self._model_a.simple_gmt_type: {
+                'id': self._model_a.identifier,
+            },
+            self._model_b.simple_gmt_type: {
+                'id': self._model_b.identifier,
+            }
+        }
+
+    def get_other_model(self, model):
+        """Returns the other model in the coupling
+
+        :param model: Model
+        :return: Model
+        """
+        if model == self._model_a:
+            return self._model_b
+        elif model == self._model_b:
+            return self._model_a
+        raise Exception(f'Provided model, "{model.identifier}", is not part of the coupling')
+
     def _get_model_superclass(self, model):
         valid_superclasses = [LoadBase, EnergyTransferBase, NetworkBase]
         superclasses = [cls_ for cls_ in model.__class__.mro() if cls_ in valid_superclasses]
@@ -92,13 +117,12 @@ class Coupling(object):
         parsed_content = self._template_env.parse(template_source)
         return meta.find_undeclared_variables(parsed_content)
 
-    def _render_template(self, template_name, template_params, generate_missing=True):
-        """Return the templated partial for the coupling as well as generated variables
+    def _render_template(self, template_name, template_params):
+        """Return the templated partial for the coupling
 
         :param template_name: string
         :param template_params: dict
-        :param generate_missing: bool
-        :return: string, dict
+        :return: string
         """
         template = self._template_env.get_template(template_name)
 
@@ -111,47 +135,24 @@ class Coupling(object):
             superclass = self._get_model_superclass(model)
             return superclass_dict[superclass]
 
-        updated_template_params = {}
+        assert 'coupling' not in template_params, 'Template parameters for Coupling must not include the key "coupling"'
+        updated_template_params = {
+            'coupling': self.to_dict()
+        }
         updated_template_params.update(template_params)
-        # NOTE: we're assuming that model_a and model_b are of different types
-        # For example, we assume that conencting a load to another load is not possible
-        updated_template_params[_get_model_id(self._model_a)] = self._model_a.identifier
-        updated_template_params[_get_model_id(self._model_b)] = self._model_b.identifier
 
-        generated_params = {}
-        if generate_missing:
-            required_params = self._get_template_parameters(template_name)
-            for param in required_params:
-                if param not in updated_template_params:
-                    if param.endswith('_id'):
-                        generated_params[param] = f'{param}_{str(uuid4()).split("-")[0]}'
-                    else:
-                        raise Exception(f'Missing required parameter that\'s not an identifier: "{param}".'
-                                        'Append _id to the variable name if it should be generated.')
-            updated_template_params.update(generated_params)
-
-        return template.render(updated_template_params), generated_params
+        return template.render(updated_template_params)
 
     def render_templates(self, template_params):
         """Renders the shared components and connect statements for the coupling.
-        It also generates names for jinja variables that serve as identifiers.
-        For an identifier to be generated, it must:
-          1. be referenced in the coupling's ComponentDefinitions.mopt file
-          2. the variable name must end with `_id`
-
-        Generated IDs are passed to the connect statements template, so they can
-        be referenced there as well.
 
         :param template_params: dict, parameters for the templates
-        :return: dict, contains key, values: component_definitions, string; connect_statements, string; generated_params, dict
+        :return: dict, containing key, values: component_definitions, string; connect_statements, string
         """
-        component_result, generated_params = self._render_template(self._template_component_definitions, template_params)
-        updated_params = {}
-        updated_params.update(**template_params, **generated_params)
-        connect_result, _ = self._render_template(self._template_connect_statements, updated_params, generate_missing=False)
+        component_result = self._render_template(self._template_component_definitions, template_params)
+        connect_result = self._render_template(self._template_connect_statements, template_params)
 
         return {
             'component_definitions': component_result,
             'connect_statements': connect_result,
-            'generated_params': generated_params
         }

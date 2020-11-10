@@ -34,3 +34,4 @@ class NetworkBase(ModelBase):
     """
     Base class of the network connectors.
     """
+    simple_gmt_type = 'network'

@@ -34,6 +34,7 @@ class LoadBase(ModelBase):
     """
     Base class of the load connectors.
     """
+    simple_gmt_type = 'load'
 
     def __init__(self, system_parameters, geojson_load=None):
         super().__init__(system_parameters)

@@ -34,3 +34,4 @@ class EnergyTransferBase(ModelBase):
     """
     Base class of the energy transfer connectors.
     """
+    simple_gmt_type = 'ets'

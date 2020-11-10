@@ -1,15 +1,15 @@
   // cooling indirect instance
   {{ type_path }} {{ unique_id }}(
-    redeclare package Medium={{ medium_w }},
+    redeclare package Medium={{ globals.medium_w }},
     allowFlowReversal1=false,
     allowFlowReversal2=false,
-    mDis_flow_nominal={{ mDis_flow_nominal_id }},
-    mBui_flow_nominal={{ mBui_flow_nominal_id }},
+    mDis_flow_nominal=mDis_flow_nominal_{{ couplings.load_coupling.id }},
+    mBui_flow_nominal=mBui_flow_nominal_{{ couplings.load_coupling.id }},
     dp1_nominal=500,
     dp2_nominal=500,
     dpValve_nominal=7000,
     use_Q_flow_nominal=true,
-    Q_flow_nominal={{ Q_flow_nominal_id }},
+    Q_flow_nominal=Q_flow_nominal_{{ couplings.load_coupling.id }},
     T_a1_nominal=273.15+8,
     T_a2_nominal=273.15+20,
     eta=0.8)
