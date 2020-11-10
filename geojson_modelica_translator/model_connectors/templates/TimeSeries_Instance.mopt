@@ -1,5 +1,5 @@
   // time series load
-  {{ type_path }} {{ unique_id }}(
+  {{ model.modelica_type }} {{ model.id }}(
     filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
     have_pum=true,
     delTBuiCoo=5,

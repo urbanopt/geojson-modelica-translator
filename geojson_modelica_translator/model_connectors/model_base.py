@@ -198,6 +198,12 @@ class ModelBase(object):
         template = template_env.get_template(f'{self.model_name}_Instance.mopt')
         return template.render(template_params)
 
+    def to_dict(self, scaffold):
+        return {
+            'id': self.identifier,
+            'modelica_type': self.get_modelica_type(scaffold)
+        }
+
     # TODO: this should be implemented here, not in individual classes
     # def get_modelica_type(self, scaffold)
 

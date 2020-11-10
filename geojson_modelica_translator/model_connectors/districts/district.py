@@ -125,7 +125,7 @@ class District(object):
 
         # render each model instance
         for identifier, model in self._models_by_id.items():
-            associated_couplings = self._couplings_by_model_id[model.identifier]
+            associated_couplings = self._couplings_by_model_id[identifier]
             # directional couplings stores the associated couplings keyed by the
             # types of the _other_ model involved
             # e.g. if current model is ets, and coupled to load and network,
@@ -141,8 +141,7 @@ class District(object):
                 directional_couplings[coupling_type] = coupling
 
             template_params = {
-                'unique_id': identifier,
-                'type_path': model.get_modelica_type(self._scaffold),
+                'model': model.to_dict(self._scaffold),
                 'couplings': directional_couplings,
             }
             template_params.update(**model_params[identifier], **common_template_params)

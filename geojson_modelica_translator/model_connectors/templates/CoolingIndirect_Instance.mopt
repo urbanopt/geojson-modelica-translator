@@ -1,5 +1,5 @@
   // cooling indirect instance
-  {{ type_path }} {{ unique_id }}(
+  {{ model.modelica_type }} {{ model.id }}(
     redeclare package Medium={{ globals.medium_w }},
     allowFlowReversal1=false,
     allowFlowReversal2=false,
