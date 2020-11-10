@@ -89,9 +89,6 @@ class District(object):
         for _, model in self._models_by_id.items():
             model.to_modelica(self._scaffold)
 
-        # model_params = {
-        #     model_id: {'couplings': {}} for model_id in self._models_by_id
-        # }
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
             "couplings": [],
@@ -109,19 +106,6 @@ class District(object):
                 'component_definitions': templated_result['component_definitions'],
                 'connect_statements': templated_result['connect_statements']
             })
-
-            # TODO: don't reach into private vars...
-            # TODO: move this logic elsewhere, not necessary to do here
-            # associate the coupling with each model's templ
-            # a_coupling_type = f'{coupling._model_b.simple_gmt_type}_coupling'
-            # b_coupling_type = f'{coupling._model_a.simple_gmt_type}_coupling'
-            # coupling_dict = coupling.to_dict()
-            # model_params[coupling._model_a.id]['couplings'].update({
-            #     a_coupling_type: coupling_dict
-            # })
-            # model_params[coupling._model_b.id]['couplings'].update({
-            #     b_coupling_type: coupling_dict
-            # })
 
         # render each model instance
         for identifier, model in self._models_by_id.items():
