@@ -41,16 +41,6 @@ When rendering the district system model file, it must:
 Refer to DistrictEnergySystem.mot and district.py for reference.
 
 Each templating step has access to a particular set of variables, which is defined below.
-To avoid collisions of modelica variable identifiers (ie variable names), the templating flow allows you to include jinja variables which wouldn't be provided in the templating context.
-As a note, name collisions could occur if you had two couplings linking the same system types.
-If they both declare a component with the name "foo" in the modelica file, the model will be invalid.
-
-For a jinja variable to be generated, it must meet these requirements:
-
-1. It must be included in the ComponentDefinitions template.
-2. The jinja variable name must end with _id. For example, "my_variable" would not be generated, but "my_variable_id" would.
-
-The generated variable names are then accessible in the other templating steps as well.
 
 Summary of Templating Contexts
 ++++++++++++++++++++++++++++++
@@ -65,25 +55,22 @@ Component Definitions
 
 This is the template which defines new components/variables necessary for a coupling. It has access to:
 
-- global variables (those defined in the district.py, such as medium_w = MediumW)
-- generated variable identifiers
-- load_id, ets_id, and/or network_id, which contains the identifier of the model instances being coupled. For example, if we were coupling TimeSeries load and CoolingIndirect ets, the template would have access to load_id and ets_id.
+- :code:`globals`: global variables (those defined in the district.py, such as medium_w = MediumW)
+- :code:`coupling`: contains the couling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append :code:`coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing :code:`parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal` you should do :code:`parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
 
 Connect Statements
 ******************
 
 This is the template which defines connect statements to be inserted into the equation section.
 
-- global variables
-- generated variable ids
-- load_id, ets_id, and/or network_id
+- :code:`globals`
+- :code:`coupling`: just like with the component definitions template, you should use the coupling.id to avoid variable name collisions.
 
 Model Instance
 **************
 
 This template is used to declare a model instance.
 
-- global vars defined in district.py
-- generated variable ids
-- type_path, which contains a path to the base model file (should be used for defining the instance type). This is derived from the python class's get_modelica_type() method
-- unique_id, which contains a unique ID for the model (should be used in place of a variable name for the component). This is derived from the python class's identifier attribute
+- :code:`globals`
+- :code:`couplings`: contains each coupling the model is associated with. For example, if our ETS was coupled to a load and network, couplings would look like :code:`{ load_coupling: <load coupling>, network_coupling: <network coupling> }`. This can be used to access coupling and model ids.
+- :code:`model`: contains info about the model instance, including :code:`modelica_type` and :code:`id`. These should be used to define the model, for example :code:`{{ model.modelica_type }} {{ model.id }}(...)`
