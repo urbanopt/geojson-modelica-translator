@@ -43,7 +43,7 @@ class TimeSeries(LoadBase):
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.identifier = 'MyTimeSeriesLoad'
+        self.id = 'MyTimeSeriesLoad'
 
     def to_modelica(self, scaffold):
         """

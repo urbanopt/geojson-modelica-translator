@@ -67,14 +67,14 @@ class District(object):
         self._models_by_id = {}
         for coupling in self._couplings:
             a, b = coupling._model_a, coupling._model_b
-            self._models_by_id[a.identifier] = a
-            self._models_by_id[b.identifier] = b
+            self._models_by_id[a.id] = a
+            self._models_by_id[b.id] = b
 
         self._couplings_by_model_id = defaultdict(list)
         for coupling in self._couplings:
             a, b = coupling._model_a, coupling._model_b
-            self._couplings_by_model_id[a.identifier].append(coupling)
-            self._couplings_by_model_id[b.identifier].append(coupling)
+            self._couplings_by_model_id[a.id].append(coupling)
+            self._couplings_by_model_id[b.id].append(coupling)
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
@@ -89,9 +89,9 @@ class District(object):
         for _, model in self._models_by_id.items():
             model.to_modelica(self._scaffold)
 
-        model_params = {
-            model_id: {'couplings': {}} for model_id in self._models_by_id
-        }
+        # model_params = {
+        #     model_id: {'couplings': {}} for model_id in self._models_by_id
+        # }
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
             "couplings": [],
@@ -113,15 +113,15 @@ class District(object):
             # TODO: don't reach into private vars...
             # TODO: move this logic elsewhere, not necessary to do here
             # associate the coupling with each model's templ
-            a_coupling_type = f'{coupling._model_b.simple_gmt_type}_coupling'
-            b_coupling_type = f'{coupling._model_a.simple_gmt_type}_coupling'
-            coupling_dict = coupling.to_dict()
-            model_params[coupling._model_a.identifier]['couplings'].update({
-                a_coupling_type: coupling_dict
-            })
-            model_params[coupling._model_b.identifier]['couplings'].update({
-                b_coupling_type: coupling_dict
-            })
+            # a_coupling_type = f'{coupling._model_b.simple_gmt_type}_coupling'
+            # b_coupling_type = f'{coupling._model_a.simple_gmt_type}_coupling'
+            # coupling_dict = coupling.to_dict()
+            # model_params[coupling._model_a.id]['couplings'].update({
+            #     a_coupling_type: coupling_dict
+            # })
+            # model_params[coupling._model_b.id]['couplings'].update({
+            #     b_coupling_type: coupling_dict
+            # })
 
         # render each model instance
         for identifier, model in self._models_by_id.items():
@@ -138,13 +138,13 @@ class District(object):
             for coupling in associated_couplings:
                 other_model = coupling.get_other_model(model)
                 coupling_type = f'{other_model.simple_gmt_type}_coupling'
-                directional_couplings[coupling_type] = coupling
+                directional_couplings[coupling_type] = coupling.to_dict()
 
             template_params = {
                 'model': model.to_dict(self._scaffold),
                 'couplings': directional_couplings,
             }
-            template_params.update(**model_params[identifier], **common_template_params)
+            template_params.update(**common_template_params)
             result = model.render_instance(template_params)
             district_template_params['models'].append(result)
 

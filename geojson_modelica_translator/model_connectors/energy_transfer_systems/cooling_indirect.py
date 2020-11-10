@@ -41,7 +41,7 @@ class CoolingIndirect(EnergyTransferBase):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.identifier = 'MyCoolingIndirect'
+        self.id = 'MyCoolingIndirect'
 
     def to_modelica(self, scaffold):
         """

@@ -69,10 +69,10 @@ class Coupling(object):
         return {
             'id': self._id,
             self._model_a.simple_gmt_type: {
-                'id': self._model_a.identifier,
+                'id': self._model_a.id,
             },
             self._model_b.simple_gmt_type: {
-                'id': self._model_b.identifier,
+                'id': self._model_b.id,
             }
         }
 
@@ -86,7 +86,7 @@ class Coupling(object):
             return self._model_b
         elif model == self._model_b:
             return self._model_a
-        raise Exception(f'Provided model, "{model.identifier}", is not part of the coupling')
+        raise Exception(f'Provided model, "{model.id}", is not part of the coupling')
 
     def _get_model_superclass(self, model):
         valid_superclasses = [LoadBase, EnergyTransferBase, NetworkBase]

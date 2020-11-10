@@ -38,7 +38,7 @@ class NetworkChilledWaterStub(NetworkBase):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.identifier = 'MyNetworkChilledWaterStub'
+        self.id = 'MyNetworkChilledWaterStub'
 
     def to_modelica(self, scaffold):
         """

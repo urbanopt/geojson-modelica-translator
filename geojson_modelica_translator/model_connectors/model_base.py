@@ -200,7 +200,7 @@ class ModelBase(object):
 
     def to_dict(self, scaffold):
         return {
-            'id': self.identifier,
+            'id': self.id,
             'modelica_type': self.get_modelica_type(scaffold)
         }
 
