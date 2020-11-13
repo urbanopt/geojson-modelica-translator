@@ -28,34 +28,28 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
-import shutil
-import unittest
-
-from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
+    EnergyTransferBase
+)
 
 
-class ScaffoldTest(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-        os.makedirs(self.output_dir)
+class EtsHotWaterStub(EnergyTransferBase):
+    model_name = 'EtsHotWaterStub'
 
-    def test_scaffold(self):
-        scaffold = Scaffold(self.output_dir, "scaffold_01", overwrite=True)
-        scaffold.create()
-        self.assertTrue(
-            os.path.exists(os.path.join(self.output_dir, "scaffold_01", "Resources", "Scripts", "Loads", "Dymola"))
-        )
+    def __init__(self, system_parameters):
+        super().__init__(system_parameters)
+        self.id = 'MyEtsHotWaterStub'
 
-    # def test_add_building(self):
-    #     scaffold = Scaffold(self.output_dir, "scaffold_02", overwrite=True)
-    #     load_1 = FakeConnector(None)
-    #     self.assertIsInstance(load_1, building_base)
-    #     scaffold.loads.append(load_1)
-    #     scaffold.create()
-    #
-    #     r = scaffold.to_modelica()
-    #     self.assertTrue(r)
+    def to_modelica(self, scaffold):
+        """
+        Create indirect cooling models based on the data in the buildings and geojsons
+
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
+        """
+        # this stub does not have any modelica files to generate as it's not its own model
+        # It's contained within the coupling files
+        pass
+
+    def get_modelica_type(self, scaffold):
+        # this stub does not have a type as it's not packaged into its own model currently
+        return 'UNIMPLEMENTED'

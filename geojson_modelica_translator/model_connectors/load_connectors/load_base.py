@@ -27,35 +27,17 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
-import os
-import shutil
-import unittest
-
-from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
-class ScaffoldTest(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-        os.makedirs(self.output_dir)
+class LoadBase(ModelBase):
+    """
+    Base class of the load connectors.
+    """
+    simple_gmt_type = 'load'
 
-    def test_scaffold(self):
-        scaffold = Scaffold(self.output_dir, "scaffold_01", overwrite=True)
-        scaffold.create()
-        self.assertTrue(
-            os.path.exists(os.path.join(self.output_dir, "scaffold_01", "Resources", "Scripts", "Loads", "Dymola"))
-        )
-
-    # def test_add_building(self):
-    #     scaffold = Scaffold(self.output_dir, "scaffold_02", overwrite=True)
-    #     load_1 = FakeConnector(None)
-    #     self.assertIsInstance(load_1, building_base)
-    #     scaffold.loads.append(load_1)
-    #     scaffold.create()
-    #
-    #     r = scaffold.to_modelica()
-    #     self.assertTrue(r)
+    def __init__(self, system_parameters, geojson_load=None):
+        super().__init__(system_parameters)
+        # TODO: remove add_building and remove default value for geojson_load (there should only ever be a single load for a model)
+        if geojson_load is not None:
+            self.add_building(geojson_load)

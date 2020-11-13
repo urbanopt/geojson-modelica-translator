@@ -33,10 +33,24 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
+from geojson_modelica_translator.model_connectors.couplings.coupling import (
+    Coupling
+)
+from geojson_modelica_translator.model_connectors.districts.district import (
+    District
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
+    CoolingIndirect
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
+    EtsHotWaterStub
+)
 from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
     TimeSeries
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub import (
+    NetworkChilledWaterStub
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -44,43 +58,45 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
-    def test_no_ets_and_run(self):
-        project_name = "time_series_no_ets"
+class DistrictSystemTest(TestCaseBase):
+    def test_district_system(self):
+        project_name = "district_system_new"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
+        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
 
-        # now test the connector (independent of the larger geojson translator)
-        self.time_series = TimeSeries(sys_params, self.gj.json_loads[0])
+        # Create the time series load, ets and their coupling
+        time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
+        cooling_indirect_system = CoolingIndirect(sys_params)
+        ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
 
-        self.assertIsNotNone(self.time_series)
-        self.assertEqual(len(self.time_series.buildings), 1)
-        self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+        # create chilled water stub for the ets
+        chilled_water_stub = NetworkChilledWaterStub(sys_params)
+        ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
 
-        # currently we must setup the root project before we can run to_modelica
-        package = PackageParser.new_from_template(self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
-        package.save()
-        self.time_series.to_modelica(self.gj.scaffold)
+        #  create hot water stub for the load
+        hot_water_stub = EtsHotWaterStub(sys_params)
+        ts_hw_coupling = Coupling(time_series_load, hot_water_stub)
 
-        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
-        files = [
-            os.path.join(root_path, 'building.mo'),
-        ]
+        district = District(
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            couplings=[
+                ts_ci_coupling,
+                ci_cw_coupling,
+                ts_hw_coupling,
+            ]
+        )
+        district.to_modelica()
 
-        # verify that there are only 2 files that matter (coupling and building)
-        for file in files:
-            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
-
-        # self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
-        #                               project_path=self.gj.scaffold.project_path,
-        #                               project_name=self.gj.scaffold.project_name)
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)

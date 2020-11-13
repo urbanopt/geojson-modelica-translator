@@ -64,6 +64,7 @@ class Scaffold(object):
         self.plants_path = None
         self.districts_path = None
         self.scripts_path = None
+        self.networks_path = None
         self.overwrite = overwrite
 
         # clear out the project path
@@ -82,6 +83,7 @@ class Scaffold(object):
         self.substations_path = ModelicaPath("Substations", root_dir=self.project_path, overwrite=self.overwrite)
         self.plants_path = ModelicaPath("Plants", root_dir=self.project_path, overwrite=self.overwrite)
         self.districts_path = ModelicaPath("Districts", root_dir=self.project_path, overwrite=self.overwrite)
+        self.networks_path = ModelicaPath("Networks", root_dir=self.project_path, overwrite=self.overwrite)
 
     def clear_or_create_path(self, path, overwrite=False):
         if os.path.exists(path):

@@ -27,35 +27,11 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
-import os
-import shutil
-import unittest
-
-from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
-class ScaffoldTest(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-        os.makedirs(self.output_dir)
-
-    def test_scaffold(self):
-        scaffold = Scaffold(self.output_dir, "scaffold_01", overwrite=True)
-        scaffold.create()
-        self.assertTrue(
-            os.path.exists(os.path.join(self.output_dir, "scaffold_01", "Resources", "Scripts", "Loads", "Dymola"))
-        )
-
-    # def test_add_building(self):
-    #     scaffold = Scaffold(self.output_dir, "scaffold_02", overwrite=True)
-    #     load_1 = FakeConnector(None)
-    #     self.assertIsInstance(load_1, building_base)
-    #     scaffold.loads.append(load_1)
-    #     scaffold.create()
-    #
-    #     r = scaffold.to_modelica()
-    #     self.assertTrue(r)
+class EnergyTransferBase(ModelBase):
+    """
+    Base class of the energy transfer connectors.
+    """
+    simple_gmt_type = 'ets'

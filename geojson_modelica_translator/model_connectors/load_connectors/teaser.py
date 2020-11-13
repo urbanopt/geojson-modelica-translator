@@ -32,15 +32,16 @@ import glob
 import os
 import shutil
 
-from geojson_modelica_translator.model_connectors.load_connectors.base import \
-    Base as model_connector_base
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
+    LoadBase
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, copytree
 from modelica_builder.model import Model
 from teaser.project import Project
 
 
-class TeaserConnector(model_connector_base):
+class TeaserConnector(LoadBase):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
 

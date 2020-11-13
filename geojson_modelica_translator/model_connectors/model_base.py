@@ -31,15 +31,17 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import shutil
 from pathlib import Path
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from modelica_builder.model import Model
 
 
-class Base(object):
+class ModelBase(object):
     """
     Base class of the model connectors. The connectors can utilize various methods to create a building (or other
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
+    # model_name must be overridden in subclass
+    model_name = None
 
     def __init__(self, system_parameters):
         """
@@ -51,7 +53,7 @@ class Base(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = Path(__file__).parent.parent / "templates"
+        self.template_dir = Path(__file__).parent / "templates"
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
 
         # store a list of the templated files to include when building the package
@@ -184,3 +186,26 @@ class Base(object):
         elif p.suffix == ".epw" or p.suffix == ".mos":
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
+
+    def render_instance(self, template_params):
+        # TODO: both to_modelica and render_instance should use the same template environment
+        # This should be fixed once all of the template files have the same variable substitution delimiters
+        # TODO: move templates into specific model directories and have subclass override template_dir and template_env
+        # This should be done once both to_modelica and render_instance can use the same environment
+        template_env = Environment(
+            loader=FileSystemLoader(searchpath=self.template_dir),
+            undefined=StrictUndefined)
+        template = template_env.get_template(f'{self.model_name}_Instance.mopt')
+        return template.render(template_params)
+
+    def to_dict(self, scaffold):
+        return {
+            'id': self.id,
+            'modelica_type': self.get_modelica_type(scaffold)
+        }
+
+    # TODO: this should be implemented here, not in individual classes
+    # def get_modelica_type(self, scaffold)
+
+    # These methods need to be defined in each of the derived model connectors
+    # def to_modelica(self):

@@ -28,34 +28,25 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
-import shutil
-import unittest
-
-from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.model_connectors.networks.network_base import (
+    NetworkBase
+)
 
 
-class ScaffoldTest(unittest.TestCase):
-    def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-        os.makedirs(self.output_dir)
+class NetworkChilledWaterStub(NetworkBase):
+    model_name = 'NetworkChilledWaterStub'
 
-    def test_scaffold(self):
-        scaffold = Scaffold(self.output_dir, "scaffold_01", overwrite=True)
-        scaffold.create()
-        self.assertTrue(
-            os.path.exists(os.path.join(self.output_dir, "scaffold_01", "Resources", "Scripts", "Loads", "Dymola"))
-        )
+    def __init__(self, system_parameters):
+        super().__init__(system_parameters)
+        self.id = 'MyNetworkChilledWaterStub'
 
-    # def test_add_building(self):
-    #     scaffold = Scaffold(self.output_dir, "scaffold_02", overwrite=True)
-    #     load_1 = FakeConnector(None)
-    #     self.assertIsInstance(load_1, building_base)
-    #     scaffold.loads.append(load_1)
-    #     scaffold.create()
-    #
-    #     r = scaffold.to_modelica()
-    #     self.assertTrue(r)
+    def to_modelica(self, scaffold):
+        """
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
+        """
+        # this stub has no model to generate, its fully implemented in the coupling currently
+        pass
+
+    def get_modelica_type(self, scaffold):
+        # this stub has no model, so there's no type
+        return 'UNIMPLEMENTED'

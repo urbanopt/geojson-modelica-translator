@@ -35,6 +35,8 @@ import re
 import subprocess
 from tempfile import mkstemp
 
+SKIP_FILES = ['DistrictEnergySystem.mot']
+
 
 class FormatModelicaFiles(distutils.cmd.Command):
     """Custom comand for applying modelicafmt to modelica files. Note that modelicafmt executable must be available in
@@ -60,6 +62,8 @@ class FormatModelicaFiles(distutils.cmd.Command):
             files = [os.path.join(template_dir, file_) for file_ in os.listdir(template_dir)]
 
         for filepath in files:
+            if os.path.basename(filepath) in SKIP_FILES:
+                continue
             try:
                 if filepath.endswith(".mot"):
                     preprocess_and_format(filepath)

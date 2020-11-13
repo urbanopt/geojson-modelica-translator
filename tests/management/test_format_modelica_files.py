@@ -34,7 +34,7 @@ import shutil
 import unittest
 
 import pytest
-from management.format_modelica_files import preprocess_and_format
+from management.format_modelica_files import SKIP_FILES, preprocess_and_format
 
 
 class FormatModelicaFilesTest(unittest.TestCase):
@@ -54,7 +54,7 @@ class FormatModelicaFilesTest(unittest.TestCase):
             filepath = os.path.join(self.template_dir, file_)
             outfilepath = os.path.join(self.output_dir, file_)
 
-            if not file_.endswith(".mot"):
+            if not file_.endswith(".mot") or os.path.basename(file_) in SKIP_FILES:
                 continue
 
             preprocess_and_format(filepath, outfilepath)
@@ -64,4 +64,4 @@ class FormatModelicaFilesTest(unittest.TestCase):
                 orig_stripped = re.sub(r'\s', '', orig.read())
                 new_stripped = re.sub(r'\s', '', new.read())
                 self.assertEqual(orig_stripped, new_stripped,
-                                 'Original and formatted files should have the same content')
+                                 f'Original and formatted files for {filepath} should have the same content')

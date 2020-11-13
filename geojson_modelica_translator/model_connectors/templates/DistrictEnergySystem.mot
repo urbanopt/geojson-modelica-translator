@@ -1,0 +1,30 @@
+within {{ district_within_path }};
+model DistrictEnergySystem
+  extends Modelica.Icons.Example;
+  // District Parameters
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  package MediumA=Buildings.Media.Air
+    "Load side medium";
+
+  // Models
+  {% for model_definition in models %}
+    {{ model_definition }}
+  {% endfor %}
+
+  // Model dependencies
+  {% for coupling in couplings %}
+    {{ coupling.component_definitions }}
+  {% endfor %}
+equation
+  // Connections
+  {% for coupling in couplings %}
+    {{ coupling.connect_statements }}
+  {% endfor %}
+
+  annotation (
+    experiment(
+      StopTime=86400,
+      Interval=3600,
+      Tolerance=1e-06));
+end DistrictEnergySystem;

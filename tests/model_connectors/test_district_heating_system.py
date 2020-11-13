@@ -36,11 +36,11 @@ from pathlib import Path
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.district_connectors.district_system import (
+from geojson_modelica_translator.model_connectors.districts.district_system import (
     DistrictSystemConnector
 )
-from geojson_modelica_translator.model_connectors.load_connectors.base import \
-    Base as district_connector_base
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import \
+    LoadBase as district_connector_base
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters

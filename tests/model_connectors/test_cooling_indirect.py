@@ -33,8 +33,8 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
-    TimeSeries
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
+    CoolingIndirect
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.system_parameters.system_parameters import (
@@ -44,9 +44,9 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
-    def test_no_ets_and_run(self):
-        project_name = "time_series_no_ets"
+class CoolingIndirectTest(TestCaseBase):
+    def test_cooling_indirect(self):
+        project_name = "cooling_indirect"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single office building
@@ -56,31 +56,21 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
+        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
-
-        # now test the connector (independent of the larger geojson translator)
-        self.time_series = TimeSeries(sys_params, self.gj.json_loads[0])
-
-        self.assertIsNotNone(self.time_series)
-        self.assertEqual(len(self.time_series.buildings), 1)
-        self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
         package.save()
-        self.time_series.to_modelica(self.gj.scaffold)
+        # now test the connector (independent of the larger geojson translator)
+        self.cooling_indirect = CoolingIndirect(sys_params)
+        self.cooling_indirect.to_modelica(self.gj.scaffold)
 
-        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
+        root_path = os.path.abspath(os.path.join(self.gj.scaffold.substations_path.files_dir))
         files = [
-            os.path.join(root_path, 'building.mo'),
+            os.path.join(root_path, 'CoolingIndirect.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
-
-        # self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
-        #                               project_path=self.gj.scaffold.project_path,
-        #                               project_name=self.gj.scaffold.project_name)

@@ -1,0 +1,12 @@
+  // TODO: move these components into a single component
+  Buildings.Fluid.Sources.Boundary_pT supHeaWat(
+    redeclare package Medium={{ globals.medium_w }},
+    use_T_in=true,
+    nPorts=1)
+    "Heating water supply"
+    {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-30,78})));{% endraw %}
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+    redeclare package Medium={{ globals.medium_w }},
+    nPorts=1)
+    "Sink for heating water"
+    {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={74,80})));{% endraw %}
