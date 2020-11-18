@@ -1,0 +1,16 @@
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal_{{ model.id }}[{{ model.id }}.nZon]={(-1*{{ model.id }}.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:{{ model.id }}.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal_{{ model.id }}[{{ model.id }}.nZon]={({{ model.id }}.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:{{ model.id }}.nZon};
+  {{ model.modelica_type }} {{ model.id }}(
+    mLoaCoo_flow_nominal=mLoaCoo_flow_nominal_{{ model.id }},
+    mLoaHea_flow_nominal=mLoaHea_flow_nominal_{{ model.id }},
+    T_aChiWat_nominal=280.15,
+    T_bChiWat_nominal=285.15,
+    T_aHeaWat_nominal=40+273.15,
+    T_bHeaWat_nominal=35+273.15,
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1,
+    have_pum=true)
+    "Building spawn model"
+    {% raw %}annotation (Placement(transformation(extent={{40,-40},{60,-20}}))){% endraw %};
