@@ -60,16 +60,15 @@ class CsvModelicaTest(unittest.TestCase):
 
     def test_csv_modelica(self):
         input_file = Path(self.data_dir) / 'building_loads.csv'
-        output_modelica_file_name = Path(self.output_dir) / 'new_modelica'
+        output_modelica_file_name = Path(self.output_dir) / 'modelica.csv'
 
         csv_converter = CSVModelica(input_file)
         # save the updated time series to the output directory of the test folder
         csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
-        output_filepath = Path(f"{output_modelica_file_name}.csv")
-        self.assertTrue(output_filepath.exists())
+        self.assertTrue(output_modelica_file_name.exists())
 
         # check if a string is in there
-        with open(output_filepath, 'r') as f:
+        with open(output_modelica_file_name, 'r') as f:
             data = f.read()
             self.assertTrue('14400,52.74,82.22,4.06,15.41,6.68,10.35' in data)
             self.assertTrue('31532400,58.72,82.22,2.47,15.19,6.68,5.62' in data)

@@ -85,7 +85,7 @@ class CSVModelica(object):
         Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
         rate and the nominal cooling water mass flow rate into the header.
 
-        :param output_modelica_file_name: string, The name of the outputfile. The extension is automatically added.
+        :param output_modelica_file_name: string, The path to the desired output file name.
         :param data_type: string, data type being converted, defaults to double
         :param overwrite: boolean, if the resulting file exists, then overwrite, defaults to True.
         :return: file created to be ingested into Modelica
@@ -95,11 +95,10 @@ class CSVModelica(object):
         self.timeseries_output = self.timeseries_output.rename(columns={'SecondsFromStart': '#time'})
 
         # write to csv for modelica
-        output_modelica_file_name_full = f'{output_modelica_file_name}.csv'
-        if Path(output_modelica_file_name_full).exists() and not overwrite:
+        if Path(output_modelica_file_name).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {output_modelica_file_name}")
 
-        with open(output_modelica_file_name_full, 'w') as f:
+        with open(Path(output_modelica_file_name), 'w') as f:
             line1 = '#1'
             line2 = f"{data_type} {output_modelica_file_name}({size[0]}, {size[1]})"
             line3 = '#Nominal heating water mass flow rate=' + str(self.nominal_heating_mass_flow_rate.loc[0, '#value'])
