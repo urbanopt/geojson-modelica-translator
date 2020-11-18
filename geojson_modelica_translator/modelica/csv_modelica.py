@@ -126,7 +126,7 @@ class CSVModelica(object):
             raise Exception(f"Output file already exists and overwrite is False: {output_modelica_file_name}")
 
         print(output_modelica_file_name)
-        print(os.path.basename(output_modelica_file_name))
+        print(Path(output_modelica_file_name).stem)
         with open(output_modelica_file_name_full, 'w') as f:
             line1 = '#1'
             line2 = f"{data_type} {Path(output_modelica_file_name).stem}({size[0]}, {size[1]})"
