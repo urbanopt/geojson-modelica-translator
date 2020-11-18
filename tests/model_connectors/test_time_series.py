@@ -68,7 +68,8 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
                          self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 
         # currently we must setup the root project before we can run to_modelica
-        package = PackageParser.new_from_template(self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
+        package = PackageParser.new_from_template(
+            self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
         package.save()
         self.time_series.to_modelica(self.gj.scaffold)
 

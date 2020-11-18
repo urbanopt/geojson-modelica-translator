@@ -82,7 +82,8 @@ class District(object):
         """
         self._scaffold.create()
         # create the root package
-        root_package = PackageParser.new_from_template(self._scaffold.project_path, self._scaffold.project_name, order=[])
+        root_package = PackageParser.new_from_template(
+            self._scaffold.project_path, self._scaffold.project_name, order=[])
         root_package.save()
 
         # generate model modelica files
@@ -137,9 +138,8 @@ class District(object):
         with open(f'{self._scaffold.districts_path.files_dir}/DistrictEnergySystem.mo', 'w') as f:
             f.write(final_result)
 
-        districts_package = PackageParser.new_from_template(
-            self._scaffold.districts_path.files_dir, "Districts", ['DistrictEnergySystem'], within=f"{self._scaffold.project_name}"
-        )
+        districts_package = PackageParser.new_from_template(self._scaffold.districts_path.files_dir, "Districts", [
+            'DistrictEnergySystem'], within=f"{self._scaffold.project_name}")
         districts_package.save()
         root_package = PackageParser(self._scaffold.project_path)
         root_package.add_model('Districts')

@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # coding: utf-8
 
 from pathlib import Path
+
 import pandas as pd
 
 
@@ -57,12 +58,18 @@ class CSVModelica(object):
             raise Exception(f"Unable to convert CSV file because this path does not exist: {input_csv_file_path}")
 
         # read the data set
-        columns_to_use = ['SecondsFromStart', 'heatingReturnTemperature[C]', 'heatingSupplyTemperature[C]',
-        'massFlowRateHeating', 'ChilledWaterReturnTemperature[C]', 'ChilledWaterSupplyTemperature[C]', 'massFlowRateCooling']
+        columns_to_use = [
+            'SecondsFromStart',
+            'heatingReturnTemperature[C]',
+            'heatingSupplyTemperature[C]',
+            'massFlowRateHeating',
+            'ChilledWaterReturnTemperature[C]',
+            'ChilledWaterSupplyTemperature[C]',
+            'massFlowRateCooling']
         try:
             self.timeseries_output = pd.read_csv(input_csv_file_path, usecols=columns_to_use).round(2)
         except ValueError as ve:
-        #     ValueError if column header is misspelled or missing
+            #     ValueError if column header is misspelled or missing
             raise SystemExit(ve)
 
         # If time doesn't start at zero, copy the first line since Dymola wants to have time start at zero.
@@ -70,7 +77,8 @@ class CSVModelica(object):
             self.timeseries_15min = self.timeseries_output.loc[[0], :]
         #     sort_index() puts the copied row at the top, as it also has index 0
         #     reset_index() makes the index unique again, while keeping the duplicated row at the top
-            self.timeseries_output = pd.concat([self.timeseries_output, self.timeseries_15min]).sort_index().reset_index(drop=True)
+            self.timeseries_output = pd.concat([self.timeseries_output,
+                                                self.timeseries_15min]).sort_index().reset_index(drop=True)
 
         # Extract the nominal flow rates from the file
         self.nominal_heating_mass_flow_rate = pd.DataFrame(
