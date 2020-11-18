@@ -53,6 +53,7 @@ class CsvModelicaTest(unittest.TestCase):
     def test_misshapen_csv_fails_gracefully(self):
         with self.assertRaises(SystemExit) as context:
             input_file = Path(self.data_dir) / 'misshapen_building_loads.csv'
+            # This input file has a typo in a column name and a missing column. Each will cause the ValueError.
             CSVModelica(input_file)
             self.assertIn(
                 "Usecols do not match columns, columns expected but not found:", str(

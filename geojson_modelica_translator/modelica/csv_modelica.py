@@ -92,6 +92,7 @@ class CSVModelica(object):
         """
         # evaluate dimensions of the matrix
         size = self.timeseries_output.shape
+        # The # symbol is needed to tell Dymola this line is a comment in the output file.
         self.timeseries_output = self.timeseries_output.rename(columns={'SecondsFromStart': '#time'})
 
         # write to csv for modelica
