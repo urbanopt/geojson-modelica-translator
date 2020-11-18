@@ -47,7 +47,7 @@ class CsvModelicaTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             input_file = os.path.join(self.data_dir, 'DNE.csv')
             CSVModelica(input_file)
-        self.assertIn("Unable to convert CSV file because it does not exist:", str(context.exception))
+        self.assertIn("Unable to convert CSV file because this path does not exist:", str(context.exception))
 
     def test_csv_modelica(self):
         input_file = os.path.join(self.data_dir, 'Mass_Flow_Rates_Temperatures.csv')
