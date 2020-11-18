@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
+from pathlib import Path
 
 from geojson_modelica_translator.modelica.csv_modelica import CSVModelica
 
@@ -49,18 +50,25 @@ class CsvModelicaTest(unittest.TestCase):
             CSVModelica(input_file)
         self.assertIn("Unable to convert CSV file because this path does not exist:", str(context.exception))
 
+    def test_misshapen_csv_fails_gracefully(self):
+        with self.assertRaises(SystemExit) as context:
+            input_file = Path(self.data_dir) / 'misshapen_building_loads.csv'
+            CSVModelica(input_file)
+            self.assertIn(
+                "Usecols do not match columns, columns expected but not found: ['ChilledWaterSupplyTemperature[C]', 'heatingReturnTemperature[C]']", str(
+                    context.exception))
+
     def test_csv_modelica(self):
-        input_file = os.path.join(self.data_dir, 'Mass_Flow_Rates_Temperatures.csv')
-        energyplus_timestep = 60 * 15
-        output_modelica_file_name = os.path.join(self.output_dir, 'modelica')
+        input_file = Path(self.data_dir) / 'building_loads.csv'
+        output_modelica_file_name = Path(self.output_dir) / 'new_modelica'
 
         csv_converter = CSVModelica(input_file)
         # save the updated time series to the output directory of the test folder
-        csv_converter.timeseries_to_modelica_data(output_modelica_file_name, energyplus_timestep, 'double')
-        self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'modelica.csv')))
+        csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
+        self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'new_modelica.csv')))
 
         # check if a string is in there
-        with open(os.path.join(self.output_dir, 'modelica.csv'), 'r') as f:
+        with open(Path(self.output_dir) / 'new_modelica.csv', 'r') as f:
             data = f.read()
-            self.assertTrue('12600,42.25,55.0,15.73,6.67,8.58,0.19' in data)
-            self.assertTrue('29700000,39.32,55.0,15.75,6.67,2.08,0.29' in data)
+            self.assertTrue('14400,52.74,82.22,4.06,15.41,6.68,10.35' in data)
+            self.assertTrue('31532400,58.72,82.22,2.47,15.19,6.68,5.62' in data)
