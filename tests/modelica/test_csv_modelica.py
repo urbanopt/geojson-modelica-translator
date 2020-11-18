@@ -55,7 +55,7 @@ class CsvModelicaTest(unittest.TestCase):
             input_file = Path(self.data_dir) / 'misshapen_building_loads.csv'
             CSVModelica(input_file)
             self.assertIn(
-                "Usecols do not match columns, columns expected but not found: ['ChilledWaterSupplyTemperature[C]', 'heatingReturnTemperature[C]']", str(
+                "Usecols do not match columns, columns expected but not found:", str(
                     context.exception))
 
     def test_csv_modelica(self):
