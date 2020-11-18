@@ -27,8 +27,6 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-# !/usr/bin/env python
-# coding: utf-8
 
 from pathlib import Path
 
@@ -39,17 +37,9 @@ class CSVModelica(object):
 
     def __init__(self, input_csv_file_path):
         """
-        Convert a CSV file into the format required by Modelica. This is specific to the Mass Flow Rate file only
-        and requires the file format to contain the following headers in this order.
-
-        0: Date/Time, string, date time. This column isn't used and will be removed upon writing out.
-        1: THWR, double, Temperature hot water return, degC
-        2: THWSET, double, Temperature hot water setpoint, degC
-        3: TChWR, double, Temperature chilled water return, degC
-        4: TChWSET, double, Temperature chilled water setpoint, degC
-        5: massFlowRateHeating, double, heating water mass flow rate, must be named massFlowRateHeating, kg/s
-        6: massFlowRateCooling, double, cooling water mass flow rate, must be named massFlowRateCooling, kg/s
-
+        Convert a CSV file into the format required by Modelica. Expects a file resulting from
+        https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica, which is included
+        in the URBANopt SDK. TODO: this is in process as of 2020-11-18
 
         :param input_csv_file_path: string, path to file to convert.
         """
@@ -98,11 +88,11 @@ class CSVModelica(object):
         :param output_modelica_file_name: string, The name of the outputfile. The extension is automatically added.
         :param data_type: string, data type being converted, defaults to double
         :param overwrite: boolean, if the resulting file exists, then overwrite, defaults to True.
-        :return:
+        :return: file created to be ingested into Modelica
         """
         # evaluate dimensions of the matrix
         size = self.timeseries_output.shape
-        timeseries_output = timeseries_output.rename(columns={'SecondsFromStart': '#time'})
+        self.timeseries_output = self.timeseries_output.rename(columns={'SecondsFromStart': '#time'})
 
         # write to csv for modelica
         output_modelica_file_name_full = f'{output_modelica_file_name}.csv'
