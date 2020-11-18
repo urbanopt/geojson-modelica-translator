@@ -46,7 +46,7 @@ class CsvModelicaTest(unittest.TestCase):
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
-            input_file = os.path.join(self.data_dir, 'DNE.csv')
+            input_file = Path(self.data_dir) / 'DNE.csv'
             CSVModelica(input_file)
         self.assertIn("Unable to convert CSV file because this path does not exist:", str(context.exception))
 
@@ -65,10 +65,11 @@ class CsvModelicaTest(unittest.TestCase):
         csv_converter = CSVModelica(input_file)
         # save the updated time series to the output directory of the test folder
         csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
-        self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'new_modelica.csv')))
+        output_filepath = Path(f"{output_modelica_file_name}.csv")
+        self.assertTrue(output_filepath.exists())
 
         # check if a string is in there
-        with open(Path(self.output_dir) / 'new_modelica.csv', 'r') as f:
+        with open(output_filepath, 'r') as f:
             data = f.read()
             self.assertTrue('14400,52.74,82.22,4.06,15.41,6.68,10.35' in data)
             self.assertTrue('31532400,58.72,82.22,2.47,15.19,6.68,5.62' in data)
