@@ -72,14 +72,6 @@ class CSVModelica(object):
             #     ValueError if column header is misspelled or missing
             raise SystemExit(ve)
 
-        # If time doesn't start at zero, copy the first line since Dymola wants to have time start at zero.
-        if (self.timeseries_output.loc[0][0] != 0):
-            self.timeseries_15min = self.timeseries_output.loc[[0], :]
-        #     sort_index() puts the copied row at the top, as it also has index 0
-        #     reset_index() makes the index unique again, while keeping the duplicated row at the top
-            self.timeseries_output = pd.concat([self.timeseries_output,
-                                                self.timeseries_15min]).sort_index().reset_index(drop=True)
-
         # Extract the nominal flow rates from the file
         self.nominal_heating_mass_flow_rate = pd.DataFrame(
             {'#heating': ['#Nominal heating water mass flow rate'],
@@ -97,7 +89,6 @@ class CSVModelica(object):
     def timeseries_to_modelica_data(
             self,
             output_modelica_file_name,
-            energyplus_timestep_minutes=15,
             data_type='double',
             overwrite=True):
         """
@@ -105,32 +96,23 @@ class CSVModelica(object):
         rate and the nominal cooling water mass flow rate into the header.
 
         :param output_modelica_file_name: string, The name of the outputfile. The extension is automatically added.
-        :param energyplus_timestep_minutes: int, EnergyPlus timestep (time between each reading), defaults to 15
         :param data_type: string, data type being converted, defaults to double
         :param overwrite: boolean, if the resulting file exists, then overwrite, defaults to True.
         :return:
         """
         # evaluate dimensions of the matrix
         size = self.timeseries_output.shape
-        print(size)
-        print(self.timeseries_output.index)
-        # modify the index for modelica mos
-        self.timeseries_output.index = self.timeseries_output.index * energyplus_timestep_minutes
-        self.timeseries_output.index.name = '#time'
+        timeseries_output = timeseries_output.rename(columns={'SecondsFromStart': '#time'})
 
-        # Remove the first column, which is the date/time (regardless of the name)
-        self.timeseries_output.drop(self.timeseries_output.columns[0], axis=1, inplace=True)
         # write to csv for modelica
         output_modelica_file_name_full = f'{output_modelica_file_name}.csv'
         if Path(output_modelica_file_name_full).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {output_modelica_file_name}")
 
-        print(output_modelica_file_name)
-        print(Path(output_modelica_file_name).stem)
         with open(output_modelica_file_name_full, 'w') as f:
             line1 = '#1'
-            line2 = f"{data_type} {Path(output_modelica_file_name).stem}({size[0]}, {size[1]})"
+            line2 = f"{data_type} {output_modelica_file_name}({size[0]}, {size[1]})"
             line3 = '#Nominal heating water mass flow rate=' + str(self.nominal_heating_mass_flow_rate.loc[0, '#value'])
             line4 = '#Nominal chilled water mass flow rate=' + str(self.nominal_cooling_mass_flow_rate.loc[0, '#value'])
             f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1, line2, line3, line4))
-            self.timeseries_output.to_csv(f, header=True)
+            self.timeseries_output.to_csv(f, header=True, index=False)
