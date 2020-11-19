@@ -1,4 +1,4 @@
-  // time series, ets hot water stub connections
+  // spawn, ets hot water stub connections
   connect(supHeaWat.T_in,THeaWatSup_{{ coupling.id }}.y)
     {% raw %}annotation (Line(points={{-42,82},{-46,82},{-46,86},{-59,86}},color={0,0,127}));{% endraw %}
   connect(supHeaWat.ports[1],{{ coupling.load.id }}.ports_aHeaWat[1])
