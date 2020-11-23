@@ -31,7 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import shutil
 from pathlib import Path
 
-from jinja2 import Environment, FileSystemLoader, StrictUndefined
+from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
 
 
@@ -195,7 +195,12 @@ class ModelBase(object):
         template_env = Environment(
             loader=FileSystemLoader(searchpath=self.template_dir),
             undefined=StrictUndefined)
-        template = template_env.get_template(f'{self.model_name}_Instance.mopt')
+        template_name = f'{self.model_name}_Instance.mopt'
+        try:
+            template = template_env.get_template(template_name)
+        except exceptions.TemplateNotFound:
+            raise Exception(f"Could not find mopt template '{template_name}' in {self.template_dir}")
+
         return template.render(template_params)
 
     def to_dict(self, scaffold):

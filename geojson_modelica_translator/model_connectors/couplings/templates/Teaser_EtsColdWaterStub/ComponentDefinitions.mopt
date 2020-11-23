@@ -1,0 +1,15 @@
+  Modelica.Blocks.Sources.RealExpression TChiWatSup_{{ coupling.id }}(
+    y=min(
+      {{ coupling.load.id }}.terUni.T_aChiWat_nominal))
+    "Chilled water supply temperature"
+    {% raw %}annotation (Placement(transformation(extent={{-110,-50},{-90,-30}}))){% endraw %};
+
+  // This component model is only needed once even if there is heating and cooling. For now put this on the
+  // Cooling side.
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
+    calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
+    pAtm(displayUnit="Pa") = 101339,
+    filNam=Modelica.Utilities.Files.loadResource(weaName),
+    computeWetBulbTemperature=true)
+    "Weather data reader"
+    {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}}, rotation=90, origin={56,96}))){% endraw %};

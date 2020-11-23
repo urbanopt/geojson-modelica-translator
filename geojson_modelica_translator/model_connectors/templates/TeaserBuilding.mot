@@ -13,7 +13,7 @@ model building
   parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of thermal zones";
   parameter Integer facSca=3
-    "Scaling factor to be applied to on each extensive quantity";
+    "Scaling factor to be applied to each extensive quantity";
   parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
     "Nominal building supply and return chilled water temperature difference";
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](

@@ -15,7 +15,7 @@ model building
   parameter Integer facSca[nZon]=fill(
     5,
     nZon)
-    "Scaling factor to be applied to on each extensive quantity";
+    "Scaling factor to be applied to each extensive quantity";
   parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[nZon]
     "Load side mass flow rate at cooling nominal conditions"
     annotation (Dialog(group="Nominal condition"));
