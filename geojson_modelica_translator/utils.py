@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
 import os
 import shutil
+from uuid import uuid4
 
 _log = logging.getLogger(__name__)
 
@@ -143,3 +144,11 @@ class ModelicaPath(object):
             return self.scripts_relative_dir
         else:
             return os.path.join(self.root_dir, self.scripts_relative_dir)
+
+
+def simple_uuid():
+    """Generates a simple string uuid
+
+    :return: string, uuid
+    """
+    return str(uuid4()).split("-")[0]
