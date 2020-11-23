@@ -28,7 +28,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 import os
-from uuid import uuid4
 
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
@@ -39,6 +38,7 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
 from geojson_modelica_translator.model_connectors.networks.network_base import (
     NetworkBase
 )
+from geojson_modelica_translator.utils import simple_uuid
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, meta
 
 
@@ -63,7 +63,7 @@ class Coupling(object):
             loader=FileSystemLoader(searchpath=template_dir),
             undefined=StrictUndefined)
 
-        self._id = str(uuid4()).split("-")[0]
+        self._id = simple_uuid()
 
     def to_dict(self):
         return {

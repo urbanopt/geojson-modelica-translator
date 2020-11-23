@@ -1,0 +1,5 @@
+  Modelica.Blocks.Sources.RealExpression THeaWatSup_{{ coupling.id }}(
+    y=max(
+      {{ coupling.load.id }}.terUni.T_aHeaWat_nominal))
+    "Heating water supply temperature"
+    {% raw %}annotation (Placement(transformation(extent={{-110,10},{-90,30}}))){% endraw %};
