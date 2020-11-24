@@ -39,9 +39,21 @@ class CSVModelica(object):
         """
         Convert a CSV file into the format required by Modelica. Expects a file resulting from
         https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica, which is included
-        in the URBANopt SDK. TODO: this is in process as of 2020-11-18
+        in the URBANopt SDK (potentially via common-measures-gem).
+        FIXME: this is in process as of 2020-11-18
+        TODO: Add support for input csv files directly from EnergyPlus (like it was before this PR). In that case,
+        this is specific to the Mass Flow Rate file only and requires the file format to contain the following headers
+        in this order:
 
-        :param input_csv_file_path: string, path to file to convert.
+        0: Date/Time, string, date time. This column isn't used and will be removed upon writing out.
+        1: THWR, double, Temperature hot water return, degC
+        2: THWSET, double, Temperature hot water setpoint, degC
+        3: TChWR, double, Temperature chilled water return, degC
+        4: TChWSET, double, Temperature chilled water setpoint, degC
+        5: massFlowRateHeating, double, heating water mass flow rate, must be named massFlowRateHeating, kg/s
+        6: massFlowRateCooling, double, cooling water mass flow rate, must be named massFlowRateCooling, kg/s
+
+        :param input_csv_file_path: string, path to input file.
         """
 
         if not Path(input_csv_file_path).exists():
