@@ -28,7 +28,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 import shutil
 import unittest
 from pathlib import Path
@@ -38,11 +37,9 @@ from geojson_modelica_translator.modelica.csv_modelica import CSVModelica
 
 class CsvModelicaTest(unittest.TestCase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-        os.makedirs(self.output_dir)
+        self.data_dir = Path(__file__).parent / 'data'
+        self.output_dir = Path(__file__).parent / 'output'
+        self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
