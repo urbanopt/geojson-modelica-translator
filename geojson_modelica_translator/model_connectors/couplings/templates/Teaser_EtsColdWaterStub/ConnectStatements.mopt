@@ -5,8 +5,3 @@
     {% raw %}annotation (Line(points={{-40,20},{0,20},{0,44},{20,44}},color={0,127,255})){% endraw %};
   connect(sinChiWat_{{ coupling.ets.id }}.ports[1],{{ coupling.load.id }}.ports_bChiWat[1])
     {% raw %}annotation (Line(points={{120,20},{74,20},{74,44},{40,44}},color={0,127,255})){% endraw %};
-
-  // How do we add a connect block that can exist in either cooling or heating but having it in both would
-  // cause an error?
-  connect(weaDat.weaBus,{{ coupling.load.id }}.weaBus)
-    {% raw %}annotation (Line(points={{56,86},{36,86},{36,57.1333},{30.0333,57.1333}},color={255,204,51})){% endraw %};

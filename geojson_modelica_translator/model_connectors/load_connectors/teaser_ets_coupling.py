@@ -528,7 +528,18 @@ class TeaserConnectorETS(LoadBase):
             )
             new_package.save()
 
-        # remaining clean up tasks across the entire exported project
+            # Copy the weather data over
+            if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+                shutil.copy(
+                    template_data["mos_weather"]["mos_weather_filename"],
+                    os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                )
+            else:
+                raise Exception(
+                    f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+
+
+# remaining clean up tasks across the entire exported project
         if not keep_original_models:
             shutil.rmtree(os.path.join(scaffold.loads_path.files_dir, "Project"))
 
