@@ -28,8 +28,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 import os
-from collections import defaultdict
 
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -57,24 +59,8 @@ class District(object):
 
     def __init__(self, root_dir, project_name, system_parameters, couplings):
         self._scaffold = Scaffold(root_dir, project_name)
-
         self.system_parameters = system_parameters
-
-        if len(couplings) == 0:
-            raise Exception('At least one coupling must be provided')
-        self._couplings = couplings
-
-        self._models_by_id = {}
-        for coupling in self._couplings:
-            a, b = coupling._model_a, coupling._model_b
-            self._models_by_id[a.id] = a
-            self._models_by_id[b.id] = b
-
-        self._couplings_by_model_id = defaultdict(list)
-        for coupling in self._couplings:
-            a, b = coupling._model_a, coupling._model_b
-            self._couplings_by_model_id[a.id].append(coupling)
-            self._couplings_by_model_id[b.id].append(coupling)
+        self._coupling_graph = CouplingGraph(couplings)
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
@@ -87,7 +73,7 @@ class District(object):
         root_package.save()
 
         # generate model modelica files
-        for _, model in self._models_by_id.items():
+        for model in self._coupling_graph.models:
             model.to_modelica(self._scaffold)
 
         district_template_params = {
@@ -101,7 +87,7 @@ class District(object):
             }
         }
         # render each coupling
-        for coupling in self._couplings:
+        for coupling in self._coupling_graph.couplings:
             templated_result = coupling.render_templates(common_template_params)
             district_template_params['couplings'].append({
                 'component_definitions': templated_result['component_definitions'],
@@ -109,25 +95,10 @@ class District(object):
             })
 
         # render each model instance
-        for identifier, model in self._models_by_id.items():
-            associated_couplings = self._couplings_by_model_id[identifier]
-            # directional couplings stores the associated couplings keyed by the
-            # types of the _other_ model involved
-            # e.g. if current model is ets, and coupled to load and network,
-            # the directional coupling would be:
-            # {
-            #    'load_coupling': <load coupling>,
-            #    'network_coupling': <network coupling>,
-            # }
-            directional_couplings = {}
-            for coupling in associated_couplings:
-                other_model = coupling.get_other_model(model)
-                coupling_type = f'{other_model.simple_gmt_type}_coupling'
-                directional_couplings[coupling_type] = coupling.to_dict()
-
+        for model in self._coupling_graph.models:
             template_params = {
                 'model': model.to_dict(self._scaffold),
-                'couplings': directional_couplings,
+                'couplings': self._coupling_graph.couplings_by_type(model),
             }
             template_params.update(**common_template_params)
             result = model.render_instance(template_params)
