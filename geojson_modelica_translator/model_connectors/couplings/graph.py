@@ -50,6 +50,26 @@ class CouplingGraph:
             self._couplings_by_model_id[a.id].append(coupling)
             self._couplings_by_model_id[b.id].append(coupling)
 
+        # _grouped_couplings_by_model_id stores couplings a model is involved with
+        # grouped by the type of the _other_ model involved, e.g.
+        # {
+        #   ...
+        #   'my_network_123': {
+        #     'ets_couplings': [...],
+        #     'system_couplings': [...]
+        #   },
+        #   ...
+        # }
+        self._grouped_couplings_by_model_id = {}
+        for model_id, couplings in self._couplings_by_model_id.items():
+            grouped_couplings = defaultdict(list)
+            for coupling in couplings:
+                other_model = coupling.get_other_model(self._models_by_id[model_id])
+                coupling_type = f'{other_model.simple_gmt_type}_couplings'
+                grouped_couplings[coupling_type].append(coupling)
+
+            self._grouped_couplings_by_model_id[model_id] = grouped_couplings
+
     @property
     def couplings(self):
         return [coupling for coupling in self._couplings]
@@ -65,19 +85,11 @@ class CouplingGraph:
         For example if given model is ets, and its coupled to a load and network,
         the result would be:
         {
-           'load_coupling': <load coupling>,
-           'network_coupling': <network coupling>,
+           'load_couplings': [<load coupling>],
+           'network_couplings': [<network coupling>],
         }
 
         :param model: Model
         :return: dict
         """
-        associated_couplings = self._couplings_by_model_id[model.id]
-
-        directional_couplings = {}
-        for coupling in associated_couplings:
-            other_model = coupling.get_other_model(model)
-            coupling_type = f'{other_model.simple_gmt_type}_coupling'
-            directional_couplings[coupling_type] = coupling.to_dict()
-
-        return directional_couplings
+        return self._grouped_couplings_by_model_id[model.id]
