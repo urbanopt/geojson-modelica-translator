@@ -1,0 +1,17 @@
+  // cooling indirect instance
+  {{ model.modelica_type }} {{ model.id }}(
+    allowFlowReversal1=false,
+    allowFlowReversal2=false,
+    redeclare package Medium={{ globals.medium_w }},
+    mDis_flow_nominal=mDis_flow_nominal_{{ couplings.load_couplings[0].id }},
+    mBui_flow_nominal=mBui_flow_nominal_{{ couplings.load_couplings[0].id }},
+    dpValve_nominal=6000,
+    dp1_nominal=500,
+    dp2_nominal=500,
+    use_Q_flow_nominal=true,
+    Q_flow_nominal=Q_flow_nominal_{{ couplings.load_couplings[0].id }},
+    T_a1_nominal=338.15,
+    T_a2_nominal=315.15,
+    xi_start=0,
+    reverseActing=true)
+    {% raw %}annotation (Placement(transformation(extent={{-22,-48},{-2,-28}}))){% endraw %};

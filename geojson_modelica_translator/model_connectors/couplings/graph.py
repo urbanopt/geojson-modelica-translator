@@ -92,7 +92,11 @@ class CouplingGraph:
         :param model: Model
         :return: dict
         """
-        return self._grouped_couplings_by_model_id[model.id]
+        grouped_couplings = self._grouped_couplings_by_model_id[model.id]
+        result = {}
+        for type_, couplings in grouped_couplings.items():
+            result[type_] = [coupling.to_dict() for coupling in couplings]
+        return result
 
     def directional_index(self, model_a, model_b):
         """Returns the index of model_b within model_a's adjacency list for
