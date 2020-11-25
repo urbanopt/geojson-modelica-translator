@@ -60,7 +60,8 @@ class CoolingIndirectTest(TestCaseBase):
         sys_params = SystemParameters(filename)
 
         # currently we must setup the root project before we can run to_modelica
-        package = PackageParser.new_from_template(self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
+        package = PackageParser.new_from_template(
+            self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
         package.save()
         # now test the connector (independent of the larger geojson translator)
         self.cooling_indirect = CoolingIndirect(sys_params)

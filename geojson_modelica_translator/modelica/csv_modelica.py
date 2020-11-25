@@ -27,10 +27,8 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-# !/usr/bin/env python
-# coding: utf-8
 
-import os
+from pathlib import Path
 
 import pandas as pd
 
@@ -39,8 +37,13 @@ class CSVModelica(object):
 
     def __init__(self, input_csv_file_path):
         """
-        Convert a CSV file into the format required by Modelica. This is specific to the Mass Flow Rate file only
-        and requires the file format to contain the following headers in this order.
+        Convert a CSV file into the format required by Modelica. Expects a file resulting from
+        https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica, which is included
+        in the URBANopt SDK (potentially via common-measures-gem).
+        FIXME: this is in process as of 2020-11-18
+        TODO: Add support for input csv files directly from EnergyPlus (like it was before this PR). In that case,
+        this is specific to the Mass Flow Rate file only and requires the file format to contain the following headers
+        in this order:
 
         0: Date/Time, string, date time. This column isn't used and will be removed upon writing out.
         1: THWR, double, Temperature hot water return, degC
@@ -50,79 +53,68 @@ class CSVModelica(object):
         5: massFlowRateHeating, double, heating water mass flow rate, must be named massFlowRateHeating, kg/s
         6: massFlowRateCooling, double, cooling water mass flow rate, must be named massFlowRateCooling, kg/s
 
-
-        :param input_csv_file_path: string, path to file to convert.
+        :param input_csv_file_path: string, path to input file.
         """
 
-        if not os.path.exists(input_csv_file_path):
-            raise Exception(f"Unable to convert CSV file because it does not exist: {input_csv_file_path}")
+        if not Path(input_csv_file_path).exists():
+            raise Exception(f"Unable to convert CSV file because this path does not exist: {input_csv_file_path}")
 
-        # read the whole data set
-        self.timeseries_output = pd.read_csv(input_csv_file_path)
-        # round the data command since energyplus reports too many sigfigs.
-        self.timeseries_output = self.timeseries_output.round(2)
-        # copy the first line since Dymola wants to have time start at zero.
-        timeseries_15min = self.timeseries_output.loc[[0], :]
-        self.timeseries_output = pd.concat([self.timeseries_output, timeseries_15min]).sort_index()
-        # reset index
-        self.timeseries_output = self.timeseries_output.reset_index(drop=True)
-
-        # verify that the columns are valid
-        if 'massFlowRateHeating' not in self.timeseries_output.columns:
-            raise Exception(f'massFlowRateHeating column not found in file and is required: {input_csv_file_path}')
-
-        if 'massFlowRateCooling' not in self.timeseries_output.columns:
-            raise Exception(f'massFlowRateCooling column not found in file and is required: {input_csv_file_path}')
+        # read the data set
+        columns_to_use = [
+            'SecondsFromStart',
+            'heatingReturnTemperature[C]',
+            'heatingSupplyTemperature[C]',
+            'massFlowRateHeating',
+            'ChilledWaterReturnTemperature[C]',
+            'ChilledWaterSupplyTemperature[C]',
+            'massFlowRateCooling']
+        try:
+            self.timeseries_output = pd.read_csv(input_csv_file_path, usecols=columns_to_use).round(2)
+        except ValueError as ve:
+            #     ValueError if column header is misspelled or missing
+            raise SystemExit(ve)
 
         # Extract the nominal flow rates from the file
         self.nominal_heating_mass_flow_rate = pd.DataFrame(
             {'#heating': ['#Nominal heating water mass flow rate'],
-             '#value': [self.timeseries_output['massFlowRateHeating'].max()]},
-            columns=['#heating', '#value']
+             '#value': [self.timeseries_output['massFlowRateHeating'].max()],
+             '#units': ['kg/s']},
+            columns=['#heating', '#value', '#units']
         )
         self.nominal_cooling_mass_flow_rate = pd.DataFrame(
             {'#cooling': ['#Nominal chilled water mass flow rate'],
-             '#value': [self.timeseries_output['massFlowRateCooling'].max()]},
-            columns=['#cooling', '#value']
+             '#value': [self.timeseries_output['massFlowRateCooling'].max()],
+             '#units': ['kg/s']},
+            columns=['#cooling', '#value', '#units']
         )
 
     def timeseries_to_modelica_data(
             self,
             output_modelica_file_name,
-            energyplus_timestep=15,
             data_type='double',
             overwrite=True):
         """
         Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
         rate and the nominal cooling water mass flow rate into the header.
 
-        :param output_modelica_file_name: string, The name of the outputfile. The extension is automatically added.
-        :param energyplus_timestep: int, EnergyPlus timestep, defaults to 15
+        :param output_modelica_file_name: string, The path to the desired output file name.
         :param data_type: string, data type being converted, defaults to double
         :param overwrite: boolean, if the resulting file exists, then overwrite, defaults to True.
-        :return:
+        :return: file created to be ingested into Modelica
         """
         # evaluate dimensions of the matrix
         size = self.timeseries_output.shape
-        print(size)
-        print(self.timeseries_output.index)
-        # modify the index for modelica mos
-        self.timeseries_output.index = self.timeseries_output.index * energyplus_timestep
-        self.timeseries_output.index.name = '#time'
+        # The # symbol is needed to tell Dymola this line is a comment in the output file.
+        self.timeseries_output = self.timeseries_output.rename(columns={'SecondsFromStart': '#time'})
 
-        # Remove the first column, which is the date/time (regardless of the name)
-        self.timeseries_output.drop(self.timeseries_output.columns[0], axis=1, inplace=True)
         # write to csv for modelica
-        output_modelica_file_name_full = f'{output_modelica_file_name}.csv'
-        if os.path.exists(output_modelica_file_name_full) and not overwrite:
+        if Path(output_modelica_file_name).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {output_modelica_file_name}")
 
-        print(output_modelica_file_name)
-        print(os.path.basename(output_modelica_file_name))
-        with open(output_modelica_file_name_full, 'w') as f:
+        with open(Path(output_modelica_file_name), 'w') as f:
             line1 = '#1'
-            line2 = f"{data_type} {os.path.basename(output_modelica_file_name)}({size[0]}, {size[1]})"
+            line2 = f"{data_type} {output_modelica_file_name}({size[0]}, {size[1]})"
             line3 = '#Nominal heating water mass flow rate=' + str(self.nominal_heating_mass_flow_rate.loc[0, '#value'])
             line4 = '#Nominal chilled water mass flow rate=' + str(self.nominal_cooling_mass_flow_rate.loc[0, '#value'])
             f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1, line2, line3, line4))
-            self.timeseries_output.to_csv(f, header=True)
+            self.timeseries_output.to_csv(f, header=True, index=False)
