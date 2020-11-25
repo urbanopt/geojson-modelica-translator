@@ -93,3 +93,38 @@ class CouplingGraph:
         :return: dict
         """
         return self._grouped_couplings_by_model_id[model.id]
+
+    def directional_index(self, model_a, model_b):
+        """Returns the index of model_b within model_a's adjacency list for
+        model_b's type.
+
+        For example, if our graph looks like this, and model_b is an ETS
+        ```
+        {
+            ...
+            model_a: {
+                ets_couplings: [
+                    { ets: model_b, ... }, { ets: model_c, ...}
+                ],
+                ...
+            },
+            ...
+        }
+        ```
+        Then this method would return 0, because it's at index 0
+
+        :param model_a: Model
+        :param model_b: Model
+        :return: int
+        """
+        grouped_couplings = self._grouped_couplings_by_model_id[model_a.id]
+        coupling_type = f'{model_b.simple_gmt_type}_couplings'
+        try:
+            couplings = grouped_couplings[coupling_type]
+            other_models = [coupling.get_other_model(model_a) for coupling in couplings]
+            other_model_ids = [m.id for m in other_models]
+            return other_model_ids.index(model_b.id)
+        except KeyError:
+            raise Exception(f'model_a has no coupling with model_b\'s type ({model_b.simple_gmt_type})')
+        except ValueError:
+            raise Exception('model_a has no coupling with model_b')
