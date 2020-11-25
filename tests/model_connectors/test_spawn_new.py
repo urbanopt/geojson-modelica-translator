@@ -36,6 +36,9 @@ from geojson_modelica_translator.geojson_modelica_translator import (
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
 )
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
 from geojson_modelica_translator.model_connectors.districts.district import (
     District
 )
@@ -73,14 +76,16 @@ class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
         hot_stub = EtsHotWaterStub(sys_params)
         cold_stub = EtsColdWaterStub(sys_params)
 
+        graph = CouplingGraph([
+            Coupling(spawn, hot_stub),
+            Coupling(spawn, cold_stub),
+        ])
+
         district = District(
             root_dir=self.output_dir,
             project_name=project_name,
             system_parameters=sys_params,
-            couplings=[
-                Coupling(spawn, hot_stub),
-                Coupling(spawn, cold_stub),
-            ]
+            coupling_graph=graph
         )
 
         district.to_modelica()

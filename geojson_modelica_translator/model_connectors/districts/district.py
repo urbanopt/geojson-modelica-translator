@@ -29,9 +29,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import os
 
-from geojson_modelica_translator.model_connectors.couplings.graph import (
-    CouplingGraph
-)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -52,15 +49,15 @@ def render_template(template_name, template_params):
     return template.render(template_params)
 
 
-class District(object):
+class District:
     """
     Class for modeling entire district energy systems
     """
 
-    def __init__(self, root_dir, project_name, system_parameters, couplings):
+    def __init__(self, root_dir, project_name, system_parameters, coupling_graph):
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
-        self._coupling_graph = CouplingGraph(couplings)
+        self._coupling_graph = coupling_graph
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
