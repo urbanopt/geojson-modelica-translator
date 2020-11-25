@@ -1,6 +1,3 @@
-  // How do we pass this in as a variable
-  parameter String weaName="modelica://teaser_single_new/Loads/Resources/Data/B5a6b99ec37f4de7f94020090/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
-    "Path of the weather file";
   {{ model.modelica_type }} {{ model.id }}(
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
