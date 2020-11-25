@@ -36,23 +36,29 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath, copytree
+from geojson_modelica_translator.utils import (
+    ModelicaPath,
+    copytree,
+    simple_uuid
+)
 from modelica_builder.model import Model
 from teaser.project import Project
 
 
-class TeaserConnectorETS(LoadBase):
+class Teaser(LoadBase):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
+    model_name = 'Teaser'
 
-    def __init__(self, system_parameters):
-        super().__init__(system_parameters)
+    def __init__(self, system_parameters, geojson_load):
+        super().__init__(system_parameters, geojson_load)
+        self.id = 'TeaserLoad_' + simple_uuid()
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
         documentation on building types is here (look into the python files):
 
-            https://github.com/RWTH-EBC/TEASER/tree/development/teaser/logic/archetypebuildings/bmvbs
+        https://github.com/RWTH-EBC/TEASER/tree/development/teaser/logic/archetypebuildings/bmvbs
         """
 
         # Also look at using JSON as the input: https://github.com/RWTH-EBC/TEASER/blob/master/teaser/examples/examplefiles/ASHRAE140_600.json  # noqa
@@ -132,16 +138,11 @@ class TeaserConnectorETS(LoadBase):
             # calculate the properties of all the buildings and export to the Buildings library
             prj.calc_all_buildings()
             prj.export_ibpsa(library="Buildings", path=os.path.join(curdir, scaffold.loads_path.files_dir))
+
         finally:
             os.chdir(curdir)
 
-        # Process each building
-        # TODO: break this out?
-
         self.post_process(scaffold, building_names, keep_original_models=keep_original_models)
-
-    def process_building(self, scaffold, building_name):
-        print("processing building")
 
     def post_process(self, scaffold, building_names, keep_original_models=False):
         """
@@ -163,24 +164,22 @@ class TeaserConnectorETS(LoadBase):
             * Wrap the thermal zones into a single model
 
         :param project_name: string, name of the project which will be used to set the package.mo file
-        :param root_building_dir: string, where the project will be ultimately saved
         :param building_names: list, names of the buildings that need to be cleaned up after export
+        :param keep_original_models: boolean, # TODO
         :return: None
         """
+
         teaser_building = self.template_env.get_template("TeaserBuilding.mot")
-        teaser_ets_coupling = self.template_env.get_template("TeaserCouplingETS.mot")
-        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
-        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
-        run_coupling_template = self.template_env.get_template("RunTeaserCouplingETS.most")
+        teaser_coupling = self.template_env.get_template("TeaserCouplingBuilding.mot")
+        run_coupling_template = self.template_env.get_template("RunTeaserCouplingBuilding.most")
 
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
         for b in building_names:
             # create a list of strings that we need to replace in all the file as we go along
+            string_replace_list = []
             mos_weather_filename = self.system_parameters.get_param_by_building_id(
                 b, "load_model_parameters.rc.mos_weather_filename")
-            string_replace_list = []
-
             # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
             b_modelica_path = ModelicaPath(f"B{b}", scaffold.loads_path.files_dir, True)
 
@@ -241,6 +240,7 @@ class TeaserConnectorETS(LoadBase):
                 # add heat port convective heat flow.
                 mofile.insert_component(
                     "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
+                    string_comment='Heat port for convective heat flow.',
                     annotations=[
                         "Placement(transformation(extent={{-10,90},{10,110}}), "
                         "iconTransformation(extent={{-10,90},{10,110}}))"
@@ -444,18 +444,18 @@ class TeaserConnectorETS(LoadBase):
                     "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
                 })
 
-            # TODO: Read nominal flows from system parameter file
-            template_data = {
-                "thermal_zones": zone_list,
-                "nominal_heat_flow": [10000] * len(zone_list),
-                "nominal_cool_flow": [-10000] * len(zone_list),
-                "load_resources_path": b_modelica_path.resources_relative_dir,  # AA added 9/15
-                "mos_weather": {
-                    "mos_weather_filename": mos_weather_filename,
-                    "filename": os.path.basename(mos_weather_filename),
-                    "path": os.path.dirname(mos_weather_filename),
+                # TODO: Read nominal flows from system parameter file
+                template_data = {
+                    "thermal_zones": zone_list,
+                    "nominal_heat_flow": [10000] * len(zone_list),
+                    "nominal_cool_flow": [-10000] * len(zone_list),
+                    "load_resources_path": b_modelica_path.resources_relative_dir,
+                    "mos_weather": {
+                        "mos_weather_filename": mos_weather_filename,
+                        "filename": os.path.basename(mos_weather_filename),
+                        "path": os.path.dirname(mos_weather_filename),
+                    }
                 }
-            }
 
             self.run_template(
                 teaser_building,
@@ -465,53 +465,25 @@ class TeaserConnectorETS(LoadBase):
                 data=template_data
             )
 
-            ets_model_type = self.system_parameters.get_param_by_building_id(f"B{b}", "ets_model")
-            ets_data = None
-            if ets_model_type == "Indirect Heating and Cooling":
-                ets_data = self.system_parameters.get_param_by_building_id(
-                    f"B{b}",
-                    "ets_model_parameters.indirect"
-                )
-            else:
-                raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
-
             self.run_template(
-                cooling_indirect_template,
-                os.path.join(os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo")),
+                teaser_coupling,
+                os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
                 project_name=scaffold.project_name,
                 model_name=f"B{b}",
-                data=template_data,
-                ets_data=ets_data,
-            )
-
-            self.run_template(
-                heating_indirect_template,
-                os.path.join(os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo")),
-                project_name=scaffold.project_name,
-                model_name=f"B{b}",
-                data=template_data,
-                ets_data=ets_data,
-            )
-
-            self.run_template(
-                teaser_ets_coupling,
-                os.path.join(os.path.join(b_modelica_path.files_dir, "TeaserCouplingETS.mo")),
-                project_name=scaffold.project_name,
-                model_name=f"B{b}",
-                data=template_data,  # AA added 9/14
+                data=template_data  # AA added 9/14
             )
 
             full_model_name = os.path.join(
                 scaffold.project_name,
                 scaffold.loads_path.files_relative_dir,
                 f"B{b}",
-                "TeaserCouplingETS").replace(os.path.sep, '.')
+                "coupling").replace(os.path.sep, '.')
 
             self.run_template(
                 run_coupling_template,
-                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunTeaserCouplingETS.mos")),
+                os.path.join(os.path.join(b_modelica_path.scripts_dir, "RunTeaserCouplingBuilding.mos")),
                 full_model_name=full_model_name,
-                model_name="TeaserCouplingETS",
+                model_name="coupling",
             )
 
             # copy over the required mo files and add the other models to the package order
@@ -519,16 +491,14 @@ class TeaserConnectorETS(LoadBase):
             for f in mo_files:
                 package.add_model(os.path.splitext(os.path.basename(f))[0])
             package.add_model('building')
-            package.add_model('CoolingIndirect')
-            package.add_model('TeaserCouplingETS')
+            package.add_model('coupling')
 
             # save the updated package.mo and package.order in the Loads.B{} folder
             new_package = PackageParser.new_from_template(
                 package.path, f"B{b}", package.order, within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
-
-            # Copy the weather data over
+            # AA added this 9/24
             if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
                 shutil.copy(
                     template_data["mos_weather"]["mos_weather_filename"],
@@ -537,9 +507,9 @@ class TeaserConnectorETS(LoadBase):
             else:
                 raise Exception(
                     f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+            # end of what AA added 9/24
 
-
-# remaining clean up tasks across the entire exported project
+        # remaining clean up tasks across the entire exported project
         if not keep_original_models:
             shutil.rmtree(os.path.join(scaffold.loads_path.files_dir, "Project"))
 
@@ -558,3 +528,9 @@ class TeaserConnectorETS(LoadBase):
             scaffold.project_path, scaffold.project_name, ["Loads"]
         )
         pp.save()
+
+    def get_modelica_type(self, scaffold):
+        building = self.buildings[0]
+        building_name = f"B{building['building_id']}"
+
+        return f'{scaffold.project_name}.Loads.{building_name}.building'

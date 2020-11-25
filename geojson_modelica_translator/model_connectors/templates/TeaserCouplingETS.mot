@@ -2,6 +2,8 @@ within {{project_name}}.Loads.{{model_name}};
 model TeaserCouplingETS
   "TEASER building connected to indirect cooling ETS"
   extends Modelica.Icons.Example;
+  parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
+    "Path of the weather file";
   package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
@@ -107,7 +109,7 @@ model TeaserCouplingETS
     pAtm(
       displayUnit="Pa")=101339,
     filNam=ModelicaServices.ExternalReferences.loadResource(
-      "modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"),
+      weaName),
     computeWetBulbTemperature=true)
     "Weather data reader"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={50,90})));

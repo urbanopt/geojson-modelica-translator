@@ -498,6 +498,7 @@ class TeaserConnector(LoadBase):
                 package.path, f"B{b}", package.order, within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
+
             # AA added this 9/24
             if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
                 shutil.copy(

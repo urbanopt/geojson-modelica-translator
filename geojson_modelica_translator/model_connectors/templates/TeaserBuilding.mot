@@ -13,9 +13,20 @@ model building
   parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of thermal zones";
   parameter Integer facSca=3
-    "Scaling factor to be applied to on each extensive quantity";
+    "Scaling factor to be applied to each extensive quantity";
   parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
     "Nominal building supply and return chilled water temperature difference";
+  parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
+    "Path of the weather file";
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
+    calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
+    pAtm(
+      displayUnit="Pa")=101339,
+    filNam=Modelica.Utilities.Files.loadResource(
+      weaName),
+    computeWetBulbTemperature=true)
+    "Weather data reader"
+    {% raw %} annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96}))) {% endraw %};
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     // TODO: Dehardcode
     k=fill(
@@ -97,7 +108,7 @@ model building
     annotation (Line(points={{-120,-144},{-94,-144},{-94,-56},{-180,-56},{-180,-56.6667}},color={0,127,255}));
   connect(disFloCoo.ports_b1,terUni.port_aChiWat)
     annotation (Line(points={{-140,-144},{-226,-144},{-226,-56.6667},{-200,-56.6667}},color={0,127,255}));
-  {% endraw %}{% for zone in data['thermal_zones'] %}connect(weaBus,{{zone['instance_name']}}.weaBus)
+  {% endraw %}{% for zone in data['thermal_zones'] %}connect(weaDat.weaBus,{{zone['instance_name']}}.weaBus)
     annotation ({% raw %}Line(points={{1,300},{0,300},{0,20},{-66,20},{-66,-10.2},{-96,-10.2}},color={255,204,51},thickness=0.5),Text(string="%first",index=-1,extent={{6,3},{6,3}},horizontalAlignment=TextAlignment.Left));
   {% endraw %}connect(terUni[{{zone['index']}}+1].heaPorCon,{{zone['instance_name']}}.port_a)
     {% raw %} annotation (Line(points={{-193.333,-50},{-192,-50},{-192,0},{-90,0}},color={191,0,0}));

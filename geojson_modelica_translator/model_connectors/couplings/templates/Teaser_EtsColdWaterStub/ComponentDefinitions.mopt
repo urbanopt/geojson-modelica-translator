@@ -1,0 +1,5 @@
+  Modelica.Blocks.Sources.RealExpression TChiWatSup_{{ coupling.id }}(
+    y=min(
+      {{ coupling.load.id }}.terUni.T_aChiWat_nominal))
+    "Chilled water supply temperature"
+    {% raw %}annotation (Placement(transformation(extent={{-110,-50},{-90,-30}}))){% endraw %};
