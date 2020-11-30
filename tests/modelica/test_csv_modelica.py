@@ -55,8 +55,23 @@ class CsvModelicaTest(unittest.TestCase):
                 "Usecols do not match columns, columns expected but not found:", str(
                     context.exception))
 
-    def test_csv_modelica(self):
-        input_file = Path(self.data_dir) / 'building_loads.csv'
+    def test_csv_modelica_at_15_min_timestep(self):
+        input_file = Path(self.data_dir) / 'building_loads_15min_snippet.csv'
+        output_modelica_file_name = Path(self.output_dir) / 'modelica_timestep.csv'
+
+        csv_converter = CSVModelica(input_file)
+        # save the updated time series to the output directory of the test folder
+        csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
+        self.assertTrue(output_modelica_file_name.exists())
+
+        # check if a string is in there
+        with open(output_modelica_file_name, 'r') as f:
+            data = f.read()
+            self.assertTrue('14400,41.8,82.2,1.659,14.7,6.7,1.375' in data)
+            self.assertTrue('28800,37.7,82.2,0.721,14.9,6.7,2.018' in data)
+
+    def test_csv_modelica_at_60_min_timestep(self):
+        input_file = Path(self.data_dir) / 'building_loads_snippet.csv'
         output_modelica_file_name = Path(self.output_dir) / 'modelica.csv'
 
         csv_converter = CSVModelica(input_file)
@@ -67,5 +82,6 @@ class CsvModelicaTest(unittest.TestCase):
         # check if a string is in there
         with open(output_modelica_file_name, 'r') as f:
             data = f.read()
-            self.assertTrue('14400,52.74,82.22,4.06,15.41,6.68,10.35' in data)
-            self.assertTrue('31532400,58.72,82.22,2.47,15.19,6.68,5.62' in data)
+            self.assertTrue('18000,41.9,82.2,1.392,14.6,6.7,1.648' in data)
+            self.assertTrue('111600,57.2,82.2,5.784,16.2,6.7,3.062' in data)
+            self.assertFalse('9900,40.1,82.2,0.879,14.9,6.7,1.512' in data)
