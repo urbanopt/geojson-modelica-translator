@@ -35,7 +35,7 @@ import pandas as pd
 
 class CSVModelica(object):
 
-    def __init__(self, input_csv_file_path):
+    def __init__(self, input_csv_file_path, sig_fig=3):
         """
         Convert a CSV file into the format required by Modelica. Expects a file resulting from
         https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica, which is included
@@ -69,20 +69,29 @@ class CSVModelica(object):
             'ChilledWaterSupplyTemperature[C]',
             'massFlowRateCooling']
         try:
-            self.timeseries_output = pd.read_csv(input_csv_file_path, usecols=columns_to_use).round(2)
+            self.timeseries_output = pd.read_csv(input_csv_file_path, usecols=columns_to_use).round(sig_fig)
         except ValueError as ve:
             #     ValueError if column header is misspelled or missing
             raise SystemExit(ve)
 
+        # Dymola wants to have time start at zero.
+        # If time doesn't start at zero, copy the first line and set time column to zero.
+        if (self.timeseries_output.loc[0][0] != 0):
+            self.timeseries_timestep = self.timeseries_output.loc[[0], :]
+            self.timeseries_timestep['SecondsFromStart'] = 0
+            # Putting timeseries_timestep first in the concat puts the copied row at the top
+            # reset_index() makes the index unique again, while keeping the duplicated row at the top
+            self.timeseries_output = pd.concat([self.timeseries_timestep, self.timeseries_output]).reset_index(drop=True)
+
         # Extract the nominal flow rates from the file
         self.nominal_heating_mass_flow_rate = pd.DataFrame(
-            {'#heating': ['#Nominal heating water mass flow rate'],
+            {'#heating': ['#Nominal heating water mass flow rate (kg/s)'],
              '#value': [self.timeseries_output['massFlowRateHeating'].max()],
              '#units': ['kg/s']},
             columns=['#heating', '#value', '#units']
         )
         self.nominal_cooling_mass_flow_rate = pd.DataFrame(
-            {'#cooling': ['#Nominal chilled water mass flow rate'],
+            {'#cooling': ['#Nominal chilled water mass flow rate (kg/s)'],
              '#value': [self.timeseries_output['massFlowRateCooling'].max()],
              '#units': ['kg/s']},
             columns=['#cooling', '#value', '#units']
