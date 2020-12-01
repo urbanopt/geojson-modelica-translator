@@ -1,7 +1,4 @@
   Modelica.Blocks.Sources.RealExpression secMasFloRat_{{ coupling.id }}(
-    // TODO: I need someone who knows modelica better to help with this:
-    // don't hardcode load ID, move this into HeatingIndirect so we can grab from there
-    // This issue is also present in CoolingIndirect
-    y=MyTimeSeriesLoad.disFloHea.mReqTot_flow)
+    y={{ graph.get_coupled_load(coupling.ets.id).id }}.disFloHea.mReqTot_flow)
     "Secondary loop chilled water flow rate."
     {% raw %}annotation (Placement(transformation(extent={{-74,-20},{-54,0}}))){% endraw %};

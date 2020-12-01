@@ -81,7 +81,8 @@ class District:
         common_template_params = {
             'globals': {
                 "medium_w": "MediumW"
-            }
+            },
+            'graph': self._coupling_graph
         }
         # render each coupling
         for coupling in self._coupling_graph.couplings:

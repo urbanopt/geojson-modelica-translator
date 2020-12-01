@@ -132,3 +132,17 @@ class CouplingGraph:
             raise Exception(f'model_a has no coupling with model_b\'s type ({model_b.simple_gmt_type})')
         except ValueError:
             raise Exception('model_a has no coupling with model_b')
+
+    def get_coupled_load(self, ets_id):
+        """Returns the load coupled to the provided ets
+
+        :param ets_id: str
+        :return: dict
+        """
+        if ets_id not in self._grouped_couplings_by_model_id:
+            raise Exception(f'No ETS with id {ets_id}')
+        try:
+            load_couplings = self._grouped_couplings_by_model_id[ets_id]['load_couplings']
+            return load_couplings[0].to_dict()['load']
+        except (KeyError, IndexError):
+            raise Exception('ETS is not coupled to a load')
