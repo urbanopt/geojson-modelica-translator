@@ -41,9 +41,7 @@ class CSVModelica(object):
         https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica, which is included
         in the URBANopt SDK (potentially via common-measures-gem).
         FIXME: this is in process as of 2020-11-18
-        TODO: Add support for input csv files directly from EnergyPlus (like it was before accepting input from the
-        above measure). In that case, this is specific to the Mass Flow Rate file only and requires the file format
-        to contain the following headers in this order:
+        If providing a csv file not from the DES_HVAC measure, ensure it contains the following headers in this order:
 
         0: Date/Time, string, date time. This column isn't used and will be removed upon writing out.
         1: THWR, double, Temperature hot water return, degC
@@ -73,7 +71,8 @@ class CSVModelica(object):
         except ValueError:
             self.timeseries_output = pd.read_csv(input_csv_file_path).round(sig_fig)
 
-        if 'massFlowRateHeating' not in self.timeseries_output.columns or 'massFlowRateCooling' not in self.timeseries_output.columns:
+        if 'massFlowRateHeating' not in self.timeseries_output.columns \
+                or 'massFlowRateCooling' not in self.timeseries_output.columns:
             raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
 
         # Dymola wants time to start at zero.
