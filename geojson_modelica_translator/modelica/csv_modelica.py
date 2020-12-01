@@ -70,15 +70,18 @@ class CSVModelica(object):
             'massFlowRateCooling']
         try:
             self.timeseries_output = pd.read_csv(input_csv_file_path, usecols=columns_to_use).round(sig_fig)
-        except ValueError as ve:
-            #     ValueError if column header is misspelled or missing
-            raise SystemExit(ve)
+        except ValueError:
+            self.timeseries_output = pd.read_csv(input_csv_file_path).round(sig_fig)
 
-        # Dymola wants to have time start at zero.
+        if 'massFlowRateHeating' not in self.timeseries_output.columns or 'massFlowRateCooling' not in self.timeseries_output.columns:
+            raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
+
+        # Dymola wants time to start at zero.
         # If time doesn't start at zero, copy the first line and set time column to zero.
         if (self.timeseries_output.loc[0][0] != 0):
             self.timeseries_timestep = self.timeseries_output.loc[[0], :]
-            self.timeseries_timestep['SecondsFromStart'] = 0
+            if 'SecondsFromStart' in self.timeseries_output.columns:
+                self.timeseries_timestep['SecondsFromStart'] = 0
             # Putting timeseries_timestep first in the concat puts the copied row at the top
             # reset_index() makes the index unique again, while keeping the duplicated row at the top
             self.timeseries_output = pd.concat(
@@ -101,6 +104,7 @@ class CSVModelica(object):
     def timeseries_to_modelica_data(
             self,
             output_modelica_file_name,
+            energyplus_timesteps_per_hour=4,
             data_type='double',
             overwrite=True):
         """
@@ -114,8 +118,19 @@ class CSVModelica(object):
         """
         # evaluate dimensions of the matrix
         size = self.timeseries_output.shape
+
+        minutes_per_hour = 60
+        seconds_per_minute = 60
+        seconds_in_timestep = int(minutes_per_hour / energyplus_timesteps_per_hour * seconds_per_minute)
+
+        # Check if output is from DES_HVAC measure or straight from E+
         # The # symbol is needed to tell Dymola this line is a comment in the output file.
-        self.timeseries_output = self.timeseries_output.rename(columns={'SecondsFromStart': '#time'})
+        if 'SecondsFromStart' in self.timeseries_output.columns:
+            self.timeseries_output = self.timeseries_output.rename(columns={'SecondsFromStart': '#time'})
+        else:
+            self.timeseries_output.index = self.timeseries_output.index * seconds_in_timestep
+            self.timeseries_output.index.name = '#time'
+            self.timeseries_output.drop(self.timeseries_output.columns[0], axis=1, inplace=True)
 
         # write to csv for modelica
         if Path(output_modelica_file_name).exists() and not overwrite:
@@ -127,4 +142,7 @@ class CSVModelica(object):
             line3 = '#Nominal heating water mass flow rate=' + str(self.nominal_heating_mass_flow_rate.loc[0, '#value'])
             line4 = '#Nominal chilled water mass flow rate=' + str(self.nominal_cooling_mass_flow_rate.loc[0, '#value'])
             f.write('{}\n' '{}\n' '{}\n' '{}\n'.format(line1, line2, line3, line4))
-            self.timeseries_output.to_csv(f, header=True, index=False)
+            if 'SecondsFromStart' in self.timeseries_output.columns:
+                self.timeseries_output.to_csv(f, header=True, index=False)
+            else:
+                self.timeseries_output.to_csv(f, header=True)
