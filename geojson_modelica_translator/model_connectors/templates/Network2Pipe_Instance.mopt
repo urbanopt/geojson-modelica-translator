@@ -1,0 +1,37 @@
+  {%- set all_ets_flow_nominal = [] -%}
+  {%- for ets in couplings.ets_couplings|map(attribute="ets")  -%}
+    {#- note that we have to add `default(...)` because `None` would get rendered otherwise #}
+    {{ all_ets_flow_nominal.append(ets.id + ".mDis_flow_nominal")|default("", true) }}
+  {%- endfor -%}
+
+  constant Integer nBui_{{ model.id }}={{ all_ets_flow_nominal|length }};
+  Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({% raw %}{{% endraw %}
+    {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %})
+    "Nominal mass flow rate of the distribution pump";
+  Modelica.SIunits.MassFlowRate mCon_flow_nominal_{{ model.id }}[nBui_{{ model.id }}]={% raw %}{{% endraw %}
+    {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %}
+    "Nominal mass flow rate in each connection line";
+  parameter Modelica.SIunits.PressureDifference dpDis_nominal_{{ model.id }}[nBui_{{ model.id }}](
+    each min=0,
+    each displayUnit="Pa")=1/2 .* cat(
+    1,
+    {dp_nominal_{{ model.id }}*0.05},
+    fill(
+      dp_nominal_{{ model.id }}*0.95/(nBui_{{ model.id }}-1),
+      nBui_{{ model.id }}-1))
+    "Pressure drop between each connected building at nominal conditions (supply line)";
+  parameter Modelica.SIunits.PressureDifference dp_nominal_{{ model.id }}=dpSetPoi_{{ model.id }}+nBui_{{ model.id }}*7000
+    "District network pressure drop";
+  parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=50000
+    "Differential pressure setpoint";
+
+  {{ model.modelica_type }} {{ model.id }}(
+    redeclare final package Medium={{ globals.medium_w }},
+    final nCon=nBui_{{ model.id }},
+    iConDpSen=1,
+    final mDis_flow_nominal=mDis_flow_nominal_{{ model.id }},
+    final mCon_flow_nominal=mCon_flow_nominal_{{ model.id }},
+    final allowFlowReversal=false,
+    dpDis_nominal=dpDis_nominal_{{ model.id }})
+    "Distribution network."
+    {% raw %}annotation (Placement(transformation(extent={{16,20},{44,32}}))){% endraw %};

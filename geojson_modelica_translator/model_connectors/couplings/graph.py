@@ -98,7 +98,7 @@ class CouplingGraph:
             result[type_] = [coupling.to_dict() for coupling in couplings]
         return result
 
-    def directional_index(self, model_a, model_b):
+    def directional_index(self, model_a_id, model_b_id):
         """Returns the index of model_b within model_a's adjacency list for
         model_b's type.
 
@@ -117,10 +117,16 @@ class CouplingGraph:
         ```
         Then this method would return 0, because it's at index 0
 
-        :param model_a: Model
-        :param model_b: Model
+        :param model_a_id: str, id of model_a
+        :param model_b_id: str, id of model_b
         :return: int
         """
+        if model_a_id not in self._models_by_id:
+            raise Exception('Model A id was not found')
+        if model_b_id not in self._models_by_id:
+            raise Exception('Model B id was not found')
+
+        model_a, model_b = self._models_by_id[model_a_id], self._models_by_id[model_b_id]
         grouped_couplings = self._grouped_couplings_by_model_id[model_a.id]
         coupling_type = f'{model_b.simple_gmt_type}_couplings'
         try:
