@@ -98,5 +98,5 @@ class CsvModelicaTest(unittest.TestCase):
         # check if a string is in there
         with open(output_modelica_file_name, 'r') as f:
             data = f.read()
-            self.assertTrue('18000,42.253,55.0,15.808,6.667,8.275,0.2' in data)
-            self.assertTrue('111600,41.86,55.0,15.115,6.667,12.32,0.021' in data)
+            self.assertTrue('18000,42.3,55.0,15.8,6.7,8.275,0.2' in data)
+            self.assertTrue('111600,41.9,55.0,15.1,6.7,12.32,0.021' in data)
