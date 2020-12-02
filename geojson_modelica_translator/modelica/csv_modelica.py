@@ -48,10 +48,12 @@ class CSVModelica(object):
         2: NODE 67:System Node Temperature[C], double, Temperature hot water setpoint, degC
         3: NODE 70:System Node Temperature[C], double, Temperature chilled water return, degC
         4: NODE 98:System Node Temperature[C], double, Temperature chilled water setpoint, degC
-        5: massFlowRateHeating, double, heating water mass flow rate, must be named massFlowRateHeating, kg/s
-        6: massFlowRateCooling, double, cooling water mass flow rate, must be named massFlowRateCooling, kg/s
+        5: massFlowRateHeating, double, heating water mass flow rate, kg/s
+        6: massFlowRateCooling, double, cooling water mass flow rate, kg/s
 
-        :param input_csv_file_path: string, path to input file.
+        :param input_csv_file_path: string, path to input file
+        :param sig_fig: integer, number of decimal places to round input csv file to. If file has fewer sig-figs,
+            this will not add trailing zeroes.
         """
 
         if not Path(input_csv_file_path).exists():
