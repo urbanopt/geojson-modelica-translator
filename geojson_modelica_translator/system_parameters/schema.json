@@ -199,7 +199,7 @@
           "enum": [
             "None",
             "Indirect Heating and Cooling",
-            "Heat Exchanger Only"
+            "Direct Heating and Cooling"
           ]
         },
         "ets_model_parameters": {
@@ -257,24 +257,6 @@
             "Reverse Return"
           ]
         },
-        "cooling_plant": {
-          "type": "object",
-          "properties": {
-            "delta_t_nominal": {
-              "type": "number"
-            },
-            "fan_power_nominal": {
-              "type": "number"
-            },
-            "chilled_water_pump_pressure_drop": {
-              "type": "number"
-            },
-            "condenser_water_pump_pressure_drop": {
-              "type": "number"
-            }
-          },
-          "additionalProperties": false
-        },
         "connection_configuration": {
           "description": "Type of connection of buildings to the loop",
           "type": "string",
@@ -287,91 +269,137 @@
       "additionalProperties": false
     },
     "ets_indirect_parameters": {
-      "description": "Indirect ETS. The energy transfer is implemented through nondirect contact of water loops (heat exchanger). Parameters associated with indirect ETS",
+      "description": "The parameters associated with the indirect energy transfer station.",
       "type": "object",
       "properties": {
-        "q_flow_nominal": {
-          "description": "Nominal heat flux ( Watts )",
+        "Q_flow_nominal": {
+          "description": "Nominal heat flow rate ( Watts )",
           "type": "number",
-          "default": 8000
+          "default": 10000
         },
-        "eta_efficiency": {
-          "description": "Heat exchanger efficiency (fraction)",
+        "HX_eta": {
+          "description": "Heat exchanger efficiency",
           "type": "number",
           "default": 0.8
         },
-        "nominal_flow_district": {
-          "description": "District water nominal flow rate (m3/s).",
+        "nominal_mass_flow_dis": {
+          "description": "District water nominal flow rate (kg/s).",
           "type": "number",
-          "default": 0.666
+          "default": 10
         },
-        "nominal_flow_building": {
-          "description": "Building water nominal flow rate (m3/s).",
+        "nominal_mass_flow_bui": {
+          "description": "Building water nominal flow rate (kg/s).",
           "type": "number",
-          "default": 0.666
+          "default": 10
         },
-        "pressure_drop_valve": {
-          "description": "Valve pressure drop (Pascals)",
+        "valve_PD": {
+          "description": "Valve pressure drop (Pa)",
           "type": "number",
-          "default": 888
+          "default": 6000
         },
-        "pressure_drop_hx_secondary": {
-          "description": "Heat exchanger secondary side pressure drop (Pascals)",
+        "HX_sec_PD": {
+          "description": "Heat exchanger secondary side pressure drop (Pa)",
           "type": "number",
-          "default": 999
+          "default": 500
         },
-        "pressure_drop_hx_primary": {
-          "description": "Heat exchanger primary side pressure drop (Pascals)",
+        "HX_pri_PD": {
+          "description": "Heat exchanger primary side pressure drop (Pa)",
           "type": "number",
-          "default": 999
+          "default": 500
         },
-        "cooling_supply_water_temperature_district": {
-          "description": "Cooling supply water temperature for district (deg C)",
+        "TDis_ChWS": {
+          "description": "Chilled water supply temperature district side (K)",
+          "type": "number",
+          "default": 5+273.15
+        },
+        "TBui_ChWS": {
+          "description": "Chilled water supply temperature building side (K)",
+          "type": "number",
+          "default": 7+273.15
+        },
+        "TDis_HWS": {
+          "description": "Heating water supply temperature district side (K)",
+          "type": "number",
+          "default": 55+273.15
+        },
+        "TBui_HWS": {
+          "description": "Heating water supply temperature building side (K)",
+          "type": "number",
+          "default": 50+273.15
+        },
+        "delTHW_Dis": {
+          "description": "Heating water temperature differenceon on the district side ",
+          "type": "number",
+          "default": 20
+        },
+        "delTHW_Bui": {
+          "description": "Design temperature differential on the building side",
+          "type": "number",
+          "default": 15
+        },
+        "delTChW_Bui": {
+          "description": "Chilled water temperature difference on the building side",
           "type": "number",
           "default": 5
         },
-        "cooling_supply_water_temperature_building": {
-          "description": "Cooling supply water temperature for building (deg C)",
+        "delTChW_Dis": {
+          "description": "Design temperature differential on the district side ",
           "type": "number",
-          "default": 7
-        },
-        "heating_supply_water_temperature_district": {
-          "description": "Heating supply water temperature for district (deg C)",
-          "type": "number",
-          "default": 55
-        },
-        "heating_supply_water_temperature_building": {
-          "description": "Heating supply water temperature for building (deg C)",
-          "type": "number",
-          "default": 50
-        },
-        "primary_design_delta_t": {
-          "description": "Design temperature differential on the primary side ",
-          "type": "number"
-        },
-        "secondary_design_delta_t": {
-          "description": "Design temperature differential on the secondary side",
-          "type": "number"
+          "default": 8
         }
       },
       "required": [
-        "q_flow_nominal",
-        "eta_efficiency",
-        "nominal_flow_district",
-        "nominal_flow_building",
-        "pressure_drop_valve",
-        "pressure_drop_hx_secondary",
-        "pressure_drop_hx_primary",
-        "cooling_supply_water_temperature_district",
-        "cooling_supply_water_temperature_building",
-        "heating_supply_water_temperature_district",
-        "heating_supply_water_temperature_building"
+        "Q_flow_nominal",
+        "HX_eta",
+        "nominal_mass_flow_dis",
+        "nominal_mass_flow_bui",
+        "valve_PD",
+        "HX_sec_PD",
+        "HX_pri_PD",
+        "TDis_ChWS",
+        "TBui_ChWS",
+        "TDis_HWS",
+        "TBui_HWS",
+        "delTHW_Dis",
+        "delTHW_Bui",
+        "delTChW_Bui",
+        "delTChW_Dis"
       ]
     },
     "spawn_model_parameters": {
       "description": "Parameters associated with spawn models.",
       "type": "object",
       "properties": {
+        "TSetCoo": {
+          "description": "Cooling setpoint air temperature(K)",
+          "type": "number",
+          "default": 24+273.15
+        },
+        "TsetHea": {
+          "description": "Heating setpoint air temperature(K)",
+          "type": "number",
+          "default": 20+273.15
+        },
+        "THW_S": {
+          "description": "Heating water supply temperature(K)",
+          "type": "number",
+          "default": 40+273.15
+        },
+        "THW_R": {
+          "description": "Heating water return temperature(K)",
+          "type": "number",
+          "default": 35+273.15
+        },
+        "TChW_S": {
+          "description": "Chilled water supply temperature(K)",
+          "type": "number",
+          "default": 7+273.15
+        },
+        "TChW_R": {
+          "description": "Chilled water return temperature(K)",
+          "type": "number",
+          "default": 12+273.15
+        },
         "idf_filename": {
           "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
@@ -399,7 +427,13 @@
         "idf_filename",
         "epw_filename",
         "mos_weather_filename",
-        "thermal_zone_names"
+        "thermal_zone_names",
+        "TSetCoo",
+        "TsetHea",
+        "THW_S",
+        "THW_R",
+        "TChW_S",
+        "TChW_R"
       ],
       "additionalProperties": false
     },
@@ -425,10 +459,47 @@
           "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
           "type": "number",
           "default": 1.25
+        },
+        "TSetCoo": {
+          "description": "Cooling setpoint air temperature(K)",
+          "type": "number",
+          "default": 24+273.15
+        },
+        "TsetHea": {
+          "description": "Heating setpoint air temperature(K)",
+          "type": "number",
+          "default": 20+273.15
+        },
+        "THW_S": {
+          "description": "Heating water supply temperature(K)",
+          "type": "number",
+          "default": 40+273.15
+        },
+        "THW_R": {
+          "description": "Heating water return temperature(K)",
+          "type": "number",
+          "default": 35+273.15
+        },
+        "TChW_S": {
+          "description": "Chilled water supply temperature(K)",
+          "type": "number",
+          "default": 7+273.15
+        },
+        "TChW_R": {
+          "description": "Chilled water return temperature(K)",
+          "type": "number",
+          "default": 12+273.15
         }
+
       },
       "required": [
-        "mos_weather_filename"
+        "mos_weather_filename",
+        "TSetCoo",
+        "TsetHea",
+        "THW_S",
+        "THW_R",
+        "TChW_S",
+        "TChW_R"
       ],
       "additionalProperties": false
     },
@@ -439,15 +510,58 @@
         "filepath": {
           "type": "string"
         },
-        "delTDisCoo": {
-          "description": "Nominal district supply and return water temperature difference",
+        "delTAirCoo": {
+          "description": "Nominal cooling air temperature difference across the terminal unit heat exchanger",
           "type": "number",
           "default": 10
+        },
+        "delTAirHea": {
+          "description": "Nominal heating air temperature difference across the terminal unit heat exchanger",
+          "type": "number",
+          "default": 18
+        },
+        "TSetCoo": {
+          "description": "Cooling setpoint air temperature(K)",
+          "type": "number",
+          "default": 24+273.15
+        },
+        "TsetHea": {
+          "description": "Heating setpoint air temperature(K)",
+          "type": "number",
+          "default": 20+273.15
+        },
+        "THW_S": {
+          "description": "Heating water supply temperature(K)",
+          "type": "number",
+          "default": 40+273.15
+        },
+        "THW_R": {
+          "description": "Heating water return temperature(K)",
+          "type": "number",
+          "default": 35+273.15
+        },
+        "TChW_S": {
+          "description": "Chilled water supply temperature(K)",
+          "type": "number",
+          "default": 7+273.15
+        },
+        "TChW_R": {
+          "description": "Chilled water return temperature(K)",
+          "type": "number",
+          "default": 12+273.15
         }
+
       },
       "required": [
         "filepath",
-        "delTDisCoo"
+        "delTAirCoo",
+        "delTAirHea",
+        "TSetCoo",
+        "TsetHea",
+        "THW_S",
+        "THW_R",
+        "TChW_S",
+        "TChW_R"
       ],
       "additionalProperties": false
     },
@@ -473,7 +587,7 @@
         "dpCHW_nominal": {
           "description": "Nominal chilled water (evaporator) side pressure drop (Pa).",
           "type": "number",
-          "default": 10
+          "default": 55000
         },
         "dpCW_nominal": {
           "description": "Nominal cooling water (condenser) side pressure drop (Pa).",
@@ -483,12 +597,12 @@
         "dpSetPoi": {
           "description": "The Chilled water circuit pressure drop setpoint (Pa)",
           "type": "number",
-          "default": 999
+          "default": 50000
         },
         "TCHWSet": {
           "description": "District circuit chilled water temperature setpoint (K)",
           "type": "number",
-          "default": 278.15
+          "default": 5+273.15
         },
         "dpCHWPum_nominal": {
           "description": "Chiller isolation valve pressure drop(Pa)",
