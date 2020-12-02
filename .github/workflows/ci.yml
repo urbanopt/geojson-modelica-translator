@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # 3.8, 3.9 do not work at the moment.
+        python-version: [3.7]
+    steps:
+      - uses: actions/checkout@v2
+      -
+        name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      -
+        name: Display system info
+        run: |
+          python -c "import sys; print(sys.version)"
+          docker --version
+          docker-compose --version
+      -
+        name: Install dependencies
+        env:
+          MODELICAPATH: /home/runner/work/modelica-buildings
+        run: |
+          git clone --single-branch --branch issue1437_district_heating_cooling https://github.com/lbl-srg/modelica-buildings.git $MODELICAPATH
+          cd $MODELICAPATH
+          echo "Git branch is $(git branch)"
+          pip install --upgrade pip
+          pip install tox==3.13.2
+      -
+        name: Run unittests (using tox)
+        env:
+          MODELICAPATH: /home/runner/work/modelica-buildings
+        run: |
+          echo $(pwd)
+          tox -e python
+      -
+        name: Job Failed
+        if: ${{ failure() }}
+        run: |
+          echo "Maybe these logs will help?"
+          free -tm
+          ls -alt $GITHUB_WORKSPACE
+          echo "============================================ stdout.log ========================================="
+          find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
+            echo "$filename"
+            cat "$filename"
+          done
+  formatting:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tox_env: [flake8, docs]
+    steps:
+      -
+        uses: actions/checkout@v2
+      -
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      # Run pre-commit checks here, this is somewhat redundant as tox handles the tox flake8, but
+      # this will also check for modelica files
+      -
+        name: Install deps
+        run: |
+          # Install modelicafmt (hard code the version for now)
+          curl -SLO https://github.com/urbanopt/modelica-fmt/releases/download/v0.1-pr.3/modelica-fmt_0.1-pr.3_Linux_x86_64.tar.gz
+          tar xzf modelica-fmt_0.1-pr.3_Linux_x86_64.tar.gz
+          chmod +x modelicafmt
+          sudo mv modelicafmt /usr/local/bin/
+          pip install --upgrade pip
+          pip install tox==3.13.2
+          pip install requests
+#      -
+#        name: Run pre-commit
+#        uses: pre-commit/action@v2.0.0
+      -
+        name: Run tox
+        run: tox -e ${{ matrix.tox_env }}
