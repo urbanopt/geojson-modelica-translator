@@ -33,7 +33,7 @@ model TimeSeriesMassFlow_Temp_CentralPlant
   parameter Modelica.SIunits.TemperatureDifference delTDisHW(
     displayUnit="degC")=20
     "Nominal heating water temperature difference(district side) ";
-  inner parameter Buildings.Applications.DHC.Examples.Combined.Generation5.Unidirectional.Data.DesignDataParallel4GDC datDesHea(
+  inner parameter Buildings.Experimental.DHC.Examples.Combined.Generation5.Unidirectional.Data.DesignDataParallel4GDC datDesHea(
     nBui=nBui,
     mDis_flow_nominal=heaETS.mDis_flow_nominal,
     mCon_flow_nominal={heaETS.mDis_flow_nominal},

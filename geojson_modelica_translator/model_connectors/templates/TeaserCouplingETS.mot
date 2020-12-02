@@ -152,13 +152,13 @@ model TeaserCouplingETS
       info="<html>
 <p>
 This example illustrates the use of
-<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding\">
-Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding</a>,
-<a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit\">
-Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding\">
+Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding</a>,
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
 and
-<a href=\"modelica://Buildings.Applications.DHC.Loads.FlowDistribution\">
-Buildings.Applications.DHC.Loads.FlowDistribution</a>
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.FlowDistribution\">
+Buildings.Experimental.DHC.Loads.FlowDistribution</a>
 in a configuration with
 </p>
 <ul>

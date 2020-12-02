@@ -82,8 +82,8 @@ terminates the simulation with an assertion.
 </p>
 <p>
 See
-<a href=\"modelica://Buildings.Experimental.DistrictHeatingCooling.SubStations.VaporCompression.BaseClasses.Validation.GetPeakMassFlowRate\">
-Buildings.Experimental.DistrictHeatingCooling.SubStations.VaporCompression.BaseClasses.Validation.GetPeakMassFlowRate</a>
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate\">
+Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate</a>
 for how to invoke this function.
 </p>
 </html>",
@@ -92,8 +92,8 @@ for how to invoke this function.
 <li>
 August 20, 2020, by Hagar Elarga:<br/>
 First implementation based on the implementation of
-<a href=\"modelica://Buildings.Experimental.DistrictHeatingCooling.SubStations.VaporCompression.BaseClasses.Validation.GetPeakLoad\">
-Buildings.Experimental.DistrictHeatingCooling.SubStations.VaporCompression.BaseClasses.Validation.GetPeakLoad</a> function.
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakLoad\">
+Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakLoad</a> function.
 </li>
 </ul>
 </html>"));
