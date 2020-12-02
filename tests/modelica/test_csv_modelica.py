@@ -49,7 +49,7 @@ class CsvModelicaTest(unittest.TestCase):
     def test_misshapen_csv_fails_gracefully(self):
         with self.assertRaises(Exception) as context:
             input_file = Path(self.data_dir) / 'misshapen_building_loads.csv'
-            # This input file has a typo in a column name and a missing column. Each will cause the ValueError.
+            # This input file has a typo in a column name and a missing column. Each will cause the Exception.
             CSVModelica(input_file)
             self.assertIn(
                 "Columns are missing or misspelled in your file:", str(
@@ -100,3 +100,12 @@ class CsvModelicaTest(unittest.TestCase):
             data = f.read()
             self.assertTrue('18000,42.3,55.0,15.8,6.7,8.275,0.2' in data)
             self.assertTrue('111600,41.9,55.0,15.1,6.7,12.32,0.021' in data)
+
+    def test_csv_modelica_no_overwrite(self):
+        with self.assertRaises(Exception) as context:
+            input_file = Path(self.data_dir) / 'building_loads_snippet.csv'
+            csv_converter = CSVModelica(input_file)
+            csv_converter.timeseries_to_modelica_data(output_modelica_file_name, overwrite=False)
+            self.assertIn(
+                "Output file already exists and overwrite is False:", str(
+                    context.exception))
