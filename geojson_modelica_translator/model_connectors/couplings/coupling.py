@@ -29,6 +29,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import os
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
 )
@@ -62,6 +63,7 @@ class Coupling(object):
         self._template_env = Environment(
             loader=FileSystemLoader(searchpath=template_dir),
             undefined=StrictUndefined)
+        self._template_env.filters.update(ALL_CUSTOM_FILTERS)
 
         self._id = simple_uuid()
 

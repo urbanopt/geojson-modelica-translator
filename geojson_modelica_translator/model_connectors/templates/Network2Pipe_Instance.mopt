@@ -1,8 +1,4 @@
-  {%- set all_ets_flow_nominal = [] -%}
-  {%- for ets in couplings.ets_couplings|map(attribute="ets")  -%}
-    {#- note that we have to add `default(...)` because `None` would get rendered otherwise #}
-    {{ all_ets_flow_nominal.append(ets.id + ".mDis_flow_nominal")|default("", true) }}
-  {%- endfor -%}
+  {%- set all_ets_flow_nominal = couplings.ets_couplings|map(attribute="ets")|map(attribute="id")|map("strcat", ".mDis_flow_nominal")|list -%}
 
   constant Integer nBui_{{ model.id }}={{ all_ets_flow_nominal|length }};
   Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({% raw %}{{% endraw %}

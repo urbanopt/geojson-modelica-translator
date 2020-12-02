@@ -29,6 +29,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import os
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -45,6 +46,7 @@ def render_template(template_name, template_params):
     template_env = Environment(
         loader=FileSystemLoader(searchpath=template_dir),
         undefined=StrictUndefined)
+    template_env.filters.update(ALL_CUSTOM_FILTERS)
     template = template_env.get_template(template_name)
     return template.render(template_params)
 
