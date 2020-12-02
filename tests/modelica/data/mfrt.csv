@@ -1,4 +1,4 @@
-Date/Tidme,NODE 62:System Node Temperature[C],NODE 67:System Node Temperature[C],NODE 70:System Node Temperature[C],NODE 98:System Node Temperature[C],massFlowRateHeating,massFlowRateCooling
+Date/Time,NODE 62:System Node Temperature[C],NODE 67:System Node Temperature[C],NODE 70:System Node Temperature[C],NODE 98:System Node Temperature[C],massFlowRateHeating,massFlowRateCooling
 2006-Jan-01 00:15:00,42.62927271,55,15.74083679,6.666666667,9.980636435,0.152041829
 2006-Jan-01 00:30:00,42.46518852,55,15.72168962,6.666666667,9.51143674,0.16482505
 2006-Jan-01 00:45:00,42.33120168,55,15.71188909,6.666666667,9.043635274,0.177025173
