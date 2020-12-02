@@ -28,7 +28,7 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
     * Install git-lfs
         * Mac: :code:`brew install git-lfs; git lfs install`
         * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-    * Pull the correct staging branch for this project with: :code:`git checkout issue1437_district_heating_cooling`
+    * Pull the correct staging branch for this project with: :code:`git checkout issue2204_gmt_mbl`
     * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Return to the GMT directory and run :code:`pip install -r requirements.txt`
 * Test if everything is installed correctly by running :code:`py.test`

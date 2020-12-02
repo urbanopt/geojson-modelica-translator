@@ -21,7 +21,7 @@ env:
 before_script:
   # Use a specific SHA of MBL as the E+ FMU seems to be causing issues in more recent commits
   - |
-    git clone --single-branch --branch issue1437_district_heating_cooling https://github.com/lbl-srg/modelica-buildings.git
+    git clone --single-branch --branch issue2204_gmt_mbl https://github.com/lbl-srg/modelica-buildings.git
     export MODELICAPATH=$(pwd)/modelica-buildings
     cd $MODELICAPATH
     echo $(git branch)
