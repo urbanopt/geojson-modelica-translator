@@ -34,6 +34,7 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy
     EnergyTransferBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.utils import simple_uuid
 
 
 class HeatingIndirect(EnergyTransferBase):
@@ -41,7 +42,7 @@ class HeatingIndirect(EnergyTransferBase):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'MyHeatingIndirect'
+        self.id = 'heaInd_' + simple_uuid()
 
     def to_modelica(self, scaffold):
         """
