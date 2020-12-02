@@ -75,7 +75,7 @@ class CSVModelica(object):
                 or 'massFlowRateCooling' not in self.timeseries_output.columns:
             raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
 
-        def format_to_single_decimal_place(temperature_value: str) -> str:
+        def format_to_single_decimal_place(temperature_value: float) -> str:
             return f'{temperature_value:,.1f}'
 
         if 'SecondsFromStart' in self.timeseries_output.columns:
