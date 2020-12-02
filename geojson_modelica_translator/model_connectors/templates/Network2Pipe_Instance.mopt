@@ -1,10 +1,10 @@
   {%- set all_ets_flow_nominal = couplings.ets_couplings|map(attribute="ets")|map(attribute="id")|map("strcat", ".mDis_flow_nominal")|list -%}
 
   constant Integer nBui_{{ model.id }}={{ all_ets_flow_nominal|length }};
-  Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({% raw %}{{% endraw %}
+  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({% raw %}{{% endraw %}
     {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %})
     "Nominal mass flow rate of the distribution pump";
-  Modelica.SIunits.MassFlowRate mCon_flow_nominal_{{ model.id }}[nBui_{{ model.id }}]={% raw %}{{% endraw %}
+  parameter Modelica.SIunits.MassFlowRate mCon_flow_nominal_{{ model.id }}[nBui_{{ model.id }}]={% raw %}{{% endraw %}
     {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %}
     "Nominal mass flow rate in each connection line";
   parameter Modelica.SIunits.PressureDifference dpDis_nominal_{{ model.id }}[nBui_{{ model.id }}](
@@ -18,6 +18,7 @@
     "Pressure drop between each connected building at nominal conditions (supply line)";
   parameter Modelica.SIunits.PressureDifference dp_nominal_{{ model.id }}=dpSetPoi_{{ model.id }}+nBui_{{ model.id }}*7000
     "District network pressure drop";
+  // NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
   parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=50000
     "Differential pressure setpoint";
 

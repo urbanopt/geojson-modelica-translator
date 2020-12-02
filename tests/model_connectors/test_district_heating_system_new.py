@@ -54,6 +54,9 @@ from geojson_modelica_translator.model_connectors.load_connectors.time_series_ne
 from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (
     Network2Pipe
 )
+from geojson_modelica_translator.model_connectors.plants.heating_plant import (
+    HeatingPlant
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -79,12 +82,14 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
         heating_indirect_system = HeatingIndirect(sys_params)
         cold_water_stub = EtsColdWaterStub(sys_params)
         network = Network2Pipe(sys_params)
+        heating_plant = HeatingPlant(sys_params)
 
         # create the couplings and graph
         graph = CouplingGraph([
             Coupling(time_series_load, heating_indirect_system),
             Coupling(time_series_load, cold_water_stub),
             Coupling(heating_indirect_system, network),
+            Coupling(network, heating_plant),
         ])
 
         district = District(
