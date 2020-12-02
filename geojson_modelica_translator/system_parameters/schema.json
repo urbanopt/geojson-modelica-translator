@@ -607,13 +607,39 @@
         "dpCHWPum_nominal": {
           "description": "Chiller isolation valve pressure drop(Pa)",
           "type": "number",
-          "default": 6000
+          "default": 50000
         },
         "dpCWPum_nominal": {
           "description": "Cooling tower isolation valve pressure drop(Pa)",
           "type": "number",
-          "default": 6000
-        }
+          "default": 50000
+        },
+        "TAirInWB_nominal": {
+          "description": "Design air wetbulb temperature",
+          "type": "number",
+          "default": 25+273.15
+        },
+        "TWatIn_nominal": {
+          "description": "Nominal water inlet temperature",
+          "type": "number",
+          "default": 35+273.15
+        },
+        "dT_nominal": {
+          "Nominal water temperature difference between of the tower",
+          "type": "number",
+          "default": 7+273.15
+        },
+        "dT_App": {
+          "Approach tempearture difference",
+          "type": "number",
+          "default": 3
+        },
+        "ratWatAir_nominal": {
+          "Approach tempearture difference",
+          "type": "number",
+          "default": 0.625
+        },
+
       },
       "required": [
         "Q_flow_nominal",
