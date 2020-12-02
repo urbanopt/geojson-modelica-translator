@@ -75,17 +75,27 @@ class CSVModelica(object):
                 or 'massFlowRateCooling' not in self.timeseries_output.columns:
             raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
 
-        format_to_single_decimal_place = lambda x: f'{x:,.1f}'
+        def format_to_single_decimal_place(temperature_value: str) -> str:
+            return f'{temperature_value:,.1f}'
+
         if 'SecondsFromStart' in self.timeseries_output.columns:
-            self.timeseries_output['heatingReturnTemperature[C]'] = self.timeseries_output['heatingReturnTemperature[C]'].map(format_to_single_decimal_place)
-            self.timeseries_output['heatingSupplyTemperature[C]'] = self.timeseries_output['heatingSupplyTemperature[C]'].map(format_to_single_decimal_place)
-            self.timeseries_output['ChilledWaterReturnTemperature[C]'] = self.timeseries_output['ChilledWaterReturnTemperature[C]'].map(format_to_single_decimal_place)
-            self.timeseries_output['ChilledWaterSupplyTemperature[C]'] = self.timeseries_output['ChilledWaterSupplyTemperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['heatingReturnTemperature[C]'] = self.timeseries_output['heatingReturnTemperature[C]'].map(
+                format_to_single_decimal_place)
+            self.timeseries_output['heatingSupplyTemperature[C]'] = self.timeseries_output['heatingSupplyTemperature[C]'].map(
+                format_to_single_decimal_place)
+            self.timeseries_output['ChilledWaterReturnTemperature[C]'] = self.timeseries_output['ChilledWaterReturnTemperature[C]'].map(
+                format_to_single_decimal_place)
+            self.timeseries_output['ChilledWaterSupplyTemperature[C]'] = self.timeseries_output['ChilledWaterSupplyTemperature[C]'].map(
+                format_to_single_decimal_place)
         elif 'NODE 62:System Node Temperature[C]' in self.timeseries_output.columns:
-            self.timeseries_output['NODE 62:System Node Temperature[C]'] = self.timeseries_output['NODE 62:System Node Temperature[C]'].map(format_to_single_decimal_place)
-            self.timeseries_output['NODE 67:System Node Temperature[C]'] = self.timeseries_output['NODE 67:System Node Temperature[C]'].map(format_to_single_decimal_place)
-            self.timeseries_output['NODE 70:System Node Temperature[C]'] = self.timeseries_output['NODE 70:System Node Temperature[C]'].map(format_to_single_decimal_place)
-            self.timeseries_output['NODE 98:System Node Temperature[C]'] = self.timeseries_output['NODE 98:System Node Temperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['NODE 62:System Node Temperature[C]'] = self.timeseries_output['NODE 62:System Node Temperature[C]'].map(
+                format_to_single_decimal_place)
+            self.timeseries_output['NODE 67:System Node Temperature[C]'] = self.timeseries_output['NODE 67:System Node Temperature[C]'].map(
+                format_to_single_decimal_place)
+            self.timeseries_output['NODE 70:System Node Temperature[C]'] = self.timeseries_output['NODE 70:System Node Temperature[C]'].map(
+                format_to_single_decimal_place)
+            self.timeseries_output['NODE 98:System Node Temperature[C]'] = self.timeseries_output['NODE 98:System Node Temperature[C]'].map(
+                format_to_single_decimal_place)
         else:
             raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
 
