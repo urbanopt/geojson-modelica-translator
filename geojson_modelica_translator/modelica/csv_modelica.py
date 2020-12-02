@@ -44,10 +44,10 @@ class CSVModelica(object):
         If providing a csv file not from the DES_HVAC measure, ensure it contains the following headers in this order:
 
         0: Date/Time, string, date time. This column isn't used and will be removed upon writing out.
-        1: THWR, double, Temperature hot water return, degC
-        2: THWSET, double, Temperature hot water setpoint, degC
-        3: TChWR, double, Temperature chilled water return, degC
-        4: TChWSET, double, Temperature chilled water setpoint, degC
+        1: NODE 62:System Node Temperature[C], double, Temperature hot water return, degC
+        2: NODE 67:System Node Temperature[C], double, Temperature hot water setpoint, degC
+        3: NODE 70:System Node Temperature[C], double, Temperature chilled water return, degC
+        4: NODE 98:System Node Temperature[C], double, Temperature chilled water setpoint, degC
         5: massFlowRateHeating, double, heating water mass flow rate, must be named massFlowRateHeating, kg/s
         6: massFlowRateCooling, double, cooling water mass flow rate, must be named massFlowRateCooling, kg/s
 
@@ -73,6 +73,20 @@ class CSVModelica(object):
 
         if 'massFlowRateHeating' not in self.timeseries_output.columns \
                 or 'massFlowRateCooling' not in self.timeseries_output.columns:
+            raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
+
+        format_to_single_decimal_place = lambda x: f'{x:,.1f}'
+        if 'SecondsFromStart' in self.timeseries_output.columns:
+            self.timeseries_output['heatingReturnTemperature[C]'] = self.timeseries_output['heatingReturnTemperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['heatingSupplyTemperature[C]'] = self.timeseries_output['heatingSupplyTemperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['ChilledWaterReturnTemperature[C]'] = self.timeseries_output['ChilledWaterReturnTemperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['ChilledWaterSupplyTemperature[C]'] = self.timeseries_output['ChilledWaterSupplyTemperature[C]'].map(format_to_single_decimal_place)
+        elif 'NODE 62:System Node Temperature[C]' in self.timeseries_output.columns:
+            self.timeseries_output['NODE 62:System Node Temperature[C]'] = self.timeseries_output['NODE 62:System Node Temperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['NODE 67:System Node Temperature[C]'] = self.timeseries_output['NODE 67:System Node Temperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['NODE 70:System Node Temperature[C]'] = self.timeseries_output['NODE 70:System Node Temperature[C]'].map(format_to_single_decimal_place)
+            self.timeseries_output['NODE 98:System Node Temperature[C]'] = self.timeseries_output['NODE 98:System Node Temperature[C]'].map(format_to_single_decimal_place)
+        else:
             raise Exception(f'Columns are missing or misspelled in your file: {input_csv_file_path}')
 
         # Dymola wants time to start at zero.
