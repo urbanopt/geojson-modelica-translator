@@ -1,5 +1,5 @@
 Date Time,Month,Day,Day of Week,Hour,Minute,SecondsFromStart,heatingReturnTemperature[C],heatingSupplyTemperature[C],massFlowRateHeating,ChilledWaterReturnTemperature[C],ChilledWaterSupplyTemperature[C],massFlowRateCooling
-01/01/2017 01:00,1,1,0,1,0,3600,0.0,0.0,0.0,0.0,0.0,0.0
+01/01/2017 01:00,1,1,0,1,0,3600,46.9,82.2,1.98,14.8,6.7,1.737
 01/01/2017 02:00,1,1,0,2,0,7200,82.2,82.2,0.0,6.7,6.7,0.0
 01/01/2017 03:00,1,1,0,3,0,10800,47.3,82.2,2.33,14.8,6.7,1.942
 01/01/2017 04:00,1,1,0,4,0,14400,82.2,82.2,0.0,6.7,6.7,0.0
