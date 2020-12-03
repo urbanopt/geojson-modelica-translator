@@ -91,7 +91,7 @@ setup(
 # Do not checkout MBL for now. This will need to be reeneabled once non-developers start using it.
 #
 # # install portions of the Modelica Buildings Library for grabbing files as needed (e.g. MOS files, examples, etc)
-# libs_to_extract = ["Buildings/Applications/DHC"]
+# libs_to_extract = ["Buildings/Experimental/DHC"]
 # save_path = "geojson_modelica_translator/modelica/buildingslibrary"
 # tmp_save_path = "geojson_modelica_translator/modelica/tmp_buildingslibrary"
 # repo_name = "lbl-srg/modelica-buildings"
