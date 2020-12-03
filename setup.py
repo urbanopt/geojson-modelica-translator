@@ -91,7 +91,7 @@ setup(
 # Do not checkout MBL for now. This will need to be reeneabled once non-developers start using it.
 #
 # # install portions of the Modelica Buildings Library for grabbing files as needed (e.g. MOS files, examples, etc)
-# libs_to_extract = ["Buildings/Applications/DHC"]
+# libs_to_extract = ["Buildings/Experimental/DHC"]
 # save_path = "geojson_modelica_translator/modelica/buildingslibrary"
 # tmp_save_path = "geojson_modelica_translator/modelica/tmp_buildingslibrary"
 # repo_name = "lbl-srg/modelica-buildings"
@@ -99,7 +99,7 @@ setup(
 #     shutil.rmtree(save_path)
 # if os.path.exists(tmp_save_path):
 #     shutil.rmtree(tmp_save_path)
-# # mbl_archive_name = "issue1437_district_heating_cooling"
+# # mbl_archive_name = "issue2204_gmt_mbl"
 # mbl_archive_name = "2eb417f9ca2a9dce188988f1937bf79253daa9ff"  # AA needed to use this in order to avoid an error about a package.order file # noqa
 # r = get(f"https://github.com/{repo_name}/archive/{mbl_archive_name}.zip")
 # with ZipFile(BytesIO(r.content)) as zip:

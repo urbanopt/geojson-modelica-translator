@@ -1,4 +1,4 @@
   Modelica.Blocks.Sources.RealExpression secMasFloRat_{{ coupling.id }}(
-    y={{ graph.get_coupled_load(coupling.ets.id).id }}.disFloHea.mReqTot_flow)
+    y={{ graph.get_coupled_load(coupling.ets.id).id }}.disFloHea.mReqTot_flow*5/7.5)
     "Secondary loop chilled water flow rate."
     {% raw %}annotation (Placement(transformation(extent={{-74,-20},{-54,0}}))){% endraw %};

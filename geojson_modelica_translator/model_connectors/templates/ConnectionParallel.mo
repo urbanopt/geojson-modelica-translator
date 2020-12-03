@@ -1,7 +1,7 @@
 within geojson_modelica_translator.model_connectors.templates;
 model ConnectionParallel
   "Model for connecting an agent to the DHC system"
-  extends Buildings.Applications.DHC.Networks.BaseClasses.PartialConnection2Pipe(
+  extends Buildings.Experimental.DHC.Networks.BaseClasses.PartialConnection2Pipe(
     redeclare model Model_pipDis=PipeDistribution(
       final dh=dhDis,
       final length=lDis,

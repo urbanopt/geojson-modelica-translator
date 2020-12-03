@@ -35,7 +35,7 @@ partial model PartialBuildingETS
     "Chilled water set point"
     annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,20}),iconTransformation(extent={{-10,-10},{10,10}},rotation=0,origin={-110,30})));
   // COMPONENTS
-  replaceable Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding bui(
+  replaceable Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding bui(
     final allowFlowReversal=allowFlowReversalBui)
     "Building model "
     annotation (Placement(transformation(extent={{-30,8},{30,68}})));
