@@ -4,12 +4,12 @@
     redeclare package Medium={{ globals.medium_w }},
     use_m_flow_in=true,
     use_T_in=false,
-    T=281.15,
+    T=55+273.15,
     nPorts=1)
-    "Heated water supply (district side)."
+    "Heating water supply temperature (district side)."
     {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-14,34}))){% endraw %};
-  Buildings.Fluid.Sources.Boundary_pT sinHeaWat1(
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium={{ globals.medium_w }},
     nPorts=1)
-    "Sink for heated water"
+    "Heating water sink (district side)"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={86,-34}))){% endraw %};
