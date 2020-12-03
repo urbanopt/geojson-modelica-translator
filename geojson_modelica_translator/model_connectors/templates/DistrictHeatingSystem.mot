@@ -97,7 +97,7 @@ model DistrictHeatingSystem
     nPorts=nBui)
     "District infinite cooling sink"
     annotation (Placement(transformation(extent={{-30,54},{-10,74}})));
-  Buildings.Applications.DHC.Loads.Validation.BaseClasses.Distribution2Pipe disNet(
+  Buildings.Experimental.DHC.Loads.Validation.BaseClasses.Distribution2Pipe disNet(
     redeclare final package Medium=MediumW,
     final nCon=nBui,
     iConDpSen=1,

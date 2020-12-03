@@ -29,7 +29,7 @@ jobs:
         env:
           MODELICAPATH: /home/runner/work/modelica-buildings
         run: |
-          git clone --single-branch --branch issue1437_district_heating_cooling https://github.com/lbl-srg/modelica-buildings.git $MODELICAPATH
+          git clone --single-branch --branch issue2204_gmt_mbl https://github.com/lbl-srg/modelica-buildings.git $MODELICAPATH
           cd $MODELICAPATH
           echo "Git branch is $(git branch)"
           pip install --upgrade pip

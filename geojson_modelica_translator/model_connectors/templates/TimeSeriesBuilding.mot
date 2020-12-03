@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
   "Building model with heating and cooling loads provided as time series"
-  extends Buildings.Applications.DHC.Loads.BaseClasses.PartialBuilding(
+  extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=MediumW,
     have_fan=false,
     have_eleHea=false,
@@ -13,7 +13,7 @@ model building
     "Load side medium";
   parameter Boolean show_T=false
     "propagated parameter show_T";
-  parameter String filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos"
+  parameter String filNam="modelica://Buildings/Resources/Data/Experimental/DHC/Loads/Examples/SwissResidential_20190916.mos"
     "Library path of the file with thermal loads as time series";
   parameter Modelica.SIunits.Temperature T_aHeaWat_nominal(
     min=273.15,
@@ -49,13 +49,13 @@ model building
   parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=T_bChiWat_nominal-T_aChiWat_nominal
     "Nominal building supply and return chilled water temperature difference";
   parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal(
-    max=-Modelica.Constants.eps)=Buildings.Experimental.DistrictHeatingCooling.SubStations.VaporCompression.BaseClasses.getPeakLoad(
+    max=-Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space cooling load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Design parameter"));
   parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal(
-    min=Modelica.Constants.eps)=Buildings.Experimental.DistrictHeatingCooling.SubStations.VaporCompression.BaseClasses.getPeakLoad(
+    min=Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space heating load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design heating heat flow rate (>=0)"
@@ -78,7 +78,7 @@ model building
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint)
     "Reader for thermal loads (y[1] is cooling load, y[2] is heating load)"
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
-  Buildings.Applications.DHC.Loads.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
+  Buildings.Experimental.DHC.Loads.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
     redeclare package Medium1=MediumW,
     redeclare package Medium2=MediumA,
     final QHea_flow_nominal=QHea_flow_nominal,
@@ -88,7 +88,7 @@ model building
     final T_aLoaHea_nominal=T_aLoaHea_nominal)
     "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
-  Buildings.Applications.DHC.Loads.FlowDistribution disFloHea(
+  Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=terUniHea.mHeaWat_flow_nominal,
     have_pum=have_pum,
@@ -98,10 +98,10 @@ model building
     nPorts_b1=1)
     "Heating water distribution system"
     annotation (Placement(transformation(extent={{120,-80},{140,-60}})));
-  Buildings.Applications.DHC.Loads.FlowDistribution disFloCoo(
+  Buildings.Experimental.DHC.Loads.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=terUniCoo.mChiWat_flow_nominal,
-    typDis=Buildings.Applications.DHC.Loads.Types.DistributionType.ChilledWater,
+    typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
     have_pum=have_pum,
     dp_nominal=100000,
     nPorts_a1=1,
@@ -111,7 +111,7 @@ model building
   Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
     nin=2) if have_pum
     annotation (Placement(transformation(extent={{212,68},{232,88}})));
-  Buildings.Applications.DHC.Loads.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
+  Buildings.Experimental.DHC.Loads.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
     redeclare package Medium1=MediumW,
     redeclare package Medium2=MediumA,
     final QHea_flow_nominal=QHea_flow_nominal,
@@ -202,8 +202,8 @@ model building
    <p>
     The heating and cooling loads are computed with a four-pipe
     fan coil unit model derived from
-    <a href=\"modelica://Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit\">
-    Buildings.Applications.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+    <a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+    Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
     and connected to the room model by means of fluid ports.
     </p>
    </html>",

@@ -1,6 +1,6 @@
   // time series load
   {{ model.modelica_type }} {{ model.id }}(
-    filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
+    filNam="modelica://Buildings/Resources/Data/Experimental/DHC/Loads/Examples/SwissResidential_20190916.mos",
     have_pum=true,
     delTBuiCoo=5,
     nPorts_aHeaWat=1,
