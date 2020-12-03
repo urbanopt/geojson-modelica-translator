@@ -65,8 +65,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.7'
-      # Run pre-commit checks here, this is somewhat redundant as tox handles the tox flake8, but
-      # this will also check for modelica files
       -
         name: Install deps
         run: |
@@ -78,9 +76,9 @@ jobs:
           pip install --upgrade pip
           pip install tox==3.13.2
           pip install requests
-#      -
-#        name: Run pre-commit
-#        uses: pre-commit/action@v2.0.0
+      -
+        name: Run pre-commit
+        uses: pre-commit/action@v2.0.0
       -
         name: Run tox
         run: tox -e ${{ matrix.tox_env }}
