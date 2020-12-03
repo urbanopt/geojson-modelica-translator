@@ -78,7 +78,9 @@ jobs:
           pip install requests
       -
         name: Run pre-commit
-        uses: pre-commit/action@v2.0.0
+        run: |
+          pip install pre-commit
+          pre-commit run --show-diff-on-failure --color=always --all-files
       -
         name: Run tox
         run: tox -e ${{ matrix.tox_env }}
