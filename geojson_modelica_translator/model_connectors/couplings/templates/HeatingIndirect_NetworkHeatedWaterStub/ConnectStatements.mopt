@@ -1,0 +1,7 @@
+  // Heating indirect, Heated water stub connections
+  connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
+    {% raw %}annotation (Line(points={{-65,16},{-48,16}}, color={0,0,127})){% endraw %};
+  connect({{ coupling.ets.id }}.port_a1,supHeaWat.ports[1])
+    {% raw %}annotation (Line(points={{-22,-32},{-22,8},{-26,8}}, color={0,127,255})){% endraw %};
+  connect(sinHeaWat.ports[1],{{ coupling.ets.id }}.port_b1)
+    {% raw %}annotation (Line(points={{40,-12},{20,-12},{20,-32},{-2,-32}}, color={0,127,255})){% endraw %};
