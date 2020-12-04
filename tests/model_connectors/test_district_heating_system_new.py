@@ -77,18 +77,26 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
         filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
 
-        # create our models
-        time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
-        heating_indirect_system = HeatingIndirect(sys_params)
-        cold_water_stub = EtsColdWaterStub(sys_params)
+        # create our our loads
+        time_series_load_a = TimeSeries(sys_params, self.gj.json_loads[0])
+        heating_indirect_system_a = HeatingIndirect(sys_params)
+        cold_water_stub_a = EtsColdWaterStub(sys_params)
+        time_series_load_b = TimeSeries(sys_params, self.gj.json_loads[0])
+        heating_indirect_system_b = HeatingIndirect(sys_params)
+        cold_water_stub_b = EtsColdWaterStub(sys_params)
+
+        # create network and plant
         network = Network2Pipe(sys_params)
         heating_plant = HeatingPlant(sys_params)
 
         # create the couplings and graph
         graph = CouplingGraph([
-            Coupling(time_series_load, heating_indirect_system),
-            Coupling(time_series_load, cold_water_stub),
-            Coupling(heating_indirect_system, network),
+            Coupling(time_series_load_a, heating_indirect_system_a),
+            Coupling(time_series_load_a, cold_water_stub_a),
+            Coupling(heating_indirect_system_a, network),
+            Coupling(time_series_load_b, heating_indirect_system_b),
+            Coupling(time_series_load_b, cold_water_stub_b),
+            Coupling(heating_indirect_system_b, network),
             Coupling(network, heating_plant),
         ])
 

@@ -49,4 +49,4 @@ class Network2Pipe(NetworkBase):
         pass
 
     def get_modelica_type(self, scaffold):
-        return 'Buildings.Applications.DHC.Loads.Validation.BaseClasses.Distribution2Pipe'
+        return 'Buildings.Experimental.DHC.Loads.Validation.BaseClasses.Distribution2Pipe'
