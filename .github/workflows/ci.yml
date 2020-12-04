@@ -53,6 +53,12 @@ jobs:
             echo "$filename"
             cat "$filename"
           done
+      -
+        name: Store test output
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-output
+          path: tests/model_connectors/output
   formatting:
     runs-on: ubuntu-latest
     strategy:
