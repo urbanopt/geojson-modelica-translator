@@ -4,7 +4,7 @@
     "Nominal heating water mass flow rate";
   parameter Modelica.SIunits.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
     "Nominal heating capaciaty";
-  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=50000
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=80000
     "Heating load";
   parameter Modelica.SIunits.PressureDifference dpHW_nominal_{{ model.id }}=45000
     "Nominal heating water side pressure";

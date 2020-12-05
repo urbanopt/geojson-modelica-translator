@@ -2,6 +2,8 @@
   {{ model.modelica_type }} {{ model.id }}(
     filNam="modelica://Buildings/Resources/Data/Experimental/DHC/Loads/Examples/SwissResidential_20190916.mos",
     have_pum=true,
+    T_aHeaWat_nominal=323.15,
+    mLoaHea_flow_nominal=10,
     delTBuiCoo=5,
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,

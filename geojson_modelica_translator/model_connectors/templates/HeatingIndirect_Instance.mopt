@@ -2,6 +2,7 @@
   {{ model.modelica_type }} {{ model.id }}(
     allowFlowReversal1=false,
     allowFlowReversal2=false,
+    show_T=true,
     redeclare package Medium={{ globals.medium_w }},
     mDis_flow_nominal=mDis_flow_nominal_{{ couplings.load_couplings[0].id }},
     mBui_flow_nominal=mBui_flow_nominal_{{ couplings.load_couplings[0].id }},
@@ -12,5 +13,9 @@
     Q_flow_nominal=Q_flow_nominal_{{ couplings.load_couplings[0].id }},
     T_a1_nominal=52+273.15,
     T_a2_nominal=45+273.15,
+    eta=0.8,
+    k=0.5,
+    Ti=100,
+    yMax=1,
     reverseActing=true)
     {% raw %}annotation (Placement(transformation(extent={{-22,-48},{-2,-28}}))){% endraw %};
