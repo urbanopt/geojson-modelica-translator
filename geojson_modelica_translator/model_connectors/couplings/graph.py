@@ -78,7 +78,7 @@ class CouplingGraph:
     def models(self):
         return [model for _, model in self._models_by_id.items()]
 
-    def couplings_by_type(self, model):
+    def couplings_by_type(self, model_id):
         """Returns the model's associated couplings keyed by the types of the
         _other_ model involved
 
@@ -89,9 +89,10 @@ class CouplingGraph:
            'network_couplings': [<network coupling>],
         }
 
-        :param model: Model
+        :param model_id: str
         :return: dict
         """
+        model = self._models_by_id[model_id]
         grouped_couplings = self._grouped_couplings_by_model_id[model.id]
         result = {}
         for type_, couplings in grouped_couplings.items():

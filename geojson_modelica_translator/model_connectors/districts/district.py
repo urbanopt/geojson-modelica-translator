@@ -98,7 +98,7 @@ class District:
         for model in self._coupling_graph.models:
             template_params = {
                 'model': model.to_dict(self._scaffold),
-                'couplings': self._coupling_graph.couplings_by_type(model),
+                'couplings': self._coupling_graph.couplings_by_type(model.id),
             }
             template_params.update(**common_template_params)
             result = model.render_instance(template_params)
