@@ -1,10 +1,11 @@
+  // heating plant instance
   parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal_{{ model.id }}=mBoi_flow_nominal_{{ model.id }}*{{ model.id }}.numBoi
     "Nominal heating water mass flow rate";
   parameter Modelica.SIunits.MassFlowRate mBoi_flow_nominal_{{ model.id }}=QBoi_nominal_{{ model.id }}/(4200*{{ model.id }}.delT_nominal)
     "Nominal heating water mass flow rate";
   parameter Modelica.SIunits.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
     "Nominal heating capaciaty";
-  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=80000
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=80000 // this should be 1.2*sum({bui.QHea_flow_nominal for bui in all_loads})
     "Heating load";
   parameter Modelica.SIunits.PressureDifference dpHW_nominal_{{ model.id }}=45000
     "Nominal heating water side pressure";
