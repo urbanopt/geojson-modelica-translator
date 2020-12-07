@@ -7,8 +7,6 @@
     "Nominal heating capaciaty";
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=80000 // this should be 1.2*sum({bui.QHea_flow_nominal for bui in all_loads})
     "Heating load";
-  parameter Modelica.SIunits.PressureDifference dpHW_nominal_{{ model.id }}=45000
-    "Nominal heating water side pressure";
   parameter Modelica.SIunits.MassFlowRate mMin_flow_{{ model.id }}=0.2*mBoi_flow_nominal_{{ model.id }}
     "Minimum mass flow rate of single boiler";
   // controls
@@ -25,7 +23,6 @@
   {{ model.modelica_type }} {{ model.id }}(
     perHWPum=perHWPum_{{ model.id }},
     mHW_flow_nominal=mHW_flow_nominal_{{ model.id }},
-    dpHW_nominal=dpHW_nominal_{{ model.id }},
     QBoi_flow_nominal=QBoi_nominal_{{ model.id }},
     mMin_flow=mMin_flow_{{ model.id }},
     mBoi_flow_nominal=mBoi_flow_nominal_{{ model.id }},
