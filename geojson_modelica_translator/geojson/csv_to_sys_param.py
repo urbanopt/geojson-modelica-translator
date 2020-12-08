@@ -28,14 +28,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-# import logging
-# import geojson
-# import json
+import json
 from pathlib import Path
 import pandas as pd
+from collections import OrderedDict
 # from geojson_modelica_translator.geojson.schemas import Schemas
-
-# _log = logging.getLogger(__name__)
 
 class CSVToSysParam(object):
     """
@@ -43,7 +40,8 @@ class CSVToSysParam(object):
     """
     pass
 
-    def __init__(self, input_mfrt_file=None, input_loads_file=None):
+    def __init__(self, input_mfrt_file=None, input_loads_file=None, scenario_dir=None):
+        # Outdated. This will be removed once scenario_dir block is working
         if Path(input_mfrt_file).exists() and Path(input_loads_file).exists():
             self.input_mfrt_file = pd.read_csv(input_mfrt_file)
             self.input_loads_file = pd.read_csv(input_loads_file)
@@ -51,9 +49,23 @@ class CSVToSysParam(object):
             raise Exception(f"Unable to convert CSV file because one of these paths does not exist: \
                 \n{Path(input_mfrt_file)}\n{Path(input_loads_file)}")
 
+        if Path(scenario_dir).exists():
+            self.scenario_dir = scenario_dir
+        else:
+            raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
+
+    def parse_feature(self):
+        """
+        To be used in a list comprehension where each item is a path to a feature directory in UO SDK output
+        """
+        pass
+
     def csv_to_sys_param(self, sys_param_filename, overwrite=True):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
+
+        everything_in_scenario_dir = scenario_dir.glob("*")
+        features_parsed = [parse_feature() for item in everything_in_scenario_dir if item.is_dir()]
 
         sys_param_starter = {
             "Buildings": {
@@ -61,63 +73,23 @@ class CSVToSysParam(object):
                     "load_model": "time_series",
                     "ets_model": None,
                     "ets_model_parameters": {
-                        "indirect": {
-                            "q_flow_nominal": None,
-                            "eta_efficiency": None,
-                            "nominal_flow_district": None,
-                            "nominal_flow_building": None,
-                            "pressure_drop_valve": None,
-                            "pressure_drop_hx_secondary": None,
-                            "pressure_drop_hx_primary": None,
-                            "cooling_supply_water_temperature_district": None,
-                            "cooling_supply_water_temperature_building": None,
-                            "heating_supply_water_temperature_district": None,
-                            "heating_supply_water_temperature_building": None,
-                            "booster_heater": False,
-                            "ets_generation": None
-                        }
                     }
                 }
-            },
-            "custom": [
-                "asdf",
-                "jkl;"
-            ]
+            }
         }
 
-        # Build starter dataframe of sys_params json file
-        self.sys_param_df = pd.DataFrame.from_dict(sys_param_starter)
-
-        ## Populate the starter df
-        # Scaffold for Filepaths and thermal zones
-        # self.sys_param_df['Buildings']['default']['load_model_parameters'] = {self.sys_param_df["Buildings"]["default"]["load_model"]: {
-        #                         "idf_filename": None,
-        #                         "epw_filename": None,
-        #                         "mos_weather_filename": None,
-        #                         "mos_wet_bulb_filename": None,
-        #                         "thermal_zone_names": None
-        #                     }
-        # }
-
         # Thermal zone names
-        # input_loads_columns = list(self.input_loads_file.columns)
-        # thermal_zone_names = []
-        # for column_header in input_loads_columns:
-        #     if 'Zone' in column_header:
-        #         thermal_zone_names.append(column_header.split('_')[-1])
-        # thermal_zone_names = list((set(thermal_zone_names)))
-        # self.sys_param_df['Buildings']['default']['load_model_parameters']['time_series']['thermal_zone_names'] = thermal_zone_names
+        input_loads_columns = list(self.input_loads_file.columns)
+        thermal_zone_names = []
+        for column_header in input_loads_columns:
+            if 'Zone' in column_header:
+                thermal_zone_names.append(column_header.split('_')[-1])
+        thermal_zone_names = list((set(thermal_zone_names)))
 
-        # Default cooling plant
-        # self.sys_param_df['district_system']['default']['cooling_plant'] = {
-        #                 "delta_t_nominal": None,
-        #                 "fan_power_nominal": None,
-        #                 "chilled_water_pump_pressure_drop": None,
-        #                 "condenser_water_pump_pressure_drop": None
-        #             }
+        # Indirect attributes
+        sys_param_starter['Buildings']['default']['ets_model_parameters']['indirect'] = {"ets_generation": "Fourth Generation"}
 
-        # self.sys_param_df['Buildings']['default']['ets_model_parameters']['nominal_flow_building'] = self.input_mfrt_file['massFlowRateHeating'].max()
-
+        # Add building data from geojson file
         building_1 = {
             "geojson_id": 1234,
             "load_model": "time_series",
@@ -133,6 +105,7 @@ class CSVToSysParam(object):
             "geojson_id": "asdf"
         }
 
-        # self.sys_param_df["custom"] = [building_1, building_2]
+        sys_param_starter['custom'] = [building_1, building_2]
 
-        self.sys_param_df.to_json(sys_param_filename, indent=2)
+        with open(sys_param_filename, 'w') as outfile:
+            json.dump(sys_param_starter, outfile, indent=2)
