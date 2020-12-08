@@ -12,9 +12,9 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Air medium";
   package MediumW=Buildings.Media.Water
     "Water medium";
-  parameter String filNam
-    "File name with thermal loads as time series";
-  parameter Real facScaHea=1
+  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+    "Library path of the file with loads as time series";
+  {% raw %}parameter Real facScaHea=1
     "Heating terminal unit scaling factor";
   parameter Real facScaCoo=1
     "Cooling terminal unit scaling factor";
