@@ -27,30 +27,11 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
-    EnergyTransferBase
-)
-from geojson_modelica_translator.utils import simple_uuid
+from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
-class EtsColdWaterStub(EnergyTransferBase):
-    model_name = 'EtsColdWaterStub'
-
-    def __init__(self, system_parameters):
-        super().__init__(system_parameters)
-        self.id = 'etsColWatStub_' + simple_uuid()
-
-    def to_modelica(self, scaffold):
-        """
-        Create cooling water stub models
-
-        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
-        """
-        # this stub does not have any modelica files to generate as it's not its own model
-        # It's contained within the coupling files
-        pass
-
-    def get_modelica_type(self, scaffold):
-        # this stub does not have a type as it's not packaged into its own model currently
-        return 'UNIMPLEMENTED'
+class PlantBase(ModelBase):
+    """
+    Base class of the central plants.
+    """
+    simple_gmt_type = 'plant'

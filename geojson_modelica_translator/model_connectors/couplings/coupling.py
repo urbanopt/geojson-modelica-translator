@@ -29,6 +29,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import os
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
 )
@@ -37,6 +38,9 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
 )
 from geojson_modelica_translator.model_connectors.networks.network_base import (
     NetworkBase
+)
+from geojson_modelica_translator.model_connectors.plants.plant_base import (
+    PlantBase
 )
 from geojson_modelica_translator.utils import simple_uuid
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, meta
@@ -62,6 +66,7 @@ class Coupling(object):
         self._template_env = Environment(
             loader=FileSystemLoader(searchpath=template_dir),
             undefined=StrictUndefined)
+        self._template_env.filters.update(ALL_CUSTOM_FILTERS)
 
         self._id = simple_uuid()
 
@@ -89,7 +94,7 @@ class Coupling(object):
         raise Exception(f'Provided model, "{model.id}", is not part of the coupling')
 
     def _get_model_superclass(self, model):
-        valid_superclasses = [LoadBase, EnergyTransferBase, NetworkBase]
+        valid_superclasses = [LoadBase, EnergyTransferBase, NetworkBase, PlantBase]
         superclasses = [cls_ for cls_ in model.__class__.mro() if cls_ in valid_superclasses]
         if len(superclasses) != 1:
             return None
@@ -103,7 +108,7 @@ class Coupling(object):
         :param b: model
         :return: list, a and b sorted
         """
-        superclass_order = [LoadBase, EnergyTransferBase, NetworkBase]
+        superclass_order = [LoadBase, EnergyTransferBase, NetworkBase, PlantBase]
 
         def _sort(x):
             # get x's superclass and return its index

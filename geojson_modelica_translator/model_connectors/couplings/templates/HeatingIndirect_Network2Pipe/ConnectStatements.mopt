@@ -1,0 +1,6 @@
+  // heating indirect and network 2 pipe
+  {% set port_index = 1 + graph.directional_index(coupling.network.id, coupling.ets.id) %}
+  connect({{ coupling.network.id }}.ports_bCon[{{ port_index }}],{{ coupling.ets.id }}.port_a1)
+    {% raw %}annotation (Line(points={{21.6,32},{0,32},{0,76},{20,76}},color={0,127,255})){% endraw %};
+  connect({{ coupling.network.id }}.ports_aCon[{{ port_index }}],{{ coupling.ets.id }}.port_b1)
+    {% raw %}annotation (Line(points={{38.4,32},{52,32},{52,76},{40,76}},color={0,127,255})){% endraw %};
