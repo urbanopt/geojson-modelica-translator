@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader
 
 
@@ -58,6 +59,7 @@ class PackageParser(object):
                 )
             )
         )
+        self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
     @classmethod
     def new_from_template(cls, path, name, order, within=None):

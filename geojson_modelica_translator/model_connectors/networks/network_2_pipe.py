@@ -28,51 +28,25 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
-
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
-    EnergyTransferBase
+from geojson_modelica_translator.model_connectors.networks.network_base import (
+    NetworkBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import simple_uuid
 
 
-class HeatingIndirect(EnergyTransferBase):
-    model_name = 'HeatingIndirect'
+class Network2Pipe(NetworkBase):
+    model_name = 'Network2Pipe'
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'heaInd_' + simple_uuid()
+        self.id = 'disNet_' + simple_uuid()
 
     def to_modelica(self, scaffold):
         """
-        Create indirect heating models based on the data in the buildings and geojsons
-
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        heating_indirect_template = self.template_env.get_template("HeatingIndirectNew.mot")
-
-        ets_data = self.system_parameters.get_param(
-            "$.buildings.default.ets_model_parameters.indirect"
-        )
-
-        self.run_template(
-            template=heating_indirect_template,
-            save_file_name=os.path.join(scaffold.project_path, "Substations", "HeatingIndirect.mo"),
-            project_name=scaffold.project_name,
-            ets_data=ets_data,
-        )
-
-        package = PackageParser.new_from_template(
-            scaffold.substations_path.files_dir, "Substations", ['HeatingIndirect'], within=f"{scaffold.project_name}"
-        )
-        package.save()
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path)
-        if 'Substations' not in package.order:
-            package.add_model('Substations')
-            package.save()
+        # no model to generate, its fully implemented in the Modelica Buildings library
+        pass
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Substations.HeatingIndirect'
+        return 'Buildings.Experimental.DHC.Loads.Validation.BaseClasses.Distribution2Pipe'

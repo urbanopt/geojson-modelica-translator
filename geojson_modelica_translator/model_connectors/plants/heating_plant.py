@@ -29,50 +29,55 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+from pathlib import Path
 
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
-    EnergyTransferBase
+from geojson_modelica_translator.model_connectors.plants.plant_base import (
+    PlantBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import simple_uuid
 
 
-class HeatingIndirect(EnergyTransferBase):
-    model_name = 'HeatingIndirect'
+class HeatingPlant(PlantBase):
+    model_name = 'HeatingPlant'
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'heaInd_' + simple_uuid()
+        self.id = 'heaPla_' + simple_uuid()
+
+        self.required_mo_files.append(os.path.join(self.template_dir, 'CentralHeatingPlant.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'Boiler_TParallel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'BoilerStage.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'HeatingWaterPumpSpeed.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallel.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallelInterface.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'ValveParameters.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'Heater_T.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPrescribedOutlet.mo'))
+        self.required_mo_files.append(os.path.join(self.template_dir, 'PrescribedOutlet.mo'))
 
     def to_modelica(self, scaffold):
         """
-        Create indirect heating models based on the data in the buildings and geojsons
+        Create timeSeries models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        heating_indirect_template = self.template_env.get_template("HeatingIndirectNew.mot")
+        self.copy_required_mo_files(
+            dest_folder=scaffold.plants_path.files_dir,
+            within=f'{scaffold.project_name}.Plants')
 
-        ets_data = self.system_parameters.get_param(
-            "$.buildings.default.ets_model_parameters.indirect"
-        )
-
-        self.run_template(
-            template=heating_indirect_template,
-            save_file_name=os.path.join(scaffold.project_path, "Substations", "HeatingIndirect.mo"),
-            project_name=scaffold.project_name,
-            ets_data=ets_data,
-        )
-
-        package = PackageParser.new_from_template(
-            scaffold.substations_path.files_dir, "Substations", ['HeatingIndirect'], within=f"{scaffold.project_name}"
-        )
-        package.save()
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
         package = PackageParser(scaffold.project_path)
-        if 'Substations' not in package.order:
-            package.add_model('Substations')
+        if 'Plants' not in package.order:
+            package.add_model('Plants')
             package.save()
 
+        order_files = [Path(mo).stem for mo in self.required_mo_files]
+        plants_package = PackageParser.new_from_template(
+            path=scaffold.plants_path.files_dir,
+            name="Plants",
+            order=order_files,
+            within=scaffold.project_name)
+        plants_package.save()
+
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Substations.HeatingIndirect'
+        return f'{scaffold.project_name}.Plants.CentralHeatingPlant'

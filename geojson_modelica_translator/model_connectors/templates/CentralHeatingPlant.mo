@@ -12,9 +12,6 @@ model CentralHeatingPlant
   parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal
     "Nominal heating water mass flow rate"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.Pressure dpHW_nominal
-    "Pressure difference at the heating water side"
-    annotation (Dialog(group="Boiler"));
   parameter Modelica.SIunits.Power QBoi_flow_nominal
     "Nominal heating capacity of single boiler"
     annotation (Dialog(group="Boiler"));
@@ -101,8 +98,8 @@ model CentralHeatingPlant
     m_flow_nominal=mBoi_flow_nominal,
     dpSetPoi=dpSetPoi,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=0.01,
-    Ti=150)
+    k=0.5,
+    Ti=30)
     "Heating water pump controller."
     annotation (Placement(transformation(extent={{-120,-40},{-100,-20}})));
   BoilerStage boiStaCon(
