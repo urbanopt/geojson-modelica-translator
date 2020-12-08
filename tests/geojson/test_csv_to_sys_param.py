@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from pathlib import Path
 import unittest
+from shutil import rmtree
 
 from geojson_modelica_translator.geojson.csv_to_sys_param import CSVToSysParam
 
@@ -38,7 +39,9 @@ class CSVToSysParamTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
-        self.output_dir.mkdir(parents=True, exist_ok=True)
+        if self.output_dir.exists():
+            rmtree(self.output_dir)
+        self.output_dir.mkdir(parents=True)
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
@@ -52,8 +55,10 @@ class CSVToSysParamTest(unittest.TestCase):
             input_mfrt_file = Path(self.data_dir) / 'building_mfrt_snippet.csv'
             input_loads_file = Path(self.data_dir) / 'building_loads_snippet.csv'
             output_sys_param_file = self.output_dir / 'test_sys_param.json'
-            csv_to_sys_param = CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
-            csv_to_sys_param.csv_to_sys_param(output_sys_param_file, overwrite=False)
+            first_run = CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
+            first_run.csv_to_sys_param(output_sys_param_file, overwrite=True)
+            raise_an_error = CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
+            raise_an_error.csv_to_sys_param(output_sys_param_file, overwrite=False)
         self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
 
     def test_csv_to_sys_param(self):
