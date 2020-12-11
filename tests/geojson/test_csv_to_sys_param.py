@@ -46,8 +46,6 @@ class CSVToSysParamTest(unittest.TestCase):
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
-            # input_mfrt_file = self.data_dir / 'DNE.csv'
-            # input_loads_file = self.data_dir / 'building_loads_snippet.csv'
             scenario_dir = self.scenario_dir / 'foobar'
             sys_param_template = self.data_dir / 'time_series_template.json'
             CSVToSysParam(scenario_dir=scenario_dir, sys_param_template=sys_param_template)
