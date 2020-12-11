@@ -28,8 +28,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-from pathlib import Path
 import unittest
+from pathlib import Path
 from shutil import rmtree
 
 from geojson_modelica_translator.geojson.csv_to_sys_param import CSVToSysParam
@@ -39,7 +39,8 @@ class CSVToSysParamTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
-        self.scenario_dir = Path(__file__).parent.parent.parent.parent / "bbb" / "run" / "baseline_scenario_with_new_updated_measures_4_timesteps"
+        self.scenario_dir = Path(__file__).parent.parent.parent.parent / "bbb" / "run" / \
+            "baseline_scenario_with_new_updated_measures_4_timesteps"
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)

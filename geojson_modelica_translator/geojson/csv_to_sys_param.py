@@ -29,9 +29,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import json
-from pathlib import Path
 from copy import deepcopy
+from pathlib import Path
+
 import pandas as pd
+
 
 class CSVToSysParam(object):
     """
@@ -106,12 +108,12 @@ class CSVToSysParam(object):
             for measure_file_path in self.measure_list:
                 if (measure_file_path.suffix == '.mos') and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
-                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_file_path).split('/')[-2]) and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_file_path).split(
+                        '/')[-2]) and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max()
                     building['load_model_parameters']['time_series']['nominal_flow_building'] = float(building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
-
 
         # Remove buildings that don't have successful simulations, with modelica outputs
         building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'] is None]
