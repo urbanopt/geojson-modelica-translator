@@ -39,32 +39,33 @@ class CSVToSysParamTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
+        self.scenario_dir = Path(__file__).parent.parent.parent.parent / "bbb" / "run" / "baseline_scenario_with_new_updated_measures_4_timesteps"
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
-            input_mfrt_file = Path(self.data_dir) / 'DNE.csv'
-            input_loads_file = Path(self.data_dir) / 'building_loads_snippet.csv'
-            CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
-        self.assertIn("Unable to convert CSV file because one of these paths does not exist:", str(context.exception))
+            # input_mfrt_file = self.data_dir / 'DNE.csv'
+            # input_loads_file = self.data_dir / 'building_loads_snippet.csv'
+            scenario_dir = self.scenario_dir / 'foobar'
+            sys_param_template = self.data_dir / 'time_series_template.json'
+            CSVToSysParam(scenario_dir=scenario_dir, sys_param_template=sys_param_template)
+        self.assertIn("Unable to find your scenario. The path you provided was:", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
         with self.assertRaises(Exception) as context:
-            input_mfrt_file = Path(self.data_dir) / 'building_mfrt_snippet.csv'
-            input_loads_file = Path(self.data_dir) / 'building_loads_snippet.csv'
+            sys_param_template = self.data_dir / 'time_series_template.json'
             output_sys_param_file = self.output_dir / 'test_sys_param.json'
-            first_run = CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
+            first_run = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template)
             first_run.csv_to_sys_param(output_sys_param_file, overwrite=True)
-            raise_an_error = CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
+            raise_an_error = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template)
             raise_an_error.csv_to_sys_param(output_sys_param_file, overwrite=False)
         self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
 
     def test_csv_to_sys_param(self):
-        input_mfrt_file = Path(self.data_dir) / 'building_mfrt_snippet.csv'
-        input_loads_file = Path(self.data_dir) / 'building_loads_snippet.csv'
+        sys_param_template = self.data_dir / 'time_series_template.json'
         output_sys_param_file = self.output_dir / 'test_sys_param.json'
-        csv_to_sys_param = CSVToSysParam(input_mfrt_file=input_mfrt_file, input_loads_file=input_loads_file)
+        csv_to_sys_param = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template)
         csv_to_sys_param.csv_to_sys_param(output_sys_param_file)
         self.assertTrue(output_sys_param_file.exists())
