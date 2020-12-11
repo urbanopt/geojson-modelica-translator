@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import json
 from pathlib import Path
 from copy import deepcopy
+import pandas as pd
 
 class CSVToSysParam(object):
     """
@@ -40,11 +41,12 @@ class CSVToSysParam(object):
     def __init__(self, scenario_dir=None, sys_param_template=None):
         if Path(scenario_dir).exists():
             self.scenario_dir = scenario_dir
-            # FIXME: this feature_file can't be hardcoded
+            # FIXME: this feature_file can't be hardcoded, name & location need to be user specified
             self.feature_file = self.scenario_dir.parent.parent / "example_project.json"
         else:
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
 
+        # TODO: sys_param_template can be hardcoded, once we decide where this whole thing lives
         if Path(sys_param_template).exists():
             self.sys_param_template = sys_param_template
         else:
@@ -71,6 +73,7 @@ class CSVToSysParam(object):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
 
+        # TODO: move all these methods iside the SystemParameters class
         # sys_param = SystemParameters(sys_param_filename, template)
         # sys_param.populate_filenames(geojson)
 
@@ -97,15 +100,23 @@ class CSVToSysParam(object):
             building_list.append(feature_info)
 
         # Grab the modelica file for the each Feature, and add it to the appropriate building dict
+        district_nominal_mfrt = 0
         for building in building_list:
+            building_nominal_mfrt = 0
             for measure_file_path in self.measure_list:
-                if measure_file_path.suffix == '.mos' and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                if (measure_file_path.suffix == '.mos') and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
+                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_file_path).split('/')[-2]) and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                    mfrt_df = pd.read_csv(measure_file_path)
+                    building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max()
+                    building['load_model_parameters']['time_series']['nominal_flow_building'] = float(building_nominal_mfrt)
+                district_nominal_mfrt += building_nominal_mfrt
+
 
         # Remove buildings that don't have successful simulations, with modelica outputs
         building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'] is None]
 
-        # Thermal zone names - useful for Spawn
+        # TODO: Thermal zone names - useful for Spawn in the future in separate method
         # input_loads_columns = list(self.input_loads_file.columns)
         # thermal_zone_names = []
         # for column_header in input_loads_columns:
@@ -114,6 +125,7 @@ class CSVToSysParam(object):
         # thermal_zone_names = list((set(thermal_zone_names)))
 
         param_template['buildings']['custom'] = building_list
+        param_template['buildings']['default']['ets_model_parameters']['indirect']['nominal_flow_district'] = district_nominal_mfrt
 
         with open(sys_param_filename, 'w') as outfile:
             json.dump(param_template, outfile, indent=2)
