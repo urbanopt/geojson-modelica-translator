@@ -40,6 +40,7 @@ class CSVToSysParam(object):
     def __init__(self, scenario_dir=None, sys_param_template=None):
         if Path(scenario_dir).exists():
             self.scenario_dir = scenario_dir
+            # FIXME: this feature_file can't be hardcoded
             self.feature_file = self.scenario_dir.parent.parent / "example_project.json"
         else:
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
@@ -49,11 +50,12 @@ class CSVToSysParam(object):
         else:
             raise Exception(f"Unable to find your sys param template. The path you provided was: {sys_param_template}")
 
+        self.measure_list = []
+
     def parse_items(self, measure_folder: Path):
         """
         Go through each folder (OpenStudio measure) in a feature and pull out the mass-flow-rate data file & modelica loads file
         """
-        self.measure_list = []
         if str(measure_folder).endswith('_export_time_series_modelica'):
             self.measure_list.append(Path(measure_folder) / "building_loads.csv")
         elif str(measure_folder).endswith('_export_modelica_loads'):
@@ -69,7 +71,7 @@ class CSVToSysParam(object):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
 
-        # sys_param = SystemParametresrs(sys_param_filename, template)
+        # sys_param = SystemParameters(sys_param_filename, template)
         # sys_param.populate_filenames(geojson)
 
         # Parse the sys_param template
@@ -95,7 +97,7 @@ class CSVToSysParam(object):
             building_list.append(feature_info)
 
         # Grab the modelica file for the each Feature, and add it to the appropriate building dict
-        for index, building in enumerate(building_list):
+        for building in building_list:
             for measure_file_path in self.measure_list:
                 if measure_file_path.suffix == '.mos' and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
@@ -111,7 +113,7 @@ class CSVToSysParam(object):
         #         thermal_zone_names.append(column_header.split('_')[-1])
         # thermal_zone_names = list((set(thermal_zone_names)))
 
-        param_template['custom'] = building_list
+        param_template['buildings']['custom'] = building_list
 
         with open(sys_param_filename, 'w') as outfile:
             json.dump(param_template, outfile, indent=2)
