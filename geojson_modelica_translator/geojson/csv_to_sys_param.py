@@ -30,82 +30,88 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import json
 from pathlib import Path
-import pandas as pd
-from collections import OrderedDict
-# from geojson_modelica_translator.geojson.schemas import Schemas
+from copy import deepcopy
 
 class CSVToSysParam(object):
     """
     Parser for URBANopt output to write a system_parameters file
     """
-    pass
 
-    def __init__(self, input_mfrt_file=None, input_loads_file=None, scenario_dir=None):
-        # Outdated. This will be removed once scenario_dir block is working
-        if Path(input_mfrt_file).exists() and Path(input_loads_file).exists():
-            self.input_mfrt_file = pd.read_csv(input_mfrt_file)
-            self.input_loads_file = pd.read_csv(input_loads_file)
-        else:
-            raise Exception(f"Unable to convert CSV file because one of these paths does not exist: \
-                \n{Path(input_mfrt_file)}\n{Path(input_loads_file)}")
-
+    def __init__(self, scenario_dir=None, sys_param_template=None):
         if Path(scenario_dir).exists():
             self.scenario_dir = scenario_dir
+            self.feature_file = self.scenario_dir.parent.parent / "example_project.json"
         else:
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
 
-    def parse_feature(self):
+        if Path(sys_param_template).exists():
+            self.sys_param_template = sys_param_template
+        else:
+            raise Exception(f"Unable to find your sys param template. The path you provided was: {sys_param_template}")
+
+    def parse_items(self, measure_folder: Path):
         """
-        To be used in a list comprehension where each item is a path to a feature directory in UO SDK output
+        Go through each folder (OpenStudio measure) in a feature and pull out the mass-flow-rate data file & modelica loads file
         """
-        pass
+        self.measure_list = []
+        if str(measure_folder).endswith('_export_time_series_modelica'):
+            self.measure_list.append(Path(measure_folder) / "building_loads.csv")
+        elif str(measure_folder).endswith('_export_modelica_loads'):
+            self.measure_list.append(Path(measure_folder) / "modelica.mos")
+
+    def parse_feature(self, feature: Path):
+        """
+        Go through each feature directory in UO SDK output
+        """
+        [self.parse_items(item) for item in feature.iterdir() if item.is_dir()]
 
     def csv_to_sys_param(self, sys_param_filename, overwrite=True):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
 
-        everything_in_scenario_dir = scenario_dir.glob("*")
-        features_parsed = [parse_feature() for item in everything_in_scenario_dir if item.is_dir()]
+        # sys_param = SystemParametresrs(sys_param_filename, template)
+        # sys_param.populate_filenames(geojson)
 
-        sys_param_starter = {
-            "Buildings": {
-                "default": {
-                    "load_model": "time_series",
-                    "ets_model": None,
-                    "ets_model_parameters": {
-                    }
-                }
-            }
-        }
+        # Parse the sys_param template
+        with open(self.sys_param_template) as template_file:
+            param_template = json.load(template_file)
 
-        # Thermal zone names
-        input_loads_columns = list(self.input_loads_file.columns)
-        thermal_zone_names = []
-        for column_header in input_loads_columns:
-            if 'Zone' in column_header:
-                thermal_zone_names.append(column_header.split('_')[-1])
-        thermal_zone_names = list((set(thermal_zone_names)))
+        # TODO: get the results in this comprehension instead of using measure_list
+        [self.parse_feature(x) for x in self.scenario_dir.iterdir() if x.is_dir()]
 
-        # Indirect attributes
-        sys_param_starter['Buildings']['default']['ets_model_parameters']['indirect'] = {"ets_generation": "Fourth Generation"}
+        # Parse the FeatureFile
+        building_ids = []
+        with open(self.feature_file) as json_file:
+            data = json.load(json_file)
+            for feature in data['features']:
+                if not feature['properties']['type'] == 'Site Origin':
+                    building_ids.append(feature['properties']['id'])
 
-        # Add building data from geojson file
-        building_1 = {
-            "geojson_id": 1234,
-            "load_model": "time_series",
-            "load_model_parameters": {
-                "time_series": {
-                    "filepath": None,
-                    "delTDisCoo": None
-                }
-            }
-        }
+        # Make sys_param template entries for each feature_id
+        building_list = []
+        for building in building_ids:
+            feature_info = deepcopy(param_template['buildings']['custom'][0])
+            feature_info['geojson_id'] = building
+            building_list.append(feature_info)
 
-        building_2 = {
-            "geojson_id": "asdf"
-        }
+        # Grab the modelica file for the each Feature, and add it to the appropriate building dict
+        for index, building in enumerate(building_list):
+            for measure_file_path in self.measure_list:
+                if measure_file_path.suffix == '.mos' and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
 
-        sys_param_starter['custom'] = [building_1, building_2]
+        # Remove buildings that don't have successful simulations, with modelica outputs
+        building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'] is None]
+
+        # Thermal zone names - useful for Spawn
+        # input_loads_columns = list(self.input_loads_file.columns)
+        # thermal_zone_names = []
+        # for column_header in input_loads_columns:
+        #     if 'Zone' in column_header:
+        #         thermal_zone_names.append(column_header.split('_')[-1])
+        # thermal_zone_names = list((set(thermal_zone_names)))
+
+        param_template['custom'] = building_list
 
         with open(sys_param_filename, 'w') as outfile:
-            json.dump(sys_param_starter, outfile, indent=2)
+            json.dump(param_template, outfile, indent=2)
