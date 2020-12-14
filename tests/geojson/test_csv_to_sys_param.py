@@ -39,8 +39,7 @@ class CSVToSysParamTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
-        self.scenario_dir = Path(__file__).parent.parent.parent.parent / "bbb" / "run" / \
-            "baseline_scenario_with_new_updated_measures_4_timesteps"
+        self.scenario_dir = self.data_dir / "sdk_output_skeleton" / "run" / "baseline_15min"
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
