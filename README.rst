@@ -94,8 +94,8 @@ desired, a user can run the simulations manually using JModelica (via Docker). F
 the runner to work locally.
 
 * Make sure jm_ipython.sh is in your local path.
-* After running the:code:`py.test` copy jmodelica.py from the :code:`cp ../../../geojson_modelica_translator/modelica/lib/runner/' directory to the :code:`tests/model_connectors/output` directory. 
-* From the :code:`tests/model_connectors/output` directory`, run examples using either of the the following:
+* After running the :code:`py.test` copy :code: 'jmodelica.py' from the :code:`../../../geojson_modelica_translator/modelica/lib/runner/' directory to the :code:`tests/model_connectors/output` directory. 
+* From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
     * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
     * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
     * The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.
