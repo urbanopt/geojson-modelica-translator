@@ -37,16 +37,6 @@
     "On signal of the plant"
     {% raw %}annotation (Placement(transformation(extent={{-100,0},{-80,20}}))){% endraw %};
 
-    // TODO: determine where to put the weather data and bus
-//   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
-//     final computeWetBulbTemperature=true,
-//     filNam=Modelica.Utilities.Files.loadResource(
-//       {# "{{data["wet_bulb_calc"]["modelica_path"]}}")) #}
-//     {% raw %}annotation (Placement(transformation(extent={{-100,-84},{-80,-64}}))){% endraw %};
-//   Buildings.BoundaryConditions.WeatherData.Bus weaBus
-//     "Weather data bus"
-//     {% raw %}annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),iconTransformation(extent={{-114,-54},{-94,-34}}))){% endraw %};
-
   {{ model.modelica_type }} {{ model.id }}(
     redeclare Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Trane_CGWD_207kW_3_99COP_None perChi,
     perCHWPum=perCHWPum_{{ model.id }},
