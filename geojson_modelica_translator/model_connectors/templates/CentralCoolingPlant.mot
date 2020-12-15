@@ -82,10 +82,11 @@ within {{ project_name }}.Plants;
     final computeWetBulbTemperature=true,
     filNam=Modelica.Utilities.Files.loadResource(
       {% endraw %}"{{ data['wet_bulb_calc']['modelica_path'] }}"))
-    {% raw %} annotation (Placement(transformation(extent={{-100,-84},{-80,-64}})));
+    {% raw %} annotation (Placement(transformation(extent={{-140,-80},{-120,-60}})));
   Buildings.BoundaryConditions.WeatherData.Bus weaBus
     "Weather data bus"
-    annotation (Placement(transformation(extent={{-114,-54},{-94,-34}}),iconTransformation(extent={{-114,-54},{-94,-34}})));
+    annotation (Placement(transformation(extent={{-110,-62},{-90,-42}}),iconTransformation(extent={{-110,-62}
+        ,{-90,-42}})));
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
     noEvent(
@@ -120,12 +121,7 @@ within {{ project_name }}.Plants;
     displayUnit="degC")
     "Set point for chilled water supply temperature"
     annotation (Placement(transformation(extent={{-180,0},{-140,40}}),iconTransformation(extent={{-140,10},{-100,50}})));
-  Modelica.Blocks.Interfaces.RealInput TWetBul(
-    final unit="K",
-    displayUnit="degC")
-    "Entering air wetbulb temperature"
-    annotation (Placement(transformation(extent={{-180,-80},{-140,-40}}),iconTransformation(extent={{-140,-100},{-100,-60}})));
-  Modelica.Blocks.Interfaces.RealInput dpMea(
+    Modelica.Blocks.Interfaces.RealInput dpMea(
     final unit="Pa")
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-180,-40},{-140,0}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
@@ -273,9 +269,7 @@ protected
     "Specific heat capacity of the fluid";
 equation
   connect(weaDat.weaBus,weaBus)
-    annotation (Line(points={{-80,-74},{-60,-74},{-60,-44},{-104,-44}},color={255,204,51},thickness=0.5));
-  connect(weaBus.TWetBul,TWetBul)
-    annotation (Line(points={{-104,-44},{-36,-44}},color={255,204,51},thickness=0.5));
+    annotation (Line(points={{-120,-70},{-100,-70},{-100,-52}},color={255,204,51},thickness=0.5));
   connect(senTCHWSup.port_b,port_b)
     annotation (Line(points={{140,-50},{160,-50}},color={0,127,255}));
   connect(senMasFloByp.port_b,valByp.port_a)
@@ -290,8 +284,14 @@ equation
     annotation (Line(points={{-99,56},{-90,56},{-90,-46},{-62,-46}},color={0,0,127}));
   connect(chiStaCon.y,pumCW.u)
     annotation (Line(points={{-99,56},{-90,56},{-90,-38},{-20,-38},{-20,-46},{-12,-46}},color={0,0,127}));
-  connect(TWetBul,cooTowWitByp.TWetBul)
-    annotation (Line(points={{-160,-60},{-90,-60},{-90,-52},{-62,-52}},color={0,0,127}));
+  connect(weaBus.TWetBul, cooTowWitByp.TWetBul) annotation (Line(
+      points={{-100,-52},{-62,-52}},
+      color={255,204,51},
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
   connect(chiStaCon.y,chiOn.u)
     annotation (Line(points={{-99,56},{-90,56},{-90,60},{-82,60}},color={0,0,127}));
   connect(CHWPumCon.dpMea,dpMea)
