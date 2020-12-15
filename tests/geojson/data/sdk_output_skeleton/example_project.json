@@ -48,7 +48,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -108,7 +107,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -148,7 +146,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -188,7 +185,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -228,7 +224,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -268,7 +263,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -308,7 +302,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -348,7 +341,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -396,7 +388,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -451,7 +442,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -507,7 +497,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
@@ -547,8 +536,8 @@
         ]
       }
     },
-
-    {"type": "Feature",
+    {
+      "type": "Feature",
       "properties": {
         "id": "12",
         "name": "Mall 1",
@@ -586,7 +575,6 @@
         ]
       }
     },
-
     {
       "type": "Feature",
       "properties": {
