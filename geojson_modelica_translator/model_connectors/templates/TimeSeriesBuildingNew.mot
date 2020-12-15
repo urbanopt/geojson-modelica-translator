@@ -14,7 +14,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Water medium";
   {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     "Library path of the file with loads as time series";
-  {% raw %}  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal=273.15+40
+  {% raw %}parameter Modelica.SIunits.Temperature T_aHeaWat_nominal=273.15+40
     "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
