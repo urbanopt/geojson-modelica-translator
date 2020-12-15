@@ -9,7 +9,7 @@
     {% raw %}annotation (Line(points={{16,22.4},{0,22.4},{0,-31},{-14,-31}},color={0,127,255})){% endraw %};
   connect({{ coupling.plant.id }}.port_b,{{ coupling.network.id }}.port_aDisSup)
     {% raw %}annotation (Line(points={{-14,-41},{-4,-41},{-4,26},{16,26}},color={0,127,255})){% endraw %};
-  connect({{ coupling.network.id }}.port_bDisSup,{{ coupling.network.id }}.port_aDisRet)
-    {% raw %}annotation (Line(points={{44,26},{52,26},{52,22.4},{44,22.4}},color={0,127,255})){% endraw %};
+  //connect({{ coupling.network.id }}.port_bDisSup,{{ coupling.network.id }}.port_aDisRet)
+//    {% raw %}annotation (Line(points={{44,26},{52,26},{52,22.4},{44,22.4}},color={0,127,255})){% endraw %};
   connect({{ coupling.network.id }}.dp,{{ coupling.plant.id }}.dpMea)
     {% raw %}annotation (Line(points={{44.7,27.8},{80,27.8},{80,-80},{-46,-80},{-46,-39},{-36,-39}},color={0,0,127})){% endraw %};
