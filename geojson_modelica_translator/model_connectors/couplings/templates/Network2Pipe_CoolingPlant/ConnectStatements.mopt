@@ -1,0 +1,21 @@
+  // TODO: these connect statements shouldn't be here, they are plant specific
+  // but since we can't currently make connect statements for single systems, this is what we've got
+  // TODO: implement weather data and weather bus, currently unused
+  //
+  // connect(weaDat_{{ coupling.plant.id }}.weaBus,weaBus_{{ coupling.plant.id }})
+  //   {% raw %}annotation (Line(points={{-80,-74},{-60,-74},{-60,-44},{-104,-44}},color={255,204,51},thickness=0.5)){% endraw %};
+  // connect(weaBus_{{ coupling.plant.id }}.TWetBul,{{ coupling.plant.id }}.TWetBul)
+  //   {% raw %}annotation (Line(points={{-104,-44},{-36,-44}},color={255,204,51},thickness=0.5)){% endraw %};
+  connect(on_{{ coupling.plant.id }}.y,{{ coupling.plant.id }}.on)
+    {% raw %}annotation (Line(points={{-79,10},{-44,10},{-44,-28},{-36,-28}},color={255,0,255})){% endraw %};
+  connect(TSetChiWatDis_{{ coupling.plant.id }}.y,{{ coupling.plant.id }}.TCHWSupSet)
+    {% raw %}annotation (Line(points={{-59,-30},{-48,-30},{-48,-33},{-36,-33}},color={0,0,127})){% endraw %};
+
+  connect({{ coupling.network.id }}.port_bDisRet,{{ coupling.plant.id }}.port_a)
+    {% raw %}annotation (Line(points={{16,22.4},{0,22.4},{0,-31},{-14,-31}},color={0,127,255})){% endraw %};
+  connect({{ coupling.plant.id }}.port_b,{{ coupling.network.id }}.port_aDisSup)
+    {% raw %}annotation (Line(points={{-14,-41},{-4,-41},{-4,26},{16,26}},color={0,127,255})){% endraw %};
+  connect({{ coupling.network.id }}.port_bDisSup,{{ coupling.network.id }}.port_aDisRet)
+    {% raw %}annotation (Line(points={{44,26},{52,26},{52,22.4},{44,22.4}},color={0,127,255})){% endraw %};
+  connect({{ coupling.network.id }}.dp,{{ coupling.plant.id }}.dpMea)
+    {% raw %}annotation (Line(points={{44.7,27.8},{80,27.8},{80,-80},{-46,-80},{-46,-39},{-36,-39}},color={0,0,127})){% endraw %};
