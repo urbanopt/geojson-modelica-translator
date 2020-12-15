@@ -91,7 +91,7 @@ class Coupling(object):
             return self._model_b
         elif model == self._model_b:
             return self._model_a
-        raise Exception(f'Provided model, "{model.id}", is not part of the coupling')
+        raise Exception(f'Provided model, "{model.id}", is not part of the coupling ({self._model_a.id}, {self._model_b.id})')
 
     def _get_model_superclass(self, model):
         valid_superclasses = [LoadBase, EnergyTransferBase, NetworkBase, PlantBase]
