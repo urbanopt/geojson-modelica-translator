@@ -292,5 +292,5 @@ First implementation.
       coordinateSystem(
         preserveAspectRatio=false,
         extent={{-300,-300},{300,300}})));
-end BuildingTimeSeriesHE;
+end building;
 {% endraw %}
