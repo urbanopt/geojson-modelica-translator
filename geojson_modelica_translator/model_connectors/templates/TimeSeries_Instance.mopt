@@ -1,11 +1,12 @@
   // time series load
   {{ model.modelica_type }} {{ model.id }}(
-    filNam="modelica://Buildings/Applications/DHC/Loads/Examples/Resources/SwissResidential_20190916.mos",
-    have_pum=true,
-    delTBuiCoo=5,
-    nPorts_aHeaWat=1,
-    nPorts_bHeaWat=1,
+    filNam="modelica://Buildings/Resources/Data/Experimental/DHC/Loads/Examples/SwissResidential_20190916.mos",
+    T_aHeaWat_nominal=323.15,
+    delTAirCoo=6,
+    delTAirHea=20,
     nPorts_bChiWat=1,
-    nPorts_aChiWat=1)
+    nPorts_aChiWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aHeaWat=1)
     "Building model integrating multiple time series thermal zones."
     {% raw %}annotation (Placement(transformation(extent={{0,60},{20,80}})));{% endraw %}

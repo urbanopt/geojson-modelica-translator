@@ -1,7 +1,7 @@
 within geojson_modelica_translator.model_connectors.templates;
 model UnidirectionalParallel
   "Hydraulic network for unidirectional parallel DHC system"
-  extends Buildings.Applications.DHC.Networks.BaseClasses.PartialDistribution2Pipe(
+  extends Buildings.Experimental.DHC.Networks.BaseClasses.PartialDistribution2Pipe(
     redeclare ConnectionParallel con[nCon](
       final lDis=lDis,
       final lCon=lCon,

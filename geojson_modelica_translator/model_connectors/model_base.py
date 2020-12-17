@@ -31,6 +31,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import shutil
 from pathlib import Path
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
 
@@ -55,6 +56,7 @@ class ModelBase(object):
         # initialize the templating framework (Jinja2)
         self.template_dir = Path(__file__).parent / "templates"
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
+        self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
         # store a list of the templated files to include when building the package
         self.template_files_to_include = []
@@ -195,6 +197,7 @@ class ModelBase(object):
         template_env = Environment(
             loader=FileSystemLoader(searchpath=self.template_dir),
             undefined=StrictUndefined)
+        template_env.filters.update(ALL_CUSTOM_FILTERS)
         template_name = f'{self.model_name}_Instance.mopt'
         try:
             template = template_env.get_template(template_name)

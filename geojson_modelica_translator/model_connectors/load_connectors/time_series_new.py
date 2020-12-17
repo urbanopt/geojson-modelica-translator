@@ -35,7 +35,7 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 
 class TimeSeries(LoadBase):
@@ -43,7 +43,7 @@ class TimeSeries(LoadBase):
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = 'MyTimeSeriesLoad'
+        self.id = 'TimeSerLoa_' + simple_uuid()
 
     def to_modelica(self, scaffold):
         """

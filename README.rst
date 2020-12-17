@@ -28,7 +28,7 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
     * Install git-lfs
         * Mac: :code:`brew install git-lfs; git lfs install`
         * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-    * Pull the correct staging branch for this project with: :code:`git checkout issue1437_district_heating_cooling`
+    * Pull the correct staging branch for this project with: :code:`git checkout issue2204_gmt_mbl`
     * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Return to the GMT directory and run :code:`pip install -r requirements.txt`
 * Test if everything is installed correctly by running :code:`py.test`
@@ -94,9 +94,9 @@ desired, a user can run the simulations manually using JModelica (via Docker). F
 the runner to work locally.
 
 * Make sure jm_ipython.sh is in your local path.
-* After running the :code:`py.test` go into the :code:`tests/model_connectors/output` directory
-* Copy jmodelica.py to path :code:`cp ../../../geojson_modelica_translator/modelica/lib/runner/jmodelica.py .`
-* Run examples using either of the the following:
+* After running the :code:`py.test`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
+* Copy :code:`jmodelica.py` to the :code:`tests/model_connectors/output` directory.
+* From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
     * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
     * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
     * The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.

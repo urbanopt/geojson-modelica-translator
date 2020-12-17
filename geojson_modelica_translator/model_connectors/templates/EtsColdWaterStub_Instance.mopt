@@ -8,5 +8,5 @@
   Buildings.Fluid.Sources.Boundary_pT sinChiWat_{{ model.id }}(
     redeclare package Medium={{ globals.medium_w }},
     nPorts=1)
-    "Sink for chilled water"
+    "Chilled water sink"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={134,-40}))){% endraw %};

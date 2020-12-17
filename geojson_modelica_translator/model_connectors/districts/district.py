@@ -29,6 +29,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import os
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -45,6 +46,7 @@ def render_template(template_name, template_params):
     template_env = Environment(
         loader=FileSystemLoader(searchpath=template_dir),
         undefined=StrictUndefined)
+    template_env.filters.update(ALL_CUSTOM_FILTERS)
     template = template_env.get_template(template_name)
     return template.render(template_params)
 
@@ -81,7 +83,8 @@ class District:
         common_template_params = {
             'globals': {
                 "medium_w": "MediumW"
-            }
+            },
+            'graph': self._coupling_graph
         }
         # render each coupling
         for coupling in self._coupling_graph.couplings:
@@ -95,7 +98,7 @@ class District:
         for model in self._coupling_graph.models:
             template_params = {
                 'model': model.to_dict(self._scaffold),
-                'couplings': self._coupling_graph.couplings_by_type(model),
+                'couplings': self._coupling_graph.couplings_by_type(model.id),
             }
             template_params.update(**common_template_params)
             result = model.render_instance(template_params)
