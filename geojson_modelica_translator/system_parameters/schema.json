@@ -271,6 +271,10 @@
             },
             "condenser_water_pump_pressure_drop": {
               "type": "number"
+            },
+            "mos_wet_bulb_filename": {
+              "description": "Absolute path or relative path from location where file instance is saved. This field is not currently used.",
+              "type": "string"
             }
           },
           "additionalProperties": false
