@@ -25,7 +25,7 @@
   {{ model.modelica_type }} {{ model.id }}(
     redeclare final package Medium={{ globals.medium_w }},
     final nCon=nBui_{{ model.id }},
-    iConDpSen=2,
+    iConDpSen=nBui_{{ model.id }},
     final mDis_flow_nominal=mDis_flow_nominal_{{ model.id }},
     final mCon_flow_nominal=mCon_flow_nominal_{{ model.id }},
     final allowFlowReversal=false,

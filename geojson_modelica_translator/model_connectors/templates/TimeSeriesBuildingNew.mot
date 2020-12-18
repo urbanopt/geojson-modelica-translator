@@ -14,11 +14,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Water medium";
   {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     "Library path of the file with loads as time series";
-  {% raw %}parameter Real facScaHea=1
-    "Heating terminal unit scaling factor";
-  parameter Real facScaCoo=1
-    "Cooling terminal unit scaling factor";
-  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal=273.15+40
+  {% raw %}parameter Modelica.SIunits.Temperature T_aHeaWat_nominal=273.15+40
     "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
@@ -51,13 +47,13 @@ within {{ project_name }}.Loads.{{ model_name }};
   parameter Modelica.SIunits.TemperatureDifference delTAirHea
     "Nominal heating air temperature difference across the terminal unit heat exchanger";
   parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal(
-    max=-Modelica.Constants.eps)=facScaCoo*Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
+    max=-Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space cooling load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Design parameter"));
   parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal(
-    min=Modelica.Constants.eps)=facScaHea*Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
+    min=Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space heating load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design heating heat flow rate (>=0)"
@@ -116,7 +112,6 @@ within {{ project_name }}.Loads.{{ model_name }};
   Buildings.Experimental.DHC.Loads.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
     redeclare final package Medium1=MediumW,
     redeclare final package Medium2=MediumA,
-    final facSca=facScaHea,
     final QHea_flow_nominal=QHea_flow_nominal,
     final mHeaWat_flow_nominal=mHeaWat_flow_nominal,
     final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
@@ -153,7 +148,6 @@ within {{ project_name }}.Loads.{{ model_name }};
   Buildings.Experimental.DHC.Loads.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
     redeclare final package Medium1=MediumW,
     redeclare final package Medium2=MediumA,
-    final facSca=facScaCoo,
     final QCoo_flow_nominal=QCoo_flow_nominal,
     final QHea_flow_nominal=QHea_flow_nominal,
     final mChiWat_flow_nominal=mChiWat_flow_nominal,
@@ -278,8 +272,7 @@ are provided as time series.
 October 20, 2020, by Hagar Elarga:<br/>
 The <code>mLoaHea_flow_nominal</code> and <code>mLoaCoo_flow_nominal</code> are
 evaluated as a function of <code> QHea_flow_nominal</code> and
-<code>QCoo_flow_nominal</code> respectively. The default values of <code>facScaHeac</code>
-and <code>facScaCoo</code> are assigned to one.
+<code>QCoo_flow_nominal</code> respectively.
 This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2201\">issue 2201</a> and
 <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2202\">issue 2202</a>.
 </li>
