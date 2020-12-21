@@ -99,12 +99,17 @@ class CoolingPlant(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        order_files = ['CentralCoolingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
-        plants_package = PackageParser.new_from_template(
-            path=scaffold.plants_path.files_dir,
-            name="Plants",
-            order=order_files,
-            within=scaffold.project_name)
+        package_models = ['CentralCoolingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
+        plants_package = PackageParser(scaffold.plants_path.files_dir)
+        if plants_package.order_data is None:
+            plants_package = PackageParser.new_from_template(
+                path=scaffold.plants_path.files_dir,
+                name="Plants",
+                order=package_models,
+                within=scaffold.project_name)
+        else:
+            for model_name in package_models:
+                plants_package.add_model(model_name)
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
