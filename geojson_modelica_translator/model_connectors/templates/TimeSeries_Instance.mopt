@@ -1,6 +1,5 @@
   // time series load
   {{ model.modelica_type }} {{ model.id }}(
-    filNam="modelica://Buildings/Resources/Data/Experimental/DHC/Loads/Examples/SwissResidential_20190916.mos",
     T_aHeaWat_nominal=323.15,
     delTAirCoo=6,
     delTAirHea=20,
