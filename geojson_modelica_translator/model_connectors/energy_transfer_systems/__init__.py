@@ -27,6 +27,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-from .spawn_new import Spawn  # noqa: F401
-from .teaser_new import Teaser  # noqa: F401
-from .time_series_new import TimeSeries  # noqa: F401
+from .cooling_indirect import CoolingIndirect  # noqa: F401
+from .heating_indirect import HeatingIndirect  # noqa: F401
+from .ets_cold_water_stub import EtsColdWaterStub  # noqa: F401
+from .ets_hot_water_stub import EtsHotWaterStub  # noqa: F401
