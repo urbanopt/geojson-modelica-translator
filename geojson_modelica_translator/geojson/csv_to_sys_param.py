@@ -68,7 +68,7 @@ class CSVToSysParam(object):
         elif str(measure_folder).endswith('_export_modelica_loads'):
             self.measure_list.append(Path(measure_folder) / "modelica.mos")
 
-    def _parse_feature(self, feature: Path):
+    def _parse_feature(self, feature: Path) -> None:
         """
         Go through each feature directory in UO SDK output
         """
@@ -109,8 +109,8 @@ class CSVToSysParam(object):
         for building in building_list:
             building_nominal_mfrt = 0
             for measure_file_path in self.measure_list:
-                measure_dir_name, measure_load_name = str(measure_file_path).split('/')[-3:-1]
-                if measure_dir_name != building['geojson_id']:
+                feature_name, measure_load_name = str(measure_file_path).split('/')[-3:-1]
+                if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
@@ -122,6 +122,8 @@ class CSVToSysParam(object):
 
         # Remove buildings that don't have successful simulations, with modelica outputs
         building_list = [x for x in building_list if x['load_model_parameters']['time_series']['filepath'] is not None]
+        if len(building_list) == 0:
+            raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
         # TODO: Thermal zone names - useful for Spawn in the future in separate method
         # input_loads_columns = list(self.input_loads_file.columns)
