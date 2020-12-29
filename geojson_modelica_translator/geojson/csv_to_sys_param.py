@@ -40,13 +40,16 @@ class CSVToSysParam(object):
     Parser for URBANopt output to write a system_parameters file
     """
 
-    def __init__(self, scenario_dir=None, sys_param_template=None):
+    def __init__(self, scenario_dir=None, sys_param_template=None, feature_file=None):
         if Path(scenario_dir).exists():
             self.scenario_dir = scenario_dir
-            # FIXME: this feature_file can't be hardcoded, name & location need to be user specified
-            self.feature_file = self.scenario_dir.parent.parent / "example_project.json"
         else:
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
+
+        if Path(feature_file).exists():
+            self.feature_file = feature_file
+        else:
+            raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
 
         # TODO: sys_param_template can be hardcoded, once we decide where this whole thing lives
         if Path(sys_param_template).exists():
