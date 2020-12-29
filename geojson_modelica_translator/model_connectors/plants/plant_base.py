@@ -39,4 +39,4 @@ class PlantBase(ModelBase):
     simple_gmt_type = 'plant'
 
     def __init__(self, system_parameters):
-        super().__init__(system_parameters, Path(__file__).parent.parent / 'templates')
+        super().__init__(system_parameters, Path(__file__).parent / 'templates')

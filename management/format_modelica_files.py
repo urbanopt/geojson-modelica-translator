@@ -33,6 +33,7 @@ import distutils.log
 import os
 import re
 import subprocess
+from pathlib import Path
 from tempfile import mkstemp
 
 SKIP_FILES = ['DistrictEnergySystem.mot']
@@ -55,20 +56,19 @@ class FormatModelicaFiles(distutils.cmd.Command):
         pass
 
     def run(self):
-        template_dir = "geojson_modelica_translator/model_connectors/templates/"
         if self.file is not None:
             files = [self.file]
         else:
-            files = [os.path.join(template_dir, file_) for file_ in os.listdir(template_dir)]
+            files = Path('geojson_modelica_translator/model_connectors').glob('**/templates/*')
 
         for filepath in files:
             if os.path.basename(filepath) in SKIP_FILES:
                 continue
             try:
-                if filepath.endswith(".mot"):
-                    preprocess_and_format(filepath)
-                elif filepath.endswith(".mo"):
-                    apply_formatter(filepath)
+                if filepath.suffix == ".mot":
+                    preprocess_and_format(str(filepath))
+                elif filepath.suffix == ".mo":
+                    apply_formatter(str(filepath))
             except FormattingException as e:
                 self.announce(f'Error processing file {filepath}:\n    {e}', level=distutils.log.ERROR)
 
