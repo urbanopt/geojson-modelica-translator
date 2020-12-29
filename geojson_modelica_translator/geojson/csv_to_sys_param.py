@@ -116,7 +116,7 @@ class CSVToSysParam(object):
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove buildings that don't have successful simulations, with modelica outputs
-        building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'] is None]
+        building_list = [x for x in building_list if x['load_model_parameters']['time_series']['filepath'] is not None]
 
         # TODO: Thermal zone names - useful for Spawn in the future in separate method
         # input_loads_columns = list(self.input_loads_file.columns)
