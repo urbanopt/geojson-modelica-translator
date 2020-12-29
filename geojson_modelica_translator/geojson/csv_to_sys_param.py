@@ -56,7 +56,7 @@ class CSVToSysParam(object):
 
         self.measure_list = []
 
-    def parse_items(self, measure_folder: Path):
+    def _parse_items(self, measure_folder: Path) -> None:
         """
         Go through each folder (OpenStudio measure) in a feature and pull out the mass-flow-rate data file & modelica loads file
         """
