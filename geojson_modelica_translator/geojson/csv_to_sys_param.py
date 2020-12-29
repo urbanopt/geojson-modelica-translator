@@ -40,7 +40,7 @@ class CSVToSysParam(object):
     Parser for URBANopt output to write a system_parameters file
     """
 
-    def __init__(self, scenario_dir=None, sys_param_template=None, feature_file=None):
+    def __init__(self, scenario_dir=None, feature_file=None):
         if Path(scenario_dir).exists():
             self.scenario_dir = scenario_dir
         else:
@@ -51,11 +51,7 @@ class CSVToSysParam(object):
         else:
             raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
 
-        # TODO: sys_param_template can be hardcoded, once we decide where this whole thing lives
-        if Path(sys_param_template).exists():
-            self.sys_param_template = sys_param_template
-        else:
-            raise Exception(f"Unable to find your sys param template. The path you provided was: {sys_param_template}")
+        self.sys_param_template = Path(__file__).parent.parent.parent / 'tests' / 'geojson' / 'data' / 'time_series_template.json'
 
         self.measure_list = []
 
@@ -72,7 +68,9 @@ class CSVToSysParam(object):
         """
         Go through each feature directory in UO SDK output
         """
-        [self._parse_items(item) for item in feature.iterdir() if item.is_dir()]
+        for item in feature.iterdir():
+            if item.is_dir():
+                self._parse_items(item)
 
     def csv_to_sys_param(self, sys_param_filename, overwrite=True):
         if Path(sys_param_filename).exists() and not overwrite:
@@ -86,8 +84,9 @@ class CSVToSysParam(object):
         with open(self.sys_param_template) as template_file:
             param_template = json.load(template_file)
 
-        # TODO: get the results in this comprehension instead of using measure_list
-        [self._parse_feature(x) for x in self.scenario_dir.iterdir() if x.is_dir()]
+        for x in self.scenario_dir.iterdir():
+            if x.is_dir():
+                self._parse_feature(x)
 
         # Parse the FeatureFile
         building_ids = []
