@@ -40,30 +40,27 @@ class CSVToSysParamTest(unittest.TestCase):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
         self.scenario_dir = self.data_dir / "sdk_output_skeleton" / "run" / "baseline_15min"
+        self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
+        self.output_sys_param_file = self.output_dir / 'test_sys_param.json'
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
             scenario_dir = self.scenario_dir / 'foobar'
-            feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
-            CSVToSysParam(scenario_dir=scenario_dir, feature_file=feature_file)
+            CSVToSysParam(scenario_dir=scenario_dir, feature_file=self.feature_file)
         self.assertIn("Unable to find your scenario. The path you provided was:", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
         with self.assertRaises(Exception) as context:
-            output_sys_param_file = self.output_dir / 'test_sys_param.json'
-            feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
-            first_run = CSVToSysParam(scenario_dir=self.scenario_dir, feature_file=feature_file)
-            first_run.csv_to_sys_param(output_sys_param_file, overwrite=True)
-            raise_an_error = CSVToSysParam(scenario_dir=self.scenario_dir, feature_file=feature_file)
-            raise_an_error.csv_to_sys_param(output_sys_param_file, overwrite=False)
+            first_run = CSVToSysParam(scenario_dir=self.scenario_dir, feature_file=self.feature_file)
+            first_run.csv_to_sys_param(self.output_sys_param_file, overwrite=True)
+            raise_an_error = CSVToSysParam(scenario_dir=self.scenario_dir, feature_file=self.feature_file)
+            raise_an_error.csv_to_sys_param(self.output_sys_param_file, overwrite=False)
         self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
 
     def test_csv_to_sys_param(self):
-        output_sys_param_file = self.output_dir / 'test_sys_param.json'
-        feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
-        csv_to_sys_param = CSVToSysParam(scenario_dir=self.scenario_dir, feature_file=feature_file)
-        csv_to_sys_param.csv_to_sys_param(output_sys_param_file)
-        self.assertTrue(output_sys_param_file.exists())
+        csv_to_sys_param = CSVToSysParam(scenario_dir=self.scenario_dir, feature_file=self.feature_file)
+        csv_to_sys_param.csv_to_sys_param(self.output_sys_param_file)
+        self.assertTrue(self.output_sys_param_file.exists())
