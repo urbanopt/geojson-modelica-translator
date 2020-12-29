@@ -50,7 +50,7 @@ class HeatingIndirect(EnergyTransferBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        heating_indirect_template = self.template_env.get_template("HeatingIndirectNew.mot")
+        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
 
         ets_data = self.system_parameters.get_param(
             "$.buildings.default.ets_model_parameters.indirect"

@@ -51,7 +51,7 @@ class TimeSeries(LoadBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        time_series_building_template = self.template_env.get_template("TimeSeriesBuildingNew.mot")
+        time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
 
         assert len(self.buildings) == 1, "There should be exactly one building loaded"
 
