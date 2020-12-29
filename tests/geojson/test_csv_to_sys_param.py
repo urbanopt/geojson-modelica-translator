@@ -48,22 +48,25 @@ class CSVToSysParamTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             scenario_dir = self.scenario_dir / 'foobar'
             sys_param_template = self.data_dir / 'time_series_template.json'
-            CSVToSysParam(scenario_dir=scenario_dir, sys_param_template=sys_param_template)
+            feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
+            CSVToSysParam(scenario_dir=scenario_dir, sys_param_template=sys_param_template, feature_file=feature_file)
         self.assertIn("Unable to find your scenario. The path you provided was:", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
         with self.assertRaises(Exception) as context:
             sys_param_template = self.data_dir / 'time_series_template.json'
             output_sys_param_file = self.output_dir / 'test_sys_param.json'
-            first_run = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template)
+            feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
+            first_run = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template, feature_file=feature_file)
             first_run.csv_to_sys_param(output_sys_param_file, overwrite=True)
-            raise_an_error = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template)
+            raise_an_error = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template, feature_file=feature_file)
             raise_an_error.csv_to_sys_param(output_sys_param_file, overwrite=False)
         self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
 
     def test_csv_to_sys_param(self):
         sys_param_template = self.data_dir / 'time_series_template.json'
         output_sys_param_file = self.output_dir / 'test_sys_param.json'
-        csv_to_sys_param = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template)
+        feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
+        csv_to_sys_param = CSVToSysParam(scenario_dir=self.scenario_dir, sys_param_template=sys_param_template, feature_file=feature_file)
         csv_to_sys_param.csv_to_sys_param(output_sys_param_file)
         self.assertTrue(output_sys_param_file.exists())

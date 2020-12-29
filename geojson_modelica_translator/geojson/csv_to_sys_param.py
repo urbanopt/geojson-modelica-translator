@@ -40,13 +40,16 @@ class CSVToSysParam(object):
     Parser for URBANopt output to write a system_parameters file
     """
 
-    def __init__(self, scenario_dir=None, sys_param_template=None):
+    def __init__(self, scenario_dir=None, sys_param_template=None, feature_file=None):
         if Path(scenario_dir).exists():
             self.scenario_dir = scenario_dir
-            # FIXME: this feature_file can't be hardcoded, name & location need to be user specified
-            self.feature_file = self.scenario_dir.parent.parent / "example_project.json"
         else:
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
+
+        if Path(feature_file).exists():
+            self.feature_file = feature_file
+        else:
+            raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
 
         # TODO: sys_param_template can be hardcoded, once we decide where this whole thing lives
         if Path(sys_param_template).exists():
@@ -56,7 +59,7 @@ class CSVToSysParam(object):
 
         self.measure_list = []
 
-    def parse_items(self, measure_folder: Path):
+    def _parse_items(self, measure_folder: Path) -> None:
         """
         Go through each folder (OpenStudio measure) in a feature and pull out the mass-flow-rate data file & modelica loads file
         """
@@ -65,17 +68,17 @@ class CSVToSysParam(object):
         elif str(measure_folder).endswith('_export_modelica_loads'):
             self.measure_list.append(Path(measure_folder) / "modelica.mos")
 
-    def parse_feature(self, feature: Path):
+    def _parse_feature(self, feature: Path) -> None:
         """
         Go through each feature directory in UO SDK output
         """
-        [self.parse_items(item) for item in feature.iterdir() if item.is_dir()]
+        [self._parse_items(item) for item in feature.iterdir() if item.is_dir()]
 
     def csv_to_sys_param(self, sys_param_filename, overwrite=True):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
 
-        # TODO: move all these methods iside the SystemParameters class
+        # TODO: move all these methods inside the SystemParameters class
         # sys_param = SystemParameters(sys_param_filename, template)
         # sys_param.populate_filenames(geojson)
 
@@ -84,7 +87,7 @@ class CSVToSysParam(object):
             param_template = json.load(template_file)
 
         # TODO: get the results in this comprehension instead of using measure_list
-        [self.parse_feature(x) for x in self.scenario_dir.iterdir() if x.is_dir()]
+        [self._parse_feature(x) for x in self.scenario_dir.iterdir() if x.is_dir()]
 
         # Parse the FeatureFile
         building_ids = []
@@ -106,17 +109,21 @@ class CSVToSysParam(object):
         for building in building_list:
             building_nominal_mfrt = 0
             for measure_file_path in self.measure_list:
-                if (measure_file_path.suffix == '.mos') and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                feature_name, measure_load_name = str(measure_file_path).split('/')[-3:-1]
+                if feature_name != building['geojson_id']:
+                    continue
+                if (measure_file_path.suffix == '.mos'):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
-                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_file_path).split(
-                        '/')[-2]) and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_load_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max()
                     building['load_model_parameters']['time_series']['nominal_flow_building'] = float(building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove buildings that don't have successful simulations, with modelica outputs
-        building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'] is None]
+        building_list = [x for x in building_list if x['load_model_parameters']['time_series']['filepath'] is not None]
+        if len(building_list) == 0:
+            raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
         # TODO: Thermal zone names - useful for Spawn in the future in separate method
         # input_loads_columns = list(self.input_loads_file.columns)
