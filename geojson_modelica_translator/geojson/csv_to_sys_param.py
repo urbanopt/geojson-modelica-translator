@@ -109,10 +109,12 @@ class CSVToSysParam(object):
         for building in building_list:
             building_nominal_mfrt = 0
             for measure_file_path in self.measure_list:
-                if (measure_file_path.suffix == '.mos') and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                measure_dir_name, measure_load_name = str(measure_file_path).split('/')[-3:-1]
+                if measure_dir_name != building['geojson_id']:
+                    continue
+                if (measure_file_path.suffix == '.mos'):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
-                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_file_path).split(
-                        '/')[-2]) and (str(measure_file_path).split('/')[-3] == building['geojson_id']):
+                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_load_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max()
                     building['load_model_parameters']['time_series']['nominal_flow_building'] = float(building_nominal_mfrt)
