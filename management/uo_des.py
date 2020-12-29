@@ -28,6 +28,7 @@ def cli():
     "-f",
     "--feature_file",
     help="Path to urbanopt sdk FeatureFile, probably in the root UO SDK project directory",
+    default=Path.cwd() / "tests" / "geojson" / "data" / "sdk_output_skeleton" / "example_project.json",
     required=True
 )
 @click.option(
@@ -41,7 +42,6 @@ def sys_param(sys_param_filename, scenario_dir, sys_param_template, feature_file
     """Test GMT CLI."""
     # click.echo(sys_param_filename)
     csv_to_sys_param = CSVToSysParam(
-        sys_param_filename=sys_param_filename
         scenario_dir=Path(scenario_dir),
         sys_param_template=Path(sys_param_template),
         feature_file=Path(feature_file)
