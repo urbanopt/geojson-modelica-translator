@@ -48,7 +48,7 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_co
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
     HeatingIndirect
 )
-from geojson_modelica_translator.model_connectors.load_connectors.time_series_new import (
+from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
     TimeSeries
 )
 from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (

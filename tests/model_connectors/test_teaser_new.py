@@ -48,7 +48,7 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_co
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
     EtsHotWaterStub
 )
-from geojson_modelica_translator.model_connectors.load_connectors.teaser_new import (
+from geojson_modelica_translator.model_connectors.load_connectors.teaser import (
     Teaser
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
