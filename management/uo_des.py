@@ -39,7 +39,7 @@ def cli():
     required=True
 )
 def sys_param(sys_param_filename, scenario_dir, sys_param_template, feature_file):
-    """Test GMT CLI."""
+    """GMT CLI."""
     # click.echo(sys_param_filename)
     csv_to_sys_param = CSVToSysParam(
         scenario_dir=Path(scenario_dir),
