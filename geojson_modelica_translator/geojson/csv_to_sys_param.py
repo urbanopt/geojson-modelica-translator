@@ -68,17 +68,17 @@ class CSVToSysParam(object):
         elif str(measure_folder).endswith('_export_modelica_loads'):
             self.measure_list.append(Path(measure_folder) / "modelica.mos")
 
-    def parse_feature(self, feature: Path):
+    def _parse_feature(self, feature: Path):
         """
         Go through each feature directory in UO SDK output
         """
-        [self.parse_items(item) for item in feature.iterdir() if item.is_dir()]
+        [self._parse_items(item) for item in feature.iterdir() if item.is_dir()]
 
     def csv_to_sys_param(self, sys_param_filename, overwrite=True):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
 
-        # TODO: move all these methods iside the SystemParameters class
+        # TODO: move all these methods inside the SystemParameters class
         # sys_param = SystemParameters(sys_param_filename, template)
         # sys_param.populate_filenames(geojson)
 
@@ -87,7 +87,7 @@ class CSVToSysParam(object):
             param_template = json.load(template_file)
 
         # TODO: get the results in this comprehension instead of using measure_list
-        [self.parse_feature(x) for x in self.scenario_dir.iterdir() if x.is_dir()]
+        [self._parse_feature(x) for x in self.scenario_dir.iterdir() if x.is_dir()]
 
         # Parse the FeatureFile
         building_ids = []
