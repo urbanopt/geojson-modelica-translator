@@ -38,6 +38,8 @@ from tempfile import mkstemp
 
 SKIP_FILES = ['DistrictEnergySystem.mot']
 
+TEMPLATE_FILES = Path('geojson_modelica_translator/model_connectors').glob('**/templates/*')
+
 
 class FormatModelicaFiles(distutils.cmd.Command):
     """Custom comand for applying modelicafmt to modelica files. Note that modelicafmt executable must be available in
@@ -59,7 +61,7 @@ class FormatModelicaFiles(distutils.cmd.Command):
         if self.file is not None:
             files = [self.file]
         else:
-            files = Path('geojson_modelica_translator/model_connectors').glob('**/templates/*')
+            files = TEMPLATE_FILES
 
         for filepath in files:
             if os.path.basename(filepath) in SKIP_FILES:
