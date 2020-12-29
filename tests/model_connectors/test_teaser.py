@@ -45,17 +45,11 @@ from geojson_modelica_translator.model_connectors.districts.district import (
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
     EtsColdWaterStub
 )
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
-    HeatingIndirect
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
+    EtsHotWaterStub
 )
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
-    TimeSeries
-)
-from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (
-    Network2Pipe
-)
-from geojson_modelica_translator.model_connectors.plants.heating_plant import (
-    HeatingPlant
+from geojson_modelica_translator.model_connectors.load_connectors.teaser import (
+    Teaser
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -64,37 +58,28 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-class DistrictHeatingSystemNewTest(TestCaseBase):
-    def test_district_heating_system_new(self):
-        project_name = 'district_heating_system_new'
+class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
+    def test_teaser_single(self):
+        project_name = "teaser_single"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        # load in the example geojson with a single office building
-        filename = os.path.join(self.data_dir, "time_series_ex1.json")
+        # load in the example geojson with a single offie building
+        filename = os.path.join(self.data_dir, "teaser_geojson_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
+        filename = os.path.join(self.data_dir, "teaser_system_params_ex1.json")
         sys_params = SystemParameters(filename)
 
-        # create network and plant
-        network = Network2Pipe(sys_params)
-        heating_plant = HeatingPlant(sys_params)
+        # build spawn model with hot and cold water stubbed out
+        teaser = Teaser(sys_params, self.gj.json_loads[0])
+        hot_stub = EtsHotWaterStub(sys_params)
+        cold_stub = EtsColdWaterStub(sys_params)
 
-        # create our our load/ets/stubs
-        all_couplings = [
-            Coupling(network, heating_plant)
-        ]
-        for _ in range(6):
-            time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
-            heating_indirect_system = HeatingIndirect(sys_params)
-            cold_water_stub = EtsColdWaterStub(sys_params)
-            all_couplings.append(Coupling(time_series_load, heating_indirect_system))
-            all_couplings.append(Coupling(time_series_load, cold_water_stub))
-            all_couplings.append(Coupling(heating_indirect_system, network))
-
-        # create the couplings and graph
-        graph = CouplingGraph(all_couplings)
+        graph = CouplingGraph([
+            Coupling(teaser, hot_stub),
+            Coupling(teaser, cold_stub),
+        ])
 
         district = District(
             root_dir=self.output_dir,
@@ -102,6 +87,7 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
             system_parameters=sys_params,
             coupling_graph=graph
         )
+
         district.to_modelica()
 
         root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))

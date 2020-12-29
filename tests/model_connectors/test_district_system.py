@@ -42,14 +42,17 @@ from geojson_modelica_translator.model_connectors.couplings.graph import (
 from geojson_modelica_translator.model_connectors.districts.district import (
     District
 )
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
-    EtsColdWaterStub
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
+    CoolingIndirect
 )
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
     EtsHotWaterStub
 )
-from geojson_modelica_translator.model_connectors.load_connectors.teaser import (
-    Teaser
+from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
+    TimeSeries
+)
+from geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub import (
+    NetworkChilledWaterStub
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -58,27 +61,36 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
-    def test_teaser_single(self):
-        project_name = "teaser_single_new"
+class DistrictSystemTest(TestCaseBase):
+    def test_district_system(self):
+        project_name = "district_system"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        # load in the example geojson with a single offie building
-        filename = os.path.join(self.data_dir, "teaser_geojson_ex1.json")
+        # load in the example geojson with a single office building
+        filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "teaser_system_params_ex1.json")
+        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
 
-        # build spawn model with hot and cold water stubbed out
-        teaser = Teaser(sys_params, self.gj.json_loads[0])
-        hot_stub = EtsHotWaterStub(sys_params)
-        cold_stub = EtsColdWaterStub(sys_params)
+        # Create the time series load, ets and their coupling
+        time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
+        cooling_indirect_system = CoolingIndirect(sys_params)
+        ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
+
+        # create chilled water stub for the ets
+        chilled_water_stub = NetworkChilledWaterStub(sys_params)
+        ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
+
+        #  create hot water stub for the load
+        hot_water_stub = EtsHotWaterStub(sys_params)
+        ts_hw_coupling = Coupling(time_series_load, hot_water_stub)
 
         graph = CouplingGraph([
-            Coupling(teaser, hot_stub),
-            Coupling(teaser, cold_stub),
+            ts_ci_coupling,
+            ci_cw_coupling,
+            ts_hw_coupling,
         ])
 
         district = District(
@@ -87,7 +99,6 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
             system_parameters=sys_params,
             coupling_graph=graph
         )
-
         district.to_modelica()
 
         root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))

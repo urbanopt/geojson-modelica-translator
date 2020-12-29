@@ -60,7 +60,7 @@ from ..base_test_case import TestCaseBase
 
 class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
     def test_spawn_single(self):
-        project_name = "spawn_single_new"
+        project_name = "spawn_single"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single offie building
