@@ -84,9 +84,9 @@ class CSVToSysParam(object):
         with open(self.sys_param_template) as template_file:
             param_template = json.load(template_file)
 
-        for x in self.scenario_dir.iterdir():
-            if x.is_dir():
-                self._parse_feature(x)
+        for dir in self.scenario_dir.iterdir():
+            if dir.is_dir():
+                self._parse_feature(dir)
 
         # Parse the FeatureFile
         building_ids = []
