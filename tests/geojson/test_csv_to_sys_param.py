@@ -39,7 +39,7 @@ class CSVToSysParamTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
-        self.scenario_dir = self.data_dir / "sdk_output_skeleton" / "run" / "baseline_15min"
+        self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
         self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
         if self.output_dir.exists():
             rmtree(self.output_dir)
