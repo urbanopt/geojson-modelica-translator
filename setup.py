@@ -62,12 +62,14 @@ setup(
     url="https://github.com/urbanopt/geojson_modelica_translator",
     license=license,
     packages=find_packages(exclude=("tests", "docs")),
+    include_package_data=True,
     cmdclass={
         "update_schemas": UpdateSchemas,
         "update_licenses": UpdateLicenses,
         "format_modelica_files": FormatModelicaFiles,
     },
     install_requires=[
+        "Click==7.1.2",
         "geojson==2.5.0",
         "jsonschema==3.2.0",
         "jsonpath-ng==1.5.2",
@@ -85,6 +87,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
+    entry_points='''
+        [console_scripts]
+        uo_des=management.uo_des:cli
+    '''
 )
 
 
