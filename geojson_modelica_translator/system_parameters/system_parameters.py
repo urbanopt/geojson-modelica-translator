@@ -286,7 +286,7 @@ class SystemParameters(object):
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
         param_template['buildings']['custom'] = building_list
-        param_template['buildings']['default']['ets_model_parameters']['indirect']['nominal_flow_district'] = district_nominal_mfrt
+        param_template['buildings']['default']['ets_model_parameters']['indirect']['nominal_flow_district'] = district_nominal_mfrt.round(3)
 
         with open(sys_param_filename, 'w') as outfile:
             json.dump(param_template, outfile, indent=2)
