@@ -29,6 +29,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+from pathlib import Path
+from shutil import rmtree
 import unittest
 
 from geojson_modelica_translator.system_parameters.system_parameters import (
@@ -38,10 +40,14 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 
 class SystemParametersTest(unittest.TestCase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        self.data_dir = Path(__file__).parent / 'data'
+        self.output_dir = Path(__file__).parent / 'output'
+        self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
+        self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
+        if self.output_dir.exists():
+            rmtree(self.output_dir)
+        self.output_dir.mkdir(parents=True)
+        self.output_sys_param_file = self.output_dir / 'test_sys_param.json'
 
     def test_expanded_paths(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
@@ -195,3 +201,23 @@ class SystemParametersTest(unittest.TestCase):
             "primary_design_delta_t": 3,
             "secondary_design_delta_t": 3
         }}, value)
+
+    def test_scenario_does_not_exist(self):
+        with self.assertRaises(Exception) as context:
+            scenario_dir = self.scenario_dir / 'foobar'
+            dne = SystemParameters()
+            dne.csv_to_sys_param(scenario_dir=scenario_dir, feature_file=self.feature_file, sys_param_filename=self.output_sys_param_file)
+        self.assertIn("Unable to find your scenario. The path you provided was:", str(context.exception))
+
+    def test_csv_to_sys_param_does_not_overwrite(self):
+        with self.assertRaises(Exception) as context:
+            first_run = SystemParameters()
+            first_run.csv_to_sys_param(scenario_dir=self.scenario_dir, feature_file=self.feature_file, sys_param_filename=self.output_sys_param_file, overwrite=True)
+            raise_an_error = SystemParameters()
+            raise_an_error.csv_to_sys_param(scenario_dir=self.scenario_dir, feature_file=self.feature_file, sys_param_filename=self.output_sys_param_file, overwrite=False)
+        self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
+
+    def test_csv_to_sys_param(self):
+        csv_to_sys_param = SystemParameters()
+        csv_to_sys_param.csv_to_sys_param(scenario_dir=self.scenario_dir, feature_file=self.feature_file, sys_param_filename=self.output_sys_param_file)
+        self.assertTrue(self.output_sys_param_file.exists())
