@@ -208,24 +208,29 @@ class SystemParameters(object):
 
         return results
 
-    def _parse_items(self, measure_folder: Path) -> None:
+    def _read_feature(self, feature: Path) -> None:
         """
-        Go through each folder (OpenStudio measure) in a feature and pull out the mass-flow-rate data file & modelica loads file
-        """
-        if str(measure_folder).endswith('_export_time_series_modelica'):
-            self.measure_list.append(Path(measure_folder) / "building_loads.csv")
-        elif str(measure_folder).endswith('_export_modelica_loads'):
-            self.measure_list.append(Path(measure_folder) / "modelica.mos")
+        Loop through each feature directory in UO SDK output
 
-    def _parse_feature(self, feature: Path) -> None:
-        """
-        Go through each feature directory in UO SDK output
+        :param feature: Path, folder within scenario_dir
+        :return None, certain folder paths are added to a list for later use
         """
         for item in feature.iterdir():
             if item.is_dir():
-                self._parse_items(item)
+                if str(item).endswith('_export_time_series_modelica'):
+                    self.measure_list.append(Path(item) / "building_loads.csv")
+                elif str(item).endswith('_export_modelica_loads'):
+                    self.measure_list.append(Path(item) / "modelica.mos")
 
-    def csv_to_sys_param(self, scenario_dir, feature_file, sys_param_filename, overwrite=True):
+    def csv_to_sys_param(self, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
+        """
+        Create a system parameters file using output from URBANopt SDK
+
+        :param scenario_dir: Path, location/name of folder with uo_sdk results
+        :param feature_file: Path, location/name of uo_sdk input file
+        :param sys_param_filename: Path, location/name of system parameter file to be created
+        :return None, file created and saved to user-specified location
+        """
         if not Path(scenario_dir).exists():
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
 
@@ -235,26 +240,25 @@ class SystemParameters(object):
         if Path(sys_param_filename).exists() and not overwrite:
             raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
 
-        sys_param_template = Path(__file__).parent / 'time_series_template.json'
-        # sys_param_template = self.data
+        # If template is passed to the class for initialization, it gets automatically validated first.
+        if self.data:
+            param_template = self.data
+        else:
+            raise Exception(f"No template found. You must pass the sys_param_template location when initializing an instance.")
 
         self.measure_list = []
-
-        # Parse the sys_param template
-        with open(sys_param_template) as template_file:
-            param_template = json.load(template_file)
 
         # Grab filepaths from sdk output
         for thing in scenario_dir.iterdir():
             if thing.is_dir():
-                self._parse_feature(thing)
+                self._read_feature(thing)
 
         # Parse the FeatureFile
         building_ids = []
         with open(feature_file) as json_file:
-            data = json.load(json_file)
-            for feature in data['features']:
-                if not feature['properties']['type'] == 'Site Origin':
+            sdk_input = json.load(json_file)
+            for feature in sdk_input['features']:
+                if feature['properties']['type'] != 'Site Origin':
                     building_ids.append(feature['properties']['id'])
 
         # Make sys_param template entries for each feature_id
