@@ -208,20 +208,6 @@ class SystemParameters(object):
 
         return results
 
-    def _read_feature(self, feature: Path) -> None:
-        """
-        Loop through each feature directory in UO SDK output
-
-        :param feature: Path, folder within scenario_dir
-        :return None, certain folder paths are added to a list for later use
-        """
-        for item in feature.iterdir():
-            if item.is_dir():
-                if str(item).endswith('_export_time_series_modelica'):
-                    self.measure_list.append(Path(item) / "building_loads.csv")
-                elif str(item).endswith('_export_modelica_loads'):
-                    self.measure_list.append(Path(item) / "modelica.mos")
-
     def csv_to_sys_param(self, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
@@ -251,7 +237,12 @@ class SystemParameters(object):
         # Grab filepaths from sdk output
         for thing in scenario_dir.iterdir():
             if thing.is_dir():
-                self._read_feature(thing)
+                for item in thing.iterdir():
+                    if item.is_dir():
+                        if str(item).endswith('_export_time_series_modelica'):
+                            self.measure_list.append(Path(item) / "building_loads.csv")
+                        elif str(item).endswith('_export_modelica_loads'):
+                            self.measure_list.append(Path(item) / "modelica.mos")
 
         # Parse the FeatureFile
         building_ids = []
