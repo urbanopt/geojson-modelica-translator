@@ -268,15 +268,15 @@ class SystemParameters(object):
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
-                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path)
+                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_load_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max()
                     building['load_model_parameters']['time_series']['nominal_flow_building'] = float(building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
 
-        # Remove buildings that don't have successful simulations, with modelica outputs
-        building_list = [x for x in building_list if x['load_model_parameters']['time_series']['filepath'] is not None]
+        # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
+        building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'].endswith("populated")]
         if len(building_list) == 0:
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
