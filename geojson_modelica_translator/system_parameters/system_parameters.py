@@ -30,10 +30,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import json
 import os
-from pathlib import Path
 from copy import deepcopy
-import pandas as pd
+from pathlib import Path
 
+import pandas as pd
 from jsonpath_ng.ext import parse
 from jsonschema.validators import _LATEST_VERSION as LatestValidator
 
@@ -244,7 +244,7 @@ class SystemParameters(object):
         if self.data:
             param_template = self.data
         else:
-            raise Exception(f"No template found. You must pass the sys_param_template location when initializing an instance.")
+            raise Exception("No template found. You must pass the sys_param_template location when initializing an instance.")
 
         self.measure_list = []
 
