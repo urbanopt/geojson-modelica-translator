@@ -232,7 +232,7 @@ class SystemParameters(object):
         else:
             raise Exception("No template found. You must pass the sys_param_template location when initializing an instance.")
 
-        self.measure_list = []
+        measure_list = []
 
         # Grab filepaths from sdk output
         for thing in scenario_dir.iterdir():
@@ -240,9 +240,9 @@ class SystemParameters(object):
                 for item in thing.iterdir():
                     if item.is_dir():
                         if str(item).endswith('_export_time_series_modelica'):
-                            self.measure_list.append(Path(item) / "building_loads.csv")
+                            measure_list.append(Path(item) / "building_loads.csv")
                         elif str(item).endswith('_export_modelica_loads'):
-                            self.measure_list.append(Path(item) / "modelica.mos")
+                            measure_list.append(Path(item) / "modelica.mos")
 
         # Parse the FeatureFile
         building_ids = []
@@ -263,13 +263,14 @@ class SystemParameters(object):
         district_nominal_mfrt = 0
         for building in building_list:
             building_nominal_mfrt = 0
-            for measure_file_path in self.measure_list:
-                feature_name, measure_load_name = str(measure_file_path).split('/')[-3:-1]
+            for measure_file_path in measure_list:
+                # Grab the relevant 2 components of the path: feature name and measure folder name, items -3 & -2 respectively
+                feature_name, measure_folder_name = str(measure_file_path).split('/')[-3:-1]
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
-                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_load_name)):
+                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max()
                     building['load_model_parameters']['time_series']['nominal_flow_building'] = float(building_nominal_mfrt)
