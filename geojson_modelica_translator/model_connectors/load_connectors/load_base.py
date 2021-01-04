@@ -27,6 +27,8 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
+from pathlib import Path
+
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
@@ -37,7 +39,7 @@ class LoadBase(ModelBase):
     simple_gmt_type = 'load'
 
     def __init__(self, system_parameters, geojson_load=None):
-        super().__init__(system_parameters)
+        super().__init__(system_parameters, Path(__file__).parent / 'templates')
         # TODO: remove add_building and remove default value for geojson_load
         # (there should only ever be a single load for a model)
         if geojson_load is not None:
