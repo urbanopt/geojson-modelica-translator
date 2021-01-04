@@ -349,14 +349,13 @@
         }
       },
       "required": [
-        "Q_flow_nominal",
+        "heat_flow_nominal",
         "hx_efficiency",
         "nominal_mass_flow_district",
         "nominal_mass_flow_building",
         "valve_pressure_drop",
         "hx_secondary_pressure_drop",
         "hx_primary_pressure_drop",
-        "temp_district_chw_supply",
         "temp_district_chw_supply",
         "temp_district_hw_supply",
         "temp_building_hw_supply",
@@ -490,7 +489,6 @@
           "type": "number",
           "default": 292.15
         }
-
       },
       "required": [
         "mos_weather_filename",
@@ -508,7 +506,6 @@
       "description": "Parameters associated with time series models.",
       "type": "object",
       "properties": {
-
         "filepath": {
           "type": "string"
         },
@@ -552,7 +549,6 @@
           "type": "number",
           "default": 292.15
         }
-
       },
       "required": [
         "filepath",
@@ -571,7 +567,6 @@
       "description": "Central cooling plant with maximum number of two chillers. Parameters associated with the model",
       "type": "object",
       "properties": {
-
         "heat_flow_nominal": {
           "description": "Nominal district cooling load. (Watts)",
           "type": "number",
@@ -633,21 +628,20 @@
           "default": 308.15
         },
         "cooling_tower_water_temperature_difference_nominal": {
-          "Nominal water temperature difference between of the tower. (K)",
+          "description": "Nominal water temperature difference between of the tower. (K)",
           "type": "number",
           "default": 280.15
         },
         "delta_temp_approach": {
-          "Approach tempearture difference. (K)",
+          "description": "Approach tempearture difference. (K)",
           "type": "number",
           "default": 3
         },
         "ratio_water_air_nominal": {
-          "water_air_ratio_nominal",
+          "description": "water_air_ratio_nominal",
           "type": "number",
           "default": 0.625
-        },
-
+        }
       },
       "required": [
         "heat_flow_nominal",
@@ -671,7 +665,6 @@
       "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model",
       "type": "object",
       "properties": {
-
         "heat_flow_nominal": {
           "description": "Nominal district heating load. (Watts)",
           "type": "number",
@@ -706,8 +699,7 @@
           "description": "Chiller isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
-        },
-
+        }
       },
       "required": [
         "heat_flow_nominal",
