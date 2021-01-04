@@ -34,21 +34,20 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
-from geojson_modelica_translator.model_connectors.load_connectors.spawn import \
-    SpawnConnector as spawn_load
-from geojson_modelica_translator.model_connectors.load_connectors.teaser import \
-    TeaserConnector as teaser_load
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import \
-    TimeSeriesConnector as timeseries_load
+from geojson_modelica_translator.model_connectors.load_connectors import (
+    Spawn,
+    Teaser,
+    TimeSeries
+)
 from geojson_modelica_translator.scaffold import Scaffold
 
 _log = logging.getLogger(__name__)
 
 
 load_mapper = {
-    "spawn": spawn_load,
-    "rc": teaser_load,
-    "time_series": timeseries_load
+    "spawn": Spawn,
+    "rc": Teaser,
+    "time_series": TimeSeries
 }
 
 
@@ -115,8 +114,7 @@ class GeoJsonModelicaTranslator(object):
                 raise SystemExit(f'Model of type {model_con} not recognized. Verify sysparam file')
 
             _log.info(f"Adding building to load model: {class_.__class__}")
-            model_connector = class_(self.system_parameters)
-            model_connector.add_building(load)
+            model_connector = class_(self.system_parameters, load)
             self.loads.append(model_connector)
 
     def set_system_parameters(self, sys_params):
