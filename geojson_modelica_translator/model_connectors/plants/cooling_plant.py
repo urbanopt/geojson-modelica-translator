@@ -68,7 +68,7 @@ class CoolingPlant(PlantBase):
                     "$.district_system.default.cooling_plant.fan_power_nominal"
                 ),
                 "chilled_water_pump_pressure_drop": self.system_parameters.get_param(
-                        "$.district_system.default.cooling_plant.chilled_water_pump_pressure_drop"
+                    "$.district_system.default.cooling_plant.chilled_water_pump_pressure_drop"
                 ),
                 "condenser_water_pump_pressure_drop": self.system_parameters.get_param(
                     "$.district_system.default.cooling_plant.condenser_water_pump_pressure_drop"
