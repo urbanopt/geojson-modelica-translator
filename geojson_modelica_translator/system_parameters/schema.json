@@ -92,22 +92,6 @@
             ]
           },
           "additionalProperties": false
-        },
-        "ets": {
-          "title": "defaults",
-          "description": "Parameters associated with ets systems",
-          "type": "object",
-          "properties": {
-            "ets_parameters": {
-              "description": "some properties here",
-              "type": "string"
-            }
-          },
-          "dependencies": {
-            "data_required": [
-              "building_name"
-            ]
-          }
         }
       },
       "additionalProperties": false
@@ -710,7 +694,6 @@
         "temp_setpoint_hw",
         "pressure_drop_hw_valve_nominal"
       ]
-    },
-    "NewDefinition": {}
+    }
   }
 }
