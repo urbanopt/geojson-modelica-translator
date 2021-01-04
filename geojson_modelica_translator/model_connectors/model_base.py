@@ -44,7 +44,7 @@ class ModelBase(object):
     # model_name must be overridden in subclass
     model_name = None
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, template_dir):
         """
         Base initializer
 
@@ -54,7 +54,7 @@ class ModelBase(object):
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
-        self.template_dir = Path(__file__).parent / "templates"
+        self.template_dir = template_dir
         self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 

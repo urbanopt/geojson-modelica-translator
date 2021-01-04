@@ -35,12 +35,15 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 
-class TimeSeriesConnector(LoadBase):
-    def __init__(self, system_parameters):
-        super().__init__(system_parameters)
+class TimeSeries(LoadBase):
+    model_name = 'TimeSeries'
+
+    def __init__(self, system_parameters, geojson_load):
+        super().__init__(system_parameters, geojson_load)
+        self.id = 'TimeSerLoa_' + simple_uuid()
 
     def to_modelica(self, scaffold):
         """
@@ -48,29 +51,9 @@ class TimeSeriesConnector(LoadBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        # The list of MOT files are conditional, but for now just include them all so that they exist as needed.
-
-        # Building Load
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
 
-        # Building Only Coupling
-        time_series_coupling_template = self.template_env.get_template("TimeSeriesCouplingBuilding.mot")
-        time_series_mos_template = self.template_env.get_template("RunTimeSeriesBuilding.most")
-
-        # ETS Models
-        cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
-        heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
-        time_series_ets_coupling_template = self.template_env.get_template("TimeSeriesCouplingETS.mot")
-        time_series_ets_mos_template = self.template_env.get_template("RunTimeSeriesCouplingETS.most")
-
-        # We should move to a LoadConnector only acting on a single building. Originally thought that a single
-        # building/load can have multiple thermalzones/models. For now, assert that only a single building exists per
-        # this connector. Move these validation methods to the base class (eventually).
-        if len(self.buildings) == 0:
-            raise Exception("No load to translate")
-
-        if len(self.buildings) > 1:
-            raise Exception("The TimeSeriesConnector is expecting only one building per connector")
+        assert len(self.buildings) == 1, "There should be exactly one building loaded"
 
         building = self.buildings[0]
         building_name = f"B{building['building_id']}"
@@ -122,77 +105,6 @@ class TimeSeriesConnector(LoadBase):
             data=template_data
         )
 
-        # Now switch between the building if it has only coupling vs when it has an ETS
-        ets_model_type = self.system_parameters.get_param_by_building_id(
-            building["building_id"], "ets_model"
-        )
-
-        if ets_model_type == "None":
-            self.run_template(
-                template=time_series_coupling_template,
-                save_file_name=os.path.join(b_modelica_path.files_dir, "coupling.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                data=template_data
-            )
-
-            self.run_template(
-                template=time_series_mos_template,
-                save_file_name=os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesBuilding.most"),
-                full_model_name=os.path.join(
-                    scaffold.project_name,
-                    scaffold.loads_path.files_relative_dir,
-                    f"B{building['building_id']}",
-                    "coupling").replace(os.path.sep, '.')
-            )
-        elif ets_model_type == "Indirect Heating and Cooling":
-            # The ETS model is Indirect Cooling. If this model is to be connected to a district, then
-            # somehow we need to know that context and remove the "TimeSeriesCouplingETS.mo file" and connect
-            # the system to the distribution network.
-            ets_data = self.system_parameters.get_param_by_building_id(
-                building["building_id"],
-                "ets_model_parameters.indirect"
-            )
-
-            self.run_template(
-                template=cooling_indirect_template,
-                save_file_name=os.path.join(b_modelica_path.files_dir, "CoolingIndirect.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                data=template_data,
-                ets_data=ets_data,
-            )
-
-            self.run_template(
-                template=heating_indirect_template,
-                save_file_name=os.path.join(b_modelica_path.files_dir, "HeatingIndirect.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                data=template_data,
-                ets_data=ets_data,
-            )
-
-            self.run_template(
-                template=time_series_ets_coupling_template,
-                save_file_name=os.path.join(b_modelica_path.files_dir, "TimeSeriesCouplingETS.mo"),
-                project_name=scaffold.project_name,
-                model_name=f"B{building['building_id']}",
-                data=template_data,
-            )
-
-            file_data = time_series_ets_mos_template.render(
-                full_model_name=os.path.join(
-                    scaffold.project_name,
-                    scaffold.loads_path.files_relative_dir,
-                    f"B{building['building_id']}", "TimeSeriesCouplingETS").replace(os.path.sep, '.'),
-                model_name="TimeSeriesCouplingETS"
-            )
-
-            with open(os.path.join(b_modelica_path.scripts_dir, "RunTimeSeriesCouplingETS.mos"), "w") as f:
-                f.write(file_data)
-        else:
-            raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' and 'None' type enabled currently")
-
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, building_name)
 
@@ -225,7 +137,13 @@ class TimeSeriesConnector(LoadBase):
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
-        pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
-        )
-        pp.save()
+        package = PackageParser(scaffold.project_path)
+        if 'Loads' not in package.order:
+            package.add_model('Loads')
+            package.save()
+
+    def get_modelica_type(self, scaffold):
+        building = self.buildings[0]
+        building_name = f"B{building['building_id']}"
+
+        return f'{scaffold.project_name}.Loads.{building_name}.building'

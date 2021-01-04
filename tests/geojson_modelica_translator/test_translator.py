@@ -33,12 +33,11 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.load_connectors.spawn import \
-    SpawnConnector as spawn_load
-from geojson_modelica_translator.model_connectors.load_connectors.teaser import \
-    TeaserConnector as teaser_load
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import \
-    TimeSeriesConnector as timeseries_load
+from geojson_modelica_translator.model_connectors.load_connectors import (
+    Spawn,
+    Teaser,
+    TimeSeries
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -75,9 +74,9 @@ class GeoJSONTranslatorTest(TestCaseBase):
         gj.to_modelica(self.project_name, self.output_dir)
 
         # verify that there are 3 buildings, one of each type
-        self.assertIsInstance(gj.loads[0], spawn_load)
-        self.assertIsInstance(gj.loads[1], timeseries_load)
-        self.assertIsInstance(gj.loads[2], teaser_load)
+        self.assertIsInstance(gj.loads[0], Spawn)
+        self.assertIsInstance(gj.loads[1], TimeSeries)
+        self.assertIsInstance(gj.loads[2], Teaser)
 
         building_paths = [
             os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.json_loads
