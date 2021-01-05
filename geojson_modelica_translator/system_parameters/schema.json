@@ -257,12 +257,12 @@
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "Nominal heat flow rate. (Watts)",
+          "description": "Nominal heat flow rate. (W)",
           "type": "number",
           "default": 10000
         },
         "hx_efficiency": {
-          "description": "Heat exchanger efficiency",
+          "description": "Heat exchanger efficiency. (fraction)",
           "type": "number",
           "default": 0.8
         },
@@ -292,27 +292,27 @@
           "default": 500
         },
         "temp_district_chw_supply": {
-          "description": "Chilled water supply temperature district side. (K)",
+          "description": "Chilled water supply temperature district side. (C)",
           "type": "number",
-          "default": 278.15
+          "default": 5
         },
         "temp_building_chw_supply": {
-          "description": "Chilled water supply temperature building side. (K)",
+          "description": "Chilled water supply temperature building side. (C)",
           "type": "number",
-          "default": 280.15
+          "default": 7
         },
         "temp_district_hw_supply": {
-          "description": "Heating water supply temperature district side. (K)",
+          "description": "Heating water supply temperature district side. (C)",
           "type": "number",
-          "default": 328.15
+          "default": 55
         },
         "temp_building_hw_supply": {
-          "description": "Heating water supply temperature building side. (K)",
+          "description": "Heating water supply temperature building side. (C)",
           "type": "number",
-          "default": 323.15
+          "default": 50
         },
         "delta_temp_hw_district": {
-          "description": "Heating water temperature differenceon on the district side. (deltaC)",
+          "description": "Heating water temperature difference on on the district side. (deltaC)",
           "type": "number",
           "default": 20
         },
@@ -354,34 +354,34 @@
       "type": "object",
       "properties": {
         "temp_setpoint_cooling": {
-          "description": "Cooling setpoint air temperature. (K)",
+          "description": "Cooling setpoint air temperature. (C)",
           "type": "number",
-          "default": 297.15
+          "default": 24
         },
         "temp_setpoint_heating": {
-          "description": "Heating setpoint air temperature. (K)",
+          "description": "Heating setpoint air temperature. (C)",
           "type": "number",
-          "default": 293.15
+          "default": 20
         },
         "temp_hw_supply": {
-          "description": "Heating water supply temperature. (K)",
+          "description": "Heating water supply temperature. (C)",
           "type": "number",
-          "default": 313.15
+          "default": 40
         },
         "temp_hw_return": {
-          "description": "Heating water return temperature. (K)",
+          "description": "Heating water return temperature. (C)",
           "type": "number",
-          "default": 308.15
+          "default": 35
         },
         "temp_chw_supply": {
-          "description": "Chilled water supply temperature. (K)",
+          "description": "Chilled water supply temperature. (C)",
           "type": "number",
-          "default": 280.15
+          "default": 7
         },
         "temp_chw_return": {
-          "description": "Chilled water return temperature. (K)",
+          "description": "Chilled water return temperature. (C)",
           "type": "number",
-          "default": 285.15
+          "default": 12
         },
         "idf_filename": {
           "description": "Absolute path or relative path from location where file instance is saved.",
@@ -392,14 +392,15 @@
           "type": "string"
         },
         "mos_weather_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved.",
+          "description": "Relative path from location where file instance is saved to the MOS weather file.",
           "type": "string"
         },
         "mos_wet_bulb_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved. This field is not currently used.",
+          "description": "Absolute path or relative path from location where file instance is saved to the wet bulb filename. This field is not currently used.",
           "type": "string"
         },
         "thermal_zone_names": {
+          "description": "List of thermal zones in the Spawn / EnergyPlus model.",
           "type": "array",
           "items": {
             "type": "string"
@@ -424,6 +425,36 @@
       "description": "Parameters associated with RC models.",
       "type": "object",
       "properties": {
+        "temp_setpoint_cooling": {
+          "description": "Cooling setpoint air temperature. (C)",
+          "type": "number",
+          "default": 24
+        },
+        "temp_setpoint_heating": {
+          "description": "Heating setpoint air temperature. (C)",
+          "type": "number",
+          "default": 20
+        },
+        "temp_hw_supply": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 40
+        },
+        "temp_hw_return": {
+          "description": "Heating water return temperature. (C)",
+          "type": "number",
+          "default": 35
+        },
+        "temp_chw_supply": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "temp_chw_return": {
+          "description": "Chilled water return temperature. (C)",
+          "type": "number",
+          "default": 12
+        },
         "order": {
           "type": "integer",
           "enum": [
@@ -435,54 +466,21 @@
           "default": 2
         },
         "mos_weather_filename": {
-          "description": "Relative path from location where file instance is saved.",
+          "description": "Relative path from location where file instance is saved to the MOS weather file.",
           "type": "string"
         },
         "fraction_latent_person": {
-          "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office)",
+          "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office).",
           "type": "number",
           "default": 1.25
-        },
-        "temp_setpoint_cooling": {
-          "description": "Cooling setpoint air temperature. (K)",
-          "type": "number",
-          "default": 297.15
-        },
-        "temp_setpoint_heating": {
-          "description": "Heating setpoint air temperature. (K)",
-          "type": "number",
-          "default": 293.15
-        },
-        "temp_hw_supply": {
-          "description": "Heating water supply temperature. (K)",
-          "type": "number",
-          "default": 313.15
-        },
-        "temp_hw_return": {
-          "description": "Heating water return temperature. (K)",
-          "type": "number",
-          "default": 308.15
-        },
-        "temp_chw_supply": {
-          "description": "Chilled water supply temperature. (K)",
-          "type": "number",
-          "default": 287.15
-        },
-        "temp_chw_return": {
-          "description": "Chilled water return temperature. (K)",
-          "type": "number",
-          "default": 292.15
         }
       },
       "required": [
-        "mos_weather_filename",
-        "fraction_latent_person",
         "temp_setpoint_cooling",
         "temp_setpoint_heating",
         "temp_hw_supply",
-        "temp_hw_return",
-        "temp_chw_supply",
-        "temp_chw_return"
+        "mos_weather_filename",
+        "fraction_latent_person"
       ],
       "additionalProperties": false
     },
@@ -490,6 +488,36 @@
       "description": "Parameters associated with time series models.",
       "type": "object",
       "properties": {
+        "temp_setpoint_cooling": {
+          "description": "Cooling setpoint air temperature. (C)",
+          "type": "number",
+          "default": 24
+        },
+        "temp_setpoint_heating": {
+          "description": "Heating setpoint air temperature. (C)",
+          "type": "number",
+          "default": 20
+        },
+        "temp_hw_supply": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 40
+        },
+        "temp_hw_return": {
+          "description": "Heating water return temperature. (C)",
+          "type": "number",
+          "default": 35
+        },
+        "temp_chw_supply": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "temp_chw_return": {
+          "description": "Chilled water return temperature. (C)",
+          "type": "number",
+          "default": 12
+        },
         "filepath": {
           "type": "string"
         },
@@ -502,48 +530,15 @@
           "description": "Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC)",
           "type": "number",
           "default": 18
-        },
-        "temp_setpoint_cooling": {
-          "description": "Cooling setpoint air temperature. (K)",
-          "type": "number",
-          "default": 297.15
-        },
-        "temp_setpoint_heating": {
-          "description": "Heating setpoint air temperature. (K)",
-          "type": "number",
-          "default": 293.15
-        },
-        "temp_hw_supply": {
-          "description": "Heating water supply temperature. (K)",
-          "type": "number",
-          "default": 313.15
-        },
-        "temp_hw_return": {
-          "description": "Heating water return temperature. (K)",
-          "type": "number",
-          "default": 308.15
-        },
-        "temp_chw_supply": {
-          "description": "Chilled water supply temperature. (K)",
-          "type": "number",
-          "default": 287.15
-        },
-        "temp_chw_return": {
-          "description": "Chilled water return temperature. (K)",
-          "type": "number",
-          "default": 292.15
         }
       },
       "required": [
-        "filepath",
-        "delta_temp_air_cooling",
-        "delta_temp_air_heating",
         "temp_setpoint_cooling",
         "temp_setpoint_heating",
         "temp_hw_supply",
-        "temp_hw_return",
-        "temp_chw_supply",
-        "temp_chw_return"
+        "filepath",
+        "delta_temp_air_cooling",
+        "delta_temp_air_heating"
       ],
       "additionalProperties": false
     },
@@ -552,7 +547,7 @@
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "Nominal district cooling load. (Watts)",
+          "description": "Nominal district cooling load. (W)",
           "type": "number",
           "default": 8000
         },
@@ -587,9 +582,9 @@
           "default": 50000
         },
         "temp_setpoint_chw": {
-          "description": "District circuit chilled water temperature setpoint. (K)",
+          "description": "District circuit chilled water temperature setpoint. (C)",
           "type": "number",
-          "default": 278.15
+          "default": 5
         },
         "pressure_drop_chw_valve_nominal": {
           "description": "Chiller isolation valve pressure drop. (Pa)",
@@ -602,27 +597,27 @@
           "default": 6000
         },
         "temp_air_wb_nominal": {
-          "description": "Design air wetbulb temperature. (K)",
+          "description": "Design air wet-bulb temperature. (C)",
           "type": "number",
-          "default": 298.15
+          "default": 25
         },
         "temp_cw_in_nominal": {
-          "description": "Nominal cooling water inlet temperature. (K)",
+          "description": "Nominal cooling water inlet temperature. (C)",
           "type": "number",
-          "default": 308.15
+          "default": 35
         },
         "cooling_tower_water_temperature_difference_nominal": {
-          "description": "Nominal water temperature difference between of the tower. (K)",
+          "description": "Nominal water temperature difference of the tower. (C)",
           "type": "number",
-          "default": 280.15
+          "default": 7
         },
         "delta_temp_approach": {
-          "description": "Approach tempearture difference. (K)",
+          "description": "Approach temperature difference. (deltaC)",
           "type": "number",
           "default": 3
         },
         "ratio_water_air_nominal": {
-          "description": "water_air_ratio_nominal",
+          "description": "To be defined",
           "type": "number",
           "default": 0.625
         }
@@ -650,7 +645,7 @@
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "Nominal district heating load. (Watts)",
+          "description": "Nominal district heating load. (W)",
           "type": "number",
           "default": 8000
         },
