@@ -117,7 +117,7 @@ class TimeSeries(LoadBase):
             * Add a project level project
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
-        :param building_names: list, names of the buildings that need to be cleaned up after export
+        :param building_name: String, name of the building that needs to be cleaned up after export
         :return: None
         """
         b_modelica_path = os.path.join(scaffold.loads_path.files_dir, building_name)
