@@ -281,6 +281,11 @@
           "type": "number",
           "default": 10
         },
+         "nominal_mass_flow_district": {
+          "description": "District water nominal flow rate. (kg/s)",
+          "type": "number",
+          "default": 10
+        },
         "valve_pressure_drop": {
           "description": "Valve pressure drop. (Pa)",
           "type": "number",
@@ -333,6 +338,7 @@
         "heat_exchanger_primary_pressure_drop",
         "heat_exchanger_secondary_pressure_drop",
         "nominal_mass_flow_building",
+        "nominal_mass_flow_district",
         "valve_pressure_drop",
         "cooling_supply_water_temperature_district",
         "cooling_supply_water_temperature_building",
