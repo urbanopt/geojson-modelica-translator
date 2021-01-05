@@ -7,6 +7,7 @@
         "indirect": {
           "heat_flow_nominal": 10000,
           "heat_exchanger_efficiency": 0.9,
+          "nominal_mass_flow_district": 0.5,
           "nominal_mass_flow_building": 0.5,
           "valve_pressure_drop": 6000,
           "heat_exchanger_secondary_pressure_drop": 500,
