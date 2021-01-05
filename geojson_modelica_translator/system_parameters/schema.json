@@ -261,7 +261,7 @@
           "type": "number",
           "default": 10000
         },
-        "hx_efficiency": {
+        "heat_exchanger_efficiency": {
           "description": "Heat exchanger efficiency. (fraction)",
           "type": "number",
           "default": 0.8
@@ -281,12 +281,12 @@
           "type": "number",
           "default": 6000
         },
-        "hx_secondary_pressure_drop": {
+        "heat_exchanger_secondary_pressure_drop": {
           "description": "Heat exchanger secondary side pressure drop. (Pa)",
           "type": "number",
           "default": 500
         },
-        "hx_primary_pressure_drop": {
+        "heat_exchanger_primary_pressure_drop": {
           "description": "Heat exchanger primary side pressure drop. (Pa)",
           "type": "number",
           "default": 500
@@ -334,12 +334,12 @@
       },
       "required": [
         "heat_flow_nominal",
-        "hx_efficiency",
+        "heat_exchanger_efficiency",
         "nominal_mass_flow_district",
         "nominal_mass_flow_building",
         "valve_pressure_drop",
-        "hx_secondary_pressure_drop",
-        "hx_primary_pressure_drop",
+        "heat_exchanger_secondary_pressure_drop",
+        "heat_exchanger_primary_pressure_drop",
         "temp_district_chw_supply",
         "temp_district_hw_supply",
         "temp_building_hw_supply",
