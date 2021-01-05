@@ -10,13 +10,13 @@
       "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "indirect": {
-          "heat_flow_nominal": 8888,
-          "heat_exchanger_efficiency": 0.9,
-          "heat_exchanger_primary_pressure_drop": 1500,
-          "heat_exchanger_secondary_pressure_drop": 1500,
-          "valve_pressure_drop": 0.5,
+          "heat_flow_nominal": 10000,
+          "heat_exchanger_efficiency": 0.8,
+          "heat_exchanger_primary_pressure_drop": 500,
+          "heat_exchanger_secondary_pressure_drop": 500,
+          "nominal_mass_flow_district": 0.5,
           "nominal_mass_flow_building": 0.5,
-          "pressure_drop_valve": 1000,
+          "valve_pressure_drop": 6000,
           "cooling_supply_water_temperature_district": 5,
           "cooling_supply_water_temperature_building": 7,
           "heating_supply_water_temperature_district": 55,
@@ -50,7 +50,7 @@
           "time_series": {
             "filepath": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
             "delta_temp_air_cooling": 10,
-            "delta_temp_air_heating": 10
+            "delta_temp_air_heating": 18
           }
         }
       }
