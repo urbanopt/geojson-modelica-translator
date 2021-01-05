@@ -16,7 +16,6 @@
           "cooling_supply_water_temperature_building": 7,
           "heating_supply_water_temperature_district": 55,
           "heating_supply_water_temperature_building": 50,
-          "booster_heater": false,
           "ets_generation": "Fourth Generation"
         }
       }
