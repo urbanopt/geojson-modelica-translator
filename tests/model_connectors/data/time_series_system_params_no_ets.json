@@ -11,7 +11,7 @@
         "load_model_parameters": {
           "time_series": {
             "filepath": "time_series_large_office_2013_5B.mos",
-            "delTDisCoo": 10
+            "delta_temp_air_cooling": 10
           }
         }
       }

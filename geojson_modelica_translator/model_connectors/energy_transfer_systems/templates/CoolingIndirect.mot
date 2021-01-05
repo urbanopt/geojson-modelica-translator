@@ -12,11 +12,11 @@ model CoolingIndirect
   // mass flow rates
   parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal(
     final min=0,
-    {% endraw %}start={{ets_data["nominal_flow_district"]}})
+    {% endraw %}start={{ets_data["valve_pressure_drop"]}})
     {% raw %} "Nominal mass flow rate of primary (district) cooling side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal(
     final min=0,
-    {% endraw %}start={{ets_data["nominal_flow_building"]}})
+    {% endraw %}start={{ets_data["nominal_mass_flow_building"]}})
     {% raw %} "Nominal mass flow rate of secondary (building) cooling side";
   // Primary supply control valve
   parameter Modelica.SIunits.PressureDifference dpValve_nominal(
@@ -26,13 +26,13 @@ model CoolingIndirect
   // Heat exchanger
   parameter Modelica.SIunits.PressureDifference dp1_nominal(
     final min=0,
-    {% endraw %}start={{ ets_data["pressure_drop_hx_primary"] }},
+    {% endraw %}start={{ ets_data["heat_exchanger_primary_pressure_drop"] }},
     {% raw %}final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.SIunits.PressureDifference dp2_nominal(
     final min=0,
-    {% endraw %}start={{  ets_data["pressure_drop_hx_secondary"] }},
+    {% endraw %}start={{  ets_data["heat_exchanger_secondary_pressure_drop"] }},
     {% raw %}final displayUnit="Pa")
     "Nominal pressure difference on secondary side"
     annotation (Dialog(group="Heat exchanger"));

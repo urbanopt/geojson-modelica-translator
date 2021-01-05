@@ -266,10 +266,15 @@
           "type": "number",
           "default": 0.8
         },
-        "nominal_mass_flow_district": {
-          "description": "District water nominal flow rate. (kg/s)",
+        "heat_exchanger_primary_pressure_drop": {
+          "description": "Heat exchanger primary side pressure drop. (Pa)",
           "type": "number",
-          "default": 10
+          "default": 500
+        },
+        "heat_exchanger_secondary_pressure_drop": {
+          "description": "Heat exchanger secondary side pressure drop. (Pa)",
+          "type": "number",
+          "default": 500
         },
         "nominal_mass_flow_building": {
           "description": "Building water nominal flow rate. (kg/s)",
@@ -281,32 +286,22 @@
           "type": "number",
           "default": 6000
         },
-        "heat_exchanger_secondary_pressure_drop": {
-          "description": "Heat exchanger secondary side pressure drop. (Pa)",
-          "type": "number",
-          "default": 500
-        },
-        "heat_exchanger_primary_pressure_drop": {
-          "description": "Heat exchanger primary side pressure drop. (Pa)",
-          "type": "number",
-          "default": 500
-        },
-        "temp_district_chw_supply": {
+        "cooling_supply_water_temperature_district": {
           "description": "Chilled water supply temperature district side. (C)",
           "type": "number",
           "default": 5
         },
-        "temp_building_chw_supply": {
+        "cooling_supply_water_temperature_building": {
           "description": "Chilled water supply temperature building side. (C)",
           "type": "number",
           "default": 7
         },
-        "temp_district_hw_supply": {
+        "heating_supply_water_temperature_district": {
           "description": "Heating water supply temperature district side. (C)",
           "type": "number",
           "default": 55
         },
-        "temp_building_hw_supply": {
+        "heating_supply_water_temperature_building": {
           "description": "Heating water supply temperature building side. (C)",
           "type": "number",
           "default": 50
@@ -335,14 +330,13 @@
       "required": [
         "heat_flow_nominal",
         "heat_exchanger_efficiency",
-        "nominal_mass_flow_district",
+        "heat_exchanger_primary_pressure_drop",
+        "heat_exchanger_secondary_pressure_drop",
         "nominal_mass_flow_building",
         "valve_pressure_drop",
-        "heat_exchanger_secondary_pressure_drop",
-        "heat_exchanger_primary_pressure_drop",
-        "temp_district_chw_supply",
-        "temp_district_hw_supply",
-        "temp_building_hw_supply",
+        "cooling_supply_water_temperature_district",
+        "heating_supply_water_temperature_district",
+        "heating_supply_water_temperature_building",
         "delta_temp_hw_district",
         "delta_temp_hw_building",
         "delta_temp_chw_building",

@@ -85,8 +85,8 @@ class TimeSeries(LoadBase):
                 "path": os.path.dirname(time_series_filename),
             },
             "nominal_values": {
-                "delTDisCoo": self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.delTDisCoo"
+                "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
+                    building["building_id"], "load_model_parameters.time_series.delta_temp_air_cooling"
                 )
             }
         }

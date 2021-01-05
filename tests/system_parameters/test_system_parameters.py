@@ -153,13 +153,13 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
         self.assertEqual({"indirect": {
-            "q_flow_nominal": 8000,
-            "eta_efficiency": 0.666,
-            "nominal_flow_district": 0.666,
-            "nominal_flow_building": 0.666,
+            "heat_flow_nominal": 8000,
+            "heat_exchanger_efficiency": 0.666,
+            "valve_pressure_drop": 0.666,
+            "nominal_mass_flow_building": 0.666,
             "pressure_drop_valve": 888,
-            "pressure_drop_hx_secondary": 999,
-            "pressure_drop_hx_primary": 999,
+            "heat_exchanger_secondary_pressure_drop": 999,
+            "heat_exchanger_primary_pressure_drop": 999,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
@@ -178,13 +178,13 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
         self.assertEqual({'indirect': {
-            "q_flow_nominal": 10000,
-            "eta_efficiency": 0.9,
-            "nominal_flow_district": 5000,
-            "nominal_flow_building": 200,
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.9,
+            "valve_pressure_drop": 5000,
+            "nominal_mass_flow_building": 200,
             "pressure_drop_valve": 3,
-            "pressure_drop_hx_secondary": 3,
-            "pressure_drop_hx_primary": 3,
+            "heat_exchanger_secondary_pressure_drop": 3,
+            "heat_exchanger_primary_pressure_drop": 3,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
