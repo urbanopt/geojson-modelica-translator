@@ -13,7 +13,7 @@
         "indirect": {
           "heat_flow_nominal": 10000,
           "heat_exchanger_efficiency": 0.8,
-          "vnominal_mass_flow_district": 0.5,
+          "nominal_mass_flow_district": 0.5,
           "nominal_mass_flow_building": 0.5,
           "valve_pressure_drop": 6000,
           "heat_exchanger_secondary_pressure_drop": 500,
@@ -23,7 +23,6 @@
           "heating_supply_water_temperature_district": 80,
           "heating_supply_water_temperature_building": 75,
           "booster_heater": false,
-          "ets_generation": "Fifth Generation",
           "ets_connection_type": "Indirect",
           "primary_design_delta_t": 3,
           "secondary_design_delta_t": 3
