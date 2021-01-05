@@ -70,11 +70,11 @@
               "$ref": "#/definitions/optimization_definition"
             },
             "time_period": {
-              "description": "Time horizon for topology optimization.This paramater is used only if LCC is used as the cost function.",
+              "description": "Time horizon for topology optimization.This parameter is used only if LCC is used as the cost function.",
               "type": "integer"
             },
             "discount_rate": {
-              "description": "Discount rate for topology optimization. This paramater is used only if LCC is used as the cost function.",
+              "description": "Discount rate for topology optimization. This parameter is used only if LCC is used as the cost function.",
               "type": "integer"
             },
             "convergence_criteria": {
@@ -203,11 +203,11 @@
       "type": "object",
       "properties": {
         "pipe_diameter": {
-          "description": "Pipe diameter. (inches)",
+          "description": "Pipe diameter. (m)",
           "type": "number"
         },
         "pipe_insulation_rvalue": {
-          "description": "Pipe insulation R-Value. (F-ft2-hr/Btu)",
+          "description": "Pipe insulation R-Value. (m2-K/W)",
           "type": "number"
         },
         "pipe_location": {
