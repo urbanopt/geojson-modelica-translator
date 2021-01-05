@@ -335,6 +335,7 @@
         "nominal_mass_flow_building",
         "valve_pressure_drop",
         "cooling_supply_water_temperature_district",
+        "cooling_supply_water_temperature_building",
         "heating_supply_water_temperature_district",
         "heating_supply_water_temperature_building",
         "delta_temp_hw_district",
