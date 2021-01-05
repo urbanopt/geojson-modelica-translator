@@ -9,7 +9,7 @@
           "heat_exchanger_efficiency": 0.9,
           "valve_pressure_drop": 0.5,
           "nominal_mass_flow_building": 0.5,
-          "pressure_drop_valve": 1000,
+          "valve_pressure_drop": 1000,
           "heat_exchanger_secondary_pressure_drop": 1500,
           "heat_exchanger_primary_pressure_drop": 1500,
           "cooling_supply_water_temperature_district": 5,
