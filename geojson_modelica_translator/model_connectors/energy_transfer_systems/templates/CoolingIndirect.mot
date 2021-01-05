@@ -12,7 +12,7 @@ model CoolingIndirect
   // mass flow rates
   parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal(
     final min=0,
-    {% endraw %}start={{ets_data["nominal_flow_district"]}})
+    {% endraw %}start={{ets_data["nominal_mass_flow_district"]}})
     {% raw %} "Nominal mass flow rate of primary (district) cooling side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal(
     final min=0,
