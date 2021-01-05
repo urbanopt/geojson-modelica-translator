@@ -5,7 +5,11 @@
       "load_model_parameters": {
         "rc": {
           "order": 2,
-          "mos_weather_filename": "example_weather_2.mos"
+          "mos_weather_filename": "example_weather_2.mos",
+          "fraction_latent_person": 1.25,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 20,
+          "temp_setpoint_heating": 24
         }
       },
       "ets_model": "Indirect Heating and Cooling",
@@ -25,7 +29,11 @@
           "booster_heater": false,
           "ets_connection_type": "Indirect",
           "primary_design_delta_t": 3,
-          "secondary_design_delta_t": 3
+          "secondary_design_delta_t": 3,
+          "delta_temp_chw_building": 5,
+          "delta_temp_chw_district": 8,
+          "delta_temp_hw_building": 15,
+          "delta_temp_hw_district": 20
         }
       }
     },
@@ -50,7 +58,11 @@
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50
+            "heating_supply_water_temperature_building": 50,
+            "delta_temp_chw_building": 5,
+            "delta_temp_chw_district": 8,
+            "delta_temp_hw_building": 15,
+            "delta_temp_hw_district": 20
           }
         }
       },
@@ -70,7 +82,11 @@
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50
+            "heating_supply_water_temperature_building": 50,
+            "delta_temp_chw_building": 5,
+            "delta_temp_chw_district": 8,
+            "delta_temp_hw_building": 15,
+            "delta_temp_hw_district": 20
           }
         }
       },
@@ -82,6 +98,12 @@
             "idf_filename": "example_model.idf",
             "mos_weather_filename": "example_weather.mos",
             "epw_filename": "example_weather.epw",
+            "temp_chw_supply": 7,
+            "temp_chw_return": 12,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 35,
+            "temp_setpoint_cooling": 20,
+            "temp_setpoint_heating": 24,
             "thermal_zone_names": [
               "Not Real Zones"
             ]
@@ -96,6 +118,12 @@
             "idf_filename": "example_model_2.idf",
             "mos_weather_filename": "example_weather_2.mos",
             "epw_filename": "example_weather_2.epw",
+            "temp_chw_supply": 7,
+            "temp_chw_return": 12,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 35,
+            "temp_setpoint_cooling": 20,
+            "temp_setpoint_heating": 24,
             "thermal_zone_names": [
               "Not Real Zones"
             ]

@@ -5,7 +5,13 @@
       "load_model_parameters": {
         "rc": {
           "order": 4,
-          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"
+          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+          "temp_chw_supply": 7,
+          "temp_chw_return": 12,
+          "temp_hw_supply": 40,
+          "temp_hw_return": 35,
+          "temp_setpoint_cooling": 20,
+          "temp_setpoint_heating": 24
         }
       },
       "ets_model": "Indirect Heating and Cooling",
@@ -21,7 +27,11 @@
           "cooling_supply_water_temperature_district": 5,
           "cooling_supply_water_temperature_building": 7,
           "heating_supply_water_temperature_district": 55,
-          "heating_supply_water_temperature_building": 50
+          "heating_supply_water_temperature_building": 50,
+          "delta_temp_chw_building": 5,
+          "delta_temp_chw_district": 8,
+          "delta_temp_hw_building": 15,
+          "delta_temp_hw_district": 20
         }
       }
     }

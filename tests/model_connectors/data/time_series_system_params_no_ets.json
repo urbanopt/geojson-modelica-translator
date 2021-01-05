@@ -11,7 +11,13 @@
         "load_model_parameters": {
           "time_series": {
             "filepath": "time_series_large_office_2013_5B.mos",
-            "delta_temp_air_cooling": 10
+            "delta_temp_air_cooling": 10,
+            "temp_chw_supply": 7,
+            "temp_chw_return": 12,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 35,
+            "temp_setpoint_cooling": 20,
+            "temp_setpoint_heating": 24
           }
         }
       }
