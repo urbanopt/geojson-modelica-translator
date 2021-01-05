@@ -41,26 +41,26 @@ model CoolingIndirect
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
     final min=0,
-    {% endraw %}start={{ ets_data['q_flow_nominal']  }})
+    {% endraw %}start={{ ets_data["heat_flow_nominal"]  }})
     {% raw %} "Nominal heat transfer"
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{ets_data['cooling_supply_water_temperature_district']}}+273.15,
+    {% endraw %}start={{ets_data["cooling_supply_water_temperature_district"]}}+273.15,
     {% raw %}final displayUnit="K")
     "Nominal temperature at port a1"
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.SIunits.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{ets_data['cooling_supply_water_temperature_building']}}+273.15,
+    {% endraw %}start={{ets_data["cooling_supply_water_temperature_building"]}}+273.15,
     {% raw  %}final displayUnit="K")
     "Nominal temperature at port a2"
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.SIunits.Efficiency eta(
     final min=0,
-    {% endraw %}final max=0.8)={{  ets_data['eta_efficiency']  }}
+    {% endraw %}final max=0.8)={{  ets_data["heat_exchanger_efficiency"]  }}
     {% raw %} "Constant effectiveness"
     annotation (Dialog(group="Heat exchanger"));
   // Controller parameters
