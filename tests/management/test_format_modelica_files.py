@@ -34,14 +34,15 @@ import shutil
 import unittest
 
 import pytest
-from management.format_modelica_files import SKIP_FILES, preprocess_and_format
+from management.format_modelica_files import (
+    SKIP_FILES,
+    TEMPLATE_FILES,
+    preprocess_and_format
+)
 
 
 class FormatModelicaFilesTest(unittest.TestCase):
     def setUp(self):
-        self.template_dir = os.path.join(
-            os.path.dirname(__file__), '..', '..', 'geojson_modelica_translator', 'model_connectors', 'templates'
-        )
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
         if os.path.exists(self.output_dir):
             shutil.rmtree(self.output_dir)
@@ -50,18 +51,17 @@ class FormatModelicaFilesTest(unittest.TestCase):
     @pytest.mark.skipif(shutil.which("modelicafmt") is None, reason="Skipping")
     def test_no_meaningful_diff_when_formatting_mot_files(self):
         """After applying formatter to .mot (Jinja) files, we expect the only differences to be in whitespace"""
-        for file_ in os.listdir(self.template_dir):
-            filepath = os.path.join(self.template_dir, file_)
-            outfilepath = os.path.join(self.output_dir, file_)
+        for file_ in TEMPLATE_FILES:
+            outfilepath = os.path.join(self.output_dir, file_.name)
 
-            if not file_.endswith(".mot") or os.path.basename(file_) in SKIP_FILES:
+            if file_.suffix != ".mot" or file_.name in SKIP_FILES:
                 continue
 
-            preprocess_and_format(filepath, outfilepath)
+            preprocess_and_format(str(file_), outfilepath)
 
             # strip whitespace from file contents and assert they're equal
-            with open(filepath, 'r') as orig, open(outfilepath, 'r') as new:
+            with open(file_, 'r') as orig, open(outfilepath, 'r') as new:
                 orig_stripped = re.sub(r'\s', '', orig.read())
                 new_stripped = re.sub(r'\s', '', new.read())
                 self.assertEqual(orig_stripped, new_stripped,
-                                 f'Original and formatted files for {filepath} should have the same content')
+                                 f'Original and formatted files for {file_} should have the same content')
