@@ -21,7 +21,7 @@ model CoolingIndirect
   // Primary supply control valve
   parameter Modelica.SIunits.PressureDifference dpValve_nominal(
     final min=0,
-    {% endraw %}final displayUnit="Pa")={{ ets_data["pressure_drop_valve"] }}
+    {% endraw %}final displayUnit="Pa")={{ ets_data["valve_pressure_drop"] }}
     {% raw %} "Nominal pressure drop of fully open control valve";
   // Heat exchanger
   parameter Modelica.SIunits.PressureDifference dp1_nominal(
