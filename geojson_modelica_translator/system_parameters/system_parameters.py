@@ -209,23 +209,23 @@ class SystemParameters(object):
         return results
 
     @classmethod
-    def csv_to_sys_param(cls, sys_param_template: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
+    def csv_to_sys_param(cls, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
-        :param sys_param_template: str, model type to select which sys_param template to use
+        :param model_type: str, model type to select which sys_param template to use
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
         :return None, file created and saved to user-specified location
         """
 
-        if sys_param_template == 'time_series':
+        if model_type == 'time_series':
             param_template_path = Path(__file__).parent / 'time_series_template.json'
-        elif sys_param_template == 'spawn':
+        elif model_type == 'spawn':
             pass
         else:
-            raise Exception(f"No template found. {sys_param_template} is not a valid template")
+            raise Exception(f"No template found. {model_type} is not a valid template")
 
         if not Path(scenario_dir).exists():
             raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")

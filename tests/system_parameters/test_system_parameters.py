@@ -208,7 +208,7 @@ class SystemParametersTest(unittest.TestCase):
             output_sys_param_file = self.output_dir / 'going_to_fail_first.json'
             missing_scenario_dir = self.scenario_dir / 'foobar'
             dne = SystemParameters.csv_to_sys_param(
-                sys_param_template='time_series',
+                model_type='time_series',
                 scenario_dir=missing_scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
@@ -216,7 +216,7 @@ class SystemParametersTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
             wrong_filename = SystemParameters.csv_to_sys_param(
-                sys_param_template='time_series',
+                model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=missing_feature_file,
                 sys_param_filename=output_sys_param_file)
@@ -226,13 +226,13 @@ class SystemParametersTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             output_sys_param_file = self.output_dir / 'test_overwriting_sys_param.json'
             first_run = SystemParameters.csv_to_sys_param(
-                sys_param_template='time_series',
+                model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file,
                 overwrite=True)
             raise_an_error = SystemParameters.csv_to_sys_param(
-                sys_param_template='time_series',
+                model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file,
@@ -242,7 +242,7 @@ class SystemParametersTest(unittest.TestCase):
     def test_csv_to_sys_param(self):
         output_sys_param_file = self.output_dir / 'test_sys_param.json'
         csv_to_sys_param = SystemParameters.csv_to_sys_param(
-            sys_param_template='time_series',
+            model_type='time_series',
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
             sys_param_filename=output_sys_param_file)
@@ -255,12 +255,12 @@ class SystemParametersTest(unittest.TestCase):
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
-        self.assertIn("csv_to_sys_param() missing 1 required positional argument: 'sys_param_template'",
+        self.assertIn("csv_to_sys_param() missing 1 required positional argument: 'model_type'",
                       str(context.exception))
         with self.assertRaises(Exception) as context:
             bogus_template_type = 'openstudio'
             wrong_template_location = SystemParameters.csv_to_sys_param(
-                sys_param_template=bogus_template_type,
+                model_type=bogus_template_type,
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
