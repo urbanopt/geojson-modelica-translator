@@ -255,13 +255,9 @@ class SystemParameters(object):
         building_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
-            # for feature in sdk_input['features']:
-            #     if feature['properties']['type'] != 'Site Origin':
-            #         building_ids.append(feature['properties']['id'])
-            features = parse('features[*].properties[?(@.type=="Building")].name').find(sdk_input)
-            building_ids = [match.value for match in features]
-            print(building_ids)
-            raise SystemExit("\nManually quit")
+            for feature in sdk_input['features']:
+                if feature['properties']['type'] != 'Site Origin':
+                    building_ids.append(feature['properties']['id'])
 
         # Make sys_param template entries for each feature_id
         building_list = []
