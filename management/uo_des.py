@@ -46,9 +46,7 @@ def cli():
 )
 def sys_param(model, sys_param_filename, scenario_dir, feature_file, overwrite):
     """GMT CLI."""
-    sys_param_template_path = Path(__file__).parent.parent / 'geojson_modelica_translator' / \
-        'system_parameters' / 'time_series_template.json'
-    make_file = SystemParameters.csv_to_sys_param(
+    SystemParameters.csv_to_sys_param(
         sys_param_template=model,
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
