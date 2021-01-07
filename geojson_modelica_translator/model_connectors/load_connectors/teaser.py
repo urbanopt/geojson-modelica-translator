@@ -36,23 +36,29 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath, copytree
+from geojson_modelica_translator.utils import (
+    ModelicaPath,
+    copytree,
+    simple_uuid
+)
 from modelica_builder.model import Model
 from teaser.project import Project
 
 
-class TeaserConnector(LoadBase):
+class Teaser(LoadBase):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
+    model_name = 'Teaser'
 
-    def __init__(self, system_parameters):
-        super().__init__(system_parameters)
+    def __init__(self, system_parameters, geojson_load):
+        super().__init__(system_parameters, geojson_load)
+        self.id = 'TeaserLoad_' + simple_uuid()
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
         documentation on building types is here (look into the python files):
 
-            https://github.com/RWTH-EBC/TEASER/tree/development/teaser/logic/archetypebuildings/bmvbs
+        https://github.com/RWTH-EBC/TEASER/tree/development/teaser/logic/archetypebuildings/bmvbs
         """
 
         # Also look at using JSON as the input: https://github.com/RWTH-EBC/TEASER/blob/master/teaser/examples/examplefiles/ASHRAE140_600.json  # noqa
@@ -136,13 +142,7 @@ class TeaserConnector(LoadBase):
         finally:
             os.chdir(curdir)
 
-        # Process each building
-        # TODO: break this out?
-
         self.post_process(scaffold, building_names, keep_original_models=keep_original_models)
-
-    def process_building(self, scaffold, building_name):
-        print("processing building")
 
     def post_process(self, scaffold, building_names, keep_original_models=False):
         """
@@ -498,7 +498,6 @@ class TeaserConnector(LoadBase):
                 package.path, f"B{b}", package.order, within=f"{scaffold.project_name}.Loads"
             )
             new_package.save()
-
             # AA added this 9/24
             if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
                 shutil.copy(
@@ -529,3 +528,9 @@ class TeaserConnector(LoadBase):
             scaffold.project_path, scaffold.project_name, ["Loads"]
         )
         pp.save()
+
+    def get_modelica_type(self, scaffold):
+        building = self.buildings[0]
+        building_name = f"B{building['building_id']}"
+
+        return f'{scaffold.project_name}.Loads.{building_name}.building'

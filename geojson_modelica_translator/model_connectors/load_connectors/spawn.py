@@ -37,12 +37,15 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 
-class SpawnConnector(LoadBase):
-    def __init__(self, system_parameters):
-        super().__init__(system_parameters)
+class Spawn(LoadBase):
+    model_name = 'Spawn'
+
+    def __init__(self, system_parameters, geojson_load):
+        super().__init__(system_parameters, geojson_load)
+        self.id = 'SpawnLoad_' + simple_uuid()
 
     def to_modelica(self, scaffold, keep_original_models=False):
         """
@@ -204,3 +207,9 @@ class SpawnConnector(LoadBase):
             scaffold.project_path, scaffold.project_name, ["Loads"]
         )
         pp.save()
+
+    def get_modelica_type(self, scaffold):
+        building = self.buildings[0]
+        building_name = f"B{building['building_id']}"
+
+        return f'{scaffold.project_name}.Loads.{building_name}.building'
