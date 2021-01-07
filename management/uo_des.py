@@ -34,14 +34,22 @@ def cli():
     '-o',
     '--overwrite',
     is_flag=True,
-    help="If a file already exists with the sys_param_filename, overwrite it."
+    help="If a file already exists with the sys_param_filename, overwrite it.",
+    default=False
 )
-def sys_param(sys_param_filename, scenario_dir, feature_file, overwrite=False):
+@click.option(
+    "-m",
+    "--model",
+    help="Selet the model type you're using. Available options: time_series",
+    default='time_series',
+    required=True
+)
+def sys_param(model, sys_param_filename, scenario_dir, feature_file, overwrite):
     """GMT CLI."""
     sys_param_template_path = Path(__file__).parent.parent / 'geojson_modelica_translator' / \
         'system_parameters' / 'time_series_template.json'
-    make_file = SystemParameters(sys_param_template_path)
-    make_file.csv_to_sys_param(
+    make_file = SystemParameters.csv_to_sys_param(
+        sys_param_template=model,
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
         feature_file=Path(feature_file),
