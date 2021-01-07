@@ -8,6 +8,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 
 @click.group()
 def cli():
+    """URBANopt District Energy Systems"""
     pass
 
 
@@ -45,7 +46,7 @@ def cli():
     required=True
 )
 def sys_param(model, sys_param_filename, scenario_dir, feature_file, overwrite):
-    """GMT CLI."""
+    """Create system parameters file using uo_sdk output"""
     SystemParameters.csv_to_sys_param(
         sys_param_template=model,
         sys_param_filename=Path(sys_param_filename),
