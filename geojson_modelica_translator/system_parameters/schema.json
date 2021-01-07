@@ -547,6 +547,11 @@
       "description": "Central cooling plant with maximum number of two chillers. Parameters associated with the model",
       "type": "object",
       "properties": {
+        "cooling_tower_fan_power_nominal": {
+          "description": "Cooling tower fan power (W)",
+          "type": "number",
+          "default": 5000
+        },
         "heat_flow_nominal": {
           "description": "Nominal district cooling load. (W)",
           "type": "number",
@@ -566,6 +571,16 @@
           "description": "Nominal condenser water mass flow rate. (kg/s)",
           "type": "number",
           "default": 10
+        },
+        "chw_pump_head": {
+          "description": "Chilled water pump head (Pa)",
+          "type": "number",
+          "default": 300000
+        },
+        "cw_pump_head": {
+          "description": "Cooling water pump head (Pa)",
+          "type": "number",
+          "default": 200000
         },
         "pressure_drop_chw_nominal": {
           "description": "Nominal chilled water (evaporator) side pressure drop. (Pa)",
@@ -628,6 +643,8 @@
         "mass_chw_flow_nominal",
         "chiller_water_flow_minimum",
         "mass_cw_flow_nominal",
+        "chw_pump_head",
+        "cw_pump_head",
         "pressure_drop_chw_nominal",
         "pressure_drop_cw_nominal",
         "pressure_drop_setpoint",
