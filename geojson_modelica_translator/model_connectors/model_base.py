@@ -96,14 +96,14 @@ class ModelBase(object):
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
                 number_stories_above_ground = number_stories
-                print("Assuming all building levels are above ground for building_id: {building_id}")
+                print(f"Assuming all building levels are above ground for building_id: {building_id}")
 
             try:
                 floor_height = urbanopt_building.feature.properties["floor_height"]
             except KeyError:
                 floor_height = 3  # Default height in meters from sdk
                 print(
-                    "No floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
+                    f"No floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
 
             # UO SDK defaults to current year, however TEASER only supports up to Year 2015
             # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818

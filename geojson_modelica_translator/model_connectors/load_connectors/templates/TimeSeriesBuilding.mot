@@ -59,7 +59,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Design parameter"));
   parameter Real k(
-    min=0)=1
+    min=0)=0.1
     "Gain of controller";
   parameter Modelica.SIunits.Time Ti(
     min=Modelica.Constants.small)=10
@@ -92,7 +92,7 @@ within {{ project_name }}.Loads.{{ model_name }};
       each unit="W"),
     offset={0,0,0},
     columns={2,3,4},
-    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
+    smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1)
     "Reader for thermal loads (y[1] is cooling load, y[2] is heating load)"
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(

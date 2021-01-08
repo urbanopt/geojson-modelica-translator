@@ -10,7 +10,7 @@
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "time_series_large_office_2013_5B.mos",
+            "filepath": "time_series_medium_office_2004_5B.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 7,
