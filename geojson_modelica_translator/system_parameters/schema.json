@@ -252,7 +252,7 @@
         "central_cooling_plant_parameters": {
           "$ref": "#/definitions/central_cooling_plant_parameters"
         },
-        "central_heating_plant_parameters":{
+        "central_heating_plant_parameters": {
           "ref": "#/definitions/central_heating_plant_parameters"
         }
       },
@@ -287,7 +287,7 @@
           "type": "number",
           "default": 10
         },
-         "nominal_mass_flow_district": {
+        "nominal_mass_flow_district": {
           "description": "District water nominal flow rate. (kg/s)",
           "type": "number",
           "default": 10

@@ -193,7 +193,7 @@ class SystemParametersTest(unittest.TestCase):
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20
-          }}, value)
+        }}, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
@@ -222,4 +222,4 @@ class SystemParametersTest(unittest.TestCase):
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20
-          }}, value)
+        }}, value)
