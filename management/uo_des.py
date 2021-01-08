@@ -48,7 +48,7 @@ def cli():
 def sys_param(model, sys_param_filename, scenario_dir, feature_file, overwrite):
     """Create system parameters file using uo_sdk output"""
     SystemParameters.csv_to_sys_param(
-        sys_param_template=model,
+        model_type=model,
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
         feature_file=Path(feature_file),
