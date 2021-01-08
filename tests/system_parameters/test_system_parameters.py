@@ -168,7 +168,7 @@ class SystemParametersTest(unittest.TestCase):
     def test_get_param_with_building_id_defaults(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
-
+        self.maxDiff = None
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
         value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None")
         self.assertEqual("None", value)
@@ -178,7 +178,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
         self.assertEqual({"indirect": {
-            "heat_flow_nominal": 10000,
+            "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
             "nominal_mass_flow_building": 0.5,
@@ -193,7 +193,7 @@ class SystemParametersTest(unittest.TestCase):
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20
-        }}, value)
+          }}, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
@@ -206,25 +206,20 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect': {
-            "heat_flow_nominal": 10000,
+        self.assertEqual({"indirect": {
+            "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
             "nominal_mass_flow_building": 0.5,
-            "valve_pressure_drop": 3,
+            "valve_pressure_drop": 6000,
             "heat_exchanger_secondary_pressure_drop": 500,
             "heat_exchanger_primary_pressure_drop": 500,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50,
-            "booster_heater": False,
-            "ets_generation": "Fifth Generation",
-            "ets_connection_type": "Indirect",
-            "primary_design_delta_t": 3,
-            "secondary_design_delta_t": 3,
             "delta_temp_chw_building": 5,
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20
-        }}, value)
+          }}, value)

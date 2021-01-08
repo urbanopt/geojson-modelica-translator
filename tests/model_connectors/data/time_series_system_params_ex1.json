@@ -50,6 +50,7 @@
           "time_series": {
             "filepath": "ts_mft_ets_example_data.mos",
             "delta_temp_air_cooling": 10,
+            "delta_temp_air_heating": 18,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,

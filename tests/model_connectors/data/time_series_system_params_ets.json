@@ -48,11 +48,14 @@
   "district_system": {
     "default": {
       "central_cooling_plant_parameters": {
+        "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
         "chiller_water_flow_minimum": 9.9,
         "mass_cw_flow_nominal": 9.9,
+        "chw_pump_head": 300000,
+        "cw_pump_head": 200000,
         "pressure_drop_chw_nominal": 5999,
         "pressure_drop_cw_nominal": 5999,
         "pressure_drop_setpoint": 49999,
