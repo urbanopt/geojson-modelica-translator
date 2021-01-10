@@ -2,6 +2,7 @@
     // TODO: avoid reaching into other coupling!
     // TODO: verify this is the correct value for `y`
     // Warning: the value here is multiplied by 5/7.5 for unknown (undocumented) reasons and needs to be reevaluated in the future.
+HeatingIndirect_NetworkHeatedWaterStub/ComponentDefinitions.mopt
     y=mDis_flow_nominal_{{ graph.couplings_by_type(coupling.ets.id).load_couplings[0].id }}*5/7.5)
     "Secondary loop chilled water flow rate."
     {% raw %}annotation (Placement(transformation(extent={{-74,-20},{-54,0}})));{% endraw %}
