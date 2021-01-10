@@ -85,8 +85,8 @@ class TimeSeries(LoadBase):
                 "path": os.path.dirname(time_series_filename),
             },
             "nominal_values": {
-                "delTDisCoo": self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.delTDisCoo"
+                "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
+                    building["building_id"], "load_model_parameters.time_series.delta_temp_air_cooling"
                 )
             }
         }
@@ -117,7 +117,7 @@ class TimeSeries(LoadBase):
             * Add a project level project
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
-        :param building_names: list, names of the buildings that need to be cleaned up after export
+        :param building_name: String, name of the building that needs to be cleaned up after export
         :return: None
         """
         b_modelica_path = os.path.join(scaffold.loads_path.files_dir, building_name)

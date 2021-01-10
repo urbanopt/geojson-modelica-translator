@@ -5,19 +5,17 @@
       "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "indirect": {
-          "q_flow_nominal": 8888,
-          "eta_efficiency": 0.9,
-          "nominal_flow_district": 0.5,
-          "nominal_flow_building": 0.5,
-          "pressure_drop_valve": 1000,
-          "pressure_drop_hx_secondary": 1500,
-          "pressure_drop_hx_primary": 1500,
+          "heat_flow_nominal": 10000,
+          "heat_exchanger_efficiency": 0.8,
+          "nominal_mass_flow_district": 0.5,
+          "nominal_mass_flow_building": 0.5,
+          "valve_pressure_drop": 6000,
+          "heat_exchanger_secondary_pressure_drop": 500,
+          "heat_exchanger_primary_pressure_drop": 500,
           "cooling_supply_water_temperature_district": 5,
           "cooling_supply_water_temperature_building": 7,
           "heating_supply_water_temperature_district": 55,
-          "heating_supply_water_temperature_building": 50,
-          "booster_heater": false,
-          "ets_generation": "Fourth Generation"
+          "heating_supply_water_temperature_building": 50
         }
       }
     },
@@ -28,7 +26,7 @@
         "load_model_parameters": {
           "time_series": {
             "filepath": "To be populated",
-            "delTDisCoo": 10
+            "delta_temp_air_cooling": 10
           }
         }
       }
