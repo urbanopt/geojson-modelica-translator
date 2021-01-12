@@ -30,7 +30,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import json
 import os
+from copy import deepcopy
+from pathlib import Path
 
+import pandas as pd
 from jsonpath_ng.ext import parse
 from jsonschema.validators import _LATEST_VERSION as LatestValidator
 
@@ -204,3 +207,90 @@ class SystemParameters(object):
             results.append(error.message)
 
         return results
+
+    @classmethod
+    def csv_to_sys_param(cls, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
+        """
+        Create a system parameters file using output from URBANopt SDK
+
+        :param model_type: str, model type to select which sys_param template to use
+        :param scenario_dir: Path, location/name of folder with uo_sdk results
+        :param feature_file: Path, location/name of uo_sdk input file
+        :param sys_param_filename: Path, location/name of system parameter file to be created
+        :return None, file created and saved to user-specified location
+        """
+
+        if model_type == 'time_series':
+            param_template_path = Path(__file__).parent / 'time_series_template.json'
+        elif model_type == 'spawn':
+            pass
+        else:
+            raise Exception(f"No template found. {model_type} is not a valid template")
+
+        if not Path(scenario_dir).exists():
+            raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
+
+        if not Path(feature_file).exists():
+            raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
+
+        if Path(sys_param_filename).exists() and not overwrite:
+            raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
+
+        with open(param_template_path, "r") as f:
+            param_template = json.load(f)
+
+        measure_list = []
+
+        # Grab filepaths from sdk output
+        for thing in scenario_dir.iterdir():
+            if thing.is_dir():
+                for item in thing.iterdir():
+                    if item.is_dir():
+                        if str(item).endswith('_export_time_series_modelica'):
+                            measure_list.append(Path(item) / "building_loads.csv")
+                        elif str(item).endswith('_export_modelica_loads'):
+                            measure_list.append(Path(item) / "modelica.mos")
+
+        # Parse the FeatureFile
+        building_ids = []
+        with open(feature_file) as json_file:
+            sdk_input = json.load(json_file)
+            for feature in sdk_input['features']:
+                if feature['properties']['type'] != 'Site Origin':
+                    building_ids.append(feature['properties']['id'])
+
+        # Make sys_param template entries for each feature_id
+        building_list = []
+        for building in building_ids:
+            feature_info = deepcopy(param_template['buildings']['custom'][0])
+            feature_info['geojson_id'] = str(building)
+            building_list.append(feature_info)
+
+        # Grab the modelica file for the each Feature, and add it to the appropriate building dict
+        district_nominal_mfrt = 0
+        for building in building_list:
+            building_nominal_mfrt = 0
+            for measure_file_path in measure_list:
+                # Grab the relevant 2 components of the path: feature name and measure folder name, items -3 & -2 respectively
+                feature_name, measure_folder_name = str(measure_file_path).split('/')[-3:-1]
+                if feature_name != building['geojson_id']:
+                    continue
+                if (measure_file_path.suffix == '.mos'):
+                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
+                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
+                    mfrt_df = pd.read_csv(measure_file_path)
+                    building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
+                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = building_nominal_mfrt
+                district_nominal_mfrt += building_nominal_mfrt
+
+        # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
+        building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'].endswith("populated")]
+        if len(building_list) == 0:
+            raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
+
+        for building in building_list:
+            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = district_nominal_mfrt.round(3)
+        param_template['buildings']['custom'] = building_list
+
+        with open(sys_param_filename, 'w') as outfile:
+            json.dump(param_template, outfile, indent=2)
