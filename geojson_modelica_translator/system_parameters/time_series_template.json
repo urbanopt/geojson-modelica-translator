@@ -1,0 +1,35 @@
+{
+  "buildings": {
+    "default": {
+      "load_model": "time_series",
+      "ets_model": "Indirect Heating and Cooling"
+    },
+    "custom": [
+      {
+        "geojson_id": "0",
+        "load_model": "time_series",
+        "load_model_parameters": {
+          "time_series": {
+            "filepath": "To be populated",
+            "delta_temp_air_cooling": 10
+          }
+        },
+        "ets_model_parameters": {
+          "indirect": {
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.8,
+            "nominal_mass_flow_district": 0.5,
+            "nominal_mass_flow_building": 0.5,
+            "valve_pressure_drop": 6000,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "heat_exchanger_primary_pressure_drop": 500,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50
+          }
+        }
+      }
+    ]
+  }
+}

@@ -57,10 +57,10 @@ within {{ project_name }}.Plants;
     constrainedby Buildings.Fluid.Movers.Data.Generic
     "Performance data of condenser water pump"
     annotation (Dialog(group="Pump"),choicesAllMatching=true,Placement(transformation(extent={{142,82},{156,96}})));
-  {% endraw %}parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["chilled_water_pump_pressure_drop"] }}
+  {% endraw %}parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["chilled_water_pump_pressure_head"] }}
     {% raw %} "Nominal pressure drop of chilled water pumps"
     annotation (Dialog(group="Pump"));
-  {% endraw %}parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["condenser_water_pump_pressure_drop"] }}
+  {% endraw %}parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["condenser_water_pump_pressure_head"] }}
     {% raw %} "Nominal pressure drop of condenser water pumps"
     annotation (Dialog(group="Pump"));
   // control settings

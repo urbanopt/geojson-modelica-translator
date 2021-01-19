@@ -64,7 +64,7 @@ if opts['solver'].lower() == 'cvode':
 
     opts['CVode_options'] = {
         'external_event_detection': False,
-        'maxh': (mod.get_default_experiment_stop_time() - mod.get_default_experiment_stop_time()) / float(opts['ncp']),
+        'maxh': (mod.get_default_experiment_stop_time() - mod.get_default_experiment_start_time()) / float(opts['ncp']),
         'iter': 'Newton',
         'discr': 'BDF',
         'rtol': rtol,
@@ -74,7 +74,7 @@ if opts['solver'].lower() == 'cvode':
 
 if debug_solver:
     opts["logging"] = True  # <- Turn on solver debug logging
-mod.set("_log_level", 6)
+    mod.set("_log_level", 6)
 
 ######################################################################
 # Simulate
