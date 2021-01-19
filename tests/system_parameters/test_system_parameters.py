@@ -210,8 +210,7 @@ class SystemParametersTest(unittest.TestCase):
         with self.assertRaises(SystemExit) as context:
             filename = os.path.join(self.data_dir, 'system_params_1.json')
             sdp = SystemParameters(filename)
-            self.maxDiff = None
-            value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
+            sdp.get_param_by_building_id(None, "ets_model", "Not None")
         self.assertIn("No building_id submitted. Please retry and include the feature_id", str(context.exception))
 
     def test_missing_files(self):
