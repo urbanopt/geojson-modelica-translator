@@ -58,7 +58,7 @@ When rendering the district system model file, it must:
 3. render the model instance definition (ie the Modelica code which instantiates the model)
 4. insert the coupling partials and model instance definitions into the district Modelica file
 
-Refer to DistrictEnergySystem.mot and district.py for reference.
+Refer to `DistrictEnergySystem.mot <https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/templates/DistrictEnergySystem.mot>`_ and :meth:`~geojson_modelica_translator.model_connectors.districts.district.District` for reference.
 
 Each templating step has access to a particular set of variables, which is defined below.
 
