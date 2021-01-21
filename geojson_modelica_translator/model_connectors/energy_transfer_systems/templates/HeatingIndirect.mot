@@ -340,6 +340,8 @@ protected
         extent={{-100,-100},{100,160}})),
     Documentation(
       info="<html>
+      </html>",
+      revisions="<html>
   <li>
   August 1, 2020, by Hagar Elarga:<br/>
   First implementation.
