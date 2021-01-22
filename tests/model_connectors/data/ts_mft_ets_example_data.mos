@@ -1,5 +1,5 @@
 #1
-#Nominal heating water mass flow rate=67.82 
+#Nominal heating water mass flow rate=67.82
 #Nominal chilled water mass flow rate=52.15
 #time,NODE 62:System Node Temperature[C],NODE 67:System Node Temperature[C],NODE 70:System Node Temperature[C],NODE 98:System Node Temperature[C],massFlowRateHeating,massFlowRateCooling
 double modelica(35041,7)
