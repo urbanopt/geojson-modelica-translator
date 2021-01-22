@@ -30,6 +30,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import unittest
+from pathlib import Path
+from shutil import rmtree
 
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -38,14 +40,21 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 
 class SystemParametersTest(unittest.TestCase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        self.data_dir = Path(__file__).parent / 'data'
+        self.output_dir = Path(__file__).parent / 'output'
+        self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
+        self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
+        self.sys_param_template = Path(__file__).parent.parent.parent / 'geojson_modelica_translator' / \
+            'system_parameters' / 'time_series_template.json'
+        if self.output_dir.exists():
+            rmtree(self.output_dir)
+        self.output_dir.mkdir(parents=True)
 
     def test_expanded_paths(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
+        for s in sdp.validate():
+            print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
         self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model.idf'))
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
@@ -82,7 +91,8 @@ class SystemParametersTest(unittest.TestCase):
             "buildings": {
                 "default": {
                     "load_model": "rc",
-                    "load_model_parameters": {"rc": {"order": 6}},
+                    "load_model_parameters": {
+                        "rc": {"order": 6}},
                 }
             }
         }
@@ -92,15 +102,29 @@ class SystemParametersTest(unittest.TestCase):
         self.assertRegex(str(exc.exception), "Invalid system parameter file.*")
 
         sp = SystemParameters.loadd(data, validate_on_load=False)
-        self.assertEqual(sp.validate()[0], "'mos_weather_filename' is a required property")
-        self.assertEqual(sp.validate()[1], "6 is not one of [1, 2, 3, 4]")
+        self.assertEqual(len(sp.validate()), 6)
+        self.assertIn("'fraction_latent_person' is a required property", sp.validate())
+        self.assertIn("'mos_weather_filename' is a required property", sp.validate())
+        self.assertIn("'temp_hw_supply' is a required property", sp.validate())
+        self.assertIn("'temp_setpoint_cooling' is a required property", sp.validate())
+        self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
+        self.assertIn("6 is not one of [1, 2, 3, 4]", sp.validate())
 
     def test_get_param(self):
         data = {
             "buildings": {
                 "default": {
                     "load_model": "rc",
-                    "load_model_parameters": {"rc": {"order": 4, "mos_weather_filename": "path-to-file"}},
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "mos_weather_filename": "path-to-file",
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24
+                        }
+                    },
                 }
             }
         }
@@ -118,7 +142,15 @@ class SystemParametersTest(unittest.TestCase):
             {
                 "load_model": "rc",
                 "load_model_parameters": {
-                    "rc": {"order": 4, "mos_weather_filename": "path-to-file"}}
+                    "rc": {
+                        "order": 4,
+                        "mos_weather_filename": "path-to-file",
+                        "fraction_latent_person": 1.25,
+                        "temp_hw_supply": 40,
+                        "temp_setpoint_heating": 40,
+                        "temp_setpoint_cooling": 24
+                    }
+                }
             }
         )
 
@@ -143,7 +175,7 @@ class SystemParametersTest(unittest.TestCase):
     def test_get_param_with_building_id_defaults(self):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
-
+        self.maxDiff = None
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
         value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None")
         self.assertEqual("None", value)
@@ -153,17 +185,21 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
         self.assertEqual({"indirect": {
-            "q_flow_nominal": 8000,
-            "eta_efficiency": 0.666,
-            "nominal_flow_district": 0.666,
-            "nominal_flow_building": 0.666,
-            "pressure_drop_valve": 888,
-            "pressure_drop_hx_secondary": 999,
-            "pressure_drop_hx_primary": 999,
+            "heat_flow_nominal": 8000,
+            "heat_exchanger_efficiency": 0.8,
+            "nominal_mass_flow_district": 0.5,
+            "nominal_mass_flow_building": 0.5,
+            "valve_pressure_drop": 6000,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "heat_exchanger_primary_pressure_drop": 500,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50
+            "heating_supply_water_temperature_building": 50,
+            "delta_temp_chw_building": 5,
+            "delta_temp_chw_district": 8,
+            "delta_temp_hw_building": 15,
+            "delta_temp_hw_district": 20
         }}, value)
 
         # respect the passed default value
@@ -177,21 +213,83 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
         self.assertEqual("Indirect Heating and Cooling", value)
         value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
-        self.assertEqual({'indirect': {
-            "q_flow_nominal": 10000,
-            "eta_efficiency": 0.9,
-            "nominal_flow_district": 5000,
-            "nominal_flow_building": 200,
-            "pressure_drop_valve": 3,
-            "pressure_drop_hx_secondary": 3,
-            "pressure_drop_hx_primary": 3,
+        self.assertEqual({"indirect": {
+            "heat_flow_nominal": 8000,
+            "heat_exchanger_efficiency": 0.8,
+            "nominal_mass_flow_district": 0.5,
+            "nominal_mass_flow_building": 0.5,
+            "valve_pressure_drop": 6000,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "heat_exchanger_primary_pressure_drop": 500,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50,
-            "booster_heater": False,
-            "ets_generation": "Fifth Generation",
-            "ets_connection_type": "Indirect",
-            "primary_design_delta_t": 3,
-            "secondary_design_delta_t": 3
+            "delta_temp_chw_building": 5,
+            "delta_temp_chw_district": 8,
+            "delta_temp_hw_building": 15,
+            "delta_temp_hw_district": 20
         }}, value)
+
+    def test_missing_files(self):
+        with self.assertRaises(Exception) as context:
+            output_sys_param_file = self.output_dir / 'going_to_fail_first.json'
+            missing_scenario_dir = self.scenario_dir / 'foobar'
+            SystemParameters.csv_to_sys_param(
+                model_type='time_series',
+                scenario_dir=missing_scenario_dir,
+                feature_file=self.feature_file,
+                sys_param_filename=output_sys_param_file)
+        self.assertIn(f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
+        with self.assertRaises(Exception) as context:
+            missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
+            SystemParameters.csv_to_sys_param(
+                model_type='time_series',
+                scenario_dir=self.scenario_dir,
+                feature_file=missing_feature_file,
+                sys_param_filename=output_sys_param_file)
+        self.assertIn(f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
+
+    def test_csv_to_sys_param_does_not_overwrite(self):
+        with self.assertRaises(Exception) as context:
+            output_sys_param_file = self.output_dir / 'test_overwriting_sys_param.json'
+            SystemParameters.csv_to_sys_param(
+                model_type='time_series',
+                scenario_dir=self.scenario_dir,
+                feature_file=self.feature_file,
+                sys_param_filename=output_sys_param_file,
+                overwrite=True)
+            SystemParameters.csv_to_sys_param(
+                model_type='time_series',
+                scenario_dir=self.scenario_dir,
+                feature_file=self.feature_file,
+                sys_param_filename=output_sys_param_file,
+                overwrite=False)
+        self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
+
+    def test_csv_to_sys_param(self):
+        output_sys_param_file = self.output_dir / 'test_sys_param.json'
+        SystemParameters.csv_to_sys_param(
+            model_type='time_series',
+            scenario_dir=self.scenario_dir,
+            feature_file=self.feature_file,
+            sys_param_filename=output_sys_param_file)
+        self.assertTrue(output_sys_param_file.exists())
+
+    def test_validate_sys_param_template(self):
+        output_sys_param_file = self.output_dir / 'bogus_sys_param.json'
+        with self.assertRaises(Exception) as context:
+            SystemParameters.csv_to_sys_param(
+                scenario_dir=self.scenario_dir,
+                feature_file=self.feature_file,
+                sys_param_filename=output_sys_param_file)
+        self.assertIn("csv_to_sys_param() missing 1 required positional argument: 'model_type'",
+                      str(context.exception))
+        with self.assertRaises(Exception) as context:
+            bogus_template_type = 'openstudio'
+            SystemParameters.csv_to_sys_param(
+                model_type=bogus_template_type,
+                scenario_dir=self.scenario_dir,
+                feature_file=self.feature_file,
+                sys_param_filename=output_sys_param_file)
+        self.assertIn(f"No template found. {bogus_template_type} is not a valid template", str(context.exception))

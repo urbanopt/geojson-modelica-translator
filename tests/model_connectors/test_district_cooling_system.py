@@ -74,8 +74,8 @@ class DistrictCoolingSystemTest(TestCaseBase):
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
-        sys_params = SystemParameters(filename)
+        params_filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
+        sys_params = SystemParameters(params_filename)
 
         # create network and plant
         network = Network2Pipe(sys_params)
