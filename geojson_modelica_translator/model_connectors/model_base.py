@@ -190,6 +190,13 @@ class ModelBase(object):
         return outputname
 
     def render_instance(self, template_params):
+        """Templates the *_Instance file for the model. The templated result will
+        be inserted into the final District Energy System model in order to
+        instantiate/define the model instance.
+
+        :param template_params: dict, parameters for the template
+        :returns: tuple (str, str), the templated result followed by the name of the file used for templating
+        """
         # TODO: both to_modelica and render_instance should use the same template environment
         # This should be fixed once all of the template files have the same variable substitution delimiters
         # TODO: move templates into specific model directories and have subclass override template_dir and template_env
@@ -204,7 +211,11 @@ class ModelBase(object):
         except exceptions.TemplateNotFound:
             raise Exception(f"Could not find mopt template '{template_name}' in {self.template_dir}")
 
-        return template.render(template_params)
+        # get template path relative to the package
+        template_filename = template.filename
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+
+        return template.render(template_params), template_filename
 
     def to_dict(self, scaffold):
         return {
