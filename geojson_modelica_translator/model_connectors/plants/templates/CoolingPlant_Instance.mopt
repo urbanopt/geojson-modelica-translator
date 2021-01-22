@@ -19,8 +19,8 @@
   // pumps
   parameter Buildings.Fluid.Movers.Data.Generic perCHWPum_{{ model.id }}(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow={0,mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi}/1000,
-      dp={pumDP_{{ model.id }},0}))
+      V_flow=((mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi)/1000)*{0.1,1,1.2},
+      dp=pumDP_{{ model.id }}*{1.2,1,0.1}))
     "Performance data for chilled water pumps";
   parameter Buildings.Fluid.Movers.Data.Generic perCWPum_{{ model.id }}(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
@@ -38,7 +38,7 @@
     {% raw %}annotation (Placement(transformation(extent={{-100,0},{-80,20}}))){% endraw %};
 
   {{ model.modelica_type }} {{ model.id }}(
-    redeclare Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Trane_CGWD_207kW_3_99COP_None perChi,
+    redeclare Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Carrier_19EX_5208kW_6_88COP_Vanes perChi,
     perCHWPum=perCHWPum_{{ model.id }},
     perCWPum=perCWPum_{{ model.id }},
     mCHW_flow_nominal=mCHW_flow_nominal_{{ model.id }},
