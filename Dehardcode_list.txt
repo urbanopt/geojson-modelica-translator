@@ -1,0 +1,9 @@
+List of Items Currently Hardcoded
+
+File:\geojson-modelica-translator\geojson_modelica_translator\system_parameters\time_series_template.json
+
+Values: Values of parameters for ETS model and custom parameters for configuring a time-series model. The use of the "Indirect Heating
+and Cooling" ETS model is also hard-coded, but that is likely due to it being the only ETS model currently available in the GMT.
+
+Notes: How should the values of these parameters be set? They could be configured directly by the user in the system parameters
+schema. The ETS-related parameters do not map to values in a building-level energy model, so they could not be set that way.
