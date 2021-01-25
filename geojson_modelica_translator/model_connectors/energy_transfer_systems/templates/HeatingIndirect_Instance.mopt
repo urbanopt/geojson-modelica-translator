@@ -13,7 +13,6 @@
     Q_flow_nominal=Q_flow_nominal_{{ couplings.load_couplings[0].id }},
     T_a1_nominal=55+273.15,
     T_a2_nominal=35+273.15,
-    eta=0.8,
     k=0.1,
     Ti=60,
     yMax=0.7,
