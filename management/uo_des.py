@@ -6,7 +6,9 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 )
 
 
-@click.group()
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+
+@click.group(context_settings=CONTEXT_SETTINGS)
 def cli():
     """URBANopt District Energy Systems"""
     pass
