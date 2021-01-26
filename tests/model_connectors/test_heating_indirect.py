@@ -64,7 +64,8 @@ class HeatingIndirectTest(TestCaseBase):
             self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
         package.save()
         # now test the connector (independent of the larger geojson translator)
-        self.heating_indirect = HeatingIndirect(sys_params, self.gj.json_loads[0])
+        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
+        self.heating_indirect = HeatingIndirect(sys_params, geojson_load_id)
         self.heating_indirect.to_modelica(self.gj.scaffold)
 
         root_path = os.path.abspath(os.path.join(self.gj.scaffold.substations_path.files_dir))

@@ -38,9 +38,8 @@ class EnergyTransferBase(ModelBase):
     """
     simple_gmt_type = 'ets'
 
-    def __init__(self, system_parameters, geojson_load):
+    def __init__(self, system_parameters, geojson_load_id):
         super().__init__(system_parameters, Path(__file__).parent / 'templates')
-        # TODO: remove add_building and remove default value for geojson_load
-        # (there should only ever be a single load for a model)
-        if geojson_load is not None:
-            self.add_building(geojson_load)
+
+        # geojson load id is used for fetching load-specific ETS configs from sys params
+        self._geojson_load_id = geojson_load_id

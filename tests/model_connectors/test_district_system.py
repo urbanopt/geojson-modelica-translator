@@ -76,7 +76,8 @@ class DistrictSystemTest(TestCaseBase):
 
         # Create the time series load, ets and their coupling
         time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
-        cooling_indirect_system = CoolingIndirect(sys_params, self.gj.json_loads[0])
+        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
+        cooling_indirect_system = CoolingIndirect(sys_params, geojson_load_id)
         ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
 
         # create chilled water stub for the ets

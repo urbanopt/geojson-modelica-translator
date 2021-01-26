@@ -40,14 +40,14 @@ from geojson_modelica_translator.utils import simple_uuid
 class CoolingIndirect(EnergyTransferBase):
     model_name = 'CoolingIndirect'
 
-    def __init__(self, system_parameters, geojson_load):
-        super().__init__(system_parameters, geojson_load)
+    def __init__(self, system_parameters, geojson_load_id):
+        super().__init__(system_parameters, geojson_load_id)
         self.id = 'cooInd_' + simple_uuid()
         # _model_filename is the name of the file we generate, and thus the actual
         # model to be referenced when instantiating in the District model
         # TODO: refactor these property names (model_name and model_filename) because
         # it's confusing
-        self._model_filename = f'CoolingIndirect_{self.buildings[0]["building_id"]}'
+        self._model_filename = f'CoolingIndirect_{self._geojson_load_id}'
 
     def to_modelica(self, scaffold):
         """
@@ -58,7 +58,7 @@ class CoolingIndirect(EnergyTransferBase):
         cooling_indirect_template = self.template_env.get_template("CoolingIndirect.mot")
 
         ets_data = self.system_parameters.get_param_by_building_id(
-            self.buildings[0]['building_id'],
+            self._geojson_load_id,
             'ets_model_parameters.indirect'
         )
 
