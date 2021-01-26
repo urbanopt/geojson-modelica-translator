@@ -1,5 +1,5 @@
-within {{project_name}}.Substations;
-model HeatingIndirect
+within {{ project_name }}.Substations;
+model {{ model_filename }}
   {% raw %} "Indirect heating energy transfer station for district energy systems"
   extends Buildings.Fluid.Interfaces.PartialFourPortInterface(
     redeclare final package Medium1=Medium,
@@ -81,11 +81,11 @@ model HeatingIndirect
     "Time constant of derivative block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
   parameter Real yMax(
-    start=1)=1
-    "Upper limit of output"
+    {% endraw %}start=1)={{ ets_data["heating_y_max"] }}
+    {% raw %} "Upper limit of output"
     annotation (Dialog(tab="Controller"));
-  parameter Real yMin=0
-    "Lower limit of output"
+  {% endraw %}parameter Real yMin={{ ets_data["heating_y_min"] }}
+    {% raw %} "Lower limit of output"
     annotation (Dialog(tab="Controller"));
   parameter Real wp(
     final min=0)=1

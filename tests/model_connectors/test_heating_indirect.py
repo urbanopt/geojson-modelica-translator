@@ -64,14 +64,10 @@ class HeatingIndirectTest(TestCaseBase):
             self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
         package.save()
         # now test the connector (independent of the larger geojson translator)
-        self.heating_indirect = HeatingIndirect(sys_params)
+        self.heating_indirect = HeatingIndirect(sys_params, self.gj.json_loads[0])
         self.heating_indirect.to_modelica(self.gj.scaffold)
 
         root_path = os.path.abspath(os.path.join(self.gj.scaffold.substations_path.files_dir))
-        files = [
-            os.path.join(root_path, 'HeatingIndirect.mo'),
-        ]
-
-        # verify that there are only 2 files that matter (coupling and building)
-        for file in files:
-            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
+        geojson_id = self.gj.json_loads[0].feature.properties["id"]
+        model_filepath = os.path.join(root_path, f'HeatingIndirect_{geojson_id}.mo')
+        self.assertTrue(os.path.exists(model_filepath), f"File does not exist: {model_filepath}")
