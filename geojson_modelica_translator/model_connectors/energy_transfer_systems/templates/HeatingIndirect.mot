@@ -81,10 +81,10 @@ model {{ model_filename }}
     "Time constant of derivative block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
   parameter Real yMax(
-    {% endraw %}start=1)={{ ets_data["heating_y_max"] }}
+    {% endraw %}start=1)={{ ets_data["heating_controller_y_max"] }}
     {% raw %} "Upper limit of output"
     annotation (Dialog(tab="Controller"));
-  {% endraw %}parameter Real yMin={{ ets_data["heating_y_min"] }}
+  {% endraw %}parameter Real yMin={{ ets_data["heating_controller_y_min"] }}
     {% raw %} "Lower limit of output"
     annotation (Dialog(tab="Controller"));
   parameter Real wp(

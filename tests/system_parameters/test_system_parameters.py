@@ -200,10 +200,10 @@ class SystemParametersTest(unittest.TestCase):
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20,
-            "cooling_y_max": 1,
-            "cooling_y_min": 0,
-            "heating_y_max": 1,
-            "heating_y_min": 0
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
         }}, value)
 
         # respect the passed default value
@@ -233,10 +233,10 @@ class SystemParametersTest(unittest.TestCase):
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20,
-            "cooling_y_max": 1,
-            "cooling_y_min": 0,
-            "heating_y_max": 1,
-            "heating_y_min": 0
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
         }}, value)
 
     def test_missing_files(self):

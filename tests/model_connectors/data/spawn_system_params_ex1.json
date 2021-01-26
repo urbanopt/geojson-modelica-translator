@@ -20,10 +20,10 @@
           "delta_temp_hw_building": 14,
           "delta_temp_chw_building": 4.9,
           "delta_temp_chw_district": 7.9,
-          "cooling_y_max": 1,
-          "cooling_y_min": 0,
-          "heating_y_max": 1,
-          "heating_y_min": 0
+          "cooling_controller_y_max": 1,
+          "cooling_controller_y_min": 0,
+          "heating_controller_y_max": 1,
+          "heating_controller_y_min": 0
         }
       }
     },

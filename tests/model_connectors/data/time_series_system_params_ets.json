@@ -22,10 +22,10 @@
           "delta_temp_chw_district": 8,
           "delta_temp_hw_building": 15,
           "delta_temp_hw_district": 20,
-          "cooling_y_max": 1,
-          "cooling_y_min": 0,
-          "heating_y_max": 1,
-          "heating_y_min": 0
+          "cooling_controller_y_max": 1,
+          "cooling_controller_y_min": 0,
+          "heating_controller_y_max": 1,
+          "heating_controller_y_min": 0
         }
       }
     },
@@ -65,10 +65,10 @@
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20,
-            "cooling_y_max": 0.6,
-            "cooling_y_min": 0,
-            "heating_y_max": 0.7,
-            "heating_y_min": 0
+            "cooling_controller_y_max": 0.6,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 0.7,
+            "heating_controller_y_min": 0
           }
         }
       },
@@ -107,10 +107,10 @@
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20,
-            "cooling_y_max": 1,
-            "cooling_y_min": 0,
-            "heating_y_max": 1,
-            "heating_y_min": 0
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
           }
         }
       }
