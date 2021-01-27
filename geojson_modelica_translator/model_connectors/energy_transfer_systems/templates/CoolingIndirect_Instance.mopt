@@ -10,8 +10,8 @@
     dpValve_nominal=7000,
     use_Q_flow_nominal=true,
     Q_flow_nominal=Q_flow_nominal_{{ couplings.load_couplings[0].id }},
-    T_a1_nominal=273.15+8,
-    T_a2_nominal=273.15+20,
-    eta=0.8)
+    // TODO: dehardcode the nominal temperatures?
+    T_a1_nominal=273.15+5,
+    T_a2_nominal=273.15+13)
     "Indirect cooling energy transfer station ETS."
     {% raw %}annotation (Placement(transformation(extent={{12,-64},{36,-44}})));{% endraw %}

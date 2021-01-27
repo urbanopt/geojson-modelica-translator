@@ -98,14 +98,13 @@ model CentralHeatingPlant
     m_flow_nominal=mBoi_flow_nominal,
     dpSetPoi=dpSetPoi,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=0.5,
-    Ti=30)
+    k=0.1)
     "Heating water pump controller."
     annotation (Placement(transformation(extent={{-120,-40},{-100,-20}})));
   BoilerStage boiStaCon(
     tWai=tWai,
     QBoi_nominal=QBoi_flow_nominal,
-    criPoiLoa=0.7*QBoi_flow_nominal,
+    criPoiLoa=0.55*QBoi_flow_nominal,
     dQ=0.25*QBoi_flow_nominal,
     numBoi=numBoi)
     "Boiler staging controller."
@@ -131,7 +130,6 @@ model CentralHeatingPlant
     m_flow_nominal=mBoi_flow_nominal,
     dpValve_nominal=7000,
     num=numBoi,
-    riseTimePump=100,
     l=0.001,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
     "Parallel heating water pumps."
@@ -174,6 +172,9 @@ model CentralHeatingPlant
     displayUnit="degC")
     "Heating water setpoint."
     annotation (Placement(transformation(extent={{-160,-60},{-140,-40}}),iconTransformation(extent={{-140,-104},{-100,-64}})));
+  Modelica.Blocks.Math.Product pumOn[numBoi]
+    "Output pump speed"
+    annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
 equation
   for i in 1:numBoi loop
     connect(THeaSet,boiHotWat.TSet[i])
@@ -187,8 +188,6 @@ equation
     annotation (Line(points={{-150,-30},{-138,-30},{-138,-35},{-121,-35}},color={0,0,127}));
   connect(valByp.port_a,senMasFloByp.port_b)
     annotation (Line(points={{54,-10},{54,-20}},color={0,127,255}));
-  connect(heaWatPumCon.y,pumHW.u)
-    annotation (Line(points={{-99,-30},{-60,-30},{-60,68},{8,68},{8,54},{2,54}},color={0,0,127}));
   connect(senMasFloByp.m_flow,heaWatPumCon.meaFloByPas)
     annotation (Line(points={{43,-30},{40,-30},{40,-74},{-130,-74},{-130,-38.8},{-121,-38.8}},color={0,0,127}));
   connect(port_a,THWRet.port_a)
@@ -221,6 +220,12 @@ equation
     annotation (Line(points={{104,61},{104,88},{-130,88},{-130,73.4},{-121,73.4}},color={0,0,127}));
   connect(senMasFlo.m_flow,boiStaCon.mHeaDis)
     annotation (Line(points={{32,61},{32,86},{-126,86},{-126,76.6},{-121,76.6}},color={0,0,127}));
+  connect(boiStaCon.y,pumOn.u1)
+    annotation (Line(points={{-99,66},{-92,66},{-92,16},{-82,16}},color={0,0,127}));
+  connect(heaWatPumCon.y,pumOn.u2)
+    annotation (Line(points={{-99,-30},{-94,-30},{-94,4},{-82,4}},color={0,0,127}));
+  connect(pumOn.y,pumHW.u)
+    annotation (Line(points={{-59,10},{-46,10},{-46,72},{12,72},{12,54},{2,54}},color={0,0,127}));
   annotation (
     __Dymola_Commands,
     Diagram(

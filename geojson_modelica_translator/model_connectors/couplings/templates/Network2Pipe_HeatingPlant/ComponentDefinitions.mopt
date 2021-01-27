@@ -1,8 +1,3 @@
-  Buildings.Fluid.Sensors.TemperatureTwoPort senTDisSup_{{ coupling.id }}(
-    redeclare final package Medium={{ globals.medium_w }},
-    final m_flow_nominal=mHW_flow_nominal_{{ coupling.plant.id }})
-    "District-side (primary) supply temperature sensor"
-    {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=90,origin={14,-20}))){% endraw %};
   // TODO: This should not be here, it is entirely plant specific and should be moved elsewhere
   // but since it requires a connect statement we must put it here for now...
   Modelica.Blocks.Sources.BooleanConstant mPum_flow_{{ coupling.id }}(

@@ -216,8 +216,8 @@ within {{ project_name }}.Plants;
     annotation (Placement(transformation(extent={{160,-40},{140,-20}})));
   Buildings.Controls.Continuous.LimPID bypValCon(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1,
-    Ti=60,
+    k=0.1,
+    Ti=30,
     reset=Buildings.Types.Reset.Parameter,
     y_reset=0)
     "Chilled water bypass valve controller"

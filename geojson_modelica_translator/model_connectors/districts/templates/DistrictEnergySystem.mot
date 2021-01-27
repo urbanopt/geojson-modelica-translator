@@ -7,6 +7,12 @@ model DistrictEnergySystem
   package MediumA=Buildings.Media.Air
     "Load side medium";
 
+  // TODO: dehardcode? Also, add display units to the other parameters.
+  parameter Modelica.SIunits.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
+  parameter Modelica.SIunits.TemperatureDifference delChiWatTemBui=5;
+  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemDis=12;
+  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemBui=5;
+
   // Models
   {% for model_definition in models %}
     {{ model_definition }}
