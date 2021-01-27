@@ -2,7 +2,8 @@ exclude: |
   (?x)(
     ^docs/conf.py|
     ^tests/modelica/|
-    ^modelica_builder/modelica_parser/
+    ^modelica_builder/modelica_parser/|
+    ^docs/license.rst
   )
 
 repos:
