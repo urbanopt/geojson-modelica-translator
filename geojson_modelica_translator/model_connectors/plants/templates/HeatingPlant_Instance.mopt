@@ -5,7 +5,7 @@
     "Nominal heating water mass flow rate";
   parameter Modelica.SIunits.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
     "Nominal heating capaciaty";
-  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=80000 // this should be 1.2*sum({bui.QHea_flow_nominal for bui in all_loads})
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=1000000*2
     "Heating load";
   parameter Modelica.SIunits.MassFlowRate mMin_flow_{{ model.id }}=0.2*mBoi_flow_nominal_{{ model.id }}
     "Minimum mass flow rate of single boiler";
@@ -28,7 +28,7 @@
     mBoi_flow_nominal=mBoi_flow_nominal_{{ model.id }},
     dpBoi_nominal=10000,
     delT_nominal(
-      displayUnit="degC")=10,
+      displayUnit="degC")=15,
     tWai=tWai_{{ model.id }},
     // TODO: we're currently grabbing dpSetPoi from the Network instance -- need feedback to determine if that's the proper "home" for it
     dpSetPoi=dpSetPoi_{{ couplings.network_couplings[0].network.id }},
