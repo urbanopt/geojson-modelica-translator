@@ -142,6 +142,9 @@ class PackageParser(object):
             data.insert(insert_at, new_model_name)
         self.order_data = "\n".join(data)
 
+        # remove any empty lines
+        self.order_data = self.order_data.replace('\n\n', '\n')
+
 
 class InputParser(object):
     """

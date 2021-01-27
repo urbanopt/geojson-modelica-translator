@@ -1,5 +1,5 @@
-within {{project_name}}.Substations;
-model CoolingIndirect
+within {{ project_name }}.Substations;
+model {{ model_filename }}
   {% raw %} "Indirect cooling energy transfer station for district energy systems"
   extends Buildings.Fluid.Interfaces.PartialFourPortInterface(
     redeclare final package Medium1=Medium,
@@ -81,11 +81,11 @@ model CoolingIndirect
     "Time constant of derivative block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
   parameter Real yMax(
-    start=1)=1
-    "Upper limit of output"
+    {% endraw %}start=1)={{ ets_data["cooling_controller_y_max"] }}
+    {% raw %} "Upper limit of output"
     annotation (Dialog(tab="Controller"));
-  parameter Real yMin=0
-    "Lower limit of output"
+  {% endraw %}parameter Real yMin={{ ets_data["cooling_controller_y_min"] }}
+    {% raw %} "Lower limit of output"
     annotation (Dialog(tab="Controller"));
   parameter Real wp(
     final min=0)=1
@@ -357,4 +357,4 @@ November 1, 2019, by Kathryn Hinkelman:<br/>
 First implementation. </li>
 </ul>
 </html>"));
-{% endraw %}end CoolingIndirect;
+{% endraw %}end {{ model_filename }};

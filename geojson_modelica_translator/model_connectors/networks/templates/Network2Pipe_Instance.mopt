@@ -1,6 +1,6 @@
   {%- set all_ets_flow_nominal = couplings.ets_couplings|map(attribute="ets")|map(attribute="id")|map("strcat", ".mDis_flow_nominal")|list -%}
 
-  constant Integer nBui_{{ model.id }}={{ all_ets_flow_nominal|length }};
+  parameter Integer nBui_{{ model.id }}={{ all_ets_flow_nominal|length }};
   parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({% raw %}{{% endraw %}
     {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %})
     "Nominal mass flow rate of the distribution pump";
