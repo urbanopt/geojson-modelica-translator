@@ -19,7 +19,7 @@
   parameter Modelica.SIunits.PressureDifference dp_nominal_{{ model.id }}=dpSetPoi_{{ model.id }}+nBui_{{ model.id }}*7000
     "District network pressure drop";
   // NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
-  parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=70000
+  parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=50000
     "Differential pressure setpoint";
 
   {{ model.modelica_type }} {{ model.id }}(

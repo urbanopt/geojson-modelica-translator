@@ -1,6 +1,6 @@
   // TimeSeries + HeatingIndirect Component Definitions
   // TODO: the components below need to be fixed!
-  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.mHeaWat_flow_nominal // .*({{ coupling.load.id }}.delTBuiCoo/delTDisCoo_{{ coupling.id }}))
+  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.mHeaWat_flow_nominal*{{ globals.delHeaWatTemBui }}/{{ globals.delHeaWatTemDis }}
     "Nominal mass flow rate of primary (district) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.mHeaWat_flow_nominal
     "Nominal mass flow rate of secondary (building) district heating side";

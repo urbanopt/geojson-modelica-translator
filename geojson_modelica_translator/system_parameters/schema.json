@@ -336,6 +336,26 @@
           "description": "Design temperature differential on the district side. (deltaC)",
           "type": "number",
           "default": 8
+        },
+        "cooling_controller_y_max": {
+          "description": "Controller upper limit",
+          "type": "number",
+          "default": 1
+        },
+        "cooling_controller_y_min": {
+          "description": "Controller lower limit",
+          "type": "number",
+          "default": 0
+        },
+        "heating_controller_y_max": {
+          "description": "Controller upper limit",
+          "type": "number",
+          "default": 1
+        },
+        "heating_controller_y_min": {
+          "description": "Controller lower limit",
+          "type": "number",
+          "default": 0
         }
       },
       "required": [
@@ -353,7 +373,11 @@
         "delta_temp_hw_district",
         "delta_temp_hw_building",
         "delta_temp_chw_building",
-        "delta_temp_chw_district"
+        "delta_temp_chw_district",
+        "cooling_controller_y_max",
+        "cooling_controller_y_min",
+        "heating_controller_y_max",
+        "heating_controller_y_min"
       ]
     },
     "spawn_model_parameters": {

@@ -82,7 +82,11 @@ class District:
         }
         common_template_params = {
             'globals': {
-                "medium_w": "MediumW"
+                'medium_w': 'MediumW',
+                'delChiWatTemBui': 'delChiWatTemBui',
+                'delChiWatTemDis': 'delChiWatTemDis',
+                'delHeaWatTemBui': 'delHeaWatTemBui',
+                'delHeaWatTemDis': 'delHeaWatTemDis',
             },
             'graph': self._coupling_graph
         }
