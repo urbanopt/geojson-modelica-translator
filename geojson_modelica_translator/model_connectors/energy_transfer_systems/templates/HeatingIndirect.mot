@@ -348,4 +348,4 @@ protected
   </li>
   </ul>
   </html>"));
-{% endraw %}end HeatingIndirect;
+{% endraw %}end {{ model_filename }};
