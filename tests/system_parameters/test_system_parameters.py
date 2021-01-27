@@ -214,30 +214,9 @@ class SystemParametersTest(unittest.TestCase):
         filename = os.path.join(self.data_dir, 'system_params_1.json')
         sdp = SystemParameters(filename)
         self.maxDiff = None
-        value = sdp.get_param_by_building_id(None, "ets_model", "Not None")
-        self.assertEqual("Indirect Heating and Cooling", value)
-        value = sdp.get_param_by_building_id(None, "ets_model_parameters", "Not None")
-        self.assertEqual({"indirect": {
-            "heat_flow_nominal": 8000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 0.5,
-            "nominal_mass_flow_building": 0.5,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_district": 5,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "delta_temp_hw_building": 15,
-            "delta_temp_hw_district": 20,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-        }}, value)
+        with self.assertRaises(SystemExit) as context:
+            sdp.get_param_by_building_id(None, "ets_model", "Not None")
+        self.assertIn("No building_id submitted. Please retry and include the feature_id", str(context.exception))
 
     def test_missing_files(self):
         with self.assertRaises(Exception) as context:
