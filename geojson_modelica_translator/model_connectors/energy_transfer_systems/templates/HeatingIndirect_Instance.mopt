@@ -1,4 +1,4 @@
-  // cooling indirect instance
+  // heating indirect instance
   {{ model.modelica_type }} {{ model.id }}(
     allowFlowReversal1=false,
     allowFlowReversal2=false,
@@ -11,11 +11,9 @@
     dp2_nominal=500,
     use_Q_flow_nominal=true,
     Q_flow_nominal=Q_flow_nominal_{{ couplings.load_couplings[0].id }},
-    T_a1_nominal=57+273.15,
-    T_a2_nominal=44+273.15,
-    eta=0.8,
+    T_a1_nominal=55+273.15,
+    T_a2_nominal=35+273.15,
     k=0.1,
-    Ti=30,
-    yMax=1,
+    Ti=60,
     reverseActing=true)
     {% raw %}annotation (Placement(transformation(extent={{-22,-48},{-2,-28}}))){% endraw %};

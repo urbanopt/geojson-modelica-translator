@@ -1,11 +1,9 @@
   // TimeSeries + HeatingIndirect Component Definitions
   // TODO: the components below need to be fixed!
-  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.mHeaWat_flow_nominal // .*({{ coupling.load.id }}.delTBuiCoo/delTDisCoo_{{ coupling.id }}))
+  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.mHeaWat_flow_nominal*{{ globals.delHeaWatTemBui }}/{{ globals.delHeaWatTemDis }}
     "Nominal mass flow rate of primary (district) district heating side";
   parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.mHeaWat_flow_nominal
-    "Nominal mass flow rate of secondary (building) district cooling side";
-  // parameter Modelica.SIunits.TemperatureDifference delTDisCoo_{{ coupling.id }}=10
-  //   "Nominal district supply and return water temperature difference";
+    "Nominal mass flow rate of secondary (building) district heating side";
   parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ coupling.id }}=({{ coupling.load.id }}.QHea_flow_nominal);
   Modelica.Fluid.Sources.FixedBoundary pressure_source_{{ coupling.id }}(
     redeclare package Medium={{ globals.medium_w }},
@@ -13,9 +11,9 @@
     nPorts=1)
     "Pressure source"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={48,-78}))){% endraw %};
-  // TODO: move THeaWatSet (and its connection) into a CoolingIndirect specific template file (this component does not depend on the coupling)
+  // TODO: move THeaWatSet (and its connection) into a HeatingIndirect specific template file (this component does not depend on the coupling)
   Modelica.Blocks.Sources.RealExpression THeaWatSet_{{ coupling.id }}(
-    y=50+273.15)
+    y=40+273.15)
     "Secondary loop (Building side) heating water setpoint temperature."
     //Dehardcode
     {% raw %}annotation (Placement(transformation(extent={{-76,-52},{-56,-32}}))){% endraw %};

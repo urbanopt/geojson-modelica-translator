@@ -33,13 +33,44 @@
           "delta_temp_chw_building": 5,
           "delta_temp_chw_district": 8,
           "delta_temp_hw_building": 15,
-          "delta_temp_hw_district": 20
+          "delta_temp_hw_district": 20,
+          "cooling_controller_y_max": 1,
+          "cooling_controller_y_min": 0,
+          "heating_controller_y_max": 1,
+          "heating_controller_y_min": 0
         }
       }
     },
     "custom": [
       {
-        "geojson_id": "abcd1234"
+        "geojson_id": "abcd1234",
+        "ets_model_parameters": {
+          "indirect": {
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.8,
+            "nominal_mass_flow_district": 0.5,
+            "nominal_mass_flow_building": 0.5,
+            "valve_pressure_drop": 6000,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "heat_exchanger_primary_pressure_drop": 500,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 80,
+            "heating_supply_water_temperature_building": 75,
+            "booster_heater": false,
+            "ets_connection_type": "Indirect",
+            "primary_design_delta_t": 3,
+            "secondary_design_delta_t": 3,
+            "delta_temp_chw_building": 5,
+            "delta_temp_chw_district": 8,
+            "delta_temp_hw_building": 15,
+            "delta_temp_hw_district": 20,
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
+          }
+        }
       },
       {
         "geojson_id": "defgh2345",
@@ -59,6 +90,33 @@
               "zone a",
               "zone_b"
             ]
+          }
+        },
+        "ets_model_parameters": {
+          "indirect": {
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.8,
+            "nominal_mass_flow_district": 0.5,
+            "nominal_mass_flow_building": 0.5,
+            "valve_pressure_drop": 6000,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "heat_exchanger_primary_pressure_drop": 500,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 80,
+            "heating_supply_water_temperature_building": 75,
+            "booster_heater": false,
+            "ets_connection_type": "Indirect",
+            "primary_design_delta_t": 3,
+            "secondary_design_delta_t": 3,
+            "delta_temp_chw_building": 5,
+            "delta_temp_chw_district": 8,
+            "delta_temp_hw_building": 15,
+            "delta_temp_hw_district": 20,
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
           }
         }
       }
