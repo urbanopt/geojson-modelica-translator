@@ -38,7 +38,7 @@ class EtsColdWaterStub(EnergyTransferBase):
     model_name = 'EtsColdWaterStub'
 
     def __init__(self, system_parameters):
-        super().__init__(system_parameters)
+        super().__init__(system_parameters, None)
         self.id = 'etsColWatStub_' + simple_uuid()
 
     def to_modelica(self, scaffold):

@@ -2,10 +2,8 @@
     {% raw %}annotation (Line(points={{-20,-25},{0,-25},{0,22.4},{16,22.4}},color={0,127,255})){% endraw %};
   connect({{ coupling.network.id }}.dp,{{ coupling.plant.id }}.dpMea)
     {% raw %}annotation (Line(points={{44.7,27.8},{62,27.8},{62,-60},{-62,-60},{-62,-33},{-42,-33}},color={0,0,127})){% endraw %};
-  connect({{ coupling.plant.id }}.port_b,senTDisSup_{{ coupling.id }}.port_a)
+  connect({{ coupling.plant.id }}.port_b,{{ coupling.network.id }}.port_aDisSup)
     {% raw %}annotation (Line(points={{-20,-35},{0,-35},{0,-34},{14,-34},{14,-30}},color={0,127,255})){% endraw %};
-  connect(senTDisSup_{{ coupling.id }}.port_b,{{ coupling.network.id }}.port_aDisSup)
-    {% raw %}annotation (Line(points={{14,-10},{14,0},{2,0},{2,26},{16,26}},color={0,127,255})){% endraw %};
   connect(mPum_flow_{{ coupling.id }}.y,{{ coupling.plant.id }}.on)
     {% raw %}annotation (Line(points={{-41,10},{-60,10},{-60,-22},{-42,-22}},color={255,0,255})){% endraw %};
   connect(TDisSetHeaWat_{{ coupling.id }}.y,{{ coupling.plant.id }}.THeaSet)

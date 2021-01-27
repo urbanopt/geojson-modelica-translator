@@ -20,9 +20,7 @@ model HeatingWaterPumpSpeed
     "Rise time till the pump reaches its maximum speed";
   parameter Modelica.Blocks.Types.SimpleController controllerType=Modelica.Blocks.Types.SimpleController.PI
     "Type of pump speed controller";
-  parameter Real k(
-    unit="1",
-    min=0)=0.1
+  parameter Real k=1
     "Gain of controller";
   parameter Modelica.SIunits.Time Ti=60
     "Time constant of Integrator block"
@@ -77,9 +75,9 @@ model HeatingWaterPumpSpeed
     annotation (Placement(transformation(extent={{-80,-60},{-60,-40}})));
   Buildings.Controls.Continuous.LimPID bypValCon(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1,
+    k=0.1,
     Ti=60,
-    reverseActing=false,
+    reverseActing=true,
     reset=Buildings.Types.Reset.Parameter,
     y_reset=0)
     "Heating water bypass valve controller"

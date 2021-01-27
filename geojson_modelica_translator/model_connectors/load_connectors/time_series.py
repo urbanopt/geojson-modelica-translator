@@ -127,13 +127,16 @@ class TimeSeries(LoadBase):
         )
         new_package.save()
 
-        # now create the Loads level package. This (for now) will create the package without considering any existing
-        # files in the Loads directory.
-        # TODO: Check if the package.order and package.mo file exists, if so then just append
-        package = PackageParser.new_from_template(
-            scaffold.loads_path.files_dir, "Loads", [building_name], within=f"{scaffold.project_name}"
-        )
-        package.save()
+        # now create the Loads level package and package.order.
+        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
+            load_package = PackageParser.new_from_template(
+                scaffold.loads_path.files_dir, "Loads", [building_name], within=f"{scaffold.project_name}"
+            )
+            load_package.save()
+        else:
+            load_package = PackageParser(os.path.join(scaffold.loads_path.files_dir))
+            load_package.add_model(building_name)
+            load_package.save()
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
