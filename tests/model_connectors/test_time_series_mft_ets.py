@@ -62,7 +62,7 @@ from ..base_test_case import TestCaseBase
 
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
     def test_mft_time_series_to_modelica_and_run(self):
-        project_name = "time_series_massflow_tmp"
+        project_name = "time_series_massflow"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single office building
