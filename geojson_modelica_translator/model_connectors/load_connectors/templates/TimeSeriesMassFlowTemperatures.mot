@@ -1,5 +1,5 @@
-within {{project_name}}.Districts;
-model TimeSeriesMassFlowTemperatures
+within {{project_name}}.Loads.{{ model_name }};
+model building
   "Time series water mass flow rates and temperatures for a building thermal
   loads generated from Energy PLus."
   extends Modelica.Icons.Example;
@@ -15,18 +15,6 @@ model TimeSeriesMassFlowTemperatures
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Nominal heating water flow rate"
     annotation (Dialog(group="Design parameter"));
-  parameter Modelica.SIunits.TemperatureDifference delTBuiChW(
-    displayUnit="degC")=7
-    "Nominal chilled water temperature differnce(building side)";
-  parameter Modelica.SIunits.TemperatureDifference delTBuiHW(
-    displayUnit="degC")=15
-    "Nominal heating water temperature difference(building side) ";
-  parameter Modelica.SIunits.TemperatureDifference delTDisChW(
-    displayUnit="degC")=9
-    "Nominal chilled water temperature differnce(district side)";
-  parameter Modelica.SIunits.TemperatureDifference delTDisHW(
-    displayUnit="degC")=20
-    "Nominal heating water temperature difference(district side) ";
   Modelica.Blocks.Sources.CombiTimeTable buiMasTem(
     tableOnFile=true,
     tableName="modelica",
@@ -43,52 +31,12 @@ model TimeSeriesMassFlowTemperatures
     nPorts=1)
     "Chilled water supply"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={30,10})));
-  Buildings.Fluid.Sources.Boundary_pT disCooSin(
-    redeclare package Medium=MediumW,
-    use_T_in=false,
-    T=288.15,
-    nPorts=1)
-    "District cooling sink."
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={30,50})));
-  CoolingIndirect cooETS(
-    allowFlowReversal1=false,
-    allowFlowReversal2=false,
-    redeclare package Medium=MediumW,
-    mBui_flow_nominal=mChW_flow_nominal,
-    mDis_flow_nominal=mChW_flow_nominal,
-    dpValve_nominal=6000,
-    dp1_nominal=500,
-    dp2_nominal=500,
-    use_Q_flow_nominal=true,
-    Q_flow_nominal=mChW_flow_nominal*4187*delTBuiChW,
-    T_a1_nominal(
-      displayUnit="degC")=278.15,
-    T_a2_nominal(
-      displayUnit="degC")=289.15,
-    eta=0.8)
-    annotation (Placement(transformation(extent={{-22,18},{-2,38}})));
   Buildings.Fluid.Sources.Boundary_pT buiCooSin(
     redeclare package Medium=MediumW,
     use_T_in=false,
     nPorts=1)
     "Building cooling sink."
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-70,10})));
-  HeatingIndirect heaETS(
-    allowFlowReversal1=false,
-    allowFlowReversal2=false,
-    redeclare package Medium=MediumW,
-    mBui_flow_nominal=mHW_flow_nominal,
-    mDis_flow_nominal=mHW_flow_nominal*delTBuiHW/delTDisHW,
-    dpValve_nominal=6000,
-    dp1_nominal=500,
-    dp2_nominal=500,
-    use_Q_flow_nominal=true,
-    Q_flow_nominal=mHW_flow_nominal*4187*delTBuiHW,
-    T_a1_nominal=338.15,
-    T_a2_nominal=315.15,
-    xi_start=0,
-    reverseActing=true)
-    annotation (Placement(transformation(extent={{-22,-48},{-2,-28}})));
   Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
     redeclare package Medium=MediumW,
     use_m_flow_in=true,
@@ -102,89 +50,28 @@ model TimeSeriesMassFlowTemperatures
     nPorts=1)
     "Building heating sink."
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-70,-70})));
-  Buildings.Fluid.Sources.Boundary_pT disHeaSou(
-    redeclare package Medium=MediumW,
-    use_T_in=false,
-    T=313.15,
-    nPorts=1)
-    "Heating water supply"
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={30,-30})));
   Buildings.Controls.OBC.UnitConversions.From_degC TChWR
     annotation (Placement(transformation(extent={{80,20},{60,40}})));
   Buildings.Controls.OBC.UnitConversions.From_degC THWR
     "Heating water temperature."
     annotation (Placement(transformation(extent={{80,-60},{60,-40}})));
-  Buildings.Controls.OBC.UnitConversions.From_degC TChWSET
-    annotation (Placement(transformation(extent={{0,60},{-20,80}})));
-  Buildings.Controls.OBC.UnitConversions.From_degC THWSET
-    annotation (Placement(transformation(extent={{0,-100},{-20,-80}})));
-  Buildings.Fluid.Sources.MassFlowSource_T supDisChWat(
-    redeclare package Medium=MediumW,
-    use_m_flow_in=true,
-    use_T_in=false,
-    T=278.15,
-    nPorts=1)
-    "Chilled water supply district side."
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-70,50})));
-  Modelica.Blocks.Sources.RealExpression mDisChW(
-    y=buiMasTem.y[6]*(delTBuiChW/delTDisChW))
-    annotation (Placement(transformation(extent={{-36,70},{-56,90}})));
-  Modelica.Blocks.Sources.RealExpression mDisHW(
-    y=buiMasTem.y[5]*delTDisHW/delTBuiHW)
-    annotation (Placement(transformation(extent={{-40,-20},{-60,0}})));
   Modelica.Blocks.Sources.RealExpression mBuiHW(
     y=buiMasTem.y[5])
     annotation (Placement(transformation(extent={{80,-20},{60,0}})));
-  Buildings.Fluid.Sources.MassFlowSource_T disHeaSin(
-    redeclare package Medium=MediumW,
-    use_m_flow_in=true,
-    use_T_in=false,
-    T=330.15,
-    nPorts=1)
-    "District heating sink."
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-70,-30})));
   Modelica.Blocks.Sources.RealExpression mBuiChW(
     y=buiMasTem.y[6])
     annotation (Placement(transformation(extent={{82,50},{62,70}})));
 equation
-  connect(cooETS.port_a2,supChiWat.ports[1])
-    annotation (Line(points={{-2,22},{8,22},{8,10},{20,10}},color={0,127,255}));
-  connect(cooETS.port_b1,disCooSin.ports[1])
-    annotation (Line(points={{-2,34},{4,34},{4,50},{20,50}},color={0,127,255}));
-  connect(buiCooSin.ports[1],cooETS.port_b2)
-    annotation (Line(points={{-60,10},{-36,10},{-36,22},{-22,22}},color={0,127,255}));
-  connect(THWSET.y,heaETS.TSetBuiSup)
-    annotation (Line(points={{-22,-90},{-36,-90},{-36,-38},{-24,-38}},color={0,0,127}));
-  connect(TChWSET.y,cooETS.TSetBuiSup)
-    annotation (Line(points={{-22,70},{-28,70},{-28,28},{-24,28}},color={0,0,127}));
   connect(TChWR.y,supChiWat.T_in)
     annotation (Line(points={{58,30},{46,30},{46,14},{42,14}},color={0,0,127}));
   connect(THWR.y,supHeaWat.T_in)
     annotation (Line(points={{58,-50},{58,-66},{42,-66}},color={0,0,127}));
-  connect(supDisChWat.ports[1],cooETS.port_a1)
-    annotation (Line(points={{-60,50},{-36,50},{-36,34},{-22,34}},color={0,127,255}));
-  connect(mDisChW.y,supDisChWat.m_flow_in)
-    annotation (Line(points={{-57,80},{-84,80},{-84,58},{-82,58}},color={0,0,127}));
-  connect(buiHeaSin.ports[1],heaETS.port_b2)
-    annotation (Line(points={{-60,-70},{-44,-70},{-44,-44},{-22,-44}},color={0,127,255}));
-  connect(supHeaWat.ports[1],heaETS.port_a2)
-    annotation (Line(points={{20,-70},{4,-70},{4,-44},{-2,-44}},color={0,127,255}));
-  connect(disHeaSou.ports[1],heaETS.port_b1)
-    annotation (Line(points={{20,-30},{4,-30},{4,-32},{-2,-32}},color={0,127,255}));
   connect(mBuiHW.y,supHeaWat.m_flow_in)
     annotation (Line(points={{59,-10},{50,-10},{50,-62},{42,-62}},color={0,0,127}));
-  connect(disHeaSin.ports[1],heaETS.port_a1)
-    annotation (Line(points={{-60,-30},{-38,-30},{-38,-32},{-22,-32}},color={0,127,255}));
-  connect(mDisHW.y,disHeaSin.m_flow_in)
-    annotation (Line(points={{-61,-10},{-84,-10},{-84,-22},{-82,-22}},color={0,0,127}));
   connect(buiMasTem.y[1],THWR.u)
     annotation (Line(points={{99,-10},{90,-10},{90,-50},{82,-50}},color={0,0,127}));
-  connect(buiMasTem.y[2],THWSET.u)
-    annotation (Line(points={{99,-10},{90,-10},{90,-90},{2,-90}},color={0,0,127}));
   connect(buiMasTem.y[3],TChWR.u)
     annotation (Line(points={{99,-10},{90,-10},{90,30},{82,30}},color={0,0,127}));
-  connect(buiMasTem.y[4],TChWSET.u)
-    annotation (Line(points={{99,-10},{90,-10},{90,70},{2,70}},color={0,0,127}));
   connect(mBuiChW.y,supChiWat.m_flow_in)
     annotation (Line(points={{61,60},{42,60},{42,18}},color={0,0,127}));
   annotation (
@@ -216,5 +103,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end TimeSeriesMassFlowTemperatures;
+end building;
 {% endraw %}
