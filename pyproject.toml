@@ -10,7 +10,6 @@ classifiers = [
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering",
-        # "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -26,7 +25,7 @@ geojson = "2.5.0"
 jsonschema = "3.2.0"
 requests = "2.25.1"
 jsonpath-ng = "1.5.2"
-teaser = "git+https://github.com/urbanopt/TEASER.git@development#egg=teaser"
+teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "1.5.4"
