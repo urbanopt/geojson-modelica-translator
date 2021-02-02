@@ -518,10 +518,7 @@ class Teaser(LoadBase):
         # now create the Loads level package and package.order.
         if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
             load_package = PackageParser.new_from_template(
-                scaffold.loads_path.files_dir,
-                "Loads",
-                ["B" + b for b in building_names],
-                within=f"{scaffold.project_name}"
+                scaffold.loads_path.files_dir, "Loads", ["B" + b for b in building_names], within=f"{scaffold.project_name}"
             )
             load_package.save()
         else:
