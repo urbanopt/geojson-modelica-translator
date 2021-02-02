@@ -90,20 +90,19 @@ class ModelBase(object):
                 number_stories = urbanopt_building.feature.properties["number_of_stories"]
                 building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
             except KeyError as ke:
-                raise SystemExit(f'Missing property {ke} in geojson feature file')
+                raise SystemExit(f'\nMissing property {ke} in geojson feature file')
 
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
                 number_stories_above_ground = number_stories
-                print("Assuming all building levels are above ground for building_id: {building_id}")
+                print(f"\nAssuming all building levels are above ground for building_id: {building_id}")
 
             try:
                 floor_height = urbanopt_building.feature.properties["floor_height"]
             except KeyError:
                 floor_height = 3  # Default height in meters from sdk
-                print(
-                    "No floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
+                print(f"\nNo floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
 
             # UO SDK defaults to current year, however TEASER only supports up to Year 2015
             # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
@@ -113,8 +112,7 @@ class ModelBase(object):
                     year_built = 2015
             except KeyError:
                 year_built = 2015
-                print(
-                    "No year_built found in geojson feature file for building {building_id}. Using default value of {year_built}")
+                print(f"No 'year_built' found in geojson feature file for building {building_id}. Using default value of {year_built}")
 
             self.buildings.append(
                 {
