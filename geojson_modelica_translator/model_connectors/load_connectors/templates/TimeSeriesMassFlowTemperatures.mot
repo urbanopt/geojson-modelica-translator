@@ -172,7 +172,13 @@ equation
           lineColor={95,95,95},
           smooth=Smooth.None,
           fillPattern=FillPattern.Solid,
-          fillColor={95,95,95})}),
+          fillColor={95,95,95}),
+        Text(
+          extent={{-100,20},{100,-20}},
+          lineColor={0,0,0},
+          fillColor={0,0,0},
+          fillPattern=FillPattern.Solid,
+          textString="MFT")}),
     __Dymola_Commands(
       file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/TimeSeries_MassFlow_Temperature.mos" "Simulate and plot"),
     experiment(
