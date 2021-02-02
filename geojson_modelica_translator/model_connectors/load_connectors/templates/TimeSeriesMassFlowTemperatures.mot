@@ -61,26 +61,26 @@ model building
   Modelica.Blocks.Sources.RealExpression mBuiChW(
     y=buiMasTem.y[6])
     annotation (Placement(transformation(extent={{82,50},{62,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_a port_aHeaWat
+  Modelica.Fluid.Interfaces.FluidPorts_a ports_aHeaWat[1]
     "Heating water inlet port"
-    annotation (Placement(transformation(extent={{-310,-100},{-290,-80}}),iconTransformation(extent={{-310,-100},{-290,-80}})));
-  Modelica.Fluid.Interfaces.FluidPort_a port_aChiWat
+    annotation (Placement(transformation(extent={{-310,-100},{-290,-20}}),iconTransformation(extent={{-310,-100},{-290,-20}})));
+  Modelica.Fluid.Interfaces.FluidPorts_a ports_aChiWat[1]
     "Chilled water inlet port"
-    annotation (Placement(transformation(extent={{-310,-300},{-290,-280}}),iconTransformation(extent={{-310,-220},{-290,-200}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_bHeaWat
+    annotation (Placement(transformation(extent={{-310,-300},{-290,-220}}),iconTransformation(extent={{-310,-220},{-290,-140}})));
+  Modelica.Fluid.Interfaces.FluidPorts_b ports_bHeaWat[1]
     "Heating water outlet port"
-    annotation (Placement(transformation(extent={{290,-100},{310,-80}}),iconTransformation(extent={{290,-100},{310,-80}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_bChiWat
+    annotation (Placement(transformation(extent={{290,-100},{310,-20}}),iconTransformation(extent={{290,-100},{310,-20}})));
+  Modelica.Fluid.Interfaces.FluidPorts_b ports_bChiWat[1]
     "Chilled water outlet port"
-    annotation (Placement(transformation(extent={{290,-300},{310,-280}}),iconTransformation(extent={{290,-220},{310,-200}})));
+    annotation (Placement(transformation(extent={{290,-300},{310,-220}}),iconTransformation(extent={{290,-220},{310,-140}})));
 equation
-  connect(buiCooSin.ports[1],port_aChiWat)
+  connect(buiCooSin.ports[1],ports_aChiWat[1])
     annotation (Line(points={{-60,10},{-60,-46},{-118,-46},{-118,-290},{-300,-290}},color={0,0,127}));
-  connect(buiHeaSin.ports[1],port_aHeaWat)
+  connect(buiHeaSin.ports[1],ports_aHeaWat[1])
     annotation (Line(points={{-60,-70},{-180,-70},{-180,-90},{-300,-90}},color={0,0,127}));
-  connect(supChiWat.ports[1],port_bChiWat)
+  connect(supChiWat.ports[1],ports_bChiWat[1])
     annotation (Line(points={{20,10},{160,10},{160,-290},{300,-290}},color={0,0,127}));
-  connect(supHeaWat.ports[1],port_bHeaWat)
+  connect(supHeaWat.ports[1],ports_bHeaWat[1])
     annotation (Line(points={{20,-70},{190,-70},{190,-90},{300,-90}},color={0,0,127}));
   connect(TChWR.y,supChiWat.T_in)
     annotation (Line(points={{58,30},{46,30},{46,14},{42,14}},color={0,0,127}));
