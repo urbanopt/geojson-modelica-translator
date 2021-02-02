@@ -61,7 +61,27 @@ model building
   Modelica.Blocks.Sources.RealExpression mBuiChW(
     y=buiMasTem.y[6])
     annotation (Placement(transformation(extent={{82,50},{62,70}})));
+  Modelica.Fluid.Interfaces.FluidPort_a port_aHeaWat
+    "Heating water inlet port"
+    annotation (Placement(transformation(extent={{-310,-100},{-290,-80}}),iconTransformation(extent={{-310,-100},{-290,-80}})));
+  Modelica.Fluid.Interfaces.FluidPort_a port_aChiWat
+    "Chilled water inlet port"
+    annotation (Placement(transformation(extent={{-310,-300},{-290,-280}}),iconTransformation(extent={{-310,-220},{-290,-200}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_bHeaWat
+    "Heating water outlet port"
+    annotation (Placement(transformation(extent={{290,-100},{310,-80}}),iconTransformation(extent={{290,-100},{310,-80}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_bChiWat
+    "Chilled water outlet port"
+    annotation (Placement(transformation(extent={{290,-300},{310,-280}}),iconTransformation(extent={{290,-220},{310,-200}})));
 equation
+  connect(buiCooSin.ports[1],port_aChiWat)
+    annotation (Line(points={{-60,10},{-60,-46},{-118,-46},{-118,-290},{-300,-290}},color={0,0,127}));
+  connect(buiHeaSin.ports[1],port_aHeaWat)
+    annotation (Line(points={{-60,-70},{-180,-70},{-180,-90},{-300,-90}},color={0,0,127}));
+  connect(supChiWat.ports[1],port_bChiWat)
+    annotation (Line(points={{20,10},{160,10},{160,-290},{300,-290}},color={0,0,127}));
+  connect(supHeaWat.ports[1],port_bHeaWat)
+    annotation (Line(points={{20,-70},{190,-70},{190,-90},{300,-90}},color={0,0,127}));
   connect(TChWR.y,supChiWat.T_in)
     annotation (Line(points={{58,30},{46,30},{46,14},{42,14}},color={0,0,127}));
   connect(THWR.y,supHeaWat.T_in)
@@ -77,10 +97,82 @@ equation
   annotation (
     Diagram(
       coordinateSystem(
-        extent={{-100,-100},{120,100}})),
+        preserveAspectRatio=false,
+        extent={{-300,-300},{300,300}})),
     Icon(
       coordinateSystem(
-        extent={{-100,-100},{120,100}})),
+        extent={{-300,-300},{300,300}},
+        preserveAspectRatio=false),
+      graphics={
+        Rectangle(
+          extent={{-300,-300},{300,300}},
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{20,-188},{300,-172}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={255,0,0},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-300,-172},{-20,-188}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{18,-38},{46,-10}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Text(
+          extent={{-150,-328},{150,-368}},
+          lineColor={0,0,255},
+          textString="%name"),
+        Rectangle(
+          extent={{20,-52},{300,-68}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-300,-68},{-20,-52}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={255,0,0},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-180,180},{174,-220}},
+          lineColor={150,150,150},
+          fillPattern=FillPattern.Sphere,
+          fillColor={255,255,255}),
+        Rectangle(
+          extent={{36,42},{108,114}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-124,42},{-52,114}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-126,-122},{-54,-50}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{40,-122},{112,-50}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{0,264},{-218,164},{220,164},{0,264}},
+          lineColor={95,95,95},
+          smooth=Smooth.None,
+          fillPattern=FillPattern.Solid,
+          fillColor={95,95,95})}),
     __Dymola_Commands(
       file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/TimeSeries_MassFlow_Temperature.mos" "Simulate and plot"),
     experiment(
