@@ -14,7 +14,11 @@ classifiers = [
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ]
-# include = []
+
+packages = [
+    { include = "management" },
+    { include = "geojson_modelica_translator"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -45,6 +49,6 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
 uo_des = 'management.uo_des:cli'
-format_modelica_files = 'management.format_modelica_files:FormatModelicaFiles'
+format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
 update_schemas = 'management.update_schemas:UpdateSchemas'
 update_licenses = 'management.update_licenses:UpdateLicenses'
