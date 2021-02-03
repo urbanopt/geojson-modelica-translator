@@ -312,17 +312,6 @@ class Teaser(LoadBase):
                     annotations=['Placement(transformation(extent={{-80,-60},{-60,-40}}))']
                 )
 
-                # add TAir output
-                mofile.insert_component(
-                    'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
-                    modifications={
-                        'quantity': '"ThermodynamicTemperature"',
-                        'unit': '"K"',
-                        'displayUnit': '"degC"',
-                    },
-                    string_comment='Room air temperature',
-                    annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
-                )
                 # add TRad output
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TRad',
@@ -361,6 +350,19 @@ class Teaser(LoadBase):
                     thermal_zone_name = 'thermalZoneFourElements'
 
                 if thermal_zone_name is not None and thermal_zone_type is not None:
+                    # add TAir output
+                    # This has been moved away from the other insert_component blocks to use thermal_zone_name
+                    mofile.insert_component(
+                        'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
+                        modifications={
+                            'quantity': '"ThermodynamicTemperature"',
+                            'unit': '"K"',
+                            'displayUnit': '"degC"',
+                        },
+                        conditional=f'if {thermal_zone_name}.ATot > 0 or {thermal_zone_name}.VAir > 0',
+                        string_comment='Room air temperature',
+                        annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
+                    )
                     mofile.update_component_modifications(
                         f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                         thermal_zone_name,
