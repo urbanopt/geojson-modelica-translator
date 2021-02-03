@@ -11,7 +11,7 @@ jobs:
       matrix:
         # 3.9 does not work as of 2020-02-01
         python-version: [3.7]
-        test_env: [python, pre-commit, docs]
+        test_env: [python, precommit, docs]
     steps:
       - uses: actions/checkout@v2
       -
