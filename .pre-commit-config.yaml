@@ -37,6 +37,6 @@ repos:
         name: Modelica Formatter
         types: [file]
         files: \.(mo|mot)$
-        entry: python pyproject.toml format_modelica_files
+        entry: poetry run format_modelica_files
         language: system
         pass_filenames: false
