@@ -53,7 +53,6 @@ class UpdateSchemas(distutils.cmd.Command):
             "thermal_connector_properties.json",
             "thermal_junction_properties.json",
         ]
-        # For now the branch is 'schema' but will need to be moved to develop after it is merged.
         self.baseurl = "https://raw.githubusercontent.com/urbanopt/urbanopt-geojson-gem/develop/lib/urbanopt/geojson/schema/"  # noqa
 
     def finalize_options(self):
@@ -65,7 +64,5 @@ class UpdateSchemas(distutils.cmd.Command):
             self.announce("Downloading schema: %s" % str(f), level=distutils.log.INFO)
             response = requests.get("%s/%s" % (self.baseurl, f))
             save_path = "geojson_modelica_translator/geojson/data/schemas/%s" % f
-            # if os.path.exists(save_path):
-            #     os.remove(save_path)
             with open(save_path, "w") as outf:
                 json.dump(response.json(), outf, indent=2)
