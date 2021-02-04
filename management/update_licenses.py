@@ -28,8 +28,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-# import distutils.cmd
-# import distutils.log
 import glob
 import os
 import re
