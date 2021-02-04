@@ -1,0 +1,2 @@
+  {{ model.modelica_type }} {{ model.id }}
+  {% raw %}annotation (Placement(transformation(extent={{0,60},{20,80}}))){% endraw %};
