@@ -58,9 +58,9 @@ from ..base_test_case import TestCaseBase
 
 
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
-    def test_district_heating_and_cooling_systems(self):
-        project_name = 'district_heating_and_cooling_systems'
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
+    def setUp(self):
+        self.project_name = 'district_heating_and_cooling_systems'
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), self.project_name)
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
@@ -68,15 +68,16 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
-        sys_params = SystemParameters(filename)
+        self.sys_params = SystemParameters(filename)
 
+    def test_district_heating_and_cooling_systems(self):
         # create cooling network and plant
-        cooling_network = Network2Pipe(sys_params)
-        cooling_plant = CoolingPlant(sys_params)
+        cooling_network = Network2Pipe(self.sys_params)
+        cooling_plant = CoolingPlant(self.sys_params)
 
         # create heating network and plant
-        heating_network = Network2Pipe(sys_params)
-        heating_plant = HeatingPlant(sys_params)
+        heating_network = Network2Pipe(self.sys_params)
+        heating_plant = HeatingPlant(self.sys_params)
 
         # create our load/ets/stubs
         all_couplings = [
@@ -85,14 +86,14 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         ]
 
         for geojson_load in self.gj.json_loads:
-            time_series_load = TimeSeries(sys_params, geojson_load)
+            time_series_load = TimeSeries(self.sys_params, geojson_load)
             geojson_load_id = geojson_load.feature.properties["id"]
 
-            cooling_indirect = CoolingIndirect(sys_params, geojson_load_id)
+            cooling_indirect = CoolingIndirect(self.sys_params, geojson_load_id)
             all_couplings.append(Coupling(time_series_load, cooling_indirect))
             all_couplings.append(Coupling(cooling_indirect, cooling_network))
 
-            heating_indirect = HeatingIndirect(sys_params, geojson_load_id)
+            heating_indirect = HeatingIndirect(self.sys_params, geojson_load_id)
             all_couplings.append(Coupling(time_series_load, heating_indirect))
             all_couplings.append(Coupling(heating_indirect, heating_network))
 
@@ -101,8 +102,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         district = District(
             root_dir=self.output_dir,
-            project_name=project_name,
-            system_parameters=sys_params,
+            project_name=self.project_name,
+            system_parameters=self.sys_params,
             coupling_graph=graph
         )
         district.to_modelica()
