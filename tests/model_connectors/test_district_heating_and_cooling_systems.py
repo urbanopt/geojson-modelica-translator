@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
@@ -84,9 +85,10 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             Coupling(cooling_network, cooling_plant),
             Coupling(heating_network, heating_plant),
         ]
-
+        loads = []
         for geojson_load in self.gj.json_loads:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
+            loads.append(time_series_load)
             geojson_load_id = geojson_load.feature.properties["id"]
 
             cooling_indirect = CoolingIndirect(self.sys_params, geojson_load_id)
@@ -112,3 +114,34 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
                                       project_path=district._scaffold.project_path,
                                       project_name=district._scaffold.project_name)
+
+        #
+        # Validate model outputs
+        #
+        results_dir = f'{district._scaffold.project_path}_results'
+        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_result.mat'
+        mat_results = Reader(mat_file, 'dymola')
+
+        # check the mass flow rates of the first load are in the expected range
+        load = loads[0]
+        (_, heat_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
+        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
+        self.assertTrue((heat_m_flow >= 0).all(), 'Heating mass flow rate must be greater than or equal to zero')
+        self.assertTrue((cool_m_flow >= 0).all(), 'Cooling mass flow rate must be greater than or equal to zero')
+
+        # this tolerance determines how much we allow the actual mass flow rate to exceed the nominal value
+        M_FLOW_NOMINAL_TOLERANCE = 0.01
+        (_, heat_m_flow_nominal) = mat_results.values(f'{load.id}.mHeaWat_flow_nominal')
+        heat_m_flow_nominal = heat_m_flow_nominal[0]
+        (_, cool_m_flow_nominal) = mat_results.values(f'{load.id}.mChiWat_flow_nominal')
+        cool_m_flow_nominal = cool_m_flow_nominal[0]
+        self.assertTrue(
+            (heat_m_flow <= heat_m_flow_nominal + (heat_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
+            f'Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) '
+            f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
+        )
+        self.assertTrue(
+            (cool_m_flow <= cool_m_flow_nominal + (cool_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
+            f'Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) '
+            f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
+        )
