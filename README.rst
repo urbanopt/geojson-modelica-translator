@@ -32,19 +32,13 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
     * Pull the correct staging branch for this project with: :code:`git checkout issue2204_gmt_mbl`
     * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
 * Return to the GMT root directory and run :code:`poetry install`
-* Test if everything is installed correctly by running :code:`poetry run py.test` or :code:`py.test`
+* Test if everything is installed correctly by running :code:`poetry run tox`
+    * This should run all unit tests, pre-commit, and build the docs.
 
-The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
+The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
 
 Developers
 **********
-
-This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc.). Since
-these are included as dependent project using git there may be a need to force an update from the dependent git repos. The best way to accomplish this is run the following command:
-
-.. code-block::bash
-
-    pip install -U --upgrade-strategy eager -r requirements.txt
 
 This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
 
@@ -52,8 +46,6 @@ This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consist
 
     pip install pre-commit
     pre-commit install
-
-Make sure to install `modelica-fmt <https://github.com/urbanopt/modelica-fmt/releases>`_ in order for pre-commit to run code cleanup on Modelica files. The latest prerelease or release is recommended. Once you download the package, place the modelicafmt binary into a folder that is in your path.
 
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
 
