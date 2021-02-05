@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+import numpy as np
 from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -81,21 +82,28 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         heating_plant = HeatingPlant(self.sys_params)
 
         # create our load/ets/stubs
+        # store all couplings to construct the District system
         all_couplings = [
             Coupling(cooling_network, cooling_plant),
             Coupling(heating_network, heating_plant),
         ]
+
+        # keep track of separate loads and etses for testing purposes
         loads = []
+        heat_etses = []
+        cool_etses = []
         for geojson_load in self.gj.json_loads:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
             loads.append(time_series_load)
             geojson_load_id = geojson_load.feature.properties["id"]
 
             cooling_indirect = CoolingIndirect(self.sys_params, geojson_load_id)
+            cool_etses.append(cooling_indirect)
             all_couplings.append(Coupling(time_series_load, cooling_indirect))
             all_couplings.append(Coupling(cooling_indirect, cooling_network))
 
             heating_indirect = HeatingIndirect(self.sys_params, geojson_load_id)
+            heat_etses.append(heating_indirect)
             all_couplings.append(Coupling(time_series_load, heating_indirect))
             all_couplings.append(Coupling(heating_indirect, heating_network))
 
@@ -144,4 +152,40 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             (cool_m_flow <= cool_m_flow_nominal + (cool_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
             f'Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) '
             f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
+        )
+
+        def cvrmsd(a, b):
+            """Return CVRMSD between arrays"""
+            def rmsd(a, b):
+                n_samples = len(a)
+                return np.sqrt(
+                    np.sum(
+                        np.square(
+                            a - b
+                        )
+                    ) / n_samples
+                )
+
+            normalization_factor = max(a.max(), b.max()) - min(a.min(), b.min())
+            return rmsd(a, b) / normalization_factor
+
+        # check the overall thermal load between the first load and its ETSes
+        heating_indirect = heat_etses[0]
+        cooling_indirect = cool_etses[0]
+        (_, heating_indirect_q_flow) = mat_results.values(f'{heating_indirect.id}.Q_flow')
+        (_, cooling_indirect_q_flow) = mat_results.values(f'{cooling_indirect.id}.Q_flow')
+        (_, load_q_heat_flow) = mat_results.values(f'{load.id}.QHea_flow')
+        (_, load_q_cool_flow) = mat_results.values(f'{load.id}.QCoo_flow')
+
+        cool_cvrmsd = cvrmsd(cooling_indirect_q_flow, load_q_cool_flow)
+        heat_cvrmsd = cvrmsd(heating_indirect_q_flow, load_q_heat_flow)
+
+        CVRMSD_MAX = 0.55
+        self.assertTrue(
+            cool_cvrmsd < CVRMSD_MAX,
+            f'The difference between the thermal cooling load of the load and ETS is too large (CVRMSD={cool_cvrmsd})'
+        )
+        self.assertTrue(
+            heat_cvrmsd < CVRMSD_MAX,
+            f'The difference between the thermal heating load of the load and ETS is too large (CVRMSD={heat_cvrmsd})'
         )
