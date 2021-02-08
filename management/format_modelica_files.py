@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -28,51 +28,36 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import distutils.cmd
-import distutils.log
 import os
 import re
 import subprocess
 from pathlib import Path
 from tempfile import mkstemp
 
-SKIP_FILES = ['DistrictEnergySystem.mot']
+import click
 
+SKIP_FILES = ['DistrictEnergySystem.mot']
 TEMPLATE_FILES = Path('geojson_modelica_translator/model_connectors').glob('**/templates/*')
 
 
-class FormatModelicaFiles(distutils.cmd.Command):
-    """Custom comand for applying modelicafmt to modelica files. Note that modelicafmt executable must be available in
-    your $PATH."""
+@click.command()
+@click.argument('mofile', required=False)
+def fmt_modelica_files(mofile):
+    if mofile is not None:
+        files = [mofile]
+    else:
+        files = TEMPLATE_FILES
 
-    description = "Formats modelica files"
-
-    user_options = [
-        ('file=', 'f', 'Specific file to format')
-    ]
-
-    def initialize_options(self):
-        self.file = None
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        if self.file is not None:
-            files = [self.file]
-        else:
-            files = TEMPLATE_FILES
-
-        for filepath in files:
-            if os.path.basename(filepath) in SKIP_FILES:
-                continue
-            try:
-                if filepath.suffix == ".mot":
-                    preprocess_and_format(str(filepath))
-                elif filepath.suffix == ".mo":
-                    apply_formatter(str(filepath))
-            except FormattingException as e:
-                self.announce(f'Error processing file {filepath}:\n    {e}', level=distutils.log.ERROR)
+    for filepath in files:
+        if os.path.basename(filepath) in SKIP_FILES:
+            continue
+        try:
+            if filepath.suffix == ".mot":
+                preprocess_and_format(str(filepath))
+            elif filepath.suffix == ".mo":
+                apply_formatter(str(filepath))
+        except FormattingException as e:
+            click.echo(f'Error processing file {filepath}:\n    {e}', err=True)
 
 
 class FormattingException(Exception):
