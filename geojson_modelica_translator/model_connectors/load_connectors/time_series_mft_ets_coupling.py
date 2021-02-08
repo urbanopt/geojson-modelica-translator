@@ -30,6 +30,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
@@ -38,45 +39,38 @@ from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 
-class TimeSeries(LoadBase):
-    model_name = 'TimeSeries'
+class TimeSeriesMFT(LoadBase):
+    model_name = 'TimeSeriesMFT'
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = 'TimeSerLoa_' + simple_uuid()
+        self.id = 'TimeSerMFTLoa_' + simple_uuid()
+
+        # Note that the order of the required MO files is important as it will be the order that
+        # the "package.order" will be in.
+        self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
 
     def to_modelica(self, scaffold):
         """
-        Create timeSeries models based on the data in the buildings and geojsons
-
+        Create TimeSeries models based on the data in the buildings and geojsons
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
 
-        assert len(self.buildings) == 1, "There should be exactly one building loaded"
+        # MassFlowrate Temperature models
+        time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
 
         building = self.buildings[0]
         building_name = f"B{building['building_id']}"
-
         b_modelica_path = ModelicaPath(
-            f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+            building_name, scaffold.loads_path.files_dir, True
         )
 
-        self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
-
-        # Note that the system_parameters object when accessing filepaths will fully resolve the
-        # location of the file.
+        # grab the data from the system_parameter file for this building id
+        # TODO: create method in system_parameter class to make this easier and respect the defaults
         time_series_filename = self.system_parameters.get_param_by_building_id(
             building["building_id"], "load_model_parameters.time_series.filepath"
         )
 
-        if not os.path.exists(time_series_filename):
-            raise Exception(f"Missing MOS file for time series: {time_series_filename}")
-        elif os.path.splitext(time_series_filename)[1].lower() == '.csv':
-            raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
-
-        # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
-        # used. The `nominal_values` are only used when the time series is coupled to an ETS system.
         template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "time_series": {
@@ -85,65 +79,84 @@ class TimeSeries(LoadBase):
                 "path": os.path.dirname(time_series_filename),
             },
             "nominal_values": {
-                "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.delta_temp_air_cooling"
+                "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                    building["building_id"], "load_model_parameters.time_series.delTDisCoo"
                 )
             }
         }
 
-        # copy over the resource files for this building
-        # TODO: move some of this over to a validation step
-        new_file = os.path.join(b_modelica_path.resources_dir, os.path.basename(time_series_filename))
-        os.makedirs(os.path.dirname(new_file), exist_ok=True)
-        shutil.copy(time_series_filename, new_file)
+        if os.path.exists(template_data["time_series"]["filepath"]):
+            new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
+            os.makedirs(os.path.dirname(new_file), exist_ok=True)
+            shutil.copy(template_data["time_series"]["filepath"], new_file)
+        else:
+            raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
+
+        # Run templates to write actual Modelica models
+        ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
+
+        ets_data = None
+        if ets_model_type == "Indirect Heating and Cooling":
+            ets_data = self.system_parameters.get_param_by_building_id(
+                building["building_id"],
+                "ets_model_parameters.indirect"
+            )
+        else:
+            raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
         self.run_template(
-            template=time_series_building_template,
-            save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
+            template=time_series_mft_template,
+            save_file_name=Path(b_modelica_path.files_dir) / "building.mo",
             project_name=scaffold.project_name,
-            model_name=f"B{building['building_id']}",
-            data=template_data
+            model_name=building_name,
+            data=template_data,
+            ets_data=ets_data,
         )
 
-        # run post process to create the remaining project files for this building
-        self.post_process(scaffold, building_name)
+        self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
 
-    def post_process(self, scaffold, building_name):
+        # Run post process to create the remaining project files for this building
+        self.post_process(scaffold)
+
+    def post_process(self, scaffold):
         """
-        Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
+        Cleanup the export of TimeSeries files into a format suitable for the district-based analysis. This includes
         the following:
-
             * Add a Loads project
             * Add a project level project
-
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
-        :param building_name: String, name of the building that needs to be cleaned up after export
         :return: None
         """
-        b_modelica_path = os.path.join(scaffold.loads_path.files_dir, building_name)
+        building = self.buildings[0]
+        building_name = f"B{building['building_id']}"
+        order_files = [Path(mo).stem for mo in self.required_mo_files]
+        order_files += self.template_files_to_include
+        b_modelica_path = Path(scaffold.loads_path.files_dir) / building_name
         new_package = PackageParser.new_from_template(
-            b_modelica_path, building_name, self.template_files_to_include,
+            path=b_modelica_path,
+            name=building_name,
+            order=order_files,
             within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
-        # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
-            load_package = PackageParser.new_from_template(
-                scaffold.loads_path.files_dir, "Loads", [building_name], within=f"{scaffold.project_name}"
-            )
-            load_package.save()
-        else:
-            load_package = PackageParser(os.path.join(scaffold.loads_path.files_dir))
-            load_package.add_model(building_name)
-            load_package.save()
+        # now create the Loads level package. This (for now) will create the package without considering any existing
+        # files in the Loads directory.
+
+        package = PackageParser.new_from_template(
+            path=scaffold.loads_path.files_dir,
+            name="Loads",
+            order=[building_name],
+            within=f"{scaffold.project_name}"
+        )
+        package.save()
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path)
-        if 'Loads' not in package.order:
-            package.add_model('Loads')
-            package.save()
+        pp = PackageParser.new_from_template(
+            scaffold.project_path, scaffold.project_name, ["Loads"]
+        )
+        pp.save()
 
     def get_modelica_type(self, scaffold):
         building = self.buildings[0]

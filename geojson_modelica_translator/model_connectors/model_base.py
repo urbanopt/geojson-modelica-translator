@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -90,20 +90,19 @@ class ModelBase(object):
                 number_stories = urbanopt_building.feature.properties["number_of_stories"]
                 building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
             except KeyError as ke:
-                raise SystemExit(f'Missing property {ke} in geojson feature file')
+                raise SystemExit(f'\nMissing property {ke} in geojson feature file')
 
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
             except KeyError:
                 number_stories_above_ground = number_stories
-                print("Assuming all building levels are above ground for building_id: {building_id}")
+                print(f"\nAssuming all building levels are above ground for building_id: {building_id}")
 
             try:
                 floor_height = urbanopt_building.feature.properties["floor_height"]
             except KeyError:
                 floor_height = 3  # Default height in meters from sdk
-                print(
-                    "No floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
+                print(f"\nNo floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
 
             # UO SDK defaults to current year, however TEASER only supports up to Year 2015
             # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
@@ -113,8 +112,7 @@ class ModelBase(object):
                     year_built = 2015
             except KeyError:
                 year_built = 2015
-                print(
-                    "No year_built found in geojson feature file for building {building_id}. Using default value of {year_built}")
+                print(f"No 'year_built' found in geojson feature file for building {building_id}. Using default value of {year_built}")
 
             self.buildings.append(
                 {
@@ -190,6 +188,13 @@ class ModelBase(object):
         return outputname
 
     def render_instance(self, template_params):
+        """Templates the *_Instance file for the model. The templated result will
+        be inserted into the final District Energy System model in order to
+        instantiate/define the model instance.
+
+        :param template_params: dict, parameters for the template
+        :returns: tuple (str, str), the templated result followed by the name of the file used for templating
+        """
         # TODO: both to_modelica and render_instance should use the same template environment
         # This should be fixed once all of the template files have the same variable substitution delimiters
         # TODO: move templates into specific model directories and have subclass override template_dir and template_env
@@ -204,7 +209,11 @@ class ModelBase(object):
         except exceptions.TemplateNotFound:
             raise Exception(f"Could not find mopt template '{template_name}' in {self.template_dir}")
 
-        return template.render(template_params)
+        # get template path relative to the package
+        template_filename = template.filename
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+
+        return template.render(template_params), template_filename
 
     def to_dict(self, scaffold):
         return {

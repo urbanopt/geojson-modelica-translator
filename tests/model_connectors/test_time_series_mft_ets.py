@@ -42,20 +42,16 @@ from geojson_modelica_translator.model_connectors.couplings.graph import (
 from geojson_modelica_translator.model_connectors.districts.district import (
     District
 )
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
-    CoolingIndirect
+from geojson_modelica_translator.model_connectors.energy_transfer_systems import (
+    CoolingIndirect,
+    HeatingIndirect
 )
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
-    EtsHotWaterStub
+from geojson_modelica_translator.model_connectors.load_connectors.time_series_mft_ets_coupling import (
+    TimeSeriesMFT
 )
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
-    TimeSeries
-)
-from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (
-    Network2Pipe
-)
-from geojson_modelica_translator.model_connectors.plants.cooling_plant import (
-    CoolingPlant
+from geojson_modelica_translator.model_connectors.networks import (
+    NetworkChilledWaterStub,
+    NetworkHeatedWaterStub
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -64,9 +60,9 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-class DistrictCoolingSystemTest(TestCaseBase):
-    def test_district_cooling_system(self):
-        project_name = 'district_cooling_system'
+class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
+    def test_mft_time_series_to_modelica_and_run(self):
+        project_name = "time_series_massflow"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single office building
@@ -74,34 +70,37 @@ class DistrictCoolingSystemTest(TestCaseBase):
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
         # load system parameter data
-        params_filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
-        sys_params = SystemParameters(params_filename)
+        filename = os.path.join(self.data_dir, "time_series_system_params_massflow_ex1.json")
+        sys_params = SystemParameters(filename)
 
-        # create network and plant
-        network = Network2Pipe(sys_params)
-        cooling_plant = CoolingPlant(sys_params)
+        # create the load, ETSes and their couplings
+        time_series_mft_load = TimeSeriesMFT(sys_params, self.gj.json_loads[0])
+        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
 
-        # create our our load/ets/stubs
-        all_couplings = [
-            Coupling(network, cooling_plant)
-        ]
-        for geojson_load in self.gj.json_loads:
-            time_series_load = TimeSeries(sys_params, geojson_load)
-            geojson_load_id = geojson_load.feature.properties["id"]
-            cooling_indirect_system = CoolingIndirect(sys_params, geojson_load_id)
-            hot_water_stub = EtsHotWaterStub(sys_params)
-            all_couplings.append(Coupling(time_series_load, cooling_indirect_system))
-            all_couplings.append(Coupling(time_series_load, hot_water_stub))
-            all_couplings.append(Coupling(cooling_indirect_system, network))
+        heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
+        ts_hi_coupling = Coupling(time_series_mft_load, heating_indirect_system)
 
-        # create the couplings and graph
-        graph = CouplingGraph(all_couplings)
+        cooling_indirect_system = CoolingIndirect(sys_params, geojson_load_id)
+        ts_ci_coupling = Coupling(time_series_mft_load, cooling_indirect_system)
 
+        # create network stubs for the ETSes
+        heated_water_stub = NetworkHeatedWaterStub(sys_params)
+        hi_hw_coupling = Coupling(heating_indirect_system, heated_water_stub)
+
+        chilled_water_stub = NetworkChilledWaterStub(sys_params)
+        ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
+
+        # build the district system
         district = District(
             root_dir=self.output_dir,
             project_name=project_name,
             system_parameters=sys_params,
-            coupling_graph=graph
+            coupling_graph=CouplingGraph([
+                ts_hi_coupling,
+                ts_ci_coupling,
+                hi_hw_coupling,
+                ci_cw_coupling,
+            ])
         )
         district.to_modelica()
 
