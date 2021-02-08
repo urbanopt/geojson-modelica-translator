@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # 3.8, 3.9 do not work at the moment.
+        # 3.9 does not work as of 2020-02-01
         python-version: [3.7]
+        test_env: [python, precommit, docs]
     steps:
       - uses: actions/checkout@v2
       -
@@ -25,22 +26,34 @@ jobs:
           docker --version
           docker-compose --version
       -
+        name: Set up Poetry
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+          # NOTE: Poetry won't be in PATH until following steps
+          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+          $HOME/.poetry/bin/poetry install
+      -
+        name: Print Environment
+        run: poetry --version
+      -
         name: Install dependencies
         env:
           MODELICAPATH: /home/runner/work/modelica-buildings
         run: |
+          # Install modelicafmt (hard code the version for now)
+          curl -SLO https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.1/modelica-fmt_0.2-pr.1_Linux_x86_64.tar.gz
+          tar xzf modelica-fmt_0.2-pr.1_Linux_x86_64.tar.gz
+          chmod +x modelicafmt
+          sudo mv modelicafmt /usr/local/bin/
+          # Install MBL
           git clone --single-branch --branch issue2204_gmt_mbl https://github.com/lbl-srg/modelica-buildings.git $MODELICAPATH
           cd $MODELICAPATH
           echo "Git branch is $(git branch)"
-          pip install --upgrade pip
-          pip install tox==3.13.2
       -
-        name: Run unittests (using tox)
+        name: Tox ${{ matrix.test_env }}
         env:
           MODELICAPATH: /home/runner/work/modelica-buildings
-        run: |
-          echo $(pwd)
-          tox -e python
+        run: poetry run tox -e ${{ matrix.test_env }}
       -
         name: Job Failed
         if: ${{ failure() }}
@@ -60,34 +73,3 @@ jobs:
         with:
           name: test-output
           path: tests/model_connectors/output
-  formatting:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tox_env: [flake8, docs]
-    steps:
-      -
-        uses: actions/checkout@v2
-      -
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-      -
-        name: Install deps
-        run: |
-          # Install modelicafmt (hard code the version for now)
-          curl -SLO https://github.com/urbanopt/modelica-fmt/releases/download/v0.1-pr.3/modelica-fmt_0.1-pr.3_Linux_x86_64.tar.gz
-          tar xzf modelica-fmt_0.1-pr.3_Linux_x86_64.tar.gz
-          chmod +x modelicafmt
-          sudo mv modelicafmt /usr/local/bin/
-          pip install --upgrade pip
-          pip install tox==3.13.2
-          pip install requests
-      -
-        name: Run pre-commit
-        run: |
-          pip install pre-commit
-          pre-commit run --show-diff-on-failure --color=always --all-files
-      -
-        name: Run tox
-        run: tox -e ${{ matrix.tox_env }}
