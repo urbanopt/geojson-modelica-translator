@@ -155,18 +155,25 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         )
 
         def cvrmsd(a, b):
-            """Return CVRMSD between arrays"""
+            """Return CVRMSD between arrays.
+            Implementation of ASHRAE Guideline 14 (4-4)
+
+            :param a: numpy.array
+            :param b: numpy.array
+            :return: float
+            """
             def rmsd(a, b):
+                p = 1
                 n_samples = len(a)
                 return np.sqrt(
                     np.sum(
                         np.square(
                             a - b
                         )
-                    ) / n_samples
+                    ) / (n_samples - p)
                 )
 
-            normalization_factor = max(a.max(), b.max()) - min(a.min(), b.min())
+            normalization_factor = np.mean(np.concatenate(a, b))
             return rmsd(a, b) / normalization_factor
 
         # check the overall thermal load between the first load and its ETSes
