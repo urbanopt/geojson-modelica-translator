@@ -173,7 +173,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
                     ) / (n_samples - p)
                 )
 
-            normalization_factor = np.mean(np.concatenate(a, b))
+            normalization_factor = np.mean(np.concatenate((a, b)))
             return rmsd(a, b) / normalization_factor
 
         # check the overall thermal load between the first load and its ETSes
