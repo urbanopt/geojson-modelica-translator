@@ -75,6 +75,10 @@ class District:
         for model in self._coupling_graph.models:
             model.to_modelica(self._scaffold)
 
+        # construct graph of visual components
+        # TODO: use the diagram graph to determine icon and line placements before passing to templates
+        _ = self._coupling_graph.get_diagram_graph()
+
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
             "couplings": [],
