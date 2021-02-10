@@ -50,7 +50,7 @@ class ModelBase(object):
 
         :param system_parameters: SystemParameters object
         """
-        self.buildings = []
+        self.building = None
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
@@ -79,6 +79,7 @@ class ModelBase(object):
         Add building to the translator.
 
         :param urbanopt_building: an urbanopt_building
+        :param mapper: placeholder object for mapping between urbanopt_building and load_connector building.
         """
 
         # TODO: Need to convert units, these should exist on the urbanopt_building object
@@ -102,7 +103,8 @@ class ModelBase(object):
                 floor_height = urbanopt_building.feature.properties["floor_height"]
             except KeyError:
                 floor_height = 3  # Default height in meters from sdk
-                print(f"\nNo floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
+                print(
+                    f"\nNo floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
 
             # UO SDK defaults to current year, however TEASER only supports up to Year 2015
             # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
@@ -112,19 +114,18 @@ class ModelBase(object):
                     year_built = 2015
             except KeyError:
                 year_built = 2015
-                print(f"No 'year_built' found in geojson feature file for building {building_id}. Using default value of {year_built}")
+                print(
+                    f"No 'year_built' found in geojson feature file for building {building_id}. Using default value of {year_built}")
 
-            self.buildings.append(
-                {
-                    "area": building_floor_area_m2,
-                    "building_id": building_id,
-                    "building_type": building_type,
-                    "floor_height": floor_height,
-                    "num_stories": number_stories,
-                    "num_stories_below_grade": number_stories - number_stories_above_ground,
-                    "year_built": year_built,
-                }
-            )
+            self.building = {
+                "area": building_floor_area_m2,
+                "building_id": building_id,
+                "building_type": building_type,
+                "floor_height": floor_height,
+                "num_stories": number_stories,
+                "num_stories_below_grade": number_stories - number_stories_above_ground,
+                "year_built": year_built,
+            }
 
     def copy_required_mo_files(self, dest_folder, within=None):
         """Copy any required_mo_files to the destination and update the within clause if defined. The required mo

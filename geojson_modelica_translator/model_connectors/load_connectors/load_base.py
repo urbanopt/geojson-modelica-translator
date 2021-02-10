@@ -41,6 +41,11 @@ class LoadBase(ModelBase):
     def __init__(self, system_parameters, geojson_load=None):
         super().__init__(system_parameters, Path(__file__).parent / 'templates')
         # TODO: remove add_building and remove default value for geojson_load
+
+        # hold the building name and id at the base level (maybe this should be load_name?)
+        self.building_id = None
+        self.building_name = None
+
         # (there should only ever be a single load for a model)
         if geojson_load is not None:
             self.add_building(geojson_load)
