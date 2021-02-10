@@ -61,6 +61,8 @@ class ModelBase(object):
         )
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
+        self._template_instance = f'{self.model_name}_Instance.mopt'
+
         # store a list of the templated files to include when building the package
         self.template_files_to_include = []
 
@@ -190,6 +192,11 @@ class ModelBase(object):
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
 
+    @property
+    def instance_template_path(self):
+        template = self.template_env.get_template(self._template_instance)
+        return template.filename
+
     def render_instance(self, template_params):
         """Templates the *_Instance file for the model. The templated result will
         be inserted into the final District Energy System model in order to
@@ -198,11 +205,10 @@ class ModelBase(object):
         :param template_params: dict, parameters for the template
         :returns: tuple (str, str), the templated result followed by the name of the file used for templating
         """
-        template_name = f'{self.model_name}_Instance.mopt'
         try:
-            template = self.template_env.get_template(template_name)
+            template = self.template_env.get_template(self._template_instance)
         except exceptions.TemplateNotFound:
-            raise Exception(f"Could not find mopt template '{template_name}' in {self.template_dir}")
+            raise Exception(f"Could not find mopt template '{self._template_instance}' in {self.template_dir}")
 
         # get template path relative to the package
         template_filename = template.filename
