@@ -27,6 +27,9 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
 from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramLine,
     DiagramTransformation,
@@ -34,6 +37,26 @@ from geojson_modelica_translator.model_connectors.couplings.utils import (
 )
 
 from ..base_test_case import TestCaseBase
+
+
+class MockCoupling:
+    def __init__(self, id, a, b):
+        self.id = id
+        self._model_a = a
+        self._model_b = b
+
+
+class MockModel:
+    def __init__(self, id):
+        self.id = id
+
+
+def mock_coupling_factory(coupling_id, model_a_id, model_b_id):
+    return MockCoupling(
+        id=coupling_id,
+        a=MockModel(model_a_id),
+        b=MockModel(model_b_id)
+    )
 
 
 class DiagramGraphTest(TestCaseBase):
@@ -89,3 +112,150 @@ end Simple;"""
 
         with self.assertRaisesRegex(Exception, 'Invalid diagram templating command: "line".*'):
             parse_diagram_commands(bad_line)
+
+    def test_diagram_commands_to_graph_succeeds_for_transformations(self):
+        # Setup
+        load_a_id = 'load_a'
+        ets_a_id = 'ets_a'
+        coupling_id = 'coupling_a'
+        load_ets_coupling = mock_coupling_factory(coupling_id, load_a_id, ets_a_id)
+        couplings = [
+            load_ets_coupling,
+        ]
+
+        diagram_commands_by_id = {
+            load_a_id: [DiagramTransformation(
+                model_name='some_load',
+                model_type='load',
+            )],
+            ets_a_id: [DiagramTransformation(
+                model_name='some_ets',
+                model_type='ets',
+            )],
+            # also create a transformation which is coupling specific (ie defined in a coupling template file)
+            coupling_id: [DiagramTransformation(
+                model_name='some_real_expression',
+                model_type='real_expression',
+            )]
+        }
+
+        # Act
+        diagram_graph = CouplingGraph._diagram_commands_to_graph(
+            diagram_commands_by_id,
+            couplings
+        )
+
+        # Assert
+        expected_diagram_graph = {
+            load_a_id: {
+                'some_load': {
+                    'type': 'load',
+                    'edges': {}
+                }
+            },
+            ets_a_id: {
+                'some_ets': {
+                    'type': 'ets',
+                    'edges': {}
+                }
+            },
+            coupling_id: {
+                'some_real_expression': {
+                    'type': 'real_expression',
+                    'edges': {}
+                }
+            }
+        }
+
+        self.assertDictEqual(
+            expected_diagram_graph,
+            diagram_graph
+        )
+
+    def test_diagram_commands_to_graph_succeeds_for_transformations_and_lines(self):
+        # Setup
+        load_a_id = 'load_a'
+        ets_a_id = 'ets_a'
+        coupling_id = 'coupling_a'
+        load_ets_coupling = mock_coupling_factory(coupling_id, load_a_id, ets_a_id)
+        couplings = [
+            load_ets_coupling,
+        ]
+
+        diagram_commands_by_id = {
+            load_a_id: [DiagramTransformation(
+                model_name='some_load',
+                model_type='load',
+            )],
+            ets_a_id: [DiagramTransformation(
+                model_name='some_ets',
+                model_type='ets',
+            )],
+            coupling_id: [
+                DiagramTransformation(
+                    model_name='some_real_expression',
+                    model_type='real_expression',
+                ),
+                # create lines which connect these components
+                DiagramLine(
+                    a_name='some_load',
+                    a_port='port_a',
+                    b_name='some_ets',
+                    b_port='port_b',
+                ),
+                DiagramLine(
+                    a_name='some_real_expression',
+                    a_port='y',
+                    b_name='some_ets',
+                    b_port='control_in'
+                ),
+            ]
+        }
+
+        # Act
+        diagram_graph = CouplingGraph._diagram_commands_to_graph(
+            diagram_commands_by_id,
+            couplings
+        )
+
+        # Assert
+        expected_diagram_graph = {
+            load_a_id: {
+                'some_load': {
+                    'type': 'load',
+                    'edges': {
+                        'port_a': [
+                            (ets_a_id, 'some_ets', 'port_b')
+                        ]
+                    }
+                }
+            },
+            ets_a_id: {
+                'some_ets': {
+                    'type': 'ets',
+                    'edges': {
+                        'port_b': [
+                            (load_a_id, 'some_load', 'port_a')
+                        ],
+                        'control_in': [
+                            (coupling_id, 'some_real_expression', 'y')
+                        ]
+                    }
+                }
+            },
+            coupling_id: {
+                'some_real_expression': {
+                    'type': 'real_expression',
+                    'edges': {
+                        'y': [
+                            (ets_a_id, 'some_ets', 'control_in')
+                        ]
+                    }
+                }
+            }
+        }
+
+        self.assertDictEqual(
+            expected_diagram_graph,
+            diagram_graph
+        )
