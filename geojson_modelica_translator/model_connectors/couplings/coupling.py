@@ -59,12 +59,12 @@ class Coupling(object):
         self._model_b = model_b
         self._template_base_name = f'{model_a.model_name}_{model_b.model_name}'
 
-        template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", self._template_base_name)
-        if not os.path.exists(template_dir):
-            raise Exception(f'Invalid coupling. Missing {template_dir} directory.')
+        self._template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", self._template_base_name)
+        if not os.path.exists(self._template_dir):
+            raise Exception(f'Invalid coupling. Missing {self._template_dir} directory.')
 
         self._template_env = Environment(
-            loader=FileSystemLoader(searchpath=template_dir),
+            loader=FileSystemLoader(searchpath=self._template_dir),
             undefined=StrictUndefined)
         self._template_env.filters.update(ALL_CUSTOM_FILTERS)
 
@@ -171,3 +171,11 @@ class Coupling(object):
             'component_definitions_template_path': component_template_path,
             'connect_statements_template_path': connect_template_path,
         }
+
+    @property
+    def component_definitions_template_path(self):
+        return self._template_env.get_template(self._template_component_definitions).filename
+
+    @property
+    def connect_statements_template_path(self):
+        return self._template_env.get_template(self._template_connect_statements).filename
