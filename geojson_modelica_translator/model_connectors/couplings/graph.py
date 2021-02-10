@@ -188,7 +188,19 @@ class CouplingGraph:
                 model_diagram_commands = parse_diagram_commands(f.read())
             diagram_commands_by_id[model.id] = model_diagram_commands
 
-        # convert commands into a graph
+        return self._diagram_commands_to_graph(diagram_commands_by_id, self.couplings)
+
+    @staticmethod
+    def _diagram_commands_to_graph(diagram_commands_by_id, couplings):
+        """Convert commands into a diagram graph.
+
+        We pass couplings as a param rather than using self to facilitate
+        testing with mocked couplings.
+
+        :param diagram_commands: dict
+        :param couplings: list[Coupling]
+        :return: dict, diagram graph
+        """
         # first add the graph nodes, which are the transformation commands (they're the rendering of icons)
         diagram_graph_by_id = {}
         for diagram_context_id, commands in diagram_commands_by_id.items():
@@ -201,13 +213,19 @@ class CouplingGraph:
                 diagram_graph_by_id[diagram_context_id][cmd.model_name]['edges'] = defaultdict(list)
 
         def _find_id_by_name(name, diagram_context_id):
+            """Helper for finding the ID of the context for a given name
+
+            Default to the scope of the provided diagram context id, and if the context
+            is a coupling, fallback to the contexts of the coupled models.
+            """
             if name in diagram_graph_by_id[diagram_context_id]:
                 # nice! it's here, we will connect to this one
                 return diagram_context_id
             else:
                 # if our current context is a coupling, check the models we are coupling for the name
                 # if our current context isn't a coupling (ie a model), fail
-                coupling = [c for c in self.couplings if c.id == diagram_context_id]
+                #   (models should only connect to components within their own contexts)
+                coupling = [c for c in couplings if c.id == diagram_context_id]
                 if coupling:
                     coupling = coupling[0]
                 else:
