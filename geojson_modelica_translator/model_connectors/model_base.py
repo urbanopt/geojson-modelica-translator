@@ -115,7 +115,7 @@ class ModelBase(object):
             except KeyError:
                 year_built = 2015
                 print(
-                    f"No 'year_built' found in geojson feature file for building {building_id}. Using default value of {year_built}")
+                    f"No 'year_built' found in geojson feature file for building {self.building_id}. Using default value of {year_built}")
 
             self.building = {
                 "area": building_floor_area_m2,
