@@ -52,23 +52,22 @@ class TimeSeriesMFT(LoadBase):
 
     def to_modelica(self, scaffold):
         """
-        Create TimeSeries models based on the data in the buildings and geojsons
+        Create TimeSeries models based on the data in the building and geojson
+
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
 
         # MassFlowrate Temperature models
         time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
 
-        building = self.buildings[0]
-        building_name = f"B{building['building_id']}"
         b_modelica_path = ModelicaPath(
-            building_name, scaffold.loads_path.files_dir, True
+            self.building_name, scaffold.loads_path.files_dir, True
         )
 
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier and respect the defaults
         time_series_filename = self.system_parameters.get_param_by_building_id(
-            building["building_id"], "load_model_parameters.time_series.filepath"
+            self.building_id, "load_model_parameters.time_series.filepath"
         )
 
         template_data = {
@@ -80,7 +79,7 @@ class TimeSeriesMFT(LoadBase):
             },
             "nominal_values": {
                 "delTDisCoo": self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.delTDisCoo"
+                    self.building_id, "load_model_parameters.time_series.delTDisCoo"
                 )
             }
         }
@@ -93,12 +92,12 @@ class TimeSeriesMFT(LoadBase):
             raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
         # Run templates to write actual Modelica models
-        ets_model_type = self.system_parameters.get_param_by_building_id(building["building_id"], "ets_model")
+        ets_model_type = self.system_parameters.get_param_by_building_id(self.building_id, "ets_model")
 
         ets_data = None
         if ets_model_type == "Indirect Heating and Cooling":
             ets_data = self.system_parameters.get_param_by_building_id(
-                building["building_id"],
+                self.building_id,
                 "ets_model_parameters.indirect"
             )
         else:
@@ -108,7 +107,7 @@ class TimeSeriesMFT(LoadBase):
             template=time_series_mft_template,
             save_file_name=Path(b_modelica_path.files_dir) / "building.mo",
             project_name=scaffold.project_name,
-            model_name=building_name,
+            model_name=self.building_name,
             data=template_data,
             ets_data=ets_data,
         )
@@ -124,32 +123,31 @@ class TimeSeriesMFT(LoadBase):
         the following:
             * Add a Loads project
             * Add a project level project
+
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :return: None
         """
-        building = self.buildings[0]
-        building_name = f"B{building['building_id']}"
         order_files = [Path(mo).stem for mo in self.required_mo_files]
         order_files += self.template_files_to_include
-        b_modelica_path = Path(scaffold.loads_path.files_dir) / building_name
+        b_modelica_path = Path(scaffold.loads_path.files_dir) / self.building_name
         new_package = PackageParser.new_from_template(
             path=b_modelica_path,
-            name=building_name,
+            name=self.building_name,
             order=order_files,
             within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
-        # now create the Loads level package. This (for now) will create the package without considering any existing
-        # files in the Loads directory.
-
-        package = PackageParser.new_from_template(
-            path=scaffold.loads_path.files_dir,
-            name="Loads",
-            order=[building_name],
-            within=f"{scaffold.project_name}"
-        )
-        package.save()
+        # now create the Loads level package and package.order.
+        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
+            load_package = PackageParser.new_from_template(
+                scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
+            )
+            load_package.save()
+        else:
+            load_package = PackageParser(os.path.join(scaffold.loads_path.files_dir))
+            load_package.add_model(self.building_name)
+            load_package.save()
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
@@ -159,7 +157,4 @@ class TimeSeriesMFT(LoadBase):
         pp.save()
 
     def get_modelica_type(self, scaffold):
-        building = self.buildings[0]
-        building_name = f"B{building['building_id']}"
-
-        return f'{scaffold.project_name}.Loads.{building_name}.building'
+        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
