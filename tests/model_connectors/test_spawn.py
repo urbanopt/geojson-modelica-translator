@@ -63,7 +63,7 @@ class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
         project_name = "spawn_single"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        # load in the example geojson with a single offie building
+        # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 

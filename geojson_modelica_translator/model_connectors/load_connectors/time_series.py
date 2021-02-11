@@ -53,13 +53,8 @@ class TimeSeries(LoadBase):
         """
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
 
-        assert len(self.buildings) == 1, "There should be exactly one building loaded"
-
-        building = self.buildings[0]
-        building_name = f"B{building['building_id']}"
-
         b_modelica_path = ModelicaPath(
-            f"B{building['building_id']}", scaffold.loads_path.files_dir, True
+            self.building_name, scaffold.loads_path.files_dir, True
         )
 
         self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
@@ -67,7 +62,7 @@ class TimeSeries(LoadBase):
         # Note that the system_parameters object when accessing filepaths will fully resolve the
         # location of the file.
         time_series_filename = self.system_parameters.get_param_by_building_id(
-            building["building_id"], "load_model_parameters.time_series.filepath"
+            self.building_id, "load_model_parameters.time_series.filepath"
         )
 
         if not os.path.exists(time_series_filename):
@@ -86,7 +81,7 @@ class TimeSeries(LoadBase):
             },
             "nominal_values": {
                 "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
-                    building["building_id"], "load_model_parameters.time_series.delta_temp_air_cooling"
+                    self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
                 )
             }
         }
@@ -101,14 +96,14 @@ class TimeSeries(LoadBase):
             template=time_series_building_template,
             save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
-            model_name=f"B{building['building_id']}",
+            model_name=self.building_name,
             data=template_data
         )
 
         # run post process to create the remaining project files for this building
-        self.post_process(scaffold, building_name)
+        self.post_process(scaffold)
 
-    def post_process(self, scaffold, building_name):
+    def post_process(self, scaffold):
         """
         Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
         the following:
@@ -117,12 +112,11 @@ class TimeSeries(LoadBase):
             * Add a project level project
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
-        :param building_name: String, name of the building that needs to be cleaned up after export
         :return: None
         """
-        b_modelica_path = os.path.join(scaffold.loads_path.files_dir, building_name)
+        b_modelica_path = os.path.join(scaffold.loads_path.files_dir, self.building_name)
         new_package = PackageParser.new_from_template(
-            b_modelica_path, building_name, self.template_files_to_include,
+            b_modelica_path, self.building_name, self.template_files_to_include,
             within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
@@ -130,12 +124,12 @@ class TimeSeries(LoadBase):
         # now create the Loads level package and package.order.
         if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
             load_package = PackageParser.new_from_template(
-                scaffold.loads_path.files_dir, "Loads", [building_name], within=f"{scaffold.project_name}"
+                scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
             )
             load_package.save()
         else:
             load_package = PackageParser(os.path.join(scaffold.loads_path.files_dir))
-            load_package.add_model(building_name)
+            load_package.add_model(self.building_name)
             load_package.save()
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
@@ -146,7 +140,4 @@ class TimeSeries(LoadBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        building = self.buildings[0]
-        building_name = f"B{building['building_id']}"
-
-        return f'{scaffold.project_name}.Loads.{building_name}.building'
+        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
