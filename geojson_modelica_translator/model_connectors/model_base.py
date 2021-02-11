@@ -119,7 +119,7 @@ class ModelBase(object):
 
             self.building = {
                 "area": building_floor_area_m2,
-                "building_id": building_id,
+                "building_id": self.building_id,
                 "building_type": building_type,
                 "floor_height": floor_height,
                 "num_stories": number_stories,
