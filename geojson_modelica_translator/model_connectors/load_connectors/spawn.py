@@ -55,13 +55,6 @@ class Spawn(LoadBase):
         spawn_building_template = self.template_env.get_template("SpawnBuilding.mot")
         spawn_mos_template = self.template_env.get_template("RunSpawnCouplingBuilding.most")
 
-        self.building_id = self.building['building_id']
-        self.building_name = f"B{self.building_id}"
-
-        # do we need to do some validation here?
-        assert self.building_id is not None
-        assert self.building_name is not None
-
         # create spawn building and save to the correct directory
         print(f"Creating spawn for building: {self.building_id}")
 

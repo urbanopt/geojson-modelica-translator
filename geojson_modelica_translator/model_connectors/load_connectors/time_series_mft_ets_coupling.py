@@ -60,13 +60,6 @@ class TimeSeriesMFT(LoadBase):
         # MassFlowrate Temperature models
         time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
 
-        self.building_id = self.building["building_id"]
-        self.building_name = f"B{self.building_id}"
-
-        # do we need to do some validation here?
-        assert self.building_id is not None
-        assert self.building_name is not None
-
         b_modelica_path = ModelicaPath(
             self.building_name, scaffold.loads_path.files_dir, True
         )

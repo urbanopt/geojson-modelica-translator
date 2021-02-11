@@ -106,13 +106,6 @@ class Teaser(LoadBase):
         :param scaffold: Scaffold object, contains all the paths of the project
         :param keep_original_models: boolean, whether or not to remove the models after exporting from Teaser
         """
-        self.building_id = self.building["building_id"]
-        self.building_name = f"B{self.building_id}"
-
-        # do we need to do some validation here?
-        assert self.building_id is not None
-        assert self.building_name is not None
-
         # Teaser changes the current dir, so make sure to reset it back to where we started
         curdir = os.getcwd()
         try:
