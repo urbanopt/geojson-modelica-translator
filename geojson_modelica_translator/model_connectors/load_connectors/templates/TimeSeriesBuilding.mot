@@ -22,19 +22,19 @@ within {{ project_name }}.Loads.{{ model_name }};
     displayUnit="degC")=T_aHeaWat_nominal-5
     "Heating water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Temperature T_aChiWat_nominal=273.15+18
-    "Chilled water inlet temperature at nominal conditions "
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['temp_cooling_water_supply'] }}
+    {% raw %} "Chilled water inlet temperature at nominal conditions "
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Temperature T_bChiWat_nominal(
+  {% endraw %}parameter Modelica.SIunits.Temperature T_bChiWat_nominal(
     min=273.15,
-    displayUnit="degC")=T_aChiWat_nominal+5
-    "Chilled water outlet temperature at nominal conditions"
+    displayUnit="degC")={{ data['nominal_values']['temp_cooling_water_return'] }}
+    {% raw %} "Chilled water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Temperature T_aLoaHea_nominal=273.15+20
-    "Load side inlet temperature at nominal conditions in heating mode"
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
+    {% raw %} "Load side inlet temperature at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Temperature T_aLoaCoo_nominal=273.15+24
-    "Load side inlet temperature at nominal conditions in cooling mode"
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
+    {% raw %} "Load side inlet temperature at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"

@@ -82,6 +82,21 @@ class TimeSeries(LoadBase):
             "nominal_values": {
                 "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
+                ),
+                "delta_temp_air_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.delta_temp_air_heating"
+                ),
+                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
+                ),
+                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_setpoint_cooling"
+                ),
+                "temp_cooling_water_supply": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_chw_supply"
+                ),
+                "temp_cooling_water_return": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_chw_return"
                 )
             }
         }
