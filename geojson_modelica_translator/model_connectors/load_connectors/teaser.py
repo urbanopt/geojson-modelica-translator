@@ -450,6 +450,26 @@ class Teaser(LoadBase):
                     "mos_weather_filename": mos_weather_filename,
                     "filename": os.path.basename(mos_weather_filename),
                     "path": os.path.dirname(mos_weather_filename),
+                },
+                "nominal_values": {
+                    "temp_cooling_water_supply": self.system_parameters.get_param_by_building_id(
+                        self.building_id, "load_model_parameters.rc.temp_chw_supply"
+                    ),
+                    "temp_cooling_water_return": self.system_parameters.get_param_by_building_id(
+                        self.building_id, "load_model_parameters.rc.temp_chw_return"
+                    ),
+                    "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                        self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
+                    ),
+                    "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                        self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
+                    ),
+                    "temp_heating_water_supply": self.system_parameters.get_param_by_building_id(
+                        self.building_id, "load_model_parameters.rc.temp_hw_supply"
+                    ),
+                    "temp_heating_water_return": self.system_parameters.get_param_by_building_id(
+                        self.building_id, "load_model_parameters.rc.temp_hw_return"
+                    )
                 }
             }
 
