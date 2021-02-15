@@ -83,7 +83,10 @@ class Spawn(LoadBase):
                 building["building_id"],
                 "load_model_parameters.spawn.thermal_zone_names",
             )
-
+            hhw_supply_temp = self.system_parameters.get_param_by_building_id(
+                building["building_id"],
+                "load_model_parameters.spawn.temp_hw_supply",
+            )
             # construct the dict to pass into the template
             template_data = {
                 "load_resources_path": b_modelica_path.resources_relative_dir,
@@ -104,7 +107,9 @@ class Spawn(LoadBase):
                 },
                 "thermal_zones": [],
                 "thermal_zones_count": len(thermal_zones),
-
+                "nominal_values": {
+                    "hhw_supply_temp": hhw_supply_temp,
+                },
             }
             for tz in thermal_zones:
                 # TODO: method for creating nice zone names for modelica

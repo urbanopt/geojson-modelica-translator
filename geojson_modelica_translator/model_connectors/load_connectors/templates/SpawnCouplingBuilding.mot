@@ -9,8 +9,8 @@ model coupling
     mLoaHea_flow_nominal=mLoaHea_flow_nominal,
     T_aChiWat_nominal=280.15,
     T_bChiWat_nominal=285.15,
-    T_aHeaWat_nominal=40+273.15,
-    T_bHeaWat_nominal=35+273.15,
+   {% endraw %} T_aHeaWat_nominal={{ data["nominal_values"]["hhw_supply_temp"] }}
+    {% raw %}T_bHeaWat_nominal=35+273.15,
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
