@@ -1,5 +1,5 @@
 within {{ project_name }}.Plants;
-{% raw %}model OSU_CoolingPlant
+{% raw %}model OSU_Cooling_Plant
   package Medium=Buildings.Media.Water
     "Medium model";
   parameter Integer numChi(
