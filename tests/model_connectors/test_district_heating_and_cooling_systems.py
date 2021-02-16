@@ -184,10 +184,14 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         (_, load_q_heat_flow) = mat_results.values(f'{load.id}.QHea_flow')
         (_, load_q_cool_flow) = mat_results.values(f'{load.id}.QCoo_flow')
 
+        # make sure the q flow is positive
+        heating_indirect_q_flow, cooling_indirect_q_flow = np.abs(heating_indirect_q_flow), np.abs(cooling_indirect_q_flow)
+        load_q_heat_flow, load_q_cool_flow = np.abs(load_q_heat_flow), np.abs(load_q_cool_flow)
+
         cool_cvrmsd = cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
         heat_cvrmsd = cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
 
-        CVRMSD_MAX = 10
+        CVRMSD_MAX = 3
         self.assertTrue(
             cool_cvrmsd < CVRMSD_MAX,
             f'The difference between the thermal cooling load of the load and ETS is too large (CVRMSD={cool_cvrmsd})'
