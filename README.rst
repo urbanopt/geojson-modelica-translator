@@ -11,17 +11,18 @@ GeoJSON Modelica Translator (GMT)
 Description
 -----------
 
-The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica project with multiple buildings loads, energy transfer stations, district system, and distribution network. The project will eventually allow multiple paths to build up different district heating and cooling system topolologies; however, the initial implementation is limited to 1GDH and 4GDC.
+The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 1GDH and 4GDHC.
 
 Getting Started
 ---------------
 
-The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need Python 3 and Pip 3 to install/build the packages. Python 2 is at end of life and should be avoided; however, Python 2 may still be needed to run the models with JModelica (this is actively being evaluated). Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
+The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
 
 * Clone this repo into a working directory
 * (optional/as-needed) Add Python 3 to the environment variables
+* Install Poetry (:code:`pip install poetry`). More information on Poetry can be found `here <https://python-poetry.org/docs/>`_.
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
-* Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
+* Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
 * Install the Modelica Buildings Library from GitHub
     * Clone https://github.com/lbl-srg/modelica-buildings/ into a working directory outside of the GMT directory
     * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
@@ -30,21 +31,14 @@ The GeoJSON Modelica Translator is in alpha-phase development and the functional
         * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
     * Pull the correct staging branch for this project with: :code:`git checkout issue2204_gmt_mbl`
     * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
-* Return to the GMT directory and run :code:`pip install -r requirements.txt`
-* Test if everything is installed correctly by running :code:`py.test`
+* Return to the GMT root directory and run :code:`poetry install`
+* Test if everything is installed correctly by running :code:`poetry run tox`
+    * This should run all unit tests, pre-commit, and build the docs.
 
-The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder.
+The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
 
 Developers
 **********
-
-This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc.). Since
-these are included as dependent project using git there may be a need to force an update from the dependent git repos.
-The best way to accomplish this is run the following command:
-
-.. code-block::bash
-
-    pip install -U --upgrade-strategy eager -r requirements.txt
 
 This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
 
@@ -52,8 +46,6 @@ This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consist
 
     pip install pre-commit
     pre-commit install
-
-Make sure to install `modelica-fmt <https://github.com/urbanopt/modelica-fmt/releases>`_ in order for pre-commit to run code cleanup on Modelica files. The latest prerelease or release is recommended. Once you download the package, place the modelicafmt binary into a folder that is in your path.
 
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
 
@@ -145,7 +137,7 @@ There is managed task to automatically pull updated GeoJSON schemas from the :co
 
 .. code-block:: bash
 
-    ./setup.py update_schemas
+    poetry run update_schemas
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
@@ -157,7 +149,7 @@ To apply the copyright/license to all the files, run the following managed task
 
 .. code-block:: bash
 
-    ./setup.py update_licenses
+    poetry run update_licenses
 
 
 Templating Diagram
@@ -176,7 +168,7 @@ Release Instructions
 
     # Remove old dist packages
     rm -rf dist/*
-    python setup.py sdist
+    poetry build
 
 * Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag.)
 * Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
@@ -184,15 +176,14 @@ Release Instructions
 
 .. code-block:: bash
 
-    pip install twine
-    twine upload dist/*
+    poetry publish
 
 * Build and release the documentation
 
 .. code-block:: bash
 
     # Build and verify with the following
-    python setup.py build_sphinx
+    poetry run make html
 
     # release using
     ./docs/publish_docs.sh

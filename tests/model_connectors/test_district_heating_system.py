@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -85,9 +85,10 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
         all_couplings = [
             Coupling(network, heating_plant)
         ]
-        for _ in range(6):
-            time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
-            heating_indirect_system = HeatingIndirect(sys_params)
+        for geojson_load in self.gj.json_loads:
+            time_series_load = TimeSeries(sys_params, geojson_load)
+            geojson_load_id = geojson_load.feature.properties["id"]
+            heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
             cold_water_stub = EtsColdWaterStub(sys_params)
             all_couplings.append(Coupling(time_series_load, heating_indirect_system))
             all_couplings.append(Coupling(time_series_load, cold_water_stub))

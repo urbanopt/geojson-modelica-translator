@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -69,6 +69,10 @@ class Coupling(object):
         self._template_env.filters.update(ALL_CUSTOM_FILTERS)
 
         self._id = simple_uuid()
+
+    @property
+    def id(self):
+        return self._id
 
     def to_dict(self):
         return {
@@ -146,7 +150,11 @@ class Coupling(object):
         }
         updated_template_params.update(template_params)
 
-        return template.render(updated_template_params)
+        # get the template file path relative to the package
+        template_filename = template.filename
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+
+        return template.render(updated_template_params), template_filename
 
     def render_templates(self, template_params):
         """Renders the shared components and connect statements for the coupling.
@@ -154,10 +162,12 @@ class Coupling(object):
         :param template_params: dict, parameters for the templates
         :return: dict, containing key, values: component_definitions, string; connect_statements, string
         """
-        component_result = self._render_template(self._template_component_definitions, template_params)
-        connect_result = self._render_template(self._template_connect_statements, template_params)
+        component_result, component_template_path = self._render_template(self._template_component_definitions, template_params)
+        connect_result, connect_template_path = self._render_template(self._template_connect_statements, template_params)
 
         return {
             'component_definitions': component_result,
             'connect_statements': connect_result,
+            'component_definitions_template_path': component_template_path,
+            'connect_statements_template_path': connect_template_path,
         }

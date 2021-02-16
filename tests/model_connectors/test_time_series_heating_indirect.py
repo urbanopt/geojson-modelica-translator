@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -76,7 +76,8 @@ class DistrictSystemTest(TestCaseBase):
 
         # Create the time series load, ets and their coupling
         time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
-        heating_indirect_system = HeatingIndirect(sys_params)
+        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
+        heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
         ts_hi_coupling = Coupling(time_series_load, heating_indirect_system)
 
         # create heated water stub for the ets

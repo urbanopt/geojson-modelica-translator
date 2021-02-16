@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -63,7 +63,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.time_series = TimeSeries(sys_params, self.gj.json_loads[0])
 
         self.assertIsNotNone(self.time_series)
-        self.assertEqual(len(self.time_series.buildings), 1)
+        self.assertIsNotNone(self.time_series.building)
         self.assertEqual("time_series",
                          self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 

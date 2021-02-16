@@ -19,7 +19,11 @@
           "delta_temp_hw_district": 19,
           "delta_temp_hw_building": 14,
           "delta_temp_chw_building": 4.9,
-          "delta_temp_chw_district": 7.9
+          "delta_temp_chw_district": 7.9,
+          "cooling_controller_y_max": 1,
+          "cooling_controller_y_min": 0,
+          "heating_controller_y_max": 1,
+          "heating_controller_y_min": 0
         }
       }
     },
@@ -45,6 +49,29 @@
               "Perimeter_ZN_3",
               "Perimeter_ZN_4"
             ]
+          }
+        },
+        "ets_model_parameters": {
+          "indirect": {
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.8,
+            "heat_exchanger_primary_pressure_drop": 500,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "nominal_mass_flow_building": 0.5,
+            "nominal_mass_flow_district": 0.5,
+            "valve_pressure_drop": 6000,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50,
+            "delta_temp_hw_district": 19,
+            "delta_temp_hw_building": 14,
+            "delta_temp_chw_building": 4.9,
+            "delta_temp_chw_district": 7.9,
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
           }
         }
       }

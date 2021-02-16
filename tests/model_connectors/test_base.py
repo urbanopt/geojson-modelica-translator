@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -29,32 +29,35 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import shutil
-import unittest
 
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import \
     LoadBase as model_connector_base
 from jinja2 import Template
 
+from ..base_test_case import TestCaseBase
 
-class TestModelConnectorBase(unittest.TestCase):
+
+class TestModelConnectorBase(TestCaseBase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output', 'templates')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
+        project_name = "base_classes"
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        os.makedirs(self.output_dir)
+        # load in the example geojson with a single office building
+        filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
+        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
     def test_init(self):
-        mc = model_connector_base(None)
+        mc = model_connector_base(None, self.gj.json_loads[0])
         self.assertIsNotNone(mc)
 
     def test_ft2_to_m2(self):
         self.assertEqual(model_connector_base.ft2_to_m2(self, area_in_ft2=1000), 92.936)
 
     def test_template(self):
-        mc = model_connector_base(None)
+        mc = model_connector_base(None, self.gj.json_loads[0])
 
         with open(os.path.join(self.data_dir, 'template_ex.tmpl')) as f:
             template = Template(f.read())

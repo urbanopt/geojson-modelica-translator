@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -82,7 +82,11 @@ class District:
         }
         common_template_params = {
             'globals': {
-                "medium_w": "MediumW"
+                'medium_w': 'MediumW',
+                'delChiWatTemBui': 'delChiWatTemBui',
+                'delChiWatTemDis': 'delChiWatTemDis',
+                'delHeaWatTemBui': 'delHeaWatTemBui',
+                'delHeaWatTemDis': 'delHeaWatTemDis',
             },
             'graph': self._coupling_graph
         }
@@ -90,8 +94,11 @@ class District:
         for coupling in self._coupling_graph.couplings:
             templated_result = coupling.render_templates(common_template_params)
             district_template_params['couplings'].append({
+                'id': coupling.id,
                 'component_definitions': templated_result['component_definitions'],
-                'connect_statements': templated_result['connect_statements']
+                'connect_statements': templated_result['connect_statements'],
+                'coupling_definitions_template_path': templated_result['component_definitions_template_path'],
+                'connect_statements_template_path': templated_result['connect_statements_template_path'],
             })
 
         # render each model instance
@@ -101,8 +108,12 @@ class District:
                 'couplings': self._coupling_graph.couplings_by_type(model.id),
             }
             template_params.update(**common_template_params)
-            result = model.render_instance(template_params)
-            district_template_params['models'].append(result)
+            templated_instance, instance_template_path = model.render_instance(template_params)
+            district_template_params['models'].append({
+                'id': model.id,
+                'instance_template_path': instance_template_path,
+                'instance': templated_instance
+            })
 
         # render the full district file
         final_result = render_template('DistrictEnergySystem.mot', district_template_params)
