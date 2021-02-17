@@ -183,7 +183,9 @@ Release Instructions
 .. code-block:: bash
 
     # Build and verify with the following
+    cd docs
     poetry run make html
+    cd ..
 
     # release using
     ./docs/publish_docs.sh
