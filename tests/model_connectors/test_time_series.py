@@ -63,7 +63,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.time_series = TimeSeries(sys_params, self.gj.json_loads[0])
 
         self.assertIsNotNone(self.time_series)
-        self.assertEqual(len(self.time_series.buildings), 1)
+        self.assertIsNotNone(self.time_series.building)
         self.assertEqual("time_series",
                          self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
 
