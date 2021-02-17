@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+network\_chilled\_water\_stub
+=============================
+
+.. automodule:: geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      NetworkChilledWaterStub
+   
+   
+
+   
+   
+   
+
+
+

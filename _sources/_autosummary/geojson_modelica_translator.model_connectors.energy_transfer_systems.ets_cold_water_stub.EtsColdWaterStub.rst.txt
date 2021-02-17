@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+EtsColdWaterStub
+================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub
+
+.. autoclass:: EtsColdWaterStub
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EtsColdWaterStub.__init__
+      ~EtsColdWaterStub.copy_required_mo_files
+      ~EtsColdWaterStub.ft2_to_m2
+      ~EtsColdWaterStub.get_modelica_type
+      ~EtsColdWaterStub.modelica_path
+      ~EtsColdWaterStub.render_instance
+      ~EtsColdWaterStub.run_template
+      ~EtsColdWaterStub.to_dict
+      ~EtsColdWaterStub.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EtsColdWaterStub.model_name
+      ~EtsColdWaterStub.simple_gmt_type
+   
+   

@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.model\_connectors.districts.district.render\_template
+===================================================================================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.districts.district
+
+.. autofunction:: render_template

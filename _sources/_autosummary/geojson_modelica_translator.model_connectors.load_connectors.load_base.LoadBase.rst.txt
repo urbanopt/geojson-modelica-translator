@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+LoadBase
+========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.load_connectors.load_base
+
+.. autoclass:: LoadBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LoadBase.__init__
+      ~LoadBase.add_building
+      ~LoadBase.copy_required_mo_files
+      ~LoadBase.ft2_to_m2
+      ~LoadBase.modelica_path
+      ~LoadBase.render_instance
+      ~LoadBase.run_template
+      ~LoadBase.to_dict
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~LoadBase.building_name
+      ~LoadBase.model_name
+      ~LoadBase.simple_gmt_type
+   
+   

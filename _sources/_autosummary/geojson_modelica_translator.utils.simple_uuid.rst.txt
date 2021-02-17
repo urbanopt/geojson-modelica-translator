@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.utils.simple\_uuid
+================================================
+
+.. currentmodule:: geojson_modelica_translator.utils
+
+.. autofunction:: simple_uuid

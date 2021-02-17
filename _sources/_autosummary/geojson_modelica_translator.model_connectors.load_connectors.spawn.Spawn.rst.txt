@@ -1,0 +1,45 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+Spawn
+=====
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.load_connectors.spawn
+
+.. autoclass:: Spawn
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Spawn.__init__
+      ~Spawn.add_building
+      ~Spawn.copy_required_mo_files
+      ~Spawn.ft2_to_m2
+      ~Spawn.get_modelica_type
+      ~Spawn.modelica_path
+      ~Spawn.post_process
+      ~Spawn.render_instance
+      ~Spawn.run_template
+      ~Spawn.to_dict
+      ~Spawn.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Spawn.building_name
+      ~Spawn.model_name
+      ~Spawn.simple_gmt_type
+   
+   

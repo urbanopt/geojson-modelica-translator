@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CouplingGraph &#8212; GeoJSON Modelica Translator v0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="districts" href="geojson_modelica_translator.model_connectors.districts.html" />
+    <link rel="prev" title="graph" href="geojson_modelica_translator.model_connectors.couplings.graph.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.model_connectors.districts.html" title="districts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.model_connectors.couplings.graph.html" title="graph"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.model_connectors.html" >model_connectors</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.model_connectors.couplings.html" >couplings</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="geojson_modelica_translator.model_connectors.couplings.graph.html" accesskey="U">graph</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">CouplingGraph</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="couplinggraph">
+<h1>CouplingGraph<a class="headerlink" href="#couplinggraph" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph">
+<em class="property">class </em><code class="sig-prename descclassname">geojson_modelica_translator.model_connectors.couplings.graph.</code><code class="sig-name descname">CouplingGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">couplings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages coupling relationships</p>
+<dl class="py method">
+<dt id="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">couplings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.__init__" title="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(couplings)</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.couplings_by_type" title="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.couplings_by_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">couplings_by_type</span></code></a>(model_id)</p></td>
+<td><p>Returns the model’s associated couplings keyed by the types of the _other_ model involved</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.directional_index" title="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.directional_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">directional_index</span></code></a>(model_a_id, model_b_id)</p></td>
+<td><p>Returns the index of model_b within model_a’s adjacency list for model_b’s type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.get_coupled_load" title="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.get_coupled_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_coupled_load</span></code></a>(ets_id)</p></td>
+<td><p>Returns the load coupled to the provided ets</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">couplings</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">models</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.couplings_by_type">
+<code class="sig-name descname">couplings_by_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.couplings_by_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the model’s associated couplings keyed by the types of the
+_other_ model involved</p>
+<p>For example if given model is ets, and its coupled to a load and network,
+the result would be:
+{</p>
+<blockquote>
+<div><p>‘load_couplings’: [&lt;load coupling&gt;],
+‘network_couplings’: [&lt;network coupling&gt;],</p>
+</div></blockquote>
+<p>}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_id</strong> – str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.directional_index">
+<code class="sig-name descname">directional_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_a_id</span></em>, <em class="sig-param"><span class="n">model_b_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.directional_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the index of model_b within model_a’s adjacency list for
+model_b’s type.</p>
+<p>For example, if our graph looks like this, and model_b is an ETS
+<a href="#id1"><span class="problematic" id="id2">``</span></a>`
+{</p>
+<blockquote>
+<div><p>…
+model_a: {</p>
+<blockquote>
+<div><dl class="simple">
+<dt>ets_couplings: [</dt><dd><p>{ ets: model_b, … }, { ets: model_c, …}</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>Then this method would return 0, because it’s at index 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_a_id</strong> – str, id of model_a</p></li>
+<li><p><strong>model_b_id</strong> – str, id of model_b</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.get_coupled_load">
+<code class="sig-name descname">get_coupled_load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ets_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.get_coupled_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the load coupled to the provided ets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ets_id</strong> – str</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="geojson_modelica_translator.model_connectors.couplings.graph.html"
+                        title="previous chapter">graph</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="geojson_modelica_translator.model_connectors.districts.html"
+                        title="next chapter">districts</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.model_connectors.districts.html" title="districts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.model_connectors.couplings.graph.html" title="graph"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.model_connectors.html" >model_connectors</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.model_connectors.couplings.html" >couplings</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="geojson_modelica_translator.model_connectors.couplings.graph.html" >graph</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">CouplingGraph</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -66,39 +66,59 @@
 </tr>
 </tbody>
 </table>
-<div class="section" id="geojson-modelica-translator">
-<span id="readme"></span><h2>GeoJSON Modelica Translator<a class="headerlink" href="#geojson-modelica-translator" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="geojson-modelica-translator-gmt">
+<span id="readme"></span><h2>GeoJSON Modelica Translator (GMT)<a class="headerlink" href="#geojson-modelica-translator-gmt" title="Permalink to this headline">¶</a></h2>
 <a class="reference external image-reference" href="https://travis-ci.org/urbanopt/geojson-modelica-translator"><img alt="https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop" src="https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop" /></a>
 <a class="reference external image-reference" href="https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop"><img alt="https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop" src="https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop" /></a>
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica project with multiple buildings loads, energy transfer stations, district system, and distribution network. The project will eventually allow multiple paths to build up different district heating and cooling system topolologies; however, the initial implementation is limited to 1GDH and 4GDC.</p>
+<p>The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 1GDH and 4GDHC.</p>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need Python 3 and Pip 3 to install/build the packages. Python 2 is at end of life and should be avoided; however, Python 2 may still be needed to run the models with JModelica (this is actively being evaluated). Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.</p>
+<p>The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.</p>
 <ul class="simple">
 <li><p>Clone this repo into a working directory</p></li>
 <li><p>(optional/as-needed) Add Python 3 to the environment variables</p></li>
+<li><p>Install Poetry (<code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>). More information on Poetry can be found <a class="reference external" href="https://python-poetry.org/docs/">here</a>.</p></li>
 <li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your platform</p></li>
-<li><p>Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.</p></li>
-<li><p><strong>Follow first 3 major bullets in Running Simulations section below.</strong></p></li>
-<li><p>Run <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p></li>
-<li><p>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">py.test</span></code></p></li>
+<li><p>Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
+<li><dl class="simple">
+<dt>Install the Modelica Buildings Library from GitHub</dt><dd><ul>
+<li><p>Clone <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">https://github.com/lbl-srg/modelica-buildings/</a> into a working directory outside of the GMT directory</p></li>
+<li><p>Change to the directory inside the modelica-buildings repo you just checked out. (<code class="code docutils literal notranslate"><span class="pre">cd</span> <span class="pre">modelica-buildings</span></code>)</p></li>
+<li><dl class="simple">
+<dt>Install git-lfs</dt><dd><ul>
+<li><p>Mac: <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
+<li><p>Ubuntu: <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
 </ul>
-<p>The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder.</p>
+</dd>
+</dl>
+</li>
+<li><p>Pull the correct staging branch for this project with: <code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">issue2204_gmt_mbl</span></code></p></li>
+<li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
+<li><dl class="simple">
+<dt>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">tox</span></code></dt><dd><ul>
+<li><p>This should run all unit tests, pre-commit, and build the docs.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder. These files can be inspected in your favorite Modelica editor.</p>
 <div class="section" id="developers">
 <h3>Developers<a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h3>
-<p>This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc). Since
-these are included as dependent project using git there may be a need to force an update from the dependent git repos.
-The best way to accomplish this is run the following command:</p>
 <p>This project used <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency. To enable pre-commit, run the following from the command line.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pre-commit
 pre-commit install
 </pre></div>
 </div>
-<p>Make sure to install <a class="reference external" href="https://github.com/urbanopt/modelica-fmt/releases">modelica-fmt</a> in order for pre-commit to run code cleanup on Modelica files. The latest prerelease or release is recommended. Once you download the package, place the modelicafmt binary into a folder that is in your path.</p>
 <p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit run --all-files
 </pre></div>
@@ -126,36 +146,25 @@ pre-commit install
 </div>
 <div class="section" id="running-simulations">
 <h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
-<p>Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
-will automatically run the models without having to follow the steps below.</p>
+<p>The GeoJSON to Modelica Translator contains a <code class="code docutils literal notranslate"><span class="pre">ModelicaRunner.run_in_docker(...)</span></code> method. It is recommended
+to use this method in a python script if needed as it will copy the required files into the correct location. If
+desired, a user can run the simulations manually using JModelica (via Docker). Follow the step below to configure
+the runner to work locally.</p>
 <ul>
-<li><p>Clone <a class="reference external" href="https://github.com/lbl-srg/docker-ubuntu-jmodelica">https://github.com/lbl-srg/docker-ubuntu-jmodelica</a> and follow the set up instructions</p></li>
+<li><p>Make sure jm_ipython.sh is in your local path.</p></li>
+<li><p>After running the <code class="code docutils literal notranslate"><span class="pre">py.test</span></code>, go into the <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/modelica/lib/runner/</span></code> directory.</p></li>
+<li><p>Copy <code class="code docutils literal notranslate"><span class="pre">jmodelica.py</span></code> to the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory.</p></li>
 <li><dl class="simple">
-<dt>Clone <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">https://github.com/lbl-srg/modelica-buildings/</a></dt><dd><ul class="simple">
-<li><p>Move insde the modelica-buildings repo you just checked out</p></li>
-<li><p>Pull the correct branch with: <code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">issue1437_district_heating_cooling</span></code></p></li>
-<li><dl class="simple">
-<dt>Install git-lfs</dt><dd><ul>
-<li><p>Mac: <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
-<li><p>Ubuntu: <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
+<dt>From the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory, run examples using either of the the following:</dt><dd><ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo</span></code></p></li>
+<li><p>The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).</p></li>
-<li><dl class="simple">
-<dt>Example simulation:</dt><dd><ul class="simple">
-<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo</span></code></p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>Visualize the results by inspecting the resulting mat file using BuildingsPy.</p>
+<li><p>Install matplotlib package. <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">matplotlib</span></code></p></li>
+<li><p>Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.</p>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -164,15 +173,15 @@ will automatically run the models without having to follow the steps below.</p>
 <span class="kn">from</span> <span class="nn">buildingspy.io.outputfile</span> <span class="kn">import</span> <span class="n">Reader</span>
 
 <span class="n">mat</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;model_connectors&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;spawn_two_building_Loads_B5a6b99ec37f4de7f94020090_building_result.mat&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;model_connectors&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat&quot;</span><span class="p">),</span>
     <span class="s2">&quot;dymola&quot;</span>
 <span class="p">)</span>
 <span class="c1"># List off all the variables</span>
 <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">varNames</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
-<span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">zn_1_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;znPerimeter_ZN_1.vol.T&quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="n">_time1</span><span class="p">,</span> <span class="n">zn_4_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;znPerimeter_ZN_4.vol.T&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">zn_1_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;bui.znPerimeter_ZN_3.TAir&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">_time1</span><span class="p">,</span> <span class="n">zn_4_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;bui.znPerimeter_ZN_4.TAir&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -185,6 +194,7 @@ will automatically run the models without having to follow the steps below.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">168</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;indoor_temp_example.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -196,7 +206,7 @@ will automatically run the models without having to follow the steps below.</p>
 <div class="section" id="updating-schemas">
 <h3>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Permalink to this headline">¶</a></h3>
 <p>There is managed task to automatically pull updated GeoJSON schemas from the <code class="code docutils literal notranslate"><span class="pre">urbanopt-geojson-gem</span></code> GitHub project. A developer can run this command by calling</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./setup.py update_schemas
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_schemas
 </pre></div>
 </div>
 <p>The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.</p>
@@ -204,7 +214,7 @@ will automatically run the models without having to follow the steps below.</p>
 <div class="section" id="updating-licenses">
 <h3>Updating Licenses<a class="headerlink" href="#updating-licenses" title="Permalink to this headline">¶</a></h3>
 <p>To apply the copyright/license to all the files, run the following managed task</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./setup.py update_licenses
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_licenses
 </pre></div>
 </div>
 </div>
@@ -223,7 +233,7 @@ will automatically run the models without having to follow the steps below.</p>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove old dist packages</span>
 rm -rf dist/*
-python setup.py sdist
+poetry build
 </pre></div>
 </div>
 <ul class="simple">
@@ -231,15 +241,16 @@ python setup.py sdist
 <li><p>Verify that the files in the dist/* folder have the correct version (no dirty, no sha)</p></li>
 <li><p>Run the following to release</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install twine
-twine upload dist/*
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry publish
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Build and release the documentation</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and verify with the following</span>
-python setup.py build_sphinx
+<span class="nb">cd</span> docs
+poetry run make html
+<span class="nb">cd</span> ..
 
 <span class="c1"># release using</span>
 ./docs/publish_docs.sh
@@ -264,7 +275,7 @@ python setup.py build_sphinx
   <h3><a href="#">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">GeoJSON Modelica Translator Documentation</a><ul>
-<li><a class="reference internal" href="#geojson-modelica-translator">GeoJSON Modelica Translator</a></li>
+<li><a class="reference internal" href="#geojson-modelica-translator-gmt">GeoJSON Modelica Translator (GMT)</a></li>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#getting-started">Getting Started</a></li>
 <li><a class="reference internal" href="#running-simulations">Running Simulations</a></li>
@@ -316,7 +327,7 @@ python setup.py build_sphinx
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2020, Alliance for Sustainable Energy, LLC.
+        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

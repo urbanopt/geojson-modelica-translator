@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+plant\_base
+===========
+
+.. automodule:: geojson_modelica_translator.model_connectors.plants.plant_base
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      PlantBase
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+cooling\_indirect
+=================
+
+.. automodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      CoolingIndirect
+   
+   
+
+   
+   
+   
+
+
+

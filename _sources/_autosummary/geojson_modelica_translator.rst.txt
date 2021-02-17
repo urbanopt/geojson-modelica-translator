@@ -33,6 +33,7 @@ geojson\_modelica\_translator
    geojson_modelica_translator.cli
    geojson_modelica_translator.geojson
    geojson_modelica_translator.geojson_modelica_translator
+   geojson_modelica_translator.jinja_filters
    geojson_modelica_translator.model_connectors
    geojson_modelica_translator.modelica
    geojson_modelica_translator.scaffold

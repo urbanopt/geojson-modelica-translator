@@ -1,0 +1,45 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+TimeSeriesMFT
+=============
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.load_connectors.time_series_mft_ets_coupling
+
+.. autoclass:: TimeSeriesMFT
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~TimeSeriesMFT.__init__
+      ~TimeSeriesMFT.add_building
+      ~TimeSeriesMFT.copy_required_mo_files
+      ~TimeSeriesMFT.ft2_to_m2
+      ~TimeSeriesMFT.get_modelica_type
+      ~TimeSeriesMFT.modelica_path
+      ~TimeSeriesMFT.post_process
+      ~TimeSeriesMFT.render_instance
+      ~TimeSeriesMFT.run_template
+      ~TimeSeriesMFT.to_dict
+      ~TimeSeriesMFT.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TimeSeriesMFT.building_name
+      ~TimeSeriesMFT.model_name
+      ~TimeSeriesMFT.simple_gmt_type
+   
+   

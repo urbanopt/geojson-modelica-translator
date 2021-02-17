@@ -1,0 +1,39 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+ModelBase
+=========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.model_base
+
+.. autoclass:: ModelBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ModelBase.__init__
+      ~ModelBase.copy_required_mo_files
+      ~ModelBase.ft2_to_m2
+      ~ModelBase.modelica_path
+      ~ModelBase.render_instance
+      ~ModelBase.run_template
+      ~ModelBase.to_dict
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ModelBase.model_name
+   
+   

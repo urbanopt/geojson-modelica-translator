@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+network\_2\_pipe
+================
+
+.. automodule:: geojson_modelica_translator.model_connectors.networks.network_2_pipe
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      Network2Pipe
+   
+   
+
+   
+   
+   
+
+
+

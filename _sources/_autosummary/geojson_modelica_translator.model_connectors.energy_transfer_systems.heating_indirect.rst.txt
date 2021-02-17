@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+heating\_indirect
+=================
+
+.. automodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      HeatingIndirect
+   
+   
+
+   
+   
+   
+
+
+

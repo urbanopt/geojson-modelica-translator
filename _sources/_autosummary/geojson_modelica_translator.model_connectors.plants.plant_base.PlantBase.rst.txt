@@ -1,0 +1,40 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+PlantBase
+=========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.plants.plant_base
+
+.. autoclass:: PlantBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PlantBase.__init__
+      ~PlantBase.copy_required_mo_files
+      ~PlantBase.ft2_to_m2
+      ~PlantBase.modelica_path
+      ~PlantBase.render_instance
+      ~PlantBase.run_template
+      ~PlantBase.to_dict
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PlantBase.model_name
+      ~PlantBase.simple_gmt_type
+   
+   

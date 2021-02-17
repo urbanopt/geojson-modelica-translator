@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+NetworkHeatedWaterStub
+======================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.networks.network_heated_water_stub
+
+.. autoclass:: NetworkHeatedWaterStub
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NetworkHeatedWaterStub.__init__
+      ~NetworkHeatedWaterStub.copy_required_mo_files
+      ~NetworkHeatedWaterStub.ft2_to_m2
+      ~NetworkHeatedWaterStub.get_modelica_type
+      ~NetworkHeatedWaterStub.modelica_path
+      ~NetworkHeatedWaterStub.render_instance
+      ~NetworkHeatedWaterStub.run_template
+      ~NetworkHeatedWaterStub.to_dict
+      ~NetworkHeatedWaterStub.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NetworkHeatedWaterStub.model_name
+      ~NetworkHeatedWaterStub.simple_gmt_type
+   
+   

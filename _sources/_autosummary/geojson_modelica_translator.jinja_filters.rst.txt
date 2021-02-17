@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+jinja\_filters
+==============
+
+.. automodule:: geojson_modelica_translator.jinja_filters
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      strcat
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

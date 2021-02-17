@@ -1,0 +1,38 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+energy\_transfer\_systems
+=========================
+
+.. automodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect
+   geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base
+   geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub
+   geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub
+   geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect
+

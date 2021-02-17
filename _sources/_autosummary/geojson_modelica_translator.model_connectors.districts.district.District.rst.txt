@@ -1,0 +1,28 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+District
+========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.districts.district
+
+.. autoclass:: District
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~District.__init__
+      ~District.to_modelica
+   
+   
+
+   
+   
+   

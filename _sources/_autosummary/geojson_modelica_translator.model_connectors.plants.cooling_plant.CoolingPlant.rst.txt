@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+CoolingPlant
+============
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.plants.cooling_plant
+
+.. autoclass:: CoolingPlant
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CoolingPlant.__init__
+      ~CoolingPlant.copy_required_mo_files
+      ~CoolingPlant.ft2_to_m2
+      ~CoolingPlant.get_modelica_type
+      ~CoolingPlant.modelica_path
+      ~CoolingPlant.render_instance
+      ~CoolingPlant.run_template
+      ~CoolingPlant.to_dict
+      ~CoolingPlant.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CoolingPlant.model_name
+      ~CoolingPlant.simple_gmt_type
+   
+   

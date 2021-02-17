@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+ets\_hot\_water\_stub
+=====================
+
+.. automodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      EtsHotWaterStub
+   
+   
+
+   
+   
+   
+
+
+

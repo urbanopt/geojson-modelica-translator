@@ -1,0 +1,40 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+EnergyTransferBase
+==================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base
+
+.. autoclass:: EnergyTransferBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EnergyTransferBase.__init__
+      ~EnergyTransferBase.copy_required_mo_files
+      ~EnergyTransferBase.ft2_to_m2
+      ~EnergyTransferBase.modelica_path
+      ~EnergyTransferBase.render_instance
+      ~EnergyTransferBase.run_template
+      ~EnergyTransferBase.to_dict
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EnergyTransferBase.model_name
+      ~EnergyTransferBase.simple_gmt_type
+   
+   

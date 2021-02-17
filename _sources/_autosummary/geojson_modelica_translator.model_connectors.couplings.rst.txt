@@ -1,0 +1,35 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+couplings
+=========
+
+.. automodule:: geojson_modelica_translator.model_connectors.couplings
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   geojson_modelica_translator.model_connectors.couplings.coupling
+   geojson_modelica_translator.model_connectors.couplings.graph
+

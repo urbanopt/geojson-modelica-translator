@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+Network2Pipe
+============
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.networks.network_2_pipe
+
+.. autoclass:: Network2Pipe
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Network2Pipe.__init__
+      ~Network2Pipe.copy_required_mo_files
+      ~Network2Pipe.ft2_to_m2
+      ~Network2Pipe.get_modelica_type
+      ~Network2Pipe.modelica_path
+      ~Network2Pipe.render_instance
+      ~Network2Pipe.run_template
+      ~Network2Pipe.to_dict
+      ~Network2Pipe.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Network2Pipe.model_name
+      ~Network2Pipe.simple_gmt_type
+   
+   

@@ -1,0 +1,33 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+time\_series\_mft\_ets\_coupling
+================================
+
+.. automodule:: geojson_modelica_translator.model_connectors.load_connectors.time_series_mft_ets_coupling
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      TimeSeriesMFT
+   
+   
+
+   
+   
+   
+
+
+

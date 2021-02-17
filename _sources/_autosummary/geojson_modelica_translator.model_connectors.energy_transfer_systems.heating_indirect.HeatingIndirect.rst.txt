@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+HeatingIndirect
+===============
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect
+
+.. autoclass:: HeatingIndirect
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HeatingIndirect.__init__
+      ~HeatingIndirect.copy_required_mo_files
+      ~HeatingIndirect.ft2_to_m2
+      ~HeatingIndirect.get_modelica_type
+      ~HeatingIndirect.modelica_path
+      ~HeatingIndirect.render_instance
+      ~HeatingIndirect.run_template
+      ~HeatingIndirect.to_dict
+      ~HeatingIndirect.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HeatingIndirect.model_name
+      ~HeatingIndirect.simple_gmt_type
+   
+   

@@ -1,0 +1,40 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+district
+========
+
+.. automodule:: geojson_modelica_translator.model_connectors.districts.district
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      render_template
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      District
+   
+   
+
+   
+   
+   
+
+
+

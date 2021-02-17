@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+cooling\_plant
+==============
+
+.. automodule:: geojson_modelica_translator.model_connectors.plants.cooling_plant
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      CoolingPlant
+   
+   
+
+   
+   
+   
+
+
+

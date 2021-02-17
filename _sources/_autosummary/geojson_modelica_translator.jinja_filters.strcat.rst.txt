@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.jinja\_filters.strcat
+===================================================
+
+.. currentmodule:: geojson_modelica_translator.jinja_filters
+
+.. autofunction:: strcat

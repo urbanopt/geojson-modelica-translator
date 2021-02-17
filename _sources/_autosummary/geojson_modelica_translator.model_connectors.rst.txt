@@ -30,12 +30,11 @@ model\_connectors
    :toctree:
    :recursive:
 
-   geojson_modelica_translator.model_connectors.base
-   geojson_modelica_translator.model_connectors.district_system
-   geojson_modelica_translator.model_connectors.spawn
-   geojson_modelica_translator.model_connectors.spawn_ets_coupling
-   geojson_modelica_translator.model_connectors.teaser
-   geojson_modelica_translator.model_connectors.teaser_ets_coupling
-   geojson_modelica_translator.model_connectors.time_series
-   geojson_modelica_translator.model_connectors.time_series_mft_ets_coupling
+   geojson_modelica_translator.model_connectors.couplings
+   geojson_modelica_translator.model_connectors.districts
+   geojson_modelica_translator.model_connectors.energy_transfer_systems
+   geojson_modelica_translator.model_connectors.load_connectors
+   geojson_modelica_translator.model_connectors.model_base
+   geojson_modelica_translator.model_connectors.networks
+   geojson_modelica_translator.model_connectors.plants
 

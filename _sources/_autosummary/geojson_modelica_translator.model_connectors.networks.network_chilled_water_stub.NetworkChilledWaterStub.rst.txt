@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+NetworkChilledWaterStub
+=======================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub
+
+.. autoclass:: NetworkChilledWaterStub
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NetworkChilledWaterStub.__init__
+      ~NetworkChilledWaterStub.copy_required_mo_files
+      ~NetworkChilledWaterStub.ft2_to_m2
+      ~NetworkChilledWaterStub.get_modelica_type
+      ~NetworkChilledWaterStub.modelica_path
+      ~NetworkChilledWaterStub.render_instance
+      ~NetworkChilledWaterStub.run_template
+      ~NetworkChilledWaterStub.to_dict
+      ~NetworkChilledWaterStub.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NetworkChilledWaterStub.model_name
+      ~NetworkChilledWaterStub.simple_gmt_type
+   
+   

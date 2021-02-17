@@ -1,0 +1,42 @@
+﻿..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+CoolingIndirect
+===============
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect
+
+.. autoclass:: CoolingIndirect
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CoolingIndirect.__init__
+      ~CoolingIndirect.copy_required_mo_files
+      ~CoolingIndirect.ft2_to_m2
+      ~CoolingIndirect.get_modelica_type
+      ~CoolingIndirect.modelica_path
+      ~CoolingIndirect.render_instance
+      ~CoolingIndirect.run_template
+      ~CoolingIndirect.to_dict
+      ~CoolingIndirect.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CoolingIndirect.model_name
+      ~CoolingIndirect.simple_gmt_type
+   
+   

@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Overview &#8212; GeoJSON Modelica Translator v0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Design Overview</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="design-overview">
+<h1>Design Overview<a class="headerlink" href="#design-overview" title="Permalink to this headline">¶</a></h1>
+<p>The GMT is designed to create an arbitrary number of user-configured models connected to other user-configured models to represent a district energy system.
+GMT has “building blocks” that it uses to define and connect models, which currently include: Energy Transfer Stations (ETSs), Loads, Networks, and Plants.</p>
+<img alt="_images/models-overview.png" src="_images/models-overview.png" />
+<p>Each block type is a collection of models, e.g. the Loads includes time series and spawn models. A model in GMT refers to an abstracted Modelica model. It generates Modelica code (the Modelica model) and is used to define connections to other models.</p>
+<p>Each block type can “connect” (note this “connect” does not refer to Modelica’s concept of “connect”) to other specific block types. For example, you can connect a load to an ETS, but you cannot connect a load to a network.</p>
+<p>Each block type has a corresponding directory inside of <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/model_connectors</span></code>, which contains its different model types (e.g. for Loads it contains the Time Series model and others).</p>
+<p>Because models are different, even within a block type (e.g. different properties and maybe even ports), the GMT uses the concept of couplings for connecting models. Couplings define how two <em>specific</em> models connect in modelica.
+For example, a coupling could define how the time series load actually connects to the heating indirect ETS.</p>
+<blockquote>
+<div><p>– As an aside, if the GMT reached a point where all models within a block type implemented the same interface then couplings would not be necessary.</p>
+</div></blockquote>
+</div>
+<div class="section" id="adding-new-models">
+<h1>Adding New Models<a class="headerlink" href="#adding-new-models" title="Permalink to this headline">¶</a></h1>
+<p>To add a new model you have to do the following:</p>
+<ol class="arabic simple">
+<li><p>Define the model’s python class: First, create a new python file and class under its respective directory in model_connectors. Follow the patterns of existing classes.</p></li>
+<li><p>Create coupling files: For every model that can be linked to, create a &lt;ModelA&gt;_&lt;ModelB&gt; directory in the couplings directory. The two files ComponentDefinitions.mopt and ConnectStatements.mopt must exist in this directory. See more information on the content of the coupling files below in the <em>Couplings</em> sections.</p></li>
+<li><p>Create the instance file: In the templates directory, you must define &lt;ModelName&gt;_Instance.mopt which is the template that instantiates the system in the district model.</p></li>
+</ol>
+<p>See the notes below for more information.</p>
+</div>
+<div class="section" id="couplings">
+<h1>Couplings<a class="headerlink" href="#couplings" title="Permalink to this headline">¶</a></h1>
+<p>A coupling defines the Modelica code necessary for interfacing two specific models, e.g. a time series load and heating indirect ETS.
+Each coupling is unique in its requirements:</p>
+<ul class="simple">
+<li><p>what additional components are necessary, for example there might be some sensor between system A and B, or maybe B requires a pump when A is a specific model type</p></li>
+<li><p>what ports are connected, for example connecting ports of model A and model B</p></li>
+</ul>
+<p>Thus each coupling must define two template files, ComponentDefinitions.mopt and ConnectStatements.mopt, respectively. These files must be placed in the directory <code class="code docutils literal notranslate"><span class="pre">couplings/templates/&lt;model</span> <span class="pre">A&gt;_&lt;model</span> <span class="pre">B&gt;/</span></code>.
+In general, the order of the names should follow the order of system types if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant)</p>
+</div>
+<div class="section" id="district-system">
+<h1>District system<a class="headerlink" href="#district-system" title="Permalink to this headline">¶</a></h1>
+<p>A district system is the model which incorporates all of the models and their couplings.</p>
+<div class="section" id="templating-flow">
+<h2>Templating Flow<a class="headerlink" href="#templating-flow" title="Permalink to this headline">¶</a></h2>
+<p>When rendering the district system model file, it must:</p>
+<ol class="arabic simple">
+<li><p>call to_modelica() for each model to generate its Modelica code</p></li>
+<li><p>render the coupling partial templates (ie the Modelica code required for couplings)</p></li>
+<li><p>render the model instance definition (ie the Modelica code which instantiates the model)</p></li>
+<li><p>insert the coupling partials and model instance definitions into the district Modelica file</p></li>
+</ol>
+<p>Refer to <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/templates/DistrictEnergySystem.mot">DistrictEnergySystem.mot</a> and <a class="reference internal" href="_autosummary/geojson_modelica_translator.model_connectors.districts.district.District.html#geojson_modelica_translator.model_connectors.districts.district.District" title="geojson_modelica_translator.model_connectors.districts.district.District"><code class="xref py py-meth docutils literal notranslate"><span class="pre">District()</span></code></a> for reference.</p>
+<p>Each templating step has access to a particular set of variables, which is defined below.</p>
+<div class="section" id="summary-of-templating-contexts">
+<h3>Summary of Templating Contexts<a class="headerlink" href="#summary-of-templating-contexts" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="model-definition">
+<h4>Model Definition<a class="headerlink" href="#model-definition" title="Permalink to this headline">¶</a></h4>
+<p>Each model generates one or more Modelica files to define its model. The templating context is implementation dependent, so refer to its <code class="code docutils literal notranslate"><span class="pre">to_modelica()</span></code> method.</p>
+</div>
+<div class="section" id="component-definitions">
+<h4>Component Definitions<a class="headerlink" href="#component-definitions" title="Permalink to this headline">¶</a></h4>
+<p>This is the template which defines new components/variables necessary for a coupling. It has access to:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">globals</span></code>: global variables (those defined in the district.py, such as medium_w = MediumW)</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">coupling</span></code>: contains the coupling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append <code class="code docutils literal notranslate"><span class="pre">coupling.id</span></code> to any variable identifiers to prevent name collisions. For example, instead of just writing <code class="code docutils literal notranslate"><span class="pre">parameter</span> <span class="pre">Modelica.SIunits.MassFlowRate</span> <span class="pre">mDis_flow_nominal</span></code> you should do <code class="code docutils literal notranslate"><span class="pre">parameter</span> <span class="pre">Modelica.SIunits.MassFlowRate</span> <span class="pre">mDis_flow_nominal_{{</span> <span class="pre">coupling.id</span> <span class="pre">}}</span></code> as well as any place where you would reference that variable.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">graph</span></code>: an instance of the CouplingGraph class, where all couplings are located. It can provide useful methods for accessing couplings throughout the entire system. Refer to the python class to see what it can do.</p></li>
+</ul>
+</div>
+<div class="section" id="connect-statements">
+<h4>Connect Statements<a class="headerlink" href="#connect-statements" title="Permalink to this headline">¶</a></h4>
+<p>This is the template which defines connect statements to be inserted into the equation section.</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">globals</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">coupling</span></code>: just like with the component definitions template, you should use the coupling.id to avoid variable name collisions.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">graph</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="model-instance">
+<h4>Model Instance<a class="headerlink" href="#model-instance" title="Permalink to this headline">¶</a></h4>
+<p>This template is used to declare a model instance.</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">globals</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">graph</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">couplings</span></code>: contains each coupling the model is associated with. For example, if our ETS was coupled to a load and network, couplings would look like <code class="code docutils literal notranslate"><span class="pre">{</span> <span class="pre">load_couplings:</span> <span class="pre">[&lt;load</span> <span class="pre">coupling&gt;],</span> <span class="pre">network_couplings:</span> <span class="pre">[&lt;network</span> <span class="pre">coupling&gt;]</span> <span class="pre">}</span></code>. This can be used to access coupling and model ids.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">model</span></code>: contains info about the model instance, including <code class="code docutils literal notranslate"><span class="pre">modelica_type</span></code> and <code class="code docutils literal notranslate"><span class="pre">id</span></code>. These should be used to define the model, for example <code class="code docutils literal notranslate"><span class="pre">{{</span> <span class="pre">model.modelica_type</span> <span class="pre">}}</span> <span class="pre">{{</span> <span class="pre">model.id</span> <span class="pre">}}(...)</span></code></p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Design Overview</a></li>
+<li><a class="reference internal" href="#adding-new-models">Adding New Models</a></li>
+<li><a class="reference internal" href="#couplings">Couplings</a></li>
+<li><a class="reference internal" href="#district-system">District system</a><ul>
+<li><a class="reference internal" href="#templating-flow">Templating Flow</a><ul>
+<li><a class="reference internal" href="#summary-of-templating-contexts">Summary of Templating Contexts</a><ul>
+<li><a class="reference internal" href="#model-definition">Model Definition</a></li>
+<li><a class="reference internal" href="#component-definitions">Component Definitions</a></li>
+<li><a class="reference internal" href="#connect-statements">Connect Statements</a></li>
+<li><a class="reference internal" href="#model-instance">Model Instance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developer_resources.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Design Overview</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+time\_series
+============
+
+.. automodule:: geojson_modelica_translator.model_connectors.load_connectors.time_series
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      TimeSeries
+   
+   
+
+   
+   
+   
+
+
+
