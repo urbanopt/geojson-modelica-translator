@@ -72,7 +72,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         # create cooling network and plant
         cooling_network = Network2Pipe(sys_params)
-        cooling_plant = CoolingPlant(sys_params)
+        cooling_plant = CoolingPlant(sys_params, template_name="OSU_Cooling_Plant")
 
         # create heating network and plant
         heating_network = Network2Pipe(sys_params)

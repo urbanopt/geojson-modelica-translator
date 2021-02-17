@@ -41,10 +41,10 @@ from geojson_modelica_translator.utils import simple_uuid
 class CoolingPlant(PlantBase):
     model_name = 'CoolingPlant'
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, template_name='CentralCoolingPlant'):
         super().__init__(system_parameters)
         self.id = 'cooPla_' + simple_uuid()
-        self.template_name = 'CentralCoolingPlant'  # This is the stem (name only, no suffix) of a template file
+        self.template_name = template_name
 
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParallel.mo'))
