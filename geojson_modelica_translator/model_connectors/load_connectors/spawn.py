@@ -80,6 +80,9 @@ class Spawn(LoadBase):
         hhw_supply_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_hw_supply",
         )
+        hhw_return_temp = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_hw_return",
+        )
 
         # construct the dict to pass into the template
         template_data = {
@@ -103,6 +106,7 @@ class Spawn(LoadBase):
             "thermal_zones_count": len(thermal_zones),
             "nominal_values": {
                     "hhw_supply_temp": hhw_supply_temp,
+                    "hhw_return_temp": hhw_return_temp,
                 },
         }
         for tz in thermal_zones:
