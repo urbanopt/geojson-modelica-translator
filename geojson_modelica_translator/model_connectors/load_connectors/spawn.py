@@ -79,7 +79,7 @@ class Spawn(LoadBase):
         )
         hhw_supply_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_hw_supply",
-        )
+        ) + 273.25
         hhw_return_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_hw_return",
         )
