@@ -50,7 +50,6 @@ class ModelBase(object):
 
         :param system_parameters: SystemParameters object
         """
-        self.buildings = []
         self.system_parameters = system_parameters
 
         # initialize the templating framework (Jinja2)
@@ -78,58 +77,6 @@ class ModelBase(object):
         :param area_in_ft2: Area in square feet to be converted to square meters
         """
         return area_in_ft2 * 0.092936
-
-    def add_building(self, urbanopt_building, mapper=None):
-        """
-        Add building to the translator.
-
-        :param urbanopt_building: an urbanopt_building
-        """
-
-        # TODO: Need to convert units, these should exist on the urbanopt_building object
-        # TODO: Abstract out the GeoJSON functionality
-        if mapper is None:
-            try:
-                building_id = urbanopt_building.feature.properties["id"]
-                building_type = urbanopt_building.feature.properties["building_type"]
-                number_stories = urbanopt_building.feature.properties["number_of_stories"]
-                building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
-            except KeyError as ke:
-                raise SystemExit(f'\nMissing property {ke} in geojson feature file')
-
-            try:
-                number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
-            except KeyError:
-                number_stories_above_ground = number_stories
-                print(f"\nAssuming all building levels are above ground for building_id: {building_id}")
-
-            try:
-                floor_height = urbanopt_building.feature.properties["floor_height"]
-            except KeyError:
-                floor_height = 3  # Default height in meters from sdk
-                print(f"\nNo floor_height found in geojson feature file for building {building_id}. Using default value of {floor_height}")
-
-            # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-            # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
-            try:
-                year_built = urbanopt_building.feature.properties["year_built"]
-                if urbanopt_building.feature.properties["year_built"] > 2015:
-                    year_built = 2015
-            except KeyError:
-                year_built = 2015
-                print(f"No 'year_built' found in geojson feature file for building {building_id}. Using default value of {year_built}")
-
-            self.buildings.append(
-                {
-                    "area": building_floor_area_m2,
-                    "building_id": building_id,
-                    "building_type": building_type,
-                    "floor_height": floor_height,
-                    "num_stories": number_stories,
-                    "num_stories_below_grade": number_stories - number_stories_above_ground,
-                    "year_built": year_built,
-                }
-            )
 
     def copy_required_mo_files(self, dest_folder, within=None):
         """Copy any required_mo_files to the destination and update the within clause if defined. The required mo

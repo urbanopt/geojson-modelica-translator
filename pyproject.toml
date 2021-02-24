@@ -23,7 +23,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.7"
 click = "7.1.2"
-BuildingsPy = "2.0.0"
+BuildingsPy = "2.1.0"
 modelica-builder= "0.1.0"
 geojson = "2.5.0"
 jsonschema = "3.2.0"
