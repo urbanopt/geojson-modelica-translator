@@ -27,8 +27,8 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-from geojson_modelica_translator.model_connectors.couplings.graph import (
-    CouplingGraph
+from geojson_modelica_translator.model_connectors.couplings.diagram import (
+    Diagram
 )
 from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramLine,
@@ -140,7 +140,7 @@ end Simple;"""
         }
 
         # Act
-        diagram_graph = CouplingGraph._diagram_commands_to_graph(
+        diagram_graph = Diagram._diagram_commands_to_graph(
             diagram_commands_by_id,
             couplings
         )
@@ -213,7 +213,7 @@ end Simple;"""
         }
 
         # Act
-        diagram_graph = CouplingGraph._diagram_commands_to_graph(
+        diagram_graph = Diagram._diagram_commands_to_graph(
             diagram_commands_by_id,
             couplings
         )
