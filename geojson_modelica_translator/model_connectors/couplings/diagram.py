@@ -113,7 +113,7 @@ class Diagram:
 
             self._current_x = (self._current_x + self.icon_size + self.icon_padding) % self.grid_size
             if self._current_x == 0:
-                self._current_y += self.icon_size
+                self._current_y += self.icon_size + self.icon_padding
 
         return {
             'transformation': transformations,
