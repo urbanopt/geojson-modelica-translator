@@ -30,6 +30,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
+from geojson_modelica_translator.model_connectors.couplings.diagram import (
+    Diagram
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -77,7 +80,7 @@ class District:
 
         # construct graph of visual components
         # TODO: use the diagram graph to determine icon and line placements before passing to templates
-        _ = self._coupling_graph.get_diagram_graph()
+        diagram = Diagram(self._coupling_graph)
 
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
@@ -96,7 +99,11 @@ class District:
         }
         # render each coupling
         for coupling in self._coupling_graph.couplings:
-            templated_result = coupling.render_templates(common_template_params)
+            template_context = {
+                'diagram': diagram.to_dict(coupling.id),
+            }
+            template_context.update(**common_template_params)
+            templated_result = coupling.render_templates(template_context)
             district_template_params['couplings'].append({
                 'id': coupling.id,
                 'component_definitions': templated_result['component_definitions'],
@@ -110,6 +117,7 @@ class District:
             template_params = {
                 'model': model.to_dict(self._scaffold),
                 'couplings': self._coupling_graph.couplings_by_type(model.id),
+                'diagram': diagram.to_dict(model.id),
             }
             template_params.update(**common_template_params)
             templated_instance, instance_template_path = model.render_instance(template_params)

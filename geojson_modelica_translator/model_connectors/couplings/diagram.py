@@ -28,6 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 from collections import defaultdict
+from string import Template
 
 from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramLine,
@@ -37,8 +38,87 @@ from geojson_modelica_translator.model_connectors.couplings.utils import (
 
 
 class Diagram:
+    grid_size = 200
+    icon_size = 20
+    icon_padding = icon_size
+
     def __init__(self, coupling_graph):
         self._initial_diagram_graph = self._parse_coupling_graph(coupling_graph)
+
+        # TODO: organize diagram rather than using x, y coords for placing
+        # track coordinates, with 0,0 at top left, coords increasing moving down and right
+        self._current_x, self._current_y = 0, 0
+
+    def to_dict(self, id):
+        """Get the diagram as a dictionary, to be used for templating for model
+        instances or couplings.
+
+        :param id: str, model or coupling ID to get the dictionary for
+
+        {
+            'transformation': {
+                '<model name>': {
+                    '<model type>': 'transformation(extent={{0,-10},{20,10}})'
+                }
+            },
+            'line': {
+                '<model A name>': {
+                    '<model A port>': {
+                        'model B name': {
+                            'model B port': 'Line(points={{21,0},{46,0}},color={0,0,127})'
+                        }
+                    }
+                }
+            }
+        }
+        """
+        if id not in self._initial_diagram_graph:
+            return {'transformation': {}, 'line': {}}
+
+        def translate_x(pos):
+            # translate from origin at upper left of grid to center of grid
+            return pos - (self.grid_size / 2)
+
+        def translate_y(pos):
+            return (self.grid_size / 2) - pos
+
+        transformations = defaultdict(dict)
+        lines = defaultdict(dict)
+        transformation_template = Template('transformation(extent={{$x1,$y1},{$x2,$y2}})')
+        line_template = Template('Line(points={{21,0},{46,0}},color={0,0,127})')
+        for component_name, details in self._initial_diagram_graph[id].items():
+            # x1, y1 is lower left of icon, x2, y2 is upper right
+            coords = {
+                'x1': translate_x(self._current_x),
+                'y1': translate_y(self._current_y + self.icon_size),
+                'x2': translate_x(self._current_x + self.icon_size),
+                'y2': translate_y(self._current_y),
+            }
+            transformations[component_name][details['type']] = transformation_template.substitute(coords)
+
+            for component_port, other_components in details['edges'].items():
+                for other_component in other_components:
+                    _, other_name, other_port = other_component
+                    line = line_template.substitute()
+                    if component_port not in lines[component_name]:
+                        lines[component_name][component_port] = {
+                            other_name: {
+                                other_port: line
+                            }
+                        }
+                    else:
+                        lines[component_name][component_port][other_name] = {
+                            other_port: line
+                        }
+
+            self._current_x = (self._current_x + self.icon_size + self.icon_padding) % self.grid_size
+            if self._current_x == 0:
+                self._current_y += self.icon_size
+
+        return {
+            'transformation': transformations,
+            'line': lines,
+        }
 
     @classmethod
     def _parse_coupling_graph(cls, coupling_graph):
