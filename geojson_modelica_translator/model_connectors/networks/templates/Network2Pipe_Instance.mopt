@@ -31,4 +31,4 @@
     final allowFlowReversal=false,
     dpDis_nominal=dpDis_nominal_{{ model.id }})
     "Distribution network."
-    {% raw %}annotation (Placement(transformation(extent={{16,20},{44,32}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.two_pipe.network }}));
