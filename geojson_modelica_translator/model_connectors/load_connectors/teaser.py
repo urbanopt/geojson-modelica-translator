@@ -451,25 +451,25 @@ class Teaser(LoadBase):
                     "path": os.path.dirname(mos_weather_filename),
                 },
                 "nominal_values": {
-                    # Adding 273.25 to convert from C to K (for absolute temps, not relative temps)
+                    # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
                     "chw_supply_temp": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_chw_supply"
-                    ) + 273.25,
+                    ) + 273.15,
                     "chw_return_temp": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_chw_return"
-                    ) + 273.25,
+                    ) + 273.15,
                     "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_hw_supply"
-                    ) + 273.25,
+                    ) + 273.15,
                     "hhw_return_temp": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_hw_return"
-                    ) + 273.25,
+                    ) + 273.15,
                     "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
-                    ) + 273.25,
+                    ) + 273.15,
                     "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
-                    ) + 273.25
+                    ) + 273.15
                 }
             }
 
