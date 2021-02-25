@@ -64,6 +64,7 @@ class LoadBase(ModelBase):
         # TODO: We should require a sys-param file. Then we'll need to change the tests, and drop this if statement.
         if system_parameters is not None:
             self.ets_template_data = {
+                # Adding 273.25 to convert from C to K (for absolute temps, not relative temps)
                 "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect.heat_flow_nominal"
                 ),
@@ -87,16 +88,16 @@ class LoadBase(ModelBase):
                 ),
                 "cooling_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_district"
-                ),
+                ) + 273.25,
                 "cooling_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
-                ),
+                ) + 273.25,
                 "heating_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_district"
-                ),
+                ) + 273.25,
                 "heating_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
-                ),
+                ) + 273.25,
                 "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect.delta_temp_chw_building"
                 ),
