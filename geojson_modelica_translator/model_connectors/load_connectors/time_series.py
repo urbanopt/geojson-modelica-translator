@@ -98,6 +98,12 @@ class TimeSeries(LoadBase):
                 ) + 273.25,
                 "temp_cooling_water_return": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.temp_chw_return"
+                ) + 273.25,
+                "temp_heating_water_supply": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_hw_supply"
+                ) + 273.25,
+                "temp_heating_water_return": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_hw_return"
                 ) + 273.25
             }
         }
