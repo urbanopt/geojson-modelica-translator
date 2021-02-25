@@ -77,6 +77,18 @@ class Spawn(LoadBase):
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
+        hhw_supply_temp = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_hw_supply",
+        )+273.25
+        hhw_return_temp = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_hw_return",
+        )+273.25
+        chw_supply_temp = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_chw_supply",
+        )+273.25
+        chw_return_temp = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_chw_return",
+        )+273.25
 
         # construct the dict to pass into the template
         template_data = {
@@ -98,6 +110,12 @@ class Spawn(LoadBase):
             },
             "thermal_zones": [],
             "thermal_zones_count": len(thermal_zones),
+            "nominal_values": {
+                    "hhw_supply_temp": hhw_supply_temp,
+                    "hhw_return_temp": hhw_return_temp,
+                    "chw_supply_temp": chw_supply_temp,
+                    "chw_return_temp": chw_return_temp,
+                },
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
