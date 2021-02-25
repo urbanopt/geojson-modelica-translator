@@ -469,64 +469,7 @@ class Teaser(LoadBase):
                     ) + 273.25,
                     "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
                         self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
-                    ) + 273.25,
-                    "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_flow_nominal"
-                    ),
-                    "heat_exchanger_efficiency": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_exchanger_efficiency"
-                    ),
-                    "nominal_mass_flow_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.nominal_mass_flow_district"
-                    ),
-                    "nominal_mass_flow_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.nominal_mass_flow_building"
-                    ),
-                    "valve_pressure_drop": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.valve_pressure_drop"
-                    ),
-                    "heat_exchanger_secondary_pressure_drop": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_exchanger_secondary_pressure_drop"
-                    ),
-                    "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_exchanger_primary_pressure_drop"
-                    ),
-                    "cooling_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_district"
-                    ),
-                    "cooling_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
-                    ),
-                    "heating_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_district"
-                    ),
-                    "heating_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
-                    ),
-                    "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_chw_building"
-                    ),
-                    "delta_temp_chw_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_chw_district"
-                    ),
-                    "delta_temp_hw_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_hw_building"
-                    ),
-                    "delta_temp_hw_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_hw_district"
-                    ),
-                    "cooling_controller_y_max": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_controller_y_max"
-                    ),
-                    "cooling_controller_y_min": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_controller_y_min"
-                    ),
-                    "heating_controller_y_max": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_controller_y_max"
-                    ),
-                    "heating_controller_y_min": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_controller_y_min"
-                    ),
+                    ) + 273.25
                 }
             }
 
@@ -535,7 +478,7 @@ class Teaser(LoadBase):
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data={**template_data, **self.ets_template_data}
         )
 
         self.run_template(
@@ -543,7 +486,7 @@ class Teaser(LoadBase):
             os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data  # AA added 9/14
+            data={**template_data, **self.ets_template_data}
         )
 
         full_model_name = os.path.join(

@@ -59,6 +59,70 @@ class LoadBase(ModelBase):
         self.building_id = geojson_load.feature.properties["id"]
         self.building = self.add_building(geojson_load)
 
+        # This ets_template_data gets added to load data when the template is run
+        # If statement needed solely for tests to pass.
+        # TODO: We should require a sys-param file. Then we'll need to change the tests, and drop this if statement.
+        if system_parameters is not None:
+            self.ets_template_data = {
+                "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heat_flow_nominal"
+                ),
+                "heat_exchanger_efficiency": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heat_exchanger_efficiency"
+                ),
+                "nominal_mass_flow_district": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.nominal_mass_flow_district"
+                ),
+                "nominal_mass_flow_building": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.nominal_mass_flow_building"
+                ),
+                "valve_pressure_drop": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.valve_pressure_drop"
+                ),
+                "heat_exchanger_secondary_pressure_drop": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heat_exchanger_secondary_pressure_drop"
+                ),
+                "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heat_exchanger_primary_pressure_drop"
+                ),
+                "cooling_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_district"
+                ),
+                "cooling_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
+                ),
+                "heating_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_district"
+                ),
+                "heating_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
+                ),
+                "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.delta_temp_chw_building"
+                ),
+                "delta_temp_chw_district": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.delta_temp_chw_district"
+                ),
+                "delta_temp_hw_building": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.delta_temp_hw_building"
+                ),
+                "delta_temp_hw_district": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.delta_temp_hw_district"
+                ),
+                "cooling_controller_y_max": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.cooling_controller_y_max"
+                ),
+                "cooling_controller_y_min": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.cooling_controller_y_min"
+                ),
+                "heating_controller_y_max": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heating_controller_y_max"
+                ),
+                "heating_controller_y_min": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "ets_model_parameters.indirect.heating_controller_y_min"
+                )
+            }
+
     def add_building(self, urbanopt_building, mapper=None):
         """
         Add building to the load to be translated. This is simply a helper method.

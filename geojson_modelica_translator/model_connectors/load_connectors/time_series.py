@@ -101,9 +101,6 @@ class TimeSeries(LoadBase):
                 ) + 273.25,
                 "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.temp_hw_supply"
-                ) + 273.25,
-                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.temp_hw_return"
                 ) + 273.25
             }
         }
@@ -119,7 +116,7 @@ class TimeSeries(LoadBase):
             save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data={**template_data, **self.ets_template_data}
         )
 
         # run post process to create the remaining project files for this building
