@@ -72,7 +72,7 @@ class TimeSeries(LoadBase):
 
         # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
         # used. The `nominal_values` are only used when the time series is coupled to an ETS system.
-        template_data = {
+        building_template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "time_series": {
                 "filepath": time_series_filename,
@@ -105,6 +105,12 @@ class TimeSeries(LoadBase):
             }
         }
 
+        # We expect AttributeError only in cases where there is no ets
+        try:
+            combined_template_data = {**building_template_data, **self.ets_template_data}
+        except AttributeError:
+            combined_template_data = building_template_data
+
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
         new_file = os.path.join(b_modelica_path.resources_dir, os.path.basename(time_series_filename))
@@ -116,7 +122,7 @@ class TimeSeries(LoadBase):
             save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data={**template_data, **self.ets_template_data}
+            data=combined_template_data
         )
 
         # run post process to create the remaining project files for this building
