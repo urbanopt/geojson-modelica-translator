@@ -65,6 +65,7 @@ class Spawn(LoadBase):
 
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier and respect the defaults
+
         idf_filename = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.idf_filename"
         )
@@ -77,18 +78,25 @@ class Spawn(LoadBase):
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
+        # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
         hhw_supply_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_hw_supply",
-        )+273.25
+        )+273.15
         hhw_return_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_hw_return",
-        )+273.25
+        )+273.15
         chw_supply_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_chw_supply",
-        )+273.25
+        )+273.15
         chw_return_temp = self.system_parameters.get_param_by_building_id(
                 self.building_id, "load_model_parameters.spawn.temp_chw_return",
-        )+273.25
+        )+273.15
+        temp_setpoint_cooling = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
+        )+273.15
+        temp_setpoint_heating = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
+        )+273.15
 
         # construct the dict to pass into the template
         template_data = {
@@ -115,6 +123,8 @@ class Spawn(LoadBase):
                     "hhw_return_temp": hhw_return_temp,
                     "chw_supply_temp": chw_supply_temp,
                     "chw_return_temp": chw_return_temp,
+                    "temp_setpoint_heating": temp_setpoint_heating,
+                    "temp_setpoint_cooling": temp_setpoint_cooling,
                 },
         }
         for tz in thermal_zones:
