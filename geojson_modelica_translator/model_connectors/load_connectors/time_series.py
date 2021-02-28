@@ -72,7 +72,7 @@ class TimeSeries(LoadBase):
 
         # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
         # used. The `nominal_values` are only used when the time series is coupled to an ETS system.
-        template_data = {
+        building_template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "time_series": {
                 "filepath": time_series_filename,
@@ -80,11 +80,36 @@ class TimeSeries(LoadBase):
                 "path": os.path.dirname(time_series_filename),
             },
             "nominal_values": {
+                # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
                 "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
-                )
+                ),
+                "delta_temp_air_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.delta_temp_air_heating"
+                ),
+                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
+                ) + 273.15,
+                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_setpoint_cooling"
+                ) + 273.15,
+                "chw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_chw_supply"
+                ) + 273.15,
+                "chw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_chw_return"
+                ) + 273.15,
+                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_hw_supply"
+                ) + 273.15
             }
         }
+
+        # We expect AttributeError only in cases where there is no ets
+        try:
+            combined_template_data = {**building_template_data, **self.ets_template_data}
+        except AttributeError:
+            combined_template_data = building_template_data
 
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
@@ -97,7 +122,7 @@ class TimeSeries(LoadBase):
             save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         # run post process to create the remaining project files for this building
