@@ -10,7 +10,7 @@ model building
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
-  parameter Integer nZon=5
+  parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of conditioned thermal zones";
   parameter Integer facSca[nZon]=fill(
     5,
