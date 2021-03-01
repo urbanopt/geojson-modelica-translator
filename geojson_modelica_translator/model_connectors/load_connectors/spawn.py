@@ -162,13 +162,18 @@ class Spawn(LoadBase):
         else:
             raise Exception(
                 f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+        # We expect AttributeError if there is no ets defined in sys-param file
+        try:
+            combined_template_data = {**template_data, **self.ets_template_data}
+        except AttributeError:
+            combined_template_data = template_data
 
         self.run_template(
             spawn_building_template,
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         full_model_name = os.path.join(
@@ -186,7 +191,7 @@ class Spawn(LoadBase):
             os.path.join(b_modelica_path.files_dir, "coupling.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         # Copy the required modelica files
