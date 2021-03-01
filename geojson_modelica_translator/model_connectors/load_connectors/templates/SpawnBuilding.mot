@@ -102,7 +102,7 @@ model building
   Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum3(
     nin=2) if have_pum
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
+  Buildings.Experimental.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
     each T_aChiWat_nominal=T_aChiWat_nominal,
     each T_bChiWat_nominal=T_bChiWat_nominal,
     redeclare each final package Medium1=MediumW,
@@ -112,7 +112,7 @@ model building
     final facSca=facSca,
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
-    each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
+    each T_aLoaHea_nominal=20+273.15,
     each T_aLoaCoo_nominal=24+273.15,
     each T_bHeaWat_nominal=T_bHeaWat_nominal,
     each T_aHeaWat_nominal=T_aHeaWat_nominal,
@@ -120,7 +120,7 @@ model building
     final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
     "Terminal unit"
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
-  {% raw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
+  Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
       terUni.mHeaWat_flow_nominal .* terUni.facSca),
