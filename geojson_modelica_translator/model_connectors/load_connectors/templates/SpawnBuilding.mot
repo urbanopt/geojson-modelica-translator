@@ -54,7 +54,7 @@ model building
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
-  //Set these based on cooling and heating setpoints for now based on current parameters in schema.
+  // Set these based on cooling and heating setpoints for now based on current parameters in schema.
   {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     {% endraw %}k=fill(
       {{ data["nominal_values"]["temp_setpoint_heating"] }},
