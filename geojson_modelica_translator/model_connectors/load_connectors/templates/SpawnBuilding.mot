@@ -54,6 +54,7 @@ model building
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
+  //Set these based on cooling and heating setpoints for now based on current parameters in schema.
   {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     {% endraw %}k=fill(
       {{ data["nominal_values"]["temp_setpoint_heating"] }},
@@ -61,11 +62,10 @@ model building
     {% raw %} "Minimum temperature setpoint"
     annotation (Placement(transformation(extent={{-220,60},{-200,80}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
-    // TODO: Dehardcode
-    k=fill(
-      24+273.15,
+    {% endraw %}k=fill(
+      {{ data["nominal_values"]["temp_setpoint_cooling"] }},
       nZon))
-    "Maximum temperature setpoint"
+    {% raw %} "Maximum temperature setpoint"
     annotation (Placement(transformation(extent={{-220,20},{-200,40}})));
   Modelica.Blocks.Sources.Constant qConGai_flow(
     k=0)
@@ -112,9 +112,9 @@ model building
     final facSca=facSca,
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
-    each T_aLoaHea_nominal=293.15,
-    each T_aLoaCoo_nominal=297.15,
-    each T_bHeaWat_nominal=T_bHeaWat_nominal,
+    {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
+    each T_aLoaCoo_nominal={{ data["nominal_values"]["temp_setpoint_cooling"] }},
+    {% raw %}each T_bHeaWat_nominal=T_bHeaWat_nominal,
     each T_aHeaWat_nominal=T_aHeaWat_nominal,
     final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
     final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
