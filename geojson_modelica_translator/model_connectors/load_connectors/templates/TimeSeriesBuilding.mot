@@ -94,16 +94,16 @@ within {{ project_name }}.Loads.{{ model_name }};
     smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1)
     "Reader for thermal loads (y[1] is cooling load, y[2] is heating load)"
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
-    k=293.15,
-    y(
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
+    k={{ data['nominal_values']['temp_setpoint_heating']  }},
+    {% raw %}y(
       final unit="K",
       displayUnit="degC"))
     "Minimum temperature set point"
     annotation (Placement(transformation(extent={{-280,170},{-260,190}})));
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
-    k=297.15,
-    y(
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
+    k={{ data['nominal_values']['temp_setpoint_cooling']  }},
+    {% raw %}y(
       final unit="K",
       displayUnit="degC"))
     "Maximum temperature set point"
