@@ -76,7 +76,7 @@ class LoadBase(ModelBase):
                 number_stories = urbanopt_building.feature.properties["number_of_stories"]
                 building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
             except KeyError as ke:
-                raise SystemExit(f'\nMissing property {ke} in geojson feature file')
+                raise SystemExit(f'\nMissing property {ke} for building {self.building_id} in geojson feature file')
 
             try:
                 number_stories_above_ground = urbanopt_building.feature.properties["number_of_stories_above_ground"]
