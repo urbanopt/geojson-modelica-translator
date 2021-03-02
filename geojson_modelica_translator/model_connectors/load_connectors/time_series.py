@@ -105,9 +105,11 @@ class TimeSeries(LoadBase):
             }
         }
 
-        # We expect AttributeError only in cases where there is no ets
+        # merge ets template values from load_base.py into the building nominal values
+        # If there is no ets defined in sys-param file, use the building template data alone
         try:
-            combined_template_data = {**building_template_data, **self.ets_template_data}
+            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            combined_template_data = {**building_template_data, **nominal_values}
         except AttributeError:
             combined_template_data = building_template_data
 
