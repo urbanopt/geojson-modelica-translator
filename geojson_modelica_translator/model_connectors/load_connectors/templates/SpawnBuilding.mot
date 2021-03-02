@@ -113,7 +113,7 @@ model building
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
     {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
-    {% raw %}each T_aLoaCoo_nominal=293.15,
+    {% raw %}each T_aLoaCoo_nominal=297.15,
     each T_bHeaWat_nominal=T_bHeaWat_nominal,
     each T_aHeaWat_nominal=T_aHeaWat_nominal,
     final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
