@@ -99,7 +99,7 @@ class Spawn(LoadBase):
         )+273.15
 
         # construct the dict to pass into the template
-        template_data = {
+        building_template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "idf": {
                 "idf_filename": idf_filename,
@@ -130,44 +130,46 @@ class Spawn(LoadBase):
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
-            template_data["thermal_zones"].append(
+            building_template_data["thermal_zones"].append(
                 {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
             )
 
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
-        if os.path.exists(template_data["idf"]["idf_filename"]):
+        if os.path.exists(building_template_data["idf"]["idf_filename"]):
             shutil.copy(
-                template_data["idf"]["idf_filename"],
+                building_template_data["idf"]["idf_filename"],
                 os.path.join(
                     b_modelica_path.resources_dir,
-                    template_data["idf"]["filename"],
+                    building_template_data["idf"]["filename"],
                 ),
             )
         else:
             raise Exception(
-                f"Missing IDF file for Spawn: {template_data['idf']['idf_filename']}"
+                f"Missing IDF file for Spawn: {building_template_data['idf']['idf_filename']}"
             )
 
-        if os.path.exists(template_data["epw"]["epw_filename"]):
-            shutil.copy(template_data["epw"]["epw_filename"],
-                        os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
+        if os.path.exists(building_template_data["epw"]["epw_filename"]):
+            shutil.copy(building_template_data["epw"]["epw_filename"],
+                        os.path.join(b_modelica_path.resources_dir, building_template_data["epw"]["filename"]))
         else:
-            raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
+            raise Exception(f"Missing EPW file for Spawn: {building_template_data['epw']['epw_filename']}")
 
-        if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+        if os.path.exists(building_template_data["mos_weather"]["mos_weather_filename"]):
             shutil.copy(
-                template_data["mos_weather"]["mos_weather_filename"],
-                os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                building_template_data["mos_weather"]["mos_weather_filename"],
+                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"])
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
-        # We expect AttributeError if there is no ets defined in sys-param file
+                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
+        # merge ets template values from load_base.py into the building nominal values
+        # If there is no ets defined in sys-param file, use the building template data alone
         try:
-            combined_template_data = {**template_data, **self.ets_template_data}
+            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            combined_template_data = {**building_template_data, **nominal_values}
         except AttributeError:
-            combined_template_data = template_data
+            combined_template_data = building_template_data
 
         self.run_template(
             spawn_building_template,
