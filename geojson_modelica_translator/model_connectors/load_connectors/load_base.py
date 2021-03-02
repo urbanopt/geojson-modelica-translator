@@ -127,6 +127,12 @@ class LoadBase(ModelBase):
                         self.building_id, "ets_model_parameters.indirect.heating_controller_y_min"
                     )
                 }
+            else:
+                # If no ets, use default values from gmt/system_parameters/schema.json
+                # TODO: If we end up having a bunch of these, we should probably pull the values from the schema
+                # itself, instead of duplicating them here in hardcode.
+                self.ets_template_data = {}
+                self.ets_template_data['delta_temp_chw_building'] = 5
 
     def add_building(self, urbanopt_building, mapper=None):
         """

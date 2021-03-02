@@ -1,12 +1,12 @@
 within {{project_name}}.Loads.{{model_name}};
-model coupling
+{% raw %}model coupling
   "Example illustrating the coupling of TEASER building loads with infinite heating and cooling sources with no ETS"
   extends Modelica.Icons.Example;
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   package MediumW=Buildings.Media.Water
     "Source side medium";
-  {% raw %}building bui(
+  building bui(
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
