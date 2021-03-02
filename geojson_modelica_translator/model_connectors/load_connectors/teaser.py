@@ -344,8 +344,8 @@ class Teaser(LoadBase):
                 thermal_zone_name = 'thermalZoneFourElements'
 
             if thermal_zone_name is not None and thermal_zone_type is not None:
-                # add TAir output
-                # This has been moved away from the other insert_component blocks to use thermal_zone_name
+                # add TAir output - This has been moved away from the other insert_component blocks
+                # to use thermal_zone_name
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
                     modifications={
@@ -357,6 +357,46 @@ class Teaser(LoadBase):
                     string_comment='Room air temperature',
                     annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
                 )
+
+                # In TEASER 0.7.5 the hConvWinOut, hConvExt, hConvWin, hConvInt, hConvFloor, hConvRoof in various of
+                # the ReducedOrder models should be hCon* not hConv*. This has been fixed on the development branch
+                # of TEASER, but the team doesn't appear to be releasing nor merging the development branch (yet).
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
+                    "eqAirTemp",
+                    "hConvWallOut",
+                    "hConWallOut"
+                )
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
+                    "eqAirTemp",
+                    "hConvWinOut",
+                    "hConWinOut"
+                )
+
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007",
+                    "eqAirTempVDI",
+                    "hConvWallOut",
+                    "hConWallOut"
+                )
+
+                renames = {
+                    "hConvExt": "hConExt",
+                    "hConvFloor": "hConFloor",
+                    "hConvRoof": "hConRoof",
+                    "hConvWinOut": "hConWinOut",
+                    "hConvWin": "hConWin",
+                    "hConvInt": "hConInt",
+                }
+                for from_, to_ in renames.items():
+                    mofile.rename_component_argument(
+                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
+                        thermal_zone_name,
+                        from_,
+                        to_
+                    )
+
                 mofile.update_component_modifications(
                     f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                     thermal_zone_name,
