@@ -13,14 +13,14 @@ within {{ project_name }}.Loads.{{ model_name }};
   package MediumW=Buildings.Media.Water
     "Water medium";
   {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
-    "Library path of the file with loads as time series";
-  {% raw %}parameter Modelica.SIunits.Temperature T_aHeaWat_nominal=273.15+40
-    "Heating water inlet temperature at nominal conditions"
+    {% raw %} "Library path of the file with loads as time series";
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
+    {% raw %} "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
+  {% endraw %}parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
     min=273.15,
     displayUnit="degC")=T_aHeaWat_nominal-5
-    "Heating water outlet temperature at nominal conditions"
+    {% raw %} "Heating water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
   {% endraw %}parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     {% raw %} "Chilled water inlet temperature at nominal conditions "
