@@ -3,18 +3,24 @@ name = "geojson-modelica-translator"
 version = "0.2.1"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["Nicholas Long <nicholas.long@nrel.gov>"]
-repository = "https://github.com/urbanopt/geojson_modelica_translator"
-classifiers = [
-        "Development Status :: 4 - Beta",
-        "Environment :: Console",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "Topic :: Scientific/Engineering",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-    ]
+license = "BSD3"
 
+readme = "README.rst"
+
+homepage = "https://docs.urbanopt.net"
+repository = "https://github.com/urbanopt.com/geojson_modelica_translator"
+documentation = "https://docs.urbanopt.net/geojson-modelica-translator/"
+keywords = ["URBANopt", "Modelica", "GeoJSON", "Physics-based Modeling"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+]
 packages = [
     { include = "management" },
     { include = "geojson_modelica_translator"}
