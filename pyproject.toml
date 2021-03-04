@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "GeoJSON Modelica Translator"
+name = "geojson-modelica-translator"
 version = "0.2.1"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["Nicholas Long <nicholas.long@nrel.gov>"]
@@ -24,12 +24,14 @@ packages = [
 python = "^3.7"
 click = "7.1.2"
 BuildingsPy = "2.1.0"
-modelica-builder= "0.1.0"
+modelica-builder= "0.1.1"
+#modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 geojson = "2.5.0"
 jsonschema = "3.2.0"
 requests = "2.25.1"
 jsonpath-ng = "1.5.2"
-teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
+teaser = "0.7.5"
+#teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "1.5.4"
