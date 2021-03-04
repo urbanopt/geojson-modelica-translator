@@ -8,7 +8,7 @@ license = "BSD3"
 readme = "README.rst"
 
 homepage = "https://docs.urbanopt.net"
-repository = "https://github.com/urbanopt.com/geojson_modelica_translator"
+repository = "https://github.com/urbanopt/geojson-modelica-translator"
 documentation = "https://docs.urbanopt.net/geojson-modelica-translator/"
 keywords = ["URBANopt", "Modelica", "GeoJSON", "Physics-based Modeling"]
 classifiers = [
