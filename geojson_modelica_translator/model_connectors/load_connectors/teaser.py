@@ -31,6 +31,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import glob
 import os
 import shutil
+from os import fdopen, remove
+from shutil import copymode, move
+from tempfile import mkstemp
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
@@ -140,9 +143,30 @@ class Teaser(LoadBase):
 
         self.post_process(scaffold, keep_original_models=keep_original_models)
 
-    def post_process(self, scaffold, keep_original_models=False):
+    def fix_gains_file(self, f):
+        """Temporary hack to fix the gains files in TEASER. This method does the following:
+            * makes the dimension of the matrix to 8761,4
+            * addes in a timestep for t=0
+
+        :param f: string, fully qualified path to file
+        :return: None
         """
-        Cleanup the export of the TEASER files into a format suitable for the district-based analysis.
+        fh, abs_path = mkstemp()  # make a temp file
+        with fdopen(fh, 'w') as new_file:
+            with open(f) as old_file:
+                for line in old_file:
+                    if "double Internals(8760, 19)" in line:
+                        new_file.write("double Internals(8761, 4)\n")
+                    elif line.startswith("3600\t"):
+                        new_file.write(line.replace('3600\t', '0\t') + line)
+                    else:
+                        new_file.write(line)
+        copymode(f, abs_path)  # copies permissions
+        remove(f)
+        move(abs_path, f)
+
+    def post_process(self, scaffold, keep_original_models=False):
+        """Cleanup the export of the TEASER files into a format suitable for the district-based analysis.
         This includes the following:
 
             * Update the partial to inherit from the GeojsonExport class defined in MBL.
@@ -192,6 +216,12 @@ class Teaser(LoadBase):
         for f in mat_files:
             new_file_name = os.path.basename(f).replace(self.building_name, "")
             os.rename(f, f"{b_modelica_path.resources_dir}/{new_file_name}")
+
+            # The main branch of teaser has yet to merge in the changes to support the fixes to the
+            # internal gain files. The next method can be removed once the TEASER development branch is
+            # merged into master/main and released.
+            self.fix_gains_file(f"{b_modelica_path.resources_dir}/{new_file_name}")
+
             string_replace_list.append(
                 (
                     f"Project/{self.building_name}/{self.building_name}_Models/{os.path.basename(f)}",
@@ -344,8 +374,8 @@ class Teaser(LoadBase):
                 thermal_zone_name = 'thermalZoneFourElements'
 
             if thermal_zone_name is not None and thermal_zone_type is not None:
-                # add TAir output
-                # This has been moved away from the other insert_component blocks to use thermal_zone_name
+                # add TAir output - This has been moved away from the other insert_component blocks
+                # to use thermal_zone_name
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
                     modifications={
@@ -357,6 +387,46 @@ class Teaser(LoadBase):
                     string_comment='Room air temperature',
                     annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
                 )
+
+                # In TEASER 0.7.5 the hConvWinOut, hConvExt, hConvWin, hConvInt, hConvFloor, hConvRoof in various of
+                # the ReducedOrder models should be hCon* not hConv*. This has been fixed on the development branch
+                # of TEASER, but the team doesn't appear to be releasing nor merging the development branch (yet).
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
+                    "eqAirTemp",
+                    "hConvWallOut",
+                    "hConWallOut"
+                )
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
+                    "eqAirTemp",
+                    "hConvWinOut",
+                    "hConWinOut"
+                )
+
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007",
+                    "eqAirTempVDI",
+                    "hConvWallOut",
+                    "hConWallOut"
+                )
+
+                renames = {
+                    "hConvExt": "hConExt",
+                    "hConvFloor": "hConFloor",
+                    "hConvRoof": "hConRoof",
+                    "hConvWinOut": "hConWinOut",
+                    "hConvWin": "hConWin",
+                    "hConvInt": "hConInt",
+                }
+                for from_, to_ in renames.items():
+                    mofile.rename_component_argument(
+                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
+                        thermal_zone_name,
+                        from_,
+                        to_
+                    )
+
                 mofile.update_component_modifications(
                     f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                     thermal_zone_name,
