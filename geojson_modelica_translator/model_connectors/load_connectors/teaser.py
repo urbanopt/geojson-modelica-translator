@@ -510,25 +510,53 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
-            # TODO: Read nominal flows from system parameter file
-            template_data = {
-                "thermal_zones": zone_list,
-                "nominal_heat_flow": [10000] * len(zone_list),
-                "nominal_cool_flow": [-10000] * len(zone_list),
-                "load_resources_path": b_modelica_path.resources_relative_dir,
-                "mos_weather": {
-                    "mos_weather_filename": mos_weather_filename,
-                    "filename": os.path.basename(mos_weather_filename),
-                    "path": os.path.dirname(mos_weather_filename),
-                }
+        building_template_data = {
+            "thermal_zones": zone_list,
+            "nominal_heat_flow": [10000] * len(zone_list),
+            "nominal_cool_flow": [-10000] * len(zone_list),
+            "load_resources_path": b_modelica_path.resources_relative_dir,
+            "mos_weather": {
+                "mos_weather_filename": mos_weather_filename,
+                "filename": os.path.basename(mos_weather_filename),
+                "path": os.path.dirname(mos_weather_filename),
+            },
+            "nominal_values": {
+                # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
+                "chw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_chw_supply"
+                ) + 273.15,
+                "chw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_chw_return"
+                ) + 273.15,
+                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_hw_supply"
+                ) + 273.15,
+                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_hw_return"
+                ) + 273.15,
+                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
+                ) + 273.15,
+                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
+                ) + 273.15
             }
+        }
+
+        # merge ets template values from load_base.py into the building nominal values
+        # If there is no ets defined in sys-param file, use the building template data alone
+        try:
+            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            combined_template_data = {**building_template_data, **nominal_values}
+        except AttributeError:
+            combined_template_data = building_template_data
 
         self.run_template(
             teaser_building,
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         self.run_template(
@@ -536,7 +564,7 @@ class Teaser(LoadBase):
             os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data  # AA added 9/14
+            data=combined_template_data
         )
 
         full_model_name = os.path.join(
@@ -566,14 +594,14 @@ class Teaser(LoadBase):
         )
         new_package.save()
         # AA added this 9/24
-        if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+        if os.path.exists(building_template_data["mos_weather"]["mos_weather_filename"]):
             shutil.copy(
-                template_data["mos_weather"]["mos_weather_filename"],
-                os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                building_template_data["mos_weather"]["mos_weather_filename"],
+                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"])
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
         # end of what AA added 9/24
 
         # remaining clean up tasks across the entire exported project
