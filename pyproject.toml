@@ -1,9 +1,8 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.2.1.4"
+version = "0.2.1"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
-authors = ["Nicholas Long <nicholas.long@nrel.gov>",
-"Nathan Moore <nathan.moore@nrel.gov>"]
+authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD3"
 
 readme = "README.rst"
