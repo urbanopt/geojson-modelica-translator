@@ -70,8 +70,8 @@ class LoadBase(ModelBase):
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
-            # Only look at buildings in the sys-param file, not necessarily the entire feature file
             for building in self.system_parameters.get_default('$.buildings.custom', []):
+                # Only look at buildings in the sys-param file, not necessarily the entire feature file
                 if urbanopt_building.feature.properties["id"] == building["geojson_id"]:
                     try:
                         self.building_id = urbanopt_building.feature.properties["id"]
@@ -93,7 +93,7 @@ class LoadBase(ModelBase):
                         floor_height = 3  # Default height in meters from sdk
                         print(
                             f"\nNo floor_height found in geojson feature file for building {self.building_id}. \
-                            Using default value of {floor_height}.")
+Using default value of {floor_height}.")
 
                     # UO SDK defaults to current year, however TEASER only supports up to Year 2015
                     # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
@@ -105,7 +105,7 @@ class LoadBase(ModelBase):
                         year_built = 2015
                         print(
                             f"No 'year_built' found in geojson feature file for building {self.building_id}. \
-                            Using default value of {year_built}.")
+Using default value of {year_built}.")
 
                     try:
                         return {
@@ -121,9 +121,6 @@ class LoadBase(ModelBase):
                         print(f"Geojson feature file is missing data for building {self.building_id}. \
                         This may be caused by referencing a detailed osm in the feature file.")
                 else:
-                    print(
-                        f"Building {urbanopt_building.feature.properties['id']} is missing from either \
-                            geojson feature file or system parameters file")
                     continue
 
         else:
