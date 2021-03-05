@@ -244,5 +244,5 @@ def run_model(modelica_project):
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
     file_to_run = run_path / 'Districts' / 'DistrictEnergySystem.mo'
-    mr = ModelicaRunner(project_name)
+    mr = ModelicaRunner()
     mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
