@@ -235,7 +235,9 @@ def run_model(modelica_project):
     Run the Modelica project in a docker-based environment.
     Results are saved inside the selected modelica_project.
 
+    \b
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
+        default = ./model_from_sdk
 
     \f
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
