@@ -1,8 +1,20 @@
 Change Log
 ==========
 
+Version 0.2.1
+-------------
+* New command line interface (CLI) for scaffolding project using results of URBANopt SDK's OpenStudio results
+* New script for converting CSV file into Modelica mos file
+* Cleanup of System Parameter Schema including renaming elements, adding definitions, and adding units
+* Redesign the couplings and remove redundant model connector files
+* Promote DES configuration variables to be accessible in the System Parameter file
+* Upgrade to TEASER 0.7.5
+* Upgrade to MBL 2.1.0
+* Migrate to Poetry for development
+* Add regression testing to full district energy system
+
 Version 0.2.0
---------------------------
+-------------
 * Add ETS data for indirect cooling to system parameters schema
 * Add district system example
 * Add time series model using massflow rates and temperatures
