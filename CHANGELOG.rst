@@ -8,6 +8,7 @@ Version 0.2.1
 * Cleanup of System Parameter Schema including renaming elements, adding definitions, and adding units
 * Redesign the couplings and remove redundant model connector files
 * Promote DES configuration variables to be accessible in the System Parameter file
+* Extended flexibility of setting parameter values programmatically for Teaser, TimeSeries, and Spawn building load models models
 * Upgrade to TEASER 0.7.5
 * Upgrade to MBL 2.1.0
 * Migrate to Poetry for development
