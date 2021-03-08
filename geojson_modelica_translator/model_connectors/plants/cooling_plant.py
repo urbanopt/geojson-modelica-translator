@@ -95,11 +95,17 @@ class CoolingPlant(PlantBase):
                 "pressure_drop_setpoint": self.system_parameters.get_param(
                     "$.district_system.default.central_cooling_plant_parameters.pressure_drop_setpoint"
                 ),
+                "temp_setpoint_chw": self.system_parameters.get_param(
+                    "$.district_system.default.central_cooling_plant_parameters.temp_setpoint_chw"
+                ),
                 "pressure_drop_chw_valve_nominal": self.system_parameters.get_param(
                     "$.district_system.default.central_cooling_plant_parameters.pressure_drop_chw_valve_nominal"
                 ),
                 "pressure_drop_cw_pum_nominal": self.system_parameters.get_param(
                     "$.district_system.default.central_cooling_plant_parameters.pressure_drop_cw_pum_nominal"
+                ),
+                "temp_air_wb_nominal": self.system_parameters.get_param(
+                    "$.district_system.default.central_cooling_plant_parameters.temp_air_wb_nominal"
                 ),
                 "temp_cw_in_nominal": self.system_parameters.get_param(
                     "$.district_system.default.central_cooling_plant_parameters.temp_cw_in_nominal"

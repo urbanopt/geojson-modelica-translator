@@ -1,5 +1,5 @@
 within {{project_name}}.Loads.{{model_name}};
-model building
+{% raw %}model building
   "n-zone RC building model based on URBANopt's use of TEASER export, with distribution pumps"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=MediumW,
@@ -10,14 +10,14 @@ model building
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
-  parameter Integer nZon={{data['thermal_zones'] | count}}
-    "Number of thermal zones";
+  {% endraw %}parameter Integer nZon={{data['thermal_zones'] | count}}
+    {% raw %} "Number of thermal zones";
   parameter Integer facSca=3
     "Scaling factor to be applied to each extensive quantity";
-  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
-    "Nominal building supply and return chilled water temperature difference";
-  parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
-    "Path of the weather file";
+  {% endraw %}parameter Modelica.SIunits.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
+    {% raw %} "Nominal building supply and return chilled water temperature difference";
+  {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
+    {% raw %} "Path of the weather file";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
     calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
     pAtm(
@@ -26,11 +26,10 @@ model building
       weaName),
     computeWetBulbTemperature=true)
     "Weather data reader"
-    {% raw %} annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96}))) {% endraw %};
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
-    // TODO: Dehardcode
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     k=fill(
-      293.15,
+      {{ data['nominal_values']['temp_setpoint_heating']  }},
       nZon),
     y(
       each final unit="K",
@@ -38,9 +37,8 @@ model building
     "Minimum temperature set point"
     {% raw %} annotation (Placement(transformation(extent={{-290,230},{-270,250}})));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
-    // TODO: Dehardcode
     k=fill(
-      297.15,
+      {{ data['nominal_values']['temp_setpoint_cooling']  }},
       nZon),
     y(
       each final unit="K",
@@ -132,7 +130,7 @@ model building
     annotation (Line(points={{-268,200},{-240,200},{-240,-46.6667},{-200.833,-46.6667}},color={0,0,127}));
   connect(minTSet.y,terUni.TSetHea)
     annotation (Line(points={{-268,240},{-220,240},{-220,-45},{-200.833,-45}},color={0,0,127}));
-  {% endraw %}annotation (
+  annotation (
     Documentation(
       info="
 <html>
@@ -149,7 +147,7 @@ and connected to the room model by means of heat ports.
       revisions="<html>
 <ul>
 <li>
-May 29, 2020, by Nicholas Long:<br/>
+May 29, 2020, Hagar Elarga:<br/>
 Template model for use in GeoJSON to Modelica Translator.
 </li>
 <li>
@@ -159,3 +157,4 @@ First implementation.
 </ul>
 </html>"));
 end building;
+{% endraw %}
