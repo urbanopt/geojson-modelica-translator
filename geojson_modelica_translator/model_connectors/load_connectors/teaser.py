@@ -31,6 +31,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import glob
 import os
 import shutil
+from os import fdopen, remove
+from shutil import copymode, move
+from tempfile import mkstemp
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
@@ -140,9 +143,30 @@ class Teaser(LoadBase):
 
         self.post_process(scaffold, keep_original_models=keep_original_models)
 
-    def post_process(self, scaffold, keep_original_models=False):
+    def fix_gains_file(self, f):
+        """Temporary hack to fix the gains files in TEASER. This method does the following:
+            * makes the dimension of the matrix to 8761,4
+            * addes in a timestep for t=0
+
+        :param f: string, fully qualified path to file
+        :return: None
         """
-        Cleanup the export of the TEASER files into a format suitable for the district-based analysis.
+        fh, abs_path = mkstemp()  # make a temp file
+        with fdopen(fh, 'w') as new_file:
+            with open(f) as old_file:
+                for line in old_file:
+                    if "double Internals(8760, 19)" in line:
+                        new_file.write("double Internals(8761, 4)\n")
+                    elif line.startswith("3600\t"):
+                        new_file.write(line.replace('3600\t', '0\t') + line)
+                    else:
+                        new_file.write(line)
+        copymode(f, abs_path)  # copies permissions
+        remove(f)
+        move(abs_path, f)
+
+    def post_process(self, scaffold, keep_original_models=False):
+        """Cleanup the export of the TEASER files into a format suitable for the district-based analysis.
         This includes the following:
 
             * Update the partial to inherit from the GeojsonExport class defined in MBL.
@@ -192,6 +216,12 @@ class Teaser(LoadBase):
         for f in mat_files:
             new_file_name = os.path.basename(f).replace(self.building_name, "")
             os.rename(f, f"{b_modelica_path.resources_dir}/{new_file_name}")
+
+            # The main branch of teaser has yet to merge in the changes to support the fixes to the
+            # internal gain files. The next method can be removed once the TEASER development branch is
+            # merged into master/main and released.
+            self.fix_gains_file(f"{b_modelica_path.resources_dir}/{new_file_name}")
+
             string_replace_list.append(
                 (
                     f"Project/{self.building_name}/{self.building_name}_Models/{os.path.basename(f)}",
@@ -344,8 +374,8 @@ class Teaser(LoadBase):
                 thermal_zone_name = 'thermalZoneFourElements'
 
             if thermal_zone_name is not None and thermal_zone_type is not None:
-                # add TAir output
-                # This has been moved away from the other insert_component blocks to use thermal_zone_name
+                # add TAir output - This has been moved away from the other insert_component blocks
+                # to use thermal_zone_name
                 mofile.insert_component(
                     'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
                     modifications={
@@ -357,6 +387,46 @@ class Teaser(LoadBase):
                     string_comment='Room air temperature',
                     annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
                 )
+
+                # In TEASER 0.7.5 the hConvWinOut, hConvExt, hConvWin, hConvInt, hConvFloor, hConvRoof in various of
+                # the ReducedOrder models should be hCon* not hConv*. This has been fixed on the development branch
+                # of TEASER, but the team doesn't appear to be releasing nor merging the development branch (yet).
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
+                    "eqAirTemp",
+                    "hConvWallOut",
+                    "hConWallOut"
+                )
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
+                    "eqAirTemp",
+                    "hConvWinOut",
+                    "hConWinOut"
+                )
+
+                mofile.rename_component_argument(
+                    "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007",
+                    "eqAirTempVDI",
+                    "hConvWallOut",
+                    "hConWallOut"
+                )
+
+                renames = {
+                    "hConvExt": "hConExt",
+                    "hConvFloor": "hConFloor",
+                    "hConvRoof": "hConRoof",
+                    "hConvWinOut": "hConWinOut",
+                    "hConvWin": "hConWin",
+                    "hConvInt": "hConInt",
+                }
+                for from_, to_ in renames.items():
+                    mofile.rename_component_argument(
+                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
+                        thermal_zone_name,
+                        from_,
+                        to_
+                    )
+
                 mofile.update_component_modifications(
                     f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                     thermal_zone_name,
@@ -440,25 +510,53 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
-            # TODO: Read nominal flows from system parameter file
-            template_data = {
-                "thermal_zones": zone_list,
-                "nominal_heat_flow": [10000] * len(zone_list),
-                "nominal_cool_flow": [-10000] * len(zone_list),
-                "load_resources_path": b_modelica_path.resources_relative_dir,
-                "mos_weather": {
-                    "mos_weather_filename": mos_weather_filename,
-                    "filename": os.path.basename(mos_weather_filename),
-                    "path": os.path.dirname(mos_weather_filename),
-                }
+        building_template_data = {
+            "thermal_zones": zone_list,
+            "nominal_heat_flow": [10000] * len(zone_list),
+            "nominal_cool_flow": [-10000] * len(zone_list),
+            "load_resources_path": b_modelica_path.resources_relative_dir,
+            "mos_weather": {
+                "mos_weather_filename": mos_weather_filename,
+                "filename": os.path.basename(mos_weather_filename),
+                "path": os.path.dirname(mos_weather_filename),
+            },
+            "nominal_values": {
+                # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
+                "chw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_chw_supply"
+                ) + 273.15,
+                "chw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_chw_return"
+                ) + 273.15,
+                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_hw_supply"
+                ) + 273.15,
+                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_hw_return"
+                ) + 273.15,
+                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
+                ) + 273.15,
+                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
+                ) + 273.15
             }
+        }
+
+        # merge ets template values from load_base.py into the building nominal values
+        # If there is no ets defined in sys-param file, use the building template data alone
+        try:
+            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            combined_template_data = {**building_template_data, **nominal_values}
+        except AttributeError:
+            combined_template_data = building_template_data
 
         self.run_template(
             teaser_building,
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         self.run_template(
@@ -466,7 +564,7 @@ class Teaser(LoadBase):
             os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data  # AA added 9/14
+            data=combined_template_data
         )
 
         full_model_name = os.path.join(
@@ -496,14 +594,14 @@ class Teaser(LoadBase):
         )
         new_package.save()
         # AA added this 9/24
-        if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+        if os.path.exists(building_template_data["mos_weather"]["mos_weather_filename"]):
             shutil.copy(
-                template_data["mos_weather"]["mos_weather_filename"],
-                os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                building_template_data["mos_weather"]["mos_weather_filename"],
+                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"])
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
         # end of what AA added 9/24
 
         # remaining clean up tasks across the entire exported project

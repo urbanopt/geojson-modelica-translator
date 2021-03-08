@@ -154,7 +154,7 @@ To apply the copyright/license to all the files, run the following managed task
 
 Templating Diagram
 ------------------
-.. image:: ConnectionTemplate.png
+.. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/ConnectionTemplate.png
 
 Release Instructions
 --------------------
