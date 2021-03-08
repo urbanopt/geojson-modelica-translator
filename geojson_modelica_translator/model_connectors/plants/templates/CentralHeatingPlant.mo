@@ -315,5 +315,13 @@ equation
         Text(
           extent={{-149,-114},{151,-154}},
           lineColor={0,0,255},
-          textString="%name")}));
+          textString="%name")}),
+   Documentation(
+revisions="<html>
+<ul>
+<li>
+June 15, 2020: Hagar Elarga<br/>
+First implementation.
+</li>
+</html>"));
 end CentralHeatingPlant;
