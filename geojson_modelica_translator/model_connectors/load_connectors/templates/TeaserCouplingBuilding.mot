@@ -1,12 +1,12 @@
 within {{project_name}}.Loads.{{model_name}};
-model coupling
+{% raw %}model coupling
   "Example illustrating the coupling of TEASER building loads with infinite heating and cooling sources with no ETS"
   extends Modelica.Icons.Example;
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   package MediumW=Buildings.Media.Water
     "Source side medium";
-  {% raw %}building bui(
+  building bui(
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
@@ -25,15 +25,15 @@ model coupling
     nPorts=1)
     "Sink for chilled water"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={130,20})));
-  Modelica.Blocks.Sources.RealExpression THeaWatSup(
+  {% endraw %}Modelica.Blocks.Sources.RealExpression THeaWatSup(
     y=max(
-      bui.terUni.T_aHeaWat_nominal))
-    "Heating water supply temperature"
+      {{ data['nominal_values']['hhw_supply_temp']  }})
+      {% raw %} "Heating water supply temperature"
     annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
-  Modelica.Blocks.Sources.RealExpression TChiWatSup(
+  {% endraw %}Modelica.Blocks.Sources.RealExpression TChiWatSup(
     y=max(
-      bui.terUni.T_aChiWat_nominal))
-    "Chilled water supply temperature"
+      {{ data['nominal_values']['chw_supply_temp']  }})
+      {% raw %} "Chilled water supply temperature"
     annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
   Buildings.Fluid.Sources.Boundary_pT supHeaWat(
     redeclare package Medium=MediumW,

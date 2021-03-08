@@ -1,20 +1,26 @@
 [tool.poetry]
-name = "GeoJSON Modelica Translator"
+name = "geojson-modelica-translator"
 version = "0.2.1"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
-authors = ["Nicholas Long <nicholas.long@nrel.gov>"]
-repository = "https://github.com/urbanopt/geojson_modelica_translator"
-classifiers = [
-        "Development Status :: 4 - Beta",
-        "Environment :: Console",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "Topic :: Scientific/Engineering",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-    ]
+authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
+license = "BSD3"
 
+readme = "README.rst"
+
+homepage = "https://docs.urbanopt.net"
+repository = "https://github.com/urbanopt/geojson-modelica-translator"
+documentation = "https://docs.urbanopt.net/geojson-modelica-translator/"
+keywords = ["URBANopt", "Modelica", "GeoJSON", "Physics-based Modeling"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+]
 packages = [
     { include = "management" },
     { include = "geojson_modelica_translator"}
@@ -23,13 +29,15 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.7"
 click = "7.1.2"
-BuildingsPy = "2.0.0"
-modelica-builder= "0.1.0"
+BuildingsPy = "2.1.0"
+modelica-builder= "0.1.1"
+#modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 geojson = "2.5.0"
 jsonschema = "3.2.0"
 requests = "2.25.1"
 jsonpath-ng = "1.5.2"
-teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
+teaser = "0.7.5"
+#teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
 [tool.poetry.dev-dependencies]
 autopep8 = "1.5.4"

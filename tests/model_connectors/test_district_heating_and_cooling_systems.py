@@ -30,6 +30,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+import numpy as np
+from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
@@ -58,9 +60,9 @@ from ..base_test_case import TestCaseBase
 
 
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
-    def test_district_heating_and_cooling_systems(self):
-        project_name = 'district_heating_and_cooling_systems'
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
+    def setUp(self):
+        self.project_name = 'district_heating_and_cooling_systems'
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), self.project_name)
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
@@ -68,31 +70,40 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
-        sys_params = SystemParameters(filename)
+        self.sys_params = SystemParameters(filename)
 
+    def test_district_heating_and_cooling_systems(self):
         # create cooling network and plant
-        cooling_network = Network2Pipe(sys_params)
-        cooling_plant = CoolingPlant(sys_params)
+        cooling_network = Network2Pipe(self.sys_params)
+        cooling_plant = CoolingPlant(self.sys_params)
 
         # create heating network and plant
-        heating_network = Network2Pipe(sys_params)
-        heating_plant = HeatingPlant(sys_params)
+        heating_network = Network2Pipe(self.sys_params)
+        heating_plant = HeatingPlant(self.sys_params)
 
         # create our load/ets/stubs
+        # store all couplings to construct the District system
         all_couplings = [
             Coupling(cooling_network, cooling_plant),
             Coupling(heating_network, heating_plant),
         ]
 
+        # keep track of separate loads and etses for testing purposes
+        loads = []
+        heat_etses = []
+        cool_etses = []
         for geojson_load in self.gj.json_loads:
-            time_series_load = TimeSeries(sys_params, geojson_load)
+            time_series_load = TimeSeries(self.sys_params, geojson_load)
+            loads.append(time_series_load)
             geojson_load_id = geojson_load.feature.properties["id"]
 
-            cooling_indirect = CoolingIndirect(sys_params, geojson_load_id)
+            cooling_indirect = CoolingIndirect(self.sys_params, geojson_load_id)
+            cool_etses.append(cooling_indirect)
             all_couplings.append(Coupling(time_series_load, cooling_indirect))
             all_couplings.append(Coupling(cooling_indirect, cooling_network))
 
-            heating_indirect = HeatingIndirect(sys_params, geojson_load_id)
+            heating_indirect = HeatingIndirect(self.sys_params, geojson_load_id)
+            heat_etses.append(heating_indirect)
             all_couplings.append(Coupling(time_series_load, heating_indirect))
             all_couplings.append(Coupling(heating_indirect, heating_network))
 
@@ -101,8 +112,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         district = District(
             root_dir=self.output_dir,
-            project_name=project_name,
-            system_parameters=sys_params,
+            project_name=self.project_name,
+            system_parameters=self.sys_params,
             coupling_graph=graph
         )
         district.to_modelica()
@@ -111,3 +122,80 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
                                       project_path=district._scaffold.project_path,
                                       project_name=district._scaffold.project_name)
+
+        #
+        # Validate model outputs
+        #
+        results_dir = f'{district._scaffold.project_path}_results'
+        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_result.mat'
+        mat_results = Reader(mat_file, 'dymola')
+
+        # check the mass flow rates of the first load are in the expected range
+        load = loads[0]
+        (_, heat_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
+        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
+        self.assertTrue((heat_m_flow >= 0).all(), 'Heating mass flow rate must be greater than or equal to zero')
+        self.assertTrue((cool_m_flow >= 0).all(), 'Cooling mass flow rate must be greater than or equal to zero')
+
+        # this tolerance determines how much we allow the actual mass flow rate to exceed the nominal value
+        M_FLOW_NOMINAL_TOLERANCE = 0.01
+        (_, heat_m_flow_nominal) = mat_results.values(f'{load.id}.mHeaWat_flow_nominal')
+        heat_m_flow_nominal = heat_m_flow_nominal[0]
+        (_, cool_m_flow_nominal) = mat_results.values(f'{load.id}.mChiWat_flow_nominal')
+        cool_m_flow_nominal = cool_m_flow_nominal[0]
+        self.assertTrue(
+            (heat_m_flow <= heat_m_flow_nominal + (heat_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
+            f'Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) '
+            f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
+        )
+        self.assertTrue(
+            (cool_m_flow <= cool_m_flow_nominal + (cool_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
+            f'Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) '
+            f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
+        )
+
+        def cvrmsd(measured, simulated):
+            """Return CVRMSD between arrays.
+            Implementation of ASHRAE Guideline 14 (4-4)
+
+            :param measured: numpy.array
+            :param simulated: numpy.array
+            :return: float
+            """
+            def rmsd(a, b):
+                p = 1
+                n_samples = len(a)
+                return np.sqrt(
+                    np.sum(
+                        np.square(
+                            a - b
+                        )
+                    ) / (n_samples - p)
+                )
+
+            normalization_factor = np.mean(measured)
+            return rmsd(measured, simulated) / normalization_factor
+
+        # check the overall thermal load between the first load and its ETSes
+        heating_indirect = heat_etses[0]
+        cooling_indirect = cool_etses[0]
+        (_, heating_indirect_q_flow) = mat_results.values(f'{heating_indirect.id}.Q_flow')
+        (_, cooling_indirect_q_flow) = mat_results.values(f'{cooling_indirect.id}.Q_flow')
+        (_, load_q_heat_flow) = mat_results.values(f'{load.id}.QHea_flow')
+        (_, load_q_cool_flow) = mat_results.values(f'{load.id}.QCoo_flow')
+
+        # make sure the q flow is positive
+        heating_indirect_q_flow, cooling_indirect_q_flow = np.abs(heating_indirect_q_flow), np.abs(cooling_indirect_q_flow)
+        load_q_heat_flow, load_q_cool_flow = np.abs(load_q_heat_flow), np.abs(load_q_cool_flow)
+
+        cool_cvrmsd = cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
+        heat_cvrmsd = cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
+
+        CVRMSD_MAX = 0.3
+        # TODO: fix q flows to meet the CVRMSD maximum, then make these assertions rather than warnings
+        if cool_cvrmsd >= CVRMSD_MAX:
+            print(f'WARNING: The difference between the thermal cooling load of the load and ETS is too large (CVRMSD={cool_cvrmsd}). '
+                  'TODO: make this warning an assertion.')
+        if heat_cvrmsd >= CVRMSD_MAX:
+            print(f'WARNING: The difference between the thermal heating load of the load and ETS is too large (CVRMSD={heat_cvrmsd}). '
+                  'TODO: make this warning an assertion.')

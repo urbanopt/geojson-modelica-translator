@@ -10,7 +10,7 @@ model building
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
-  parameter Integer nZon=5
+  parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of conditioned thermal zones";
   parameter Integer facSca[nZon]=fill(
     5,
@@ -22,23 +22,24 @@ model building
   parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[nZon]
     "Load side mass flow rate at heating nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo=5
+  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo={{data['delta_temp_chw_building']}}
     "Nominal building supply and return chilled water temperature difference";
-  parameter Modelica.SIunits.TemperatureDifference delTDisCoo=9
+  parameter Modelica.SIunits.TemperatureDifference delTDisCoo={{data['delta_temp_chw_district']}}
     "Nominal district supply and return water temperature difference";
-  parameter Modelica.SIunits.TemperatureDifference delTBuiHea=8
+  parameter Modelica.SIunits.TemperatureDifference delTBuiHea={{data['delta_temp_hw_building']}}
     "Nominal building supply and return water temperature difference";
-  parameter Modelica.SIunits.TemperatureDifference delTDisHea=10
+  parameter Modelica.SIunits.TemperatureDifference delTDisHea={{data['delta_temp_hw_district']}}
     "Nominal district supply and return water temperature difference";
-  parameter Modelica.SIunits.Temperature T_aChiWat_nominal=280.15
+  parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     "Supply chilled water nominal temperature";
-  parameter Modelica.SIunits.Temperature T_bChiWat_nominal=285.15
+  parameter Modelica.SIunits.Temperature T_bChiWat_nominal={{ data['nominal_values']['chw_return_temp'] }}
     "Return chilled water nominal temperature";
-  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal=40+273.15
+  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     "Supply heating water nominal temperature";
-  parameter Modelica.SIunits.Temperature T_bHeaWat_nominal=35+273.15
+  parameter Modelica.SIunits.Temperature T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp'] }}
     "Return heating water nominal temperature";
   parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]=fill(
+    //Zone-level noiminal heat flows aren't currently in the schema--extend in future?
     3000,
     nZon) ./ facSca
     "Design heating heat flow rate (>=0)"
@@ -53,19 +54,18 @@ model building
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     "Path of the weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
+  // Set these based on cooling and heating setpoints for now based on current parameters in schema.
   {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
-    // TODO: Dehardcode
-    k=fill(
-      20+273.15,
+    {% endraw %}k=fill(
+      {{ data["nominal_values"]["temp_setpoint_heating"] }},
       nZon))
-    "Minimum temperature setpoint"
+    {% raw %} "Minimum temperature setpoint"
     annotation (Placement(transformation(extent={{-220,60},{-200,80}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
-    // TODO: Dehardcode
-    k=fill(
-      24+273.15,
+    {% endraw %}k=fill(
+      {{ data["nominal_values"]["temp_setpoint_cooling"] }},
       nZon))
-    "Maximum temperature setpoint"
+    {% raw %} "Maximum temperature setpoint"
     annotation (Placement(transformation(extent={{-220,20},{-200,40}})));
   Modelica.Blocks.Sources.Constant qConGai_flow(
     k=0)
@@ -112,9 +112,9 @@ model building
     final facSca=facSca,
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
-    each T_aLoaHea_nominal=293.15,
-    each T_aLoaCoo_nominal=297.15,
-    each T_bHeaWat_nominal=T_bHeaWat_nominal,
+    {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
+    each T_aLoaCoo_nominal={{ data["nominal_values"]["temp_setpoint_cooling"] }},
+    {% raw %}each T_bHeaWat_nominal=T_bHeaWat_nominal,
     each T_aHeaWat_nominal=T_aHeaWat_nominal,
     final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
     final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
@@ -226,7 +226,7 @@ model building
       revisions="<html>
 <ul>
 <li>
-March 12, 2020: Nicholas Long<br/>
+March 12, 2020: Hagar Elarga<br/>
 Updated implementation to handle template needed for GeoJSON to Modelica.
 </li>
 <li>

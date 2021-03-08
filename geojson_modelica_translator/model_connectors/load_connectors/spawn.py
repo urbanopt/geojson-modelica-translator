@@ -65,6 +65,7 @@ class Spawn(LoadBase):
 
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier and respect the defaults
+
         idf_filename = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.idf_filename"
         )
@@ -77,9 +78,28 @@ class Spawn(LoadBase):
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
+        # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
+        hhw_supply_temp = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.temp_hw_supply",
+        ) + 273.25
+        hhw_return_temp = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.temp_hw_return",
+        ) + 273.25
+        chw_supply_temp = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.temp_chw_supply",
+        ) + 273.25
+        chw_return_temp = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.temp_chw_return",
+        ) + 273.25
+        temp_setpoint_cooling = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
+        ) + 273.15
+        temp_setpoint_heating = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
+        ) + 273.15
 
         # construct the dict to pass into the template
-        template_data = {
+        building_template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "idf": {
                 "idf_filename": idf_filename,
@@ -98,49 +118,65 @@ class Spawn(LoadBase):
             },
             "thermal_zones": [],
             "thermal_zones_count": len(thermal_zones),
+            "nominal_values": {
+                "hhw_supply_temp": hhw_supply_temp,
+                "hhw_return_temp": hhw_return_temp,
+                "chw_supply_temp": chw_supply_temp,
+                "chw_return_temp": chw_return_temp,
+                "temp_setpoint_heating": temp_setpoint_heating,
+                "temp_setpoint_cooling": temp_setpoint_cooling,
+
+            },
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
-            template_data["thermal_zones"].append(
+            building_template_data["thermal_zones"].append(
                 {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
             )
 
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
-        if os.path.exists(template_data["idf"]["idf_filename"]):
+        if os.path.exists(building_template_data["idf"]["idf_filename"]):
             shutil.copy(
-                template_data["idf"]["idf_filename"],
+                building_template_data["idf"]["idf_filename"],
                 os.path.join(
                     b_modelica_path.resources_dir,
-                    template_data["idf"]["filename"],
+                    building_template_data["idf"]["filename"],
                 ),
             )
         else:
             raise Exception(
-                f"Missing IDF file for Spawn: {template_data['idf']['idf_filename']}"
+                f"Missing IDF file for Spawn: {building_template_data['idf']['idf_filename']}"
             )
 
-        if os.path.exists(template_data["epw"]["epw_filename"]):
-            shutil.copy(template_data["epw"]["epw_filename"],
-                        os.path.join(b_modelica_path.resources_dir, template_data["epw"]["filename"]))
+        if os.path.exists(building_template_data["epw"]["epw_filename"]):
+            shutil.copy(building_template_data["epw"]["epw_filename"],
+                        os.path.join(b_modelica_path.resources_dir, building_template_data["epw"]["filename"]))
         else:
-            raise Exception(f"Missing EPW file for Spawn: {template_data['epw']['epw_filename']}")
+            raise Exception(f"Missing EPW file for Spawn: {building_template_data['epw']['epw_filename']}")
 
-        if os.path.exists(template_data["mos_weather"]["mos_weather_filename"]):
+        if os.path.exists(building_template_data["mos_weather"]["mos_weather_filename"]):
             shutil.copy(
-                template_data["mos_weather"]["mos_weather_filename"],
-                os.path.join(b_modelica_path.resources_dir, template_data["mos_weather"]["filename"])
+                building_template_data["mos_weather"]["mos_weather_filename"],
+                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"])
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Spawn: {template_data['mos_weather']['mos_weather_filename']}")
+                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
+        # merge ets template values from load_base.py into the building nominal values
+        # If there is no ets defined in sys-param file, use the building template data alone
+        try:
+            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            combined_template_data = {**building_template_data, **nominal_values}
+        except AttributeError:
+            combined_template_data = building_template_data
 
         self.run_template(
             spawn_building_template,
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         full_model_name = os.path.join(
@@ -158,7 +194,7 @@ class Spawn(LoadBase):
             os.path.join(b_modelica_path.files_dir, "coupling.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=template_data
+            data=combined_template_data
         )
 
         # Copy the required modelica files
