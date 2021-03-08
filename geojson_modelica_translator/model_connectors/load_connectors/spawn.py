@@ -125,7 +125,6 @@ class Spawn(LoadBase):
                 "chw_return_temp": chw_return_temp,
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
-
             },
         }
         for tz in thermal_zones:
