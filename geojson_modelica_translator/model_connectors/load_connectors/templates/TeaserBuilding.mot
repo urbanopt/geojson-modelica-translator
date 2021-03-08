@@ -147,7 +147,7 @@ and connected to the room model by means of heat ports.
       revisions="<html>
 <ul>
 <li>
-May 29, 2020, by Nicholas Long:<br/>
+May 29, 2020, Hagar Elarga:<br/>
 Template model for use in GeoJSON to Modelica Translator.
 </li>
 <li>
