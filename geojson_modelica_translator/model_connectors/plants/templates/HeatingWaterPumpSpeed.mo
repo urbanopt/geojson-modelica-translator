@@ -157,5 +157,6 @@ revisions="<html>
 June 15, 2020: Hagar Elarga<br/>
 First implementation.
 </li>
+</ul>
 </html>"));
 end HeatingWaterPumpSpeed;
