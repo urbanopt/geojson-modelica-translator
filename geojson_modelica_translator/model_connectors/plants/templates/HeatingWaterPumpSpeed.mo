@@ -149,5 +149,13 @@ equation
           lineColor={0,0,255})}),
     Diagram(
       coordinateSystem(
-        preserveAspectRatio=false)));
+        preserveAspectRatio=false)),
+  Documentation(
+revisions="<html>
+<ul>
+<li>
+June 15, 2020: Hagar Elarga<br/>
+First implementation.
+</li>
+</html>"));
 end HeatingWaterPumpSpeed;
