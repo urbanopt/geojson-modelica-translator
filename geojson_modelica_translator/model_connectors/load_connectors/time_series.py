@@ -101,6 +101,9 @@ class TimeSeries(LoadBase):
                 ) + 273.15,
                 "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.temp_hw_supply"
+                ) + 273.15,
+                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_hw_return"
                 ) + 273.15
             }
         }

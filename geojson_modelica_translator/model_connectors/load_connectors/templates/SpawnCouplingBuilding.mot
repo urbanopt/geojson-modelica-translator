@@ -112,7 +112,7 @@ Buildings.ThermalZones.EnergyPlus.UsersGuide</a>.
       revisions="<html>
 <ul>
 <li>
-March 21, 2020, by Nicholas Long:<br/>
+March 21, 2020, by Hagar Elarga:<br/>
 GeoJson-Modelica translator template first implementation, infinite source to building (no ETS).
 </li>
 <li>
