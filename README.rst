@@ -1,8 +1,8 @@
 GeoJSON Modelica Translator (GMT)
 ---------------------------------
 
-.. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
-    :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
+.. image:: https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop
+    :target: https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml
 
 .. image:: https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop
     :target: https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop
