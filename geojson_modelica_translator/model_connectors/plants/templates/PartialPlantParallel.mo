@@ -5,8 +5,8 @@ partial model PartialPlantParallel
   extends ValveParameters(
     final deltaM=0.1,
     rhoStd=Medium.density_pTX(
-      Medium.p_default,
-      273.15+50,
+      101325,
+      273.15+4,
       Medium.X_default));
   extends Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
     final numFil=num);
@@ -48,11 +48,10 @@ partial model PartialPlantParallel
     each final rhoStd=rhoStd)
     "Isolation valves for on/off use"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={46,0})));
-  replaceable Heater_T boi[num](
-    redeclare each final package Medium=Medium,
-    each from_dp=true,
-    each T_start=293.15)
-    "Hot water boiler"
+  replaceable Buildings.Fluid.Boilers.BoilerPolynomial boi[num](
+      redeclare each final package Medium = Medium,
+      each from_dp=true,
+      each T_start=293.15)
     annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
 initial equation
   assert(
