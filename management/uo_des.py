@@ -28,6 +28,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+import os
 from pathlib import Path
 
 import click
@@ -244,6 +245,10 @@ def run_model(modelica_project):
     """
 
     run_path = Path(modelica_project).resolve()
+    print(os.getcwd())
+    os.chdir(run_path)
+    print(os.getcwd())
+    # raise SystemExit()
     project_name = run_path.stem
     file_to_run = run_path / 'Districts' / 'DistrictEnergySystem.mo'
     mr = ModelicaRunner()
