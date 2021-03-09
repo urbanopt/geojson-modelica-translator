@@ -56,12 +56,12 @@ within {{project_name}}.Loads.{{model_name}};
     each facSca=facSca,
     QHea_flow_nominal={10000,10000,10000,10000,10000,10000},
     QCoo_flow_nominal={-10000,-10000,-10000,-10000,-10000,-50000},
-    each T_aLoaHea_nominal=293.15,
-    each T_aLoaCoo_nominal=297.15,
-    each T_bHeaWat_nominal=35+273.15,
-    each T_bChiWat_nominal=12+273.15,
-    each T_aHeaWat_nominal=40+273.15,
-    each T_aChiWat_nominal=7+273.15,
+    each T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }},
+    each T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }},
+    each T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp']  }},
+    each T_bChiWat_nominal={{ data['nominal_values']['chw_return_temp']  }},
+    each T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp']  }},
+    each T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp']  }},
     each mLoaHea_flow_nominal=5,
     each mLoaCoo_flow_nominal=5)
     "Terminal unit"
@@ -147,7 +147,7 @@ and connected to the room model by means of heat ports.
       revisions="<html>
 <ul>
 <li>
-May 29, 2020, by Nicholas Long:<br/>
+May 29, 2020, Hagar Elarga:<br/>
 Template model for use in GeoJSON to Modelica Translator.
 </li>
 <li>
