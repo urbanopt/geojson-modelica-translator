@@ -53,7 +53,6 @@ class HeatingPlant(PlantBase):
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallelInterface.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ValveParameters.mo'))
 
-
     def to_modelica(self, scaffold):
         """
         Create timeSeries models based on the data in the buildings and geojsons

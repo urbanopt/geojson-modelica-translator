@@ -81,7 +81,7 @@ model CentralHeatingPlant
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-160,-40},{-140,-20}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
   Boiler_TParallel boiHotWat(
-    redeclare package Medium = Medium,
+    redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
     Q_flow_nominal=QBoi_flow_nominal,
     dp_nominal=dpBoi_nominal,
@@ -169,8 +169,8 @@ model CentralHeatingPlant
     "Output pump speed"
     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
 equation
-  connect(THeaSet, boiHotWat.THeaWatSet) annotation (Line(points={{-150,-50},{-72,
-           -50},{-72,-56},{9,-56}}, color={0,0,127}));
+  connect(THeaSet,boiHotWat.THeaWatSet)
+    annotation (Line(points={{-150,-50},{-72,-50},{-72,-56},{9,-56}},color={0,0,127}));
   connect(on,boiStaCon.on)
     annotation (Line(points={{-150,68},{-121,68}},color={255,0,255}));
   connect(dpMea,heaWatPumCon.dpMea)
@@ -213,104 +213,103 @@ equation
     annotation (Line(points={{-99,-30},{-94,-30},{-94,4},{-82,4}},color={0,0,127}));
   connect(pumOn.y,pumHW.u)
     annotation (Line(points={{-59,10},{-46,10},{-46,72},{12,72},{12,54},{2,54}},color={0,0,127}));
-  connect(boiStaCon.y_On, heaWatPumCon.ON) annotation (Line(points={{-99,70.6},{
-             -88,70.6},{-88,24},{-128,24},{-128,-23.4},{-121,-23.4}}, color={255,0,
-             255}));
-  connect(mPum_flow.y, heaWatPumCon.masFloPum) annotation (Line(points={{-121,40},
-          {-134,40},{-134,-25.6},{-121,-25.6}}, color={0,0,127}));
-
- annotation (
-     Diagram(
-       coordinateSystem(
-         preserveAspectRatio=false,
-         extent={{-140,-80},{120,100}})),
-     Icon(
-       graphics={
-         Rectangle(
-           extent={{-100,-100},{100,100}},
-           lineColor={0,0,127},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Polygon(
-           points={{-62,-14},{-62,-14}},
-           lineColor={238,46,47},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Polygon(
-           points={{80,-60},{-80,-60},{-80,60},{-60,60},{-60,0},{-40,0},{-40,20},{0,0},{0,20},{40,0},{40,20},{80,0},{80,-60}},
-           lineColor={95,95,95},
-           fillColor={238,46,47},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{46,-38},{58,-26}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{62,-38},{74,-26}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{62,-54},{74,-42}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{46,-54},{58,-42}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{22,-54},{34,-42}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{6,-54},{18,-42}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{6,-38},{18,-26}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{22,-38},{34,-26}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{-18,-54},{-6,-42}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{-34,-54},{-22,-42}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{-34,-38},{-22,-26}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Rectangle(
-           extent={{-18,-38},{-6,-26}},
-           lineColor={255,255,255},
-           fillColor={255,255,255},
-           fillPattern=FillPattern.Solid),
-         Text(
-           extent={{-149,-114},{151,-154}},
-           lineColor={0,0,255},
-           textString="%name")}),
-  Documentation(info="<html>
+  connect(boiStaCon.y_On,heaWatPumCon.ON)
+    annotation (Line(points={{-99,70.6},{-88,70.6},{-88,24},{-128,24},{-128,-23.4},{-121,-23.4}},color={255,0,255}));
+  connect(mPum_flow.y,heaWatPumCon.masFloPum)
+    annotation (Line(points={{-121,40},{-134,40},{-134,-25.6},{-121,-25.6}},color={0,0,127}));
+  annotation (
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-140,-80},{120,100}})),
+    Icon(
+      graphics={
+        Rectangle(
+          extent={{-100,-100},{100,100}},
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{-62,-14},{-62,-14}},
+          lineColor={238,46,47},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{80,-60},{-80,-60},{-80,60},{-60,60},{-60,0},{-40,0},{-40,20},{0,0},{0,20},{40,0},{40,20},{80,0},{80,-60}},
+          lineColor={95,95,95},
+          fillColor={238,46,47},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{46,-38},{58,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{62,-38},{74,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{62,-54},{74,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{46,-54},{58,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{22,-54},{34,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{6,-54},{18,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{6,-38},{18,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{22,-38},{34,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-18,-54},{-6,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-34,-54},{-22,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-34,-38},{-22,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-18,-38},{-6,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Text(
+          extent={{-149,-114},{151,-154}},
+          lineColor={0,0,255},
+          textString="%name")}),
+    Documentation(
+      info="<html>
    <p>
    This model presents a heating water central plant for the distrcit systems application.
    </p>
    </html>",
-  revisions="<html>
+      revisions="<html>
    <ul>
    <li>
    June 30, 2020, by Hagar Elarga:<br/>

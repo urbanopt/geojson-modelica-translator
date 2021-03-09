@@ -49,9 +49,9 @@ partial model PartialPlantParallel
     "Isolation valves for on/off use"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={46,0})));
   replaceable Buildings.Fluid.Boilers.BoilerPolynomial boi[num](
-      redeclare each final package Medium = Medium,
-      each from_dp=true,
-      each T_start=293.15)
+    redeclare each final package Medium=Medium,
+    each from_dp=true,
+    each T_start=293.15)
     annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
 initial equation
   assert(
