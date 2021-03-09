@@ -58,9 +58,16 @@ equation
 
 {% endfor %}
 
-  annotation (
+annotation(
     experiment(
       StopTime=86400,
       Interval=3600,
-      Tolerance=1e-06));
+      Tolerance=1e-06),
+  Documentation(
+  revisions="<html>
+ <li>
+ May 10, 2020: Hagar Elarga<br/>
+Updated implementation to handle template needed for GeoJSON to Modelica.
+</li>
+</html>"));
 end DistrictEnergySystem;
