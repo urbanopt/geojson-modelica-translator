@@ -7,6 +7,8 @@ GeoJSON Modelica Translator (GMT)
 .. image:: https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop
     :target: https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop
 
+.. image:: https://badge.fury.io/py/testsuite.svg
+    :target: https://pypi.org/project/testsuite/
 
 Description
 -----------
