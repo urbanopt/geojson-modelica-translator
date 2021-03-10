@@ -60,9 +60,6 @@ class HeatingPlant(PlantBase):
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallel.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallelInterface.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'ValveParameters.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'Heater_T.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPrescribedOutlet.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PrescribedOutlet.mo'))
 
     def to_modelica(self, scaffold):
         """
