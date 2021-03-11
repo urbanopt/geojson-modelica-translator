@@ -79,8 +79,8 @@ def cli():
     type=click.Path(file_okay=True, dir_okay=False),
 )
 @click.argument(
-    "scenario_dir",
-    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+    "scenario_file",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
     "feature_file",
@@ -97,17 +97,15 @@ def cli():
     help="Delete and replace any existing file of the same name & location",
     default=False
 )
-def create_sys_param(model_type, sys_param_filename, scenario_dir, feature_file, overwrite):
+def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file, overwrite):
     """
     Create system parameters file using uo_sdk output
 
     SYS_PARAM_FILENAME: Path/name to sys-param file be created. Be sure to include the ".json" suffix.
 
-    SCENARIO_DIR: Path to sdk scenario folder with OpenStudio results.
+    SCENARIO_FILE: Path to sdk scenario folder with OpenStudio results.
 
     FEATURE_FILE: Path to sdk json feature file with data about the buildings.
-
-    OVERWRITE: Optional flag to signify you are deleting an existing file with the name given in SYS_PARAM_FILENAME
 
     \b
     MODEL_TYPE: selection for which kind of simulation this sys-param file will support.
@@ -115,11 +113,16 @@ def create_sys_param(model_type, sys_param_filename, scenario_dir, feature_file,
 
     \f
     :param model_type: string, selection of which model type to use in the GMT
-    :param sys_param_filename: Path, location & name of output file to save
-    :param scenario_dir: Path, location of SDK scenario to create sys-param file from
-    :param feature_file: Path, location of SDK feature file
+    :param sys_param_filename: Path, location & name of json output file to save
+    :param scenario_file: Path, location of SDK scenario_file
+    :param feature_file: Path, location of SDK feature_file
     :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
     """
+
+    # Use scenario_file to be consistent with sdk
+    scenario_name = Path(scenario_file).stem
+    scenario_dir = Path(scenario_file).parent / 'run' / scenario_name
+
     SystemParameters.csv_to_sys_param(
         model_type=model_type,
         sys_param_filename=Path(sys_param_filename),
@@ -139,15 +142,15 @@ def create_sys_param(model_type, sys_param_filename, scenario_dir, feature_file,
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
-    "model_type",
-    default='time_series',
-)
-@click.argument(
     "project_name",
     default="model_from_sdk",
     type=click.Path(exists=False, file_okay=False, dir_okay=True),
 )
-def build_model(model_type, sys_param_file, geojson_feature_file, project_name):
+@click.argument(
+    "model_type",
+    default='time_series',
+)
+def create_model(model_type, sys_param_file, geojson_feature_file, project_name):
     """Build Modelica model from user data
 
     SYS_PARAM_FILE: Path/name to sys-param file, possibly created with this CLI.
@@ -240,6 +243,7 @@ def build_model(model_type, sys_param_file, geojson_feature_file, project_name):
 )
 def run_model(modelica_project):
     """
+    \b
     Run the Modelica project in a docker-based environment.
     Results are saved at the same level as the project path that is passed.
     The model that runs is hard coded to be the Districts/DistrictEnergySystem.mo within the package.
