@@ -77,7 +77,7 @@ class TestCaseBase(GMTTestCase):
         Run the test in docker.
 
         :param file_to_run: Full path to the file to run. Typically this is the .mo file of interest (e.g., coupling.mo)
-        :param project_path: Full path to the location oft he project to run. This is typically the the full path to
+        :param project_path: Full path to the location of the project to run. This is typically the the full path to
         where the directory named with the `project_name` comes come from.
         :param project_name: The name of the project that is running. This is the directory where the root package.mo
         lives.

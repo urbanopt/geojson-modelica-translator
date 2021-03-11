@@ -40,7 +40,6 @@ import glob
 import os
 import shutil
 import subprocess
-from pathlib import Path
 
 
 class ModelicaRunner(object):
@@ -82,7 +81,7 @@ class ModelicaRunner(object):
         stdout.log will store both stdout and stderr of the simulations
 
         :param file_to_run: string, name of the file (could be directory?) to simulate
-        :param run_path: string, location where the Modelica simulation where start
+        :param run_path: string, location where the Modelica simulation will start
         :param project_name: string, name of the project being simulated. Will be used to determine name of results
                                      directory
         """
@@ -140,17 +139,17 @@ class ModelicaRunner(object):
 
         # get the location of the results path
         results_path = os.path.join(run_path, f'{project_name}_results')
-        self.move_results(run_path, results_path, file_to_run)
+        self.move_results(run_path, results_path, project_name)
         return exitcode
 
-    def move_results(self, from_path, to_path, file_ran=None):
-        """This method aggressively moves the results of the simulation. It is aggressive, because it moves any
-        file in the folder `from_path`; therefore, use with caution. This method moves all files, plus all folders
-        beginning with the "file_ran" name.
+    def move_results(self, from_path, to_path, project_name=None):
+        """This method moves the results of the simulation that are known for now.
+        This method moves only specific files (stdout.log for now), plus all files and folders beginning
+        with the "{project_name}_" name.
 
         :param from_path: string, where the files will move from
         :param to_path: string, where the files will be saved. Will be created if does not exist.
-        :param file_ran: string, name of modelica file used by run_in_docker method
+        :param project_name: string, name of the project ran in run_in_docker method
         :return:
         """
         # if there are results, they will simply be overwritten (for now).
@@ -160,11 +159,15 @@ class ModelicaRunner(object):
             shutil.rmtree(to_path)
             os.makedirs(to_path)
 
+        files_to_move = [
+            'stdout.log',
+        ]
+
         # print(f"Moving simulation results from {from_path} to {to_path}")
         for f in os.listdir(from_path):
             to_move = os.path.join(from_path, f)
             if not to_move == to_path:
-                if os.path.isfile(to_move) or f.startswith(str(Path(file_ran).stem)):
+                if (os.path.basename(to_move) in files_to_move) or (f.startswith(f'{project_name}_')):
                     shutil.move(to_move, os.path.join(to_path, f))
 
     def cleanup_path(self, path):
