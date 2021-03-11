@@ -36,7 +36,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 from pathlib import Path
 
 import click
@@ -242,7 +241,8 @@ def build_model(model_type, sys_param_file, geojson_feature_file, project_name):
 def run_model(modelica_project):
     """
     Run the Modelica project in a docker-based environment.
-    Results are saved inside the selected modelica_project.
+    Results are saved at the same level as the project path that is passed.
+    The model that runs is hard coded to be the Districts/DistrictEnergySystem.mo within the package.
 
     \b
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
@@ -251,13 +251,10 @@ def run_model(modelica_project):
     \f
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
     """
-
     run_path = Path(modelica_project).resolve()
-    print(os.getcwd())
-    os.chdir(run_path)
-    print(os.getcwd())
-    # raise SystemExit()
     project_name = run_path.stem
     file_to_run = run_path / 'Districts' / 'DistrictEnergySystem.mo'
+
+    # setup modelica runner
     mr = ModelicaRunner()
-    mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
+    mr.run_in_docker(file_to_run, run_path=run_path.parent, project_name=project_name)
