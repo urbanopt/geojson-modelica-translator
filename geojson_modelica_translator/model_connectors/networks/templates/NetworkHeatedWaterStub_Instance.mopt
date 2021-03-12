@@ -7,9 +7,9 @@
     T=55+273.15,
     nPorts=1)
     "Heating water supply temperature (district side)."
-    {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-14,34}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium={{ globals.medium_w }},
     nPorts=1)
     "Heating water sink (district side)"
-    {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={86,-34}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));

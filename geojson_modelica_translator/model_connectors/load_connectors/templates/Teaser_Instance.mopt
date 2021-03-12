@@ -4,4 +4,4 @@
     nPorts_aChiWat=1,
     nPorts_bChiWat=1)
     "Building with thermal loads as TEASER zones"
-    {% raw %}annotation (Placement(transformation(extent={{20,40},{40,60}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.teaser_load.load }}));

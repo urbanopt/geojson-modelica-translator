@@ -9,4 +9,4 @@
     nPorts_bChiWat=1,
     have_pum=true)
     "Building spawn model"
-    {% raw %}annotation (Placement(transformation(extent={{40,-40},{60,-20}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.spawn_load.load }}));

@@ -16,4 +16,4 @@
     y=40+273.15)
     "Secondary loop (Building side) heating water setpoint temperature."
     //Dehardcode
-    annotation (Placement({{ diagram.transformation.t_set.real_expression }}));
+    annotation (Placement({{ diagram.transformation.t_hea_wat_set.real_expression }}));

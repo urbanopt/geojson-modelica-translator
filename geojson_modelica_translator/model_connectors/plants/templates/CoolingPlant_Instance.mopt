@@ -32,7 +32,7 @@
   Modelica.Blocks.Sources.RealExpression TSetChiWatDis_{{ model.id }}(
     y=5+273.15)
     "Chilled water supply temperature set point on district level."
-    annotation (Placement({{ diagram.transformation.t_set.real_expression }}));
+    annotation (Placement({{ diagram.transformation.t_set_chi_wat_dis.real_expression }}));
   Modelica.Blocks.Sources.BooleanConstant on_{{ model.id }}
     "On signal of the plant"
     annotation (Placement({{ diagram.transformation.on.boolean_constant }}));

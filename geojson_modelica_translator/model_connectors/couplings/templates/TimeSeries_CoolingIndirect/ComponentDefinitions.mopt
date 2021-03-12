@@ -15,4 +15,4 @@
     y=7+273.15)
     //Dehardcode
     "Primary loop (district side) chilled water setpoint temperature."
-    annotation (Placement({{ diagram.transformation.t_set.real_expression }}));
+    annotation (Placement({{ diagram.transformation.t_chi_wat_set.real_expression }}));
