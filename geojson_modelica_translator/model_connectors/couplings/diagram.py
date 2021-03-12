@@ -27,6 +27,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
+from abc import ABC, abstractmethod
 from collections import defaultdict
 from string import Template
 
@@ -38,22 +39,25 @@ from geojson_modelica_translator.model_connectors.couplings.utils import (
 
 
 class Diagram:
-    grid_size = 200
-    icon_size = 20
-    icon_padding = icon_size
+    grid_cells_width = 10  # width and height of grid in number of cells
+    grid_cell_size = 20
+    grid_size = grid_cells_width * grid_cell_size
+    icon_padding = grid_cell_size
 
     def __init__(self, coupling_graph):
+        self._coupling_graph = coupling_graph
         self._initial_diagram_graph = self._parse_coupling_graph(coupling_graph)
 
         # TODO: organize diagram rather than using x, y coords for placing
         # track coordinates, with 0,0 at top left, coords increasing moving down and right
         self._current_x, self._current_y = 0, 0
 
-    def to_dict(self, id):
+    def to_dict(self, id, is_coupling):
         """Get the diagram as a dictionary, to be used for templating for model
         instances or couplings.
 
         :param id: str, model or coupling ID to get the dictionary for
+        :param is_coupling: bool, True if id is for a coupling, False if id is for a model
 
         {
             'transformation': {
@@ -72,9 +76,6 @@ class Diagram:
             }
         }
         """
-        if id not in self._initial_diagram_graph:
-            return {'transformation': {}, 'line': {}}
-
         def translate_x(pos):
             # translate from origin at upper left of grid to center of grid
             return pos - (self.grid_size / 2)
@@ -86,34 +87,55 @@ class Diagram:
         lines = defaultdict(dict)
         transformation_template = Template('transformation(extent={{$x1,$y1},{$x2,$y2}})')
         line_template = Template('Line(points={{21,0},{46,0}},color={0,0,127})')
-        for component_name, details in self._initial_diagram_graph[id].items():
+
+        # add transformations defined within this id's context
+        # e.g. if id is for a model, add all transformations defined in the model instance template
+        for component_name, details in self._initial_diagram_graph.get(id, {}).items():
+            icon = DiagramIcon.get_icon(details['type'])
             # x1, y1 is lower left of icon, x2, y2 is upper right
             coords = {
                 'x1': translate_x(self._current_x),
-                'y1': translate_y(self._current_y + self.icon_size),
-                'x2': translate_x(self._current_x + self.icon_size),
+                'y1': translate_y(self._current_y + (icon.height * self.grid_cell_size)),
+                'x2': translate_x(self._current_x + (icon.width * self.grid_cell_size)),
                 'y2': translate_y(self._current_y),
             }
             transformations[component_name][details['type']] = transformation_template.substitute(coords)
 
-            for component_port, other_components in details['edges'].items():
-                for other_component in other_components:
-                    _, other_name, other_port = other_component
-                    line = line_template.substitute()
-                    if component_port not in lines[component_name]:
-                        lines[component_name][component_port] = {
-                            other_name: {
-                                other_port: line
-                            }
-                        }
-                    else:
-                        lines[component_name][component_port][other_name] = {
-                            other_port: line
-                        }
-
-            self._current_x = (self._current_x + self.icon_size + self.icon_padding) % self.grid_size
+            self._current_x = self._current_x + self.grid_cell_size + self.icon_padding
+            if self._current_x >= self.grid_size:
+                self._current_x = 0
             if self._current_x == 0:
-                self._current_y += self.icon_size + self.icon_padding
+                # move to next grid row
+                self._current_y += self.grid_cell_size + self.icon_padding
+
+        diagram_ids = [id]
+        if is_coupling:
+            coupling = self._coupling_graph.get_coupling(id)
+            diagram_ids += [coupling.model_a.id, coupling.model_b.id]
+
+        # add lines - including the edges connecting components not written as part of the coupling
+        for diagram_id in diagram_ids:
+            for component_name, details in self._initial_diagram_graph.get(diagram_id, {}).items():
+                for component_port, other_components in details['edges'].items():
+                    for other_component in other_components:
+                        other_id, other_name, other_port = other_component
+                        # include this line if either:
+                        #   - we're working on the coupling lines
+                        #   - this edge connects to another model we might be interested in
+                        #     (e.g. model a instance connecting to model b instance)
+                        include_line = diagram_id == id or other_id in diagram_ids
+                        if include_line:
+                            line = line_template.substitute()
+                            if component_port not in lines[component_name]:
+                                lines[component_name][component_port] = {
+                                    other_name: {
+                                        other_port: line
+                                    }
+                                }
+                            else:
+                                lines[component_name][component_port][other_name] = {
+                                    other_port: line
+                                }
 
         return {
             'transformation': transformations,
@@ -136,18 +158,22 @@ class Diagram:
             }, ...
         }
         """
-        diagram_commands_by_id = {}
+        template_files_by_id = defaultdict(list)
         for coupling in coupling_graph.couplings:
-            with open(coupling.component_definitions_template_path) as f:
-                coupling_diagram_commands = parse_diagram_commands(f.read())
-            with open(coupling.connect_statements_template_path) as f:
-                coupling_diagram_commands += parse_diagram_commands(f.read())
-            diagram_commands_by_id[coupling.id] = coupling_diagram_commands
+            template_files_by_id[coupling.id].append(coupling.component_definitions_template_path)
+            template_files_by_id[coupling.id].append(coupling.connect_statements_template_path)
 
         for model in coupling_graph.models:
-            with open(model.instance_template_path) as f:
-                model_diagram_commands = parse_diagram_commands(f.read())
-            diagram_commands_by_id[model.id] = model_diagram_commands
+            template_files_by_id[model.id].append(model.instance_template_path)
+
+        diagram_commands_by_id = defaultdict(list)
+        for id_, template_files in template_files_by_id.items():
+            for template_file in template_files:
+                try:
+                    with open(template_file) as f:
+                        diagram_commands_by_id[id_].extend(parse_diagram_commands(f.read()))
+                except Exception as e:
+                    raise Exception(f'Failed to parse diagram commands for {template_file}: {str(e)}')
 
         return cls._diagram_commands_to_graph(diagram_commands_by_id, coupling_graph.couplings)
 
@@ -208,7 +234,7 @@ class Diagram:
                 else:
                     raise Exception(
                         f'Invalid diagram line command: failed to find "{name}" '
-                        'in the coupling or either of the coupled models'
+                        f'in the coupling or either of the coupled models ({coupling_model_a_id} and {coupling_model_b_id})'
                     )
 
         # add the edges between nodes, which are line commands (they're connectors between icons)
@@ -225,3 +251,47 @@ class Diagram:
                 diagram_graph_by_id[b_id][b_name]['edges'][b_port].append((a_id, a_name, a_port))
 
         return diagram_graph_by_id
+
+
+class DiagramIcon(ABC):
+    @property
+    @abstractmethod
+    def height(self):
+        """fraction of a diagram grid cell height (1 is full height, 0.5 is half, etc)"""
+        pass
+
+    @property
+    @abstractmethod
+    def width(self):
+        """fraction of a diagram grid cell width (1 is full width, 0.5 is half, etc)"""
+        pass
+
+    @staticmethod
+    def get_icon(icon_type):
+        if icon_type == 'load':
+            return LoadIcon()
+        elif icon_type == 'network':
+            return NetworkIcon()
+        else:
+            # use load icon as default for now
+            return LoadIcon()
+
+
+class LoadIcon(DiagramIcon):
+    @property
+    def height(self):
+        return 1
+
+    @property
+    def width(self):
+        return 1
+
+
+class NetworkIcon(DiagramIcon):
+    @property
+    def height(self):
+        return 0.5
+
+    @property
+    def width(self):
+        return 1

@@ -74,6 +74,14 @@ class Coupling(object):
     def id(self):
         return self._id
 
+    @property
+    def model_a(self):
+        return self._model_a
+
+    @property
+    def model_b(self):
+        return self._model_b
+
     def to_dict(self):
         return {
             'id': self._id,

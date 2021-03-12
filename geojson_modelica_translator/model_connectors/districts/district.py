@@ -100,7 +100,7 @@ class District:
         # render each coupling
         for coupling in self._coupling_graph.couplings:
             template_context = {
-                'diagram': diagram.to_dict(coupling.id),
+                'diagram': diagram.to_dict(coupling.id, is_coupling=True),
             }
             template_context.update(**common_template_params)
             templated_result = coupling.render_templates(template_context)
@@ -117,7 +117,7 @@ class District:
             template_params = {
                 'model': model.to_dict(self._scaffold),
                 'couplings': self._coupling_graph.couplings_by_type(model.id),
-                'diagram': diagram.to_dict(model.id),
+                'diagram': diagram.to_dict(model.id, is_coupling=False),
             }
             template_params.update(**common_template_params)
             templated_instance, instance_template_path = model.render_instance(template_params)
