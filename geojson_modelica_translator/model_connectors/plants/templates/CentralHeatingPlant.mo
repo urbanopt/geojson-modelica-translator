@@ -83,9 +83,9 @@ model CentralHeatingPlant
   Boiler_TParallel boiHotWat(
     redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
-    show_T=true,
+    Q_flow_nominal=QBoi_flow_nominal,
     dp_nominal=dpBoi_nominal,
-    QMax_flow=QBoi_flow_nominal)
+    numBoi=numBoi)
     "Parallel boilers."
     annotation (Placement(transformation(extent={{10,-60},{30,-40}})));
   Buildings.Fluid.Sensors.TemperatureTwoPort THWSup(
@@ -98,6 +98,7 @@ model CentralHeatingPlant
     m_flow_nominal=mBoi_flow_nominal,
     dpSetPoi=dpSetPoi,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    Ti=30,
     k=0.1)
     "Heating water pump controller."
     annotation (Placement(transformation(extent={{-120,-40},{-100,-20}})));
@@ -119,10 +120,6 @@ model CentralHeatingPlant
     "Heating water return temperature"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={104,50})));
   Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_y pumHW(
-    rhoStd=Medium.density_pTX(
-      Medium.p_default,
-      Medium.T_default,
-      Medium.X_default),
     per=fill(
       perHWPum,
       numBoi),
@@ -139,10 +136,6 @@ model CentralHeatingPlant
     allowFlowReversal=false,
     m_flow_nominal=mHW_flow_nominal*0.05,
     dpValve_nominal=7000,
-    rhoStd=Medium.density_pTX(
-      Medium.p_default,
-      Medium.T_default,
-      Medium.X_default),
     l=0.001)
     "Heating water bypass valve"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=90,origin={54,0})));
@@ -176,14 +169,10 @@ model CentralHeatingPlant
     "Output pump speed"
     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
 equation
-  for i in 1:numBoi loop
-    connect(THeaSet,boiHotWat.TSet[i])
-      annotation (Line(points={{-150,-50},{-60,-50},{-60,-54},{9,-54}},color={0,0,127}));
-  end for;
+  connect(THeaSet,boiHotWat.THeaWatSet)
+    annotation (Line(points={{-150,-50},{-72,-50},{-72,-56},{9,-56}},color={0,0,127}));
   connect(on,boiStaCon.on)
     annotation (Line(points={{-150,68},{-121,68}},color={255,0,255}));
-  connect(mPum_flow.y,heaWatPumCon.masFloPum)
-    annotation (Line(points={{-121,40},{-132,40},{-132,-23.4},{-121,-23.4}},color={0,0,127}));
   connect(dpMea,heaWatPumCon.dpMea)
     annotation (Line(points={{-150,-30},{-138,-30},{-138,-35},{-121,-35}},color={0,0,127}));
   connect(valByp.port_a,senMasFloByp.port_b)
@@ -212,8 +201,6 @@ equation
     annotation (Line(points={{12,16},{42,16},{42,50}},color={0,127,255}));
   connect(boiStaCon.y_On,boiHotWat.on)
     annotation (Line(points={{-99,70.6},{-72,70.6},{-72,-45},{9,-45}},color={255,0,255}));
-  connect(boiStaCon.y_On,heaWatPumCon.resPI)
-    annotation (Line(points={{-99,70.6},{-88,70.6},{-88,-6},{-126,-6},{-126,-21.2},{-121,-21.2}},color={255,0,255}));
   connect(THWSup.T,boiStaCon.TDisSup)
     annotation (Line(points={{132,-39},{132,96},{-134,96},{-134,70.6},{-121,70.6}},color={0,0,127}));
   connect(THWRet.T,boiStaCon.TDisRet)
@@ -226,15 +213,15 @@ equation
     annotation (Line(points={{-99,-30},{-94,-30},{-94,4},{-82,4}},color={0,0,127}));
   connect(pumOn.y,pumHW.u)
     annotation (Line(points={{-59,10},{-46,10},{-46,72},{12,72},{12,54},{2,54}},color={0,0,127}));
+  connect(boiStaCon.y_On,heaWatPumCon.ON)
+    annotation (Line(points={{-99,70.6},{-88,70.6},{-88,24},{-128,24},{-128,-23.4},{-121,-23.4}},color={255,0,255}));
+  connect(mPum_flow.y,heaWatPumCon.masFloPum)
+    annotation (Line(points={{-121,40},{-134,40},{-134,-25.6},{-121,-25.6}},color={0,0,127}));
   annotation (
-    __Dymola_Commands,
     Diagram(
       coordinateSystem(
         preserveAspectRatio=false,
         extent={{-140,-80},{120,100}})),
-    experiment(
-      StopTime=600,
-      __Dymola_NumberOfIntervals=1440),
     Icon(
       graphics={
         Rectangle(
@@ -315,5 +302,19 @@ equation
         Text(
           extent={{-149,-114},{151,-154}},
           lineColor={0,0,255},
-          textString="%name")}));
+          textString="%name")}),
+    Documentation(
+      info="<html>
+   <p>
+   This model presents a heating water central plant for the distrcit systems application.
+   </p>
+   </html>",
+      revisions="<html>
+   <ul>
+   <li>
+   June 30, 2020, by Hagar Elarga:<br/>
+   First implementation.
+   </li>
+   </ul>
+   </html>"));
 end CentralHeatingPlant;

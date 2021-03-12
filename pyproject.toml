@@ -3,7 +3,7 @@ name = "geojson-modelica-translator"
 version = "0.2.1"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
-license = "BSD3"
+license = "BSD-4-Clause"
 
 readme = "README.rst"
 

@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -92,11 +100,11 @@ class Spawn(LoadBase):
             self.building_id, "load_model_parameters.spawn.temp_chw_return",
         ) + 273.25
         temp_setpoint_cooling = self.system_parameters.get_param_by_building_id(
-                self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
-        )+273.15
+            self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
+        ) + 273.15
         temp_setpoint_heating = self.system_parameters.get_param_by_building_id(
-                self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
-        )+273.15
+            self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
+        ) + 273.15
 
         # construct the dict to pass into the template
         building_template_data = {
@@ -125,7 +133,6 @@ class Spawn(LoadBase):
                 "chw_return_temp": chw_return_temp,
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
-
             },
         }
         for tz in thermal_zones:
