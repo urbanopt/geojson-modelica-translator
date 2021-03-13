@@ -13,7 +13,7 @@ Version 0.2.1
 * Upgrade to MBL 2.1.0
 * Migrate to Poetry for development
 * Add regression testing to full district energy system
-* Auto-layout of templated components. This is a work in progress and the next version will include "pooling" of components. 
+* Auto-layout of templated components. This is a work in progress and the next version will include "pooling" of components.
 
 Version 0.2.0
 -------------
