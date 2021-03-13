@@ -151,7 +151,7 @@ html_css_files = [
     'custom_sphinx_styles.css',
 ]
 
-html_extra_path = ['../ConnectionTemplate.png']
+html_extra_path = []
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
