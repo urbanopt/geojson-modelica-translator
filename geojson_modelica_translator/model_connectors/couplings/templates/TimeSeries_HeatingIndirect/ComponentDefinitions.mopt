@@ -10,10 +10,10 @@
     use_T=false,
     nPorts=1)
     "Pressure source"
-    {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={48,-78}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.pressure_source.fixed_boundary }}));
   // TODO: move THeaWatSet (and its connection) into a HeatingIndirect specific template file (this component does not depend on the coupling)
   Modelica.Blocks.Sources.RealExpression THeaWatSet_{{ coupling.id }}(
     y=40+273.15)
     "Secondary loop (Building side) heating water setpoint temperature."
     //Dehardcode
-    {% raw %}annotation (Placement(transformation(extent={{-76,-52},{-56,-32}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.t_hea_wat_set.real_expression }}));

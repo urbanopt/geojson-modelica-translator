@@ -1,7 +1,7 @@
   // time series, ets hot water stub connections
   connect(supHeaWat_{{ coupling.ets.id }}.T_in,THeaWatSup_{{ coupling.id }}.y)
-    {% raw %}annotation (Line(points={{-42,82},{-46,82},{-46,86},{-59,86}},color={0,0,127})){% endraw %};
+    annotation ({{ diagram.line.sup_hea_wat.t_in.t_hea_wat_sup.y }});
   connect(supHeaWat_{{ coupling.ets.id }}.ports[1],{{ coupling.load.id }}.ports_aHeaWat[1])
-    {% raw %}annotation (Line(points={{-20,78},{-14,78},{-14,68},{0,68}},color={0,127,255})){% endraw %};
+    annotation ({{ diagram.line.sup_hea_wat.ports.ts_load.ports_a_hea_wat }});
   connect(sinHeaWat_{{ coupling.ets.id }}.ports[1],{{ coupling.load.id }}.ports_bHeaWat[1])
-    {% raw %}annotation (Line(points={{64,80},{40,80},{40,68},{20,68}},color={0,127,255})){% endraw %};
+    annotation ({{ diagram.line.sin_hea_wat.ports.ts_load.ports_b_hea_wat }});

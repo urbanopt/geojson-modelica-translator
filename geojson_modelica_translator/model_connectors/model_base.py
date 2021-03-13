@@ -62,8 +62,13 @@ class ModelBase(object):
 
         # initialize the templating framework (Jinja2)
         self.template_dir = template_dir
-        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir))
+        self.template_env = Environment(
+            loader=FileSystemLoader(searchpath=self.template_dir),
+            undefined=StrictUndefined
+        )
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
+
+        self._template_instance = f'{self.model_name}_Instance.mopt'
 
         # store a list of the templated files to include when building the package
         self.template_files_to_include = []
@@ -142,6 +147,11 @@ class ModelBase(object):
             outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
         return outputname
 
+    @property
+    def instance_template_path(self):
+        template = self.template_env.get_template(self._template_instance)
+        return template.filename
+
     def render_instance(self, template_params):
         """Templates the *_Instance file for the model. The templated result will
         be inserted into the final District Energy System model in order to
@@ -150,19 +160,10 @@ class ModelBase(object):
         :param template_params: dict, parameters for the template
         :returns: tuple (str, str), the templated result followed by the name of the file used for templating
         """
-        # TODO: both to_modelica and render_instance should use the same template environment
-        # This should be fixed once all of the template files have the same variable substitution delimiters
-        # TODO: move templates into specific model directories and have subclass override template_dir and template_env
-        # This should be done once both to_modelica and render_instance can use the same environment
-        template_env = Environment(
-            loader=FileSystemLoader(searchpath=self.template_dir),
-            undefined=StrictUndefined)
-        template_env.filters.update(ALL_CUSTOM_FILTERS)
-        template_name = f'{self.model_name}_Instance.mopt'
         try:
-            template = template_env.get_template(template_name)
+            template = self.template_env.get_template(self._template_instance)
         except exceptions.TemplateNotFound:
-            raise Exception(f"Could not find mopt template '{template_name}' in {self.template_dir}")
+            raise Exception(f"Could not find mopt template '{self._template_instance}' in {self.template_dir}")
 
         # get template path relative to the package
         template_filename = template.filename

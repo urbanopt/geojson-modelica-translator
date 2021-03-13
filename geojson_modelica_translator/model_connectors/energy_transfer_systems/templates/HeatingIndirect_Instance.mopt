@@ -16,4 +16,4 @@
     k=0.1,
     Ti=60,
     reverseActing=true)
-    {% raw %}annotation (Placement(transformation(extent={{-22,-48},{-2,-28}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.hea_ets.ets }}));

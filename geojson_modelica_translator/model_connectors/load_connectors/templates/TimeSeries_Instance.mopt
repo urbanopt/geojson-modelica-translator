@@ -11,4 +11,4 @@
     nPorts_bHeaWat=1,
     nPorts_aHeaWat=1)
     "Building model integrating multiple time series thermal zones."
-    {% raw %}annotation (Placement(transformation(extent={{0,60},{20,80}})));{% endraw %}
+    annotation (Placement({{ diagram.transformation.ts_load.load }}));

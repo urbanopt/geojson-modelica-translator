@@ -192,7 +192,7 @@ class Spawn(LoadBase):
             self.building_name,
             "coupling").replace(os.path.sep, '.')
 
-        file_data = spawn_mos_template.render(full_model_name=full_model_name)
+        file_data = spawn_mos_template.render(full_model_name=full_model_name, model_name=self.model_name)
         with open(os.path.join(b_modelica_path.scripts_dir, "RunSpawnCouplingBuilding.mos"), "w") as f:
             f.write(file_data)
 

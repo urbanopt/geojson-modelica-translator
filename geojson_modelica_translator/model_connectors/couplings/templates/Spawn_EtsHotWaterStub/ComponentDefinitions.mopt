@@ -2,4 +2,4 @@
     y=max(
       {{ coupling.load.id }}.terUni.T_aHeaWat_nominal))
     "Heating water supply temperature"
-    {% raw %}annotation (Placement(transformation(extent={{-110,10},{-90,30}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.t_hea_wat_sup.real_expression }}));

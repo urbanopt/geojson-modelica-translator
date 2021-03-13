@@ -161,3 +161,9 @@ class CouplingGraph:
             return load_couplings[0].to_dict()['load']
         except (KeyError, IndexError):
             raise Exception('ETS is not coupled to a load')
+
+    def get_coupling(self, coupling_id):
+        for coupling in self._couplings:
+            if coupling.id == coupling_id:
+                return coupling
+        raise Exception(f'No coupling found with id "{coupling_id}"')

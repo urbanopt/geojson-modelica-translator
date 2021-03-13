@@ -34,4 +34,4 @@
     dpSetPoi=dpSetPoi_{{ couplings.network_couplings[0].network.id }},
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
     "District heating plant."
-    {% raw %}annotation (Placement(transformation(extent={{-40,-40},{-20,-20}}))){% endraw %};
+    annotation (Placement({{ diagram.transformation.heating_plant.plant }}));
