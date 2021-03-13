@@ -53,6 +53,7 @@ jobs:
         name: Tox ${{ matrix.test_env }}
         env:
           MODELICAPATH: /home/runner/work/modelica-buildings
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: poetry run tox -e ${{ matrix.test_env }}
       -
         name: Job Failed
