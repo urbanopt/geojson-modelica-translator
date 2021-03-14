@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 Network2Pipe
@@ -36,6 +36,7 @@ Network2Pipe
 
    .. autosummary::
    
+      ~Network2Pipe.instance_template_path
       ~Network2Pipe.model_name
       ~Network2Pipe.simple_gmt_type
    

@@ -1,0 +1,38 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+DiagramLine
+===========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.utils
+
+.. autoclass:: DiagramLine
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DiagramLine.__init__
+      ~DiagramLine.count
+      ~DiagramLine.index
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DiagramLine.a_name
+      ~DiagramLine.a_port
+      ~DiagramLine.b_name
+      ~DiagramLine.b_port
+   
+   

@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.model\_connectors.couplings.utils.parse\_diagram\_commands
+========================================================================================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.utils
+
+.. autofunction:: parse_diagram_commands

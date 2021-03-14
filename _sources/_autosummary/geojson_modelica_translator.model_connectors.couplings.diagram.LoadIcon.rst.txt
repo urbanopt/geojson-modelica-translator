@@ -1,0 +1,35 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+LoadIcon
+========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.diagram
+
+.. autoclass:: LoadIcon
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LoadIcon.__init__
+      ~LoadIcon.get_icon
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~LoadIcon.height
+      ~LoadIcon.width
+   
+   

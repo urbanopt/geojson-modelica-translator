@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 Spawn
@@ -39,6 +39,7 @@ Spawn
    .. autosummary::
    
       ~Spawn.building_name
+      ~Spawn.instance_template_path
       ~Spawn.model_name
       ~Spawn.simple_gmt_type
    

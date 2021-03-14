@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 EtsColdWaterStub
@@ -36,6 +36,7 @@ EtsColdWaterStub
 
    .. autosummary::
    
+      ~EtsColdWaterStub.instance_template_path
       ~EtsColdWaterStub.model_name
       ~EtsColdWaterStub.simple_gmt_type
    

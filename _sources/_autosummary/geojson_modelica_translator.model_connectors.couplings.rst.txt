@@ -31,5 +31,7 @@ couplings
    :recursive:
 
    geojson_modelica_translator.model_connectors.couplings.coupling
+   geojson_modelica_translator.model_connectors.couplings.diagram
    geojson_modelica_translator.model_connectors.couplings.graph
+   geojson_modelica_translator.model_connectors.couplings.utils
 

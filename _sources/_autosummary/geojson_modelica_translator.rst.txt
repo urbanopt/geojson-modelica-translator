@@ -30,7 +30,6 @@ geojson\_modelica\_translator
    :toctree:
    :recursive:
 
-   geojson_modelica_translator.cli
    geojson_modelica_translator.geojson
    geojson_modelica_translator.geojson_modelica_translator
    geojson_modelica_translator.jinja_filters

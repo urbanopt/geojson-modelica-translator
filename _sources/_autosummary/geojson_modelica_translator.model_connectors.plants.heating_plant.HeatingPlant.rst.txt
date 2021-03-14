@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 HeatingPlant
@@ -36,6 +36,7 @@ HeatingPlant
 
    .. autosummary::
    
+      ~HeatingPlant.instance_template_path
       ~HeatingPlant.model_name
       ~HeatingPlant.simple_gmt_type
    

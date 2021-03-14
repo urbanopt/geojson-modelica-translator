@@ -1,0 +1,37 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+Diagram
+=======
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.diagram
+
+.. autoclass:: Diagram
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Diagram.__init__
+      ~Diagram.to_dict
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Diagram.grid_cell_size
+      ~Diagram.grid_cells_width
+      ~Diagram.grid_size
+      ~Diagram.icon_padding
+   
+   

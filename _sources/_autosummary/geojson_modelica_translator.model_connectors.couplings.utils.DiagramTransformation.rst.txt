@@ -1,0 +1,36 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+DiagramTransformation
+=====================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.utils
+
+.. autoclass:: DiagramTransformation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DiagramTransformation.__init__
+      ~DiagramTransformation.count
+      ~DiagramTransformation.index
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DiagramTransformation.model_name
+      ~DiagramTransformation.model_type
+   
+   

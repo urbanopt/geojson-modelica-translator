@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 Teaser
@@ -21,6 +21,7 @@ Teaser
       ~Teaser.__init__
       ~Teaser.add_building
       ~Teaser.copy_required_mo_files
+      ~Teaser.fix_gains_file
       ~Teaser.ft2_to_m2
       ~Teaser.get_modelica_type
       ~Teaser.lookup_building_type
@@ -40,6 +41,7 @@ Teaser
    .. autosummary::
    
       ~Teaser.building_name
+      ~Teaser.instance_template_path
       ~Teaser.model_name
       ~Teaser.simple_gmt_type
    

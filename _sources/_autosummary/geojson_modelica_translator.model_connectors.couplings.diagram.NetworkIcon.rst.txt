@@ -1,0 +1,35 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+NetworkIcon
+===========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.diagram
+
+.. autoclass:: NetworkIcon
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NetworkIcon.__init__
+      ~NetworkIcon.get_icon
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NetworkIcon.height
+      ~NetworkIcon.width
+   
+   

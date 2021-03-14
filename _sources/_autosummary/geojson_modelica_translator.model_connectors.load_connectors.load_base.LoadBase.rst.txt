@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 LoadBase
@@ -36,6 +36,7 @@ LoadBase
    .. autosummary::
    
       ~LoadBase.building_name
+      ~LoadBase.instance_template_path
       ~LoadBase.model_name
       ~LoadBase.simple_gmt_type
    

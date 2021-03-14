@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 HeatingIndirect
@@ -36,6 +36,7 @@ HeatingIndirect
 
    .. autosummary::
    
+      ~HeatingIndirect.instance_template_path
       ~HeatingIndirect.model_name
       ~HeatingIndirect.simple_gmt_type
    

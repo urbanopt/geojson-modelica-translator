@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 PlantBase
@@ -34,6 +34,7 @@ PlantBase
 
    .. autosummary::
    
+      ~PlantBase.instance_template_path
       ~PlantBase.model_name
       ~PlantBase.simple_gmt_type
    

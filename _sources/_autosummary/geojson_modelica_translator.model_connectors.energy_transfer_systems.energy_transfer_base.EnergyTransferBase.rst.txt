@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 EnergyTransferBase
@@ -34,6 +34,7 @@ EnergyTransferBase
 
    .. autosummary::
    
+      ~EnergyTransferBase.instance_template_path
       ~EnergyTransferBase.model_name
       ~EnergyTransferBase.simple_gmt_type
    

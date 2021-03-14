@@ -31,6 +31,10 @@ Coupling
 
    .. autosummary::
    
+      ~Coupling.component_definitions_template_path
+      ~Coupling.connect_statements_template_path
       ~Coupling.id
+      ~Coupling.model_a
+      ~Coupling.model_b
    
    

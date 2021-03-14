@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 NetworkChilledWaterStub
@@ -36,6 +36,7 @@ NetworkChilledWaterStub
 
    .. autosummary::
    
+      ~NetworkChilledWaterStub.instance_template_path
       ~NetworkChilledWaterStub.model_name
       ~NetworkChilledWaterStub.simple_gmt_type
    

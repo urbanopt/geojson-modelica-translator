@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 NetworkBase
@@ -34,6 +34,7 @@ NetworkBase
 
    .. autosummary::
    
+      ~NetworkBase.instance_template_path
       ~NetworkBase.model_name
       ~NetworkBase.simple_gmt_type
    

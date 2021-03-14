@@ -1,0 +1,36 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+diagram
+=======
+
+.. automodule:: geojson_modelica_translator.model_connectors.couplings.diagram
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      Diagram
+      DiagramIcon
+      LoadIcon
+      NetworkIcon
+   
+   
+
+   
+   
+   
+
+
+

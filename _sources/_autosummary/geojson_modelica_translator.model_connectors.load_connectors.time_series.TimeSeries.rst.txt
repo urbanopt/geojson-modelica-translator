@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 TimeSeries
@@ -39,6 +39,7 @@ TimeSeries
    .. autosummary::
    
       ~TimeSeries.building_name
+      ~TimeSeries.instance_template_path
       ~TimeSeries.model_name
       ~TimeSeries.simple_gmt_type
    

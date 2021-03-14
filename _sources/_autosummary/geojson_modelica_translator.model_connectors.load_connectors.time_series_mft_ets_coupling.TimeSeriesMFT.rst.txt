@@ -39,6 +39,7 @@ TimeSeriesMFT
    .. autosummary::
    
       ~TimeSeriesMFT.building_name
+      ~TimeSeriesMFT.instance_template_path
       ~TimeSeriesMFT.model_name
       ~TimeSeriesMFT.simple_gmt_type
    

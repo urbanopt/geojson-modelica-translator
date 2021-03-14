@@ -49,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-1">Version 0.2.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
 </ul>
@@ -68,12 +69,15 @@
 </table>
 <div class="section" id="geojson-modelica-translator-gmt">
 <span id="readme"></span><h2>GeoJSON Modelica Translator (GMT)<a class="headerlink" href="#geojson-modelica-translator-gmt" title="Permalink to this headline">¶</a></h2>
-<a class="reference external image-reference" href="https://travis-ci.org/urbanopt/geojson-modelica-translator"><img alt="https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop" src="https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop" /></a>
+<a class="reference external image-reference" href="https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml"><img alt="https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop" src="https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop" /></a>
 <a class="reference external image-reference" href="https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop"><img alt="https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop" src="https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/GeoJSON-Modelica-Translator/"><img alt="https://badge.fury.io/py/GeoJSON-Modelica-Translator.svg" src="https://badge.fury.io/py/GeoJSON-Modelica-Translator.svg" /></a>
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 1GDH and 4GDHC.</p>
+<p>The project is motivated by the need to easily evaluate district energy systems. The goal is to eventually cover the various generations of heating and cooling systems as shown in the figure below. The need to move towards 5GDHC systems results in higher efficiencies and greater access to additional waste-heat sources.</p>
+<img alt="https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-generations.png" src="https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-generations.png" />
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
@@ -221,7 +225,7 @@ the runner to work locally.</p>
 </div>
 <div class="section" id="templating-diagram">
 <h2>Templating Diagram<a class="headerlink" href="#templating-diagram" title="Permalink to this headline">¶</a></h2>
-<img alt="ConnectionTemplate.png" src="ConnectionTemplate.png" />
+<img alt="https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png" src="https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png" />
 </div>
 <div class="section" id="release-instructions">
 <h2>Release Instructions<a class="headerlink" href="#release-instructions" title="Permalink to this headline">¶</a></h2>

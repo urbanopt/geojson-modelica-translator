@@ -1,4 +1,4 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
 ModelBase
@@ -34,6 +34,7 @@ ModelBase
 
    .. autosummary::
    
+      ~ModelBase.instance_template_path
       ~ModelBase.model_name
    
    
