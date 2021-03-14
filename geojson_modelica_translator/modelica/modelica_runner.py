@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -32,7 +40,6 @@ import glob
 import os
 import shutil
 import subprocess
-from pathlib import Path
 
 
 class ModelicaRunner(object):
@@ -74,7 +81,7 @@ class ModelicaRunner(object):
         stdout.log will store both stdout and stderr of the simulations
 
         :param file_to_run: string, name of the file (could be directory?) to simulate
-        :param run_path: string, location where the Modelica simulation where start
+        :param run_path: string, location where the Modelica simulation will start
         :param project_name: string, name of the project being simulated. Will be used to determine name of results
                                      directory
         """
@@ -132,17 +139,17 @@ class ModelicaRunner(object):
 
         # get the location of the results path
         results_path = os.path.join(run_path, f'{project_name}_results')
-        self.move_results(run_path, results_path, file_to_run)
+        self.move_results(run_path, results_path, project_name)
         return exitcode
 
-    def move_results(self, from_path, to_path, file_ran=None):
-        """This method aggressively moves the results of the simulation. It is aggressive, because it moves any
-        file in the folder `from_path`; therefore, use with caution. This method moves all files, plus all folders
-        beginning with the "file_ran" name.
+    def move_results(self, from_path, to_path, project_name=None):
+        """This method moves the results of the simulation that are known for now.
+        This method moves only specific files (stdout.log for now), plus all files and folders beginning
+        with the "{project_name}_" name.
 
         :param from_path: string, where the files will move from
         :param to_path: string, where the files will be saved. Will be created if does not exist.
-        :param file_ran: string, name of modelica file used by run_in_docker method
+        :param project_name: string, name of the project ran in run_in_docker method
         :return:
         """
         # if there are results, they will simply be overwritten (for now).
@@ -152,11 +159,15 @@ class ModelicaRunner(object):
             shutil.rmtree(to_path)
             os.makedirs(to_path)
 
+        files_to_move = [
+            'stdout.log',
+        ]
+
         # print(f"Moving simulation results from {from_path} to {to_path}")
         for f in os.listdir(from_path):
             to_move = os.path.join(from_path, f)
             if not to_move == to_path:
-                if os.path.isfile(to_move) or f.startswith(str(Path(file_ran).stem)):
+                if (os.path.basename(to_move) in files_to_move) or (f.startswith(f'{project_name}_')):
                     shutil.move(to_move, os.path.join(to_path, f))
 
     def cleanup_path(self, path):

@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -28,13 +36,29 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import itertools
 import os
 
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.teaser import TeaserConnector
+from geojson_modelica_translator.model_connectors.couplings.coupling import (
+    Coupling
+)
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
+from geojson_modelica_translator.model_connectors.districts.district import (
+    District
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
+    EtsColdWaterStub
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
+    EtsHotWaterStub
+)
+from geojson_modelica_translator.model_connectors.load_connectors.teaser import (
+    Teaser
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -43,90 +67,38 @@ from ..base_test_case import TestCaseBase
 
 
 class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
-    def load_project(self, project_name, geojson_filename, sys_param_filename):
+    def test_teaser_single(self):
+        project_name = "teaser_single"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single office building
-        filename = os.path.join(self.data_dir, geojson_filename)
+        filename = os.path.join(self.data_dir, "teaser_geojson_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
 
-        if sys_param_filename is not None:
-            filename = os.path.join(self.data_dir, sys_param_filename)
-            sys_params = SystemParameters(filename)
-        else:
-            sys_params = SystemParameters()
+        # load system parameter data
+        filename = os.path.join(self.data_dir, "teaser_system_params_ex1.json")
+        sys_params = SystemParameters(filename)
 
-        self.teaser = TeaserConnector(sys_params)
-        for b in self.gj.json_loads:
-            self.teaser.add_building(b)
+        # build spawn model with hot and cold water stubbed out
+        teaser = Teaser(sys_params, self.gj.json_loads[0])
+        hot_stub = EtsHotWaterStub(sys_params)
+        cold_stub = EtsColdWaterStub(sys_params)
 
-    def test_building_types(self):
-        sys_params = SystemParameters()
-        tc = TeaserConnector(sys_params)
-        self.assertEqual('institute8', tc.lookup_building_type('Laboratory'))
-        self.assertEqual('institute', tc.lookup_building_type('Education'))
-        self.assertEqual('office', tc.lookup_building_type('Office'))
+        graph = CouplingGraph([
+            Coupling(teaser, hot_stub),
+            Coupling(teaser, cold_stub),
+        ])
 
-    def test_undefined_building_type(self):
-        sys_params = SystemParameters()
-        tc = TeaserConnector(sys_params)
-
-        with self.assertRaises(Exception) as exc:
-            tc.lookup_building_type('Undefined Building Type')
-        self.assertEqual("Building type of Undefined Building Type not defined in GeoJSON to TEASER mappings",
-                         str(exc.exception))
-
-    def test_teaser_rc_default(self):
-        """Should result in TEASER models with two element RC models"""
-        project_name = 'teaser_rc_default'
-        self.load_project(project_name, "teaser_geojson_ex1.json", "teaser_system_params_ex2.json")
-        self.teaser.to_modelica(self.gj.scaffold)
-
-        # Check that the created file is two element
-        check_file = os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'Office.mo')
-        self.assertTrue(os.path.exists(check_file))
-
-        with open(check_file) as f:
-            self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.TwoElements' in f.read())
-
-        file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
-        )
-        self.run_and_assert_in_docker(
-            file_to_run, project_path=self.gj.scaffold.project_path, project_name=self.gj.scaffold.project_name
+        district = District(
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            coupling_graph=graph
         )
 
-    def test_teaser_rc_4(self):
-        """Models should be 4 element RC models"""
-        project_name = 'teaser_rc_4'
+        district.to_modelica()
 
-        self.load_project(project_name, "teaser_geojson_ex1.json", "teaser_system_params_ex1.json")
-        self.teaser.to_modelica(self.gj.scaffold)
-
-        # setup what wze are going to check
-        model_names = ["Floor", "ICT", "Meeting", "Office", "package", "Restroom", "Storage", ]
-        building_paths = [
-            os.path.join(self.gj.scaffold.loads_path.files_dir, b.dirname) for b in self.gj.json_loads
-        ]
-        path_checks = [f"{os.path.sep.join(r)}.mo" for r in itertools.product(building_paths, model_names)]
-
-        for p in path_checks:
-            self.assertTrue(os.path.exists(p), f"Path not found {p}")
-            if os.path.basename(p) == 'package.mo':
-                continue
-
-            with open(p) as f:
-                self.assertTrue('Buildings.ThermalZones.ReducedOrder.RC.FourElements' in f.read(),
-                                "Could not find the correct RC Model Order")
-
-        # go through the generated buildings and ensure that the resources are created
-        resource_names = ["InternalGains_Floor", "InternalGains_ICT", "InternalGains_Meeting",
-                          "InternalGains_Office", "InternalGains_Restroom", "InternalGains_Storage", ]
-        for b in self.gj.json_loads:
-            for resource_name in resource_names:
-                # TEASER 0.7.2 used .txt for schedule files
-                path = os.path.join(self.gj.scaffold.loads_path.files_dir, "Resources", "Data",
-                                    b.dirname, f"{resource_name}.txt")
-                self.assertTrue(os.path.exists(path), f"Path not found: {path}")
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)

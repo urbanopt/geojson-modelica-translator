@@ -1,0 +1,238 @@
+within {{project_name}}.Loads.{{model_name}};
+model building
+  "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
+  extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
+    redeclare package Medium=Buildings.Media.Water,
+    final have_eleHea=false,
+    final have_eleCoo=false,
+    final have_weaBus=false);
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  package MediumA=Buildings.Media.Air
+    "Load side medium";
+  parameter Integer nZon={{data['thermal_zones'] | count}}
+    "Number of conditioned thermal zones";
+  parameter Integer facSca[nZon]=fill(
+    5,
+    nZon)
+    "Scaling factor to be applied to each extensive quantity";
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[nZon]
+    "Load side mass flow rate at cooling nominal conditions"
+    annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[nZon]
+    "Load side mass flow rate at heating nominal conditions"
+    annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo={{data['delta_temp_chw_building']}}
+    "Nominal building supply and return chilled water temperature difference";
+  parameter Modelica.SIunits.TemperatureDifference delTDisCoo={{data['delta_temp_chw_district']}}
+    "Nominal district supply and return water temperature difference";
+  parameter Modelica.SIunits.TemperatureDifference delTBuiHea={{data['delta_temp_hw_building']}}
+    "Nominal building supply and return water temperature difference";
+  parameter Modelica.SIunits.TemperatureDifference delTDisHea={{data['delta_temp_hw_district']}}
+    "Nominal district supply and return water temperature difference";
+  parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
+    "Supply chilled water nominal temperature";
+  parameter Modelica.SIunits.Temperature T_bChiWat_nominal={{ data['nominal_values']['chw_return_temp'] }}
+    "Return chilled water nominal temperature";
+  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
+    "Supply heating water nominal temperature";
+  parameter Modelica.SIunits.Temperature T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp'] }}
+    "Return heating water nominal temperature";
+  parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]=fill(
+    //Zone-level noiminal heat flows aren't currently in the schema--extend in future?
+    3000,
+    nZon) ./ facSca
+    "Design heating heat flow rate (>=0)"
+    annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal[nZon]=fill(
+    -8750,
+    nZon) ./ facSca
+    "Design cooling heat flow rate (<=0)"
+    annotation (Dialog(group="Nominal condition"));
+  parameter String idfName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
+    "Path of the IDF file";
+  parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
+    "Path of the weather file";
+  // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
+  // Set these based on cooling and heating setpoints for now based on current parameters in schema.
+  {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
+    {% endraw %}k=fill(
+      {{ data["nominal_values"]["temp_setpoint_heating"] }},
+      nZon))
+    {% raw %} "Minimum temperature setpoint"
+    annotation (Placement(transformation(extent={{-220,60},{-200,80}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
+    {% endraw %}k=fill(
+      {{ data["nominal_values"]["temp_setpoint_cooling"] }},
+      nZon))
+    {% raw %} "Maximum temperature setpoint"
+    annotation (Placement(transformation(extent={{-220,20},{-200,40}})));
+  Modelica.Blocks.Sources.Constant qConGai_flow(
+    k=0)
+    "Convective heat gain"
+    annotation (Placement(transformation(extent={{-66,128},{-46,148}})));
+  Modelica.Blocks.Sources.Constant qRadGai_flow(
+    k=0)
+    "Radiative heat gain"
+    annotation (Placement(transformation(extent={{-66,168},{-46,188}})));
+  Modelica.Blocks.Routing.Multiplex3 multiplex3_1
+    annotation (Placement(transformation(extent={{-20,128},{0,148}})));
+  Modelica.Blocks.Sources.Constant qLatGai_flow(
+    k=0)
+    "Latent heat gain"
+    annotation (Placement(transformation(extent={{-66,88},{-46,108}})));
+  {% endraw %}// TODO: apply a dynamic layout
+  {% for zone in data['thermal_zones'] %}Buildings.ThermalZones.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
+    redeclare package Medium=MediumA,
+    nPorts=2,
+    zoneName="{{zone['spawn_object_name']}}")
+    "Thermal zone"
+    {% raw %} annotation (Placement(transformation(extent={{40,-20},{80,20}})));
+  {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus.Building building(
+    idfName=Modelica.Utilities.Files.loadResource(
+      idfName),
+    weaName=Modelica.Utilities.Files.loadResource(
+      weaName),
+    showWeatherData=false)
+    "Building outer component"
+    annotation (Placement(transformation(extent={{40,60},{60,80}})));
+  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
+    nin=nZon)
+    annotation (Placement(transformation(extent={{260,110},{280,130}})));
+  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum3(
+    nin=2) if have_pum
+    annotation (Placement(transformation(extent={{260,70},{280,90}})));
+  Buildings.Experimental.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
+    each T_aChiWat_nominal=T_aChiWat_nominal,
+    each T_bChiWat_nominal=T_bChiWat_nominal,
+    redeclare each final package Medium1=MediumW,
+    redeclare each final package Medium2=MediumA,
+    each fan(
+      show_T=true),
+    final facSca=facSca,
+    final QHea_flow_nominal=QHea_flow_nominal,
+    final QCoo_flow_nominal=QCoo_flow_nominal,
+    {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
+    each T_aLoaCoo_nominal={{ data["nominal_values"]["temp_setpoint_cooling"] }},
+    {% raw %}each T_bHeaWat_nominal=T_bHeaWat_nominal,
+    each T_aHeaWat_nominal=T_aHeaWat_nominal,
+    final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
+    final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
+    "Terminal unit"
+    annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
+  Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
+    redeclare package Medium=MediumW,
+    m_flow_nominal=sum(
+      terUni.mHeaWat_flow_nominal .* terUni.facSca),
+    have_pum=have_pum,
+    dp_nominal=100000,
+    nPorts_a1=nZon,
+    nPorts_b1=nZon)
+    "Heating water distribution system"
+    annotation (Placement(transformation(extent={{-236,-188},{-216,-168}})));
+  Buildings.Experimental.DHC.Loads.FlowDistribution disFloCoo(
+    redeclare package Medium=MediumW,
+    m_flow_nominal=sum(
+      terUni.mChiWat_flow_nominal .* terUni.facSca),
+    typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
+    dp_nominal=100000,
+    have_pum=have_pum,
+    nPorts_a1=nZon,
+    nPorts_b1=nZon)
+    "Chilled water distribution system"
+    annotation (Placement(transformation(extent={{-160,-230},{-140,-210}})));
+{% endraw %}equation
+  {% raw %} connect(qRadGai_flow.y,multiplex3_1.u1[1])
+    annotation (Line(points={{-45,178},{-26,178},{-26,145},{-22,145}},color={0,0,127},smooth=Smooth.None));
+  connect(qConGai_flow.y,multiplex3_1.u2[1])
+    annotation (Line(points={{-45,138},{-22,138}},smooth=Smooth.None));
+  connect(qLatGai_flow.y,multiplex3_1.u3[1])
+    annotation (Line(points={{-22,131},{-26,131},{-26,98},{-45,98}},color={0,0,127}));
+  connect(disFloHea.port_a,ports_aHeaWat[1])
+    annotation (Line(points={{-300,0},{-280,0},{-280,-178},{-236,-178}},color={0,127,255}));
+  connect(disFloHea.port_b,ports_bHeaWat[1])
+    annotation (Line(points={{-216,-178},{260,-178},{260,0},{300,0}},color={0,127,255}));
+  connect(disFloCoo.port_a,ports_aChiWat[1])
+    annotation (Line(points={{-300,0},{-280,0},{-280,-220},{-160,-220}},color={0,127,255}));
+  connect(disFloCoo.port_b,ports_bChiWat[1])
+    annotation (Line(points={{-140,-220},{280,-220},{280,0},{300,0}},color={0,127,255}));
+  connect(mulSum.y,PFan)
+    annotation (Line(points={{282,120},{302,120},{302,120},{320,120}},color={0,0,127}));
+  if have_pum then
+    connect(PPum,mulSum3.y)
+      annotation (Line(points={{320,80},{302,80},{302,80},{282,80}},color={0,0,127}));
+    connect(disFloHea.PPum,mulSum3.u[1])
+      annotation (Line(points={{-215,-186},{220.5,-186},{220.5,81},{258,81}},color={0,0,127}));
+    connect(disFloCoo.PPum,mulSum3.u[2])
+      annotation (Line(points={{-139,-228},{224,-228},{224,79},{258,79}},color={0,0,127}));
+  end if;
+  connect(disFloHea.QActTot_flow,QHea_flow)
+    annotation (Line(points={{-215,-184},{-2,-184},{-2,-182},{212,-182},{212,280},{320,280}},color={0,0,127}));
+  connect(disFloCoo.QActTot_flow,QCoo_flow)
+    annotation (Line(points={{-139,-226},{28,-226},{28,-224},{216,-224},{216,240},{320,240}},color={0,0,127}));
+  {% endraw %}for i in 1:nZon loop
+    connect(terUni[i].PFan,mulSum.u[i])
+      {% raw %} annotation (Line(points={{-119.167,9},{-100,9},{-100,220},{220,220},{220,118.333},{258,118.333}},{% endraw %}color={0,0,127}));
+    connect(disFloCoo.ports_a1[i],terUni[i].port_bChiWat)
+      {% raw %} annotation (Line(points={{-140,-214},{-38,-214},{-38,1.66667},{-120,1.66667}},{% endraw %}color={0,127,255}));
+    connect(disFloCoo.ports_b1[i],terUni[i].port_aChiWat)
+      {% raw %} annotation (Line(points={{-160,-214},{-260,-214},{-260,1.66667},{-140,1.66667}},{% endraw %}color={0,127,255}));
+    connect(disFloHea.ports_a1[i],terUni[i].port_bHeaWat)
+      {% raw %} annotation (Line(points={{-220,-164},{-40,-164},{-40,-0.166667},{-120,-0.166667}},{% endraw %}color={0,127,255}));
+    connect(disFloHea.ports_b1[i],terUni[i].port_aHeaWat)
+      {% raw %} annotation (Line(points={{-240,-164},{-260,-164},{-260,-0.166667},{-140,-0.166667}},{% endraw %}color={0,127,255}));
+    connect(terUni[i].mReqChiWat_flow,disFloCoo.mReq_flow[i])
+      {% raw %} annotation (Line(points={{-119.167,3.5},{-104,3.5},{-104,-80},{-180,-80},{-180,-224},{-161,-224}},{% endraw %}color={0,0,127}));
+    connect(terUni[i].mReqHeaWat_flow,disFloHea.mReq_flow[i])
+      {% raw %} annotation (Line(points={{-119.167,5.33333},{-100,5.33333},{-100,-90.5},{-241,-90.5},{-241,-174}},{% endraw %}color={0,0,127}));
+    connect(terUni[i].TSetHea,minTSet[i].y)
+      {% raw %} annotation (Line(points={{-140.833,14.5},{-160,14.5},{-160,70},{-198,70}},{% endraw %}color={0,0,127}));
+    connect(terUni[i].TSetCoo,maxTSet[i].y)
+      {% raw %} annotation (Line(points={{-140.833,12.6667},{-164,12.6667},{-164,30},{-198,30}},{% endraw %}color={0,0,127}));
+  end for;
+  //----------------Depending on number of thermal zones-----------------
+  {% for zone in data['thermal_zones'] %}connect(multiplex3_1.y,{{zone['modelica_object_name']}}.qGai_flow)
+    {% raw %} annotation (Line(points={{1,138},{20,138},{20,30},{22,30}},{% endraw %}color={0,0,127}));
+  connect({{zone['modelica_object_name']}}.ports[1],terUni[{{loop.index}}].port_aLoa)
+    {% raw %} annotation (Line(points={{42,-119.2},{-8,-119.2},{-8,18.1667},{-120,18.1667}},{% endraw %}color={0,127,255}));
+  connect({{zone['modelica_object_name']}}.ports[2],terUni[{{loop.index}}].port_bLoa)
+    {% raw %} annotation (Line(points={{-140,18.1667},{-20,18.1667},{-20,-119.2},{46,-119.2}},{% endraw %}color={0,127,255}));
+  connect({{zone['modelica_object_name']}}.TAir,terUni[{{loop.index}}].TSen)
+    {% raw %} annotation (Line(points={{81,13.8},{80,13.8},{80,160},{-152,160},{-152,10.8333},{-140.833,10.8333}},{% endraw %}color={0,0,127}));
+  {% endfor %}{% raw %}annotation (
+    Diagram(
+      coordinateSystem(
+        extent={{-300,-300},{300,300}})),
+    Icon(
+      coordinateSystem(
+        extent={{-300,-300},{300,300}}),
+      graphics={
+        Bitmap(
+          extent={{-72,-88},{50,55}},
+          fileName="modelica://Buildings/Resources/Images/ThermalZones/EnergyPlus/EnergyPlusLogo.png")}),
+    Documentation(
+      info="<html>
+<p>
+ This is a simplified building model based on EnergyPlus
+ building envelope model.
+ It was generated from translating a GeoJSON model specified within URBANopt UI.
+ The heating and cooling loads are computed with a four-pipe
+ fan coil unit model derived from
+ <a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+ Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+ and connected to the room model by means of fluid ports.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 12, 2020: Hagar Elarga<br/>
+Updated implementation to handle template needed for GeoJSON to Modelica.
+</li>
+<li>
+February 21, 2020, by Antoine Gautier:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+{% endraw %}end building;

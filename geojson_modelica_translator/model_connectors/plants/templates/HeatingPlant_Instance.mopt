@@ -1,0 +1,37 @@
+  // heating plant instance
+  parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal_{{ model.id }}=mBoi_flow_nominal_{{ model.id }}*{{ model.id }}.numBoi
+    "Nominal heating water mass flow rate";
+  parameter Modelica.SIunits.MassFlowRate mBoi_flow_nominal_{{ model.id }}=QBoi_nominal_{{ model.id }}/(4200*{{ model.id }}.delT_nominal)
+    "Nominal heating water mass flow rate";
+  parameter Modelica.SIunits.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
+    "Nominal heating capaciaty";
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=1000000*2
+    "Heating load";
+  parameter Modelica.SIunits.MassFlowRate mMin_flow_{{ model.id }}=0.2*mBoi_flow_nominal_{{ model.id }}
+    "Minimum mass flow rate of single boiler";
+  // controls
+  parameter Modelica.SIunits.Pressure pumDP=({{ model.id }}.dpBoi_nominal+dpSetPoi_{{ couplings.network_couplings[0].network.id }}+50000)
+    "Heating water pump pressure drop";
+  parameter Modelica.SIunits.Time tWai_{{ model.id }}=30
+    "Waiting time";
+  parameter Buildings.Fluid.Movers.Data.Generic perHWPum_{{ model.id }}(
+    pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
+      V_flow=mBoi_flow_nominal_{{  model.id }}/1000*{0.1,1.1},
+      dp=pumDP*{1.1,0.1}))
+    "Performance data for heating water pumps";
+
+  {{ model.modelica_type }} {{ model.id }}(
+    perHWPum=perHWPum_{{ model.id }},
+    mHW_flow_nominal=mHW_flow_nominal_{{ model.id }},
+    QBoi_flow_nominal=QBoi_nominal_{{ model.id }},
+    mMin_flow=mMin_flow_{{ model.id }},
+    mBoi_flow_nominal=mBoi_flow_nominal_{{ model.id }},
+    dpBoi_nominal=10000,
+    delT_nominal(
+      displayUnit="degC")=15,
+    tWai=tWai_{{ model.id }},
+    // TODO: we're currently grabbing dpSetPoi from the Network instance -- need feedback to determine if that's the proper "home" for it
+    dpSetPoi=dpSetPoi_{{ couplings.network_couplings[0].network.id }},
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    "District heating plant."
+    annotation (Placement({{ diagram.transformation.heating_plant.plant }}));

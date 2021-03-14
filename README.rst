@@ -1,43 +1,50 @@
-GeoJSON Modelica Translator
----------------------------
+GeoJSON Modelica Translator (GMT)
+---------------------------------
 
-.. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
-    :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
+.. image:: https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop
+    :target: https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml
 
 .. image:: https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop
     :target: https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop
 
+.. image:: https://badge.fury.io/py/GeoJSON-Modelica-Translator.svg
+    :target: https://pypi.org/project/GeoJSON-Modelica-Translator/
 
 Description
 -----------
 
-The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica project with multiple buildings loads, energy transfer stations, district system, and distribution network. The project will eventually allow multiple paths to build up different district heating and cooling system topolologies; however, the initial implementation is limited to 1GDH and 4GDC.
+The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 1GDH and 4GDHC.
+
+The project is motivated by the need to easily evaluate district energy systems. The goal is to eventually cover the various generations of heating and cooling systems as shown in the figure below. The need to move towards 5GDHC systems results in higher efficiencies and greater access to additional waste-heat sources.
+
+.. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-generations.png
 
 Getting Started
 ---------------
 
-The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. Currently you need Python 3 and Pip 3 to install/build the packages. Python 2 is at end of life and should be avoided; however, Python 2 may still be needed to run the models with JModelica (this is actively being evaluated). Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
+The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
 
 * Clone this repo into a working directory
 * (optional/as-needed) Add Python 3 to the environment variables
+* Install Poetry (:code:`pip install poetry`). More information on Poetry can be found `here <https://python-poetry.org/docs/>`_.
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
-* Configure Docker on your local desktop to have at least 4 GB Ram and 2 Cores. This is configured under the Docker Preferences.
-* **Follow first 3 major bullets in Running Simulations section below.**
-* Run :code:`pip install -r requirements.txt`
-* Test if everything is installed correctly by running :code:`py.test`
+* Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
+* Install the Modelica Buildings Library from GitHub
+    * Clone https://github.com/lbl-srg/modelica-buildings/ into a working directory outside of the GMT directory
+    * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
+    * Install git-lfs
+        * Mac: :code:`brew install git-lfs; git lfs install`
+        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
+    * Pull the correct staging branch for this project with: :code:`git checkout issue2204_gmt_mbl`
+    * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
+* Return to the GMT root directory and run :code:`poetry install`
+* Test if everything is installed correctly by running :code:`poetry run tox`
+    * This should run all unit tests, pre-commit, and build the docs.
 
-The py.test tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder.
+The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
 
 Developers
 **********
-
-This project uses several dependencies that are under active development (e.g., modelica-builder, TEASER, etc). Since
-these are included as dependent project using git there may be a need to force an update from the dependent git repos.
-The best way to accomplish this is run the following command:
-
-.. code-block::bash
-
-    pip install -U --upgrade-strategy eager -r requirements.txt
 
 This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
 
@@ -45,8 +52,6 @@ This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consist
 
     pip install pre-commit
     pre-commit install
-
-Make sure to install `modelica-fmt <https://github.com/urbanopt/modelica-fmt/releases>`_ in order for pre-commit to run code cleanup on Modelica files. The latest prerelease or release is recommended. Once you download the package, place the modelicafmt binary into a folder that is in your path.
 
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
 
@@ -81,21 +86,20 @@ In some cases, the Level 3 case (translation to Modelica) is a blackbox method (
 Running Simulations
 -------------------
 
-Currently simulations are runnable using JModelica (via Docker). In the future the plan is to enable a method that
-will automatically run the models without having to follow the steps below.
+The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. It is recommended
+to use this method in a python script if needed as it will copy the required files into the correct location. If
+desired, a user can run the simulations manually using JModelica (via Docker). Follow the step below to configure
+the runner to work locally.
 
-* Clone https://github.com/lbl-srg/docker-ubuntu-jmodelica and follow the set up instructions
-* Clone https://github.com/lbl-srg/modelica-buildings/
-    * Move insde the modelica-buildings repo you just checked out
-    * Pull the correct branch with: :code:`git checkout issue1437_district_heating_cooling`
-    * Install git-lfs
-        * Mac: :code:`brew install git-lfs; git lfs install`
-        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-* Add the Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
-* Example simulation:
-    * :code:`jm_ipython.sh jmodelica.py spawn_two_building.Loads.B5a6b99ec37f4de7f94020090.building`
-    * :code:`jm_ipython.sh jmodelica.py spawn_two_building/Loads/B5a6b99ec37f4de7f94020090/building.mo`
-* Visualize the results by inspecting the resulting mat file using BuildingsPy.
+* Make sure jm_ipython.sh is in your local path.
+* After running the :code:`py.test`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
+* Copy :code:`jmodelica.py` to the :code:`tests/model_connectors/output` directory.
+* From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
+    * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
+    * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
+    * The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.
+* Install matplotlib package. :code:`pip install matplotlib`
+* Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.
 
     .. code-block:: python
 
@@ -106,15 +110,15 @@ will automatically run the models without having to follow the steps below.
         from buildingspy.io.outputfile import Reader
 
         mat = Reader(os.path.join(
-            "tests", "model_connectors", "output", "spawn_two_building_Loads_B5a6b99ec37f4de7f94020090_building_result.mat"),
+            "tests", "model_connectors", "output", "spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat"),
             "dymola"
         )
         # List off all the variables
         for var in mat.varNames():
             print(var)
 
-        (time1, zn_1_temp) = mat.values("znPerimeter_ZN_1.vol.T")
-        (_time1, zn_4_temp) = mat.values("znPerimeter_ZN_4.vol.T")
+        (time1, zn_1_temp) = mat.values("bui.znPerimeter_ZN_3.TAir")
+        (_time1, zn_4_temp) = mat.values("bui.znPerimeter_ZN_4.TAir")
         plt.style.use('seaborn-whitegrid')
 
         fig = plt.figure(figsize=(16, 8))
@@ -127,6 +131,7 @@ will automatically run the models without having to follow the steps below.
         ax.set_xlim([0, 168])
         ax.legend()
         ax.grid(True)
+        fig.savefig('indoor_temp_example.png')
 
 Managed Tasks
 -------------
@@ -138,7 +143,7 @@ There is managed task to automatically pull updated GeoJSON schemas from the :co
 
 .. code-block:: bash
 
-    ./setup.py update_schemas
+    poetry run update_schemas
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
@@ -150,12 +155,12 @@ To apply the copyright/license to all the files, run the following managed task
 
 .. code-block:: bash
 
-    ./setup.py update_licenses
+    poetry run update_licenses
 
 
 Templating Diagram
 ------------------
-.. image:: ConnectionTemplate.png
+.. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png
 
 Release Instructions
 --------------------
@@ -169,7 +174,7 @@ Release Instructions
 
     # Remove old dist packages
     rm -rf dist/*
-    python setup.py sdist
+    poetry build
 
 * Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag.)
 * Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
@@ -177,15 +182,16 @@ Release Instructions
 
 .. code-block:: bash
 
-    pip install twine
-    twine upload dist/*
+    poetry publish
 
 * Build and release the documentation
 
 .. code-block:: bash
 
     # Build and verify with the following
-    python setup.py build_sphinx
+    cd docs
+    poetry run make html
+    cd ..
 
     # release using
     ./docs/publish_docs.sh

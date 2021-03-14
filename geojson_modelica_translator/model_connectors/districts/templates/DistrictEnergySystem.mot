@@ -1,0 +1,73 @@
+within {{ district_within_path }};
+model DistrictEnergySystem
+  extends Modelica.Icons.Example;
+  // District Parameters
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  package MediumA=Buildings.Media.Air
+    "Load side medium";
+
+  // TODO: dehardcode? Also, add display units to the other parameters.
+  parameter Modelica.SIunits.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
+  parameter Modelica.SIunits.TemperatureDifference delChiWatTemBui=5;
+  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemDis=12;
+  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemBui=5;
+
+  // Models
+{% for model in models %}
+  //
+  // Begin Model Instance for {{ model.id }}
+  // Source template: {{ model.instance_template_path }}
+  //
+{{ model.instance }}
+  //
+  // End Model Instance for {{ model.id }}
+  //
+
+
+  {% endfor %}
+
+  // Model dependencies
+{% for coupling in couplings %}
+  //
+  // Begin Component Definitions for {{ coupling.id }}
+  // Source template: {{ coupling.coupling_definitions_template_path }}
+  //
+{{ coupling.component_definitions }}
+
+  //
+  // End Component Definitions for {{ coupling.id }}
+  //
+
+
+{% endfor %}
+equation
+  // Connections
+{% for coupling in couplings %}
+  //
+  // Begin Connect Statements for {{ coupling.id }}
+  // Source template: {{ coupling.connect_statements_template_path }}
+  //
+
+{{ coupling.connect_statements }}
+
+  //
+  // End Connect Statements for {{ coupling.id }}
+  //
+
+
+{% endfor %}
+
+annotation(
+    experiment(
+      StopTime=86400,
+      Interval=3600,
+      Tolerance=1e-06),
+  Documentation(
+  revisions="<html>
+ <li>
+ May 10, 2020: Hagar Elarga<br/>
+Updated implementation to handle template needed for GeoJSON to Modelica.
+</li>
+</html>"));
+end DistrictEnergySystem;

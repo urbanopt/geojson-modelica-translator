@@ -1,0 +1,14 @@
+  // time series load
+  {{ model.modelica_type }} {{ model.id }}(
+    T_aHeaWat_nominal=318.15,
+    T_aChiWat_nominal=280.15,
+    delTAirCoo(displayUnit="degC")=10,
+    delTAirHea(displayUnit="degC")=20,
+    k=0.1,
+    Ti=120,
+    nPorts_bChiWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aHeaWat=1)
+    "Building model integrating multiple time series thermal zones."
+    annotation (Placement({{ diagram.transformation.ts_load.load }}));

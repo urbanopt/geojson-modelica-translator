@@ -1,0 +1,7 @@
+  // spawn, ets cold water stub connections
+  connect(TChiWatSup_{{ coupling.id }}.y,supChiWat_{{ coupling.ets.id }}.T_in)
+    annotation ({{ diagram.line.t_chi_wat_sup.y.sup_chi_wat.t_in }});
+  connect({{ coupling.load.id }}.ports_bChiWat[1],sinChiWat_{{ coupling.ets.id }}.ports[1])
+    annotation ({{ diagram.line.spawn_load.ports_b_chi_wat.sin_chi_wat.ports }});
+  connect(supChiWat_{{ coupling.ets.id }}.ports[1],{{ coupling.load.id }}.ports_aChiWat[1])
+    annotation ({{ diagram.line.sup_chi_wat.ports.spawn_load.ports_a_chi_wat }});

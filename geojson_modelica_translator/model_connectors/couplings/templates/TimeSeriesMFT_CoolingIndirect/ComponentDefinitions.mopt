@@ -1,0 +1,5 @@
+  Buildings.Controls.OBC.UnitConversions.From_degC TChWSET_{{ coupling.id }}
+    annotation (Placement({{ diagram.transformation.t_ch_w_set.unit_converter }}));
+  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }} = {{ coupling.load.id }}.mChW_flow_nominal;
+  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal_{{ coupling.id }} = {{ coupling.load.id }}.mChW_flow_nominal;
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ coupling.id }} = {{ coupling.load.id }}.mChW_flow_nominal*4187*{{ globals.delChiWatTemBui }};

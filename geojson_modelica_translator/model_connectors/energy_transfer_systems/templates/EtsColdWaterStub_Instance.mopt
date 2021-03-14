@@ -1,0 +1,12 @@
+  // TODO: move these components into a single component
+  Buildings.Fluid.Sources.Boundary_pT supChiWat_{{ model.id }}(
+    redeclare package Medium={{ globals.medium_w }},
+    use_T_in=true,
+    nPorts=1)
+    "Chilled water supply"
+    annotation (Placement({{ diagram.transformation.sup_chi_wat.boundary_pt }}));
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat_{{ model.id }}(
+    redeclare package Medium={{ globals.medium_w }},
+    nPorts=1)
+    "Chilled water sink"
+    annotation (Placement({{ diagram.transformation.sin_chi_wat.boundary_pt }}));

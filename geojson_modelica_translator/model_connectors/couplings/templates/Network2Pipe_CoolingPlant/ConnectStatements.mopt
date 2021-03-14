@@ -1,0 +1,13 @@
+  // TODO: these connect statements shouldn't be here, they are plant specific
+  // but since we can't currently make connect statements for single systems, this is what we've got
+  connect(on_{{ coupling.plant.id }}.y,{{ coupling.plant.id }}.on)
+    annotation ({{ diagram.line.on.y.cooling_plant.on }});
+  connect(TSetChiWatDis_{{ coupling.plant.id }}.y,{{ coupling.plant.id }}.TCHWSupSet)
+    annotation ({{ diagram.line.t_set_chi_wat_dis.y.cooling_plant.t_c_h_w_sup_set }});
+
+  connect({{ coupling.network.id }}.port_bDisRet,{{ coupling.plant.id }}.port_a)
+    annotation ({{ diagram.line.two_pipe.port_b_dis_ret.cooling_plant.port_a }});
+  connect({{ coupling.plant.id }}.port_b,{{ coupling.network.id }}.port_aDisSup)
+    annotation ({{ diagram.line.cooling_plant.port_b.two_pipe.port_a_dis_sup }});
+  connect({{ coupling.network.id }}.dp,{{ coupling.plant.id }}.dpMea)
+    annotation ({{ diagram.line.two_pipe.dp.cooling_plant.dp_mea }});

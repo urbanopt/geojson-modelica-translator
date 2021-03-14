@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -16,6 +16,14 @@ distribution.
 
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
+
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -33,7 +41,24 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.spawn import SpawnConnector
+from geojson_modelica_translator.model_connectors.couplings.coupling import (
+    Coupling
+)
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
+from geojson_modelica_translator.model_connectors.districts.district import (
+    District
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
+    EtsColdWaterStub
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
+    EtsHotWaterStub
+)
+from geojson_modelica_translator.model_connectors.load_connectors.spawn import (
+    Spawn
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -42,39 +67,38 @@ from ..base_test_case import TestCaseBase
 
 
 class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
-    def setUp(self):
+    def test_spawn_single(self):
         project_name = "spawn_single"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        # load in the example geojson with a single offie building
+        # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "spawn_system_params_ex1.json")
         sys_params = SystemParameters(filename)
 
-        # now test the spawn connector (independent of the larger geojson translator
-        self.spawn = SpawnConnector(sys_params)
+        # build spawn model with hot and cold water stubbed out
+        spawn = Spawn(sys_params, self.gj.json_loads[0])
+        hot_stub = EtsHotWaterStub(sys_params)
+        cold_stub = EtsColdWaterStub(sys_params)
 
-        for b in self.gj.json_loads:
-            self.spawn.add_building(b)
+        graph = CouplingGraph([
+            Coupling(spawn, hot_stub),
+            Coupling(spawn, cold_stub),
+        ])
 
-    def test_spawn_init(self):
-        self.assertIsNotNone(self.spawn)
-        self.assertEqual(self.spawn.system_parameters.get_param("buildings.custom")[0]["load_model"], "spawn", )
-
-    def test_spawn_to_modelica(self):
-        self.spawn.to_modelica(self.gj.scaffold)
-
-    def test_spawn_to_modelica_and_run(self):
-        self.spawn.to_modelica(self.gj.scaffold)
-
-        file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090', 'coupling.mo'),
+        district = District(
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            coupling_graph=graph
         )
-        self.run_and_assert_in_docker(
-            file_to_run, project_path=self.gj.scaffold.project_path, project_name=self.gj.scaffold.project_name
-        )
+
+        district.to_modelica()
+
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)

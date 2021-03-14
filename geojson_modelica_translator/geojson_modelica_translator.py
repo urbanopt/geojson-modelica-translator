@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -16,6 +16,14 @@ distribution.
 
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
+
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -34,21 +42,20 @@ import os
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
-from geojson_modelica_translator.model_connectors.spawn import \
-    SpawnConnector as spawn_load
-from geojson_modelica_translator.model_connectors.teaser import \
-    TeaserConnector as teaser_load
-from geojson_modelica_translator.model_connectors.time_series import \
-    TimeSeriesConnector as timeseries_load
+from geojson_modelica_translator.model_connectors.load_connectors import (
+    Spawn,
+    Teaser,
+    TimeSeries
+)
 from geojson_modelica_translator.scaffold import Scaffold
 
 _log = logging.getLogger(__name__)
 
 
 load_mapper = {
-    "spawn": spawn_load,
-    "rc": teaser_load,
-    "time_series": timeseries_load
+    "spawn": Spawn,
+    "rc": Teaser,
+    "time_series": TimeSeries
 }
 
 
@@ -115,8 +122,7 @@ class GeoJsonModelicaTranslator(object):
                 raise SystemExit(f'Model of type {model_con} not recognized. Verify sysparam file')
 
             _log.info(f"Adding building to load model: {class_.__class__}")
-            model_connector = class_(self.system_parameters)
-            model_connector.add_building(load)
+            model_connector = class_(self.system_parameters, load)
             self.loads.append(model_connector)
 
     def set_system_parameters(self, sys_params):
@@ -153,7 +159,7 @@ class GeoJsonModelicaTranslator(object):
         for load in self.loads:
             load.to_modelica(self.scaffold)  # , keep_original_models=False)
 
-        # import geojson_modelica_translator.model_connectors.ets_template as ets_template
+        # import geojson_modelica_translator.model_connectors.load_connectors.ets_template as ets_template
         # ets_class = getattr(ets_template, "ETSConnector")
         # ets_connector = ets_class(self.system_parameters)
 

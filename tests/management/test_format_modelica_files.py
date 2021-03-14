@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -16,6 +16,14 @@ distribution.
 
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
+
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -34,14 +42,15 @@ import shutil
 import unittest
 
 import pytest
-from management.format_modelica_files import preprocess_and_format
+from management.format_modelica_files import (
+    SKIP_FILES,
+    TEMPLATE_FILES,
+    preprocess_and_format
+)
 
 
 class FormatModelicaFilesTest(unittest.TestCase):
     def setUp(self):
-        self.template_dir = os.path.join(
-            os.path.dirname(__file__), '..', '..', 'geojson_modelica_translator', 'model_connectors', 'templates'
-        )
         self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
         if os.path.exists(self.output_dir):
             shutil.rmtree(self.output_dir)
@@ -50,18 +59,17 @@ class FormatModelicaFilesTest(unittest.TestCase):
     @pytest.mark.skipif(shutil.which("modelicafmt") is None, reason="Skipping")
     def test_no_meaningful_diff_when_formatting_mot_files(self):
         """After applying formatter to .mot (Jinja) files, we expect the only differences to be in whitespace"""
-        for file_ in os.listdir(self.template_dir):
-            filepath = os.path.join(self.template_dir, file_)
-            outfilepath = os.path.join(self.output_dir, file_)
+        for file_ in TEMPLATE_FILES:
+            outfilepath = os.path.join(self.output_dir, file_.name)
 
-            if not file_.endswith(".mot"):
+            if file_.suffix != ".mot" or file_.name in SKIP_FILES:
                 continue
 
-            preprocess_and_format(filepath, outfilepath)
+            preprocess_and_format(str(file_), outfilepath)
 
             # strip whitespace from file contents and assert they're equal
-            with open(filepath, 'r') as orig, open(outfilepath, 'r') as new:
+            with open(file_, 'r') as orig, open(outfilepath, 'r') as new:
                 orig_stripped = re.sub(r'\s', '', orig.read())
                 new_stripped = re.sub(r'\s', '', new.read())
                 self.assertEqual(orig_stripped, new_stripped,
-                                 'Original and formatted files should have the same content')
+                                 f'Original and formatted files for {file_} should have the same content')

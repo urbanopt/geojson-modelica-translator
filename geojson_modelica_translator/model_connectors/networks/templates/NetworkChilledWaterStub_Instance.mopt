@@ -1,0 +1,15 @@
+  // chilled water stub
+  // TODO: move these components into a single component
+  Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
+    redeclare package Medium={{ globals.medium_w }},
+    use_m_flow_in=true,
+    use_T_in=false,
+    T=281.15,
+    nPorts=1)
+    "Chilled water supply (district side)."
+    annotation (Placement({{ diagram.transformation.sup_chi_wat.boundary_pt }}));
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat1(
+    redeclare package Medium={{ globals.medium_w }},
+    nPorts=1)
+    "Chilled water sink (district side)"
+    annotation (Placement({{ diagram.transformation.sin_chi_wat1.boundary_pt }}));

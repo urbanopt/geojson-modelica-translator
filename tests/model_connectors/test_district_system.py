@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -16,6 +16,14 @@ distribution.
 
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
+
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -33,10 +41,26 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.base import \
-    Base as model_connector_base
-from geojson_modelica_translator.model_connectors.district_system import (
-    DistrictSystemConnector
+from geojson_modelica_translator.model_connectors.couplings.coupling import (
+    Coupling
+)
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
+from geojson_modelica_translator.model_connectors.districts.district import (
+    District
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import (
+    CoolingIndirect
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_hot_water_stub import (
+    EtsHotWaterStub
+)
+from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
+    TimeSeries
+)
+from geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub import (
+    NetworkChilledWaterStub
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -45,32 +69,48 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-class SpawnModelConnectorSingleBuildingTimeSeriesTest(TestCaseBase):
-    def setUp(self):
-        project_name = "districts_1"
+class DistrictSystemTest(TestCaseBase):
+    def test_district_system(self):
+        project_name = "district_system"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
+        # load in the example geojson with a single office building
+        filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "spawn_district_system_params_ex1.json")
+        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
         sys_params = SystemParameters(filename)
 
-        # now test the spawn connector (independent of the larger geojson translator
-        self.district = DistrictSystemConnector(sys_params)
+        # Create the time series load, ets and their coupling
+        time_series_load = TimeSeries(sys_params, self.gj.json_loads[0])
+        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
+        cooling_indirect_system = CoolingIndirect(sys_params, geojson_load_id)
+        ts_ci_coupling = Coupling(time_series_load, cooling_indirect_system)
 
-        # TODO: the buildings are hard coded right now, need to fix that!
+        # create chilled water stub for the ets
+        chilled_water_stub = NetworkChilledWaterStub(sys_params)
+        ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
 
-    def test_district_cooling_to_modelica_and_run(self):
-        self.assertIsNotNone(self.district)
-        self.district.to_modelica(self.gj.scaffold, model_connector_base)
+        #  create hot water stub for the load
+        hot_water_stub = EtsHotWaterStub(sys_params)
+        ts_hw_coupling = Coupling(time_series_load, hot_water_stub)
 
-        file_to_run = os.path.abspath(
-            os.path.join(self.gj.scaffold.districts_path.files_dir, 'DistrictCoolingSystem.mo'),
+        graph = CouplingGraph([
+            ts_ci_coupling,
+            ci_cw_coupling,
+            ts_hw_coupling,
+        ])
+
+        district = District(
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            coupling_graph=graph
         )
-        self.run_and_assert_in_docker(
-            file_to_run, project_path=self.gj.scaffold.project_path, project_name=self.gj.scaffold.project_name
-        )
+        district.to_modelica()
+
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)

@@ -1,0 +1,6 @@
+  // heating indirect and network 2 pipe
+  {% set port_index = 1 + graph.directional_index(coupling.network.id, coupling.ets.id) %}
+  connect({{ coupling.network.id }}.ports_bCon[{{ port_index }}],{{ coupling.ets.id }}.port_a1)
+    annotation ({{ diagram.line.two_pipe.ports_b_con.hea_ets.port_a1 }});
+  connect({{ coupling.network.id }}.ports_aCon[{{ port_index }}],{{ coupling.ets.id }}.port_b1)
+    annotation ({{ diagram.line.two_pipe.ports_a_con.hea_ets.port_b1 }});

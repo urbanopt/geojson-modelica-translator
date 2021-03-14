@@ -1,0 +1,12 @@
+  // TODO: move these components into a single component
+  Buildings.Fluid.Sources.Boundary_pT supHeaWat_{{ model.id }}(
+    redeclare package Medium={{ globals.medium_w }},
+    use_T_in=true,
+    nPorts=1)
+    "Heating water supply"
+    annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat_{{ model.id }}(
+    redeclare package Medium={{ globals.medium_w }},
+    nPorts=1)
+    "Heating water sink"
+    annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));

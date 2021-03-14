@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -29,29 +37,35 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import shutil
-import unittest
 
-from geojson_modelica_translator.model_connectors.base import \
-    Base as model_connector_base
+from geojson_modelica_translator.geojson_modelica_translator import (
+    GeoJsonModelicaTranslator
+)
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import \
+    LoadBase as model_connector_base
 from jinja2 import Template
 
+from ..base_test_case import TestCaseBase
 
-class TestModelConnectorBase(unittest.TestCase):
+
+class TestModelConnectorBase(TestCaseBase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output', 'templates')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
+        project_name = "base_classes"
+        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
-        os.makedirs(self.output_dir)
+        # load in the example geojson with a single office building
+        filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
+        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
     def test_init(self):
-        mc = model_connector_base(None)
+        mc = model_connector_base(None, self.gj.json_loads[0])
         self.assertIsNotNone(mc)
 
+    def test_ft2_to_m2(self):
+        self.assertEqual(model_connector_base.ft2_to_m2(self, area_in_ft2=1000), 92.936)
+
     def test_template(self):
-        mc = model_connector_base(None)
+        mc = model_connector_base(None, self.gj.json_loads[0])
 
         with open(os.path.join(self.data_dir, 'template_ex.tmpl')) as f:
             template = Template(f.read())

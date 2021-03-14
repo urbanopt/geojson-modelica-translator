@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -16,6 +16,14 @@ distribution.
 
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
+
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -33,8 +41,25 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.time_series_mft_ets_coupling import (
-    TimeSeriesConnectorMFTETS
+from geojson_modelica_translator.model_connectors.couplings.coupling import (
+    Coupling
+)
+from geojson_modelica_translator.model_connectors.couplings.graph import (
+    CouplingGraph
+)
+from geojson_modelica_translator.model_connectors.districts.district import (
+    District
+)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems import (
+    CoolingIndirect,
+    HeatingIndirect
+)
+from geojson_modelica_translator.model_connectors.load_connectors.time_series_mft_ets_coupling import (
+    TimeSeriesMFT
+)
+from geojson_modelica_translator.model_connectors.networks import (
+    NetworkChilledWaterStub,
+    NetworkHeatedWaterStub
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -44,40 +69,50 @@ from ..base_test_case import TestCaseBase
 
 
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
-    def setUp(self):
+    def test_mft_time_series_to_modelica_and_run(self):
         project_name = "time_series_massflow"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_massflow_ex1.json")
         sys_params = SystemParameters(filename)
 
-        # now test the spawn connector (independent of the larger geojson translator
-        self.time_series = TimeSeriesConnectorMFTETS(sys_params)
-        for b in self.gj.json_loads:
-            self.time_series.add_building(b)
+        # create the load, ETSes and their couplings
+        time_series_mft_load = TimeSeriesMFT(sys_params, self.gj.json_loads[0])
+        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
 
-    def test_mft_time_series_to_modelica_and_run(self):
-        self.time_series.to_modelica(self.gj.scaffold)
+        heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
+        ts_hi_coupling = Coupling(time_series_mft_load, heating_indirect_system)
 
-        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
-        files = [
-            os.path.join(root_path, 'CoolingIndirect.mo'),
-            os.path.join(root_path, 'HeatingIndirect.mo'),
-            os.path.join(root_path, 'TimeSeriesMassFlowTemperatures.mo'),
-            os.path.join(root_path, 'TimeSeriesMassFlowTemperaturesCentralPlants.mo'),
-        ]
+        cooling_indirect_system = CoolingIndirect(sys_params, geojson_load_id)
+        ts_ci_coupling = Coupling(time_series_mft_load, cooling_indirect_system)
 
-        # verify that there are only 2 files that matter (coupling and building)
-        for file in files:
-            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
+        # create network stubs for the ETSes
+        heated_water_stub = NetworkHeatedWaterStub(sys_params)
+        hi_hw_coupling = Coupling(heating_indirect_system, heated_water_stub)
 
-        self.run_and_assert_in_docker(os.path.join(root_path, 'TimeSeriesMassFlowTemperatures.mo'),
-                                      project_path=self.gj.scaffold.project_path,
-                                      project_name=self.gj.scaffold.project_name)
+        chilled_water_stub = NetworkChilledWaterStub(sys_params)
+        ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
+
+        # build the district system
+        district = District(
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            coupling_graph=CouplingGraph([
+                ts_hi_coupling,
+                ts_ci_coupling,
+                hi_hw_coupling,
+                ci_cw_coupling,
+            ])
+        )
+        district.to_modelica()
+
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)

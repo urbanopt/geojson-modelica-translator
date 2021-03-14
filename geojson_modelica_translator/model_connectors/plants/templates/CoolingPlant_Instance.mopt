@@ -1,0 +1,57 @@
+  parameter Modelica.SIunits.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ model.id }}.numChi*({{ model.id }}.perChi.mEva_flow_nominal)
+    "Nominal chilled water mass flow rate";
+  parameter Modelica.SIunits.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
+    "Nominal condenser water mass flow rate";
+  parameter Modelica.SIunits.PressureDifference dpCHW_nominal_{{ model.id }}=44.8*1000
+    "Nominal chilled water side pressure";
+  parameter Modelica.SIunits.PressureDifference dpCW_nominal_{{ model.id }}=46.2*1000
+    "Nominal condenser water side pressure";
+  parameter Modelica.SIunits.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
+    "Nominal cooling capaciaty (Negative means cooling)";
+  parameter Modelica.SIunits.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
+    "Minimum mass flow rate of single chiller";
+  // control settings
+  parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=70000
+    "Differential pressure setpoint";
+  parameter Modelica.SIunits.Pressure pumDP_{{ model.id }}=dpCHW_nominal_{{ model.id }}+dpSetPoi_{{ model.id }}+200000;
+  parameter Modelica.SIunits.Time tWai_{{ model.id }}=30
+    "Waiting time";
+  // pumps
+  parameter Buildings.Fluid.Movers.Data.Generic perCHWPum_{{ model.id }}(
+    pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
+      V_flow=((mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi)/1000)*{0.1,1,1.2},
+      dp=pumDP_{{ model.id }}*{1.2,1,0.1}))
+    "Performance data for chilled water pumps";
+  parameter Buildings.Fluid.Movers.Data.Generic perCWPum_{{ model.id }}(
+    pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
+      V_flow=mCW_flow_nominal_{{ model.id }}/1000*{0.2,0.6,1.0,1.2},
+      dp=(dpCW_nominal_{{ model.id }}+60000+6000)*{1.2,1.1,1.0,0.6}))
+    "Performance data for condenser water pumps";
+
+
+  Modelica.Blocks.Sources.RealExpression TSetChiWatDis_{{ model.id }}(
+    y=5+273.15)
+    "Chilled water supply temperature set point on district level."
+    annotation (Placement({{ diagram.transformation.t_set_chi_wat_dis.real_expression }}));
+  Modelica.Blocks.Sources.BooleanConstant on_{{ model.id }}
+    "On signal of the plant"
+    annotation (Placement({{ diagram.transformation.on.boolean_constant }}));
+
+  {{ model.modelica_type }} {{ model.id }}(
+    redeclare Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Carrier_19EX_5208kW_6_88COP_Vanes perChi,
+    perCHWPum=perCHWPum_{{ model.id }},
+    perCWPum=perCWPum_{{ model.id }},
+    mCHW_flow_nominal=mCHW_flow_nominal_{{ model.id }},
+    dpCHW_nominal=dpCHW_nominal_{{ model.id }},
+    QEva_nominal=QEva_nominal_{{ model.id }},
+    mMin_flow=mMin_flow_{{ model.id }},
+    mCW_flow_nominal=mCW_flow_nominal_{{ model.id }},
+    dpCW_nominal=dpCW_nominal_{{ model.id }},
+    TAirInWB_nominal=298.7,
+    TCW_nominal=308.15,
+    TMin=288.15,
+    tWai=tWai_{{ model.id }},
+    dpSetPoi=dpSetPoi_{{ model.id }},
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    "District cooling plant."
+    annotation (Placement({{ diagram.transformation.cooling_plant.plant }}));

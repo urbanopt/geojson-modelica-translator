@@ -1,0 +1,7 @@
+  // Cooling indirect, Chilled water stub connections
+  connect(secMasFloRat_{{ coupling.id }}.y, supChiWat.m_flow_in)
+    annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_chi_wat.m_flow_in }});
+  connect({{ coupling.ets.id }}.port_a1,supChiWat.ports[1])
+    annotation ({{ diagram.line.coo_ets.port_a1.sup_chi_wat.ports }});
+  connect(sinChiWat1.ports[1],{{ coupling.ets.id }}.port_b1)
+    annotation ({{ diagram.line.sin_chi_wat1.ports.coo_ets.port_b1 }});

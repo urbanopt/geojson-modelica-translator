@@ -1,0 +1,2 @@
+  {{ model.modelica_type }} {{ model.id }}
+  annotation (Placement({{ diagram.transformation.ts_mft_load.load }}));

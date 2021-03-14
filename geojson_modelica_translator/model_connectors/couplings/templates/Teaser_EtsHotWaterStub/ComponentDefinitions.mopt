@@ -1,0 +1,5 @@
+  Modelica.Blocks.Sources.RealExpression THeaWatSup_{{ coupling.id }}(
+    y=max(
+      {{ coupling.load.id }}.terUni.T_aHeaWat_nominal))
+    "Heating water supply temperature"
+    annotation (Placement({{ diagram.transformation.t_hea_wat_sup.real_expression }}));

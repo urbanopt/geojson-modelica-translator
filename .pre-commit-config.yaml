@@ -2,7 +2,8 @@ exclude: |
   (?x)(
     ^docs/conf.py|
     ^tests/modelica/|
-    ^modelica_builder/modelica_parser/
+    ^modelica_builder/modelica_parser/|
+    ^docs/license.rst
   )
 
 repos:
@@ -36,6 +37,6 @@ repos:
         name: Modelica Formatter
         types: [file]
         files: \.(mo|mot)$
-        entry: python setup.py format_modelica_files
+        entry: poetry run format_modelica_files
         language: system
         pass_filenames: false

@@ -1,0 +1,7 @@
+  {{ model.modelica_type }} {{ model.id }}(
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1)
+    "Building with thermal loads as TEASER zones"
+    annotation (Placement({{ diagram.transformation.teaser_load.load }}));

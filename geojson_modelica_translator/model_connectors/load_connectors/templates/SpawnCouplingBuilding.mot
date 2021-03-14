@@ -1,0 +1,124 @@
+within {{project_name}}.Loads.{{model_name}};
+model coupling
+  "Example illustrating the coupling of Spawn building loads infinite cooling and heating sources with no ETS"
+  extends Modelica.Icons.Example;
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  {% raw %}building bui(
+    mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+    mLoaHea_flow_nominal=mLoaHea_flow_nominal,
+    {% endraw %}T_aChiWat_nominal={{ data["nominal_values"]["chw_supply_temp"] }},
+    T_bChiWat_nominal={{ data["nominal_values"]["chw_return_temp"] }},
+    T_aHeaWat_nominal={{ data["nominal_values"]["hhw_supply_temp"] }},
+    T_bHeaWat_nominal={{ data["nominal_values"]["hhw_return_temp"] }},
+    {% raw %}nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1,
+    have_pum=true)
+    "Building spawn model"
+    annotation (Placement(transformation(extent={{40,-40},{60,-20}})));
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[bui.nZon]={(-1*bui.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:bui.nZon};
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[bui.nZon]={(bui.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:bui.nZon};
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+    redeclare package Medium=MediumW,
+    nPorts=1)
+    "Sink for heating water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={134,20})));
+  Buildings.Fluid.Sources.Boundary_pT sinChiWat(
+    redeclare package Medium=MediumW,
+    nPorts=1)
+    "Sink for chilled water"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={134,-40})));
+  Modelica.Blocks.Sources.RealExpression THeaWatSup(
+    y=max(
+      bui.terUni.T_aHeaWat_nominal))
+    "Heating water supply temperature"
+    annotation (Placement(transformation(extent={{-110,10},{-90,30}})));
+  Modelica.Blocks.Sources.RealExpression TChiWatSup(
+    y=min(
+      bui.terUni.T_aChiWat_nominal))
+    "Chilled water supply temperature"
+    annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
+  Buildings.Fluid.Sources.Boundary_pT supHeaWat(
+    redeclare package Medium=MediumW,
+    use_T_in=true,
+    nPorts=1)
+    "Heating water supply"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-40,20})));
+  Buildings.Fluid.Sources.Boundary_pT supChiWat(
+    redeclare package Medium=MediumW,
+    use_T_in=true,
+    nPorts=1)
+    "Chilled water supply"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-40,-40})));
+{% endraw %}equation
+  {% raw %} connect(supHeaWat.T_in,THeaWatSup.y)
+    annotation (Line(points={{-52,24},{-70,24},{-70,20},{-89,20}},color={0,0,127}));
+  connect(TChiWatSup.y,supChiWat.T_in)
+    annotation (Line(points={{-89,-40},{-70,-40},{-70,-36},{-52,-36}},color={0,0,127}));
+  connect(bui.ports_bChiWat[1],sinChiWat.ports[1])
+    annotation (Line(points={{80,-46},{104,-46},{104,-40},{124,-40}},color={0,127,255}));
+  connect(bui.ports_bHeaWat[1],sinHeaWat.ports[1])
+    annotation (Line(points={{80,-50},{104,-50},{104,20},{124,20}},color={0,127,255}));
+  connect(supHeaWat.ports[1],bui.ports_aHeaWat[1])
+    annotation (Line(points={{-30,20},{-10,20},{-10,-50},{20,-50}},color={0,127,255}));
+  connect(supChiWat.ports[1],bui.ports_aChiWat[1])
+    annotation (Line(points={{-30,-40},{-10,-40},{-10,-46},{20,-46}},color={0,127,255}));
+  annotation (
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-120,-100},{160,60}}),
+      graphics={
+        Text(
+          extent={{-46,36},{86,10}},
+          lineColor={28,108,200},
+          textString="")}),
+    {% endraw %}__Dymola_Commands(
+      file="modelica://{{project_name}}/Loads/Resources/Scripts/{{model_name}}/Dymola/RunSpawnCouplingBuilding.mos" {% raw %} "Simulate and plot"),
+    experiment(
+      StopTime=604800,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+<p>
+This example illustrates the use of
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding\">
+Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding</a>,
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+and
+<a href=\"modelica://Buildings.Experimental.DHC.Loads.FlowDistribution\">
+Buildings.Experimental.DHC.Loads.FlowDistribution</a>
+in a configuration with:
+</p>
+<ul>
+<li>
+six-zone building model based on EnergyPlus envelope model (from
+GeoJSON export),
+</li>
+<li>
+secondary pumps.
+</li>
+</ul>
+<p>
+Simulation with Dymola requires minimum version 2020x and setting
+<code>Hidden.AvoidDoubleComputation=true</code>, see
+<a href=\"modelica://Buildings.ThermalZones.EnergyPlus.UsersGuide\">
+Buildings.ThermalZones.EnergyPlus.UsersGuide</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 21, 2020, by Hagar Elarga:<br/>
+GeoJson-Modelica translator template first implementation, infinite source to building (no ETS).
+</li>
+<li>
+February 21, 2020, by Antoine Gautier:<br/>
+Model first implementation.
+</li>
+</ul>
+</html>"));
+{% endraw %}end coupling;

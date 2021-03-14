@@ -1,0 +1,205 @@
+within {{project_name}}.Loads.{{ model_name }};
+model building
+  "Time series water mass flow rates and temperatures for a building thermal
+  loads generated from Energy PLus."
+  extends Modelica.Icons.Example;
+  {% raw %}package MediumW=Buildings.Media.Water;
+  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}";
+  {% raw %}parameter Modelica.SIunits.MassFlowRate mChW_flow_nominal=getPeakMassFlowRate(
+    string="#Nominal chilled water mass flow rate",
+    filNam=Modelica.Utilities.Files.loadResource(filNam))
+    "Nominal cooling water flow rate"
+    annotation (Dialog(group="Design parameter"));
+  parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal=getPeakMassFlowRate(
+    string="#Nominal heating water mass flow rate",
+    filNam=Modelica.Utilities.Files.loadResource(filNam))
+    "Nominal heating water flow rate"
+    annotation (Dialog(group="Design parameter"));
+  Modelica.Blocks.Sources.CombiTimeTable buiMasTem(
+    tableOnFile=true,
+    tableName="modelica",
+    fileName=Modelica.Utilities.Files.loadResource(
+      filNam),
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
+    columns=2:7,
+    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
+    annotation (Placement(transformation(extent={{120,-20},{100,0}})));
+  Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
+    redeclare package Medium=MediumW,
+    use_m_flow_in=true,
+    use_T_in=true,
+    nPorts=1)
+    "Chilled water supply"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={30,10})));
+  Buildings.Fluid.Sources.Boundary_pT buiCooSin(
+    redeclare package Medium=MediumW,
+    use_T_in=false,
+    nPorts=1)
+    "Building cooling sink."
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-70,10})));
+  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
+    redeclare package Medium=MediumW,
+    use_m_flow_in=true,
+    use_T_in=true,
+    nPorts=1)
+    "Heating water supply"
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={30,-70})));
+  Buildings.Fluid.Sources.Boundary_pT buiHeaSin(
+    redeclare package Medium=MediumW,
+    use_T_in=false,
+    nPorts=1)
+    "Building heating sink."
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-70,-70})));
+  Buildings.Controls.OBC.UnitConversions.From_degC TChWR
+    annotation (Placement(transformation(extent={{80,20},{60,40}})));
+  Buildings.Controls.OBC.UnitConversions.From_degC THWR
+    "Heating water temperature."
+    annotation (Placement(transformation(extent={{80,-60},{60,-40}})));
+  Modelica.Blocks.Sources.RealExpression mBuiHW(
+    y=buiMasTem.y[5])
+    annotation (Placement(transformation(extent={{80,-20},{60,0}})));
+  Modelica.Blocks.Sources.RealExpression mBuiChW(
+    y=buiMasTem.y[6])
+    annotation (Placement(transformation(extent={{82,50},{62,70}})));
+  Modelica.Fluid.Interfaces.FluidPorts_a ports_aHeaWat[1]
+    "Heating water inlet port"
+    annotation (Placement(transformation(extent={{-310,-100},{-290,-20}}),iconTransformation(extent={{-310,-100},{-290,-20}})));
+  Modelica.Fluid.Interfaces.FluidPorts_a ports_aChiWat[1]
+    "Chilled water inlet port"
+    annotation (Placement(transformation(extent={{-310,-300},{-290,-220}}),iconTransformation(extent={{-310,-220},{-290,-140}})));
+  Modelica.Fluid.Interfaces.FluidPorts_b ports_bHeaWat[1]
+    "Heating water outlet port"
+    annotation (Placement(transformation(extent={{290,-100},{310,-20}}),iconTransformation(extent={{290,-100},{310,-20}})));
+  Modelica.Fluid.Interfaces.FluidPorts_b ports_bChiWat[1]
+    "Chilled water outlet port"
+    annotation (Placement(transformation(extent={{290,-300},{310,-220}}),iconTransformation(extent={{290,-220},{310,-140}})));
+equation
+  connect(buiCooSin.ports[1],ports_aChiWat[1])
+    annotation (Line(points={{-60,10},{-60,-46},{-118,-46},{-118,-290},{-300,-290}},color={0,0,127}));
+  connect(buiHeaSin.ports[1],ports_aHeaWat[1])
+    annotation (Line(points={{-60,-70},{-180,-70},{-180,-90},{-300,-90}},color={0,0,127}));
+  connect(supChiWat.ports[1],ports_bChiWat[1])
+    annotation (Line(points={{20,10},{160,10},{160,-290},{300,-290}},color={0,0,127}));
+  connect(supHeaWat.ports[1],ports_bHeaWat[1])
+    annotation (Line(points={{20,-70},{190,-70},{190,-90},{300,-90}},color={0,0,127}));
+  connect(TChWR.y,supChiWat.T_in)
+    annotation (Line(points={{58,30},{46,30},{46,14},{42,14}},color={0,0,127}));
+  connect(THWR.y,supHeaWat.T_in)
+    annotation (Line(points={{58,-50},{58,-66},{42,-66}},color={0,0,127}));
+  connect(mBuiHW.y,supHeaWat.m_flow_in)
+    annotation (Line(points={{59,-10},{50,-10},{50,-62},{42,-62}},color={0,0,127}));
+  connect(buiMasTem.y[1],THWR.u)
+    annotation (Line(points={{99,-10},{90,-10},{90,-50},{82,-50}},color={0,0,127}));
+  connect(buiMasTem.y[3],TChWR.u)
+    annotation (Line(points={{99,-10},{90,-10},{90,30},{82,30}},color={0,0,127}));
+  connect(mBuiChW.y,supChiWat.m_flow_in)
+    annotation (Line(points={{61,60},{42,60},{42,18}},color={0,0,127}));
+  annotation (
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-300,-300},{300,300}})),
+    Icon(
+      coordinateSystem(
+        extent={{-300,-300},{300,300}},
+        preserveAspectRatio=false),
+      graphics={
+        Rectangle(
+          extent={{-300,-300},{300,300}},
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{20,-188},{300,-172}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={255,0,0},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-300,-172},{-20,-188}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{18,-38},{46,-10}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Text(
+          extent={{-150,-328},{150,-368}},
+          lineColor={0,0,255},
+          textString="%name"),
+        Rectangle(
+          extent={{20,-52},{300,-68}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-300,-68},{-20,-52}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={255,0,0},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-180,180},{174,-220}},
+          lineColor={150,150,150},
+          fillPattern=FillPattern.Sphere,
+          fillColor={255,255,255}),
+        Rectangle(
+          extent={{36,42},{108,114}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-124,42},{-52,114}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-126,-122},{-54,-50}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{40,-122},{112,-50}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{0,264},{-218,164},{220,164},{0,264}},
+          lineColor={95,95,95},
+          smooth=Smooth.None,
+          fillPattern=FillPattern.Solid,
+          fillColor={95,95,95}),
+        Text(
+          extent={{-100,20},{100,-20}},
+          lineColor={0,0,0},
+          fillColor={0,0,0},
+          fillPattern=FillPattern.Solid,
+          textString="MFT")}),
+    __Dymola_Commands(
+      file="modelica://Buildings/Resources/Scripts/Dymola/Applications/DHC/Loads/Examples/TimeSeries_MassFlow_Temperature.mos" "Simulate and plot"),
+    experiment(
+      Tolerance=1e-6,
+      StopTime=31534200),
+    Documentation(
+      info="<html>
+<p>
+This example connects the building side (time series CSV file generated from
+energyPlus of heating/cooling water mass flow rate and temperature's)
+with the district side (infinite sources of cooling and heating) through
+an indirect heating and cooling energy transfer station (ETS, a heat exchanger).
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+August 25, 2020, by Hagar Elarga:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end building;
+{% endraw %}

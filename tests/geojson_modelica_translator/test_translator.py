@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -16,6 +16,14 @@ distribution.
 
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
+
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -33,12 +41,11 @@ import os
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.spawn import \
-    SpawnConnector as spawn_load
-from geojson_modelica_translator.model_connectors.teaser import \
-    TeaserConnector as teaser_load
-from geojson_modelica_translator.model_connectors.time_series import \
-    TimeSeriesConnector as timeseries_load
+from geojson_modelica_translator.model_connectors.load_connectors import (
+    Spawn,
+    Teaser,
+    TimeSeries
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -75,9 +82,9 @@ class GeoJSONTranslatorTest(TestCaseBase):
         gj.to_modelica(self.project_name, self.output_dir)
 
         # verify that there are 3 buildings, one of each type
-        self.assertIsInstance(gj.loads[0], spawn_load)
-        self.assertIsInstance(gj.loads[1], timeseries_load)
-        self.assertIsInstance(gj.loads[2], teaser_load)
+        self.assertIsInstance(gj.loads[0], Spawn)
+        self.assertIsInstance(gj.loads[1], TimeSeries)
+        self.assertIsInstance(gj.loads[2], Teaser)
 
         building_paths = [
             os.path.join(gj.scaffold.loads_path.files_dir, b.dirname) for b in gj.json_loads

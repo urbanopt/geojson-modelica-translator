@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -28,45 +36,36 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import distutils.cmd
-import distutils.log
 import os
 import re
 import subprocess
+from pathlib import Path
 from tempfile import mkstemp
 
+import click
 
-class FormatModelicaFiles(distutils.cmd.Command):
-    """Custom comand for applying modelicafmt to modelica files. Note that modelicafmt executable must be available in
-    your $PATH."""
+SKIP_FILES = ['DistrictEnergySystem.mot']
+TEMPLATE_FILES = Path('geojson_modelica_translator/model_connectors').glob('**/templates/*')
 
-    description = "Formats modelica files"
 
-    user_options = [
-        ('file=', 'f', 'Specific file to format')
-    ]
+@click.command()
+@click.argument('mofile', required=False)
+def fmt_modelica_files(mofile):
+    if mofile is not None:
+        files = [mofile]
+    else:
+        files = TEMPLATE_FILES
 
-    def initialize_options(self):
-        self.file = None
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        template_dir = "geojson_modelica_translator/model_connectors/templates/"
-        if self.file is not None:
-            files = [self.file]
-        else:
-            files = [os.path.join(template_dir, file_) for file_ in os.listdir(template_dir)]
-
-        for filepath in files:
-            try:
-                if filepath.endswith(".mot"):
-                    preprocess_and_format(filepath)
-                elif filepath.endswith(".mo"):
-                    apply_formatter(filepath)
-            except FormattingException as e:
-                self.announce(f'Error processing file {filepath}:\n    {e}', level=distutils.log.ERROR)
+    for filepath in files:
+        if os.path.basename(filepath) in SKIP_FILES:
+            continue
+        try:
+            if filepath.suffix == ".mot":
+                preprocess_and_format(str(filepath))
+            elif filepath.suffix == ".mo":
+                apply_formatter(str(filepath))
+        except FormattingException as e:
+            click.echo(f'Error processing file {filepath}:\n    {e}', err=True)
 
 
 class FormattingException(Exception):

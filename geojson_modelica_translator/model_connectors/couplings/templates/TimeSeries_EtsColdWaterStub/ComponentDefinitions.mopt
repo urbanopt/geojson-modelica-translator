@@ -1,0 +1,4 @@
+  Modelica.Blocks.Sources.RealExpression TChiWatSup_{{ coupling.id }}(
+    y={{ coupling.load.id }}.T_aChiWat_nominal)
+    "Chilled water supply temperature"
+    annotation (Placement({{ diagram.transformation.t_chi_wat_sup.real_expression }}));

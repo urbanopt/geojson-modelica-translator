@@ -1,0 +1,7 @@
+  // Heating indirect, Heated water stub connections
+  connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
+    annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_hea_wat.m_flow_in }});
+  connect({{ coupling.ets.id }}.port_a1,supHeaWat.ports[1])
+    annotation ({{ diagram.line.hea_ets.port_a1.sup_hea_wat.ports }});
+  connect(sinHeaWat.ports[1],{{ coupling.ets.id }}.port_b1)
+    annotation ({{ diagram.line.sin_hea_wat.ports.hea_ets.port_b1 }});

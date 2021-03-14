@@ -1,0 +1,12 @@
+  // TODO: This should not be here, it is entirely plant specific and should be moved elsewhere
+  // but since it requires a connect statement we must put it here for now...
+  Modelica.Blocks.Sources.BooleanConstant mPum_flow_{{ coupling.id }}(
+    k=true)
+    "Total heating water pump mass flow rate"
+    annotation (Placement({{ diagram.transformation.m_pum_flow.boolean_constant }}));
+  // TODO: This should not be here, it is entirely plant specific and should be moved elsewhere
+  // but since it requires a connect statement we must put it here for now...
+  Modelica.Blocks.Sources.RealExpression TDisSetHeaWat_{{ coupling.id }}(
+    each y=55+273.15)
+    "Distrcit side heating water supply temperature set point."
+    annotation (Placement({{ diagram.transformation.t_dis_set_hea_wat.real_expression }}));

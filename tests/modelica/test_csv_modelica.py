@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2020 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -28,39 +36,84 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
-import shutil
 import unittest
+from pathlib import Path
 
 from geojson_modelica_translator.modelica.csv_modelica import CSVModelica
 
 
 class CsvModelicaTest(unittest.TestCase):
     def setUp(self):
-        self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
-        self.output_dir = os.path.join(os.path.dirname(__file__), 'output')
-        if os.path.exists(self.output_dir):
-            shutil.rmtree(self.output_dir)
-        os.makedirs(self.output_dir)
+        self.data_dir = Path(__file__).parent / 'data'
+        self.output_dir = Path(__file__).parent / 'output'
+        self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def test_csv_does_not_exist(self):
         with self.assertRaises(Exception) as context:
-            input_file = os.path.join(self.data_dir, 'DNE.csv')
+            input_file = Path(self.data_dir) / 'DNE.csv'
             CSVModelica(input_file)
-        self.assertIn("Unable to convert CSV file because it does not exist:", str(context.exception))
+        self.assertIn("Unable to convert CSV file because this path does not exist:", str(context.exception))
 
-    def test_csv_modelica(self):
-        input_file = os.path.join(self.data_dir, 'Mass_Flow_Rates_Temperatures.csv')
-        energyplus_timestep = 60 * 15
-        output_modelica_file_name = os.path.join(self.output_dir, 'modelica')
+    def test_misshapen_csv_fails_gracefully(self):
+        with self.assertRaises(Exception) as context:
+            input_file = Path(self.data_dir) / 'misshapen_building_loads.csv'
+            # This input file has a typo in a column name and a missing column. Each will cause the Exception.
+            CSVModelica(input_file)
+            self.assertIn(
+                "Columns are missing or misspelled in your file:", str(
+                    context.exception))
+
+    def test_csv_modelica_at_15_min_timestep(self):
+        input_file = Path(self.data_dir) / 'building_loads_15min_snippet.csv'
+        output_modelica_file_name = Path(self.output_dir) / 'modelica_timestep.csv'
 
         csv_converter = CSVModelica(input_file)
         # save the updated time series to the output directory of the test folder
-        csv_converter.timeseries_to_modelica_data(output_modelica_file_name, energyplus_timestep, 'double')
-        self.assertTrue(os.path.exists(os.path.join(self.output_dir, 'modelica.csv')))
+        csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
+        self.assertTrue(output_modelica_file_name.exists())
 
         # check if a string is in there
-        with open(os.path.join(self.output_dir, 'modelica.csv'), 'r') as f:
+        with open(output_modelica_file_name, 'r') as f:
             data = f.read()
-            self.assertTrue('12600,42.25,55.0,15.73,6.67,8.58,0.19' in data)
-            self.assertTrue('29700000,39.32,55.0,15.75,6.67,2.08,0.29' in data)
+            self.assertTrue('14400,41.8,82.2,1.659,14.7,6.7,1.375' in data)
+            self.assertTrue('28800,37.7,82.2,0.721,14.9,6.7,2.018' in data)
+
+    def test_csv_modelica_at_60_min_timestep(self):
+        input_file = Path(self.data_dir) / 'building_loads_snippet.csv'
+        output_modelica_file_name = Path(self.output_dir) / 'modelica.csv'
+
+        csv_converter = CSVModelica(input_file)
+        # save the updated time series to the output directory of the test folder
+        csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
+        self.assertTrue(output_modelica_file_name.exists())
+
+        # check if a string is in there
+        with open(output_modelica_file_name, 'r') as f:
+            data = f.read()
+            self.assertTrue('18000,41.9,82.2,1.392,14.6,6.7,1.648' in data)
+            self.assertTrue('111600,57.2,82.2,5.784,16.2,6.7,3.062' in data)
+            self.assertFalse('9900,40.1,82.2,0.879,14.9,6.7,1.512' in data)
+
+    def test_csv_modelica_at_60_min_timestep_with_Eplus_file(self):
+        input_file = Path(self.data_dir) / 'mfrt.csv'
+        output_modelica_file_name = Path(self.output_dir) / 'mfrt_output.csv'
+
+        csv_converter = CSVModelica(input_file)
+        # save the updated time series to the output directory of the test folder
+        csv_converter.timeseries_to_modelica_data(output_modelica_file_name)
+        self.assertTrue(output_modelica_file_name.exists())
+
+        # check if a string is in there
+        with open(output_modelica_file_name, 'r') as f:
+            data = f.read()
+            self.assertTrue('18000,42.3,55.0,15.8,6.7,8.275,0.2' in data)
+            self.assertTrue('111600,41.9,55.0,15.1,6.7,12.32,0.021' in data)
+
+    def test_csv_modelica_no_overwrite(self):
+        with self.assertRaises(Exception) as context:
+            input_file = Path(self.data_dir) / 'building_loads_snippet.csv'
+            csv_converter = CSVModelica(input_file)
+            csv_converter.timeseries_to_modelica_data(output_modelica_file_name, overwrite=False)
+            self.assertIn(
+                "Output file already exists and overwrite is False:", str(
+                    context.exception))
