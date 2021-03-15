@@ -22,6 +22,20 @@ The project is motivated by the need to easily evaluate district energy systems.
 Getting Started
 ---------------
 
+:code:`pip install geojson-modelica-translator`
+* Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
+* Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
+
+For help and command documentation in the terminal: :code:`uo_des -h`
+
+Documentation for each command can be found at:
+* :code:`uo_des build-system-param -h`
+* :code:`uo_des create-model -h`
+* :code:`uo_des run-model -h`
+
+Developer Installation
+----------------------
+
 The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
 
 * Clone this repo into a working directory
