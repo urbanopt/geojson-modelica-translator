@@ -18,7 +18,7 @@ class CLITest(TestCase):
 
         # run subprocess inside the poetry shell to ensure we're using the same venv
         run(['poetry', 'run', 'uo_des', 'build-sys-param', self.output_dir / 'test_sys_param.json',
-            self.scenario_file_path, self.feature_file_path])
+             self.scenario_file_path, self.feature_file_path])
 
         # If this file exists, the cli command ran successfully
         assert (self.output_dir / 'test_sys_param.json').exists()
@@ -29,7 +29,7 @@ class CLITest(TestCase):
 
         # run subprocess inside the poetry shell to ensure we're using the same venv
         run(['poetry', 'run', 'uo_des', 'create-model', self.output_dir / 'test_sys_param.json',
-            self.feature_file_path, self.output_dir / 'modelica_project'])
+             self.feature_file_path, self.output_dir / 'modelica_project'])
 
         # If this file exists, the cli command ran successfully
         assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
