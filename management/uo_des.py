@@ -172,6 +172,8 @@ def create_model(model_type, sys_param_file, geojson_feature_file, project_name)
 
     gj = GeoJsonModelicaTranslator.from_geojson(geojson_feature_file)
     sys_params = SystemParameters(sys_param_file)
+    modelica_project_name = Path(project_name).stem
+    project_run_dir = Path(project_name).parent
 
     # create cooling network and plant
     # TODO: Enable selecting different plant models in sys-param file, kinda like this concept
@@ -226,8 +228,8 @@ def create_model(model_type, sys_param_file, geojson_feature_file, project_name)
     graph = CouplingGraph(all_couplings)
 
     district = District(
-        root_dir="./",
-        project_name=project_name,
+        root_dir=project_run_dir,
+        project_name=modelica_project_name,
         system_parameters=sys_params,
         coupling_graph=graph
     )
