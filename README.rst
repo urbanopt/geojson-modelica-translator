@@ -23,6 +23,7 @@ Getting Started
 ---------------
 
 :code:`pip install geojson-modelica-translator`
+
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
 * Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
 
