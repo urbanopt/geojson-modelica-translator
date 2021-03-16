@@ -1,0 +1,1810 @@
+{
+   "completed_at" : "20210302T164917Z",
+   "completed_status" : "Success",
+   "current_step" : 18,
+   "description" : "District Office 1",
+   "eplusout_err" : "Program Version,EnergyPlus, Version 9.4.0-998c4b761e, YMD=2021.03.02 09:47,\n   ** Warning ** Timestep: Requested number (1) is less than the suggested minimum of 4.\n   **   ~~~   ** Please see entry for Timestep in Input/Output Reference for discussion of considerations.\n   ************* Beginning Zone Sizing Calculations\n   ** Warning ** ProcessScheduleInput: Schedule:Day:Interval=\"ECONOMIZER MAX OA FRACTION 70 PCT DEFAULT\", Blank Schedule Type Limits Name input -- will not be validated.\n   ** Warning ** ProcessScheduleInput: Schedule:Day:Interval=\"SCHEDULE DAY 1\", Blank Schedule Type Limits Name input -- will not be validated.\n   ** Warning ** ProcessScheduleInput: Schedule:Day:Interval=\"SCHEDULE DAY 2\", Blank Schedule Type Limits Name input -- will not be validated.\n   ** Warning ** ProcessScheduleInput: Schedule:Year=\"ECONOMIZER MAX OA FRACTION 70 PCT\", Blank Schedule Type Limits Name input -- will not be validated.\n   ** Warning ** ProcessScheduleInput: Schedule:Constant=\"ALWAYS OFF DISCRETE\", Blank Schedule Type Limits Name input -- will not be validated.\n   ** Warning ** ProcessScheduleInput: Schedule:Constant=\"ALWAYS ON CONTINUOUS\", Blank Schedule Type Limits Name input -- will not be validated.\n   ** Warning ** GetHTSurfaceData: Surfaces with interface to Ground found but no \"Ground Temperatures\" were input.\n   **   ~~~   ** Found first in surface=SURFACE 1\n   **   ~~~   ** Defaults, constant throughout the year of (18.0) will be used.\n   ** Warning ** CheckUsedConstructions: There are 12 nominally unused constructions in input.\n   **   ~~~   ** For explicit details on each unused construction, use Output:Diagnostics,DisplayExtraWarnings;\n   ** Warning ** GetDaylightingControls: Fraction of Zone controlled by the Daylighting reference points is < 1.0.\n   **   ~~~   ** ..discovered in \"Daylighting:Controls\" for Zone=\"BUILDING STORY 1 THERMALZONE 1\", only 0.337 of the zone is controlled.\n   ** Warning ** GetDaylightingControls: Fraction of Zone controlled by the Daylighting reference points is < 1.0.\n   **   ~~~   ** ..discovered in \"Daylighting:Controls\" for Zone=\"BUILDING STORY 1 THERMALZONE 2\", only 0.335 of the zone is controlled.\n   ** Warning ** GetDaylightingControls: Fraction of Zone controlled by the Daylighting reference points is < 1.0.\n   **   ~~~   ** ..discovered in \"Daylighting:Controls\" for Zone=\"BUILDING STORY 1 THERMALZONE 3\", only 0.337 of the zone is controlled.\n   ** Warning ** GetDaylightingControls: Fraction of Zone controlled by the Daylighting reference points is < 1.0.\n   **   ~~~   ** ..discovered in \"Daylighting:Controls\" for Zone=\"BUILDING STORY 1 THERMALZONE 4\", only 0.335 of the zone is controlled.\n   ************* Beginning System Sizing Calculations\n   ** Warning ** Since Zone Minimum Air Flow Input Method = CONSTANT, input for Fixed Minimum Air Flow Rate will be ignored.\n   **   ~~~   ** Occurs in AirTerminal:SingleDuct:VAV:Reheat = BUILDING STORY 1 THERMALZONE VAV TERMINAL\n   ** Warning ** Since Zone Minimum Air Flow Input Method = CONSTANT, input for Fixed Minimum Air Flow Rate will be ignored.\n   **   ~~~   ** Occurs in AirTerminal:SingleDuct:VAV:Reheat = BUILDING STORY 1 THERMALZONE 1 VAV TERMINAL\n   ** Warning ** Since Zone Minimum Air Flow Input Method = CONSTANT, input for Fixed Minimum Air Flow Rate will be ignored.\n   **   ~~~   ** Occurs in AirTerminal:SingleDuct:VAV:Reheat = BUILDING STORY 1 THERMALZONE 2 VAV TERMINAL\n   ** Warning ** Since Zone Minimum Air Flow Input Method = CONSTANT, input for Fixed Minimum Air Flow Rate will be ignored.\n   **   ~~~   ** Occurs in AirTerminal:SingleDuct:VAV:Reheat = BUILDING STORY 1 THERMALZONE 3 VAV TERMINAL\n   ** Warning ** Since Zone Minimum Air Flow Input Method = CONSTANT, input for Fixed Minimum Air Flow Rate will be ignored.\n   **   ~~~   ** Occurs in AirTerminal:SingleDuct:VAV:Reheat = BUILDING STORY 1 THERMALZONE 4 VAV TERMINAL\n   ************* Beginning Plant Sizing Calculations\n   ** Warning ** GetOAControllerInputs: Controller:MechanicalVentilation=\"5 ZONE VAV VENT CONTROLLER\n   **   ~~~   ** Cannot locate a matching DesignSpecification:ZoneAirDistribution object for Zone=\"BUILDING STORY 1 THERMALZONE\".\n   **   ~~~   ** Using default zone air distribution effectiveness of 1.0 for heating and cooling.\n   ** Warning ** GetOAControllerInputs: Controller:MechanicalVentilation=\"5 ZONE VAV VENT CONTROLLER\n   **   ~~~   ** Cannot locate a matching DesignSpecification:ZoneAirDistribution object for Zone=\"BUILDING STORY 1 THERMALZONE 1\".\n   **   ~~~   ** Using default zone air distribution effectiveness of 1.0 for heating and cooling.\n   ** Warning ** GetOAControllerInputs: Controller:MechanicalVentilation=\"5 ZONE VAV VENT CONTROLLER\n   **   ~~~   ** Cannot locate a matching DesignSpecification:ZoneAirDistribution object for Zone=\"BUILDING STORY 1 THERMALZONE 2\".\n   **   ~~~   ** Using default zone air distribution effectiveness of 1.0 for heating and cooling.\n   ** Warning ** GetOAControllerInputs: Controller:MechanicalVentilation=\"5 ZONE VAV VENT CONTROLLER\n   **   ~~~   ** Cannot locate a matching DesignSpecification:ZoneAirDistribution object for Zone=\"BUILDING STORY 1 THERMALZONE 3\".\n   **   ~~~   ** Using default zone air distribution effectiveness of 1.0 for heating and cooling.\n   ** Warning ** GetOAControllerInputs: Controller:MechanicalVentilation=\"5 ZONE VAV VENT CONTROLLER\n   **   ~~~   ** Cannot locate a matching DesignSpecification:ZoneAirDistribution object for Zone=\"BUILDING STORY 1 THERMALZONE 4\".\n   **   ~~~   ** Using default zone air distribution effectiveness of 1.0 for heating and cooling.\n   ** Warning ** Meter:Custom=\"HEATREJECTION:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATREJECTION:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATREJECTION:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATREJECTION:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATREJECTION:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATREJECTION:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATREJECTION:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATREJECTION:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATREJECTION:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATREJECTION:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATREJECTION:OTHERFUELS\", no items assigned \n   **   ~~~   ** ...will not be shown with the Meter results. This may be caused by a Meter:Custom be assigned to another Meter:Custom.\n   ** Warning ** Meter:Custom=\"HEATING:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATING:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATING:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATING:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATING:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATING:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATING:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATING:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATING:OTHERFUELS\", invalid Output Variable or Meter Name=\"HEATING:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"HEATING:OTHERFUELS\", no items assigned \n   **   ~~~   ** ...will not be shown with the Meter results. This may be caused by a Meter:Custom be assigned to another Meter:Custom.\n   ** Warning ** Meter:Custom=\"WATERSYSTEMS:OTHERFUELS\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"WATERSYSTEMS:OTHERFUELS\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"WATERSYSTEMS:OTHERFUELS\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"WATERSYSTEMS:OTHERFUELS\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"WATERSYSTEMS:OTHERFUELS\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"WATERSYSTEMS:OTHERFUELS\", no items assigned \n   **   ~~~   ** ...will not be shown with the Meter results. This may be caused by a Meter:Custom be assigned to another Meter:Custom.\n   ** Warning ** Meter:Custom=\"INTERIOREQUIPMENT:OTHERFUELS\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"INTERIOREQUIPMENT:OTHERFUELS\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"INTERIOREQUIPMENT:OTHERFUELS\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"INTERIOREQUIPMENT:OTHERFUELS\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"INTERIOREQUIPMENT:OTHERFUELS\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"INTERIOREQUIPMENT:OTHERFUELS\", no items assigned \n   **   ~~~   ** ...will not be shown with the Meter results. This may be caused by a Meter:Custom be assigned to another Meter:Custom.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATREJECTION:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATREJECTION:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATREJECTION:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATREJECTION:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATREJECTION:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATING:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATING:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATING:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATING:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"HEATING:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"WATERSYSTEMS:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:FUELOIL#1\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:DIESEL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:GASOLINE\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:COAL\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", invalid Output Variable or Meter Name=\"INTERIOREQUIPMENT:STEAM\".\n   **   ~~~   ** ...will not be shown with the Meter results.\n   ** Warning ** Meter:Custom=\"OTHERFUELS:FACILITY\", no items assigned \n   **   ~~~   ** ...will not be shown with the Meter results. This may be caused by a Meter:Custom be assigned to another Meter:Custom.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTING:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GAS:FACILITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTING:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GAS:FACILITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"COOLING:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIORLIGHTS:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIORLIGHTS:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIORLIGHTS:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIORLIGHTS:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIORLIGHTS:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIORLIGHTS:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTS:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTS:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTS:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTS:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTS:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIORLIGHTS:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"EXTERIOREQUIPMENT:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FANS:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FANS:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FANS:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FANS:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FANS:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FANS:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PUMPS:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PUMPS:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PUMPS:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PUMPS:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PUMPS:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PUMPS:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HUMIDIFIER:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATRECOVERY:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATRECOVERY:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATRECOVERY:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATRECOVERY:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATRECOVERY:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATRECOVERY:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"REFRIGERATION:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:ELECTRICITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:NATURALGAS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:FUELOILNO2\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:PROPANE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:DISTRICTCOOLING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:DISTRICTHEATING\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"GENERATORS:WATER\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"FUELOILNO2:FACILITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"PROPANE:FACILITY\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:FUELOIL#1\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:DIESEL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:GASOLINE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:COAL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:STEAM\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATREJECTION:OTHERFUELS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:FUELOIL#1\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:DIESEL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:GASOLINE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:COAL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:STEAM\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"HEATING:OTHERFUELS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:FUELOIL#1\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:DIESEL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:GASOLINE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:COAL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:STEAM\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"WATERSYSTEMS:OTHERFUELS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:FUELOIL#1\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:DIESEL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:GASOLINE\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:COAL\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:STEAM\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"INTERIOREQUIPMENT:OTHERFUELS\" - not found.\n   ** Warning ** Output:Meter: invalid Key Name=\"OTHERFUELS:FACILITY\" - not found.\n   ** Warning ** Output:Meter:MeterFileOnly requested for \"Electricity:Facility\" (TimeStep), already on \"Output:Meter\". Will report to both eplusout.eso and eplusout.mtr\n   ** Warning ** Output:Meter:MeterFileOnly: invalid Key Name=\"ELECTRICITYPRODUCED:FACILITY\" - not found.\n   ** Warning ** Output:Meter:MeterFileOnly: invalid Key Name=\"GAS:FACILITY\" - not found.\n   ** Warning ** Output:Meter:MeterFileOnly requested for \"DistrictCooling:Facility\" (TimeStep), already on \"Output:Meter\". Will report to both eplusout.eso and eplusout.mtr\n   ** Warning ** Output:Meter:MeterFileOnly requested for \"DistrictHeating:Facility\" (TimeStep), already on \"Output:Meter\". Will report to both eplusout.eso and eplusout.mtr\n   ************* Testing Individual Branch Integrity\n   ************* All Branches passed integrity testing\n   ************* Testing Individual Supply Air Path Integrity\n   ************* All Supply Air Paths passed integrity testing\n   ************* Testing Individual Return Air Path Integrity\n   ************* All Return Air Paths passed integrity testing\n   ************* No node connection errors were found.\n   ** Warning ** CalcOAController: Minimum OA fraction > Mechanical Ventilation Controller request for Controller:OutdoorAir=5 ZONE VAV OA CONTROLLER, Min OA fraction is used.\n   **   ~~~   ** This may be overriding desired ventilation controls. Check inputs for Minimum Outdoor Air Flow Rate, Minimum Outdoor Air Schedule Name and Controller:MechanicalVentilation\n   **   ~~~   ** Minimum OA fraction = 0.3428, Mech Vent OA fraction = 0.2057\n   **   ~~~   **  Environment=BUFFALO NIAGARA INTL AP ANN CLG .4% CONDNS DB=>MWB 1 HVAC Sizing Pass 1, at Simulation time=07/21 00:00 - 01:00\n   ** Warning ** More than 4% of time (1.0 hours) uncomfortable in one or more zones \n   **   ~~~   ** Based on ASHRAE 55-2004 graph (Section 5.2.1.1)\n   **   ~~~   ** During SizingPeriod Environment [01/21 - 01/21]: BUFFALO NIAGARA INTL AP ANN HTG 99.6% CONDNS DB 1 HVAC Sizing Pass 1\n   **   ~~~   ** 23.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE\n   **   ~~~   ** 17.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE 2\n   **   ~~~   ** 3.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE 4\n   ************* Beginning Simulation\n   ** Warning ** HeatExchanger:AirToAir:SensibleAndLatent \"5 ZONE VAV ERV\"\n   **   ~~~   ** Average air volume flow rate is <50% or >130% of the nominal HX supply air volume flow rate.\n   **   ~~~   ** Air volume flow rate ratio = 1.574. Environment=RUN PERIOD 1, at Simulation time=04/05 11:00 - 12:00\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/05 11:00 - 12:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   **   ~~~   ** ...use Output:Diagnostics,DisplayExtraWarnings; to show more details on each max iteration exceeded.\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/06 11:00 - 12:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/06 11:15 - 11:30\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/06 11:45 - 12:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/06 12:00 - 13:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/06 12:00 - 12:30\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/06 12:30 - 13:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/18 15:40 - 16:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/18 16:00 - 16:30\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/20 14:00 - 15:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/20 14:20 - 14:40\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/20 14:40 - 15:00\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/20 16:00 - 16:20\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at RUN PERIOD 1, 04/20 16:20 - 16:40\n   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge\n   ** Warning ** More than 4% of time (350.4 hours) uncomfortable in one or more zones \n   **   ~~~   ** Based on ASHRAE 55-2004 graph (Section 5.2.1.1)\n   **   ~~~   ** During Environment [01/01/2017 - 12/31/2017]: RUN PERIOD 1\n   **   ~~~   ** 2211.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE\n   **   ~~~   ** 2017.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE 1\n   **   ~~~   ** 2440.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE 2\n   **   ~~~   ** 2181.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE 3\n   **   ~~~   ** 1789.0 hours were uncomfortable in zone: BUILDING STORY 1 THERMALZONE 4\n   ** Warning ** The resource referenced by LifeCycleCost:UsePriceEscalation= \"U.S. AVG  COMMERCIAL-ELECTRICITY\" has no energy cost. \n   **   ~~~   ** ... It is likely that the wrong resource is used. The resource should match the meter used in Utility:Tariff.\n   ** Warning ** The resource referenced by LifeCycleCost:UsePriceEscalation= \"U.S. AVG  COMMERCIAL-DISTILLATE OIL\" has no energy cost. \n   **   ~~~   ** ... It is likely that the wrong resource is used. The resource should match the meter used in Utility:Tariff.\n   ** Warning ** The resource referenced by LifeCycleCost:UsePriceEscalation= \"U.S. AVG  COMMERCIAL-RESIDUAL OIL\" has no energy cost. \n   **   ~~~   ** ... It is likely that the wrong resource is used. The resource should match the meter used in Utility:Tariff.\n   ** Warning ** The resource referenced by LifeCycleCost:UsePriceEscalation= \"U.S. AVG  COMMERCIAL-NATURAL GAS\" has no energy cost. \n   **   ~~~   ** ... It is likely that the wrong resource is used. The resource should match the meter used in Utility:Tariff.\n   ** Warning ** The resource referenced by LifeCycleCost:UsePriceEscalation= \"U.S. AVG  COMMERCIAL-COAL\" has no energy cost. \n   **   ~~~   ** ... It is likely that the wrong resource is used. The resource should match the meter used in Utility:Tariff.\n   ************* Simulation Error Summary *************\n   ** Warning ** The following Report Variables were requested but not generated -- check.rdd file\n   **   ~~~   ** Either the IDF did not contain these elements, the variable name is misspelled,\n   **   ~~~   ** or the requested variable is an advanced output which requires Output : Diagnostics, DisplayAdvancedReportVariables;\n   ************* Key=*, VarName=FANGERPMV, Frequency=TimeStep\n   ************* Key=*, VarName=FANGERPPD, Frequency=TimeStep\n   ************* Key=*, VarName=TIME NOT COMFORTABLE SUMMER CLOTHES, Frequency=TimeStep\n   ************* Key=*, VarName=TIME NOT COMFORTABLE WINTER CLOTHES, Frequency=TimeStep\n   ************* Key=*, VarName=TIME NOT COMFORTABLE SUMMER OR WINTER CLOTHES, Frequency=TimeStep\n   ************* Key=*, VarName=EXTERIOREQUIPMENT:ELECTRICITY, Frequency=TimeStep\n   ************* Key=*, VarName=ICE THERMAL STORAGE END FRACTION, Frequency=TimeStep\n   ************* Key=*, VarName=COOLING COIL ICE THERMAL STORAGE END FRACTION, Frequency=TimeStep\n   ************* There are 5 unused schedules in input.\n   ************* There are 5 unused week schedules in input.\n   ************* There are 12 unused day schedules in input.\n   ************* Use Output:Diagnostics,DisplayUnusedSchedules; to see them.\n   *************\n   ************* ===== Recurring Error Summary =====\n   ************* The following recurring error messages occurred.\n   *************\n   *************  ** Warning ** Controller:OutdoorAir=\"5 ZONE VAV OA CONTROLLER\": Min OA fraction > Mechanical ventilation OA fraction, continues...\n   *************  **   ~~~   **   This error occurred 284763 total times;\n   *************  **   ~~~   **   during Warmup 0 times;\n   *************  **   ~~~   **   during Sizing 0 times.\n   *************  **   ~~~   **   Max=0.342804  Min=0.342804\n   *************\n   *************  ** Warning ** HeatExchanger:AirToAir:SensibleAndLatent \"5 ZONE VAV ERV\":  Average air volume flow rate is <50% or >130% warning continues. Air flow rate ratio statistics follow.\n   *************  **   ~~~   **   This error occurred 98 total times;\n   *************  **   ~~~   **   during Warmup 0 times;\n   *************  **   ~~~   **   during Sizing 0 times.\n   *************  **   ~~~   **   Max=1.573683  Min=1.488425\n   *************\n   *************  ** Warning ** SimHVAC: Exceeding Maximum iterations for all HVAC loops, during RUN PERIOD 1 continues\n   *************  **   ~~~   **   This error occurred 35 total times;\n   *************  **   ~~~   **   during Warmup 0 times;\n   *************  **   ~~~   **   during Sizing 0 times.\n   *************\n   *************\n   ************* ===== Final Error Summary =====\n   ************* The following error categories occurred.  Consider correcting or noting.\n   ************* Nominally Unused Constructions\n   ************* ..The nominally unused constructions warning is provided to alert you to potential conditions that can cause\n   ************* ..extra time during simulation. Each construction is calculated by the algorithm indicated in the HeatBalanceAlgorithm\n   ************* ..object. You may remove the constructions indicated (when you use the DisplayExtraWarnings option).\n   *************\n   ************* EnergyPlus Warmup Error Summary. During Warmup: 0 Warning; 0 Severe Errors.\n   ************* EnergyPlus Sizing Error Summary. During Sizing: 17 Warning; 0 Severe Errors.\n   ************* EnergyPlus Completed Successfully-- 285115 Warning; 0 Severe Errors; Elapsed Time=00hr 00min 16.99sec\n",
+   "file_paths" :
+   [
+      "/Users/nmoore/github/bbb/run/baseline_scenario/5/generated_files",
+      "/Users/nmoore/github/bbb/mappers/../weather/",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-calibration-0.3.1/lib/files",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-common-measures-0.3.2/lib/files",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-ee-0.3.2/lib/files",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-extension-0.3.2/lib/files",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-load-flexibility-measures-0.2.1/lib/files",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-model-articulation-0.3.1/lib/files",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/urbanopt-reopt-0.5.4/lib/files",
+      "./files",
+      "./weather",
+      "../../files",
+      "../../weather",
+      "./"
+   ],
+   "hash" : "439111E1",
+   "measure_paths" :
+   [
+      "/Users/nmoore/github/bbb/mappers/../measures/",
+      "/Users/nmoore/github/bbb/mappers/../resources/hpxml-measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-calibration-0.3.1/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-common-measures-0.3.2/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-ee-0.3.2/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-extension-0.3.2/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-load-flexibility-measures-0.2.1/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/openstudio-model-articulation-0.3.1/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/urbanopt-geojson-0.5.2/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/urbanopt-reopt-0.5.4/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/urbanopt-reporting-0.3.6/lib/measures",
+      "/Users/nmoore/.rbenv/versions/2.5.8/lib/ruby/gems/2.5.0/gems/urbanopt-scenario-0.5.1/lib/measures"
+   ],
+   "name" : "District Office 1",
+   "run_directory" : "/Users/nmoore/github/bbb/run/baseline_scenario/5",
+   "seed_file" : null,
+   "started_at" : "20210302T164731Z",
+   "steps" :
+   [
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "begin_date" : "2017-01-01",
+            "end_date" : "2017-12-31",
+            "timesteps_per_hour" : 1
+         },
+         "measure_dir_name" : "set_run_period",
+         "result" :
+         {
+            "completed_at" : "20210302T164731Z",
+            "measure_class_name" : "SetRunPeriod",
+            "measure_display_name" : "SetRunPeriod",
+            "measure_name" : "set_run_period",
+            "measure_taxonomy" : "Envelope.Form",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "7a84292a-3975-4ab3-9284-6edabcbe750b",
+            "measure_version_id" : "4f0334fc-172b-40ec-99e5-1c83e308f760",
+            "measure_version_modified" : "20200623T205026Z",
+            "measure_xml_checksum" : "2AF3A68E",
+            "started_at" : "20210302T164731Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "timesteps_per_hour",
+                  "value" : 1
+               },
+               {
+                  "name" : "begin_date",
+                  "value" : "2017-01-01"
+               },
+               {
+                  "name" : "end_date",
+                  "value" : "2017-12-31"
+               }
+            ],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "climate_zone" : "ASHRAE 169-2013-6A",
+            "weather_file_name" : "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+         },
+         "measure_dir_name" : "ChangeBuildingLocation",
+         "result" :
+         {
+            "completed_at" : "20210302T164733Z",
+            "measure_class_name" : "ChangeBuildingLocation",
+            "measure_display_name" : "ChangeBuildingLocation",
+            "measure_name" : "change_building_location",
+            "measure_taxonomy" : "Whole Building.Space Types",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "d4db4971-f5ba-11e3-a3ac-0800200c9a66",
+            "measure_version_id" : "0c3c39a2-f5d3-43c1-bdc0-7a32a9379f1a",
+            "measure_version_modified" : "20200623T195838Z",
+            "measure_xml_checksum" : "057E8D9D",
+            "started_at" : "20210302T164732Z",
+            "stderr" : "",
+            "stdout" : "[openstudio.model.YearDescription] <1> 'UseWeatherFile' is not yet a supported option for YearDescription\n[openstudio.model.YearDescription] <1> 'UseWeatherFile' is not yet a supported option for YearDescription\n",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_final_condition" : "The final weather file is Buffalo Niagara Intl Ap and the model has 3 design day objects.",
+            "step_info" :
+            [
+               "city is Buffalo Niagara Intl Ap. State is NY",
+               "mean dry bulb is 8.966666666666667",
+               "Adding object Buffalo Niagara Intl Ap Ann Clg .4% Condns DB=>MWB",
+               "Adding object Buffalo Niagara Intl Ap Ann Clg .4% Condns WB=>MDB",
+               "Adding object Buffalo Niagara Intl Ap Ann Htg 99.6% Condns DB",
+               "Setting ASHRAE Climate Zone to 6A"
+            ],
+            "step_initial_condition" : "No weather file is set. The model has 0 design day objects",
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "weather_file_name",
+                  "value" : "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+               },
+               {
+                  "name" : "climate_zone",
+                  "value" : "ASHRAE 169-2013-6A"
+               },
+               {
+                  "name" : "set_year",
+                  "value" : 0
+               },
+               {
+                  "name" : "use_upstream_args",
+                  "value" : true
+               },
+               {
+                  "name" : "epw_gsub",
+                  "value" : "Do Nothing"
+               },
+               {
+                  "name" : "reported_climate_zone",
+                  "value" : "ASHRAE 169-2013-6A"
+               }
+            ],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "bar_division_method" : "Multiple Space Types - Individual Stories Sliced",
+            "bldg_type_a" : "SmallOffice",
+            "bldg_type_a_num_units" : 0,
+            "bldg_type_b" : "SmallOffice",
+            "bldg_type_b_fract_bldg_area" : 0,
+            "bldg_type_b_num_units" : 0,
+            "bldg_type_c" : "SmallOffice",
+            "bldg_type_c_fract_bldg_area" : 0,
+            "bldg_type_c_num_units" : 0,
+            "bldg_type_d" : "SmallOffice",
+            "bldg_type_d_fract_bldg_area" : 0,
+            "bldg_type_d_num_units" : 0,
+            "building_rotation" : 0,
+            "floor_height" : 10,
+            "ns_to_ew_ratio" : 0,
+            "num_stories_above_grade" : 1,
+            "num_stories_below_grade" : 0,
+            "party_wall_fraction" : 0,
+            "single_floor_area" : 8804,
+            "story_multiplier" : "None",
+            "template" : "90.1-2013",
+            "wwr" : 0
+         },
+         "measure_dir_name" : "create_bar_from_building_type_ratios",
+         "result" :
+         {
+            "completed_at" : "20210302T164738Z",
+            "measure_class_name" : "CreateBarFromBuildingTypeRatios",
+            "measure_display_name" : "Create Bar From Building Type Ratios",
+            "measure_name" : "create_bar_from_building_type_ratios",
+            "measure_taxonomy" : "Envelope.Form",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "6e3a14f8-c3c7-4e03-bc51-bef8a52e1a05",
+            "measure_version_id" : "c569be27-f463-4721-8bfb-72bd6775d70e",
+            "measure_version_modified" : "20200512T025555Z",
+            "measure_xml_checksum" : "2AF3A68E",
+            "started_at" : "20210302T164736Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_final_condition" : "The building finished with 9 spaces.",
+            "step_info" :
+            [
+               "Replacing argument named climate_zone from current measure with a value of ASHRAE 169-2013-6A from ChangeBuildingLocation.",
+               "0.0 value for aspect ratio will be replaced with smart default for SmallOffice of 1.5.",
+               "0.0 value for minimum perimeter multiplier will be replaced with smart default for SmallOffice of 1.0.",
+               "0.0 value for window to wall ratio will be replaced with smart default for SmallOffice of 0.15.",
+               "Creating Space Types for SmallOffice.",
+               "Making bar with length of 115 ft and width of 77 ft",
+               "Intersecting and matching surfaces in story Story Ground, this will create additional geometry.",
+               "Created bar envelope with floor area of 8,804 ft^2. Total building area is 8,804 ft^2."
+            ],
+            "step_initial_condition" : "The building started with 0 spaces.",
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "bldg_type_a",
+                  "value" : "SmallOffice"
+               },
+               {
+                  "name" : "bldg_type_a_num_units",
+                  "value" : 0
+               },
+               {
+                  "name" : "bldg_type_b",
+                  "value" : "SmallOffice"
+               },
+               {
+                  "name" : "bldg_type_b_fract_bldg_area",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "bldg_type_b_num_units",
+                  "value" : 0
+               },
+               {
+                  "name" : "bldg_type_c",
+                  "value" : "SmallOffice"
+               },
+               {
+                  "name" : "bldg_type_c_fract_bldg_area",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "bldg_type_c_num_units",
+                  "value" : 0
+               },
+               {
+                  "name" : "bldg_type_d",
+                  "value" : "SmallOffice"
+               },
+               {
+                  "name" : "bldg_type_d_fract_bldg_area",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "bldg_type_d_num_units",
+                  "value" : 0
+               },
+               {
+                  "name" : "total_bldg_floor_area",
+                  "value" : 10000.0
+               },
+               {
+                  "name" : "single_floor_area",
+                  "value" : 8804.0
+               },
+               {
+                  "name" : "floor_height",
+                  "value" : 10.0
+               },
+               {
+                  "name" : "custom_height_bar",
+                  "value" : true
+               },
+               {
+                  "name" : "num_stories_above_grade",
+                  "value" : 1.0
+               },
+               {
+                  "name" : "num_stories_below_grade",
+                  "value" : 0
+               },
+               {
+                  "name" : "building_rotation",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "template",
+                  "value" : "90.1-2013"
+               },
+               {
+                  "name" : "ns_to_ew_ratio",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "perim_mult",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "bar_sep_dist_mult",
+                  "value" : 10.0
+               },
+               {
+                  "name" : "wwr",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "party_wall_fraction",
+                  "value" : 0.0
+               },
+               {
+                  "name" : "party_wall_stories_north",
+                  "value" : 0
+               },
+               {
+                  "name" : "party_wall_stories_south",
+                  "value" : 0
+               },
+               {
+                  "name" : "party_wall_stories_east",
+                  "value" : 0
+               },
+               {
+                  "name" : "party_wall_stories_west",
+                  "value" : 0
+               },
+               {
+                  "name" : "bottom_story_ground_exposed_floor",
+                  "value" : true
+               },
+               {
+                  "name" : "top_story_exterior_exposed_roof",
+                  "value" : true
+               },
+               {
+                  "name" : "story_multiplier",
+                  "value" : "None"
+               },
+               {
+                  "name" : "make_mid_story_surfaces_adiabatic",
+                  "value" : true
+               },
+               {
+                  "name" : "bar_division_method",
+                  "value" : "Multiple Space Types - Individual Stories Sliced"
+               },
+               {
+                  "name" : "double_loaded_corridor",
+                  "value" : "Primary Space Type"
+               },
+               {
+                  "name" : "space_type_sort_logic",
+                  "value" : "Building Type > Size"
+               },
+               {
+                  "name" : "use_upstream_args",
+                  "value" : true
+               },
+               {
+                  "name" : "climate_zone",
+                  "value" : "Lookup From Stat File"
+               },
+               {
+                  "name" : "wall_area_ip",
+                  "units" : "ft^2",
+                  "value" : 3830.5787204198423
+               },
+               {
+                  "name" : "ns_wall_area_ip",
+                  "units" : "ft^2",
+                  "value" : 2298.3472322519006
+               },
+               {
+                  "name" : "ew_wall_area_ip",
+                  "units" : "ft^2",
+                  "value" : 1532.2314881679415
+               },
+               {
+                  "name" : "floor_area_to_perim_ratio",
+                  "value" : 7.0053623639038145
+               },
+               {
+                  "name" : "bar_width",
+                  "units" : "ft",
+                  "value" : 76.611574408396876
+               }
+            ],
+            "step_warnings" :
+            [
+               "User-defined single floor area was used for calculation of total building floor area",
+               "Cannot use custom height bar with single floor area method, will not create custom height bar."
+            ]
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "add_hvac" : false,
+            "add_refrigeration" : false,
+            "template" : "90.1-2013"
+         },
+         "measure_dir_name" : "create_typical_building_from_model",
+         "name" : "create_typical_building_from_model 1",
+         "result" :
+         {
+            "completed_at" : "20210302T164739Z",
+            "measure_class_name" : "CreateTypicalBuildingFromModel",
+            "measure_display_name" : "Create Typical Building from Model",
+            "measure_name" : "create_typical_building_from_model",
+            "measure_taxonomy" : "Whole Building.Space Types",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "339a2e3a-273c-4494-bb50-bfe586a0647c",
+            "measure_version_id" : "cf4a5895-bc2f-4b83-925c-7eaaeb3d0913",
+            "measure_version_modified" : "20200911T195900Z",
+            "measure_xml_checksum" : "EE13F09F",
+            "started_at" : "20210302T164738Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_final_condition" : "The building finished with 446 objects.",
+            "step_info" :
+            [
+               "Replacing argument named climate_zone from current measure with a value of ASHRAE 169-2013-6A from ChangeBuildingLocation.",
+               "Replacing argument named template from current measure with a value of 90.1-2013 from create_bar_from_building_type_ratios.",
+               "Using climate zone ASHRAE 169-2013-6A from user arguments",
+               "Adding loads to space type named Office WholeBuilding - Sm Office - 90.1-2013",
+               "Adding default construction set named Res 90.1-2013 - Office - ASHRAE 169-2013-6A",
+               "No elevators added to the building.",
+               "Adding Exterior Lights named Parking Areas and Drives Def (W/ft^2) with design level of 0.1 * 14,262.",
+               "Adding Exterior Lights named Building Facades Def (W/ft^2) with design level of 0.15 * 3,831.",
+               "Adding Exterior Lights named Main Entries Def (W/ft) with design level of 30.0 * 14.",
+               "Adding Exterior Lights named Other Doors Def (W/ft) with design level of 20.0 * 7.",
+               "Adding Office Shared Service Water Loop to the building. It has 1 water use connections.",
+               "Assigning Office WholeBuilding - Sm Office - 90.1-2013 Thermostat to thermal zones with Office WholeBuilding - Sm Office - 90.1-2013 assigned.",
+               "Using OpenStudio Standards version 0.2.12 with template 90.1-2013.",
+               "Loading OpenStudio Standards data for 90.1-2013",
+               "Office WholeBuilding - Sm Office had no people, one has been created.",
+               "Office WholeBuilding - Sm Office set occupancy to 5.6 people/1000 ft^2.",
+               "Office WholeBuilding - Sm Office had no lights, one has been created.",
+               "Office WholeBuilding - Sm Office set LPD to 0.82 W/ft^2.",
+               "Office WholeBuilding - Sm Office had no electric equipment, one has been created.",
+               "Office WholeBuilding - Sm Office set electric EPD to 0.63 W/ft^2.",
+               "Office WholeBuilding - Sm Office had no ventilation specification, one has been created.",
+               "Office WholeBuilding - Sm Office set ventilation per area to 0.085 cfm/ft^2.",
+               "Office WholeBuilding - Sm Office set occupancy schedule to OfficeSmall BLDG_OCC_SCH.",
+               "Office WholeBuilding - Sm Office set occupant activity schedule to OfficeSmall ACTIVITY_SCH.",
+               "Office WholeBuilding - Sm Office set lighting schedule to OfficeSmall BLDG_LIGHT_SCH_2013.",
+               "Office WholeBuilding - Sm Office set electric equipment schedule to OfficeSmall BLDG_EQUIP_SCH_2013.",
+               "Office WholeBuilding - Sm Office set infiltration schedule to OfficeSmall INFIL_QUARTER_ON_SCH.",
+               "Adding construction set: 90.1-2013-ASHRAE 169-2013-6A-Office--is_residentialNo",
+               "Adding construction Typical Insulated Exterior Mass Floor R-19.61.",
+               "Adding construction Typical Insulated Exterior Mass Wall R-12.5.",
+               "Adding construction Typical IEAD Roof R-31.25.",
+               "Adding construction Typical Interior Floor.",
+               "Adding construction Typical Interior Wall.",
+               "Adding construction Typical Interior Ceiling.",
+               "Adding construction Typical Insulated Carpeted 8in Slab Floor.",
+               "Adding construction Typical Insulated Basement Mass Wall.",
+               "Adding construction U 0.48 SHGC 0.40 Dbl Ref-D Clr 6mm/13mm.",
+               "Adding construction Typical Insulated Metal Door R-2.0.",
+               "Adding construction U 0.44 SHGC 0.26 Dbl Ref-B-H Clr 6mm/13mm Air.",
+               "Adding construction Typical Overhead Door R-2.0.",
+               "Adding construction Window_U_0.50_SHGC_0.40_Skylight_Frame_Width_0.430_in.",
+               "Adding construction Typical Interior Window.",
+               "Adding construction Typical Interior Door.",
+               "Adding construction Typical Interior Partition.",
+               "For Office WholeBuilding - Sm Office A  - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office A end_a - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office A end_b - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office B  - Story Ground, no exterior wall area was found, no infiltration will be added.",
+               "For Office WholeBuilding - Sm Office B end_a - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office B end_b - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office C  - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office C end_a - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "For Office WholeBuilding - Sm Office C end_b - Story Ground, set infiltration rate to 0.112 cfm/ft2 exterior wall area (aka 1.0 cfm/ft2 @75Pa).",
+               "The building only has 1 story, no elevators will be added.",
+               "For Office WholeBuilding - Sm Office - 90.1-2013, floor area = 8804 ft^2.",
+               "For Office WholeBuilding - Sm Office - 90.1-2013, number of spaces = 9.",
+               "For Office WholeBuilding - Sm Office - 90.1-2013, number of people = 49.",
+               "Facade and Landscape exterior lights shut off from {:hr=>24, :min=>0} to {:hr=>6, :min=>0}",
+               "Non Facade and Landscape lights reduce by 30.0 % from {:hr=>24, :min=>0} to {:hr=>6, :min=>0}",
+               "Added 0.1 W/ft^2 of lighting for 14262.479999999994 ft^2 of parking area.",
+               "Added 0.15 W/ft^2 of lighting for 3830.5787204198423 ft^2 of building facade area.",
+               "Added 30.0 W/ft of lighting for 14.086399999999994 ft of main entry length.",
+               "Added 20.0 W/ft of lighting for 7.043199999999997 ft of other doors.",
+               "For Office WholeBuilding - Sm Office - 90.1-2013, floor area = 8804 ft^2.",
+               "For Office WholeBuilding - Sm Office - 90.1-2013, number of spaces = 9.",
+               "For Office WholeBuilding - Sm Office - 90.1-2013, number of people = 49.",
+               "Added Office WholeBuilding - Sm Office - 90.1-2013 Service Water Use 0.08gpm at 140F.",
+               "Capacity of 5040 Btu/hr = 1.0 peak fraction * 5 gal/hr * 8.4 lb/gal * 1.0 Btu/lb F * (140 - 40 deltaF / 0.8 htg eff).",
+               "Capacity of 5040 Btu/hr = 1.0 peak fraction * 5 gal/hr * 8.4 lb/gal * 1.0 Btu/lb F * (140 - 40 deltaF / 0.8 htg eff).",
+               "Added water heater called 40gal NaturalGas Water Heater - 5kBtu/hr",
+               "Pipe length 188ft = 2.0 * ( (8804ft2 / 0.9999999999999999 stories)^0.5 + (10.0ft * (0.9999999999999999 stories - 1.0) ) )",
+               "Added 188ft of Copper pipe 0.75in type L with 0.5in fiberglass batt losing heat to 70F air to Office Shared Service Water Loop.",
+               "Added circulating SWH loop called Office Shared Service Water Loop",
+               "Adding shared water heating loop for Office.",
+               "Started adding daylighting controls.",
+               "For Office WholeBuilding - Sm Office A  - Story Ground: illuminance setpoint = 375.0 Lux",
+               "For Office WholeBuilding - Sm Office A  - Story Ground: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office A  - Story Ground: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office A  - Story Ground: sensor 1 controls 12% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office A  - Story Ground: sensor 2 controls 4% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office A end_a - Story Ground, primary sidelighting control not required because less than 150W of lighting are present in the primary daylighted area per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office A end_a - Story Ground, secondary sidelighting control not required because less than 300W of lighting are present in the combined primary and secondary daylighted areas per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office A end_b - Story Ground, primary sidelighting control not required because less than 150W of lighting are present in the primary daylighted area per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office A end_b - Story Ground, secondary sidelighting control not required because less than 300W of lighting are present in the combined primary and secondary daylighted areas per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office B  - Story Ground, daylighting control not applicable because no exterior fenestration is present.",
+               "For Office WholeBuilding - Sm Office B end_a - Story Ground: illuminance setpoint = 375.0 Lux",
+               "For Office WholeBuilding - Sm Office B end_a - Story Ground: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office B end_a - Story Ground: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office B end_a - Story Ground: sensor 1 controls 12% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office B end_a - Story Ground: sensor 2 controls 4% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office B end_b - Story Ground: illuminance setpoint = 375.0 Lux",
+               "For Office WholeBuilding - Sm Office B end_b - Story Ground: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office B end_b - Story Ground: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office B end_b - Story Ground: sensor 1 controls 12% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office B end_b - Story Ground: sensor 2 controls 4% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office C  - Story Ground: illuminance setpoint = 375.0 Lux",
+               "For Office WholeBuilding - Sm Office C  - Story Ground: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office C  - Story Ground: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Office WholeBuilding - Sm Office C  - Story Ground: sensor 1 controls 12% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office C  - Story Ground: sensor 2 controls 4% of the zone lighting.",
+               "For Office WholeBuilding - Sm Office C end_a - Story Ground, primary sidelighting control not required because less than 150W of lighting are present in the primary daylighted area per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office C end_a - Story Ground, secondary sidelighting control not required because less than 300W of lighting are present in the combined primary and secondary daylighted areas per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office C end_b - Story Ground, primary sidelighting control not required because less than 150W of lighting are present in the primary daylighted area per 9.4.1.1(e).",
+               "For Office WholeBuilding - Sm Office C end_b - Story Ground, secondary sidelighting control not required because less than 300W of lighting are present in the combined primary and secondary daylighted areas per 9.4.1.1(e).",
+               "Finished adding daylighting controls.",
+               "Finished adding internal mass",
+               "Office WholeBuilding - Sm Office - 90.1-2013 set heating setpoint schedule to OfficeSmall HTGSETP_SCH_NO_OPTIMUM.",
+               "Office WholeBuilding - Sm Office - 90.1-2013 set cooling setpoint schedule to OfficeSmall CLGSETP_SCH_NO_OPTIMUM.",
+               "Added internal mass 'Office WholeBuilding - Sm Office C end_b - Story Ground Mass' to space 'Office WholeBuilding - Sm Office C end_b - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office C  - Story Ground Mass' to space 'Office WholeBuilding - Sm Office C  - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office B end_b - Story Ground Mass' to space 'Office WholeBuilding - Sm Office B end_b - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office A  - Story Ground Mass' to space 'Office WholeBuilding - Sm Office A  - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office A end_b - Story Ground Mass' to space 'Office WholeBuilding - Sm Office A end_b - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office B  - Story Ground Mass' to space 'Office WholeBuilding - Sm Office B  - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office C end_a - Story Ground Mass' to space 'Office WholeBuilding - Sm Office C end_a - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office B end_a - Story Ground Mass' to space 'Office WholeBuilding - Sm Office B end_a - Story Ground'.",
+               "Added internal mass 'Office WholeBuilding - Sm Office A end_a - Story Ground Mass' to space 'Office WholeBuilding - Sm Office A end_a - Story Ground'.",
+               "Finished adding internal mass",
+               "Cannot remove Object of type 'OS:Schedule:Day' and named 'Schedule Day 16', because that would invalidate Object of type 'OS:Schedule:Ruleset' and named 'Schedule Ruleset 4'.",
+               "Cannot remove Object of type 'OS:Schedule:Day' and named 'Schedule Day 15', because that would invalidate Object of type 'OS:Schedule:Ruleset' and named 'Schedule Ruleset 3'."
+            ],
+            "step_initial_condition" : "The building started with 167 objects.",
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "template",
+                  "value" : "90.1-2013"
+               },
+               {
+                  "name" : "system_type",
+                  "value" : "Inferred"
+               },
+               {
+                  "name" : "hvac_delivery_type",
+                  "value" : "Forced Air"
+               },
+               {
+                  "name" : "htg_src",
+                  "value" : "NaturalGas"
+               },
+               {
+                  "name" : "clg_src",
+                  "value" : "Electricity"
+               },
+               {
+                  "name" : "swh_src",
+                  "value" : "Inferred"
+               },
+               {
+                  "name" : "kitchen_makeup",
+                  "value" : "Adjacent"
+               },
+               {
+                  "name" : "exterior_lighting_zone",
+                  "value" : "3 - All Other Areas"
+               },
+               {
+                  "name" : "add_constructions",
+                  "value" : true
+               },
+               {
+                  "name" : "add_space_type_loads",
+                  "value" : true
+               },
+               {
+                  "name" : "add_elevators",
+                  "value" : true
+               },
+               {
+                  "name" : "add_internal_mass",
+                  "value" : true
+               },
+               {
+                  "name" : "add_exterior_lights",
+                  "value" : true
+               },
+               {
+                  "name" : "onsite_parking_fraction",
+                  "value" : 1.0
+               },
+               {
+                  "name" : "add_exhaust",
+                  "value" : true
+               },
+               {
+                  "name" : "add_swh",
+                  "value" : true
+               },
+               {
+                  "name" : "add_thermostat",
+                  "value" : true
+               },
+               {
+                  "name" : "add_hvac",
+                  "value" : false
+               },
+               {
+                  "name" : "add_refrigeration",
+                  "value" : false
+               },
+               {
+                  "name" : "modify_wkdy_op_hrs",
+                  "value" : false
+               },
+               {
+                  "name" : "wkdy_op_hrs_start_time",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "wkdy_op_hrs_duration",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "modify_wknd_op_hrs",
+                  "value" : false
+               },
+               {
+                  "name" : "wknd_op_hrs_start_time",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "wknd_op_hrs_duration",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "unmet_hours_tolerance",
+                  "value" : 1.0
+               },
+               {
+                  "name" : "remove_objects",
+                  "value" : true
+               },
+               {
+                  "name" : "use_upstream_args",
+                  "value" : true
+               },
+               {
+                  "name" : "enable_dst",
+                  "value" : true
+               },
+               {
+                  "name" : "climate_zone",
+                  "value" : "Lookup From Model"
+               }
+            ],
+            "step_warnings" :
+            [
+               "[openstudio.standards.Construction] Can only set the u-value of opaque constructions or simple glazing. U 0.48 SHGC 0.40 Dbl Ref-D Clr 6mm/13mm is not opaque or simple glazing.",
+               "[openstudio.standards.Construction] Can only set the u-value of opaque constructions or simple glazing. U 0.44 SHGC 0.26 Dbl Ref-B-H Clr 6mm/13mm Air is not opaque or simple glazing.",
+               "[openstudio.standards.Construction] Can only set the u-value of opaque constructions or simple glazing. Window_U_0.50_SHGC_0.40_Skylight_Frame_Width_0.430_in is not opaque or simple glazing."
+            ]
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "blend_method" : "Building Story"
+         },
+         "measure_dir_name" : "blended_space_type_from_model",
+         "result" :
+         {
+            "completed_at" : "20210302T164740Z",
+            "measure_class_name" : "BlendedSpaceTypeFromModel",
+            "measure_display_name" : "Blended Space Type from Model",
+            "measure_name" : "blended_space_type_from_model",
+            "measure_taxonomy" : "Whole Building.Space Types",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "667c2f1f-0927-4dbd-a7be-1087b5c15181",
+            "measure_version_id" : "d8c569d3-25a1-43a8-b48b-32e6135ceca6",
+            "measure_version_modified" : "20200509T155939Z",
+            "measure_xml_checksum" : "28AD5222",
+            "started_at" : "20210302T164739Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_final_condition" : "The final building uses 1 spaces types.",
+            "step_info" :
+            [
+               "Story Ground area is 8,804.00 ft^2, number of people is 49.",
+               "Story Ground accounts for 1 space types.",
+               "Blending space type Office WholeBuilding - Sm Office - 90.1-2013 Story Ground. Floor area ratio is 1.0. People ratio is 1.0",
+               "Blending space Office WholeBuilding - Sm Office C end_b - Story Ground. Floor area ratio is 0.026. People ratio is 0.026",
+               "Blending space Office WholeBuilding - Sm Office C  - Story Ground. Floor area ratio is 0.145. People ratio is 0.145",
+               "Blending space Office WholeBuilding - Sm Office B end_b - Story Ground. Floor area ratio is 0.079. People ratio is 0.079",
+               "Blending space Office WholeBuilding - Sm Office A  - Story Ground. Floor area ratio is 0.145. People ratio is 0.145",
+               "Blending space Office WholeBuilding - Sm Office A end_b - Story Ground. Floor area ratio is 0.026. People ratio is 0.026",
+               "Blending space Office WholeBuilding - Sm Office B  - Story Ground. Floor area ratio is 0.45. People ratio is 0.45",
+               "Blending space Office WholeBuilding - Sm Office C end_a - Story Ground. Floor area ratio is 0.026. People ratio is 0.026",
+               "Blending space Office WholeBuilding - Sm Office B end_a - Story Ground. Floor area ratio is 0.079. People ratio is 0.079",
+               "Blending space Office WholeBuilding - Sm Office A end_a - Story Ground. Floor area ratio is 0.026. People ratio is 0.026"
+            ],
+            "step_initial_condition" : "The initial building uses 1 spaces types.",
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "blend_method",
+                  "value" : "Building Story"
+               }
+            ],
+            "step_warnings" :
+            [
+               "Office WholeBuilding - Sm Office C  - Story Ground has one or more daylighting controls. Lighting loads from blended space type may affect lighting reduction from daylighting controls.",
+               "Office WholeBuilding - Sm Office B end_b - Story Ground has one or more daylighting controls. Lighting loads from blended space type may affect lighting reduction from daylighting controls.",
+               "Office WholeBuilding - Sm Office A  - Story Ground has one or more daylighting controls. Lighting loads from blended space type may affect lighting reduction from daylighting controls.",
+               "Office WholeBuilding - Sm Office B end_a - Story Ground has one or more daylighting controls. Lighting loads from blended space type may affect lighting reduction from daylighting controls."
+            ]
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "charge_behavior" : "Business as Usual",
+            "chg_station_type" : "Typical Public",
+            "delay_type" : "Min Delay",
+            "ev_percent" : 100
+         },
+         "measure_dir_name" : "add_ev_load",
+         "result" :
+         {
+            "completed_at" : "20210302T164740Z",
+            "measure_class_name" : "AddEVLoad",
+            "measure_display_name" : "Add_EV_Load",
+            "measure_name" : "add_ev_load",
+            "measure_taxonomy" : "Equipment.Electric Equipment",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "a23e0493-7357-48ca-b089-4d902efd6b50",
+            "measure_version_id" : "582a5aea-6836-4224-96ca-cb90e42e61e5",
+            "measure_version_modified" : "20200901T153151Z",
+            "measure_xml_checksum" : "9A202986",
+            "started_at" : "20210302T164740Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "curtailment_frac" : 0.5
+         },
+         "measure_dir_name" : "add_ems_to_control_ev_charging",
+         "result" :
+         {
+            "completed_at" : "20210302T164740Z",
+            "measure_class_name" : "AddEMSToControlEVCharging",
+            "measure_display_name" : "Add EMS to Control EV Charging",
+            "measure_name" : "add_ems_to_control_ev_charging",
+            "measure_taxonomy" : "Equipment.Equipment Controls",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "df97997f-d02a-4e35-af7a-5aed16cb5772",
+            "measure_version_id" : "0ad18ca6-32ff-4264-9451-36a1bcb0aadf",
+            "measure_version_modified" : "20200901T153152Z",
+            "measure_xml_checksum" : "976EB6EB",
+            "started_at" : "20210302T164740Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "feature_id" : "5",
+            "geojson_file" : "/Users/nmoore/github/bbb/example_project.json",
+            "surrounding_buildings" : "ShadingOnly"
+         },
+         "measure_dir_name" : "urban_geometry_creation_zoning",
+         "result" :
+         {
+            "completed_at" : "20210302T164741Z",
+            "measure_class_name" : "UrbanGeometryCreationZoning",
+            "measure_display_name" : "UrbanGeometryCreationZoning",
+            "measure_name" : "urban_geometry_creation_zoning",
+            "measure_taxonomy" : "Envelope.Form",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "96ea1317-76ac-4670-b51d-71ee3f4fdd65",
+            "measure_version_id" : "0c0d1135-a50f-40c6-82fb-fc357e46dd02",
+            "measure_version_modified" : "20201208T232103Z",
+            "measure_xml_checksum" : "D254E772",
+            "started_at" : "20210302T164740Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" :
+            [
+               "Min_lat = 42.81357515750889, min_lon = -78.84857883872144",
+               "13 nearby buildings found",
+               "Intersecting surfaces",
+               "Matching surfaces",
+               "Changing adjacent surfaces to adiabatic"
+            ],
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "geojson_file",
+                  "value" : "/Users/nmoore/github/bbb/example_project.json"
+               },
+               {
+                  "name" : "feature_id",
+                  "value" : "5"
+               },
+               {
+                  "name" : "surrounding_buildings",
+                  "value" : "ShadingOnly"
+               }
+            ],
+            "step_warnings" :
+            [
+               "Surface elevation not set for building 'District Office 1'",
+               "Reversing floor print",
+               "Reversing floor print",
+               "Reversing floor print",
+               "Reversing floor print",
+               "Reversing floor print",
+               "Reversing floor print",
+               "Reversing floor print"
+            ]
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "add_constructions" : false,
+            "add_elevators" : false,
+            "add_exhaust" : false,
+            "add_exterior_lights" : false,
+            "add_hvac" : true,
+            "add_refrigeration" : false,
+            "add_space_type_loads" : false,
+            "add_swh" : false,
+            "remove_objects" : false,
+            "system_type" : "VAV district chilled water with district hot water reheat",
+            "template" : "90.1-2013",
+            "use_upstream_args" : false
+         },
+         "measure_dir_name" : "create_typical_building_from_model",
+         "name" : "create_typical_building_from_model 2",
+         "result" :
+         {
+            "completed_at" : "20210302T164747Z",
+            "measure_class_name" : "CreateTypicalBuildingFromModel",
+            "measure_display_name" : "Create Typical Building from Model",
+            "measure_name" : "create_typical_building_from_model",
+            "measure_taxonomy" : "Whole Building.Space Types",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "339a2e3a-273c-4494-bb50-bfe586a0647c",
+            "measure_version_id" : "cf4a5895-bc2f-4b83-925c-7eaaeb3d0913",
+            "measure_version_modified" : "20200911T195900Z",
+            "measure_xml_checksum" : "EE13F09F",
+            "started_at" : "20210302T164741Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_final_condition" : "The building finished with 703 objects.",
+            "step_info" :
+            [
+               "Using climate zone ASHRAE 169-2013-6A from model",
+               "Assigning Story Ground Blended Space Type Thermostat to thermal zones with Story Ground Blended Space Type assigned.",
+               "Using OpenStudio Standards version 0.2.12 with template 90.1-2013.",
+               "Loading OpenStudio Standards data for 90.1-2013",
+               "Started adding daylighting controls.",
+               "For Building Story 1 Space, daylighting control not applicable because no exterior fenestration is present.",
+               "For Building Story 1 Space 1: illuminance setpoint = 375.0 Lux",
+               "For Building Story 1 Space 1: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 1: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 1: sensor 1 controls 29% of the zone lighting.",
+               "For Building Story 1 Space 1: sensor 2 controls 4% of the zone lighting.",
+               "For Building Story 1 Space 2: illuminance setpoint = 375.0 Lux",
+               "For Building Story 1 Space 2: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 2: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 2: sensor 1 controls 29% of the zone lighting.",
+               "For Building Story 1 Space 2: sensor 2 controls 5% of the zone lighting.",
+               "For Building Story 1 Space 3: illuminance setpoint = 375.0 Lux",
+               "For Building Story 1 Space 3: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 3: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 3: sensor 1 controls 29% of the zone lighting.",
+               "For Building Story 1 Space 3: sensor 2 controls 4% of the zone lighting.",
+               "For Building Story 1 Space 4: illuminance setpoint = 375.0 Lux",
+               "For Building Story 1 Space 4: assuming only 43% of the primary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 4: assuming only 14% of the secondary sidelit area is daylightable based on typical design practice.",
+               "For Building Story 1 Space 4: sensor 1 controls 29% of the zone lighting.",
+               "For Building Story 1 Space 4: sensor 2 controls 5% of the zone lighting.",
+               "Finished adding daylighting controls.",
+               "Finished adding internal mass",
+               "Story Ground Blended Space Type set heating setpoint schedule to OfficeSmall HTGSETP_SCH_NO_OPTIMUM.",
+               "Story Ground Blended Space Type set cooling setpoint schedule to OfficeSmall CLGSETP_SCH_NO_OPTIMUM.",
+               "Final system type group: occ = nonresidential, area = 8800 ft2, num stories = 1, zones:",
+               "--- Building Story 1 ThermalZone, Building Story 1 ThermalZone 1, Building Story 1 ThermalZone 2, Building Story 1 ThermalZone 3, Building Story 1 ThermalZone 4",
+               "Adding hot water loop.",
+               "New high temperature hot water loop created.",
+               "Adding chilled water loop.",
+               "Adding VAV system for 5 zones.",
+               "For 5 Zone VAV: VAV damper action was set to Dual Maximum control.",
+               "Set sizing factors to 1.25 for heating and 1.15 for cooling.",
+               "Running simulation /Users/nmoore/github/bbb/run/baseline_scenario/5/008_create_typical_building_from_model/SR1.",
+               "Finished run.",
+               "Started applying multizone vav OA sizing.",
+               "For 5 Zone VAV: Zone Building Story 1 ThermalZone has a ventilation effectiveness of -1.05.  Increasing to 0.6 by increasing minimum damper position from 0.2 to 0.74.",
+               "For 5 Zone VAV: Zone Building Story 1 ThermalZone 2 has a ventilation effectiveness of 0.58.  Increasing to 0.6 by increasing minimum damper position from 0.2 to 0.21.",
+               "For 5 Zone VAV: the multizone outdoor air calculation method was applied.  A simple summation of the zone outdoor air requirements gives a value of 748 cfm.  Applying the multizone method gives a value of -714 cfm, with an original system ventilation effectiveness of -1.05.  After increasing the minimum damper position in 2 critical zones, the resulting requirement is 1247 cfm with a system ventilation effectiveness of 0.6.",
+               "Finished applying multizone vav OA sizing.",
+               "Started applying prototype HVAC assumptions.",
+               "For Prototype: 5 Zone VAV Fan: 3608cfm; Pressure Rise = 4.0in w.c.",
+               "For 5 Zone VAV Fan: allowed_hp = 3.84HP; motor eff = 89.5%; total fan eff = 58% based on 3608 cfm.",
+               "5 Zone VAV requires an economizer because the total cooling capacity of 124306 Btu/hr exceeds the minimum capacity of 54000 Btu/hr.",
+               "Finished applying prototype HVAC assumptions.",
+               "Started applying HVAC efficiency standards for 90.1-2013 template.",
+               "For 5 Zone VAV, ERV required based on 21% OA flow, design supply air flow of 3608cfm, and climate zone ASHRAE 169-2013-6A. Exceeds minimum flow requirement of 0.0cfm.",
+               "For 5 Zone VAV ERV, ERV power is calculated to be 303 W, based on a min OA flow of 748 cfm.  This power represents mostly the added fan energy from the extra static pressure, and is active only when the ERV is operating.",
+               "For 5 Zone VAV: Economizer type = DifferentialDryBulb, limits",
+               "For 5 Zone VAV: VAV damper action was set to Dual Maximum control.",
+               "For 5 Zone VAV: multizone vav optimization is not required because the system has Energy Recovery.",
+               "For 5 Zone VAV Fan: Part load fan power control is required for 3.9 HP fan.",
+               "For 5 Zone VAV Fan: Set fan curve coefficients to reflect control type of 'Multi Zone VAV with VSD and SP Setpoint Reset'.",
+               "For 5 Zone VAV: DCV is not required since the system has Energy Recovery.",
+               "For 5 Zone VAV: Supply air temperature reset is required.",
+               "For 5 Zone VAV: Supply air temperature reset was enabled using a SPM Warmest with a min SAT of 55F and a max SAT of 60F.",
+               "For 5 Zone VAV: Annual occupied hours = 2860 hr/yr, assuming a 0.15 occupancy threshold.  This schedule will be used as the HVAC operation schedule.",
+               "For 5 Zone VAV: Because the system has an economizer, it requires a motorized OA damper.",
+               "For 5 Zone VAV: Setting motorized OA damper schedule to 5 Zone VAV Occ Sch.",
+               "For 5 Zone VAV: Optimum start is not required since design flow rate of 3608 cfm is below the limit of 10000 cfm.",
+               "For 5 Zone VAV Fan: motor nameplate = 5HP, motor eff = 89.5%.",
+               "For Office Shared Service Water Loop Circulator Pump: brake hp = 0.0HP, motor nameplate = 0.1HP, motor eff = 70.0%.",
+               "For Chilled Water Loop Pump: brake hp = 0.48HP, motor nameplate = 1.0HP, motor eff = 85.5%.",
+               "For Hot Water Loop Pump: brake hp = 0.38HP, motor nameplate = 1.0HP, motor eff = 85.5%.",
+               "For 90.1-2013: 40gal NaturalGas Water Heater - 5kBtu/hr 0.82 Therm Eff; thermal efficiency = 0.82, skin-loss UA = 1Btu/hr",
+               "For 5 Zone VAV ERV: Set sensible and latent effectiveness to 50%.",
+               "Finished applying HVAC efficiency standards for 90.1-2013 template.",
+               "Added internal mass 'Building Story 1 Space 1 Mass' to space 'Building Story 1 Space 1'.",
+               "Added internal mass 'Building Story 1 Space 4 Mass' to space 'Building Story 1 Space 4'.",
+               "Added internal mass 'Building Story 1 Space 2 Mass' to space 'Building Story 1 Space 2'.",
+               "Added internal mass 'Building Story 1 Space 3 Mass' to space 'Building Story 1 Space 3'.",
+               "Added internal mass 'Building Story 1 Space Mass' to space 'Building Story 1 Space'.",
+               "Finished adding internal mass"
+            ],
+            "step_initial_condition" : "The building started with 392 objects.",
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "template",
+                  "value" : "90.1-2013"
+               },
+               {
+                  "name" : "system_type",
+                  "value" : "VAV district chilled water with district hot water reheat"
+               },
+               {
+                  "name" : "hvac_delivery_type",
+                  "value" : "Forced Air"
+               },
+               {
+                  "name" : "htg_src",
+                  "value" : "NaturalGas"
+               },
+               {
+                  "name" : "clg_src",
+                  "value" : "Electricity"
+               },
+               {
+                  "name" : "swh_src",
+                  "value" : "Inferred"
+               },
+               {
+                  "name" : "kitchen_makeup",
+                  "value" : "Adjacent"
+               },
+               {
+                  "name" : "exterior_lighting_zone",
+                  "value" : "3 - All Other Areas"
+               },
+               {
+                  "name" : "add_constructions",
+                  "value" : false
+               },
+               {
+                  "name" : "add_space_type_loads",
+                  "value" : false
+               },
+               {
+                  "name" : "add_elevators",
+                  "value" : false
+               },
+               {
+                  "name" : "add_internal_mass",
+                  "value" : true
+               },
+               {
+                  "name" : "add_exterior_lights",
+                  "value" : false
+               },
+               {
+                  "name" : "onsite_parking_fraction",
+                  "value" : 1.0
+               },
+               {
+                  "name" : "add_exhaust",
+                  "value" : false
+               },
+               {
+                  "name" : "add_swh",
+                  "value" : false
+               },
+               {
+                  "name" : "add_thermostat",
+                  "value" : true
+               },
+               {
+                  "name" : "add_hvac",
+                  "value" : true
+               },
+               {
+                  "name" : "add_refrigeration",
+                  "value" : false
+               },
+               {
+                  "name" : "modify_wkdy_op_hrs",
+                  "value" : false
+               },
+               {
+                  "name" : "wkdy_op_hrs_start_time",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "wkdy_op_hrs_duration",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "modify_wknd_op_hrs",
+                  "value" : false
+               },
+               {
+                  "name" : "wknd_op_hrs_start_time",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "wknd_op_hrs_duration",
+                  "value" : 8.0
+               },
+               {
+                  "name" : "unmet_hours_tolerance",
+                  "value" : 1.0
+               },
+               {
+                  "name" : "remove_objects",
+                  "value" : false
+               },
+               {
+                  "name" : "use_upstream_args",
+                  "value" : false
+               },
+               {
+                  "name" : "enable_dst",
+                  "value" : true
+               },
+               {
+                  "name" : "climate_zone",
+                  "value" : "Lookup From Model"
+               }
+            ],
+            "step_warnings" :
+            [
+               "[openstudio.model.AirTerminalSingleDuctVAVReheat] setZoneMinimumAirFlowMethod is deprecated, please use setZoneMinimumAirFlowInputMethod",
+               "[openstudio.model.AirTerminalSingleDuctVAVReheat] setZoneMinimumAirFlowMethod is deprecated, please use setZoneMinimumAirFlowInputMethod",
+               "[openstudio.model.AirTerminalSingleDuctVAVReheat] setZoneMinimumAirFlowMethod is deprecated, please use setZoneMinimumAirFlowInputMethod",
+               "[openstudio.model.AirTerminalSingleDuctVAVReheat] setZoneMinimumAirFlowMethod is deprecated, please use setZoneMinimumAirFlowInputMethod",
+               "[openstudio.model.AirTerminalSingleDuctVAVReheat] setZoneMinimumAirFlowMethod is deprecated, please use setZoneMinimumAirFlowInputMethod"
+            ]
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false,
+            "airVelocitySchedule" : "Air Velocity Schedule",
+            "clothingSchedule" : "Clothing Schedule",
+            "comfortWarnings" : true,
+            "workEfficiencySchedule" : "Work Efficiency Schedule"
+         },
+         "measure_dir_name" : "PredictedMeanVote",
+         "result" :
+         {
+            "completed_at" : "20210302T164747Z",
+            "measure_class_name" : "PredictedMeanVote",
+            "measure_display_name" : "Predicted Mean Vote",
+            "measure_name" : "predicted_mean_vote",
+            "measure_taxonomy" : "Reporting.QAQC",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "11cd3144-dac6-4f64-90e4-b8804c6bfc5e",
+            "measure_version_id" : "3351a0f8-9ffc-4dbd-a36b-873d8f45851b",
+            "measure_version_modified" : "20200228T204851Z",
+            "measure_xml_checksum" : "0CA4D54C",
+            "started_at" : "20210302T164747Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_final_condition" : "1 people definitions and 1 people instances were altered.",
+            "step_info" :
+            [
+               "Editing 'Office WholeBuilding - Sm Office People Definition'",
+               "Assigning Schedules for 'Office WholeBuilding - Sm Office People 1'",
+               "Adding zone output variables for Fanger PMV, Fanger PPD, and ASHRAE 55"
+            ],
+            "step_initial_condition" : "The building started with 1 people definitions.",
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "comfortWarnings",
+                  "value" : true
+               },
+               {
+                  "name" : "meanRadiantCalcType",
+                  "value" : "ZoneAveraged"
+               },
+               {
+                  "name" : "workEfficiencySchedule",
+                  "value" : "{13eca7cb-f8fd-4511-9bc6-999f9151bd30}"
+               },
+               {
+                  "name" : "clothingSchedule",
+                  "value" : "{68d2d46e-a65e-42b4-97d4-2f0feb2f3971}"
+               },
+               {
+                  "name" : "airVelocitySchedule",
+                  "value" : "{c2c788c0-7c98-4483-af52-168f2d1a5824}"
+               },
+               {
+                  "name" : "reporting_frequency",
+                  "value" : "Timestep"
+               }
+            ],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "r_value" : 10
+         },
+         "measure_dir_name" : "IncreaseInsulationRValueForExteriorWalls",
+         "result" :
+         {
+            "completed_at" : "20210302T164747Z",
+            "measure_class_name" : "IncreaseInsulationRValueForExteriorWalls",
+            "measure_display_name" : "Increase R-value of Insulation for Exterior Walls to a Specific Value",
+            "measure_name" : "increase_insulation_r_value_for_exterior_walls",
+            "measure_taxonomy" : "Envelope.Opaque",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "3fdf9c39-d305-449b-a4b5-077166af5a67",
+            "measure_version_id" : "5912ea03-d7cd-451f-97a9-32d544a40628",
+            "measure_version_modified" : "20200331T153741Z",
+            "measure_xml_checksum" : "0F858D9E",
+            "started_at" : "20210302T164747Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "elecequip_power_reduction_percent" : 20
+         },
+         "measure_dir_name" : "ReduceElectricEquipmentLoadsByPercentage",
+         "result" :
+         {
+            "completed_at" : "20210302T164747Z",
+            "measure_class_name" : "ReduceElectricEquipmentLoadsByPercentage",
+            "measure_display_name" : "Reduce Electric Equipment Loads by Percentage",
+            "measure_name" : "reduce_electric_equipment_loads_by_percentage",
+            "measure_taxonomy" : "Equipment.Electric Equipment",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "0902e302-70db-4339-99b0-17f08bc93629",
+            "measure_version_id" : "5a5c83a1-1847-4b93-969b-bf78c64fcbd7",
+            "measure_version_modified" : "20200316T215557Z",
+            "measure_xml_checksum" : "F9A5B8F0",
+            "started_at" : "20210302T164747Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "lighting_power_reduction_percent" : 30
+         },
+         "measure_dir_name" : "ReduceLightingLoadsByPercentage",
+         "result" :
+         {
+            "completed_at" : "20210302T164747Z",
+            "measure_class_name" : "ReduceLightingLoadsByPercentage",
+            "measure_display_name" : "Reduce Lighting Loads by Percentage",
+            "measure_name" : "reduce_lighting_loads_by_percentage",
+            "measure_taxonomy" : "Electric Lighting.Lighting Equipment",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "791f3404-a28b-4a80-ba3f-e15b339e39ea",
+            "measure_version_id" : "a8b83ef3-2795-4ba9-a779-1c4b023009b1",
+            "measure_version_modified" : "20200316T215558Z",
+            "measure_xml_checksum" : "293730A7",
+            "started_at" : "20210302T164747Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "charge_start" : "23:00",
+            "chiller_resize_factor" : 0.80000000000000004,
+            "discharge_end" : "20:00",
+            "discharge_start" : "08:00",
+            "inter_sp" : 46
+         },
+         "measure_dir_name" : "add_central_ice_storage",
+         "result" :
+         {
+            "completed_at" : "20210302T164747Z",
+            "measure_class_name" : "AddCentralIceStorage",
+            "measure_display_name" : "Add Central Ice Storage",
+            "measure_name" : "add_central_ice_storage",
+            "measure_taxonomy" : "HVAC.Cooling",
+            "measure_type" : "ModelMeasure",
+            "measure_uid" : "48f37812-0cb6-4770-b695-beb8d8a5660d",
+            "measure_version_id" : "2972286b-0047-4d40-90bf-c0c56a7a5799",
+            "measure_version_modified" : "20201203T034326Z",
+            "measure_xml_checksum" : "6394841D",
+            "started_at" : "20210302T164747Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : true,
+            "charge_start" : "23:00",
+            "size_mult" : "0.75"
+         },
+         "measure_dir_name" : "add_packaged_ice_storage",
+         "result" :
+         {
+            "completed_at" : "20210302T164748Z",
+            "measure_class_name" : "AddPackagedIceStorage",
+            "measure_display_name" : "Add Packaged Ice Storage",
+            "measure_name" : "add_packaged_ice_storage",
+            "measure_taxonomy" : "HVAC.Cooling",
+            "measure_type" : "EnergyPlusMeasure",
+            "measure_uid" : "2aa8c128-53b9-49fd-9aaf-9253a1f05936",
+            "measure_version_id" : "1a0ab79e-1825-4418-a4ad-aec2194d4707",
+            "measure_version_modified" : "20201208T224029Z",
+            "measure_xml_checksum" : "2617824F",
+            "started_at" : "20210302T164748Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" : [],
+            "step_info" : [],
+            "step_result" : "Skip",
+            "step_values" : [],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false
+         },
+         "measure_dir_name" : "export_time_series_modelica",
+         "result" :
+         {
+            "completed_at" : "20210302T164807Z",
+            "measure_class_name" : "ExportTimeSeriesLoadsCSV",
+            "measure_display_name" : "ExportTimeSeriesLoadsCSV",
+            "measure_name" : "export_time_series_loads_csv",
+            "measure_taxonomy" : "Reporting.QAQC",
+            "measure_type" : "ReportingMeasure",
+            "measure_uid" : "9fcf6116-c2eb-43d6-93f0-e1bdd822f768",
+            "measure_version_id" : "3a539fd4-3978-4d0f-bd25-a54905fc7306",
+            "measure_version_modified" : "20201212T061249Z",
+            "measure_xml_checksum" : "9BF1E6AC",
+            "started_at" : "20210302T164805Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" :
+            [
+               "/Users/nmoore/github/bbb/run/baseline_scenario/5/015_export_time_series_modelica/building_loads.csv"
+            ],
+            "step_info" : [],
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "hhw_loop_name",
+                  "value" : "hot"
+               },
+               {
+                  "name" : "chw_loop_name",
+                  "value" : "chilled"
+               },
+               {
+                  "name" : "dec_places_mass_flow",
+                  "value" : 3
+               },
+               {
+                  "name" : "dec_places_temp",
+                  "value" : 1
+               }
+            ],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "__SKIP__" : false
+         },
+         "measure_dir_name" : "export_modelica_loads",
+         "result" :
+         {
+            "completed_at" : "20210302T164809Z",
+            "measure_class_name" : "ExportModelicaLoads",
+            "measure_display_name" : "Export Modelica Loads",
+            "measure_name" : "export_modelica_loads",
+            "measure_taxonomy" : "Reporting.QAQC",
+            "measure_type" : "ReportingMeasure",
+            "measure_uid" : "7051db01-2e55-4223-b5b5-fee615b68dd0",
+            "measure_version_id" : "7782f28c-19e6-449d-8cf3-e3f915550ebd",
+            "measure_version_modified" : "20201203T151454Z",
+            "measure_xml_checksum" : "2C8A3EEF",
+            "started_at" : "20210302T164807Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" :
+            [
+               "/Users/nmoore/github/bbb/run/baseline_scenario/5/016_export_modelica_loads/modelica.mos",
+               "/Users/nmoore/github/bbb/run/baseline_scenario/5/016_export_modelica_loads/building_loads.csv"
+            ],
+            "step_info" : [],
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "energyplus_runtime",
+                  "units" : "sec",
+                  "value" : 16.989999999999998
+               },
+               {
+                  "name" : "peak_cooling_load",
+                  "units" : "W",
+                  "value" : -16166.200000000001
+               },
+               {
+                  "name" : "peak_heating_load",
+                  "units" : "W",
+                  "value" : 158946.29999999999
+               },
+               {
+                  "name" : "peak_water_heating",
+                  "units" : "W",
+                  "value" : 0
+               }
+            ],
+            "step_warnings" : []
+         }
+      },
+      {
+         "arguments" :
+         {
+            "feature_id" : "5",
+            "feature_location" : "[-78.84828658806616, 42.81371454161721]",
+            "feature_name" : "District Office 1",
+            "feature_type" : "Building"
+         },
+         "measure_dir_name" : "default_feature_reports",
+         "result" :
+         {
+            "completed_at" : "20210302T164913Z",
+            "measure_class_name" : "DefaultFeatureReports",
+            "measure_display_name" : "DefaultFeatureReports",
+            "measure_name" : "default_feature_reports",
+            "measure_taxonomy" : "Reporting.QAQC",
+            "measure_type" : "ReportingMeasure",
+            "measure_uid" : "9ee3135a-8070-4408-bfa1-b75fecf9dd4f",
+            "measure_version_id" : "d4f5b2e2-f93d-4ce2-9c68-ed29714fdc0c",
+            "measure_version_modified" : "20201208T230102Z",
+            "measure_xml_checksum" : "FB304155",
+            "started_at" : "20210302T164809Z",
+            "stderr" : "",
+            "stdout" : "",
+            "step_errors" : [],
+            "step_files" :
+            [
+               "/Users/nmoore/github/bbb/run/baseline_scenario/5/017_default_feature_reports/default_feature_reports.json",
+               "/Users/nmoore/github/bbb/run/baseline_scenario/5/017_default_feature_reports/default_feature_reports.csv"
+            ],
+            "step_final_condition" : "Default Feature Reports generated successfully.",
+            "step_info" :
+            [
+               "All timeseries: [\"Electricity:Facility\", \"ElectricityProduced:Facility\", \"NaturalGas:Facility\", \"Propane:Facility\", \"FuelOilNo2:Facility\", \"OtherFuels:Facility\", \"Cooling:Electricity\", \"Heating:Electricity\", \"InteriorLights:Electricity\", \"ExteriorLights:Electricity\", \"InteriorEquipment:Electricity\", \"ExteriorEquipment:Electricity\", \"Fans:Electricity\", \"Pumps:Electricity\", \"WaterSystems:Electricity\", \"HeatRejection:Electricity\", \"HeatRejection:NaturalGas\", \"Heating:NaturalGas\", \"WaterSystems:NaturalGas\", \"InteriorEquipment:NaturalGas\", \"HeatRejection:Propane\", \"Heating:Propane\", \"WaterSystems:Propane\", \"InteriorEquipment:Propane\", \"HeatRejection:FuelOilNo2\", \"Heating:FuelOilNo2\", \"WaterSystems:FuelOilNo2\", \"InteriorEquipment:FuelOilNo2\", \"HeatRejection:OtherFuels\", \"Heating:OtherFuels\", \"WaterSystems:OtherFuels\", \"InteriorEquipment:OtherFuels\", \"DistrictCooling:Facility\", \"DistrictHeating:Facility\", \"District Cooling Chilled Water Rate\", \"District Cooling Mass Flow Rate\", \"District Cooling Inlet Temperature\", \"District Cooling Outlet Temperature\", \"District Heating Hot Water Rate\", \"District Heating Mass Flow Rate\", \"District Heating Inlet Temperature\", \"District Heating Outlet Temperature\", \"Cooling Coil Total Cooling Rate\", \"Heating Coil Heating Rate\", \"Zone Thermal Comfort Fanger Model PMV\", \"Zone Thermal Comfort Fanger Model PPD\", \"Net Electric Energy\", \"Electricity:Facility Power\", \"ElectricityProduced:Facility Power\", \"Electricity:Facility Apparent Power\", \"ElectricityProduced:Facility Apparent Power\", \"Net Power\", \"Net Apparent Power\", \"Ice Thermal Storage End Fraction\", \"Cooling Coil Ice Thermal Storage End Fraction\"]",
+               "TIMESERIES: Electricity:Facility",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: Electricity:Facility AND key_value: ",
+               "First timeseries",
+               "TIMESERIES: ElectricityProduced:Facility",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: ElectricityProduced:Facility AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: NaturalGas:Facility",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: NaturalGas:Facility AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: Propane:Facility",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Propane:Facility AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: FuelOilNo2:Facility",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: FuelOilNo2:Facility AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: OtherFuels:Facility",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: OtherFuels:Facility AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Cooling:Electricity",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Cooling:Electricity AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Heating:Electricity",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Heating:Electricity AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: InteriorLights:Electricity",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: InteriorLights:Electricity AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: ExteriorLights:Electricity",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: ExteriorLights:Electricity AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: InteriorEquipment:Electricity",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: InteriorEquipment:Electricity AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: ExteriorEquipment:Electricity",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: ExteriorEquipment:Electricity AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Fans:Electricity",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: Fans:Electricity AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: Pumps:Electricity",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: Pumps:Electricity AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: WaterSystems:Electricity",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: WaterSystems:Electricity AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: HeatRejection:Electricity",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: HeatRejection:Electricity AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: HeatRejection:NaturalGas",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: HeatRejection:NaturalGas AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Heating:NaturalGas",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Heating:NaturalGas AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: WaterSystems:NaturalGas",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: WaterSystems:NaturalGas AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: InteriorEquipment:NaturalGas",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: InteriorEquipment:NaturalGas AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: HeatRejection:Propane",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: HeatRejection:Propane AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Heating:Propane",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Heating:Propane AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: WaterSystems:Propane",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: WaterSystems:Propane AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: InteriorEquipment:Propane",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: InteriorEquipment:Propane AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: HeatRejection:FuelOilNo2",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: HeatRejection:FuelOilNo2 AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Heating:FuelOilNo2",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Heating:FuelOilNo2 AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: WaterSystems:FuelOilNo2",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: WaterSystems:FuelOilNo2 AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: InteriorEquipment:FuelOilNo2",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: InteriorEquipment:FuelOilNo2 AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: HeatRejection:OtherFuels",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: HeatRejection:OtherFuels AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Heating:OtherFuels",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Heating:OtherFuels AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: WaterSystems:OtherFuels",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: WaterSystems:OtherFuels AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: InteriorEquipment:OtherFuels",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: InteriorEquipment:OtherFuels AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: DistrictCooling:Facility",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: DistrictCooling:Facility AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: DistrictHeating:Facility",
+               "KEY VALUES: [\"\"]",
+               "!! TIMESERIES NAME: DistrictHeating:Facility AND key_value: ",
+               "Is Initialized",
+               "TIMESERIES: District Cooling Chilled Water Rate",
+               "KEY VALUES: [\"PURCHASED COOLING\"]",
+               "!! TIMESERIES NAME: District Cooling Chilled Water Rate AND key_value: PURCHASED COOLING",
+               "Is Initialized",
+               "TIMESERIES: District Cooling Mass Flow Rate",
+               "KEY VALUES: [\"PURCHASED COOLING\"]",
+               "!! TIMESERIES NAME: District Cooling Mass Flow Rate AND key_value: PURCHASED COOLING",
+               "Is Initialized",
+               "TIMESERIES: District Cooling Inlet Temperature",
+               "KEY VALUES: [\"PURCHASED COOLING\"]",
+               "!! TIMESERIES NAME: District Cooling Inlet Temperature AND key_value: PURCHASED COOLING",
+               "Is Initialized",
+               "TIMESERIES: District Cooling Outlet Temperature",
+               "KEY VALUES: [\"PURCHASED COOLING\"]",
+               "!! TIMESERIES NAME: District Cooling Outlet Temperature AND key_value: PURCHASED COOLING",
+               "Is Initialized",
+               "TIMESERIES: District Heating Hot Water Rate",
+               "KEY VALUES: [\"HOT WATER LOOP DISTRICT HEATING\"]",
+               "!! TIMESERIES NAME: District Heating Hot Water Rate AND key_value: HOT WATER LOOP DISTRICT HEATING",
+               "Is Initialized",
+               "TIMESERIES: District Heating Mass Flow Rate",
+               "KEY VALUES: [\"HOT WATER LOOP DISTRICT HEATING\"]",
+               "!! TIMESERIES NAME: District Heating Mass Flow Rate AND key_value: HOT WATER LOOP DISTRICT HEATING",
+               "Is Initialized",
+               "TIMESERIES: District Heating Inlet Temperature",
+               "KEY VALUES: [\"HOT WATER LOOP DISTRICT HEATING\"]",
+               "!! TIMESERIES NAME: District Heating Inlet Temperature AND key_value: HOT WATER LOOP DISTRICT HEATING",
+               "Is Initialized",
+               "TIMESERIES: District Heating Outlet Temperature",
+               "KEY VALUES: [\"HOT WATER LOOP DISTRICT HEATING\"]",
+               "!! TIMESERIES NAME: District Heating Outlet Temperature AND key_value: HOT WATER LOOP DISTRICT HEATING",
+               "Is Initialized",
+               "TIMESERIES: Cooling Coil Total Cooling Rate",
+               "KEY VALUES: [\"5 ZONE VAV CLG COIL\"]",
+               "!! TIMESERIES NAME: Cooling Coil Total Cooling Rate AND key_value: 5 ZONE VAV CLG COIL",
+               "Is Initialized",
+               "TIMESERIES: Heating Coil Heating Rate",
+               "KEY VALUES: [\"5 ZONE VAV MAIN HTG COIL\", \"BUILDING STORY 1 THERMALZONE 1 REHEAT COIL\", \"BUILDING STORY 1 THERMALZONE 2 REHEAT COIL\", \"BUILDING STORY 1 THERMALZONE 3 REHEAT COIL\", \"BUILDING STORY 1 THERMALZONE 4 REHEAT COIL\", \"BUILDING STORY 1 THERMALZONE REHEAT COIL\"]",
+               "!! TIMESERIES NAME: Heating Coil Heating Rate AND key_value: 5 ZONE VAV MAIN HTG COIL",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Heating Coil Heating Rate AND key_value: BUILDING STORY 1 THERMALZONE 1 REHEAT COIL",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Heating Coil Heating Rate AND key_value: BUILDING STORY 1 THERMALZONE 2 REHEAT COIL",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Heating Coil Heating Rate AND key_value: BUILDING STORY 1 THERMALZONE 3 REHEAT COIL",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Heating Coil Heating Rate AND key_value: BUILDING STORY 1 THERMALZONE 4 REHEAT COIL",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Heating Coil Heating Rate AND key_value: BUILDING STORY 1 THERMALZONE REHEAT COIL",
+               "Is Initialized",
+               "TIMESERIES: Zone Thermal Comfort Fanger Model PMV",
+               "KEY VALUES: [\"BUILDING STORY 1 THERMALZONE 1 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE 2 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE 3 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE 4 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\"]",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PMV AND key_value: BUILDING STORY 1 THERMALZONE 1 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "SETTING UP NEW ARRAY FOR: Zone Thermal Comfort Fanger Model PMV",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PMV AND key_value: BUILDING STORY 1 THERMALZONE 2 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PMV AND key_value: BUILDING STORY 1 THERMALZONE 3 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PMV AND key_value: BUILDING STORY 1 THERMALZONE 4 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PMV AND key_value: BUILDING STORY 1 THERMALZONE OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "timeseries Zone Thermal Comfort Fanger Model PMV: hours out of bounds: 4413.0",
+               "TIMESERIES: Zone Thermal Comfort Fanger Model PPD",
+               "KEY VALUES: [\"BUILDING STORY 1 THERMALZONE 1 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE 2 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE 3 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE 4 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\", \"BUILDING STORY 1 THERMALZONE OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1\"]",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PPD AND key_value: BUILDING STORY 1 THERMALZONE 1 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "SETTING UP NEW ARRAY FOR: Zone Thermal Comfort Fanger Model PPD",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PPD AND key_value: BUILDING STORY 1 THERMALZONE 2 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PPD AND key_value: BUILDING STORY 1 THERMALZONE 3 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PPD AND key_value: BUILDING STORY 1 THERMALZONE 4 OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "!! TIMESERIES NAME: Zone Thermal Comfort Fanger Model PPD AND key_value: BUILDING STORY 1 THERMALZONE OFFICE WHOLEBUILDING - SM OFFICE PEOPLE 1",
+               "Is Initialized",
+               "timeseries Zone Thermal Comfort Fanger Model PPD: hours out of bounds: 1759.0",
+               "TIMESERIES: Net Electric Energy",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Net Electric Energy AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Electricity:Facility Power",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Electricity:Facility Power AND key_value: ",
+               "Is NOT Initialized",
+               "timeseries_name: Electricity:Facility Power, key: Electricity:Facility",
+               "TIMESERIES: ElectricityProduced:Facility Power",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: ElectricityProduced:Facility Power AND key_value: ",
+               "Is NOT Initialized",
+               "timeseries_name: ElectricityProduced:Facility Power, key: ElectricityProduced:Facility",
+               "TIMESERIES: Electricity:Facility Apparent Power",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Electricity:Facility Apparent Power AND key_value: ",
+               "Is NOT Initialized",
+               "timeseries_name: Electricity:Facility Apparent Power, key: Electricity:Facility",
+               "TIMESERIES: ElectricityProduced:Facility Apparent Power",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: ElectricityProduced:Facility Apparent Power AND key_value: ",
+               "Is NOT Initialized",
+               "timeseries_name: ElectricityProduced:Facility Apparent Power, key: ElectricityProduced:Facility",
+               "TIMESERIES: Net Power",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Net Power AND key_value: ",
+               "Is NOT Initialized",
+               "Power calc",
+               "TIMESERIES: Net Apparent Power",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Net Apparent Power AND key_value: ",
+               "Is NOT Initialized",
+               "TIMESERIES: Ice Thermal Storage End Fraction",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Ice Thermal Storage End Fraction AND key_value: ",
+               "Is NOT Initialized",
+               "SETTING UP NEW ARRAY FOR: Ice Thermal Storage End Fraction",
+               "TIMESERIES: Cooling Coil Ice Thermal Storage End Fraction",
+               "KEY VALUES: []",
+               "!! TIMESERIES NAME: Cooling Coil Ice Thermal Storage End Fraction AND key_value: ",
+               "Is NOT Initialized",
+               "SETTING UP NEW ARRAY FOR: Cooling Coil Ice Thermal Storage End Fraction",
+               "new final_timeseries_names size: 69"
+            ],
+            "step_result" : "Success",
+            "step_values" :
+            [
+               {
+                  "name" : "feature_id",
+                  "value" : "5"
+               },
+               {
+                  "name" : "feature_name",
+                  "value" : "District Office 1"
+               },
+               {
+                  "name" : "feature_type",
+                  "value" : "Building"
+               },
+               {
+                  "name" : "feature_location",
+                  "value" : "[-78.84828658806616, 42.81371454161721]"
+               },
+               {
+                  "name" : "reporting_frequency",
+                  "value" : "Timestep"
+               }
+            ],
+            "step_warnings" :
+            [
+               "Query failed for Life-Cycle Cost Report and TableName='Present Value for Recurring, Nonrecurring and Energy Costs (Before Tax)' AND RowName='LCC_MAT - BUILDING - LIFE CYCLE COSTS' AND ColumnName='Cost'",
+               "Query failed for Packaged Ice Thermal Storage Capacity",
+               "Query failed for Ice Thermal Storage Capacity",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Propane:Facility' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='FuelOilNo2:Facility' AND ColumnName='Annual Value'",
+               "Query failed for AnnualBuildingUtilityPerformanceSummary and TableName='End Uses' AND RowName='Total End Uses' AND ColumnName='Additional Fuel'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Heating:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Cooling:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='InteriorLights:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='ExteriorLights:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='InteriorEquipment:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='ExteriorEquipment:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Fans:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Pumps:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='HeatRejection:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Humidifier:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='HeatRecovery:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='WaterSystems:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Refrigeration:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Generators:Propane' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Heating:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Cooling:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='InteriorLights:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='ExteriorLights:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='InteriorEquipment:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='ExteriorEquipment:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Fans:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Pumps:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='HeatRejection:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Humidifier:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='HeatRecovery:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='WaterSystems:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Refrigeration:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for EnergyMeters and TableName='Annual and Peak Values - Other' AND RowName='Generators:FuelOil#2' AND ColumnName='Annual Value'",
+               "Query failed for AnnualBuildingUtilityPerformanceSummary and TableName='End Uses By Subcategory' AND RowName='Exterior Equipment:Electric Vehicles' AND ColumnName='Electricity'",
+               "Query failed for Economics Results Summary Report and TableName='Annual Cost' AND RowName='Cost' AND ColumnName='Total'",
+               "Query failed for Economics Results Summary Report and TableName='Annual Cost' AND RowName='Cost' AND ColumnName='Electric'",
+               "Query failed for Economics Results Summary Report and TableName='Annual Cost' AND RowName='Cost' AND ColumnName='Gas'"
+            ]
+         }
+      }
+   ],
+   "updated_at" : "20210302T164917Z",
+   "weather_file" : null
+}
