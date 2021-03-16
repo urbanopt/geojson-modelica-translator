@@ -131,6 +131,11 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
         overwrite=overwrite
     )
 
+    if Path(sys_param_filename).exists():
+        print(f"\nSystem parameters file {sys_param_filename} successfully created.")
+    else:
+        raise SystemExit(f"{sys_param_filename} failed. Please check your inputs and try again.")
+
 
 @cli.command(short_help="Create Modelica model")
 @click.argument(
@@ -235,6 +240,11 @@ def create_model(model_type, sys_param_file, geojson_feature_file, project_name)
     )
     district.to_modelica()
 
+    if (Path(project_name) / 'Districts' / 'DistrictEnergySystem.mo').exists():
+        print(f"\nModelica model {modelica_project_name} successfully created in {project_run_dir}.")
+    else:
+        raise SystemExit(f"{modelica_project_name} failed. Please check your inputs and try again.")
+
 
 @cli.command(short_help="Run Modelica model")
 @click.argument(
@@ -264,3 +274,8 @@ def run_model(modelica_project):
     # setup modelica runner
     mr = ModelicaRunner()
     mr.run_in_docker(file_to_run, run_path=run_path.parent, project_name=project_name)
+
+    if (run_path.parent / f'{project_name}_results' / f'{project_name}_Districts_DistrictEnergySystem_result.mat').exists():
+        print(f"\nModelica model {project_name} ran successfully")
+    else:
+        raise SystemExit(f"{project_name} had a problem. Please check your inputs and try again.")
