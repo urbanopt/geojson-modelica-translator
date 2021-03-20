@@ -6,9 +6,6 @@
 
    geojson_modelica_translator
 
-#.. _readme:
-#.. include:: ../README.rst
-
 Developer Resources
 ===================
 
@@ -77,10 +74,6 @@ To apply the copyright/license to all the files, run the following managed task
 .. code-block:: bash
 
     poetry run update_licenses
-
-
-
-
 
 Adding New Models
 -----------------
@@ -211,9 +204,6 @@ the runner to work locally.
         ax.legend()
         ax.grid(True)
         fig.savefig('indoor_temp_example.png')
-
-
-
 
 
 Release Instructions

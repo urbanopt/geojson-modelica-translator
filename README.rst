@@ -83,7 +83,6 @@ The Model Connectors are libraries that are used to connect between the data tha
 model-based engine for calculating loads (and potentially energy consumption). Examples includes, TEASER,
 Data-Driven Model (DDM), CSV, Spawn, etc.
 
-
 Simulation Mapper Class / Translator
 ++++++++++++++++++++++++++++++++++++
 
