@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 0.2.2
+-------------
+* Fix bug in CLI which required the user to be in a specific directory to run. Updated CLI is more flexible.
+
 Version 0.2.1
 -------------
 * New command line interface (CLI) for scaffolding project using results of URBANopt SDK's OpenStudio results
