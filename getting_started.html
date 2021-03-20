@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Input File Documentation" href="input_file_documentation.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="input_file_documentation.html" title="Input File Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-started">
+<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">geojson-modelica-translator</span></code></p>
+<ul class="simple">
+<li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your platform</p></li>
+<li><p>Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
+</ul>
+<p>For help and command documentation in the terminal: <code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">-h</span></code></p>
+<p>Documentation for each command can be found at:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">build-system-param</span> <span class="pre">-h</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">create-model</span> <span class="pre">-h</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">run-model</span> <span class="pre">-h</span></code></p></li>
+</ul>
+<div class="section" id="library-installation">
+<h2>Library Installation<a class="headerlink" href="#library-installation" title="Permalink to this headline">¶</a></h2>
+<p>The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the
+proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to
+install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this
+approach does not require Python 2.</p>
+<ul class="simple">
+<li><p>Clone this repo into a working directory</p></li>
+<li><p>(optional/as-needed) Add Python 3 to the environment variables</p></li>
+<li><p>Install Poetry (<code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>). More information on Poetry can be found <a class="reference external" href="https://python-poetry.org/docs/">here</a>.</p></li>
+<li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your platform</p></li>
+<li><p>Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
+<li><dl class="simple">
+<dt>Install the Modelica Buildings Library from GitHub</dt><dd><ul>
+<li><p>Clone <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">https://github.com/lbl-srg/modelica-buildings/</a> into a working directory outside of the GMT directory</p></li>
+<li><p>Change to the directory inside the modelica-buildings repo you just checked out. (<code class="code docutils literal notranslate"><span class="pre">cd</span> <span class="pre">modelica-buildings</span></code>)</p></li>
+<li><dl class="simple">
+<dt>Install git-lfs</dt><dd><ul>
+<li><p>Mac: <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
+<li><p>Ubuntu: <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Pull the correct staging branch for this project with: <code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">issue2204_gmt_mbl</span></code></p></li>
+<li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Return to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
+<li><dl class="simple">
+<dt>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">tox</span></code></dt><dd><ul>
+<li><p>This should run all unit tests, pre-commit, and build the docs.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
+of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the
+<code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder. These files can be inspected in your favorite Modelica editor.</p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#library-installation">Library Installation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="input_file_documentation.html"
+                        title="next chapter">Input File Documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/getting_started.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="input_file_documentation.html" title="Input File Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

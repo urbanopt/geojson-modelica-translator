@@ -1,8 +1,8 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
 
-modelica\_runner
-================
+geojson\_modelica\_translator.modelica.modelica\_runner
+=======================================================
 
 .. automodule:: geojson_modelica_translator.modelica.modelica_runner
 

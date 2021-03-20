@@ -1,8 +1,8 @@
-﻿..
+..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
 
-couplings
-=========
+geojson\_modelica\_translator.model\_connectors.couplings
+=========================================================
 
 .. automodule:: geojson_modelica_translator.model_connectors.couplings
 

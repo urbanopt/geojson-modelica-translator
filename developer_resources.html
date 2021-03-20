@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Design Overview &#8212; GeoJSON Modelica Translator v0.0.1 documentation</title>
+    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -17,7 +17,9 @@
     <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="geojson_modelica_translator" href="_autosummary/geojson_modelica_translator.html" />
+    <link rel="prev" title="Input File Documentation" href="input_file_documentation.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,8 +30,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Design Overview</a></li> 
+        <li class="right" >
+          <a href="_autosummary/geojson_modelica_translator.html" title="geojson_modelica_translator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="input_file_documentation.html" title="Input File Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>  
 
@@ -38,8 +46,21 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="design-overview">
-<h1>Design Overview<a class="headerlink" href="#design-overview" title="Permalink to this headline">¶</a></h1>
+  <table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/geojson_modelica_translator.html#module-geojson_modelica_translator" title="geojson_modelica_translator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geojson_modelica_translator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h1>Developer Resources<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="design-overview">
+<h2>Design Overview<a class="headerlink" href="#design-overview" title="Permalink to this headline">¶</a></h2>
 <p>The GMT is designed to create an arbitrary number of user-configured models connected to other user-configured models to represent a district energy system.
 GMT has “building blocks” that it uses to define and connect models, which currently include: Energy Transfer Stations (ETSs), Loads, Networks, and Plants.</p>
 <img alt="_images/models-overview.png" src="_images/models-overview.png" />
@@ -52,8 +73,44 @@ For example, a coupling could define how the time series load actually connects 
 <div><p>– As an aside, if the GMT reached a point where all models within a block type implemented the same interface then couplings would not be necessary.</p>
 </div></blockquote>
 </div>
+<div class="section" id="getting-started-as-a-developer">
+<h2>Getting Started as a Developer<a class="headerlink" href="#getting-started-as-a-developer" title="Permalink to this headline">¶</a></h2>
+<p>There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
+to follow the detailed instructions for setting up MBL and Docker in the <a class="reference external" href="getting_started">getting started</a> guide.</p>
+<p>Also, follow the instructions below to install pre-commit.</p>
+</div>
+<div class="section" id="pre-commit">
+<h2>Pre-commit<a class="headerlink" href="#pre-commit" title="Permalink to this headline">¶</a></h2>
+<p>This project used <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency. To enable pre-commit, run the following from the command line.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pre-commit
+pre-commit install
+</pre></div>
+</div>
+<p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit run --all-files
+</pre></div>
+</div>
+</div>
+<div class="section" id="managed-tasks">
+<h2>Managed Tasks<a class="headerlink" href="#managed-tasks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="updating-schemas">
+<h3>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Permalink to this headline">¶</a></h3>
+<p>There is managed task to automatically pull updated GeoJSON schemas from the <code class="code docutils literal notranslate"><span class="pre">urbanopt-geojson-gem</span></code> GitHub project. A developer can run this command by calling</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_schemas
+</pre></div>
+</div>
+<p>The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.</p>
+</div>
+<div class="section" id="updating-licenses">
+<h3>Updating Licenses<a class="headerlink" href="#updating-licenses" title="Permalink to this headline">¶</a></h3>
+<p>To apply the copyright/license to all the files, run the following managed task</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_licenses
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="adding-new-models">
-<h1>Adding New Models<a class="headerlink" href="#adding-new-models" title="Permalink to this headline">¶</a></h1>
+<h2>Adding New Models<a class="headerlink" href="#adding-new-models" title="Permalink to this headline">¶</a></h2>
 <p>To add a new model you have to do the following:</p>
 <ol class="arabic simple">
 <li><p>Define the model’s python class: First, create a new python file and class under its respective directory in model_connectors. Follow the patterns of existing classes.</p></li>
@@ -63,7 +120,7 @@ For example, a coupling could define how the time series load actually connects 
 <p>See the notes below for more information.</p>
 </div>
 <div class="section" id="couplings">
-<h1>Couplings<a class="headerlink" href="#couplings" title="Permalink to this headline">¶</a></h1>
+<h2>Couplings<a class="headerlink" href="#couplings" title="Permalink to this headline">¶</a></h2>
 <p>A coupling defines the Modelica code necessary for interfacing two specific models, e.g. a time series load and heating indirect ETS.
 Each coupling is unique in its requirements:</p>
 <ul class="simple">
@@ -72,12 +129,7 @@ Each coupling is unique in its requirements:</p>
 </ul>
 <p>Thus each coupling must define two template files, ComponentDefinitions.mopt and ConnectStatements.mopt, respectively. These files must be placed in the directory <code class="code docutils literal notranslate"><span class="pre">couplings/templates/&lt;model</span> <span class="pre">A&gt;_&lt;model</span> <span class="pre">B&gt;/</span></code>.
 In general, the order of the names should follow the order of system types if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant)</p>
-</div>
-<div class="section" id="district-system">
-<h1>District system<a class="headerlink" href="#district-system" title="Permalink to this headline">¶</a></h1>
 <p>A district system is the model which incorporates all of the models and their couplings.</p>
-<div class="section" id="templating-flow">
-<h2>Templating Flow<a class="headerlink" href="#templating-flow" title="Permalink to this headline">¶</a></h2>
 <p>When rendering the district system model file, it must:</p>
 <ol class="arabic simple">
 <li><p>call to_modelica() for each model to generate its Modelica code</p></li>
@@ -123,6 +175,117 @@ In general, the order of the names should follow the order of system types if yo
 </div>
 </div>
 </div>
+<div class="section" id="running-simulations">
+<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
+<p>The GeoJSON to Modelica Translator contains a <code class="code docutils literal notranslate"><span class="pre">ModelicaRunner.run_in_docker(...)</span></code> method. It is recommended
+to use this method in a python script as it will copy the required files into the correct location. If
+desired, a user can run the simulations manually using JModelica (via Docker). Follow the steps below to configure
+the runner to work locally.</p>
+<ul>
+<li><p>Make sure jm_ipython.sh is in your local path.</p></li>
+<li><p>After running the <code class="code docutils literal notranslate"><span class="pre">py.test</span></code>, go into the <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/modelica/lib/runner/</span></code> directory.</p></li>
+<li><p>Copy <code class="code docutils literal notranslate"><span class="pre">jmodelica.py</span></code> to the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory.</p></li>
+<li><dl class="simple">
+<dt>From the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory, run examples using either of the the following:</dt><dd><ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo</span></code></p></li>
+<li><p>The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Install matplotlib package. <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">matplotlib</span></code></p></li>
+<li><p>Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">buildingspy.io.outputfile</span> <span class="kn">import</span> <span class="n">Reader</span>
+
+<span class="n">mat</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;model_connectors&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;dymola&quot;</span>
+<span class="p">)</span>
+<span class="c1"># List off all the variables</span>
+<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">varNames</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">zn_1_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;bui.znPerimeter_ZN_3.TAir&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">_time1</span><span class="p">,</span> <span class="n">zn_4_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;bui.znPerimeter_ZN_4.TAir&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">zn_1_temp</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_1$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">zn_4_temp</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_4$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [h]&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;temperature [$^\circ$C]&#39;</span><span class="p">)</span>
+<span class="c1"># Simulation is only for 168 hours?</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">168</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;indoor_temp_example.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="release-instructions">
+<h2>Release Instructions<a class="headerlink" href="#release-instructions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Bump version to &lt;NEW_VERSION&gt; in setup.py (use semantic versioning).</p></li>
+<li><p>Run <code class="code docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">--all-files</span></code> to ensure code is formatted properly.</p></li>
+<li><p>Create a PR against develop into main.</p></li>
+<li><p>After main branch passes, merge and checkout the main branch. Build the distribution using the following code:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove old dist packages</span>
+rm -rf dist/*
+poetry build
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Run <cite>git tag &lt;NEW_VERSION&gt;</cite>. (Note that <cite>python setup.py –version</cite> pulls from the latest tag.)</p></li>
+<li><p>Verify that the files in the dist/* folder have the correct version (no dirty, no sha)</p></li>
+<li><p>Run the following to release</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry publish
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Build and release the documentation</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and verify with the following</span>
+<span class="nb">cd</span> docs
+poetry run make html
+<span class="nb">cd</span> ..
+
+<span class="c1"># release using</span>
+./docs/publish_docs.sh
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Push the tag to GitHub after everything is published to PyPi, then go to GitHub and add in the CHANGELOG.rst notes into the tagged release and officially release.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git push origin &lt;NEW_VERSION&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="code-documentation">
+<h2>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/geojson_modelica_translator.html#module-geojson_modelica_translator" title="geojson_modelica_translator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geojson_modelica_translator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
@@ -134,11 +297,17 @@ In general, the order of the names should follow the order of system types if yo
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Design Overview</a></li>
+<li><a class="reference internal" href="#">Developer Resources</a><ul>
+<li><a class="reference internal" href="#design-overview">Design Overview</a></li>
+<li><a class="reference internal" href="#getting-started-as-a-developer">Getting Started as a Developer</a></li>
+<li><a class="reference internal" href="#pre-commit">Pre-commit</a></li>
+<li><a class="reference internal" href="#managed-tasks">Managed Tasks</a><ul>
+<li><a class="reference internal" href="#updating-schemas">Updating Schemas</a></li>
+<li><a class="reference internal" href="#updating-licenses">Updating Licenses</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#adding-new-models">Adding New Models</a></li>
-<li><a class="reference internal" href="#couplings">Couplings</a></li>
-<li><a class="reference internal" href="#district-system">District system</a><ul>
-<li><a class="reference internal" href="#templating-flow">Templating Flow</a><ul>
+<li><a class="reference internal" href="#couplings">Couplings</a><ul>
 <li><a class="reference internal" href="#summary-of-templating-contexts">Summary of Templating Contexts</a><ul>
 <li><a class="reference internal" href="#model-definition">Model Definition</a></li>
 <li><a class="reference internal" href="#component-definitions">Component Definitions</a></li>
@@ -148,10 +317,19 @@ In general, the order of the names should follow the order of system types if yo
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#running-simulations">Running Simulations</a></li>
+<li><a class="reference internal" href="#release-instructions">Release Instructions</a></li>
+<li><a class="reference internal" href="#code-documentation">Code Documentation</a></li>
 </ul>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="input_file_documentation.html"
+                        title="previous chapter">Input File Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="_autosummary/geojson_modelica_translator.html"
+                        title="next chapter">geojson_modelica_translator</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -182,8 +360,14 @@ In general, the order of the names should follow the order of system types if yo
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Design Overview</a></li> 
+        <li class="right" >
+          <a href="_autosummary/geojson_modelica_translator.html" title="geojson_modelica_translator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="input_file_documentation.html" title="Input File Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
