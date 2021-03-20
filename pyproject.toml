@@ -37,6 +37,7 @@ jsonschema = "3.2.0"
 requests = "2.25.1"
 jsonpath-ng = "1.5.2"
 teaser = "0.7.5"
+toml = "0.10.2"
 #teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
 [tool.poetry.dev-dependencies]

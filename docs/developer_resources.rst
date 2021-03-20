@@ -219,7 +219,7 @@ the runner to work locally.
 Release Instructions
 --------------------
 
-* Bump version to <NEW_VERSION> in setup.py and in docs/conf.py (use semantic versioning).
+* Bump version to <NEW_VERSION> in setup.py (use semantic versioning).
 * Run :code:`pre-commit --all-files` to ensure code is formatted properly.
 * Create a PR against develop into main.
 * After main branch passes, merge and checkout the main branch. Build the distribution using the following code:
