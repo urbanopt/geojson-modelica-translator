@@ -48,7 +48,8 @@ OpenStudio/EnergyPlus simulations.
     # test running the new Modelica package - This requires installing Docker and the MBL!
     uo_des run-model model_from_sdk
 
-Instructions for installing and configuring the MBL and Docker are available `here <docs/getting_started.rst>`_
+Instructions for installing and configuring the MBL and Docker are available `here <docs/getting_started.rst>`_. More
+example projects are available in an accompanying `example repository <https://github.com/urbanopt/geojson-modelica-translator-examples>`_.
 
 Architecture Overview
 ---------------------
