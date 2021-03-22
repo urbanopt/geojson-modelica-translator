@@ -7,7 +7,7 @@ There are three major steps to running the GeoJSON to Modelica Translator (GMT):
 
 #. generating the GeoJSON and System Parameter JSON files,
 #. creating of the Modelica package containing the district system, and
-#. running the Modelica packge.
+#. running the Modelica package.
 
 Depending on the use case, the need to run all the steps above may not be needed. For example:
 it may be desirable to only generate the Modelica package and then open and run the model
@@ -64,7 +64,7 @@ Once the MBL is installed, then the CLI can be used to create the model with the
     # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
     uo_des create-model sys_param.json
 
-The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`pacakge.mo` file in the root directory of the generated package. You will also need to
+The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`package.mo` file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.
 
 Docker Installation
