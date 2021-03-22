@@ -36,7 +36,8 @@ After installation of the GMT, a new command line interface (called the URBANopt
     uo_des -h
     uo_des build-system-param -h
 
-    # example
+    # the command below is only an example; however, it will run if the repository
+    # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
     uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 
 MBL Installation
@@ -59,7 +60,8 @@ Once the MBL is installed, then the CLI can be used to create the model with the
 
     uo_des create-model -h
 
-    # example
+    # the command below is only an example; however, it will run if the repository
+    # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
     uo_des create-model sys_param.json
 
 The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`pacakge.mo` file in the root directory of the generated package. You will also need to
@@ -70,7 +72,7 @@ Docker Installation
 
 The preferred method of running the simulations would be within Dymola; however, that is not a
 practical solution for many based on the license requirement. The GMT enables the running of the
-models using JModelica which requires the installtion of `Docker`_. To configure Docker, do the
+models using JModelica which requires the installation of `Docker`_. To configure Docker, do the
 following:
 
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your system.
@@ -84,7 +86,8 @@ command:
 
     uo_des run-model -h
 
-    # example
+    # the command below is only an example; however, it will run if the repository
+    # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
     uo_des run-model model_from_sdk
 
 
