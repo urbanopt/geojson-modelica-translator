@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/thermal_junction_properties.json#",
   "title": "URBANopt Thermal Junction",
   "description": "Schema for an URBANopt Thermal Junction object",
   "type": "object",

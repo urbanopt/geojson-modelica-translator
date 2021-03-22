@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
-  "title": "URBANopt Electrical Line",
-  "description": "Schema for an URBANopt Electrical Line object",
+  "id": "http://json-schema.org/openstudio-urban-modeling/electrical_connector_properties.json#",
+  "title": "URBANopt Electrical Connector",
+  "description": "Schema for an URBANopt Electrical Connector object",
   "type": "object",
   "properties": {
     "id": {
@@ -17,7 +17,7 @@
       "description": "Type of feature.",
       "type": "string",
       "enum": [
-        "ElectricalLine"
+        "ElectricalConnector"
       ]
     },
     "source_name": {
@@ -46,7 +46,7 @@
       "description": "Total length (ft) of the line, generated on export.",
       "type": "number"
     },
-    "start_junction_id": {
+    "startJunctionId": {
       "description": "Id of the junction that this line starts at.",
       "type": "string"
     },
@@ -76,7 +76,7 @@
         "type": "string"
       }
     },
-    "end_junction_id": {
+    "endJunctionId": {
       "description": "Id of the junction that this line ends at.",
       "type": "string"
     },
@@ -88,8 +88,8 @@
     "type",
     "id",
     "connector_type",
-    "start_junction_id",
-    "end_junction_id"
+    "startJunctionId",
+    "endJunctionId"
   ],
   "additionalProperties": false,
   "definitions": {
@@ -97,7 +97,7 @@
       "description": "Type of electrical line",
       "type": "string",
       "enum": [
-        "Line"
+        "Wire"
       ]
     },
     "WireType": {
