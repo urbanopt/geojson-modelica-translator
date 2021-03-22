@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://json-schema.org/openstudio-urban-modeling/district_system_properties.json#",
+  "id": "http://json-schema.org/openstudio-urban-modeling/electrical_junction_properties.json#",
   "title": "URBANopt Electrical Junction",
   "description": "Schema for an URBANopt Electrical Junction object",
   "type": "object",
@@ -35,11 +35,11 @@
     "connector_type": {
       "$ref": "#/definitions/ElectricalJunctionType"
     },
-    "building_id": {
+    "buildingId": {
       "description": "Id of building if this junction is inside a building.",
       "type": "string"
     },
-    "district_system_id": {
+    "DSId": {
       "description": "Id of district system if this junction is inside a district system.",
       "type": "string"
     },
@@ -49,8 +49,7 @@
   },
   "required": [
     "type",
-    "id",
-    "connector_type"
+    "id"
   ],
   "additionalProperties": false,
   "definitions": {

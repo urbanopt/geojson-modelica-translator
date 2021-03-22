@@ -87,7 +87,7 @@
       "type": "string"
     },
     "floor_area": {
-      "description": "Usable floor area (ft^2).",
+      "description": "Usable floor area (ft^2). Required for residential buildings, this represents conditioned floor area.",
       "type": "number"
     },
     "number_of_stories": {
@@ -95,7 +95,7 @@
       "type": "integer"
     },
     "number_of_stories_above_ground": {
-      "description": "The number of building stories above ground. Defaults to number_of_stories.",
+      "description": "The number of building stories above ground. Defaults to number_of_stories. Required for residential buildings.",
       "type": "integer"
     },
     "maximum_roof_height": {
@@ -110,6 +110,12 @@
         "Gable",
         "Hip"
       ]
+    },
+    "foundation_type": {
+      "$ref": "#/definitions/foundationType"
+    },
+    "attic_type": {
+      "$ref": "#/definitions/atticType"
     },
     "footprint_area": {
       "description": "Area of the footprint (ft^2).  Calculated on export.",
@@ -131,6 +137,9 @@
     },
     "system_type": {
       "$ref": "#/definitions/systemType"
+    },
+    "heating_system_fuel_type": {
+      "$ref": "#/definitions/heatingSystemFuelType"
     },
     "weekday_start_time": {
       "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.",
@@ -185,7 +194,11 @@
       "maximum": 100
     },
     "number_of_residential_units": {
-      "description": "Total number of residential units in the building. Required for residential buildings or mixed-use buildings with residential use types.",
+      "description": "Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.",
+      "type": "integer"
+    },
+    "number_of_bedrooms": {
+      "description": "Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.",
       "type": "integer"
     },
     "exterior_lighting_zone": {
@@ -212,16 +225,154 @@
     },
     "user_data": {
       "description": "Arbitrary user data"
+    },
+    "ev_charging": {
+      "description": "Should be set to true if EV charging is associated with the building.",
+      "type": "boolean"
+    },
+    "ev_charging_station_type": {
+      "description": "Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station",
+      "type": "string",
+      "enum": [
+        "Typical Home",
+        "Typical Public",
+        "Typical Work"
+      ]
+    },
+    "delay_type": {
+      "description": "Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event.",
+      "type": "string",
+      "enum": [
+        "Min Delay",
+        "Max Delay",
+        "Min Power"
+      ]
+    },
+    "ev_charging_behavior": {
+      "description": "Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces.",
+      "type": "string",
+      "enum": [
+        "Business as Usual",
+        "Free Workplace Charging at Project Site",
+        "Free Workplace Charging Across Metro Area"
+      ]
+    },
+    "ev_percent": {
+      "description": "Denotes the % of vehicles parked at the building that are EVs.",
+      "type": "number"
+    },
+    "ev_curtailment_frac": {
+      "description": "Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system",
+      "type": "number"
     }
   },
-  "required": [
-    "id",
-    "type",
-    "name",
-    "floor_area",
-    "number_of_stories",
-    "footprint_area",
-    "building_type"
+  "oneOf": [
+    {
+      "properties": {
+        "building_type": {
+          "enum": [
+            "Single-Family Detached"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "floor_area",
+        "number_of_stories_above_ground",
+        "number_of_stories",
+        "building_type",
+        "number_of_bedrooms",
+        "foundation_type",
+        "attic_type"
+      ]
+    },
+    {
+      "properties": {
+        "building_type": {
+          "enum": [
+            "Single-Family Attached"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "floor_area",
+        "number_of_stories_above_ground",
+        "number_of_stories",
+        "building_type",
+        "number_of_residential_units",
+        "number_of_bedrooms",
+        "foundation_type",
+        "attic_type"
+      ]
+    },
+    {
+      "properties": {
+        "building_type": {
+          "enum": [
+            "Multifamily"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "floor_area",
+        "number_of_stories_above_ground",
+        "number_of_stories",
+        "building_type",
+        "number_of_residential_units",
+        "number_of_bedrooms",
+        "foundation_type"
+      ]
+    },
+    {
+      "properties": {
+        "building_type": {
+          "enum": [
+            "Single-Family",
+            "Multifamily (2 to 4 units)",
+            "Multifamily (5 or more units)",
+            "Vacant",
+            "Office",
+            "Laboratory",
+            "Nonrefrigerated warehouse",
+            "Food sales",
+            "Public order and safety",
+            "Outpatient health care",
+            "Refrigerated warehouse",
+            "Religious worship",
+            "Public assembly",
+            "Education",
+            "Food service",
+            "Inpatient health care",
+            "Nursing",
+            "Lodging",
+            "Strip shopping mall",
+            "Enclosed mall",
+            "Retail other than mall",
+            "Service",
+            "Mixed use",
+            "Uncovered Parking",
+            "Covered Parking"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "floor_area",
+        "number_of_stories",
+        "footprint_area",
+        "building_type"
+      ]
+    }
   ],
   "additionalProperties": true,
   "definitions": {
@@ -229,10 +380,12 @@
       "description": "Primary building space type.",
       "type": "string",
       "enum": [
+        "Single-Family Detached",
+        "Single-Family Attached",
+        "Multifamily",
         "Single-Family",
         "Multifamily (2 to 4 units)",
         "Multifamily (5 or more units)",
-        "Mobile Home",
         "Vacant",
         "Office",
         "Laboratory",
@@ -262,85 +415,116 @@
       "description": "Building HVAC system type.",
       "type": "string",
       "enum": [
-        "Ideal Air Loads",
-        "PTAC with hot water heat",
-        "PTAC with hot water heat with central air source heat pump",
-        "PTAC with gas coil heat",
-        "PTAC with electric baseboard heat",
+        "PTAC with baseboard electric",
+        "PTAC with baseboard gas boiler",
+        "PTAC with baseboard district hot water",
+        "PTAC with gas unit heaters",
+        "PTAC with electric coil",
+        "PTAC with gas coil",
+        "PTAC with gas boiler",
         "PTAC with no heat",
-        "PTAC with district hot water heat",
-        "PTAC with central air source heat pump heat",
+        "PTAC with district hot water",
+        "PTAC with central air source heat pump",
         "PTHP",
-        "PSZ-AC with gas coil heat",
-        "PSZ-AC with electric baseboard heat",
+        "PSZ-AC with gas coil",
+        "PSZ-AC with baseboard electric",
         "PSZ-AC with no heat",
-        "PSZ-AC with district hot water heat",
-        "PSZ-AC with central air source heat pump heat",
+        "PSZ-AC with district hot water",
+        "PSZ-AC with central air source heat pump",
         "PSZ-HP",
         "Fan coil district chilled water with no heat",
-        "Fan coil district chilled water and boiler",
-        "Fan coil district chilled water and central air source heat pump",
-        "Fan coil district chilled water unit heaters",
-        "Fan coil district chilled water electric baseboard heat",
-        "Fan coil district hot and chilled water",
-        "Fan coil district hot water and chiller",
-        "Fan coil district hot water and air-cooled chiller",
-        "Fan coil chiller and boiler",
-        "Fan coil air-cooled chiller and boiler",
-        "Fan coil chiller and central air source heat pump",
-        "Fan coil air-cooled chiller and central air source heat pump",
+        "Fan coil district chilled water with boiler",
+        "Fan coil district chilled water with central air source heat pump",
+        "Fan coil district chilled water with gas unit heaters",
+        "Fan coil district chilled water with baseboard electric",
+        "Fan coil district chilled water with district hot water",
+        "Fan coil chiller with district hot water",
+        "Fan coil air-cooled chiller with district hot water",
+        "Fan coil chiller with boiler",
+        "Fan coil air-cooled chiller with boiler",
+        "Fan coil chiller with central air source heat pump",
+        "Fan coil air-cooled chiller with central air source heat pump",
         "Fan coil chiller with no heat",
         "DOAS with fan coil district chilled water with no heat",
         "DOAS with fan coil district chilled water and boiler",
-        "DOAS with fan coil district chilled water and central air source heat pump",
-        "DOAS with fan coil district chilled water unit heaters",
-        "DOAS with fan coil district chilled water electric baseboard heat",
-        "DOAS with fan coil district hot and chilled water",
-        "DOAS with fan coil district hot water and chiller",
-        "DOAS with fan coil district hot water and air-cooled chiller",
-        "DOAS with fan coil chiller and boiler",
-        "DOAS with fan coil air-cooled chiller and boiler",
-        "DOAS with fan coil chiller and central air source heat pump",
-        "DOAS with fan coil air-cooled chiller and central air source heat pump",
+        "DOAS with fan coil district chilled water with central air source heat pump",
+        "DOAS with fan coil district chilled water with gas unit heaters",
+        "DOAS with fan coil district chilled water with baseboard electric",
+        "DOAS with fan coil district chilled water with district hot water",
+        "DOAS with fan coil chiller with district hot water",
+        "DOAS with fan coil air-cooled chiller with district hot water",
+        "DOAS with fan coil air-cooled chiller with boiler",
+        "DOAS with fan coil chiller with central air source heat pump",
+        "DOAS with fan coil air-cooled chiller with central air source heat pump",
         "DOAS with fan coil chiller with no heat",
-        "VRF with DOAS",
-        "Ground Source Heat Pumps with DOAS",
-        "Baseboard district hot water heat",
-        "Baseboard district hot water heat with direct evap coolers",
-        "Baseboard electric heat",
-        "Baseboard electric heat with direct evap coolers",
-        "Baseboard hot water heat",
-        "Baseboard hot water heat with direct evap coolers",
+        "DOAS with VRF",
+        "VRF",
+        "DOAS with water source heat pumps with ground source heat pump",
+        "Forced air furnace",
+        "Baseboard district hot water",
+        "Baseboard electric",
+        "Baseboard gas boiler",
+        "Baseboard central air source heat pump",
         "Window AC with no heat",
         "Window AC with forced air furnace",
-        "Window AC with district hot water baseboard heat",
-        "Window AC with hot water baseboard heat",
-        "Window AC with electric baseboard heat",
+        "Window AC with baseboard district hot water",
+        "Window AC with baseboard electric",
         "Window AC with unit heaters",
-        "Direct evap coolers",
-        "Direct evap coolers with unit heaters",
-        "Unit heaters",
-        "Heat pump heat with no cooling",
-        "Heat pump heat with direct evap cooler",
-        "VAV with reheat",
-        "VAV with reheat central air source heat pump",
-        "VAV with PFP boxes",
-        "VAV with gas reheat",
-        "VAV with zone unit heaters",
-        "VAV with electric baseboard heat",
-        "VAV cool with zone heat pump heat",
-        "PVAV with reheat",
-        "PVAV with reheat with central air source heat pump",
+        "Window AC with baseboard gas boiler",
+        "Window AC with baseboard central air source heat pump",
+        "Direct evap coolers with baseboard district hot water",
+        "Direct evap coolers with baseboard electric",
+        "Direct evap coolers with baseboard gas boiler",
+        "Direct evap coolers with baseboard central air source heat pump",
+        "Direct evap coolers with no heat",
+        "Direct evap coolers with gas unit heaters",
+        "Direct evap coolers with forced air furnace",
+        "Gas unit heaters",
+        "VAV chiller with gas boiler reheat",
+        "VAV chiller with gas coil reheat",
+        "VAV chiller with central air source heat pump reheat",
+        "VAV chiller with PFP boxes",
+        "VAV air-cooled chiller with gas boiler reheat",
+        "VAV air-cooled chiller with central air source heat pump reheat",
+        "VAV air-cooled chiller with district hot water reheat",
+        "VAV air-cooled chiller with gas coil reheat",
+        "VAV air-cooled chiller with no reheat with gas unit heaters",
+        "VAV district chilled water with gas boiler reheat",
+        "VAV district chilled water with central air source heat pump reheat",
+        "VAV district chilled water with no reheat with zone heat pump",
+        "VAV chiller with no reheat with baseboard electric",
+        "VAV air-cooled chiller with no reheat with zone heat pump",
+        "VAV district chilled water with district hot water reheat",
+        "VAV district chilled water with gas coil reheat",
+        "PVAV with gas heat with electric reheat",
+        "PVAV with central air source heat pump reheat",
         "PVAV with PFP boxes",
-        "Residential forced air",
-        "Residential forced air cooling hot water baseboard heat",
-        "Residential forced air with district hot water",
-        "Residential heat pump",
-        "Forced air furnace",
-        "Forced air furnace district chilled water fan coil",
-        "Forced air furnace direct evap cooler",
-        "Residential AC with no heat",
-        "Residential AC with electric baseboard heat"
+        "Residential - electric resistance and no cooling",
+        "Residential - electric resistance and central air conditioner",
+        "Residential - electric resistance and room air conditioner",
+        "Residential - electric resistance and evaporative cooler",
+        "Residential - furnace and no cooling",
+        "Residential - furnace and central air conditioner",
+        "Residential - furnace and room air conditioner",
+        "Residential - furnace and evaporative cooler",
+        "Residential - boiler and no cooling",
+        "Residential - boiler and central air conditioner",
+        "Residential - boiler and room air conditioner",
+        "Residential - boiler and evaporative cooler",
+        "Residential - air-to-air heat pump",
+        "Residential - mini-split heat pump",
+        "Residential - ground-to-air heat pump"
+      ]
+    },
+    "heatingSystemFuelType": {
+      "description": "The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps).",
+      "type": "string",
+      "enum": [
+        "electricity",
+        "natural gas",
+        "fuel oil",
+        "propane",
+        "wood"
       ]
     },
     "templateType": {
@@ -374,7 +558,34 @@
         "DEER 2060",
         "DEER 2065",
         "DEER 2070",
-        "DEER 2075"
+        "DEER 2075",
+        "Residential IECC 2006 - Customizable Template Sep 2020",
+        "Residential IECC 2009 - Customizable Template Sep 2020",
+        "Residential IECC 2012 - Customizable Template Sep 2020",
+        "Residential IECC 2015 - Customizable Template Sep 2020",
+        "Residential IECC 2018 - Customizable Template Sep 2020"
+      ]
+    },
+    "foundationType": {
+      "description": "The foundation type of the building. Required for residential buildings.",
+      "type": "string",
+      "enum": [
+        "slab",
+        "crawlspace - vented",
+        "crawlspace - unvented",
+        "basement - unconditioned",
+        "basement - conditioned",
+        "ambient"
+      ]
+    },
+    "atticType": {
+      "description": "The attic type of the building. Required for single-family residential buildings.",
+      "type": "string",
+      "enum": [
+        "attic - vented",
+        "attic - unvented",
+        "attic - conditioned",
+        "flat roof"
       ]
     }
   }
