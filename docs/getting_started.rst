@@ -68,7 +68,7 @@ load the MBL into your Modelica editor.
 Docker Installation
 -------------------
 
-The preferred method of running the simulations would be wihtin Dymola; however, that is not a
+The preferred method of running the simulations would be within Dymola; however, that is not a
 practical solution for many based on the license requirement. The GMT enables the running of the
 models using JModelica which requires the installtion of `Docker`_. To configure Docker, do the
 following:
