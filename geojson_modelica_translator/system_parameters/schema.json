@@ -178,7 +178,7 @@
           "additionalProperties": false
         },
         "ets_model": {
-          "description": "energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops ",
+          "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
           "type": "string",
           "enum": [
             "None",

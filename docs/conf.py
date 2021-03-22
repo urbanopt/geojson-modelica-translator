@@ -226,7 +226,7 @@ latex_documents = [
         "index",
         "GeoJSON Modelica Translator.tex",
         u"GeoJSON Modelica Translator Documentation",
-        u"Nicholas Long",
+        u"URBANopt DES Team",
         "manual",
     )
 ]
@@ -261,7 +261,7 @@ man_pages = [
         "index",
         "GeoJSON Modelica Translator",
         u"GeoJSON Modelica Translator Documentation",
-        [u"Nicholas Long"],
+        [u"URBANopt DES Team"],
         1,
     )
 ]
@@ -280,7 +280,7 @@ texinfo_documents = [
         "index",
         "GeoJSON Modelica Translator",
         u"GeoJSON Modelica Translator Documentation",
-        u"Nicholas Long",
+        u"URBANopt DES Team",
         "GeoJSON Modelica Translator",
         "One line description of project.",
         "Miscellaneous",

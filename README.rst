@@ -60,7 +60,7 @@ of these functionalities are more developed than others, for instance swapping b
 RC models (using TEASER) is fleshed out; however, swapping between a first and fifth generation heating system has
 yet to be fully implemented.
 
-The diageram below is meant to illustrate the future proposed interconnectivity and functionality of the
+The diagram below is meant to illustrate the future proposed interconnectivity and functionality of the
 GMT project.
 
 .. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png

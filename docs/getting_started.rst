@@ -5,9 +5,9 @@ Getting Started
 
 There are three major steps to running the GeoJSON to Modelica Translator (GMT):
 
-1. generation of the GeoJSON and System Parameter JSON files,
-1. creating of the Modelica package containing the district system, and
-1. running the Modelica packge.
+#. generating the GeoJSON and System Parameter JSON files,
+#. creating of the Modelica package containing the district system, and
+#. running the Modelica packge.
 
 Depending on the use case, the need to run all the steps above may not be needed. For example:
 it may be desirable to only generate the Modelica package and then open and run the model
@@ -16,9 +16,9 @@ GeoJSON and System Parameter file from results of an URBANopt SDK simulation res
 
 This Getting Started guide is broken up into three major setup steps:
 
-1. Installing the GMT from PyPi
-1. Installing and configuring the Modelica Buildings Library (MBL)
-1. Installing and configuring Docker in order to run simulations using JModelica
+#. Installing the GMT from PyPi
+#. Installing and configuring the Modelica Buildings Library (MBL)
+#. Installing and configuring Docker in order to run simulations using JModelica
 
 GMT Installation
 ----------------

@@ -52,7 +52,7 @@ Pre-commit
 **********
 
 This project uses `pre-commit <https://pre-commit.com/>`_ to ensure code consistency.
-To enable pre-commit on every commit then run the following from the command line from within the git checkout of the
+To enable pre-commit on every commit run the following from the command line from within the git checkout of the
 GMT:
 
 .. code-block:: bash
