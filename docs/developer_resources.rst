@@ -34,16 +34,29 @@ Getting Started as a Developer
 There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
 to follow the detailed instructions for setting up MBL and Docker in the `getting started <getting_started>`_ guide.
 
-Also, follow the instructions below to install pre-commit.
+Follow the instructions below in order to configure your local environment:
+
+* Clone this repo into a working directory
+* (optional/as-needed) Add Python 3 to the environment variables
+* For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
+* Return to the GMT root directory and run :code:`poetry install`
+* Test if everything is installed correctly by running :code:`poetry run pytest`. This will run all the unit and integration tests.
+* Follow the instructions below to install pre-commit.
+* To test pre-commit and building the documentation, you can run :code:`poetry run tox`
+
+The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
+of Modelica models that are created and persisted into the :code:`tests/output` folder and the
+:code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
 
 Pre-commit
-----------
+**********
 
-This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
+This project uses `pre-commit <https://pre-commit.com/>`_ to ensure code consistency.
+To enable pre-commit on every commit then run the following from the command line from within the git checkout of the
+GMT:
 
 .. code-block:: bash
 
-    pip install pre-commit
     pre-commit install
 
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
@@ -53,12 +66,13 @@ To run pre-commit against the files without calling git commit, then run the fol
     pre-commit run --all-files
 
 Managed Tasks
--------------
+*************
 
 Updating Schemas
-****************
+^^^^^^^^^^^^^^^^
 
-There is managed task to automatically pull updated GeoJSON schemas from the :code:`urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
+There is managed task to automatically pull updated GeoJSON schemas from the :code:`urbanopt-geojson-gem` GitHub
+project. A developer can run this command by calling
 
 .. code-block:: bash
 
@@ -67,7 +81,7 @@ There is managed task to automatically pull updated GeoJSON schemas from the :co
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
 Updating Licenses
-*****************
+^^^^^^^^^^^^^^^^^
 
 To apply the copyright/license to all the files, run the following managed task
 
@@ -89,7 +103,7 @@ To add a new model you have to do the following:
 See the notes below for more information.
 
 Couplings
----------
+*********
 
 A coupling defines the Modelica code necessary for interfacing two specific models, e.g. a time series load and heating indirect ETS.
 Each coupling is unique in its requirements:
@@ -101,12 +115,12 @@ Thus each coupling must define two template files, ComponentDefinitions.mopt and
 In general, the order of the names should follow the order of system types if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant)
 
 District system
-+++++++++++++++
+***************
 
 A district system is the model which incorporates all of the models and their couplings.
 
 Templating Flow
-+++++++++++++++
+***************
 
 When rendering the district system model file, it must:
 
@@ -220,15 +234,15 @@ Release Instructions
     rm -rf dist/*
     poetry build
 
-* Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag.)
-* Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
-* Run the following to release
+* Run `git tag <NEW_VERSION>`.
+* Verify that the files in the dist/* folder have the correct version (no dirty, no sha).
+* Run the following to release.
 
 .. code-block:: bash
 
     poetry publish
 
-* Build and release the documentation
+* Build and release the documentation.
 
 .. code-block:: bash
 
@@ -255,3 +269,6 @@ Code Documentation
    :recursive:
 
    geojson_modelica_translator
+
+
+.. _Poetry: https://python-poetry.org/docs/

@@ -22,10 +22,11 @@ The project is motivated by the need to easily evaluate district energy systems.
 Getting Started
 ---------------
 
-It is possible to test the GeoJSON to Modelica Translator by simpling installing the Python package and running the
+It is possible to test the GeoJSON to Modelica Translator (GMT) by simpling installing the Python package and running the
 command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the
 functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings
-library (MBL) and Docker.
+library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available
+`here <docs/getting_started.rst>`_
 
 To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola) then
 run the following code below up to the point of run-model. The example generates a complete 4th Generation District
@@ -42,14 +43,14 @@ OpenStudio/EnergyPlus simulations.
     # generate the system parameter from the results of the URBANopt SDK and OpenStudio Simulations
     uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 
-    # create the modelica package
+    # create the modelica package (requires installation of the MBL)
     uo_des create-model sys_param.json
 
-    # test running the new Modelica package - This requires installing Docker and the MBL!
+    # test running the new Modelica package (requires installation of Docker)
     uo_des run-model model_from_sdk
 
-Instructions for installing and configuring the MBL and Docker are available `here <docs/getting_started.rst>`_. More
-example projects are available in an accompanying `example repository <https://github.com/urbanopt/geojson-modelica-translator-examples>`_.
+More example projects are available in an accompanying
+`example repository <https://github.com/urbanopt/geojson-modelica-translator-examples>`_.
 
 Architecture Overview
 ---------------------
