@@ -62,7 +62,7 @@ Once the MBL is installed, then the CLI can be used to create the model with the
     # example
     uo_des create-model sys_param.json
 
-The resulting Modelica package will be created and can be opened in a Modelica editor. open the :code:`pacakge.mo` file in the root directory of the generated package. You will also need to
+The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`pacakge.mo` file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.
 
 Docker Installation
