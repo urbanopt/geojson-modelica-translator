@@ -74,7 +74,7 @@ models using JModelica which requires the installtion of `Docker`_. To configure
 following:
 
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your system.
-* Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
+* Configure Docker Desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
 * It is recommended to test the installation of Docker by simply running :code:`docker run hello-world` in a terminal.
 
 After Docker is installed and configured, you can use the CLI to run the model using the following
