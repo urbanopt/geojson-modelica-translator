@@ -65,9 +65,9 @@ GMT project.
 
 .. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png
 
-There are various models that exist in the GMT and are described in the subsections below. More comprehensive
-documentation on the GMT is `here <https://docs.urbanopt.net/geojson-modelica-translator/`_. Documentation on
-URBANopt SDK is `here <https://docs.urbanopt.net/>`_.
+There are various models that exist in the GMT and are described in the subsections below. See the more `comprehensive
+documentation on the GMT <https://docs.urbanopt.net/geojson-modelica-translator/>`_ or the `documentation on
+URBANopt SDK  <https://docs.urbanopt.net/>`_.
 
 GeoJSON and System Parameter Files
 ++++++++++++++++++++++++++++++++++
