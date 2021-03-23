@@ -141,7 +141,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         # check the mass flow rates of the first load are in the expected range
         load = loads[0]
         (_, heat_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
-        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
+        # NL: changed the line below to be aChiWat (not repeating aHeaWat).
+        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aChiWat[1].m_flow')
         self.assertTrue((heat_m_flow >= 0).all(), 'Heating mass flow rate must be greater than or equal to zero')
         self.assertTrue((cool_m_flow >= 0).all(), 'Cooling mass flow rate must be greater than or equal to zero')
 
@@ -162,28 +163,6 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
         )
 
-        def cvrmsd(measured, simulated):
-            """Return CVRMSD between arrays.
-            Implementation of ASHRAE Guideline 14 (4-4)
-
-            :param measured: numpy.array
-            :param simulated: numpy.array
-            :return: float
-            """
-            def rmsd(a, b):
-                p = 1
-                n_samples = len(a)
-                return np.sqrt(
-                    np.sum(
-                        np.square(
-                            a - b
-                        )
-                    ) / (n_samples - p)
-                )
-
-            normalization_factor = np.mean(measured)
-            return rmsd(measured, simulated) / normalization_factor
-
         # check the overall thermal load between the first load and its ETSes
         heating_indirect = heat_etses[0]
         cooling_indirect = cool_etses[0]
@@ -196,8 +175,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         heating_indirect_q_flow, cooling_indirect_q_flow = np.abs(heating_indirect_q_flow), np.abs(cooling_indirect_q_flow)
         load_q_heat_flow, load_q_cool_flow = np.abs(load_q_heat_flow), np.abs(load_q_cool_flow)
 
-        cool_cvrmsd = cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
-        heat_cvrmsd = cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
+        cool_cvrmsd = self.cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
+        heat_cvrmsd = self.cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
 
         CVRMSD_MAX = 0.3
         # TODO: fix q flows to meet the CVRMSD maximum, then make these assertions rather than warnings
