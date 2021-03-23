@@ -232,16 +232,17 @@ Release Instructions
 
     # Remove old dist packages
     rm -rf dist/*
-    poetry build
 
 * Run `git tag <NEW_VERSION>`.
-* Verify that the files in the dist/* folder have the correct version (no dirty, no sha).
+
 * Run the following to release.
 
 .. code-block:: bash
 
-    poetry publish
+    poetry publish --build
 
+* Enter your PyPI username and password
+* (If the build fails) verify that the files in the dist/* folder have the correct version (no dirty, no sha).
 * Build and release the documentation.
 
 .. code-block:: bash
