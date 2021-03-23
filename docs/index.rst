@@ -1,20 +1,15 @@
 :tocdepth: 2
 
-GeoJSON Modelica Translator Documentation
-=========================================
+GeoJSON to Modelica Translator
+==============================
 
 .. toctree::
    :maxdepth: 2
 
-   License <license>
-   Authors <authors>
+   Overview <overview>
+   Getting Started <getting_started>
+   Input File Documentation <input_file_documentation>
+   Developer Resources <developer_resources>
+   Contributors <authors>
    Changelog <changelog>
-
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   geojson_modelica_translator
-
-.. _readme:
-.. include:: ../README.rst
+   License <license>

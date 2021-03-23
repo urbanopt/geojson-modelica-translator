@@ -13,7 +13,7 @@ fi
 
 echo "Deleting old content"
 cd ${DOCS_DIR}
-make clean
+poetry run make clean
 git worktree prune
 cd ${REPO_DIR}
 rm -rf .git/worktrees/html/
@@ -22,7 +22,7 @@ echo "Checking out gh-pages branch into ${PUBLISH_DIR}l"
 git worktree add -B gh-pages ${PUBLISH_DIR} origin/gh-pages
 
 echo "Generating site"
-cd ${DOCS_DIR} && make html && touch ${PUBLISH_DIR}/.nojekyll
+cd ${DOCS_DIR} && poetry run make html && touch ${PUBLISH_DIR}/.nojekyll
 
 echo "Updating gh-pages branch"
 cd ${PUBLISH_DIR} && git add --all && git commit -m "docs: updated repo documentation" --no-verify

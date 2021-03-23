@@ -41,6 +41,7 @@ import shutil
 from pathlib import Path
 from unittest import TestCase
 
+import numpy as np
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
 
@@ -73,8 +74,7 @@ class TestCaseBase(GMTTestCase):
         return self.data_dir, self.output_dir
 
     def run_and_assert_in_docker(self, file_to_run, project_path, project_name):
-        """
-        Run the test in docker.
+        """Run the test in docker.
 
         :param file_to_run: Full path to the file to run. Typically this is the .mo file of interest (e.g., coupling.mo)
         :param project_path: Full path to the location of the project to run. This is typically the the full path to
@@ -93,3 +93,25 @@ class TestCaseBase(GMTTestCase):
         # make sure that the results log exist
         results_path = os.path.join(run_path, f"{project_name}_results")
         self.assertTrue(os.path.join(results_path, 'stdout.log'))
+
+    def cvrmsd(self, measured, simulated):
+        """Return CVRMSD between arrays.
+        Implementation of ASHRAE Guideline 14 (4-4)
+
+        :param measured: numpy.array
+        :param simulated: numpy.array
+        :return: float
+        """
+        def rmsd(a, b):
+            p = 1
+            n_samples = len(a)
+            return np.sqrt(
+                np.sum(
+                    np.square(
+                        a - b
+                    )
+                ) / (n_samples - p)
+            )
+
+        normalization_factor = np.mean(measured)
+        return rmsd(measured, simulated) / normalization_factor

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.2.1"
+version = "0.2.2"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -49,7 +49,10 @@ pytest-cov = "2.11.1"
 coveralls = "3.0.1"
 sphinx = "3.2.1"
 sphinx_rtd_theme = "0.5.0"
+sphinx-jsonschema = "1.16.7"
+toml = "0.10.2"
 tox = "3.20.0"
+
 
 [build-system]
 requires = ["poetry = 1.1.4"]

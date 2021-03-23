@@ -66,7 +66,7 @@ class SchemasTest(unittest.TestCase):
             "footprint_perimeter": 533,
             "building_type": "Office",
             "number_of_stories": 3,
-            "system_type": "PTAC with hot water heat",
+            "system_type": "PTAC with district hot water",
             "number_of_stories_above_ground": 3,
             "building_status": "Proposed",
             "floor_area": 51177,
