@@ -4,6 +4,7 @@ Change Log
 Version 0.2.2
 -------------
 * Fix bug in CLI which required the user to be in a specific directory to run. Updated CLI is more flexible.
+* Update documentation.
 
 Version 0.2.1
 -------------
