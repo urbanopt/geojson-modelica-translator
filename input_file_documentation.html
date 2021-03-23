@@ -48,515 +48,677 @@
             
   <div class="section" id="input-file-documentation">
 <span id="documentation"></span><h1>Input File Documentation<a class="headerlink" href="#input-file-documentation" title="Permalink to this headline">¶</a></h1>
-<p>There are two input files that need to be defined to use the GeoJSON to Modelica Translator: a GeoJSON file and a System Parameters file.</p>
+<p>There are two input files that need to be defined to use the GeoJSON to Modelica Translator: a GeoJSON file and
+a System Parameters file.</p>
 <div class="section" id="geojson-documentation">
 <h2>GeoJSON Documentation<a class="headerlink" href="#geojson-documentation" title="Permalink to this headline">¶</a></h2>
-<p>There are multiple GeoJSON schemas that are used to define the expected properties of GeoJSON
-features. The reason is because the only element that we are leveraging in GeoJSON is the ‘properties’
-field; all the other fields are protected GeoJSON fields. Presently only the building_properties are
-leveraged in the GMT; however, the thermal_connector_properties and thermal_junction_properties will
-eventually be used.</p>
+<p>Presently only the building_properties.json of URBANopt’s GeoJSON schemas is leveraged in the GMT.</p>
 <div class="section" id="building-properties">
 <h3>Building Properties<a class="headerlink" href="#building-properties" title="Permalink to this headline">¶</a></h3>
+<p>Bolded elements are required fields.</p>
 <div class="section" id="urbanopt-building">
 <h4>URBANopt Building<a class="headerlink" href="#urbanopt-building" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td colspan="3"><p><a class="reference external" href="http://json-schema.org/openstudio-urban-modeling/building_properties">http://json-schema.org/openstudio-urban-modeling/building_properties</a>.json#</p></td>
+<tr class="row-odd"><td colspan="4"><p><a class="reference external" href="http://json-schema.org/openstudio-urban-modeling/building_properties">http://json-schema.org/openstudio-urban-modeling/building_properties</a>.json#</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Schema for an URBANopt Building object</p></td>
+<tr class="row-even"><td colspan="4"><p>Schema for an URBANopt Building object</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>object</em></p></td>
+<td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p><strong>id</strong></p></li>
+<li><p>id</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Unique id used to refer to this feature within this dataset.</p></td>
+<td colspan="3"><p>Unique id used to refer to this feature within this dataset.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>project_id</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Project which this feature belongs to.</p></td>
+<td colspan="3"><p>Project which this feature belongs to.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>type</strong></p></li>
+<li><p>type</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Type of feature.</p></td>
+<td colspan="3"><p>Type of feature.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>enum</p></td>
-<td><p>Building</p></td>
+<td colspan="2"><p>Building</p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>source_name</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Name of the original data source.</p></td>
+<td colspan="3"><p>Name of the original data source.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>source_id</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Id of the feature in original data source.</p></td>
+<td colspan="3"><p>Id of the feature in original data source.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p><strong>name</strong></p></li>
+<li><p>name</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Feature name.</p></td>
+<td colspan="3"><p>Feature name.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>legal_name</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Legal name used to identify this feature.</p></td>
+<td colspan="3"><p>Legal name used to identify this feature.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>address</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Street address.</p></td>
+<td colspan="3"><p>Street address.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>building_status</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Building status.</p></td>
+<td colspan="3"><p>Building status.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>enum</p></td>
-<td><p>Proposed, Existing</p></td>
+<td colspan="2"><p>Proposed, Existing</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>detailed_model_filename</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.</p></td>
+<td colspan="3"><p>Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>weather_filename</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Name of EPW weather file for this building.  Defaults to site’s weather_filename.</p></td>
+<td colspan="3"><p>Name of EPW weather file for this building.  Defaults to site’s weather_filename.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>tariff_filename</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Name of the tariff file for this building.  Defaults to site’s tariff_filename.</p></td>
+<td colspan="3"><p>Name of the tariff file for this building.  Defaults to site’s tariff_filename.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>surface_elevation</p></li>
 </ul>
 </td>
-<td colspan="2"><p>The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site’s surface_elevation.</p></td>
+<td colspan="3"><p>The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site’s surface_elevation.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>timesteps_per_hour</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Number of timesteps per hour for energy simulations. Defaults to site’s timesteps_per_hour.</p></td>
+<td colspan="3"><p>Number of timesteps per hour for energy simulations. Defaults to site’s timesteps_per_hour.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>integer</em></p></td>
+<td colspan="2"><p><em>integer</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>maximum</p></td>
-<td><p>60</p></td>
+<td colspan="2"><p>60</p></td>
 </tr>
 <tr class="row-even"><td><p>minimum</p></td>
-<td><p>1</p></td>
+<td colspan="2"><p>1</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>begin_date</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Date to begin simulation, format YYYY-MM-DD. Defaults to site’s begin_date.</p></td>
+<td colspan="3"><p>Date to begin simulation, format YYYY-MM-DD. Defaults to site’s begin_date.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>end_date</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Date to end simulation, format YYYY-MM-DD. Defaults to site’s end_date.</p></td>
+<td colspan="3"><p>Date to end simulation, format YYYY-MM-DD. Defaults to site’s end_date.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>climate_zone</p></li>
 </ul>
 </td>
-<td colspan="2"><p>ASHRAE 169 climate zone. Defaults to site’s climate_zone</p></td>
+<td colspan="3"><p>ASHRAE 169 climate zone. Defaults to site’s climate_zone</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>cec_climate_zone</p></li>
 </ul>
 </td>
-<td colspan="2"><p>CEC Title24 climate zone. Defaults to site’s cec_climate_zone</p></td>
+<td colspan="3"><p>CEC Title24 climate zone. Defaults to site’s cec_climate_zone</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p><strong>floor_area</strong></p></li>
+<li><p>floor_area</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Usable floor area (ft^2).</p></td>
+<td colspan="3"><p>Usable floor area (ft^2). Required for residential buildings, this represents conditioned floor area.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p><strong>number_of_stories</strong></p></li>
+<li><p>number_of_stories</p></li>
 </ul>
 </td>
-<td colspan="2"><p>The maximum number of building stories, sum of number of above and below ground stories.</p></td>
+<td colspan="3"><p>The maximum number of building stories, sum of number of above and below ground stories.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>integer</em></p></td>
+<td colspan="2"><p><em>integer</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>number_of_stories_above_ground</p></li>
 </ul>
 </td>
-<td colspan="2"><p>The number of building stories above ground. Defaults to number_of_stories.</p></td>
+<td colspan="3"><p>The number of building stories above ground. Defaults to number_of_stories. Required for residential buildings.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>integer</em></p></td>
+<td colspan="2"><p><em>integer</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>maximum_roof_height</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Maximum height of the roof relative to surface elevation (ft)</p></td>
+<td colspan="3"><p>Maximum height of the roof relative to surface elevation (ft)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>roof_type</p></li>
 </ul>
 </td>
-<td colspan="2"><p>The type of roof. Defaults to flat.</p></td>
+<td colspan="3"><p>The type of roof. Defaults to flat.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>enum</p></td>
-<td><p>Flat, Gable, Hip</p></td>
+<td colspan="2"><p>Flat, Gable, Hip</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p><strong>footprint_area</strong></p></li>
+<tr class="row-even"><td><ul class="simple">
+<li><p>foundation_type</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Area of the footprint (ft^2).  Calculated on export.</p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/foundationType</span></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>attic_type</p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/atticType</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>footprint_area</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Area of the footprint (ft^2).  Calculated on export.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>footprint_perimeter</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Perimeter of the footprint (ft). Calculated on export.</p></td>
+<td colspan="3"><p>Perimeter of the footprint (ft). Calculated on export.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>year_built</p></li>
 </ul>
 </td>
-<td colspan="2"><p>The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year.</p></td>
+<td colspan="3"><p>The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>integer</em></p></td>
+<td colspan="2"><p><em>integer</em></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>template</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/templateType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/templateType</span></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
-<li><p><strong>building_type</strong></p></li>
+<li><p>building_type</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>system_type</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/systemType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/systemType</span></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
+<li><p>heating_system_fuel_type</p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/heatingSystemFuelType</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>weekday_start_time</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default. Should this be part of a mixed type struct?</p></td>
+<td colspan="3"><p>Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>weekday_duration</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
+<td colspan="3"><p>Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>weekend_start_time</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default. Should this be part of a mixed type struct?</p></td>
+<td colspan="3"><p>Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>weekend_duration</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
+<td colspan="3"><p>Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>mixed_type_1</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>mixed_type_1_percentage</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Percentage of 1st mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>Percentage of 1st mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>maximum</p></td>
-<td><p>100</p></td>
+<tr class="row-odd"><td><p>maximum</p></td>
+<td colspan="2"><p>100</p></td>
 </tr>
-<tr class="row-odd"><td><p>minimum</p></td>
-<td><p>0</p></td>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>mixed_type_2</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>mixed_type_2_percentage</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>maximum</p></td>
-<td><p>100</p></td>
+<tr class="row-even"><td><p>maximum</p></td>
+<td colspan="2"><p>100</p></td>
 </tr>
-<tr class="row-even"><td><p>minimum</p></td>
-<td><p>0</p></td>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>mixed_type_3</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>mixed_type_3_percentage</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>maximum</p></td>
-<td><p>100</p></td>
+<tr class="row-odd"><td><p>maximum</p></td>
+<td colspan="2"><p>100</p></td>
 </tr>
-<tr class="row-odd"><td><p>minimum</p></td>
-<td><p>0</p></td>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>mixed_type_4</p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/buildingType</span></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>mixed_type_4_percentage</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Percentage of 4th mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>Percentage of 4th mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>maximum</p></td>
-<td><p>100</p></td>
+<tr class="row-even"><td><p>maximum</p></td>
+<td colspan="2"><p>100</p></td>
 </tr>
-<tr class="row-even"><td><p>minimum</p></td>
-<td><p>0</p></td>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>number_of_residential_units</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Total number of residential units in the building. Required for residential buildings or mixed-use buildings with residential use types.</p></td>
+<td colspan="3"><p>Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>integer</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>number_of_bedrooms</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>exterior_lighting_zone</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Choice of exterior lighting zone.</p></td>
+<td colspan="3"><p>Choice of exterior lighting zone.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>enum</p></td>
-<td><p>0 - Undeveloped Areas Parks, 1 - Developed Areas Parks, 2 - Neighborhood, 3 - All Other Areas, 4 - High Activity</p></td>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>0 - Undeveloped Areas Parks, 1 - Developed Areas Parks, 2 - Neighborhood, 3 - All Other Areas, 4 - High Activity</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>onsite_parking_fraction</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.</p></td>
+<td colspan="3"><p>Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>maximum</p></td>
-<td><p>1</p></td>
+<tr class="row-odd"><td><p>maximum</p></td>
+<td colspan="2"><p>1</p></td>
 </tr>
-<tr class="row-odd"><td><p>minimum</p></td>
-<td><p>0</p></td>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>power_factor</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Ratio of the real power used by building to the apparent power seen by grid.</p></td>
+<td colspan="3"><p>Ratio of the real power used by building to the apparent power seen by grid.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>minimum</p></td>
-<td><p>0</p></td>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>user_data</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Arbitrary user data</p></td>
+<td colspan="3"><p>Arbitrary user data</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>ev_charging</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Should be set to true if EV charging is associated with the building.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>ev_charging_station_type</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>Typical Home, Typical Public, Typical Work</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>delay_type</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>Min Delay, Max Delay, Min Power</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>ev_charging_behavior</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>Business as Usual, Free Workplace Charging at Project Site, Free Workplace Charging Across Metro Area</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>ev_percent</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Denotes the % of vehicles parked at the building that are EVs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>ev_curtailment_frac</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>True</p></td>
+<td colspan="3"><p>True</p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>definitions</p></td>
+<tr class="row-odd"><td rowspan="8"><p>oneOf</p></td>
+<td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>building_type</strong></p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>Single-Family Detached</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>building_type</strong></p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>Single-Family Attached</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>building_type</strong></p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>Multifamily</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>building_type</strong></p></li>
+</ul>
+</td>
+<td><p>enum</p></td>
+<td><p>Single-Family, Multifamily (2 to 4 units), Multifamily (5 or more units), Vacant, Office, Laboratory, Nonrefrigerated warehouse, Food sales, Public order and safety, Outpatient health care, Refrigerated warehouse, Religious worship, Public assembly, Education, Food service, Inpatient health care, Nursing, Lodging, Strip shopping mall, Enclosed mall, Retail other than mall, Service, Mixed use, Uncovered Parking, Covered Parking</p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>definitions</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>buildingType</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Primary building space type.</p></td>
+<td colspan="3"><p>Primary building space type.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>enum</p></td>
-<td><p>Single-Family, Multifamily (2 to 4 units), Multifamily (5 or more units), Mobile Home, Vacant, Office, Laboratory, Nonrefrigerated warehouse, Food sales, Public order and safety, Outpatient health care, Refrigerated warehouse, Religious worship, Public assembly, Education, Food service, Inpatient health care, Nursing, Lodging, Strip shopping mall, Enclosed mall, Retail other than mall, Service, Mixed use, Uncovered Parking, Covered Parking, null</p></td>
+<td colspan="2"><p>Single-Family Detached, Single-Family Attached, Multifamily, Single-Family, Multifamily (2 to 4 units), Multifamily (5 or more units), Vacant, Office, Laboratory, Nonrefrigerated warehouse, Food sales, Public order and safety, Outpatient health care, Refrigerated warehouse, Religious worship, Public assembly, Education, Food service, Inpatient health care, Nursing, Lodging, Strip shopping mall, Enclosed mall, Retail other than mall, Service, Mixed use, Uncovered Parking, Covered Parking, null</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>systemType</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Building HVAC system type. Should this be part of a mixed type struct?</p></td>
+<td colspan="3"><p>Building HVAC system type.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>enum</p></td>
-<td><p>Ideal Air Loads, PTAC with hot water heat, PTAC with hot water heat with central air source heat pump, PTAC with gas coil heat, PTAC with electric baseboard heat, PTAC with no heat, PTAC with district hot water heat, PTAC with central air source heat pump heat, PTHP, PSZ-AC with gas coil heat, PSZ-AC with electric baseboard heat, PSZ-AC with no heat, PSZ-AC with district hot water heat, PSZ-AC with central air source heat pump heat, PSZ-HP, Fan coil district chilled water with no heat, Fan coil district chilled water and boiler, Fan coil district chilled water and central air source heat pump, Fan coil district chilled water unit heaters, Fan coil district chilled water electric baseboard heat, Fan coil district hot and chilled water, Fan coil district hot water and chiller, Fan coil district hot water and air-cooled chiller, Fan coil chiller and boiler, Fan coil air-cooled chiller and boiler, Fan coil chiller and central air source heat pump, Fan coil air-cooled chiller and central air source heat pump, Fan coil chiller with no heat, DOAS with fan coil district chilled water with no heat, DOAS with fan coil district chilled water and boiler, DOAS with fan coil district chilled water and central air source heat pump, DOAS with fan coil district chilled water unit heaters, DOAS with fan coil district chilled water electric baseboard heat, DOAS with fan coil district hot and chilled water, DOAS with fan coil district hot water and chiller, DOAS with fan coil district hot water and air-cooled chiller, DOAS with fan coil chiller and boiler, DOAS with fan coil air-cooled chiller and boiler, DOAS with fan coil chiller and central air source heat pump, DOAS with fan coil air-cooled chiller and central air source heat pump, DOAS with fan coil chiller with no heat, VRF with DOAS, Ground Source Heat Pumps with DOAS, Baseboard district hot water heat, Baseboard district hot water heat with direct evap coolers, Baseboard electric heat, Baseboard electric heat with direct evap coolers, Baseboard hot water heat, Baseboard hot water heat with direct evap coolers, Window AC with no heat, Window AC with forced air furnace, Window AC with district hot water baseboard heat, Window AC with hot water baseboard heat, Window AC with electric baseboard heat, Window AC with unit heaters, Direct evap coolers, Direct evap coolers with unit heaters, Unit heaters, Heat pump heat with no cooling, Heat pump heat with direct evap cooler, VAV with reheat, VAV with reheat central air source heat pump, VAV with PFP boxes, VAV with gas reheat, VAV with zone unit heaters, VAV with electric baseboard heat, VAV cool with zone heat pump heat, PVAV with reheat, PVAV with reheat with central air source heat pump, PVAV with PFP boxes, Residential forced air, Residential forced air cooling hot water baseboard heat, Residential forced air with district hot water, Residential heat pump, Forced air furnace, Forced air furnace district chilled water fan coil, Forced air furnace direct evap cooler, Residential AC with no heat, Residential AC with electric baseboard heat</p></td>
+<td colspan="2"><p>PTAC with baseboard electric, PTAC with baseboard gas boiler, PTAC with baseboard district hot water, PTAC with gas unit heaters, PTAC with electric coil, PTAC with gas coil, PTAC with gas boiler, PTAC with no heat, PTAC with district hot water, PTAC with central air source heat pump, PTHP, PSZ-AC with gas coil, PSZ-AC with baseboard electric, PSZ-AC with no heat, PSZ-AC with district hot water, PSZ-AC with central air source heat pump, PSZ-HP, Fan coil district chilled water with no heat, Fan coil district chilled water with boiler, Fan coil district chilled water with central air source heat pump, Fan coil district chilled water with gas unit heaters, Fan coil district chilled water with baseboard electric, Fan coil district chilled water with district hot water, Fan coil chiller with district hot water, Fan coil air-cooled chiller with district hot water, Fan coil chiller with boiler, Fan coil air-cooled chiller with boiler, Fan coil chiller with central air source heat pump, Fan coil air-cooled chiller with central air source heat pump, Fan coil chiller with no heat, DOAS with fan coil district chilled water with no heat, DOAS with fan coil district chilled water and boiler, DOAS with fan coil district chilled water with central air source heat pump, DOAS with fan coil district chilled water with gas unit heaters, DOAS with fan coil district chilled water with baseboard electric, DOAS with fan coil district chilled water with district hot water, DOAS with fan coil chiller with district hot water, DOAS with fan coil air-cooled chiller with district hot water, DOAS with fan coil air-cooled chiller with boiler, DOAS with fan coil chiller with central air source heat pump, DOAS with fan coil air-cooled chiller with central air source heat pump, DOAS with fan coil chiller with no heat, DOAS with VRF, VRF, DOAS with water source heat pumps with ground source heat pump, Forced air furnace, Baseboard district hot water, Baseboard electric, Baseboard gas boiler, Baseboard central air source heat pump, Window AC with no heat, Window AC with forced air furnace, Window AC with baseboard district hot water, Window AC with baseboard electric, Window AC with unit heaters, Window AC with baseboard gas boiler, Window AC with baseboard central air source heat pump, Direct evap coolers with baseboard district hot water, Direct evap coolers with baseboard electric, Direct evap coolers with baseboard gas boiler, Direct evap coolers with baseboard central air source heat pump, Direct evap coolers with no heat, Direct evap coolers with gas unit heaters, Direct evap coolers with forced air furnace, Gas unit heaters, VAV chiller with gas boiler reheat, VAV chiller with gas coil reheat, VAV chiller with central air source heat pump reheat, VAV chiller with PFP boxes, VAV air-cooled chiller with gas boiler reheat, VAV air-cooled chiller with central air source heat pump reheat, VAV air-cooled chiller with district hot water reheat, VAV air-cooled chiller with gas coil reheat, VAV air-cooled chiller with no reheat with gas unit heaters, VAV district chilled water with gas boiler reheat, VAV district chilled water with central air source heat pump reheat, VAV district chilled water with no reheat with zone heat pump, VAV chiller with no reheat with baseboard electric, VAV air-cooled chiller with no reheat with zone heat pump, VAV district chilled water with district hot water reheat, VAV district chilled water with gas coil reheat, PVAV with gas heat with electric reheat, PVAV with central air source heat pump reheat, PVAV with PFP boxes, Residential - electric resistance and no cooling, Residential - electric resistance and central air conditioner, Residential - electric resistance and room air conditioner, Residential - electric resistance and evaporative cooler, Residential - furnace and no cooling, Residential - furnace and central air conditioner, Residential - furnace and room air conditioner, Residential - furnace and evaporative cooler, Residential - boiler and no cooling, Residential - boiler and central air conditioner, Residential - boiler and room air conditioner, Residential - boiler and evaporative cooler, Residential - air-to-air heat pump, Residential - mini-split heat pump, Residential - ground-to-air heat pump</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>heatingSystemFuelType</p></li>
+</ul>
+</td>
+<td colspan="3"><p>The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps).</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>electricity, natural gas, fuel oil, propane, wood</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>templateType</p></li>
 </ul>
 </td>
-<td colspan="2"><p>Standard template applied to building. Default to site’s default_template</p></td>
+<td colspan="3"><p>Standard template applied to building. Default to site’s default_template</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>DOE Ref Pre-1980, DOE Ref 1980-2004, 90.1-2004, 90.1-2007, 90.1-2010, 90.1-2013, NREL ZNE Ready 2017, DEER Pre-1975, DEER 1985, DEER 1996, DEER 2003, DEER 2007, DEER 2011, DEER 2014, DEER 2015, DEER 2017, DEER 2020, DEER 2025, DEER 2030, DEER 2035, DEER 2040, DEER 2045, DEER 2050, DEER 2055, DEER 2060, DEER 2065, DEER 2070, DEER 2075, Residential IECC 2006 - Customizable Template Sep 2020, Residential IECC 2009 - Customizable Template Sep 2020, Residential IECC 2012 - Customizable Template Sep 2020, Residential IECC 2015 - Customizable Template Sep 2020, Residential IECC 2018 - Customizable Template Sep 2020</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>foundationType</p></li>
+</ul>
+</td>
+<td colspan="3"><p>The foundation type of the building. Required for residential buildings.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>enum</p></td>
-<td><p>DOE Ref Pre-1980, DOE Ref 1980-2004, 90.1-2004, 90.1-2007, 90.1-2010, 90.1-2013, NREL ZNE Ready 2017, DEER Pre-1975, DEER 1985, DEER 1996, DEER 2003, DEER 2007, DEER 2011, DEER 2014, DEER 2015, DEER 2017, DEER 2020, DEER 2025, DEER 2030, DEER 2035, DEER 2040, DEER 2045, DEER 2050, DEER 2055, DEER 2060, DEER 2065, DEER 2070, DEER 2075</p></td>
+<td colspan="2"><p>slab, crawlspace - vented, crawlspace - unvented, basement - unconditioned, basement - conditioned, ambient</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>atticType</p></li>
+</ul>
+</td>
+<td colspan="3"><p>The attic type of the building. Required for single-family residential buildings.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>attic - vented, attic - unvented, attic - conditioned, flat roof</p></td>
 </tr>
 </tbody>
 </table>
@@ -565,6 +727,7 @@ eventually be used.</p>
 </div>
 <div class="section" id="system-parameters-schema">
 <h2>System Parameters Schema<a class="headerlink" href="#system-parameters-schema" title="Permalink to this headline">¶</a></h2>
+<p>Bolded elements are required fields.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20%" />
@@ -905,7 +1068,7 @@ eventually be used.</p>
 <li><p>ets_model</p></li>
 </ul>
 </td>
-<td colspan="3"><p>energy transfer station model, one side is connected with district water loops, and the other side is connected with building water loops</p></td>
+<td colspan="3"><p>Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>

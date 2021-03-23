@@ -77,13 +77,25 @@ For example, a coupling could define how the time series load actually connects 
 <h2>Getting Started as a Developer<a class="headerlink" href="#getting-started-as-a-developer" title="Permalink to this headline">¶</a></h2>
 <p>There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
 to follow the detailed instructions for setting up MBL and Docker in the <a class="reference external" href="getting_started">getting started</a> guide.</p>
-<p>Also, follow the instructions below to install pre-commit.</p>
-</div>
+<p>Follow the instructions below in order to configure your local environment:</p>
+<ul class="simple">
+<li><p>Clone this repo into a working directory</p></li>
+<li><p>(optional/as-needed) Add Python 3 to the environment variables</p></li>
+<li><p>For developers, dependency management is through <a class="reference external" href="https://python-poetry.org/docs/">Poetry</a>. Installation is accomplished by running <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>.</p></li>
+<li><p>Return to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
+<li><p>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span></code>. This will run all the unit and integration tests.</p></li>
+<li><p>Follow the instructions below to install pre-commit.</p></li>
+<li><p>To test pre-commit and building the documentation, you can run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">tox</span></code></p></li>
+</ul>
+<p>The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
+of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the
+<code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder. These files can be inspected in your favorite Modelica editor.</p>
 <div class="section" id="pre-commit">
-<h2>Pre-commit<a class="headerlink" href="#pre-commit" title="Permalink to this headline">¶</a></h2>
-<p>This project used <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency. To enable pre-commit, run the following from the command line.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pre-commit
-pre-commit install
+<h3>Pre-commit<a class="headerlink" href="#pre-commit" title="Permalink to this headline">¶</a></h3>
+<p>This project uses <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency.
+To enable pre-commit on every commit run the following from the command line from within the git checkout of the
+GMT:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit install
 </pre></div>
 </div>
 <p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.</p>
@@ -92,20 +104,22 @@ pre-commit install
 </div>
 </div>
 <div class="section" id="managed-tasks">
-<h2>Managed Tasks<a class="headerlink" href="#managed-tasks" title="Permalink to this headline">¶</a></h2>
+<h3>Managed Tasks<a class="headerlink" href="#managed-tasks" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="updating-schemas">
-<h3>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Permalink to this headline">¶</a></h3>
-<p>There is managed task to automatically pull updated GeoJSON schemas from the <code class="code docutils literal notranslate"><span class="pre">urbanopt-geojson-gem</span></code> GitHub project. A developer can run this command by calling</p>
+<h4>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Permalink to this headline">¶</a></h4>
+<p>There is managed task to automatically pull updated GeoJSON schemas from the <code class="code docutils literal notranslate"><span class="pre">urbanopt-geojson-gem</span></code> GitHub
+project. A developer can run this command by calling</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_schemas
 </pre></div>
 </div>
 <p>The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.</p>
 </div>
 <div class="section" id="updating-licenses">
-<h3>Updating Licenses<a class="headerlink" href="#updating-licenses" title="Permalink to this headline">¶</a></h3>
+<h4>Updating Licenses<a class="headerlink" href="#updating-licenses" title="Permalink to this headline">¶</a></h4>
 <p>To apply the copyright/license to all the files, run the following managed task</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_licenses
 </pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -118,9 +132,8 @@ pre-commit install
 <li><p>Create the instance file: In the templates directory, you must define &lt;ModelName&gt;_Instance.mopt which is the template that instantiates the system in the district model.</p></li>
 </ol>
 <p>See the notes below for more information.</p>
-</div>
 <div class="section" id="couplings">
-<h2>Couplings<a class="headerlink" href="#couplings" title="Permalink to this headline">¶</a></h2>
+<h3>Couplings<a class="headerlink" href="#couplings" title="Permalink to this headline">¶</a></h3>
 <p>A coupling defines the Modelica code necessary for interfacing two specific models, e.g. a time series load and heating indirect ETS.
 Each coupling is unique in its requirements:</p>
 <ul class="simple">
@@ -129,7 +142,13 @@ Each coupling is unique in its requirements:</p>
 </ul>
 <p>Thus each coupling must define two template files, ComponentDefinitions.mopt and ConnectStatements.mopt, respectively. These files must be placed in the directory <code class="code docutils literal notranslate"><span class="pre">couplings/templates/&lt;model</span> <span class="pre">A&gt;_&lt;model</span> <span class="pre">B&gt;/</span></code>.
 In general, the order of the names should follow the order of system types if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant)</p>
+</div>
+<div class="section" id="district-system">
+<h3>District system<a class="headerlink" href="#district-system" title="Permalink to this headline">¶</a></h3>
 <p>A district system is the model which incorporates all of the models and their couplings.</p>
+</div>
+<div class="section" id="templating-flow">
+<h3>Templating Flow<a class="headerlink" href="#templating-flow" title="Permalink to this headline">¶</a></h3>
 <p>When rendering the district system model file, it must:</p>
 <ol class="arabic simple">
 <li><p>call to_modelica() for each model to generate its Modelica code</p></li>
@@ -139,6 +158,7 @@ In general, the order of the names should follow the order of system types if yo
 </ol>
 <p>Refer to <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/templates/DistrictEnergySystem.mot">DistrictEnergySystem.mot</a> and <a class="reference internal" href="_autosummary/geojson_modelica_translator.model_connectors.districts.district.District.html#geojson_modelica_translator.model_connectors.districts.district.District" title="geojson_modelica_translator.model_connectors.districts.district.District"><code class="xref py py-meth docutils literal notranslate"><span class="pre">District()</span></code></a> for reference.</p>
 <p>Each templating step has access to a particular set of variables, which is defined below.</p>
+</div>
 <div class="section" id="summary-of-templating-contexts">
 <h3>Summary of Templating Contexts<a class="headerlink" href="#summary-of-templating-contexts" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="model-definition">
@@ -236,25 +256,25 @@ the runner to work locally.</p>
 <h2>Release Instructions<a class="headerlink" href="#release-instructions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Bump version to &lt;NEW_VERSION&gt; in setup.py (use semantic versioning).</p></li>
-<li><p>Run <code class="code docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">--all-files</span></code> to ensure code is formatted properly.</p></li>
+<li><p>Run <code class="code docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code> to ensure code is formatted properly.</p></li>
 <li><p>Create a PR against develop into main.</p></li>
 <li><p>After main branch passes, merge and checkout the main branch. Build the distribution using the following code:</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove old dist packages</span>
 rm -rf dist/*
-poetry build
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Run <cite>git tag &lt;NEW_VERSION&gt;</cite>. (Note that <cite>python setup.py –version</cite> pulls from the latest tag.)</p></li>
-<li><p>Verify that the files in the dist/* folder have the correct version (no dirty, no sha)</p></li>
-<li><p>Run the following to release</p></li>
+<li><p>Run <cite>git tag &lt;NEW_VERSION&gt;</cite>.</p></li>
+<li><p>Run the following to release.</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry publish
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry publish --build
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Build and release the documentation</p></li>
+<li><p>Enter your PyPI username and password</p></li>
+<li><p>(If the build fails) verify that the files in the dist/* folder have the correct version (no dirty, no sha).</p></li>
+<li><p>Build and release the documentation.</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and verify with the following</span>
 <span class="nb">cd</span> docs
@@ -299,15 +319,19 @@ poetry run make html
   <ul>
 <li><a class="reference internal" href="#">Developer Resources</a><ul>
 <li><a class="reference internal" href="#design-overview">Design Overview</a></li>
-<li><a class="reference internal" href="#getting-started-as-a-developer">Getting Started as a Developer</a></li>
+<li><a class="reference internal" href="#getting-started-as-a-developer">Getting Started as a Developer</a><ul>
 <li><a class="reference internal" href="#pre-commit">Pre-commit</a></li>
 <li><a class="reference internal" href="#managed-tasks">Managed Tasks</a><ul>
 <li><a class="reference internal" href="#updating-schemas">Updating Schemas</a></li>
 <li><a class="reference internal" href="#updating-licenses">Updating Licenses</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#adding-new-models">Adding New Models</a></li>
-<li><a class="reference internal" href="#couplings">Couplings</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-new-models">Adding New Models</a><ul>
+<li><a class="reference internal" href="#couplings">Couplings</a></li>
+<li><a class="reference internal" href="#district-system">District system</a></li>
+<li><a class="reference internal" href="#templating-flow">Templating Flow</a></li>
 <li><a class="reference internal" href="#summary-of-templating-contexts">Summary of Templating Contexts</a><ul>
 <li><a class="reference internal" href="#model-definition">Model Definition</a></li>
 <li><a class="reference internal" href="#component-definitions">Component Definitions</a></li>

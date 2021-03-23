@@ -48,33 +48,44 @@
             
   <div class="section" id="getting-started">
 <span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">geojson-modelica-translator</span></code></p>
+<p>There are three major steps to running the GeoJSON to Modelica Translator (GMT):</p>
+<ol class="arabic simple">
+<li><p>generating the GeoJSON and System Parameter JSON files,</p></li>
+<li><p>creating of the Modelica package containing the district system, and</p></li>
+<li><p>running the Modelica package.</p></li>
+</ol>
+<p>Depending on the use case, the need to run all the steps above may not be needed. For example:
+it may be desirable to only generate the Modelica package and then open and run the model
+in a Modelica user interface such as Dymola. Or, there may be a case to simply generate the
+GeoJSON and System Parameter file from results of an URBANopt SDK simulation result set.</p>
+<p>This Getting Started guide is broken up into three major setup steps:</p>
+<ol class="arabic simple">
+<li><p>Installing the GMT from PyPi</p></li>
+<li><p>Installing and configuring the Modelica Buildings Library (MBL)</p></li>
+<li><p>Installing and configuring Docker in order to run simulations using JModelica</p></li>
+</ol>
+<div class="section" id="gmt-installation">
+<h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Permalink to this headline">¶</a></h2>
+<p>You must have PIP and Python 3.7 or later installed (run <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see what version you’re using). After installing Python and PIP run the following in a terminal (requires Python 3):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install geojson-modelica-translator
+</pre></div>
+</div>
+<p>After installation of the GMT, a new command line interface (called the URBANopt District Energy Systems [UO DES] CLI) can be used to run various commands. Without needing to install the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">MBL</a> the user can use the CLI to build the system parameters file from the results of the URBANopt SDK. For more information run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des -h
+uo_des build-system-param -h
+
+<span class="c1"># the command below is only an example; however, it will run if the repository</span>
+<span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
+uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
+</pre></div>
+</div>
+</div>
+<div class="section" id="mbl-installation">
+<h2>MBL Installation<a class="headerlink" href="#mbl-installation" title="Permalink to this headline">¶</a></h2>
+<p>The Modelica Buildings Library contains many models that are needed to assemble the district systems.
+Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:</p>
 <ul class="simple">
-<li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your platform</p></li>
-<li><p>Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
-</ul>
-<p>For help and command documentation in the terminal: <code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">-h</span></code></p>
-<p>Documentation for each command can be found at:</p>
-<ul class="simple">
-<li><p><code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">build-system-param</span> <span class="pre">-h</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">create-model</span> <span class="pre">-h</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">uo_des</span> <span class="pre">run-model</span> <span class="pre">-h</span></code></p></li>
-</ul>
-<div class="section" id="library-installation">
-<h2>Library Installation<a class="headerlink" href="#library-installation" title="Permalink to this headline">¶</a></h2>
-<p>The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the
-proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to
-install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this
-approach does not require Python 2.</p>
-<ul class="simple">
-<li><p>Clone this repo into a working directory</p></li>
-<li><p>(optional/as-needed) Add Python 3 to the environment variables</p></li>
-<li><p>Install Poetry (<code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>). More information on Poetry can be found <a class="reference external" href="https://python-poetry.org/docs/">here</a>.</p></li>
-<li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your platform</p></li>
-<li><p>Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
-<li><dl class="simple">
-<dt>Install the Modelica Buildings Library from GitHub</dt><dd><ul>
-<li><p>Clone <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">https://github.com/lbl-srg/modelica-buildings/</a> into a working directory outside of the GMT directory</p></li>
+<li><p>Clone the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">MBL</a> into a working directory outside of the GMT directory</p></li>
 <li><p>Change to the directory inside the modelica-buildings repo you just checked out. (<code class="code docutils literal notranslate"><span class="pre">cd</span> <span class="pre">modelica-buildings</span></code>)</p></li>
 <li><dl class="simple">
 <dt>Install git-lfs</dt><dd><ul>
@@ -85,23 +96,39 @@ approach does not require Python 2.</p>
 </dl>
 </li>
 <li><p>Pull the correct staging branch for this project with: <code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">issue2204_gmt_mbl</span></code></p></li>
-<li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).</p></li>
+<li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings). Restart your terminal to ensure that the MBL library is exported correctly.</p></li>
 </ul>
-</dd>
-</dl>
-</li>
-<li><p>Return to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
-<li><dl class="simple">
-<dt>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">tox</span></code></dt><dd><ul>
-<li><p>This should run all unit tests, pre-commit, and build the docs.</p></li>
+<p>Once the MBL is installed, then the CLI can be used to create the model with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des create-model -h
+
+<span class="c1"># the command below is only an example; however, it will run if the repository</span>
+<span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
+uo_des create-model sys_param.json
+</pre></div>
+</div>
+<p>The resulting Modelica package will be created and can be opened in a Modelica editor. Open the <code class="code docutils literal notranslate"><span class="pre">package.mo</span></code> file in the root directory of the generated package. You will also need to
+load the MBL into your Modelica editor.</p>
+</div>
+<div class="section" id="docker-installation">
+<h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
+<p>The preferred method of running the simulations would be within Dymola; however, that is not a
+practical solution for many based on the license requirement. The GMT enables the running of the
+models using JModelica which requires the installation of <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a>. To configure Docker, do the
+following:</p>
+<ul class="simple">
+<li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your system.</p></li>
+<li><p>Configure Docker Desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
+<li><p>It is recommended to test the installation of Docker by simply running <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">hello-world</span></code> in a terminal.</p></li>
 </ul>
-</dd>
-</dl>
-</li>
-</ul>
-<p>The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
-of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the
-<code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder. These files can be inspected in your favorite Modelica editor.</p>
+<p>After Docker is installed and configured, you can use the CLI to run the model using the following
+command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des run-model -h
+
+<span class="c1"># the command below is only an example; however, it will run if the repository</span>
+<span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
+uo_des run-model model_from_sdk
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -115,7 +142,9 @@ of Modelica models that are created and persisted into the <code class="code doc
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
-<li><a class="reference internal" href="#library-installation">Library Installation</a></li>
+<li><a class="reference internal" href="#gmt-installation">GMT Installation</a></li>
+<li><a class="reference internal" href="#mbl-installation">MBL Installation</a></li>
+<li><a class="reference internal" href="#docker-installation">Docker Installation</a></li>
 </ul>
 </li>
 </ul>

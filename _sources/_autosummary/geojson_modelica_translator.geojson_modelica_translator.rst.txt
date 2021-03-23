@@ -1,8 +1,8 @@
-..
+﻿..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
 
-geojson\_modelica\_translator.geojson\_modelica\_translator
-===========================================================
+geojson\_modelica\_translator
+=============================
 
 .. automodule:: geojson_modelica_translator.geojson_modelica_translator
 
