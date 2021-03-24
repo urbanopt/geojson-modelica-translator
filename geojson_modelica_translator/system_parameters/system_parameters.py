@@ -37,7 +37,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import json
-import os
 from copy import deepcopy
 from pathlib import Path
 
@@ -71,13 +70,13 @@ class SystemParameters(object):
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        with open(os.path.join(os.path.dirname(__file__), "schema.json"), "r") as f:
+        with open((Path(__file__).parent / "schema.json"), "r") as f:
             self.schema = json.load(f)
         self.data = {}
         self.filename = filename
 
         if self.filename:
-            if os.path.exists(self.filename):
+            if Path(self.filename).exists():
                 with open(self.filename, "r") as f:
                     self.data = json.load(f)
             else:
@@ -112,14 +111,14 @@ class SystemParameters(object):
         """Resolve the paths in the file to be absolute if they were defined as relative. This method uses
         the JSONPath (with ext) to find if the value exists in the self.data object. If so, it then uses
         the set_param which navigates the JSON tree to set the value as needed."""
-        filepath = os.path.abspath(os.path.dirname(self.filename))
+        filepath = Path(self.filename).parent.resolve()
 
         for pe in self.PATH_ELEMENTS:
             matches = parse(pe["json_path"]).find(self.data)
             for index, match in enumerate(matches):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
-                new_path = os.path.join(filepath, match.value)
-                parse(str(match.full_path)).update(self.data, new_path)
+                new_path = Path(filepath) / match.value
+                parse(str(match.full_path)).update(self.data, str(new_path))
 
     # def resolve_defaults(self):
     #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
