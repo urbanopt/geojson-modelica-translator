@@ -193,6 +193,17 @@ In general, the order of the names should follow the order of system types if yo
 <li><p><code class="code docutils literal notranslate"><span class="pre">model</span></code>: contains info about the model instance, including <code class="code docutils literal notranslate"><span class="pre">modelica_type</span></code> and <code class="code docutils literal notranslate"><span class="pre">id</span></code>. These should be used to define the model, for example <code class="code docutils literal notranslate"><span class="pre">{{</span> <span class="pre">model.modelica_type</span> <span class="pre">}}</span> <span class="pre">{{</span> <span class="pre">model.id</span> <span class="pre">}}(...)</span></code></p></li>
 </ul>
 </div>
+<div class="section" id="simulation-mapper-class-translator">
+<h4>Simulation Mapper Class / Translator<a class="headerlink" href="#simulation-mapper-class-translator" title="Permalink to this headline">¶</a></h4>
+<p>The Simulation Mapper Class can operate at multiple levels:</p>
+<ol class="arabic simple">
+<li><p>The GeoJSON level – input: geojson, output: geojson+</p></li>
+<li><p>The Load Model Connection – input: geojson+, output: multiple files related to building load models (spawn, rom, csv)</p></li>
+<li><p>The Translation to Modelica – input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.</p></li>
+</ol>
+<p>In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a
+simulation mapper class from existing at that level.</p>
+</div>
 </div>
 </div>
 <div class="section" id="running-simulations">
@@ -337,6 +348,7 @@ poetry run make html
 <li><a class="reference internal" href="#component-definitions">Component Definitions</a></li>
 <li><a class="reference internal" href="#connect-statements">Connect Statements</a></li>
 <li><a class="reference internal" href="#model-instance">Model Instance</a></li>
+<li><a class="reference internal" href="#simulation-mapper-class-translator">Simulation Mapper Class / Translator</a></li>
 </ul>
 </li>
 </ul>
