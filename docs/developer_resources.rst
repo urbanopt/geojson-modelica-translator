@@ -169,6 +169,18 @@ This template is used to declare a model instance.
 - :code:`couplings`: contains each coupling the model is associated with. For example, if our ETS was coupled to a load and network, couplings would look like :code:`{ load_couplings: [<load coupling>], network_couplings: [<network coupling>] }`. This can be used to access coupling and model ids.
 - :code:`model`: contains info about the model instance, including :code:`modelica_type` and :code:`id`. These should be used to define the model, for example :code:`{{ model.modelica_type }} {{ model.id }}(...)`
 
+Simulation Mapper Class / Translator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Simulation Mapper Class can operate at multiple levels:
+
+1. The GeoJSON level -- input: geojson, output: geojson+
+2. The Load Model Connection -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
+3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
+
+In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a
+simulation mapper class from existing at that level.
+
 Running Simulations
 -------------------
 
