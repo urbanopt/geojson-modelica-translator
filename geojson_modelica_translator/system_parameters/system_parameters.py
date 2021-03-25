@@ -294,7 +294,7 @@ class SystemParameters(object):
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
         for building in building_list:
-            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = district_nominal_mfrt.round(3)
+            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
         param_template['buildings']['custom'] = building_list
 
         with open(sys_param_filename, 'w') as outfile:
