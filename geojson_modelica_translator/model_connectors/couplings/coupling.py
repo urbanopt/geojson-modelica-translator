@@ -168,9 +168,9 @@ class Coupling(object):
 
         # get the template file path relative to the package
         template_filename = template.filename
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
-        return template.render(updated_template_params), template_filename
+        return template.render(updated_template_params), template_filename[1:]
 
     def render_templates(self, template_params):
         """Renders the shared components and connect statements for the coupling.

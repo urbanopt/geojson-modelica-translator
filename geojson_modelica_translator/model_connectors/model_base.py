@@ -167,9 +167,9 @@ class ModelBase(object):
 
         # get template path relative to the package
         template_filename = template.filename
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
-        return template.render(template_params), template_filename
+        return template.render(template_params), template_filename[1:]
 
     def to_dict(self, scaffold):
         return {
