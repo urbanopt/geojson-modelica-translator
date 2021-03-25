@@ -37,6 +37,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from pathlib import Path
+from shutil import rmtree
 
 import click
 from geojson_modelica_translator.geojson_modelica_translator import (
@@ -155,7 +156,14 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
     "model_type",
     default='time_series',
 )
-def create_model(model_type, sys_param_file, geojson_feature_file, project_name):
+@click.option(
+    '-o',
+    '--overwrite',
+    is_flag=True,
+    help="Delete and replace any existing folder of the same name & location",
+    default=False
+)
+def create_model(model_type, sys_param_file, geojson_feature_file, project_name, overwrite):
     """Build Modelica model from user data
 
     SYS_PARAM_FILE: Path/name to sys-param file, possibly created with this CLI.
@@ -173,7 +181,15 @@ def create_model(model_type, sys_param_file, geojson_feature_file, project_name)
     :param model_type: String, type of model to create
     :param sys_param_file: Path, location and name of file created with this cli
     :param geojson_feature_file: Path, location and name of sdk feature_file
+    :param project_name: Path, location and name of Modelica model dir to be created
+    :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
     """
+
+    if Path(project_name).exists():
+        if overwrite:
+            rmtree(project_name)
+        else:
+            raise Exception(f"Output dir '{project_name}' already exists and overwrite flag is not given")
 
     gj = GeoJsonModelicaTranslator.from_geojson(geojson_feature_file)
     sys_params = SystemParameters(sys_param_file)
