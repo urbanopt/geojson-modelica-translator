@@ -13,7 +13,7 @@ The project is motivated by the need to easily evaluate district energy systems.
 Architecture Overview
 ---------------------
 
-The GMT is designed to enable "easy" swapping of building loads, district systems, and network topologies. Some of these functionalities are more developed than others, for instance swapping building loads between is currently fleshed out; however, swapping between a first and fourth generation heating system has yet to be fully implemented.
+The GMT is designed to enable "easy" swapping between building loads, district systems, and network topologies. Some of these functionalities are more developed than others, for instance swapping building loads between is currently fleshed out; however, swapping between a first and fourth generation heating system has yet to be fully implemented.
 
 The diagram below is meant to illustrate the future proposed interconnectivity and functionality of the GMT project.
 
@@ -24,7 +24,7 @@ As shown in the image, there are multiple building loads that can be deployed wi
 Building Load Models
 ++++++++++++++++++++
 
-The building loads can be defined multiple ways depending on the fidelity of the required models. Each of the building load models are easily replaced using configuration settings within the System Parameters file. The 4 different building load models include:
+The building loads can be defined multiple ways depending on the fidelity of the required models. Each of the building load models are easily replaced using configuration settings within the System Parameters file. The models can have mixed building load models, for example the district system can have 3 time series models, an RC model, and a detail Spawn model. The 4 different building load models include:
 
 #. Time Series in Watts: This building load is the total heating, cooling, and domestic hot water loads represented in a CSV type file (MOS file). The units are Watts and should be reported at an hour interval; however, finer resolution is possible. The load is defined as the load seen by the ETS.
 #. Time Series as mass flow rate and delta temperature: This building load is similar to the other Time Series model but uses the load as seen by the ETS in the form of mass flow rate and delta temperature. The file format is similar to the other Time Series model but the columns are mass flow rate and delta temperature for heating and cooling separately.
