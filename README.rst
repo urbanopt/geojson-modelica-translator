@@ -26,7 +26,7 @@ It is possible to test the GeoJSON to Modelica Translator (GMT) by simpling inst
 command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the
 functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings
 library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available
-`here <docs/getting_started.rst>`_
+`here <docs/getting_started.rst>`_.
 
 To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola) then
 run the following code below up to the point of run-model. The example generates a complete 4th Generation District
