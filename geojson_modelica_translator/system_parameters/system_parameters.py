@@ -276,8 +276,8 @@ class SystemParameters(object):
             building_nominal_mfrt = 0
             for measure_file_path in measure_list:
                 # Grab the relevant 2 components of the path: feature name and measure folder name, items -3 & -2 respectively
-                feature_name = Path(measure_file_path).resolve().parts[-3]
-                measure_folder_name = Path(measure_file_path).resolve().parts[-2]
+                feature_name = Path(measure_file_path).parts[-3]
+                measure_folder_name = Path(measure_file_path).parts[-2]
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
