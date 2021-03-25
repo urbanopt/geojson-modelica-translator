@@ -103,7 +103,7 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
 
     SYS_PARAM_FILENAME: Path/name to sys-param file be created. Be sure to include the ".json" suffix.
 
-    SCENARIO_FILE: Path to sdk scenario folder with OpenStudio results.
+    SCENARIO_FILE: Path to sdk scenario file.
 
     FEATURE_FILE: Path to sdk json feature file with data about the buildings.
 
