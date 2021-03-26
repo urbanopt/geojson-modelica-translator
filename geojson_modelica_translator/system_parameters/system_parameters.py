@@ -118,7 +118,7 @@ class SystemParameters(object):
             for index, match in enumerate(matches):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
                 new_path = Path(filepath) / match.value
-                parse(str(match.full_path)).update(self.data, str(new_path.as_posix()))
+                parse(str(match.full_path)).update(self.data, new_path.as_posix())
 
     # def resolve_defaults(self):
     #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
