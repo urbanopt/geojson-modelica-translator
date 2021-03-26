@@ -285,7 +285,7 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = building_nominal_mfrt
+                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
