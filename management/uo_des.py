@@ -187,7 +187,7 @@ def create_model(model_type, sys_param_file, geojson_feature_file, project_name,
 
     if Path(project_name).exists():
         if overwrite:
-            rmtree(project_name)
+            rmtree(project_name, ignore_errors=True)
         else:
             raise Exception(f"Output dir '{project_name}' already exists and overwrite flag is not given")
 
