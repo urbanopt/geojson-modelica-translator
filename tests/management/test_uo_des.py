@@ -39,14 +39,14 @@ class CLIIntegrationTest(TestCase):
     def test_cli_overwrites_properly(self):
         # run subprocess as if we're an end-user, expecting to hit error message
         project_name = 'modelica_project'
-        with self.assertRaises(Exception) as context:
-            run(['uo_des', 'create-model', self.output_dir / 'test_sys_param.json',
-                 self.feature_file_path, self.output_dir / project_name])
-        self.assertIn("already exists and overwrite flag is not given", str(context.exception))
+        no_overwrite_result = run(['uo_des', 'create-model', self.output_dir / 'test_sys_param.json',
+                                   self.feature_file_path, self.output_dir / project_name], capture_output=True)
+        assert no_overwrite_result.returncode != 0
+        self.assertIn("already exists and overwrite flag is not given", no_overwrite_result.stderr.decode())
 
         # Run subprocess with overwrite flag, expect it to write new files without errors
         run(['uo_des', 'create-model', self.output_dir / 'test_sys_param.json',
-             self.feature_file_path, self.output_dir / project_name], '--overwrite')
+             self.feature_file_path, self.output_dir / project_name, '--overwrite'])
 
         # If this file exists, the cli command ran successfully
         assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
