@@ -72,7 +72,20 @@ jobs:
         name: Tox ${{ matrix.test_env }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: poetry run tox -e ${{ matrix.test_env }}
+        run: |
+          POSARGS=""
+          if [ '${{ matrix.test_env }}' == 'python' ] && [ '${{ matrix.os }}' == 'windows-latest' ]; then
+            # for windows, skip python tests that require simulation (currently broken)
+            POSARGS="-- -m 'not simulation' ./tests"
+          fi
+          poetry run tox -e ${{ matrix.test_env }} ${POSARGS}
+      -
+        name: Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' }}
+        run: |
+          poetry run coveralls
       -
         name: Job Failed
         if: ${{ failure() }}

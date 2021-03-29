@@ -40,6 +40,8 @@ import os
 import shutil
 import unittest
 
+import pytest
+
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
 
@@ -75,6 +77,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
 
+    @pytest.mark.simulation
     def test_run_in_docker_errors(self):
         mr = ModelicaRunner()
         file_to_run = os.path.join(self.run_path, 'no_file.mo')
@@ -87,6 +90,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             mr.run_in_docker(file_to_run)
         self.assertEqual(f'Expecting to run a file, not a folder in {file_to_run}', str(exc.exception))
 
+    @pytest.mark.simulation
     def test_run_in_docker(self):
         mr = ModelicaRunner()
         mr.run_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
