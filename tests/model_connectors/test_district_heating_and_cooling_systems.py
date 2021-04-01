@@ -163,20 +163,18 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
         )
 
-        # check the overall thermal load between the first load and its ETSes
-        heating_indirect = heat_etses[0]
-        cooling_indirect = cool_etses[0]
-        (_, heating_indirect_q_flow) = mat_results.values(f'{heating_indirect.id}.Q_flow')
-        (_, cooling_indirect_q_flow) = mat_results.values(f'{cooling_indirect.id}.Q_flow')
+        # check the thermal load
+        (_, load_q_req_hea_flow) = mat_results.values(f'{load.id}.QReqHea_flow')
+        (_, load_q_req_coo_flow) = mat_results.values(f'{load.id}.QReqCoo_flow')
         (_, load_q_heat_flow) = mat_results.values(f'{load.id}.QHea_flow')
         (_, load_q_cool_flow) = mat_results.values(f'{load.id}.QCoo_flow')
 
         # make sure the q flow is positive
-        heating_indirect_q_flow, cooling_indirect_q_flow = np.abs(heating_indirect_q_flow), np.abs(cooling_indirect_q_flow)
+        load_q_req_hea_flow, load_q_req_coo_flow = np.abs(load_q_req_hea_flow), np.abs(load_q_req_coo_flow)
         load_q_heat_flow, load_q_cool_flow = np.abs(load_q_heat_flow), np.abs(load_q_cool_flow)
 
-        cool_cvrmsd = self.cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
-        heat_cvrmsd = self.cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
+        cool_cvrmsd = self.cvrmsd(load_q_cool_flow, load_q_req_coo_flow)
+        heat_cvrmsd = self.cvrmsd(load_q_heat_flow, load_q_req_hea_flow)
 
         CVRMSD_MAX = 0.3
         # TODO: fix q flows to meet the CVRMSD maximum, then make these assertions rather than warnings
