@@ -38,6 +38,53 @@ from geojson_modelica_translator.model_connectors.couplings.utils import (
 )
 
 
+class DiagramNode:
+    def __init__(self, context_id, model_name, model_type):
+        """
+        :param context_id: str, used for "grouping" nodes. E.g. this would be
+          either the coupling id or the model id (depending on where the icon is declared)
+        :param model_name: str
+        :param model_type: str, general type of the component (e.g. load, network, etc)
+        """
+        self.context_id = context_id
+        self.model_name = model_name
+        self.model_type = model_type
+        self.icon = DiagramIcon.get_icon(model_type)
+        self.connections = defaultdict(list)
+
+    def __eq__(self, other):
+        if not isinstance(other, DiagramNode):
+            return False
+
+        def _simple_eq(a, b):
+            return (
+                a.context_id == b.context_id
+                and a.model_name == b.model_name
+            )
+
+        if not _simple_eq(self, other):
+            return False
+
+        # check connections iteratively to avoid infinite recursion
+        if self.connections.keys() != other.connections.keys():
+            return False
+
+        for port_name in self.connections.keys():
+            for self_conn, other_conn in zip(self.connections[port_name], other.connections[port_name]):
+                if not _simple_eq(self_conn[0], other_conn[0]) or self_conn[1] != other_conn[1]:
+                    return False
+
+        return True
+
+    def add_connection(self, this_port, other_node, other_port):
+        """
+        :param this_port: str, name or dotted path of port for this node (should not start with '.' though)
+        :param other_node: DiagramNode, other node connecting to
+        :param other_port: str, name or dotted path of port for other node (should not start with '.' though)
+        """
+        self.connections[this_port].append((other_node, other_port))
+
+
 class Diagram:
     grid_cells_width = 10  # width and height of grid in number of cells
     grid_cell_size = 20
@@ -52,12 +99,12 @@ class Diagram:
         # track coordinates, with 0,0 at top left, coords increasing moving down and right
         self._current_x, self._current_y = 0, 0
 
-    def to_dict(self, id, is_coupling):
+    def to_dict(self, context_id, is_coupling):
         """Get the diagram as a dictionary, to be used for templating for model
         instances or couplings.
 
-        :param id: str, model or coupling ID to get the dictionary for
-        :param is_coupling: bool, True if id is for a coupling, False if id is for a model
+        :param context_id: str, model or coupling context_id to get the dictionary for
+        :param is_coupling: bool, True if context_id is for a coupling, False if context_id is for a model
 
         {
             'transformation': {
@@ -90,16 +137,15 @@ class Diagram:
 
         # add transformations defined within this id's context
         # e.g. if id is for a model, add all transformations defined in the model instance template
-        for component_name, details in self._initial_diagram_graph.get(id, {}).items():
-            icon = DiagramIcon.get_icon(details['type'])
+        for component_name, diagram_node in self._initial_diagram_graph.get(context_id, {}).items():
             # x1, y1 is lower left of icon, x2, y2 is upper right
             coords = {
                 'x1': translate_x(self._current_x),
-                'y1': translate_y(self._current_y + (icon.height * self.grid_cell_size)),
-                'x2': translate_x(self._current_x + (icon.width * self.grid_cell_size)),
+                'y1': translate_y(self._current_y + (diagram_node.icon.height * self.grid_cell_size)),
+                'x2': translate_x(self._current_x + (diagram_node.icon.width * self.grid_cell_size)),
                 'y2': translate_y(self._current_y),
             }
-            transformations[component_name][details['type']] = transformation_template.substitute(coords)
+            transformations[component_name][diagram_node.model_type] = transformation_template.substitute(coords)
 
             self._current_x = self._current_x + self.grid_cell_size + self.icon_padding
             if self._current_x >= self.grid_size:
@@ -108,32 +154,32 @@ class Diagram:
                 # move to next grid row
                 self._current_y += self.grid_cell_size + self.icon_padding
 
-        diagram_ids = [id]
+        diagram_ids = [context_id]
         if is_coupling:
-            coupling = self._coupling_graph.get_coupling(id)
+            coupling = self._coupling_graph.get_coupling(context_id)
             diagram_ids += [coupling.model_a.id, coupling.model_b.id]
 
         # add lines - including the edges connecting components not written as part of the coupling
-        for diagram_id in diagram_ids:
-            for component_name, details in self._initial_diagram_graph.get(diagram_id, {}).items():
-                for component_port, other_components in details['edges'].items():
+        for this_context_id in diagram_ids:
+            for component_name, diagram_node in self._initial_diagram_graph.get(this_context_id, {}).items():
+                for component_port, other_components in diagram_node.connections.items():
                     for other_component in other_components:
-                        other_id, other_name, other_port = other_component
-                        # include this line if either:
+                        other_node, other_port = other_component
+                        # include this connection if either:
                         #   - we're working on the coupling lines
-                        #   - this edge connects to another model we might be interested in
+                        #   - this connects to another model we might be interested in
                         #     (e.g. model a instance connecting to model b instance)
-                        include_line = diagram_id == id or other_id in diagram_ids
+                        include_line = this_context_id == context_id or other_node.context_id in diagram_ids
                         if include_line:
                             line = line_template.substitute()
                             if component_port not in lines[component_name]:
                                 lines[component_name][component_port] = {
-                                    other_name: {
+                                    other_node.model_name: {
                                         other_port: line
                                     }
                                 }
                             else:
-                                lines[component_name][component_port][other_name] = {
+                                lines[component_name][component_port][other_node.model_name] = {
                                     other_port: line
                                 }
 
@@ -185,16 +231,13 @@ class Diagram:
         :param couplings: list[Coupling]
         :return: dict, diagram graph
         """
-        # first add the graph nodes, which are the transformation commands (they're the rendering of icons)
-        diagram_graph_by_id = {}
+        diagram_graph_by_id = defaultdict(dict)
         for diagram_context_id, commands in diagram_commands_by_id.items():
-            diagram_graph_by_id[diagram_context_id] = {}
+            # get the commands which create icons
             transformation_cmds = [cmd for cmd in commands if isinstance(cmd, DiagramTransformation)]
             for cmd in transformation_cmds:
-                diagram_graph_by_id[diagram_context_id][cmd.model_name] = {}
-                diagram_graph_by_id[diagram_context_id][cmd.model_name]['type'] = cmd.model_type
-                # we will add edges later
-                diagram_graph_by_id[diagram_context_id][cmd.model_name]['edges'] = defaultdict(list)
+                new_node = DiagramNode(diagram_context_id, cmd.model_name, cmd.model_type)
+                diagram_graph_by_id[diagram_context_id][cmd.model_name] = new_node
 
         def _find_id_by_name(name, diagram_context_id):
             """Helper for finding the ID of the context for a given name
@@ -216,10 +259,10 @@ class Diagram:
                     raise Exception(f'Invalid diagram line command: unable to find "{name}" in the context of {diagram_context_id}')
 
                 # search each of the coupling's models nodes for the element
-                coupling_model_a_id = coupling._model_a.id
-                found_in_model_a = coupling_model_a_id in diagram_graph_by_id and name in diagram_graph_by_id[coupling_model_a_id]
-                coupling_model_b_id = coupling._model_b.id
-                found_in_model_b = coupling_model_b_id in diagram_graph_by_id and name in diagram_graph_by_id[coupling_model_b_id]
+                model_a_id = coupling._model_a.id
+                found_in_model_a = model_a_id in diagram_graph_by_id and name in diagram_graph_by_id[model_a_id]
+                model_b_id = coupling._model_b.id
+                found_in_model_b = model_b_id in diagram_graph_by_id and name in diagram_graph_by_id[model_b_id]
 
                 if found_in_model_a and found_in_model_b:
                     raise Exception(
@@ -228,27 +271,29 @@ class Diagram:
                         'of the coupling\'s models'
                     )
                 elif found_in_model_a:
-                    return coupling_model_a_id
+                    return model_a_id
                 elif found_in_model_b:
-                    return coupling_model_b_id
+                    return model_b_id
                 else:
                     raise Exception(
                         f'Invalid diagram line command: failed to find "{name}" '
-                        f'in the coupling or either of the coupled models ({coupling_model_a_id} and {coupling_model_b_id})'
+                        f'in the coupling or either of the coupled models ({model_a_id} and {model_b_id})'
                     )
 
-        # add the edges between nodes, which are line commands (they're connectors between icons)
+        # add connections between nodes
         for diagram_context_id, commands in diagram_commands_by_id.items():
             line_cmds = [cmd for cmd in commands if isinstance(cmd, DiagramLine)]
             for cmd in line_cmds:
                 a_name, a_port, b_name, b_port = cmd.a_name, cmd.a_port, cmd.b_name, cmd.b_port
 
-                # find IDs of the referenced components
+                # find context IDs of the referenced components
                 a_id = _find_id_by_name(a_name, diagram_context_id)
                 b_id = _find_id_by_name(b_name, diagram_context_id)
 
-                diagram_graph_by_id[a_id][a_name]['edges'][a_port].append((b_id, b_name, b_port))
-                diagram_graph_by_id[b_id][b_name]['edges'][b_port].append((a_id, a_name, a_port))
+                a_node = diagram_graph_by_id[a_id][a_name]
+                b_node = diagram_graph_by_id[b_id][b_name]
+                a_node.add_connection(a_port, b_node, b_port)
+                b_node.add_connection(b_port, a_node, a_port)
 
         return diagram_graph_by_id
 
