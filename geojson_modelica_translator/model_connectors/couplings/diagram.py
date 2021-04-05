@@ -94,15 +94,39 @@ class DiagramNode:
 
 
 class Diagram:
-    grid_cells_width = 10  # width and height of grid in number of cells
     grid_cell_size = 20
-    grid_size = grid_cells_width * grid_cell_size
     icon_padding = 1  # number of cells padding each icon
 
     def __init__(self, coupling_graph):
+        # set when calculating the icon placements
+        self.grid_height_px = None
+        self.grid_width_px = None
+        self._diagram_matrix = None
+
         self._coupling_graph = coupling_graph
         self._initial_diagram_graph = self._parse_coupling_graph(coupling_graph)
         self._resolve_icon_placements()
+
+    @property
+    def extent(self):
+        """Returns extent as a string for templating into the district model
+
+        :return: str
+        """
+        half_width = self.grid_width_px / 2
+        half_height = self.grid_height_px / 2
+        return f'{{{{-{half_width},-{half_height}}},{{{half_width},{half_height}}}}}'
+
+    def _grid_to_coord(self, col, row):
+        return self.grid_cell_size * col, self.grid_cell_size * row
+
+    def _translate_x(self, pos):
+        # translate from origin at upper left of grid to center of grid
+        return pos - (self.grid_width_px / 2)
+
+    def _translate_y(self, pos):
+        # translate from origin at upper left of grid to center of grid
+        return (self.grid_height_px / 2) - pos
 
     def to_dict(self, context_id, is_coupling):
         """Get the diagram as a dictionary, to be used for templating for model
@@ -128,31 +152,21 @@ class Diagram:
             }
         }
         """
-        def grid_to_coord(col, row):
-            return self.grid_cell_size * col, self.grid_cell_size * row
-
-        def translate_x(pos):
-            # translate from origin at upper left of grid to center of grid
-            return pos - (self.grid_size / 2)
-
-        def translate_y(pos):
-            return (self.grid_size / 2) - pos
-
         transformations = defaultdict(dict)
         lines = defaultdict(dict)
         transformation_template = Template('transformation(extent={{$x1,$y1},{$x2,$y2}})')
-        line_template = Template('Line(points={{21,0},{46,0}},color={0,0,127})')
+        line_template = Template('Line(points={$points},color={0,0,127})')
 
         # add transformations defined within this id's context
         # e.g. if id is for a model, add all transformations defined in the model instance template
         for component_name, diagram_node in self._initial_diagram_graph.get(context_id, {}).items():
             # x1, y1 is lower left of icon, x2, y2 is upper right
-            x_pos, y_pos = grid_to_coord(diagram_node.grid_col, diagram_node.grid_row)
+            x_pos, y_pos = self._grid_to_coord(diagram_node.grid_col, diagram_node.grid_row)
             coords = {
-                'x1': translate_x(x_pos),
-                'y1': translate_y(y_pos + (diagram_node.icon.height * self.grid_cell_size)),
-                'x2': translate_x(x_pos + (diagram_node.icon.width * self.grid_cell_size)),
-                'y2': translate_y(y_pos),
+                'x1': self._translate_x(x_pos),
+                'y1': self._translate_y(y_pos + (diagram_node.icon.height * self.grid_cell_size)),
+                'x2': self._translate_x(x_pos + (diagram_node.icon.width * self.grid_cell_size)),
+                'y2': self._translate_y(y_pos),
             }
             transformations[component_name][diagram_node.model_type] = transformation_template.substitute(coords)
 
@@ -173,7 +187,16 @@ class Diagram:
                         #     (e.g. model a instance connecting to model b instance)
                         include_line = this_context_id == context_id or other_node.context_id in diagram_ids
                         if include_line:
-                            line = line_template.substitute()
+                            points = self._calculate_connector_line(
+                                diagram_node,
+                                component_port,
+                                other_node,
+                                other_port
+                            )
+                            formatted_points = [f'{{{x},{y}}}' for x, y in points]
+                            line = line_template.substitute(
+                                points=','.join(formatted_points)
+                            )
                             if component_port not in lines[component_name]:
                                 lines[component_name][component_port] = {
                                     other_node.model_name: {
@@ -189,6 +212,24 @@ class Diagram:
             'transformation': transformations,
             'line': lines,
         }
+
+    def _calculate_connector_line(self, node_a, port_a, node_b, port_b):
+        """
+        :param node_a: DiagramNode
+        :param port_a: str
+        :param node_b: DiagramNode
+        :param port_b: str
+        :return: list, list of x,y tuples
+        """
+        start_x, start_y = self._grid_to_coord(node_a.grid_col, node_a.grid_row)
+        end_x, end_y = self._grid_to_coord(node_b.grid_col, node_b.grid_row)
+        mid_x = min(start_x, end_x) + (abs(start_x - end_x) / 2)
+        return [
+            (self._translate_x(start_x), self._translate_y(start_y)),
+            (self._translate_x(mid_x), self._translate_y(start_y)),
+            (self._translate_x(mid_x), self._translate_y(end_y)),
+            (self._translate_x(end_x), self._translate_y(end_y)),
+        ]
 
     def _resolve_icon_placements(self):
         """Calculate and add locations to all diagram graph nodes"""
@@ -268,9 +309,10 @@ class Diagram:
         # add remaining row
         merged_rows.append(grid_row)
 
-        # add padding between icons
-        # first row should be empty
-        diagram_matrix = [[None] * MAX_ICONS_PER_ROW]
+        # add padding between icons by building an updated grid
+        # first row should be empty (+1 to make sure there's pad on both sides)
+        grid_cells_per_row = 1 + MAX_ICONS_PER_ROW + (MAX_ICONS_PER_ROW * self.icon_padding)
+        diagram_matrix = [[None] * grid_cells_per_row]
         for row in merged_rows:
             # first col of row should be empty
             final_row = [None]
@@ -278,7 +320,7 @@ class Diagram:
                 final_row += [col] + ([None] * self.icon_padding)
             diagram_matrix.append(final_row)
             for _ in range(self.icon_padding):
-                diagram_matrix.append([None] * MAX_ICONS_PER_ROW)
+                diagram_matrix.append([None] * grid_cells_per_row)
 
         # calculate grid positions using the final result
         for i, row in enumerate(diagram_matrix):
@@ -288,6 +330,8 @@ class Diagram:
                 node.grid_row = i
                 node.grid_col = j
 
+        self.grid_height_px = len(diagram_matrix) * self.grid_cell_size
+        self.grid_width_px = len(diagram_matrix[0]) * self.grid_cell_size
         self._diagram_matrix = diagram_matrix
 
     @classmethod

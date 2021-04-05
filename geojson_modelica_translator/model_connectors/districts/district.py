@@ -92,6 +92,7 @@ class District:
 
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
+            "diagram": diagram,
             "couplings": [],
             "models": []
         }
