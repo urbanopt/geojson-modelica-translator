@@ -54,8 +54,8 @@ class DiagramNode:
         self.model_type = model_type
         self.icon = DiagramIcon.get_icon(model_type)
         self.connections = defaultdict(list)
-        self.grid_row = None
         self.grid_col = None
+        self.grid_row = None
 
     def __eq__(self, other):
         if not isinstance(other, DiagramNode):
@@ -97,7 +97,7 @@ class Diagram:
     grid_cells_width = 10  # width and height of grid in number of cells
     grid_cell_size = 20
     grid_size = grid_cells_width * grid_cell_size
-    icon_padding = grid_cell_size
+    icon_padding = 1  # number of cells padding each icon
 
     def __init__(self, coupling_graph):
         self._coupling_graph = coupling_graph
@@ -128,6 +128,9 @@ class Diagram:
             }
         }
         """
+        def grid_to_coord(col, row):
+            return self.grid_cell_size * col, self.grid_cell_size * row
+
         def translate_x(pos):
             # translate from origin at upper left of grid to center of grid
             return pos - (self.grid_size / 2)
@@ -144,8 +147,7 @@ class Diagram:
         # e.g. if id is for a model, add all transformations defined in the model instance template
         for component_name, diagram_node in self._initial_diagram_graph.get(context_id, {}).items():
             # x1, y1 is lower left of icon, x2, y2 is upper right
-            x_pos = diagram_node.grid_col * (self.grid_cell_size + self.icon_padding)
-            y_pos = diagram_node.grid_row * (self.grid_cell_size + self.icon_padding)
+            x_pos, y_pos = grid_to_coord(diagram_node.grid_col, diagram_node.grid_row)
             coords = {
                 'x1': translate_x(x_pos),
                 'y1': translate_y(y_pos + (diagram_node.icon.height * self.grid_cell_size)),
@@ -211,7 +213,7 @@ class Diagram:
                         nodes.add(other_node)
             return list(nodes)
 
-        MAX_COLS = 4
+        MAX_ICONS_PER_ROW = 4
 
         load_ets_rows = []
         # add loads and etses
@@ -256,7 +258,7 @@ class Diagram:
         # add auxillary rows
         grid_row = []
         for node in get_nodes_of_type('auxillary'):
-            if len(grid_row) == MAX_COLS:
+            if len(grid_row) == MAX_ICONS_PER_ROW:
                 # start a new row
                 merged_rows.append(grid_row)
                 grid_row = [node]
@@ -266,22 +268,27 @@ class Diagram:
         # add remaining row
         merged_rows.append(grid_row)
 
+        # add padding between icons
+        # first row should be empty
+        diagram_matrix = [[None] * MAX_ICONS_PER_ROW]
         for row in merged_rows:
-            simplified = []
+            # first col of row should be empty
+            final_row = [None]
             for col in row:
-                if col is not None:
-                    simplified.append(col.model_type)
-                else:
-                    simplified.append(None)
-            print(simplified)
+                final_row += [col] + ([None] * self.icon_padding)
+            diagram_matrix.append(final_row)
+            for _ in range(self.icon_padding):
+                diagram_matrix.append([None] * MAX_ICONS_PER_ROW)
 
         # calculate grid positions using the final result
-        for i, row in enumerate(merged_rows):
+        for i, row in enumerate(diagram_matrix):
             for j, node in enumerate(row):
                 if node is None:
                     continue
                 node.grid_row = i
                 node.grid_col = j
+
+        self._diagram_matrix = diagram_matrix
 
     @classmethod
     def _parse_coupling_graph(cls, coupling_graph):
