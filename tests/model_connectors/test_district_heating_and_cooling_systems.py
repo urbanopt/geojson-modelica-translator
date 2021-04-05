@@ -125,7 +125,6 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             coupling_graph=graph
         )
         district.to_modelica()
-        return None
 
         root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
         self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
