@@ -39,6 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 
 import numpy as np
+import pytest
 from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -67,6 +68,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def setUp(self):
         self.project_name = 'district_heating_and_cooling_systems'
