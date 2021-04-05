@@ -113,7 +113,7 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
         )
         district.to_modelica()
 
-        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+        # root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        # self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+        #                               project_path=district._scaffold.project_path,
+        #                               project_name=district._scaffold.project_name)

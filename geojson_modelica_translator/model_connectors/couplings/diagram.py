@@ -28,7 +28,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 from abc import ABC, abstractmethod
-from collections import defaultdict
+from collections import defaultdict, namedtuple
+from itertools import zip_longest
 from string import Template
 
 from geojson_modelica_translator.model_connectors.couplings.utils import (
@@ -36,6 +37,8 @@ from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramTransformation,
     parse_diagram_commands
 )
+
+NodePort = namedtuple('NodePort', ['node', 'port'])
 
 
 class DiagramNode:
@@ -51,6 +54,8 @@ class DiagramNode:
         self.model_type = model_type
         self.icon = DiagramIcon.get_icon(model_type)
         self.connections = defaultdict(list)
+        self.grid_row = None
+        self.grid_col = None
 
     def __eq__(self, other):
         if not isinstance(other, DiagramNode):
@@ -71,10 +76,13 @@ class DiagramNode:
 
         for port_name in self.connections.keys():
             for self_conn, other_conn in zip(self.connections[port_name], other.connections[port_name]):
-                if not _simple_eq(self_conn[0], other_conn[0]) or self_conn[1] != other_conn[1]:
+                if not _simple_eq(self_conn.node, other_conn.node) or self_conn.port != other_conn.port:
                     return False
 
         return True
+
+    def __hash__(self):
+        return hash((self.context_id, self.model_name, self.model_type))
 
     def add_connection(self, this_port, other_node, other_port):
         """
@@ -82,7 +90,7 @@ class DiagramNode:
         :param other_node: DiagramNode, other node connecting to
         :param other_port: str, name or dotted path of port for other node (should not start with '.' though)
         """
-        self.connections[this_port].append((other_node, other_port))
+        self.connections[this_port].append(NodePort(other_node, other_port))
 
 
 class Diagram:
@@ -94,10 +102,7 @@ class Diagram:
     def __init__(self, coupling_graph):
         self._coupling_graph = coupling_graph
         self._initial_diagram_graph = self._parse_coupling_graph(coupling_graph)
-
-        # TODO: organize diagram rather than using x, y coords for placing
-        # track coordinates, with 0,0 at top left, coords increasing moving down and right
-        self._current_x, self._current_y = 0, 0
+        self._resolve_icon_placements()
 
     def to_dict(self, context_id, is_coupling):
         """Get the diagram as a dictionary, to be used for templating for model
@@ -139,20 +144,15 @@ class Diagram:
         # e.g. if id is for a model, add all transformations defined in the model instance template
         for component_name, diagram_node in self._initial_diagram_graph.get(context_id, {}).items():
             # x1, y1 is lower left of icon, x2, y2 is upper right
+            x_pos = diagram_node.grid_col * (self.grid_cell_size + self.icon_padding)
+            y_pos = diagram_node.grid_row * (self.grid_cell_size + self.icon_padding)
             coords = {
-                'x1': translate_x(self._current_x),
-                'y1': translate_y(self._current_y + (diagram_node.icon.height * self.grid_cell_size)),
-                'x2': translate_x(self._current_x + (diagram_node.icon.width * self.grid_cell_size)),
-                'y2': translate_y(self._current_y),
+                'x1': translate_x(x_pos),
+                'y1': translate_y(y_pos + (diagram_node.icon.height * self.grid_cell_size)),
+                'x2': translate_x(x_pos + (diagram_node.icon.width * self.grid_cell_size)),
+                'y2': translate_y(y_pos),
             }
             transformations[component_name][diagram_node.model_type] = transformation_template.substitute(coords)
-
-            self._current_x = self._current_x + self.grid_cell_size + self.icon_padding
-            if self._current_x >= self.grid_size:
-                self._current_x = 0
-            if self._current_x == 0:
-                # move to next grid row
-                self._current_y += self.grid_cell_size + self.icon_padding
 
         diagram_ids = [context_id]
         if is_coupling:
@@ -162,9 +162,9 @@ class Diagram:
         # add lines - including the edges connecting components not written as part of the coupling
         for this_context_id in diagram_ids:
             for component_name, diagram_node in self._initial_diagram_graph.get(this_context_id, {}).items():
-                for component_port, other_components in diagram_node.connections.items():
-                    for other_component in other_components:
-                        other_node, other_port = other_component
+                for component_port, others in diagram_node.connections.items():
+                    for other in others:
+                        other_node, other_port = other.node, other.port
                         # include this connection if either:
                         #   - we're working on the coupling lines
                         #   - this connects to another model we might be interested in
@@ -187,6 +187,101 @@ class Diagram:
             'transformation': transformations,
             'line': lines,
         }
+
+    def _resolve_icon_placements(self):
+        """Calculate and add locations to all diagram graph nodes"""
+
+        def get_nodes_of_type(node_type):
+            nodes = []
+            for _, context_nodes in self._initial_diagram_graph.items():
+                for _, node in context_nodes.items():
+                    if node_type != 'auxillary' and node.model_type == node_type:
+                        nodes.append(node)
+                    if node_type == 'auxillary' and node.model_type not in ['load', 'ets', 'plant', 'network']:
+                        nodes.append(node)
+            return nodes
+
+        def get_connected_nodes_of_type(node, other_node_type):
+            # use a set to avoid duplicates (a node might have multiple connections to another node)
+            nodes = set()
+            for _, connections in node.connections.items():
+                for connection in connections:
+                    other_node = connection.node
+                    if other_node.model_type == other_node_type:
+                        nodes.add(other_node)
+            return list(nodes)
+
+        MAX_COLS = 4
+
+        load_ets_rows = []
+        # add loads and etses
+        loads = get_nodes_of_type('load')
+        for load_node in loads:
+            etses = get_connected_nodes_of_type(load_node, 'ets')
+            for load_ets_pair in zip_longest(etses, [load_node], fillvalue=None):
+                load_ets_rows.append(list(load_ets_pair))
+
+        network_plant_rows = []
+        # add networks and plants
+        for i, plant in enumerate(get_nodes_of_type('plant')):
+            grid_row = []
+            grid_row.append(plant)
+            # NOTE: should only have one plant connected to a network
+            for network in get_connected_nodes_of_type(plant, 'network'):
+                grid_row.append(network)
+
+            network_plant_rows.append(grid_row)
+
+        # make sure each set of rows has the same length
+        num_network_plant_rows = len(network_plant_rows)
+        num_load_ets_rows = len(load_ets_rows)
+        if num_network_plant_rows < num_load_ets_rows:
+            # pad the network plant rows
+            num_pad_rows = num_load_ets_rows - num_network_plant_rows
+            num_cols_per_row = len(network_plant_rows[0])
+            for _ in range(num_pad_rows):
+                network_plant_rows.append([None for _ in range(num_cols_per_row)])
+        elif num_load_ets_rows < num_network_plant_rows:
+            # pad the load ets rows
+            num_pad_rows = num_network_plant_rows - num_load_ets_rows
+            num_cols_per_row = len(load_ets_rows[0])
+            for _ in range(num_pad_rows):
+                load_ets_rows.append([None for _ in range(num_cols_per_row)])
+
+        # merge all of the rows
+        merged_rows = []
+        for left, right in zip(network_plant_rows, load_ets_rows):
+            merged_rows.append(left + right)
+
+        # add auxillary rows
+        grid_row = []
+        for node in get_nodes_of_type('auxillary'):
+            if len(grid_row) == MAX_COLS:
+                # start a new row
+                merged_rows.append(grid_row)
+                grid_row = [node]
+            else:
+                # continue building row
+                grid_row.append(node)
+        # add remaining row
+        merged_rows.append(grid_row)
+
+        for row in merged_rows:
+            simplified = []
+            for col in row:
+                if col is not None:
+                    simplified.append(col.model_type)
+                else:
+                    simplified.append(None)
+            print(simplified)
+
+        # calculate grid positions using the final result
+        for i, row in enumerate(merged_rows):
+            for j, node in enumerate(row):
+                if node is None:
+                    continue
+                node.grid_row = i
+                node.grid_col = j
 
     @classmethod
     def _parse_coupling_graph(cls, coupling_graph):
