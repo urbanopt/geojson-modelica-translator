@@ -281,15 +281,15 @@ class Diagram:
         if num_network_plant_rows < num_load_ets_rows:
             # pad the network plant rows
             num_pad_rows = num_load_ets_rows - num_network_plant_rows
-            num_cols_per_row = len(network_plant_rows[0])
+            NUM_ICONS = 2  # dehardcode
             for _ in range(num_pad_rows):
-                network_plant_rows.append([None for _ in range(num_cols_per_row)])
+                network_plant_rows.append([None] * NUM_ICONS)
         elif num_load_ets_rows < num_network_plant_rows:
             # pad the load ets rows
             num_pad_rows = num_network_plant_rows - num_load_ets_rows
-            num_cols_per_row = len(load_ets_rows[0])
+            NUM_ICONS = 2  # dehardcode
             for _ in range(num_pad_rows):
-                load_ets_rows.append([None for _ in range(num_cols_per_row)])
+                load_ets_rows.append([None] * NUM_ICONS)
 
         # merge all of the rows
         merged_rows = []
