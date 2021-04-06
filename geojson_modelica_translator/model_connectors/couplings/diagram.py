@@ -216,7 +216,8 @@ class Diagram:
         }
 
     def _calculate_connector_line(self, node_a, port_a, node_b, port_b):
-        """
+        """Determines a coordinate path to get from node a's port to node b's port
+
         :param node_a: DiagramNode
         :param port_a: str
         :param node_b: DiagramNode
@@ -230,6 +231,8 @@ class Diagram:
             node_b.grid_row,
             node_b.grid_col
         )
+
+        # convert grid path into a coordinate path for the diagram
         diagram_path = []
         half_cell = self.grid_cell_size / 2
         # hack: add a random offsets to make lines overlap less
@@ -245,7 +248,9 @@ class Diagram:
         return diagram_path
 
     def _resolve_icon_placements(self):
-        """Calculate and add locations to all diagram graph nodes"""
+        """Calculate and add locations to all diagram graph nodes. This should be
+        called automatically when initializing the class.
+        """
 
         def get_nodes_of_type(node_type):
             nodes = []
@@ -322,6 +327,13 @@ class Diagram:
         # add remaining row
         merged_rows.append(grid_row)
 
+        # make sure all rows have the same number of columns by adding `None`s
+        # to the end of shorter rows
+        # TODO: find better solution
+        longest_row = max([len(row) for row in merged_rows])
+        for row in merged_rows:
+            row += [None] * (longest_row - len(row))
+
         # add padding between icons by building an updated grid
         # first row should be empty (+1 to make sure there's pad on both sides)
         grid_cells_per_row = 1 + MAX_ICONS_PER_ROW + (MAX_ICONS_PER_ROW * self.icon_padding)
@@ -363,6 +375,7 @@ class Diagram:
             }, ...
         }
         """
+        # parse the visual diagram from the template files
         template_files_by_id = defaultdict(list)
         for coupling in coupling_graph.couplings:
             template_files_by_id[coupling.id].append(coupling.component_definitions_template_path)
@@ -386,7 +399,7 @@ class Diagram:
     def _diagram_commands_to_graph(diagram_commands_by_id, couplings):
         """Convert commands into a diagram graph.
 
-        :param diagram_commands: dict
+        :param diagram_commands: dict[str: DiagramCommand]
         :param couplings: list[Coupling]
         :return: dict, diagram graph
         """
