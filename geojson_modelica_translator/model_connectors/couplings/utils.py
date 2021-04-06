@@ -1,5 +1,5 @@
 import re
-from collections import namedtuple
+from collections import deque, namedtuple
 
 DiagramTransformation = namedtuple('DiagramTransformation', ['model_name', 'model_type'])
 DiagramLine = namedtuple('DiagramLine', ['a_name', 'a_port', 'b_name', 'b_port'])
@@ -49,3 +49,58 @@ def parse_diagram_commands(template_contents):
         commands.append(diagram_command)
 
     return commands
+
+
+def find_path_bfs(matrix, start_row, start_col, end_row, end_col):
+    """Find path from start to end in the matrix. Matrix items that are None are
+    considered "empty" and traversable. Raises an exception if no path is found.
+
+    :param matrix: list[list[]]
+    :param start_row: int
+    :param start_col: int
+    :param end_row: int
+    :param end_col: int
+    :return: list, list of (row, col) tuples
+    """
+    start = (start_row, start_col)
+    finish = (end_row, end_col)
+
+    queue = deque([([], start)])
+    visited = []
+
+    def visitable(pos):
+        return (
+            # must be valid matrix position
+            pos[0] >= 0
+            and pos[0] < len(matrix)
+            and pos[1] >= 0
+            and pos[1] < len(matrix[0])
+            # must be empty or the finish
+            and (matrix[pos[0]][pos[1]] is None or pos == finish)
+            # must not be visited
+            and pos not in visited
+        )
+
+    def get_neighbors(pos):
+        north = (pos[0] - 1, pos[1])
+        south = (pos[0] + 1, pos[1])
+        east = (pos[0], pos[1] - 1)
+        west = (pos[0], pos[1] + 1)
+        neighbors = [north, south, east, west]
+        return [direction for direction in neighbors if visitable(direction)]
+
+    while queue:
+        path, current = queue.popleft()
+
+        if current == finish:
+            return path
+        if current in visited:
+            continue
+
+        visited.append(current)
+
+        for neighbor in get_neighbors(current):
+            queue.append((path + [neighbor], neighbor))
+
+    # failed to find a path
+    raise Exception(f'Failed to find path from {start} to {finish}')

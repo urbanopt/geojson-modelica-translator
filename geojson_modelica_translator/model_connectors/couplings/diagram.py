@@ -30,11 +30,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from abc import ABC, abstractmethod
 from collections import defaultdict, namedtuple
 from itertools import zip_longest
+from random import uniform
 from string import Template
 
 from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramLine,
     DiagramTransformation,
+    find_path_bfs,
     parse_diagram_commands
 )
 
@@ -221,15 +223,26 @@ class Diagram:
         :param port_b: str
         :return: list, list of x,y tuples
         """
-        start_x, start_y = self._grid_to_coord(node_a.grid_col, node_a.grid_row)
-        end_x, end_y = self._grid_to_coord(node_b.grid_col, node_b.grid_row)
-        mid_x = min(start_x, end_x) + (abs(start_x - end_x) / 2)
-        return [
-            (self._translate_x(start_x), self._translate_y(start_y)),
-            (self._translate_x(mid_x), self._translate_y(start_y)),
-            (self._translate_x(mid_x), self._translate_y(end_y)),
-            (self._translate_x(end_x), self._translate_y(end_y)),
-        ]
+        grid_path = find_path_bfs(
+            self._diagram_matrix,
+            node_a.grid_row,
+            node_a.grid_col,
+            node_b.grid_row,
+            node_b.grid_col
+        )
+        diagram_path = []
+        half_cell = self.grid_cell_size / 2
+        # hack: add a random offsets to make lines overlap less
+        x_offset = uniform(half_cell * -1, half_cell)
+        y_offset = uniform(half_cell * -1, half_cell)
+        for pos in grid_path:
+            x, y = self._grid_to_coord(pos[1] + 0.5, pos[0] + 0.5)
+            diagram_path.append((
+                self._translate_x(x + x_offset),
+                self._translate_y(y + y_offset)
+            ))
+
+        return diagram_path
 
     def _resolve_icon_placements(self):
         """Calculate and add locations to all diagram graph nodes"""
