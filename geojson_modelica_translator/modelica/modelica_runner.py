@@ -67,7 +67,7 @@ class ModelicaRunner(object):
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
         self.jmodelica_py_path = os.path.join(local_path, 'lib', 'runner', 'jmodelica.py')
-        self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.sh')
+        self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.py')
 
         # Verify that docker is up and running
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -124,7 +124,7 @@ class ModelicaRunner(object):
 
             # TODO: Create a logger to show more information such as the actual run command being executed.
             p = subprocess.Popen(
-                ['./jm_ipython.sh', 'jmodelica.py', run_model],
+                ['python', 'jm_ipython.py', 'jmodelica.py', run_model],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
@@ -175,7 +175,7 @@ class ModelicaRunner(object):
         Clean up the files in the path that was presumably used to run the simulation
         """
         remove_files = [
-            'jm_ipython.sh',
+            'jm_ipython.py',
             'jmodelica.py',
         ]
 
