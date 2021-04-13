@@ -44,7 +44,7 @@ OpenStudio/EnergyPlus simulations.
     uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 
     # create the modelica package (requires installation of the MBL)
-    uo_des create-model sys_param.json
+    uo_des create-model sys_param.json example_project.json model_from_sdk
 
     # test running the new Modelica package (requires installation of Docker)
     uo_des run-model model_from_sdk
