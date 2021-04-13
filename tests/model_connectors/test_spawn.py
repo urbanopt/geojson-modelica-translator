@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+import pytest
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
@@ -66,6 +67,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
     def test_spawn_single(self):
         project_name = "spawn_single"

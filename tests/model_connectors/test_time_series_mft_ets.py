@@ -39,6 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import re
 
+import pytest
 from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -71,6 +72,7 @@ from modelica_builder.model import Model
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
     def test_mft_time_series_to_modelica_and_run(self):
         project_name = "time_series_massflow"

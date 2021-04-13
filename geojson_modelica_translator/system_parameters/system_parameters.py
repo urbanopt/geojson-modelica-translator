@@ -37,7 +37,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import json
-import os
 from copy import deepcopy
 from pathlib import Path
 
@@ -71,13 +70,13 @@ class SystemParameters(object):
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        with open(os.path.join(os.path.dirname(__file__), "schema.json"), "r") as f:
-            self.schema = json.load(f)
+        schema = Path(__file__).parent / "schema.json"
+        self.schema = json.loads(schema.read_text())
         self.data = {}
         self.filename = filename
 
         if self.filename:
-            if os.path.exists(self.filename):
+            if Path(self.filename).exists():
                 with open(self.filename, "r") as f:
                     self.data = json.load(f)
             else:
@@ -112,14 +111,14 @@ class SystemParameters(object):
         """Resolve the paths in the file to be absolute if they were defined as relative. This method uses
         the JSONPath (with ext) to find if the value exists in the self.data object. If so, it then uses
         the set_param which navigates the JSON tree to set the value as needed."""
-        filepath = os.path.abspath(os.path.dirname(self.filename))
+        filepath = Path(self.filename).parent.resolve()
 
         for pe in self.PATH_ELEMENTS:
             matches = parse(pe["json_path"]).find(self.data)
             for index, match in enumerate(matches):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
-                new_path = os.path.join(filepath, match.value)
-                parse(str(match.full_path)).update(self.data, new_path)
+                new_path = Path(filepath) / match.value
+                parse(str(match.full_path)).update(self.data, new_path.as_posix())
 
     # def resolve_defaults(self):
     #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
@@ -277,7 +276,8 @@ class SystemParameters(object):
             building_nominal_mfrt = 0
             for measure_file_path in measure_list:
                 # Grab the relevant 2 components of the path: feature name and measure folder name, items -3 & -2 respectively
-                feature_name, measure_folder_name = str(measure_file_path).split('/')[-3:-1]
+                feature_name = Path(measure_file_path).parts[-3]
+                measure_folder_name = Path(measure_file_path).parts[-2]
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
@@ -285,7 +285,7 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = building_nominal_mfrt
+                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
@@ -294,7 +294,7 @@ class SystemParameters(object):
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
         for building in building_list:
-            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = district_nominal_mfrt.round(3)
+            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
         param_template['buildings']['custom'] = building_list
 
         with open(sys_param_filename, 'w') as outfile:

@@ -166,8 +166,8 @@ class ModelBase(object):
             raise Exception(f"Could not find mopt template '{self._template_instance}' in {self.template_dir}")
 
         # get template path relative to the package
-        template_filename = template.filename
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+        template_filename = Path(template.filename).as_posix()
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
         return template.render(template_params), template_filename
 
