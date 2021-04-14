@@ -85,7 +85,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def test_district_heating_and_cooling_systems(self):
         # create cooling network and plant
         cooling_network = Network2Pipe(self.sys_params)
-        cooling_plant = CoolingPlant(self.sys_params)
+        cooling_plant = CoolingPlant(self.sys_params, template_name="CentralCoolingPlant")
 
         # create heating network and plant
         heating_network = Network2Pipe(self.sys_params)

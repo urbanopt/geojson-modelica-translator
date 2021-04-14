@@ -49,9 +49,10 @@ from geojson_modelica_translator.utils import simple_uuid
 class CoolingPlant(PlantBase):
     model_name = 'CoolingPlant'
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, template_name='CentralCoolingPlant'):
         super().__init__(system_parameters)
         self.id = 'cooPla_' + simple_uuid()
+        self.template_name = template_name
 
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParallel.mo'))
@@ -132,10 +133,10 @@ class CoolingPlant(PlantBase):
             },
         }
 
-        plant_template = self.template_env.get_template("CentralCoolingPlant.mot")
+        plant_template = self.template_env.get_template(f"{self.template_name}.mot")
         self.run_template(
             plant_template,
-            os.path.join(scaffold.plants_path.files_dir, "CentralCoolingPlant.mo"),
+            os.path.join(scaffold.plants_path.files_dir, f"{self.template_name}.mo"),
             project_name=scaffold.project_name,
             data=template_data
         )
@@ -149,7 +150,7 @@ class CoolingPlant(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        package_models = ['CentralCoolingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
+        package_models = [f'{self.template_name}'] + [Path(mo).stem for mo in self.required_mo_files]
         plants_package = PackageParser(scaffold.plants_path.files_dir)
         if plants_package.order_data is None:
             plants_package = PackageParser.new_from_template(
@@ -163,4 +164,4 @@ class CoolingPlant(PlantBase):
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.CentralCoolingPlant'
+        return f'{scaffold.project_name}.Plants.{self.template_name}'
