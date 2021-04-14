@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.2.2
+-------------
+* Fix bug in CLI which required the user to be in a specific directory to run. Updated CLI is more flexible.
+* Update documentation.
+
 Version 0.2.1
 -------------
 * New command line interface (CLI) for scaffolding project using results of URBANopt SDK's OpenStudio results
@@ -13,6 +18,7 @@ Version 0.2.1
 * Upgrade to MBL 2.1.0
 * Migrate to Poetry for development
 * Add regression testing to full district energy system
+* Auto-layout of templated components. This is a work in progress and the next version will include "pooling" of components.
 
 Version 0.2.0
 -------------

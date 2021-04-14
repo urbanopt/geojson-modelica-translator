@@ -58,9 +58,20 @@ equation
 
 {% endfor %}
 
-  annotation (
-    experiment(
-      StopTime=86400,
-      Interval=3600,
-      Tolerance=1e-06));
+annotation(
+  experiment(
+    StopTime=86400,
+    Interval=3600,
+    Tolerance=1e-06),
+  Diagram(
+    coordinateSystem(
+      preserveAspectRatio=false,
+      extent={{ diagram.extent }})),
+  Documentation(
+    revisions="<html>
+ <li>
+ May 10, 2020: Hagar Elarga<br/>
+Updated implementation to handle template needed for GeoJSON to Modelica.
+</li>
+</html>"));
 end DistrictEnergySystem;

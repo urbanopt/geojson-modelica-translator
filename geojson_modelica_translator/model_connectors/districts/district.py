@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -30,6 +38,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
+from geojson_modelica_translator.model_connectors.couplings.diagram import (
+    Diagram
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -75,8 +86,13 @@ class District:
         for model in self._coupling_graph.models:
             model.to_modelica(self._scaffold)
 
+        # construct graph of visual components
+        # TODO: use the diagram graph to determine icon and line placements before passing to templates
+        diagram = Diagram(self._coupling_graph)
+
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
+            "diagram": diagram,
             "couplings": [],
             "models": []
         }
@@ -92,7 +108,11 @@ class District:
         }
         # render each coupling
         for coupling in self._coupling_graph.couplings:
-            templated_result = coupling.render_templates(common_template_params)
+            template_context = {
+                'diagram': diagram.to_dict(coupling.id, is_coupling=True),
+            }
+            template_context.update(**common_template_params)
+            templated_result = coupling.render_templates(template_context)
             district_template_params['couplings'].append({
                 'id': coupling.id,
                 'component_definitions': templated_result['component_definitions'],
@@ -106,6 +126,7 @@ class District:
             template_params = {
                 'model': model.to_dict(self._scaffold),
                 'couplings': self._coupling_graph.couplings_by_type(model.id),
+                'diagram': diagram.to_dict(model.id, is_coupling=False),
             }
             template_params.update(**common_template_params)
             templated_instance, instance_template_path = model.render_instance(template_params)

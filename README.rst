@@ -1,197 +1,80 @@
 GeoJSON Modelica Translator (GMT)
 ---------------------------------
 
-.. image:: https://travis-ci.org/urbanopt/geojson-modelica-translator.svg?branch=develop
-    :target: https://travis-ci.org/urbanopt/geojson-modelica-translator
+.. image:: https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop
+    :target: https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml
 
 .. image:: https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop
     :target: https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop
 
+.. image:: https://badge.fury.io/py/GeoJSON-Modelica-Translator.svg
+    :target: https://pypi.org/project/GeoJSON-Modelica-Translator/
 
 Description
 -----------
 
 The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 1GDH and 4GDHC.
 
+The project is motivated by the need to easily evaluate district energy systems. The goal is to eventually cover the various generations of heating and cooling systems as shown in the figure below. The need to move towards 5GDHC systems results in higher efficiencies and greater access to additional waste-heat sources.
+
+.. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-generations.png
+
 Getting Started
 ---------------
 
-The GeoJSON Modelica Translator is in alpha-phase development and the functionality is limited. Currently, the proposed approach for getting started is outlined in this readme. You need Python 3, pip 3, and Poetry to install/build the packages. Note that the best approach is to use Docker to run the Modelica models as this approach does not require Python 2.
+It is possible to test the GeoJSON to Modelica Translator (GMT) by simpling installing the Python package and running the
+command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the
+functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings
+library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available
+`here <docs/getting_started.rst>`_.
 
-* Clone this repo into a working directory
-* (optional/as-needed) Add Python 3 to the environment variables
-* Install Poetry (:code:`pip install poetry`). More information on Poetry can be found `here <https://python-poetry.org/docs/>`_.
-* Install `Docker <https://docs.docker.com/get-docker/>`_ for your platform
-* Configure Docker on your local desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
-* Install the Modelica Buildings Library from GitHub
-    * Clone https://github.com/lbl-srg/modelica-buildings/ into a working directory outside of the GMT directory
-    * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
-    * Install git-lfs
-        * Mac: :code:`brew install git-lfs; git lfs install`
-        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-    * Pull the correct staging branch for this project with: :code:`git checkout issue2204_gmt_mbl`
-    * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings).
-* Return to the GMT root directory and run :code:`poetry install`
-* Test if everything is installed correctly by running :code:`poetry run tox`
-    * This should run all unit tests, pre-commit, and build the docs.
-
-The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set of Modelica models that are created and persisted into the :code:`tests/output` folder and the :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
-
-Developers
-**********
-
-This project used `pre-commit <https://pre-commit.com/>`_ to ensure code consistency. To enable pre-commit, run the following from the command line.
+To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola) then
+run the following code below up to the point of run-model. The example generates a complete 4th Generation District
+Heating and Cooling (4GDHC) system with time series loads that were generated from the URBANopt SDK using
+OpenStudio/EnergyPlus simulations.
 
 .. code-block:: bash
 
-    pip install pre-commit
-    pre-commit install
+    pip install geojson-modelica-translator
 
-To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
+    # from the simulation results within a checkout of this repository
+    # in the ./tests/management/data/sdk_project_scraps path.
 
-.. code-block:: bash
+    # generate the system parameter from the results of the URBANopt SDK and OpenStudio Simulations
+    uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 
-    pre-commit run --all-files
+    # create the modelica package (requires installation of the MBL)
+    uo_des create-model sys_param.json example_project.json model_from_sdk
 
-GeoJSON
-+++++++
+    # test running the new Modelica package (requires installation of Docker)
+    uo_des run-model model_from_sdk
 
-This module manages the connection to the GeoJSON file including any calculations that are needed. Calculations can include distance calculations, number of buildings, number of connections, etc.
+More example projects are available in an accompanying
+`example repository <https://github.com/urbanopt/geojson-modelica-translator-examples>`_.
 
-The GeoJSON model should include checks for ensuring the accuracy of the area calculations, non-overlapping building areas and coordinates, and various others.
+Architecture Overview
+---------------------
 
-Load Model Connectors
-+++++++++++++++++++++
+The GMT is designed to enable "easy" swapping of building loads, district systems, and newtork topologies. Some
+of these functionalities are more developed than others, for instance swapping building loads between Spawn and
+RC models (using TEASER) is fleshed out; however, swapping between a first and fifth generation heating system has
+yet to be fully implemented.
 
-The Model Connectors are libraries that are used to connect between the data that exist in the GeoJSON with a model-based engine for calculating loads (and potentially energy consumption). Examples includes, TEASER, Data-Driven Model (DDM), CSV, Spawn, etc.
+The diagram below is meant to illustrate the future proposed interconnectivity and functionality of the
+GMT project.
 
+.. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png
 
-Simulation Mapper Class / Translator
-++++++++++++++++++++++++++++++++++++
+As shown in the image, there are multiple building loads that can be deployed with the GMT and are described in the `Building Load Models`_ section below. These models, and the associated design parameters, are required to create a fully runnable Modelica model. The GMT leverages two file formats for generating the Modelica project and are the GeoJSON feature file and a System Parameter JSON file. See the more `comprehensive
+documentation on the GMT <https://docs.urbanopt.net/geojson-modelica-translator/>`_ or the `documentation on
+URBANopt SDK  <https://docs.urbanopt.net/>`_.
 
-The Simulation Mapper Class can operate at mulitple levels:
+Building Load Models
+++++++++++++++++++++
 
-1. The GeoJSON level -- input: geojson, output: geojson+
-2. The Load Model Connection -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
-3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
+The building loads can be defined multiple ways depending on the fidelity of the required models. Each of the building load models are easily replaced using configuration settings within the System Parameters file. The 4 different building load models include:
 
-In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a simulation mapper class from existing at that level.
-
-Running Simulations
--------------------
-
-The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. It is recommended
-to use this method in a python script if needed as it will copy the required files into the correct location. If
-desired, a user can run the simulations manually using JModelica (via Docker). Follow the step below to configure
-the runner to work locally.
-
-* Make sure jm_ipython.sh is in your local path.
-* After running the :code:`py.test`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
-* Copy :code:`jmodelica.py` to the :code:`tests/model_connectors/output` directory.
-* From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
-    * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
-    * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
-    * The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.
-* Install matplotlib package. :code:`pip install matplotlib`
-* Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.
-
-    .. code-block:: python
-
-        %matplotlib inline
-        import os
-        import matplotlib.pyplot as plt
-
-        from buildingspy.io.outputfile import Reader
-
-        mat = Reader(os.path.join(
-            "tests", "model_connectors", "output", "spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat"),
-            "dymola"
-        )
-        # List off all the variables
-        for var in mat.varNames():
-            print(var)
-
-        (time1, zn_1_temp) = mat.values("bui.znPerimeter_ZN_3.TAir")
-        (_time1, zn_4_temp) = mat.values("bui.znPerimeter_ZN_4.TAir")
-        plt.style.use('seaborn-whitegrid')
-
-        fig = plt.figure(figsize=(16, 8))
-        ax = fig.add_subplot(211)
-        ax.plot(time1 / 3600, zn_1_temp - 273.15, 'r', label='$T_1$')
-        ax.plot(time1 / 3600, zn_4_temp - 273.15, 'b', label='$T_4$')
-        ax.set_xlabel('time [h]')
-        ax.set_ylabel(r'temperature [$^\circ$C]')
-        # Simulation is only for 168 hours?
-        ax.set_xlim([0, 168])
-        ax.legend()
-        ax.grid(True)
-        fig.savefig('indoor_temp_example.png')
-
-Managed Tasks
--------------
-
-Updating Schemas
-****************
-
-There is managed task to automatically pull updated GeoJSON schemas from the :code:`urbanopt-geojson-gem` GitHub project. A developer can run this command by calling
-
-.. code-block:: bash
-
-    poetry run update_schemas
-
-The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
-
-
-Updating Licenses
-*****************
-
-To apply the copyright/license to all the files, run the following managed task
-
-.. code-block:: bash
-
-    poetry run update_licenses
-
-
-Templating Diagram
-------------------
-.. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/ConnectionTemplate.png
-
-Release Instructions
---------------------
-
-* Bump version to <NEW_VERSION> in setup.py (use semantic versioning as much as possible).
-* Run `autopep8` to nicely format the code (or run `pre-commit --all-files`).
-* Create a PR against develop into main.
-* After main branch passes, then merge and checkout the main branch. Build the distribution using the following code:
-
-.. code-block:: bash
-
-    # Remove old dist packages
-    rm -rf dist/*
-    poetry build
-
-* Run `git tag <NEW_VERSION>`. (Note that `python setup.py --version` pulls from the latest tag.)
-* Verify that the files in the dist/* folder have the correct version (no dirty, no sha)
-* Run the following to release
-
-.. code-block:: bash
-
-    poetry publish
-
-* Build and release the documentation
-
-.. code-block:: bash
-
-    # Build and verify with the following
-    cd docs
-    poetry run make html
-    cd ..
-
-    # release using
-    ./docs/publish_docs.sh
-
-* Push the tag to GitHub after everything is published to PyPi, then go to GitHub and add in the CHANGELOG.rst notes into the tagged release and officially release.
-
-.. code-block:: bash
-
-    git push origin <NEW_VERSION>
+#. Time Series in Watts: This building load is the total heating, cooling, and domestic hot water loads represented in a CSV type file (MOS file). The units are Watts and should be reported at an hour interval; however, finer resolution is possible. The load is defined as the load seen by the ETS.
+#. Time Series as mass flow rate and delta temperature: This building load is similar to the other Time Series model but uses the load as seen by the ETS in the form of mass flow rate and delta temperature. The file format is similar to the other Time Series model but the columns are mass flow rate and delta temperature for heating and cooling separately.
+#. RC Model: This model leverages the TEASER framework to generate an RC model with the correct coefficients based on high level parameters that are extracted from the GeoJSON file including building area and building type.
+#. Spawn of EnergyPlus: This model uses EnergyPlus models to represent the thermal zone heat balance portion of the models while using Modelica for the remaining components. Spawn of EnergyPlus is still under development and currently only works on Linux-based systems.

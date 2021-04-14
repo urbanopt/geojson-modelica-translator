@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -31,6 +39,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
+
+import pytest
 
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
@@ -67,6 +77,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
 
+    @pytest.mark.simulation
     def test_run_in_docker_errors(self):
         mr = ModelicaRunner()
         file_to_run = os.path.join(self.run_path, 'no_file.mo')
@@ -79,6 +90,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             mr.run_in_docker(file_to_run)
         self.assertEqual(f'Expecting to run a file, not a folder in {file_to_run}', str(exc.exception))
 
+    @pytest.mark.simulation
     def test_run_in_docker(self):
         mr = ModelicaRunner()
         mr.run_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))

@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -28,9 +36,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
+from pathlib import Path
 
 import numpy as np
+import pytest
 from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
@@ -59,17 +68,18 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def setUp(self):
         self.project_name = 'district_heating_and_cooling_systems'
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), self.project_name)
+        self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
-        filename = os.path.join(self.data_dir, "time_series_ex1.json")
+        filename = Path(self.data_dir) / "time_series_ex1.json"
         self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
+        filename = Path(self.data_dir) / "time_series_system_params_ets.json"
         self.sys_params = SystemParameters(filename)
 
     def test_district_heating_and_cooling_systems(self):
@@ -118,8 +128,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         )
         district.to_modelica()
 
-        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+        root_path = Path(district._scaffold.districts_path.files_dir).resolve()
+        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
                                       project_path=district._scaffold.project_path,
                                       project_name=district._scaffold.project_name)
 
@@ -133,7 +143,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         # check the mass flow rates of the first load are in the expected range
         load = loads[0]
         (_, heat_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
-        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
+        # NL: changed the line below to be aChiWat (not repeating aHeaWat).
+        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aChiWat[1].m_flow')
         self.assertTrue((heat_m_flow >= 0).all(), 'Heating mass flow rate must be greater than or equal to zero')
         self.assertTrue((cool_m_flow >= 0).all(), 'Cooling mass flow rate must be greater than or equal to zero')
 
@@ -154,42 +165,18 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
         )
 
-        def cvrmsd(measured, simulated):
-            """Return CVRMSD between arrays.
-            Implementation of ASHRAE Guideline 14 (4-4)
-
-            :param measured: numpy.array
-            :param simulated: numpy.array
-            :return: float
-            """
-            def rmsd(a, b):
-                p = 1
-                n_samples = len(a)
-                return np.sqrt(
-                    np.sum(
-                        np.square(
-                            a - b
-                        )
-                    ) / (n_samples - p)
-                )
-
-            normalization_factor = np.mean(measured)
-            return rmsd(measured, simulated) / normalization_factor
-
-        # check the overall thermal load between the first load and its ETSes
-        heating_indirect = heat_etses[0]
-        cooling_indirect = cool_etses[0]
-        (_, heating_indirect_q_flow) = mat_results.values(f'{heating_indirect.id}.Q_flow')
-        (_, cooling_indirect_q_flow) = mat_results.values(f'{cooling_indirect.id}.Q_flow')
+        # check the thermal load
+        (_, load_q_req_hea_flow) = mat_results.values(f'{load.id}.QReqHea_flow')
+        (_, load_q_req_coo_flow) = mat_results.values(f'{load.id}.QReqCoo_flow')
         (_, load_q_heat_flow) = mat_results.values(f'{load.id}.QHea_flow')
         (_, load_q_cool_flow) = mat_results.values(f'{load.id}.QCoo_flow')
 
         # make sure the q flow is positive
-        heating_indirect_q_flow, cooling_indirect_q_flow = np.abs(heating_indirect_q_flow), np.abs(cooling_indirect_q_flow)
+        load_q_req_hea_flow, load_q_req_coo_flow = np.abs(load_q_req_hea_flow), np.abs(load_q_req_coo_flow)
         load_q_heat_flow, load_q_cool_flow = np.abs(load_q_heat_flow), np.abs(load_q_cool_flow)
 
-        cool_cvrmsd = cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
-        heat_cvrmsd = cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
+        cool_cvrmsd = self.cvrmsd(load_q_cool_flow, load_q_req_coo_flow)
+        heat_cvrmsd = self.cvrmsd(load_q_heat_flow, load_q_req_hea_flow)
 
         CVRMSD_MAX = 0.3
         # TODO: fix q flows to meet the CVRMSD maximum, then make these assertions rather than warnings

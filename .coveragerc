@@ -1,18 +1,20 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-source = geojson_modelica_translator
 
 [paths]
 source =
-    sample/
     */site-packages/
 
 [report]
 omit =
-    geojson_modelica_translator/cli.py
-    geojson_modelica_translator/model_connectors/templates/*
+    .tox/*
+    management/update_schemas.py
+    management/update_licenses.py
+    geojson_modelica_translator/model_connectors/load_connectors/templates/RunSpawnCouplingBuilding.most
+    geojson_modelica_translator/modelica/lib/runner/__init__.py
     geojson_modelica_translator/modelica/lib/runner/jmodelica.py
+    tests/*
 
 # Regexes for lines to exclude from consideration
 exclude_lines =

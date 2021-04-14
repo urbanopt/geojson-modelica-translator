@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -27,7 +35,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-import os
+from pathlib import Path
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
@@ -59,12 +67,12 @@ class Coupling(object):
         self._model_b = model_b
         self._template_base_name = f'{model_a.model_name}_{model_b.model_name}'
 
-        template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", self._template_base_name)
-        if not os.path.exists(template_dir):
-            raise Exception(f'Invalid coupling. Missing {template_dir} directory.')
+        self._template_dir = Path(__file__).parent / "templates" / self._template_base_name
+        if not Path(self._template_dir).exists():
+            raise Exception(f'Invalid coupling. Missing {self._template_dir} directory.')
 
         self._template_env = Environment(
-            loader=FileSystemLoader(searchpath=template_dir),
+            loader=FileSystemLoader(searchpath=self._template_dir),
             undefined=StrictUndefined)
         self._template_env.filters.update(ALL_CUSTOM_FILTERS)
 
@@ -73,6 +81,14 @@ class Coupling(object):
     @property
     def id(self):
         return self._id
+
+    @property
+    def model_a(self):
+        return self._model_a
+
+    @property
+    def model_b(self):
+        return self._model_b
 
     def to_dict(self):
         return {
@@ -151,8 +167,8 @@ class Coupling(object):
         updated_template_params.update(template_params)
 
         # get the template file path relative to the package
-        template_filename = template.filename
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+        template_filename = Path(template.filename).as_posix()
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
         return template.render(updated_template_params), template_filename
 
@@ -171,3 +187,11 @@ class Coupling(object):
             'component_definitions_template_path': component_template_path,
             'connect_statements_template_path': connect_template_path,
         }
+
+    @property
+    def component_definitions_template_path(self):
+        return self._template_env.get_template(self._template_component_definitions).filename
+
+    @property
+    def connect_statements_template_path(self):
+        return self._template_env.get_template(self._template_connect_statements).filename

@@ -2,4 +2,4 @@
     y={{ coupling.load.id }}.T_aHeaWat_nominal)
     //Dehardcode where this is originally set
     "Heating water supply temperature"
-    {% raw %}annotation (Placement(transformation(extent={{-80,76},{-60,96}})));{% endraw %}
+    annotation (Placement({{ diagram.transformation.t_hea_wat_sup.real_expression }}));

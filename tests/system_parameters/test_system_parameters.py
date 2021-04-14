@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -28,7 +36,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 import unittest
 from pathlib import Path
 from shutil import rmtree
@@ -51,30 +58,30 @@ class SystemParametersTest(unittest.TestCase):
         self.output_dir.mkdir(parents=True)
 
     def test_expanded_paths(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         for s in sdp.validate():
             print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model.idf'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_model.idf')
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_weather.mos'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.mos')
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_weather.epw'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.epw')
 
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model_2.idf'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_model_2.idf')
 
     def test_load_system_parameters_1(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.assertEqual(
             sdp.data["buildings"]["default"]["load_model_parameters"]["rc"]["order"], 2
         )
 
     def test_load_system_parameters_2(self):
-        filename = os.path.join(self.data_dir, 'system_params_2.json')
+        filename = self.data_dir / 'system_params_2.json'
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
@@ -173,7 +180,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual(2, value)
 
     def test_get_param_with_building_id_defaults(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
@@ -211,7 +218,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual(24815, value)
 
     def test_get_param_with_none_building_id(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         with self.assertRaises(SystemExit) as context:

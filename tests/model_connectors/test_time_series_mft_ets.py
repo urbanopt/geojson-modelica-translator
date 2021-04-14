@@ -17,6 +17,14 @@ distribution.
 Neither the name of the copyright holder nor the names of its contributors may be used to endorse
 or promote products derived from this software without specific prior written permission.
 
+Redistribution of this software, without modification, must refer to the software by the same
+designation. Redistribution of a modified version of this software (i) may not refer to the
+modified version by the same designation, or by any confusingly similar designation, and
+(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
+to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
+not be used to refer to any modified version of this software or any modified version of the
+underlying software originally provided by Alliance without the prior written consent of Alliance.
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
 IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -29,7 +37,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import re
 
+import pytest
+from buildingspy.io.outputfile import Reader
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
@@ -56,10 +67,12 @@ from geojson_modelica_translator.model_connectors.networks import (
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
+from modelica_builder.model import Model
 
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
     def test_mft_time_series_to_modelica_and_run(self):
         project_name = "time_series_massflow"
@@ -105,6 +118,62 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
         district.to_modelica()
 
         root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+        mo_file_name = os.path.join(root_path, 'DistrictEnergySystem.mo')
+        # set the run time to 31536000 (full year in seconds)
+        mofile = Model(mo_file_name)
+        mofile.update_model_annotation({"experiment": {"StopTime": 31536000}})
+        mofile.save()
+        self.run_and_assert_in_docker(mo_file_name,
                                       project_path=district._scaffold.project_path,
                                       project_name=district._scaffold.project_name)
+
+        # Check the results
+        results_dir = f'{district._scaffold.project_path}_results'
+        mat_file = f'{results_dir}/time_series_massflow_Districts_DistrictEnergySystem_result.mat'
+        mat_results = Reader(mat_file, 'dymola')
+
+        # hack to get the name of the loads (rather the 8 character connector shas)
+        timeseries_load_var = None
+        coolflow_var = None
+        heatflow_var = None
+        for var in mat_results.varNames():
+            m = re.match("TimeSerMFTLoa_(.{8})", var)
+            if m:
+                timeseries_load_var = m[1]
+                continue
+
+            m = re.match("cooInd_(.{8})", var)
+            if m:
+                coolflow_var = m[1]
+                continue
+
+            m = re.match("heaInd_(.{8})", var)
+            if m:
+                heatflow_var = m[1]
+                continue
+
+            if None not in (timeseries_load_var, coolflow_var, heatflow_var):
+                break
+
+        (time1, ts_hea_load) = mat_results.values(f"TimeSerMFTLoa_{timeseries_load_var}.ports_aChiWat[1].m_flow")
+        (_time1, ts_chi_load) = mat_results.values(f"TimeSerMFTLoa_{timeseries_load_var}.ports_aHeaWat[1].m_flow")
+        (_time1, cool_q_flow) = mat_results.values(f"cooInd_{coolflow_var}.Q_flow")
+        (_time1, heat_q_flow) = mat_results.values(f"heaInd_{heatflow_var}.Q_flow")
+
+        # if any of these assertions fail, then it is likely that the change in the timeseries massflow model
+        # has been updated and we need to revalidate the models.
+        self.assertEqual(ts_hea_load.min(), 0)
+        self.assertAlmostEqual(ts_hea_load.max(), 51, delta=1)
+        self.assertAlmostEqual(ts_hea_load.mean(), 4, delta=1)
+
+        self.assertEqual(ts_chi_load.min(), 0)
+        self.assertAlmostEqual(ts_chi_load.max(), 61, delta=1)
+        self.assertAlmostEqual(ts_chi_load.mean(), 4, delta=1)
+
+        self.assertAlmostEqual(cool_q_flow.min(), -51750, delta=10)
+        self.assertAlmostEqual(cool_q_flow.max(), 354100, delta=10)
+        self.assertAlmostEqual(cool_q_flow.mean(), 3160, delta=10)
+
+        self.assertAlmostEqual(heat_q_flow.min(), -343210, delta=10)
+        self.assertAlmostEqual(heat_q_flow.max(), 39475, delta=10)
+        self.assertAlmostEqual(heat_q_flow.mean(), -23270, delta=10)

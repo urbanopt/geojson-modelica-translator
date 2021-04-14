@@ -14,4 +14,4 @@
     T_a1_nominal=273.15+5,
     T_a2_nominal=273.15+13)
     "Indirect cooling energy transfer station ETS."
-    {% raw %}annotation (Placement(transformation(extent={{12,-64},{36,-44}})));{% endraw %}
+    annotation (Placement({{ diagram.transformation.coo_ets.ets }}));
