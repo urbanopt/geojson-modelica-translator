@@ -36,7 +36,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
@@ -53,13 +52,13 @@ class HeatingPlant(PlantBase):
         super().__init__(system_parameters)
         self.id = 'heaPla_' + simple_uuid()
 
-        self.required_mo_files.append(os.path.join(self.template_dir, 'CentralHeatingPlant.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'Boiler_TParallel.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'BoilerStage.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'HeatingWaterPumpSpeed.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallel.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'PartialPlantParallelInterface.mo'))
-        self.required_mo_files.append(os.path.join(self.template_dir, 'ValveParameters.mo'))
+        self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'Boiler_TParallel.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'BoilerStage.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'HeatingWaterPumpSpeed.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'PartialPlantParallel.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'PartialPlantParallelInterface.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'ValveParameters.mo')
 
     def to_modelica(self, scaffold):
         """
