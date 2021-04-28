@@ -56,7 +56,7 @@ class PackageParser(object):
         :param path: string, path to where the package.mo and package.order reside.
         """
         self.path = path
-        self.order_data = ''
+        self.order_data = None  # This is stored as a string for now.
         self.package_data = None
         self.load()
 
