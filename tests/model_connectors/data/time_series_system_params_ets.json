@@ -40,8 +40,8 @@
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
-            "temp_hw_supply": 50,
-            "temp_hw_return": 35,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 38,
             "temp_setpoint_cooling": 24,
             "temp_setpoint_heating": 20
           }
@@ -82,8 +82,8 @@
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
-            "temp_hw_supply": 50,
-            "temp_hw_return": 35,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 38,
             "temp_setpoint_cooling": 24,
             "temp_setpoint_heating": 20
           }
