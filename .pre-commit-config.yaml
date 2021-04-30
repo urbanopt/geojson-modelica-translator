@@ -38,6 +38,5 @@ repos:
         types: [file]
         files: \.(mo|mot)$
         entry: poetry run format_modelica_files
-        additional_dependencies: [click]
         language: system
         pass_filenames: false
