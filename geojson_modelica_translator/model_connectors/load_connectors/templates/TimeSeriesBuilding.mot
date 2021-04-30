@@ -19,7 +19,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     annotation (Dialog(group="Nominal condition"));
   {% endraw %}parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
     min=273.15,
-    displayUnit="degC")=T_aHeaWat_nominal-5
+    displayUnit="degC")={{ data['nominal_values']['hhw_return_temp'] }}
     {% raw %} "Heating water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
   {% endraw %}parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
