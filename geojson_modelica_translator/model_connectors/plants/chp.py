@@ -85,8 +85,8 @@ class DistrictCHP(PlantBase):
         }
         plant_template = self.template_env.get_template(f"{self.template_name}.mot")
         self.run_template(
-            plant_template,
-            Path(scaffold.plants_path.files_dir) / f"{self.template_name}.mo",
+            template=plant_template,
+            save_file_name=Path(scaffold.plants_path.files_dir) / f"{self.template_name}.mo",
             project_name=scaffold.project_name,
             data=template_data
         )
