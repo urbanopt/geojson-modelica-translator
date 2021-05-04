@@ -730,6 +730,11 @@
           "description": "Chiller isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
+        },
+        "thermal_following": {
+          "description": "Switch declaring a CHP plant that primarily produces electricity",
+          "type": "boolean",
+          "default": true
         }
       },
       "required": [
