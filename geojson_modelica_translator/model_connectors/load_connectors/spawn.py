@@ -241,10 +241,10 @@ class Spawn(LoadBase):
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
-        pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
-        )
-        pp.save()
+        package = PackageParser(scaffold.project_path)
+        if 'Loads' not in package.order:
+            package.add_model('Loads')
+            package.save()
 
     def get_modelica_type(self, scaffold):
         return f'{scaffold.project_name}.Loads.{self.building_name}.building'

@@ -1,61 +1,104 @@
 {
   "buildings": {
     "default": {
-      "load_model": "spawn",
-      "load_model_parameters": {
-        "spawn": {
-          "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
-          "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
-          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
-          "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
-          "temp_chw_supply": 7,
-          "temp_chw_return": 12,
-          "temp_hw_supply": 40,
-          "temp_hw_return": 35,
-          "temp_setpoint_cooling": 24,
-          "temp_setpoint_heating": 20,
-          "thermal_zone_names": [
-            "Core_ZN",
-            "Perimeter_ZN_1",
-            "Perimeter_ZN_2",
-            "Perimeter_ZN_3",
-            "Perimeter_ZN_4"
-          ]
-        }
-      },
+      "load_model": "rc",
       "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "indirect": {
           "heat_flow_nominal": 10000,
           "heat_exchanger_efficiency": 0.8,
-          "nominal_mass_flow_district": 0.5,
-          "nominal_mass_flow_building": 0.5,
-          "valve_pressure_drop": 6000,
-          "heat_exchanger_secondary_pressure_drop": 500,
           "heat_exchanger_primary_pressure_drop": 500,
+          "heat_exchanger_secondary_pressure_drop": 500,
+          "nominal_mass_flow_building": 0.5,
+          "nominal_mass_flow_district": 0.5,
+          "valve_pressure_drop": 6000,
           "cooling_supply_water_temperature_district": 5,
           "cooling_supply_water_temperature_building": 7,
           "heating_supply_water_temperature_district": 55,
           "heating_supply_water_temperature_building": 50,
-          "delta_temp_chw_building": 5,
-          "delta_temp_chw_district": 8,
-          "delta_temp_hw_building": 15,
-          "delta_temp_hw_district": 20,
+          "delta_temp_hw_district": 19,
+          "delta_temp_hw_building": 14,
+          "delta_temp_chw_building": 4.9,
+          "delta_temp_chw_district": 7.9,
           "cooling_controller_y_max": 1,
           "cooling_controller_y_min": 0,
           "heating_controller_y_max": 1,
           "heating_controller_y_min": 0
         }
       }
-    }
+    },
+    "custom": [
+      {
+        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "load_model": "spawn",
+        "load_model_parameters": {
+          "spawn": {
+            "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
+            "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
+            "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "temp_chw_supply": 7,
+            "temp_chw_return": 12,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 35,
+            "temp_setpoint_cooling": 24,
+            "temp_setpoint_heating": 20,
+            "thermal_zone_names": [
+              "Core_ZN",
+              "Perimeter_ZN_1",
+              "Perimeter_ZN_2",
+              "Perimeter_ZN_3",
+              "Perimeter_ZN_4"
+            ]
+          }
+        },
+        "ets_model_parameters": {
+          "indirect": {
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.8,
+            "heat_exchanger_primary_pressure_drop": 500,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "nominal_mass_flow_building": 0.5,
+            "nominal_mass_flow_district": 0.5,
+            "valve_pressure_drop": 6000,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50,
+            "delta_temp_hw_district": 19,
+            "delta_temp_hw_building": 14,
+            "delta_temp_chw_building": 4.9,
+            "delta_temp_chw_district": 7.9,
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
+          }
+        }
+      }
+    ]
   },
   "district_system": {
     "default": {
-      "cooling_plant": {
-        "delta_t_nominal": 5.56,
-        "fan_power_nominal": 5000,
-        "chilled_water_pump_pressure_head": 6000,
-        "condenser_water_pump_pressure_head": 6000
+      "central_cooling_plant_parameters": {
+        "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+        "heat_flow_nominal": 7999,
+        "cooling_tower_fan_power_nominal": 4999,
+        "mass_chw_flow_nominal": 9.9,
+        "chiller_water_flow_minimum": 9.9,
+        "mass_cw_flow_nominal": 9.9,
+        "chw_pump_head": 300000,
+        "cw_pump_head": 200000,
+        "pressure_drop_chw_nominal": 5999,
+        "pressure_drop_cw_nominal": 5999,
+        "pressure_drop_setpoint": 49999,
+        "temp_setpoint_chw": 6,
+        "pressure_drop_chw_valve_nominal": 5999,
+        "pressure_drop_cw_pum_nominal": 5999,
+        "temp_air_wb_nominal": 24.9,
+        "temp_cw_in_nominal": 34.9,
+        "cooling_tower_water_temperature_difference_nominal": 6.56,
+        "delta_temp_approach": 3.25,
+        "ratio_water_air_nominal": 0.6
       }
     }
   }
