@@ -1,5 +1,5 @@
-within geojson_modelica_translator.model_connectors.templates;
-model DistrictCHP
+within {{ project_name }}.Plants;
+{% raw %}model DistrictCHP
   "Combined heating and power plant."
   package Medium=Buildings.Media.Water
     "MediumW model";
@@ -188,9 +188,9 @@ model DistrictCHP
     k=60)
     annotation (Placement(transformation(extent={{-120,52},{-100,72}})));
 protected
-  Modelica.Blocks.Sources.BooleanExpression theFolSig(
-    final y=true)
-    "Signal for thermal following, set to false if electrical following"
+  {% endraw %} Modelica.Blocks.Sources.BooleanExpression theFolSig(
+    final y={{ data["nominal_values"]["thermal_following"] }})
+    {% raw %} "Signal for thermal following, set to false if electrical following"
     annotation (Placement(transformation(extent={{-160,50},{-140,66}})));
 equation
   connect(THeaSet,boiHotWat.THeaWatSet)
@@ -354,3 +354,4 @@ equation
    </ul>
    </html>"));
 end DistrictCHP;
+{% endraw %}
