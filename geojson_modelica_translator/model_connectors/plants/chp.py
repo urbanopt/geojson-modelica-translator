@@ -67,21 +67,36 @@ class DistrictCHP(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        mos_wet_bulb_filename = self.system_parameters.get_param(
-            "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"
-        )
+        # mos_wet_bulb_filename = self.system_parameters.get_param(
+        #     "$.district_system.default.central_heating_plant_parameters.mos_wet_bulb_filename"
+        # )
         template_data = {
             "nominal_values": {
-                "delta_temp": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.cooling_tower_water_temperature_difference_nominal"
-                )
-            },
-            "wet_bulb_calc": {
-                "mos_wet_bulb_filename": mos_wet_bulb_filename,
-                "filename": Path(mos_wet_bulb_filename).name,
-                "path": Path(mos_wet_bulb_filename).parent,
-                "modelica_path": self.modelica_path(mos_wet_bulb_filename),
-            },
+                "heat_flow_nominal": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.heat_flow_nominal"
+                ),
+                "mass_hw_flow_nominal": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.mass_hw_flow_nominal"
+                ),
+                "boiler_water_flow_minimum": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.boiler_water_flow_minimum"
+                ),
+                "pressure_drop_hw_nominal": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_nominal"
+                ),
+                "pressure_drop_setpoint": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.pressure_drop_setpoint"
+                ),
+                "temp_setpoint_hw": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hw"
+                ),
+                "pressure_drop_hw_valve_nominal": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_valve_nominal"
+                ),
+                "thermal_following": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.thermal_following"
+                ),
+            }
         }
         plant_template = self.template_env.get_template(f"{self.template_name}.mot")
         self.run_template(
