@@ -10,8 +10,8 @@ model DistrictEnergySystem
   // TODO: dehardcode? Also, add display units to the other parameters.
   parameter Modelica.SIunits.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
   parameter Modelica.SIunits.TemperatureDifference delChiWatTemBui=5;
-  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemDis=20;
-  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemBui=8;
+  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemDis=12;
+  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemBui=5;
 
   // Models
 {% for model in models %}
