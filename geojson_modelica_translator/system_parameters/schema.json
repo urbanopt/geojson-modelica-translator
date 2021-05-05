@@ -732,9 +732,8 @@
           "default": 6000
         },
         "thermal_following": {
-          "description": "Switch declaring a CHP plant that primarily produces electricity",
-          "type": "boolean",
-          "default": true
+          "description": "CHP plant prioritizes electricity over heat",
+          "type": "boolean"
         }
       },
       "required": [
