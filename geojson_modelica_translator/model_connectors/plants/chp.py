@@ -46,8 +46,7 @@ from geojson_modelica_translator.utils import simple_uuid
 
 
 class DistrictCHP(PlantBase):
-    # model_name = 'DistrictCHP'
-    model_name = 'HeatingPlant'
+    model_name = 'DistrictCHP'
 
     def __init__(self, system_parameters, template_name='DistrictCHP'):
         super().__init__(system_parameters)
