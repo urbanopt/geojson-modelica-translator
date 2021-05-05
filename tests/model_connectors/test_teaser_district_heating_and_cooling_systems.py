@@ -145,9 +145,9 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
 
         # this tolerance determines how much we allow the actual mass flow rate to exceed the nominal value
         M_FLOW_NOMINAL_TOLERANCE = 0.01
-        (_, heat_m_flow_nominal) = mat_results.values(f'{load.id}.mLoaHea_flow_nominal[1]')
+        (_, heat_m_flow_nominal) = mat_results.values(f'{load.id}.terUni[1].mLoaHea_flow_nominal')
         heat_m_flow_nominal = heat_m_flow_nominal[0]
-        (_, cool_m_flow_nominal) = mat_results.values(f'{load.id}.mLoaCoo_flow_nominal[1]')
+        (_, cool_m_flow_nominal) = mat_results.values(f'{load.id}.terUni[1].mLoaCoo_flow_nominal')
         cool_m_flow_nominal = cool_m_flow_nominal[0]
         # TODO: remove try/except this is fixed
         try:
