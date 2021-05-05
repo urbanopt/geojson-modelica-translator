@@ -90,9 +90,9 @@ class DistrictCHP(PlantBase):
                 "pressure_drop_hw_valve_nominal": self.system_parameters.get_param(
                     "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_valve_nominal"
                 ),
-                "thermal_following": self.system_parameters.get_param(
+                "thermal_following": str(self.system_parameters.get_param(
                     "$.district_system.default.central_heating_plant_parameters.thermal_following"
-                ),
+                )).lower(),  # Booleans in Python start with a capital letter. Modelica wants it lowercase, hence this.
             }
         }
         plant_template = self.template_env.get_template(f"{self.template_name}.mot")

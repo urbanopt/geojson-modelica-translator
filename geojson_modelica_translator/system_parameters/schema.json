@@ -733,8 +733,7 @@
         },
         "thermal_following": {
           "description": "CHP plant prioritizes electricity over heat",
-          "type": "string",
-          "default": "true"
+          "type": "boolean"
         }
       },
       "required": [
