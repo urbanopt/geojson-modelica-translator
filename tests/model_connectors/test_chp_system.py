@@ -74,8 +74,8 @@ from ..base_test_case import TestCaseBase
 
 @pytest.mark.simulation
 class CombinedHeatingPowerTest(TestCaseBase):
-    def test_district_heating_system(self):
-        self.project_name = 'district_heating_and_cooling_systems'
+    def test_district_chp_system(self):
+        self.project_name = 'district_chp_system'
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
