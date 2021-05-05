@@ -47,6 +47,7 @@ from geojson_modelica_translator.utils import simple_uuid
 
 class DistrictCHP(PlantBase):
     # model_name = 'DistrictCHP'
+    model_name = 'HeatingPlant'
 
     def __init__(self, system_parameters, template_name='DistrictCHP'):
         super().__init__(system_parameters)
@@ -67,9 +68,6 @@ class DistrictCHP(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        # mos_wet_bulb_filename = self.system_parameters.get_param(
-        #     "$.district_system.default.central_heating_plant_parameters.mos_wet_bulb_filename"
-        # )
         template_data = {
             "nominal_values": {
                 "heat_flow_nominal": self.system_parameters.get_param(
