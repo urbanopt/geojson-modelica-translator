@@ -41,7 +41,7 @@
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
-            "temp_hw_return": 32,
+            "temp_hw_return": 35,
             "temp_setpoint_cooling": 24,
             "temp_setpoint_heating": 20
           }
@@ -57,8 +57,8 @@
             "heat_exchanger_primary_pressure_drop": 500,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50,
+            "heating_supply_water_temperature_district": 50,
+            "heating_supply_water_temperature_building": 40,
             "booster_heater": false,
             "ets_generation": "Fourth Generation",
             "delta_temp_chw_building": 5,
@@ -83,7 +83,7 @@
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
-            "temp_hw_return": 32,
+            "temp_hw_return": 35,
             "temp_setpoint_cooling": 24,
             "temp_setpoint_heating": 20
           }
@@ -99,8 +99,8 @@
             "heat_exchanger_primary_pressure_drop": 500,
             "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_district": 55,
-            "heating_supply_water_temperature_building": 50,
+            "heating_supply_water_temperature_district": 50,
+            "heating_supply_water_temperature_building": 40,
             "booster_heater": false,
             "ets_generation": "Fourth Generation",
             "delta_temp_chw_building": 5,
