@@ -1,0 +1,4 @@
+  connect({{ coupling.plant.id }}.eleFol.port_b,{{ coupling.network.id }}.port_aDisSup)
+    annotation ({{ diagram.line.chp_plant.port_b.two_pipe.port_a_dis_sup }});
+  connect({{ coupling.plant.id }}.eleFol.port_a,{{ coupling.network.id }}.port_bDisRet)
+    annotation ({{ diagram.line.chp_plant.port_a.two_pipe.port_b_dis_ret }});
