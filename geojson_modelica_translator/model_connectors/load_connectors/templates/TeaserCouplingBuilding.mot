@@ -27,13 +27,13 @@ within {{project_name}}.Loads.{{model_name}};
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={130,20})));
   {% endraw %}Modelica.Blocks.Sources.RealExpression THeaWatSup(
     y=max(
-      {{ data['nominal_values']['hhw_supply_temp']  }})
-      {% raw %} "Heating water supply temperature"
+      {{ data['nominal_values']['hhw_supply_temp']  }}))
+    {% raw %} "Heating water supply temperature"
     annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
   {% endraw %}Modelica.Blocks.Sources.RealExpression TChiWatSup(
     y=max(
-      {{ data['nominal_values']['chw_supply_temp']  }})
-      {% raw %} "Chilled water supply temperature"
+      {{ data['nominal_values']['chw_supply_temp']  }}))
+    {% raw %} "Chilled water supply temperature"
     annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
   Buildings.Fluid.Sources.Boundary_pT supHeaWat(
     redeclare package Medium=MediumW,
