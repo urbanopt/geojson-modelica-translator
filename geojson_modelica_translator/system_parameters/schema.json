@@ -254,6 +254,9 @@
         },
         "central_heating_plant_parameters": {
           "ref": "#/definitions/central_heating_plant_parameters"
+        },
+        "combined_heat_and_power_parameters": {
+          "ref": "#/definitions/combined_heat_and_power_parameters"
         }
       },
       "additionalProperties": false
@@ -730,10 +733,6 @@
           "description": "Chiller isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
-        },
-        "thermal_following": {
-          "description": "CHP plant prioritizes electricity over heat",
-          "type": "boolean"
         }
       },
       "required": [
@@ -744,6 +743,19 @@
         "pressure_drop_setpoint",
         "temp_setpoint_hw",
         "pressure_drop_hw_valve_nominal"
+      ]
+    },
+    "combined_heat_and_power_parameters": {
+      "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model",
+      "type": "object",
+      "properties": {
+        "thermal_following": {
+          "description": "True if CHP is thermal_following (prioritized thermal heat over electricity)",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "thermal_following"
       ]
     }
   }
