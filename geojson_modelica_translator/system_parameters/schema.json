@@ -746,7 +746,7 @@
       ]
     },
     "combined_heat_and_power_parameters": {
-      "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model",
+      "description": "Combined heat and power plant. Parameters associated with the model",
       "type": "object",
       "properties": {
         "thermal_following": {
