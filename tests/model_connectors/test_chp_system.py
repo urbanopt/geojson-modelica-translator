@@ -64,6 +64,7 @@ from geojson_modelica_translator.model_connectors.load_connectors.time_series im
 from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (
     Network2Pipe
 )
+from geojson_modelica_translator.model_connectors.plants import HeatingPlant
 from geojson_modelica_translator.model_connectors.plants.chp import DistrictCHP
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -74,8 +75,8 @@ from ..base_test_case import TestCaseBase
 
 @pytest.mark.simulation
 class CombinedHeatingPowerTest(TestCaseBase):
-    def test_district_chp_system(self):
-        self.project_name = 'district_chp_system'
+    def test_chp_as_sole_heating_source(self):
+        self.project_name = 'chp_alone'
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
@@ -102,6 +103,68 @@ class CombinedHeatingPowerTest(TestCaseBase):
             all_couplings.append(Coupling(time_series_load, heating_indirect_system))
             all_couplings.append(Coupling(time_series_load, cold_water_stub))
             all_couplings.append(Coupling(heating_indirect_system, network))
+
+        # create the couplings and graph
+        graph = CouplingGraph(all_couplings)
+
+        district = District(
+            root_dir=self.output_dir,
+            project_name=self.project_name,
+            system_parameters=self.sys_params,
+            coupling_graph=graph
+        )
+        district.to_modelica()
+
+        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
+        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+                                      project_path=district._scaffold.project_path,
+                                      project_name=district._scaffold.project_name)
+
+    def test_chp_and_heating_district(self):
+        self.project_name = 'chp_and_central_heating'
+        self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
+
+        # load in the example geojson with a single office building
+        filename = Path(self.data_dir) / "time_series_ex1.json"
+        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+
+        # load system parameter data
+        filename = Path(self.data_dir) / "time_series_system_params_ets.json"
+        self.sys_params = SystemParameters(filename)
+
+        # create chp network and plant
+        # chp_network = Network2Pipe(self.sys_params)
+        chp_plant = DistrictCHP(self.sys_params, template_name="DistrictCHP")
+
+        # create heating network and plant
+        heating_network = Network2Pipe(self.sys_params)
+        heating_plant = HeatingPlant(self.sys_params)
+
+        # create our load/ets/stubs
+        # store all couplings to construct the District system
+        all_couplings = [
+            Coupling(heating_network, chp_plant),
+            Coupling(heating_network, heating_plant),
+        ]
+
+        # keep track of separate loads and etses for testing purposes
+        loads = []
+        heat_etses = []
+        # cool_etses = []
+        for geojson_load in self.gj.json_loads:
+            time_series_load = TimeSeries(self.sys_params, geojson_load)
+            loads.append(time_series_load)
+            geojson_load_id = geojson_load.feature.properties["id"]
+
+            chp_indirect = HeatingIndirect(self.sys_params, geojson_load_id)
+            heat_etses.append(chp_indirect)
+            all_couplings.append(Coupling(time_series_load, chp_indirect))
+            all_couplings.append(Coupling(chp_indirect, heating_network))
+
+            heating_indirect = HeatingIndirect(self.sys_params, geojson_load_id)
+            heat_etses.append(heating_indirect)
+            all_couplings.append(Coupling(time_series_load, heating_indirect))
+            all_couplings.append(Coupling(heating_indirect, heating_network))
 
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
