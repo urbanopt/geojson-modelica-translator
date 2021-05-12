@@ -45,15 +45,18 @@ from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import simple_uuid
 
 
-class DistrictCHP(PlantBase):
-    model_name = 'DistrictCHP'
+class HeatingPlantWithOptionalCHP(PlantBase):
+    model_name = 'HeatingPlant'
 
-    def __init__(self, system_parameters, template_name='DistrictCHP'):
+    def __init__(self, system_parameters):
         super().__init__(system_parameters)
         self.id = 'chpPla_' + simple_uuid()
-        self.template_name = template_name
+        self.chp_exists = self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.with_chp"
+                )
+        if not self.chp_exists:
+            self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
 
-        self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'Boiler_TParallel.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'BoilerStage.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'HeatingWaterPumpSpeed.mo')
@@ -67,41 +70,44 @@ class DistrictCHP(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        template_data = {
-            "nominal_values": {
-                "heat_flow_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.heat_flow_nominal"
-                ),
-                "mass_hw_flow_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.mass_hw_flow_nominal"
-                ),
-                "boiler_water_flow_minimum": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.boiler_water_flow_minimum"
-                ),
-                "pressure_drop_hw_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.pressure_drop_hw_nominal"
-                ),
-                "pressure_drop_setpoint": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.pressure_drop_setpoint"
-                ),
-                "temp_setpoint_hw": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.temp_setpoint_hw"
-                ),
-                "pressure_drop_hw_valve_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.pressure_drop_hw_valve_nominal"
-                ),
-                "thermal_following": str(self.system_parameters.get_param(
-                    "$.district_system.default.combined_heat_and_power_parameters.thermal_following"
-                )).lower(),  # Booleans in Python start with a capital letter. Modelica wants it lowercase, hence this.
+        if self.chp_exists:
+            template_data = {
+                "nominal_values": {
+                    "heat_flow_nominal": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.heat_flow_nominal"
+                    ),
+                    "mass_hw_flow_nominal": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.mass_hw_flow_nominal"
+                    ),
+                    "boiler_water_flow_minimum": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.boiler_water_flow_minimum"
+                    ),
+                    "pressure_drop_hw_nominal": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_nominal"
+                    ),
+                    "pressure_drop_setpoint": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.pressure_drop_setpoint"
+                    ),
+                    "temp_setpoint_hw": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hw"
+                    ),
+                    "pressure_drop_hw_valve_nominal": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_valve_nominal"
+                    ),
+                },
+                "signals": {
+                    "thermal_following": str(self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.thermal_following"
+                    )).lower(),  # Booleans in Python start with a capital letter. Modelica wants it lowercase, hence this.
+                },
             }
-        }
-        plant_template = self.template_env.get_template(f"{self.template_name}.mot")
-        self.run_template(
-            template=plant_template,
-            save_file_name=Path(scaffold.plants_path.files_dir) / f"{self.template_name}.mo",
-            project_name=scaffold.project_name,
-            data=template_data
-        )
+            plant_template = self.template_env.get_template("HeatingPlantWithCHP.mot")
+            self.run_template(
+                template=plant_template,
+                save_file_name=Path(scaffold.plants_path.files_dir) / "CentralHeatingPlant.mo",
+                project_name=scaffold.project_name,
+                data=template_data
+            )
 
         self.copy_required_mo_files(
             dest_folder=scaffold.plants_path.files_dir,
@@ -112,7 +118,7 @@ class DistrictCHP(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        package_models = [f'{self.template_name}'] + [Path(mo).stem for mo in self.required_mo_files]
+        package_models = ['CentralHeatingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
         plants_package = PackageParser(scaffold.plants_path.files_dir)
         if plants_package.order_data is None:
             plants_package = PackageParser.new_from_template(
@@ -126,4 +132,4 @@ class DistrictCHP(PlantBase):
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.{self.template_name}'
+        return f'{scaffold.project_name}.Plants.CentralHeatingPlant'
