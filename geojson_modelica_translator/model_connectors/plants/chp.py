@@ -52,8 +52,8 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         super().__init__(system_parameters)
         self.id = 'chpPla_' + simple_uuid()
         self.chp_exists = self.system_parameters.get_param(
-                    "$.district_system.default.central_heating_plant_parameters.with_chp"
-                )
+            "$.district_system.default.central_heating_plant_parameters.with_chp"
+        )
         if not self.chp_exists:
             self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
 
