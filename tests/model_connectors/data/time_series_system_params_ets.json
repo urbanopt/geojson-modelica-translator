@@ -146,17 +146,9 @@
         "pressure_drop_hw_nominal": 55001,
         "pressure_drop_setpoint": 50000,
         "temp_setpoint_hw": 339.15,
-        "pressure_drop_hw_valve_nominal": 6001
-      },
-      "combined_heat_and_power_parameters": {
-        "thermal_following": true,
-        "heat_flow_nominal": 8002,
-        "mass_hw_flow_nominal": 10.5,
-        "boiler_water_flow_minimum": 10.5,
-        "pressure_drop_hw_nominal": 55002,
-        "pressure_drop_setpoint": 50001,
-        "temp_setpoint_hw": 339.16,
-        "pressure_drop_hw_valve_nominal": 5999
+        "pressure_drop_hw_valve_nominal": 6001,
+        "with_chp": false,
+        "thermal_following": true
       }
     }
   }
