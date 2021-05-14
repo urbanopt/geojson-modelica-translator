@@ -212,4 +212,8 @@ class LoadBase(ModelBase):
 
     @property
     def building_name(self):
-        return f"B{self.building_id}"
+        # teaser will prepend a "B" if the name is numeric, so accounting for that
+        if self.building_id[0].isnumeric():
+            return f"B{self.building_id}"
+
+        return self.building_id
