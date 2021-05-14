@@ -169,6 +169,7 @@ within {{ project_name }}.Plants;
     "Output pump speed"
     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
   Buildings.Fluid.CHPs.ThermalElectricalFollowing eleFol(
+    redeclare package Medium=Medium,
     m_flow_nominal=0.4,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     redeclare Buildings.Fluid.CHPs.Data.Senertech5_5kW per,
