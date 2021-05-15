@@ -1,4 +1,4 @@
-within district_heating_and_cooling_systems.Districts;
+within district_heating_and_cooling_systems;
 model DistrictEnergySystemCHP
   extends Modelica.Icons.Example;
   // District Parameters
@@ -374,8 +374,7 @@ parameter Integer nBui_disNet_aaccda4a=2;
   //
   // TODO: This should not be here, it is entirely plant specific and should be moved elsewhere
   // but since it requires a connect statement we must put it here for now...
-  Modelica.Blocks.Sources.BooleanConstant mPum_flow_1544cf6b(
-    k=true)
+  Modelica.Blocks.Sources.BooleanConstant mPum_flow_1544cf6b(k=true)
     "Total heating water pump mass flow rate"
     annotation (Placement(transformation(extent={{-70.0,-50.0},{-50.0,-30.0}})));
   // TODO: This should not be here, it is entirely plant specific and should be moved elsewhere
@@ -547,13 +546,18 @@ parameter Integer nBui_disNet_aaccda4a=2;
     TEngIni=273.15 + 69.55,
     waitTime=0)
     annotation (Placement(transformation(extent={{-80,28},{-60,48}})));
-  Modelica.Blocks.Sources.BooleanTable avaSig(startValue=true, table={172800})
-    "Plant availability signal"
-    annotation (Placement(transformation(extent={{-160,80},{-140,100}})));
   Modelica.Blocks.Sources.Constant ElePowDem(k=5500)
     annotation (Placement(transformation(extent={{-120,82},{-100,102}})));
-  Modelica.Blocks.Sources.Constant TWatOutSet(k=60)
+  Modelica.Blocks.Sources.Constant TWatOutSet(k=60 + 273.15)
     annotation (Placement(transformation(extent={{-120,52},{-100,72}})));
+  Buildings.Fluid.Movers.FlowControlled_m_flow CWPum(
+    redeclare package Medium = MediumW,
+    final m_flow_nominal=0.4,
+    final nominalValuesDefineDefaultPressureCurve=true)
+    annotation (Placement(transformation(extent={{-140,10},{-120,30}})));
+  Buildings.HeatTransfer.Sources.FixedTemperature TRoo(T(displayUnit="K") =
+      273.15 + 25)
+    annotation (Placement(transformation(extent={{-140,-30},{-120,-10}})));
 protected
   Modelica.Blocks.Sources.BooleanExpression theFolSig(final y=true)
     "Signal for thermal following, set to false if electrical following"
@@ -752,8 +756,6 @@ equation
   // End Connect Statements for afcd41bc
   //
 
-  connect(avaSig.y, eleFol.avaSig)
-    annotation (Line(points={{-139,90},{-128,90},{-128,47},{-82,47}},  color={255,0,255}));
   connect(theFolSig.y, eleFol.theFol)
     annotation (Line(points={{-139,58},{-136,58},{-136,45},{-82,45}}, color={255,0,255}));
   connect(TWatOutSet.y, eleFol.TWatOutSet)
@@ -762,8 +764,18 @@ equation
     annotation (Line(points={{-99,92},{-92,92},{-92,41},{-82,41}}, color={0,0,127}));
   connect(eleFol.port_b, disNet_aaccda4a.port_aDisSup)
     annotation (Line(points={{-60,38},{-42,38},{-42,85},{-30,85}}, color={0,127,255}));
-  connect(eleFol.port_a, disNet_aaccda4a.port_bDisRet)
-    annotation (Line(points={{-80,38},{-88,38},{-88,8},{-36,8},{-36,82},{-30,82}}, color={0,127,255}));
+  connect(TRoo.port, eleFol.TRoo) annotation (Line(points={{-120,-20},{-94,-20},
+          {-94,31},{-80,31}}, color={191,0,0}));
+  connect(CWPum.port_b, eleFol.port_a) annotation (Line(points={{-120,20},{-100,
+          20},{-100,38},{-80,38}}, color={0,127,255}));
+  connect(disNet_aaccda4a.port_bDisRet, CWPum.port_a) annotation (Line(points={
+          {-30,82},{-38,82},{-38,4},{-160,4},{-160,20},{-140,20}}, color={0,127,
+          255}));
+  connect(eleFol.mWatSet_flow, CWPum.m_flow_in) annotation (Line(points={{-58,
+          47},{-56,47},{-56,0},{-166,0},{-166,40},{-130,40},{-130,32}}, color={
+          0,0,127}));
+  connect(theFolSig.y, eleFol.avaSig) annotation (Line(points={{-139,58},{-136,
+          58},{-136,47},{-82,47}}, color={255,0,255}));
 annotation (
   experiment(
     StopTime=86400,
