@@ -1,0 +1,8 @@
+  connect({{ coupling.load.id }}.ports_bChiWat[1], {{ coupling.ets.id }}.port_a2)
+    annotation ({{ diagram.line.spawn_load.ports_b_chi_wat.coo_ets.port_a2 }});
+  connect({{ coupling.ets.id }}.port_b2,{{ coupling.load.id }}.ports_aChiWat[1])
+    annotation ({{ diagram.line.coo_ets.port_b2.spawn_load.ports_a_chi_wat }});
+  connect(pressure_source_{{ coupling.id }}.ports[1], {{ coupling.ets.id }}.port_b2)
+    annotation ({{ diagram.line.pressure_source.ports.coo_ets.port_b2 }});
+  connect(TChiWatSet_{{ coupling.id }}.y,{{ coupling.ets.id }}.TSetBuiSup)
+    annotation ({{ diagram.line.t_chi_wat_set.y.spawn_load.t_set_bui_sup }});

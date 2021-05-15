@@ -1,0 +1,141 @@
+within {{ project_name }}.Plants;
+{% raw %}model DistrictCHP
+  "Combined heating and power plant."
+  // District Parameters
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  Buildings.Fluid.CHPs.ThermalElectricalFollowing eleFol(
+    redeclare package Medium=MediumW,
+    m_flow_nominal=0.4,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    redeclare Buildings.Fluid.CHPs.Data.Senertech5_5kW per,
+    TEngIni=273.15+69.55,
+    waitTime=0)
+    annotation (Placement(transformation(extent={{-80,28},{-60,48}})));
+  Modelica.Blocks.Sources.BooleanTable avaSig(
+    startValue=true,
+    table={172800})
+    "Plant availability signal"
+    annotation (Placement(transformation(extent={{-160,80},{-140,100}})));
+  Modelica.Blocks.Sources.Constant ElePowDem(
+    k=5500)
+    annotation (Placement(transformation(extent={{-120,82},{-100,102}})));
+  Modelica.Blocks.Sources.Constant TWatOutSet(
+    k=60)
+    annotation (Placement(transformation(extent={{-120,52},{-100,72}})));
+protected
+  {% endraw %} Modelica.Blocks.Sources.BooleanExpression theFolSig(
+    final y={{ data["nominal_values"]["thermal_following"] }})
+    {% raw %} "Signal for thermal following, set to false if electrical following"
+    annotation (Placement(transformation(extent={{-160,50},{-140,66}})));
+equation
+  connect(avaSig.y,eleFol.avaSig)
+    annotation (Line(points={{-139,90},{-128,90},{-128,47},{-82,47}},color={255,0,255}));
+  connect(theFolSig.y,eleFol.theFol)
+    annotation (Line(points={{-139,58},{-136,58},{-136,45},{-82,45}},color={255,0,255}));
+  connect(TWatOutSet.y,eleFol.TWatOutSet)
+    annotation (Line(points={{-99,62},{-92,62},{-92,43},{-82,43}},color={0,0,127}));
+  connect(ElePowDem.y,eleFol.PEleDem)
+    annotation (Line(points={{-99,92},{-92,92},{-92,41},{-82,41}},color={0,0,127}));
+  annotation (
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-140,-80},{120,100}})),
+    Icon(
+      graphics={
+        Rectangle(
+          extent={{-100,-100},{100,100}},
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{-62,-14},{-62,-14}},
+          lineColor={238,46,47},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{80,-60},{-80,-60},{-80,60},{-60,60},{-60,0},{-40,0},{-40,20},{0,0},{0,20},{40,0},{40,20},{80,0},{80,-60}},
+          lineColor={95,95,95},
+          fillColor={238,46,47},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{46,-38},{58,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{62,-38},{74,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{62,-54},{74,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{46,-54},{58,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{22,-54},{34,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{6,-54},{18,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{6,-38},{18,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{22,-38},{34,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-18,-54},{-6,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-34,-54},{-22,-42}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-34,-38},{-22,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-18,-38},{-6,-26}},
+          lineColor={255,255,255},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Text(
+          extent={{-149,-114},{151,-154}},
+          lineColor={0,0,255},
+          textString="%name")}),
+    Documentation(
+      info="<html>
+   <p>
+   This model presents a combined heating water & power central plant for the distrcit systems application.
+   </p>
+   </html>",
+      revisions="<html>
+   <ul>
+   <li>
+   June 30, 2020, by Hagar Elarga:<br/>
+   First implementation.
+   </li>
+   </ul>
+   </html>"));
+end DistrictCHP;
+{% endraw %}

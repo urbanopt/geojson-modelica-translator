@@ -254,6 +254,9 @@
         },
         "central_heating_plant_parameters": {
           "ref": "#/definitions/central_heating_plant_parameters"
+        },
+        "combined_heat_and_power_parameters": {
+          "ref": "#/definitions/combined_heat_and_power_parameters"
         }
       },
       "additionalProperties": false
@@ -730,6 +733,14 @@
           "description": "Chiller isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
+        },
+        "with_chp": {
+          "description": "True if heating plant is a Combined Heat and Power plant",
+          "type": "boolean"
+        },
+        "thermal_following": {
+          "description": "True if CHP is thermal_following (prioritized thermal heat over electricity)",
+          "type": "boolean"
         }
       },
       "required": [

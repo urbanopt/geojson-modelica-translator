@@ -124,7 +124,7 @@ class Teaser(LoadBase):
             prj.add_non_residential(
                 method="bmvbs",
                 usage=self.lookup_building_type(self.building["building_type"]),
-                name=self.building_id,
+                name=self.building_name,
                 year_of_construction=self.building["year_built"],
                 number_of_floors=self.building["num_stories"],
                 height_of_floors=self.building["floor_height"],
@@ -363,8 +363,8 @@ class Teaser(LoadBase):
             mofile.remove_connect('weaDat.weaBus', 'weaBus')
 
             # add new port connections
-            rc_order = self.system_parameters.get_param(
-                "buildings.default.load_model_parameters.rc.order", default=2
+            rc_order = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.rc.order", default=2
             )
             thermal_zone_name = None
             thermal_zone_type = None
@@ -629,10 +629,10 @@ class Teaser(LoadBase):
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
-        pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
-        )
-        pp.save()
+        package = PackageParser(scaffold.project_path)
+        if 'Loads' not in package.order:
+            package.add_model('Loads')
+            package.save()
 
     def get_modelica_type(self, scaffold):
         return f'{scaffold.project_name}.Loads.{self.building_name}.building'

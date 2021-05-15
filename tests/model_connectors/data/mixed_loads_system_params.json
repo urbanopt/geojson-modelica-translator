@@ -31,7 +31,7 @@
     },
     "custom": [
       {
-        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "geojson_id": "timeSeriesID",
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
@@ -73,25 +73,73 @@
         }
       },
       {
-        "geojson_id": "abcdefghijklmnopqrstuvwx",
-        "load_model": "time_series",
+        "geojson_id": "spawnID",
+        "load_model": "spawn",
         "load_model_parameters": {
-          "time_series": {
-            "filepath": "time_series_large_office_2013_5B.mos",
-            "delta_temp_air_cooling": 10,
-            "delta_temp_air_heating": 18,
+          "spawn": {
+            "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
+            "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
+            "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
             "temp_hw_return": 35,
             "temp_setpoint_cooling": 24,
-            "temp_setpoint_heating": 20
+            "temp_setpoint_heating": 20,
+            "thermal_zone_names": [
+              "Core_ZN",
+              "Perimeter_ZN_1",
+              "Perimeter_ZN_2",
+              "Perimeter_ZN_3",
+              "Perimeter_ZN_4"
+            ]
           }
         },
         "ets_model_parameters": {
           "indirect": {
             "heat_flow_nominal": 10000,
-            "heat_exchanger_efficiency": 0.9,
+            "heat_exchanger_efficiency": 0.8,
+            "heat_exchanger_primary_pressure_drop": 500,
+            "heat_exchanger_secondary_pressure_drop": 500,
+            "nominal_mass_flow_building": 0.5,
+            "nominal_mass_flow_district": 0.5,
+            "valve_pressure_drop": 6000,
+            "cooling_supply_water_temperature_district": 5,
+            "cooling_supply_water_temperature_building": 7,
+            "heating_supply_water_temperature_district": 55,
+            "heating_supply_water_temperature_building": 50,
+            "delta_temp_hw_district": 19,
+            "delta_temp_hw_building": 14,
+            "delta_temp_chw_building": 4.9,
+            "delta_temp_chw_district": 7.9,
+            "cooling_controller_y_max": 1,
+            "cooling_controller_y_min": 0,
+            "heating_controller_y_max": 1,
+            "heating_controller_y_min": 0
+          }
+        }
+      },
+      {
+        "geojson_id": "teaserID",
+        "load_model": "rc",
+        "load_model_parameters": {
+          "rc": {
+            "order": 4,
+            "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "temp_chw_supply": 7,
+            "temp_chw_return": 12,
+            "temp_hw_supply": 40,
+            "temp_hw_return": 35,
+            "temp_setpoint_cooling": 24,
+            "temp_setpoint_heating": 20,
+            "fraction_latent_person": 1.24
+          }
+        },
+        "ets_model": "Indirect Heating and Cooling",
+        "ets_model_parameters": {
+          "indirect": {
+            "heat_flow_nominal": 10000,
+            "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
             "nominal_mass_flow_building": 0.5,
             "valve_pressure_drop": 6000,
@@ -101,15 +149,13 @@
             "cooling_supply_water_temperature_building": 7,
             "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50,
-            "booster_heater": false,
-            "ets_generation": "Fourth Generation",
             "delta_temp_chw_building": 5,
             "delta_temp_chw_district": 8,
             "delta_temp_hw_building": 15,
             "delta_temp_hw_district": 20,
-            "cooling_controller_y_max": 0.6,
+            "cooling_controller_y_max": 1,
             "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 0.7,
+            "heating_controller_y_max": 1,
             "heating_controller_y_min": 0
           }
         }
@@ -138,17 +184,6 @@
         "cooling_tower_water_temperature_difference_nominal": 6.56,
         "delta_temp_approach": 3.25,
         "ratio_water_air_nominal": 0.6
-      },
-      "central_heating_plant_parameters": {
-        "heat_flow_nominal": 8001,
-        "mass_hw_flow_nominal": 11,
-        "boiler_water_flow_minimum": 11,
-        "pressure_drop_hw_nominal": 55001,
-        "pressure_drop_setpoint": 50000,
-        "temp_setpoint_hw": 339.15,
-        "pressure_drop_hw_valve_nominal": 6001,
-        "with_chp": true,
-        "thermal_following": true
       }
     }
   }

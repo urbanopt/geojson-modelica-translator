@@ -1,0 +1,8 @@
+  connect({{ coupling.load.id }}.ports_bHeaWat[1], {{ coupling.ets.id }}.port_a2)
+    annotation ({{ diagram.line.teaser_load.ports_b_hea_wat.hea_ets.port_a2 }});
+  connect({{ coupling.ets.id }}.port_b2,{{ coupling.load.id }}.ports_aHeaWat[1])
+    annotation ({{ diagram.line.hea_ets.port_b2.teaser_load.ports_a_hea_wat }});
+  connect(pressure_source_{{ coupling.id }}.ports[1], {{ coupling.ets.id }}.port_b2)
+    annotation ({{ diagram.line.pressure_source.ports.hea_ets.port_b2 }});
+  connect(THeaWatSet_{{ coupling.id }}.y,{{ coupling.ets.id }}.TSetBuiSup)
+    annotation ({{ diagram.line.t_hea_wat_set.y.hea_ets.t_set_bui_sup }});
