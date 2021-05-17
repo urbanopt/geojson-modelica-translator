@@ -39,8 +39,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 
 import pytest
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
@@ -75,14 +75,14 @@ class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "spawn_system_params_ex1.json")
         sys_params = SystemParameters(filename)
 
         # build spawn model with hot and cold water stubbed out
-        spawn = Spawn(sys_params, self.gj.json_loads[0])
+        spawn = Spawn(sys_params, self.gj.buildings[0])
         hot_stub = EtsHotWaterStub(sys_params)
         cold_stub = EtsColdWaterStub(sys_params)
 

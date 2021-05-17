@@ -58,6 +58,8 @@ class GMTTestCase(TestCase):
 class TestCaseBase(GMTTestCase):
     """Base Test Case Class to handle generic configurations"""
 
+    SHARED_DATA_DIR = Path(__file__).parent / 'data_shared'
+
     def set_up(self, root_folder, project_name):
         """
 
@@ -65,13 +67,14 @@ class TestCaseBase(GMTTestCase):
         :param project_name: Name of the project folder to create.
         :return:
         """
-        self.data_dir = os.path.join(root_folder, 'data')
-        self.output_dir = os.path.join(root_folder, 'output')
+        data_dir = Path(root_folder) / 'data'
+        output_dir = Path(root_folder) / 'output'
 
-        if os.path.exists(os.path.join(self.output_dir, project_name)):
-            shutil.rmtree(os.path.join(self.output_dir, project_name))
+        project_dir = output_dir / project_name
+        if project_dir.exists():
+            shutil.rmtree(project_dir)
 
-        return self.data_dir, self.output_dir
+        return data_dir, output_dir
 
     def run_and_assert_in_docker(self, file_to_run, project_path, project_name):
         """Run the test in docker.
@@ -85,14 +88,13 @@ class TestCaseBase(GMTTestCase):
         """
         mr = ModelicaRunner()
         run_path = Path(os.path.abspath(project_path)).parent
-        exitcode = mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
+        success, results_path = mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
         # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
         # Look at the stdout.log if this is non-zero.
-        self.assertEqual(0, exitcode)
+        self.assertTrue(success)
 
         # make sure that the results log exist
-        results_path = os.path.join(run_path, f"{project_name}_results")
-        self.assertTrue(os.path.join(results_path, 'stdout.log'))
+        self.assertTrue((Path(results_path) / 'stdout.log').exists())
 
     def cvrmsd(self, measured, simulated):
         """Return CVRMSD between arrays.
