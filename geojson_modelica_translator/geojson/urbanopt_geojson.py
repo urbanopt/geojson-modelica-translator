@@ -37,13 +37,16 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import logging
-import os
-from collections import defaultdict
+from pathlib import Path
 
 import geojson
 from geojson_modelica_translator.geojson.schemas import Schemas
 
 _log = logging.getLogger(__name__)
+
+
+class GeoJsonValidationError(Exception):
+    pass
 
 
 # TODO: Inherit from GeoJSON Feature class, move to its own file
@@ -57,11 +60,10 @@ class UrbanOptLoad(object):
     def __init__(self, feature):
         self.feature = feature
         self.id = feature.get("properties", {}).get("id", None)
-        self.dirname = f"B{self.id}"
 
         # do some validation
         if self.id is None:
-            raise Exception("GeoJSON feature requires an ID property but value was null")
+            raise GeoJsonValidationError("GeoJSON feature requires an ID property but value was null")
 
     def __str__(self):
         return f"ID: {self.id}"
@@ -73,41 +75,40 @@ class UrbanOptGeoJson(object):
     URBANopt GeoJSON files.
     """
 
-    def __init__(self, filename):
-        if os.path.exists(filename):
-            with open(filename, "r") as f:
-                self.data = geojson.load(f)
-        else:
-            raise Exception(f"URBANopt GeoJSON file does not exist: {filename}")
+    def __init__(self, filename, building_ids=None):
+        """
+        :param filename: str, path to the GeoJSON file to parse
+        :param building_ids: list[str | int] | None, optional, list of GeoJSON building
+            IDs to parse from the file. If None or an empty list, parse all buildings.
+        """
+        if not Path(filename).exists():
+            raise GeoJsonValidationError(f"URBANopt GeoJSON file does not exist: {filename}")
 
-        # load the shemas
+        with open(filename, "r") as f:
+            self.data = geojson.load(f)
+
         self.schemas = Schemas()
 
-        # break up the file based on the various features
+        building_errors = {}
         self.buildings = []
-        for f in self.data.features:
-            if f["properties"]["type"] == "Building":
-                self.buildings.append(UrbanOptLoad(f))
-            elif f["properties"]["type"] == "District System":
-                print('Found district system, not parsing yet')
-                pass
+        for feature in self.data.features:
+            if feature["properties"]["type"] == "Building":
+                building = UrbanOptLoad(feature)
+                if not building_ids or building.id in building_ids:
+                    errors = self.schemas.validate("building", building.feature.properties)
+                    if errors:
+                        building_errors[building.id] = errors
+                    else:
+                        self.buildings.append(building)
 
-    def validate(self):
-        """
-        Validate each of the properties object for each of the types
+        if building_errors:
+            formatted_errors = ''
+            for building_id, errors in building_errors.items():
+                building_errors_bullets = ''.join([f'\n    * {error}' for error in errors])
+                formatted_errors += f'\n  ID {building_id}:{building_errors_bullets}'
 
-        :return: dict of lists, errors for each of the types
-        """
-        validations = defaultdict(dict)
-        validations["building"] = []
-        status = True
+            message = f'GeoJSON file is not valid:{formatted_errors}'
+            raise GeoJsonValidationError(message)
 
-        # go through building properties for validation
-        for b in self.buildings:
-            val_res = self.schemas.validate("building", b.feature.properties)
-            if len(val_res) > 0:
-                status = False
-                res = {"id": b.feature.properties["id"], "errors": val_res}
-                validations["building"].append(res)
-
-        return status, validations
+        if not self.buildings:
+            raise GeoJsonValidationError(f'No valid buildings found in GeoJSON file: {filename}')

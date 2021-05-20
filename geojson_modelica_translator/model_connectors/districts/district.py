@@ -35,7 +35,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-import os
+from pathlib import Path
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import (
@@ -53,7 +53,7 @@ def render_template(template_name, template_params):
     :param template_params: dict, template parameters
     :return: string, templated result
     """
-    template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+    template_dir = Path(__file__).parent / 'templates'
     template_env = Environment(
         loader=FileSystemLoader(searchpath=template_dir),
         undefined=StrictUndefined)
@@ -71,12 +71,16 @@ class District:
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
         self._coupling_graph = coupling_graph
+        self.district_model_filepath = None
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
         the entire district system.
         """
+        # scaffold the project
         self._scaffold.create()
+        self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / 'DistrictEnergySystem.mo'
+
         # create the root package
         root_package = PackageParser.new_from_template(
             self._scaffold.project_path, self._scaffold.project_name, order=[])
@@ -138,7 +142,7 @@ class District:
 
         # render the full district file
         final_result = render_template('DistrictEnergySystem.mot', district_template_params)
-        with open(f'{self._scaffold.districts_path.files_dir}/DistrictEnergySystem.mo', 'w') as f:
+        with open(self.district_model_filepath, 'w') as f:
             f.write(final_result)
 
         districts_package = PackageParser.new_from_template(self._scaffold.districts_path.files_dir, "Districts", [

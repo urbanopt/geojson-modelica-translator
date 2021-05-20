@@ -39,8 +39,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 
 import pytest
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
@@ -81,7 +81,7 @@ class TestTeaserHeating(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "teaser_geojson_two_loads.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "teaser_system_params_two_loads.json")
@@ -95,7 +95,7 @@ class TestTeaserHeating(TestCaseBase):
         all_couplings = [
             Coupling(network, heating_plant)
         ]
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             teaser_load = Teaser(sys_params, geojson_load)
             geojson_load_id = geojson_load.feature.properties["id"]
             heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
