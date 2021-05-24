@@ -49,10 +49,9 @@ from geojson_modelica_translator.utils import simple_uuid
 class CoolingPlant(PlantBase):
     model_name = 'CoolingPlant'
 
-    def __init__(self, system_parameters, template_name='CentralCoolingPlant'):
+    def __init__(self, system_parameters):
         super().__init__(system_parameters)
         self.id = 'cooPla_' + simple_uuid()
-        self.template_name = template_name
 
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerWithBypass.mo'))
         self.required_mo_files.append(os.path.join(self.template_dir, 'CoolingTowerParallel.mo'))
@@ -68,6 +67,10 @@ class CoolingPlant(PlantBase):
         mos_wet_bulb_filename = self.system_parameters.get_param(
             "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"
         )
+
+        if mos_wet_bulb_filename is None:
+            raise FileNotFoundError('Cooling plant\'s mos_wet_bulb_filename was not provided')
+
         template_data = {
             "nominal_values": {
                 "delta_temp": self.system_parameters.get_param(
@@ -133,10 +136,10 @@ class CoolingPlant(PlantBase):
             },
         }
 
-        plant_template = self.template_env.get_template(f"{self.template_name}.mot")
+        plant_template = self.template_env.get_template("CentralCoolingPlant.mot")
         self.run_template(
             plant_template,
-            os.path.join(scaffold.plants_path.files_dir, f"{self.template_name}.mo"),
+            os.path.join(scaffold.plants_path.files_dir, "CentralCoolingPlant.mo"),
             project_name=scaffold.project_name,
             data=template_data
         )
@@ -150,7 +153,7 @@ class CoolingPlant(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        package_models = [f'{self.template_name}'] + [Path(mo).stem for mo in self.required_mo_files]
+        package_models = ['CentralCoolingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
         plants_package = PackageParser(scaffold.plants_path.files_dir)
         if plants_package.order_data is None:
             plants_package = PackageParser.new_from_template(
@@ -164,4 +167,4 @@ class CoolingPlant(PlantBase):
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.{self.template_name}'
+        return f'{scaffold.project_name}.Plants.CentralCoolingPlant'

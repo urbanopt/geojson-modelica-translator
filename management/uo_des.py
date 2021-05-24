@@ -43,23 +43,6 @@ import click
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )
-from geojson_modelica_translator.model_connectors.couplings import (
-    Coupling,
-    CouplingGraph
-)
-from geojson_modelica_translator.model_connectors.districts import District
-from geojson_modelica_translator.model_connectors.energy_transfer_systems import (
-    CoolingIndirect,
-    HeatingIndirect
-)
-from geojson_modelica_translator.model_connectors.load_connectors import (
-    TimeSeries
-)
-from geojson_modelica_translator.model_connectors.networks import Network2Pipe
-from geojson_modelica_translator.model_connectors.plants import (
-    CoolingPlant,
-    HeatingPlant
-)
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -148,13 +131,9 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
-    "project_name",
+    "project_path",
     default="model_from_sdk",
     type=click.Path(exists=False, file_okay=False, dir_okay=True),
-)
-@click.argument(
-    "model_type",
-    default='time_series',
 )
 @click.option(
     '-o',
@@ -163,103 +142,37 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
     help="Delete and replace any existing folder of the same name & location",
     default=False
 )
-def create_model(model_type, sys_param_file, geojson_feature_file, project_name, overwrite):
+def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
     """Build Modelica model from user data
 
     SYS_PARAM_FILE: Path/name to sys-param file, possibly created with this CLI.
 
     GEOJSON_FEATURE_FILE: Path to sdk json feature file with data about the buildings.
 
-    PROJECT_NAME: Path for Modelica project directory created with this command
-
-    \b
-    MODEL_TYPE: selection for which kind of simulation this model will support.
-        Valid choices for MODEL_TYPE: "time_series"
-        Default: "time_series"
+    PROJECT_PATH: Path for Modelica project directory created with this command
 
     \f
     :param model_type: String, type of model to create
     :param sys_param_file: Path, location and name of file created with this cli
     :param geojson_feature_file: Path, location and name of sdk feature_file
-    :param project_name: Path, location and name of Modelica model dir to be created
+    :param project_path: Path, location and name of Modelica model dir to be created
     :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
     """
-
-    if Path(project_name).exists():
+    project_path = Path(project_path)
+    if project_path.exists():
         if overwrite:
-            rmtree(project_name, ignore_errors=True)
+            rmtree(project_path, ignore_errors=True)
         else:
-            raise Exception(f"Output dir '{project_name}' already exists and overwrite flag is not given")
+            raise Exception(f"Output dir '{project_path}' already exists and overwrite flag is not given")
 
-    gj = GeoJsonModelicaTranslator.from_geojson(geojson_feature_file)
-    sys_params = SystemParameters(sys_param_file)
-    modelica_project_name = Path(project_name).stem
-    project_run_dir = Path(project_name).parent
-
-    # create cooling network and plant
-    # TODO: Enable selecting different plant models in sys-param file, kinda like this concept
-    # if sys_params.get_param("$.district_system.default"):
-    #     cooling_plant = CoolingPlant(sys_params)
-    # elif sys_params.get_param("$.district_system.osu"):
-    #     cooling_plant = CoolingPlantOSU(sys_params)
-    # else:
-    #     raise SystemExit(f"Cooling plant not defined")
-    cooling_network = Network2Pipe(sys_params)
-    cooling_plant = CoolingPlant(sys_params)
-
-    # create heating network and plant
-    heating_network = Network2Pipe(sys_params)
-    heating_plant = HeatingPlant(sys_params)
-
-    # create our load/ets/stubs
-    # store all couplings to construct the District system
-    all_couplings = [
-        Coupling(cooling_network, cooling_plant),
-        Coupling(heating_network, heating_plant),
-    ]
-
-    # keep track of separate loads and etses
-    loads = []
-    heat_etses = []
-    cool_etses = []
-    # Simalar to load_base.py, only check buildings that are in the sys-param file
-    for building in sys_params.get_default('$.buildings.custom[*].geojson_id', []):
-        for geojson_load in gj.json_loads:
-            # Read load & ets data from user-supplied files, build objects from them
-            if geojson_load.feature.properties["id"] == building:
-                if model_type == "time_series":
-                    time_series_load = TimeSeries(sys_params, geojson_load)
-                    loads.append(time_series_load)
-                else:
-                    raise Exception(f"Model type: '{model_type}' is not supported at this time. \
-'time_series' is the only valid model_type.")
-                geojson_load_id = geojson_load.feature.properties["id"]
-
-                cooling_indirect = CoolingIndirect(sys_params, geojson_load_id)
-                cool_etses.append(cooling_indirect)
-                all_couplings.append(Coupling(time_series_load, cooling_indirect))
-                all_couplings.append(Coupling(cooling_indirect, cooling_network))
-
-                heating_indirect = HeatingIndirect(sys_params, geojson_load_id)
-                heat_etses.append(heating_indirect)
-                all_couplings.append(Coupling(time_series_load, heating_indirect))
-                all_couplings.append(Coupling(heating_indirect, heating_network))
-
-    # create the couplings and graph
-    graph = CouplingGraph(all_couplings)
-
-    district = District(
-        root_dir=project_run_dir,
-        project_name=modelica_project_name,
-        system_parameters=sys_params,
-        coupling_graph=graph
+    gmt = GeoJsonModelicaTranslator(
+        geojson_feature_file,
+        sys_param_file,
+        project_path.parent,
+        project_path.name
     )
-    district.to_modelica()
 
-    if (Path(project_name) / 'Districts' / 'DistrictEnergySystem.mo').exists():
-        print(f"\nModelica model {modelica_project_name} successfully created in {project_run_dir}.")
-    else:
-        raise Exception(f"{modelica_project_name} failed. Please check your inputs and try again.")
+    gmt.to_modelica()
 
 
 @cli.command(short_help="Run Modelica model")
