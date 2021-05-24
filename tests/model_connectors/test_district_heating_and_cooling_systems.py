@@ -41,8 +41,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 from buildingspy.io.outputfile import Reader
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings import (
     Coupling,
@@ -76,7 +76,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = Path(self.data_dir) / "time_series_ex1.json"
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = Path(self.data_dir) / "time_series_system_params_ets.json"
@@ -85,7 +85,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def test_district_heating_and_cooling_systems(self):
         # create cooling network and plant
         cooling_network = Network2Pipe(self.sys_params)
-        cooling_plant = CoolingPlant(self.sys_params, template_name="CentralCoolingPlant")
+        cooling_plant = CoolingPlant(self.sys_params)
 
         # create heating network and plant
         heating_network = Network2Pipe(self.sys_params)
@@ -102,7 +102,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         loads = []
         heat_etses = []
         cool_etses = []
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
             loads.append(time_series_load)
             geojson_load_id = geojson_load.feature.properties["id"]

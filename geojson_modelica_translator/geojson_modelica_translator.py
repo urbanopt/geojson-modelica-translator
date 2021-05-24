@@ -37,30 +37,110 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import logging
-import os
+from pathlib import Path
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
+)
+from geojson_modelica_translator.model_connectors.couplings import (
+    Coupling,
+    CouplingGraph
+)
+from geojson_modelica_translator.model_connectors.districts import District
+from geojson_modelica_translator.model_connectors.energy_transfer_systems import (
+    CoolingIndirect,
+    HeatingIndirect
 )
 from geojson_modelica_translator.model_connectors.load_connectors import (
     Spawn,
     Teaser,
     TimeSeries
 )
-from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.model_connectors.networks import Network2Pipe
+from geojson_modelica_translator.model_connectors.plants import (
+    CoolingPlant,
+    HeatingPlant
+)
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
 
 _log = logging.getLogger(__name__)
 
 
-load_mapper = {
+# map the system parameter "load_model" to Python class
+LOAD_MODEL_TO_CLASS = {
     "spawn": Spawn,
     "rc": Teaser,
     "time_series": TimeSeries
 }
 
 
-class LoadsList(list):
-    pass
+def _parse_couplings(geojson, sys_params):
+    """Given config files, construct the necessary models and their couplings which
+    can then be passed to CouplingGraph.
+
+    :param geojson: UrbanOptGeoJson
+    :param sys_params: SystemParameters
+    :return: list[Coupling], list of couplings to be passed to CouplingGraph
+    """
+    # Current implementation assumes that all generated district energy system models will have:
+    #   - one heating plant
+    #   - one cooling plant
+    #   - one heating distribution network
+    #   - one cooling distribution network
+    #   - one heating and cooling ETS per load
+    # NOTE: loads can be of any type/combination
+    all_couplings = []
+
+    # create the plants and networks
+    cooling_network = Network2Pipe(sys_params)
+    cooling_plant = CoolingPlant(sys_params)
+    heating_network = Network2Pipe(sys_params)
+    heating_plant = HeatingPlant(sys_params)
+    all_couplings += [
+        Coupling(cooling_plant, cooling_network),
+        Coupling(heating_plant, heating_network),
+    ]
+
+    # create the loads and their ETSes
+    for building in geojson.buildings:
+        load_model_type = sys_params.get_param_by_building_id(building.id, "load_model")
+        load_class = LOAD_MODEL_TO_CLASS[load_model_type]
+        load = load_class(sys_params, building)
+
+        cooling_indirect = CoolingIndirect(sys_params, building.id)
+        all_couplings.append(Coupling(load, cooling_indirect))
+        all_couplings.append(Coupling(cooling_indirect, cooling_network))
+
+        heating_indirect = HeatingIndirect(sys_params, building.id)
+        all_couplings.append(Coupling(load, heating_indirect))
+        all_couplings.append(Coupling(heating_indirect, heating_network))
+
+    return all_couplings
+
+
+class ModelicaPackage(object):
+    """Represents a modelica package which can be simulated"""
+
+    def __init__(self, file_to_run, project_path, project_name):
+        self._file_to_run = file_to_run
+        self._project_path = project_path
+        self._project_name = project_name
+
+    def simulate(self):
+        """Simulate the package.
+
+        :return: tuple(bool, pathlib.Path), True or False depending on simulation success
+            followed by the path to the results directory
+        """
+        modelica_runner = ModelicaRunner()
+        return modelica_runner.run_in_docker(
+            self._file_to_run,
+            run_path=self._project_path,
+            project_name=self._project_name
+        )
 
 
 class GeoJsonModelicaTranslator(object):
@@ -68,116 +148,55 @@ class GeoJsonModelicaTranslator(object):
     Main class for using the GeoJSON to Modelica Translator.
     """
 
-    def __init__(self):
-        # self.json = None
-        # These objects should be removed eventually and used as helpers to
-        # translate the geojson to iterators for processing in this class.
-        self.json_loads = []
+    def __init__(
+        self,
+        geojson_filepath,
+        sys_params_filepath,
+        root_dir,
+        project_name,
+    ):
+        """Create an instance of this class
 
-        # directory name member variables. These are set in the scaffold_directory method
-        self.scaffold = None
-        self.system_parameters = None
-
-        self.loads = LoadsList()
-        # self.district_systems = DistrictSystemsList()
-
-    @classmethod
-    def from_geojson(cls, filename):
+        :param geojson_filepath: str, path to GeoJSON file
+        :param sys_params_filepath: str, path to system parameters file
+        :param root_dir: str, where to create the package
+        :project_name: str, name of the package
         """
-        Initialize the translator from a GeoJSON file
+        if not Path(geojson_filepath).exists():
+            raise FileNotFoundError(f'GeoJSON file path does not exist: {geojson_filepath}')
+        if not Path(sys_params_filepath).exists():
+            raise FileNotFoundError(f'System parameters file path does not exist: {sys_params_filepath}')
 
-        :param filename: string, GeoJSON file
-        :return: object, GeoJsonModelicaTranslator
+        self._system_parameters = SystemParameters(sys_params_filepath)
+
+        geojson_ids = self._system_parameters.get_default(
+            '$.buildings.custom[*].geojson_id',
+            []
+        )
+        self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)
+
+        self._root_dir = root_dir
+        self._project_name = project_name
+        self._couplings = _parse_couplings(self._geojson, self._system_parameters)
+        self._coupling_graph = CouplingGraph(self._couplings)
+        self._district = District(
+            self._root_dir,
+            self._project_name,
+            self._system_parameters,
+            self._coupling_graph
+        )
+        self._package_created = False
+
+    def to_modelica(self):
+        """Generate the modelica package. Call `simulate` method on the result
+        to run the package
+
+        :return: ModelicaPackage
         """
+        self._district.to_modelica()
 
-        if os.path.exists(filename):
-            klass = GeoJsonModelicaTranslator()
-            json = UrbanOptGeoJson(filename)
-            klass.json_loads = json.buildings
-
-            # load in the building loads
-            return klass
-        else:
-            raise Exception(f"GeoJSON file does not exist: {filename}")
-
-    def process_loads(self):
-        """
-        Process the loads of the GeoJSON file. This combines the GeoJSON object
-        with the sys_params object. Each building object contains all the data
-        it needs to generate the resulting model.
-
-        :return: None
-        """
-        if self.system_parameters is None:
-            raise Exception("Must set the system parameter file first. Use gj.set_system_parameters")
-
-        for load in self.json_loads:
-            # Read in the load and determine if the model is RC, CSV, or Spawn
-            _log.debug(load)
-            model_con = self.system_parameters.get_param_by_building_id(load.id, "load_model")
-            try:
-                # Also handle the load as if it is connected to the ETS or not
-                class_ = load_mapper[model_con]
-            except KeyError:
-                raise SystemExit(f'Model of type {model_con} not recognized. Verify sysparam file')
-
-            _log.info(f"Adding building to load model: {class_.__class__}")
-            model_connector = class_(self.system_parameters, load)
-            self.loads.append(model_connector)
-
-    def set_system_parameters(self, sys_params):
-        """
-        Read in the system design parameter data
-
-        :param SystemParameters: SystemParameters object
-        """
-        self.system_parameters = sys_params
-
-    def scaffold_directory(self, root_dir, project_name, overwrite=False):
-        """
-        Scaffold out the initial directory and set various helper directories
-
-        :param root_dir: string, absolute path where the project will be scaffolded.
-        :param project_name: string, name of the project that is being created
-        :return: string, path to the scaffold directory
-        """
-        self.scaffold = Scaffold(root_dir, project_name)
-        self.scaffold.create()
-        return self.scaffold.project_path
-
-    def to_modelica(self, project_name, save_dir):
-        """
-        Convert the data in the GeoJSON to modelica based-objects
-
-        :param save_dir: str, directory where the exported project will be stored. The name of the project will be
-                              {save_dir}/{project_name}
-        :param model_connector_str: str, which model_connector to use
-        """
-        self.scaffold_directory(save_dir, project_name)
-
-        # Only call to_modelica once all the buildings have been added
-        for load in self.loads:
-            load.to_modelica(self.scaffold)  # , keep_original_models=False)
-
-        # import geojson_modelica_translator.model_connectors.load_connectors.ets_template as ets_template
-        # ets_class = getattr(ets_template, "ETSConnector")
-        # ets_connector = ets_class(self.system_parameters)
-
-        # _log.info("Exporting District System")
-
-        # model_connector.to_modelica(self.scaffold, keep_original_models=False)
-
-        # for building in self.buildings:
-        #    ets_connector.to_modelica(self.scaffold, building)
-
-        # add in Districts
-        # add in Plants
-
-        # now add in the top level package.
-        # Need to decide how to create the top level packages when running this as part of the model_connectors.
-        # pp = PackageParser.new_from_template(self.scaffold.project_path, project_name, ["Loads"])
-        # pp.save()
-
-        # TODO: BuildingModelClass
-        # TODO: mapper class
-        # TODO: lookup tables / data sets
+        return ModelicaPackage(
+            self._district.district_model_filepath,
+            self._root_dir,
+            self._project_name
+        )

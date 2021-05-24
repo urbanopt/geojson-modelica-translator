@@ -40,8 +40,8 @@ from pathlib import Path
 
 import pytest
 from buildingspy.io.outputfile import Reader
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings import (
     Coupling,
@@ -72,7 +72,7 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         filename = Path(self.data_dir) / "teaser_geojson_two_loads.json"
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = Path(self.data_dir) / "teaser_system_params_two_loads.json"
@@ -98,7 +98,7 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         loads = []
         heat_etses = []
         cool_etses = []
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             teaser_load = Teaser(self.sys_params, geojson_load)
             loads.append(teaser_load)
             geojson_load_id = geojson_load.feature.properties["id"]

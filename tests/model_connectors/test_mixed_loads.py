@@ -39,8 +39,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from pathlib import Path
 
 import pytest
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings import (
     Coupling,
@@ -72,13 +72,13 @@ from ..base_test_case import TestCaseBase
 class MixedLoadsTest(TestCaseBase):
     def setUp(self):
         self.project_name = 'mixed_loads'
-        self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
+        _, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
-        filename = Path(self.data_dir) / "mixed_loads_geojson.json"
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        filename = self.SHARED_DATA_DIR / 'mixed_loads_district' / 'geojson.json'
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = Path(self.data_dir) / "mixed_loads_system_params.json"
+        filename = self.SHARED_DATA_DIR / 'mixed_loads_district' / 'system_params.json'
         self.sys_params = SystemParameters(filename)
 
     def test_mixed_loads_district_energy_system(self):
@@ -105,7 +105,7 @@ class MixedLoadsTest(TestCaseBase):
             "rc": Teaser,
             "time_series": TimeSeries
         }
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             load_model_name = self.sys_params.get_param_by_building_id(geojson_load.id, "load_model")
             load_model = load_model_map[load_model_name]
             load = load_model(self.sys_params, geojson_load)

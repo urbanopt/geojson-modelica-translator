@@ -40,6 +40,7 @@ import glob
 import os
 import shutil
 import subprocess
+from pathlib import Path
 
 
 class ModelicaRunner(object):
@@ -84,6 +85,7 @@ class ModelicaRunner(object):
         :param run_path: string, location where the Modelica simulation will start
         :param project_name: string, name of the project being simulated. Will be used to determine name of results
                                      directory
+        :return: tuple(bool, str), success status and path to the results directory
         """
         if not self.docker_configured:
             raise Exception('Docker not configured on host computer, unable to run')
@@ -99,6 +101,7 @@ class ModelicaRunner(object):
             # simple Modelica projects but typically the run_path needs to be a few levels higher in order
             # to include other project dependencies (e.g., multiple mo files).
             run_path = os.path.dirname(file_to_run)
+        run_path = Path(run_path)
 
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
@@ -138,22 +141,22 @@ class ModelicaRunner(object):
         self.cleanup_path(run_path)
 
         # get the location of the results path
-        results_path = os.path.join(run_path, f'{project_name}_results')
+        results_path = Path(run_path) / f'{project_name}_results'
         self.move_results(run_path, results_path, project_name)
-        return exitcode
+        return (exitcode == 0, results_path)
 
     def move_results(self, from_path, to_path, project_name=None):
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.
 
-        :param from_path: string, where the files will move from
-        :param to_path: string, where the files will be saved. Will be created if does not exist.
+        :param from_path: pathlib.Path, where the files will move from
+        :param to_path: pathlib.Path, where the files will be saved. Will be created if does not exist.
         :param project_name: string, name of the project ran in run_in_docker method
-        :return:
+        :return: None
         """
         # if there are results, they will simply be overwritten (for now).
-        if not os.path.exists(to_path):
+        if not to_path.exists():
             os.makedirs(to_path)
         else:
             shutil.rmtree(to_path)
@@ -163,12 +166,10 @@ class ModelicaRunner(object):
             'stdout.log',
         ]
 
-        # print(f"Moving simulation results from {from_path} to {to_path}")
-        for f in os.listdir(from_path):
-            to_move = os.path.join(from_path, f)
+        for to_move in from_path.iterdir():
             if not to_move == to_path:
-                if (os.path.basename(to_move) in files_to_move) or (f.startswith(f'{project_name}_')):
-                    shutil.move(to_move, os.path.join(to_path, f))
+                if (to_move.name in files_to_move) or to_move.name.startswith(f'{project_name}_'):
+                    shutil.move(to_move, to_path / to_move.name)
 
     def cleanup_path(self, path):
         """
