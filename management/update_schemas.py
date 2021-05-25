@@ -64,3 +64,6 @@ def update_schemas(schema):
         save_path = f"geojson_modelica_translator/geojson/data/schemas/{f}"
         with open(save_path, "w") as outf:
             json.dump(response.json(), outf, indent=2)
+
+        print("Note that the [unused] fields will have been overwritten by this operation. It is recommended to "
+              "open the previous version and new version in a diff tool to copy over the [unused] tags.")
