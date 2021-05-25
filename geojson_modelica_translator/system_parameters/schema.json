@@ -730,7 +730,7 @@
           "default": 338.15
         },
         "pressure_drop_hw_valve_nominal": {
-          "description": "[unused] Boiler isolation valve pressure drop. (Pa)",
+          "description": "Boiler isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
         },
