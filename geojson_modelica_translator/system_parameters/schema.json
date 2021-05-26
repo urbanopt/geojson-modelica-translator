@@ -4,7 +4,7 @@
   "definitions": {
     "system_design_parameter_def": {
       "title": "System Design Parameter Schema",
-      "description": "Definition of System Design Parameters. (Version 0.1)",
+      "description": "Definition of System Design Parameters. (Version 0.1). Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT.",
       "type": "object",
       "properties": {
         "buildings": {
@@ -26,7 +26,7 @@
           "additionalProperties": false
         },
         "connectors": {
-          "description": "Parameters related to the connections between objects.",
+          "description": "[unused] Parameters related to the connections between objects.",
           "type": "object",
           "properties": {
             "default": {
@@ -47,7 +47,7 @@
         },
         "topology": {
           "title": "defaults",
-          "description": "Parameters associated with district topologies.",
+          "description": "[unused] Parameters associated with district topologies.",
           "type": "object",
           "properties": {
             "topology_parameters": {
@@ -98,7 +98,7 @@
     },
     "topology_def": {
       "title": "defaults",
-      "description": "Parameters associated with district topologies.",
+      "description": "[unused] Parameters associated with district topologies.",
       "type": "object",
       "properties": {
         "configuration": {
@@ -115,7 +115,7 @@
     },
     "cost_function_definition": {
       "title": "defaults",
-      "description": "Possible cost functions for the topology optimization problem",
+      "description": "[unused] Possible cost functions for the topology optimization problem",
       "type": "object",
       "properties": {
         "cost_function": {
@@ -131,7 +131,7 @@
     },
     "optimization_definition": {
       "title": "defaults",
-      "description": "Optimization approach for the topology optimization problem",
+      "description": "[unused] Optimization approach for the topology optimization problem",
       "type": "object",
       "properties": {
         "optimization_approach": {
@@ -199,19 +199,19 @@
       "additionalProperties": false
     },
     "connector_def": {
-      "description": "Parameters associated with the connectors in a district system.",
+      "description": "[unused] Parameters associated with the connectors in a district system.",
       "type": "object",
       "properties": {
         "pipe_diameter": {
-          "description": "Pipe diameter. (m)",
+          "description": "[unused] Pipe diameter. (m)",
           "type": "number"
         },
         "pipe_insulation_rvalue": {
-          "description": "Pipe insulation R-Value. (m2-K/W)",
+          "description": "[unused] Pipe insulation R-Value. (m2-K/W)",
           "type": "number"
         },
         "pipe_location": {
-          "description": "Location of the pipe.",
+          "description": "[unused] Location of the pipe.",
           "type": "string",
           "enum": [
             "Tunnel",
@@ -219,7 +219,7 @@
           ]
         },
         "pipe_material": {
-          "description": "Pipe material (to be used for determining surface roughness) ",
+          "description": "[unused] Pipe material (to be used for determining surface roughness) ",
           "type": "string",
           "enum": [
             "Plastic",
@@ -234,7 +234,7 @@
       "type": "object",
       "properties": {
         "return_configuration": {
-          "description": "Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.",
+          "description": "[unused] Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.",
           "type": "string",
           "enum": [
             "Direct Return",
@@ -242,7 +242,7 @@
           ]
         },
         "connection_configuration": {
-          "description": "Type of connection of buildings to the loop",
+          "description": "[unused] Type of connection of buildings to the loop",
           "type": "string",
           "enum": [
             "Series",
@@ -427,7 +427,7 @@
           "type": "string"
         },
         "mos_wet_bulb_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved to the wet bulb filename. This field is not currently used.",
+          "description": "Absolute path or relative path from location where file instance is saved to the wet bulb filename. This is needed for the central cooling plants.",
           "type": "string"
         },
         "thermal_zone_names": {
@@ -693,41 +693,41 @@
       ]
     },
     "central_heating_plant_parameters": {
-      "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model",
+      "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model.",
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "Nominal district heating load. (W)",
+          "description": "[unused] Nominal district heating load. (W)",
           "type": "number",
           "default": 8000
         },
         "mass_hw_flow_nominal": {
-          "description": "Nominal heating water mass flow rate. (kg/s)",
+          "description": "[unused] Nominal heating water mass flow rate. (kg/s)",
           "type": "number",
           "default": 10
         },
         "boiler_water_flow_minimum": {
-          "description": " Boiler minimum  water mass flow rate. (kg/s)",
+          "description": "[unused] Boiler minimum  water mass flow rate. (kg/s)",
           "type": "number",
           "default": 10
         },
         "pressure_drop_hw_nominal": {
-          "description": "Nominal heating water (boiler side) pressure drop. (Pa)",
+          "description": "[unused] Nominal heating water (boiler side) pressure drop. (Pa)",
           "type": "number",
           "default": 55000
         },
         "pressure_drop_setpoint": {
-          "description": "The heating water circuit pressure drop setpoint. (Pa)",
+          "description": "[unused] The heating water circuit pressure drop setpoint. (Pa)",
           "type": "number",
           "default": 50000
         },
         "temp_setpoint_hw": {
-          "description": "District circuit heating water temperature setpoint. (K)",
+          "description": "[unused] District circuit heating water temperature setpoint. (K)",
           "type": "number",
           "default": 338.15
         },
         "pressure_drop_hw_valve_nominal": {
-          "description": "Chiller isolation valve pressure drop. (Pa)",
+          "description": "[unused] Boiler isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
         }
