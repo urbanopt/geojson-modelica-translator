@@ -8,5 +8,5 @@
   // but since it requires a connect statement we must put it here for now...
   Modelica.Blocks.Sources.RealExpression TDisSetHeaWat_{{ coupling.id }}(
     each y=55+273.15)
-    "Distrcit side heating water supply temperature set point."
+    "District side heating water supply temperature set point."
     annotation (Placement({{ diagram.transformation.t_dis_set_hea_wat.real_expression }}));
