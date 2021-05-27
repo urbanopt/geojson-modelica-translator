@@ -23,8 +23,10 @@ diagram
    
       Diagram
       DiagramIcon
+      DiagramNode
       LoadIcon
       NetworkIcon
+      NodePort
    
    
 

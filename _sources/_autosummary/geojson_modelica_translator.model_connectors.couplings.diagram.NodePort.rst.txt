@@ -1,12 +1,12 @@
 ..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
-Diagram
-=======
+NodePort
+========
 
 .. currentmodule:: geojson_modelica_translator.model_connectors.couplings.diagram
 
-.. autoclass:: Diagram
+.. autoclass:: NodePort
    :members:
    :show-inheritance:
    :inherited-members:
@@ -18,8 +18,9 @@ Diagram
 
    .. autosummary::
    
-      ~Diagram.__init__
-      ~Diagram.to_dict
+      ~NodePort.__init__
+      ~NodePort.count
+      ~NodePort.index
    
    
 
@@ -29,8 +30,7 @@ Diagram
 
    .. autosummary::
    
-      ~Diagram.extent
-      ~Diagram.grid_cell_size
-      ~Diagram.icon_padding
+      ~NodePort.node
+      ~NodePort.port
    
    

@@ -22,7 +22,7 @@ geojson\_modelica\_translator
       :toctree:
    
       GeoJsonModelicaTranslator
-      LoadsList
+      ModelicaPackage
    
    
 

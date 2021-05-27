@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.geojson.urbanopt\_geojson.GeoJsonValidationError
+==============================================================================
+
+.. currentmodule:: geojson_modelica_translator.geojson.urbanopt_geojson
+
+.. autoexception:: GeoJsonValidationError

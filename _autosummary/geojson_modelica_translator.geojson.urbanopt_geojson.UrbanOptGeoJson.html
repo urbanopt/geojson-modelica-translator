@@ -54,14 +54,22 @@
 <h1>UrbanOptGeoJson<a class="headerlink" href="#urbanoptgeojson" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson">
-<em class="property">class </em><code class="sig-prename descclassname">geojson_modelica_translator.geojson.urbanopt_geojson.</code><code class="sig-name descname">UrbanOptGeoJson</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">geojson_modelica_translator.geojson.urbanopt_geojson.</code><code class="sig-name descname">UrbanOptGeoJson</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">building_ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Root class for parsing an URBANopt GeoJSON file. This class simply reads and parses
 URBANopt GeoJSON files.</p>
 <dl class="py method">
 <dt id="geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">building_ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – str, path to the GeoJSON file to parse</p></li>
+<li><p><strong>building_ids</strong> – list[str | int] | None, optional, list of GeoJSON building
+IDs to parse from the file. If None or an empty list, parse all buildings.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -71,25 +79,16 @@ URBANopt GeoJSON files.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__" title="geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filename)</p></td>
-<td><p>Initialize self.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.validate" title="geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>()</p></td>
-<td><p>Validate each of the properties object for each of the types</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__" title="geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filename[, building_ids])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param filename</dt>
+<dd class="field-odd"><p>str, path to the GeoJSON file to parse</p>
+</dd>
+</dl>
+</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt id="geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.validate">
-<code class="sig-name descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.geojson.urbanopt_geojson.UrbanOptGeoJson.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate each of the properties object for each of the types</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>dict of lists, errors for each of the types</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </div>

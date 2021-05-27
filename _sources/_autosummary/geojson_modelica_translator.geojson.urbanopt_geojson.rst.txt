@@ -28,6 +28,13 @@ urbanopt\_geojson
 
    
    
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      GeoJsonValidationError
+   
    
 
 

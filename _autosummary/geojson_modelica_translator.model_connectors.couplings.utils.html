@@ -18,7 +18,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command" href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command.html" />
+    <link rel="next" title="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs" href="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs.html" />
     <link rel="prev" title="CouplingGraph" href="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,7 +31,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command.html" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command"
+          <a href="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs.html" title="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.html" title="CouplingGraph"
@@ -59,10 +59,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command.html#geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_diagram_command</span></code></a>(str_cmd)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs.html#geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs" title="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_path_bfs</span></code></a>(matrix, start_row, start_col, …)</p></td>
+<td><p>Find path from start to end in the matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command.html#geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_diagram_command</span></code></a>(str_cmd)</p></td>
 <td><p>Returns a diagram command or None if it’s not a diagram command</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_commands.html#geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_commands" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_commands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_diagram_commands</span></code></a>(template_contents)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_commands.html#geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_commands" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_commands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_diagram_commands</span></code></a>(template_contents)</p></td>
 <td><p>Returns a list of diagram commands parsed from the template modelica contents i.e. it will find any instances of {{ diagram.&lt;cmd&gt;.* }} in the template.</p></td>
 </tr>
 </tbody>
@@ -95,8 +98,8 @@
   <p class="topless"><a href="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.html"
                         title="previous chapter">CouplingGraph</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command.html"
-                        title="next chapter">geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command</a></p>
+  <p class="topless"><a href="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs.html"
+                        title="next chapter">geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -128,7 +131,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command.html" title="geojson_modelica_translator.model_connectors.couplings.utils.parse_diagram_command"
+          <a href="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs.html" title="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs"
              >next</a> |</li>
         <li class="right" >
           <a href="geojson_modelica_translator.model_connectors.couplings.graph.CouplingGraph.html" title="CouplingGraph"

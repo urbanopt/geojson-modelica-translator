@@ -17,6 +17,7 @@ utils
    .. autosummary::
       :toctree:
    
+      find_path_bfs
       parse_diagram_command
       parse_diagram_commands
    

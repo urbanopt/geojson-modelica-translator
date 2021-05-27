@@ -62,7 +62,7 @@ Once the MBL is installed, then the CLI can be used to create the model with the
 
     # the command below is only an example; however, it will run if the repository
     # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
-    uo_des create-model sys_param.json
+    uo_des create-model sys_param.json example_project.json model_from_sdk
 
 The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`package.mo` file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.

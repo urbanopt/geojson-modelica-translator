@@ -1,12 +1,12 @@
 ..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
-UrbanOptGeoJson
-===============
+DiagramNode
+===========
 
-.. currentmodule:: geojson_modelica_translator.geojson.urbanopt_geojson
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.diagram
 
-.. autoclass:: UrbanOptGeoJson
+.. autoclass:: DiagramNode
    :members:
    :show-inheritance:
    :inherited-members:
@@ -18,7 +18,8 @@ UrbanOptGeoJson
 
    .. autosummary::
    
-      ~UrbanOptGeoJson.__init__
+      ~DiagramNode.__init__
+      ~DiagramNode.add_connection
    
    
 

@@ -73,7 +73,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.__init__" title="geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(coupling_graph)</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict" title="geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a>(id, is_coupling)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict" title="geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a>(context_id, is_coupling)</p></td>
 <td><p>Get the diagram as a dictionary, to be used for templating for model instances or couplings.</p></td>
 </tr>
 </tbody>
@@ -85,30 +85,38 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_cell_size</span></code></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.extent" title="geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.extent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extent</span></code></a></p></td>
+<td><p>Returns extent as a string for templating into the district model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_cell_size</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_cells_width</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_size</span></code></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">icon_padding</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">icon_padding</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
+<dt id="geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.extent">
+<em class="property">property </em><code class="sig-name descname">extent</code><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.extent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns extent as a string for templating into the district model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict">
-<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">is_coupling</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">context_id</span></em>, <em class="sig-param"><span class="n">is_coupling</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.diagram.Diagram.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the diagram as a dictionary, to be used for templating for model
 instances or couplings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>id</strong> – str, model or coupling ID to get the dictionary for</p></li>
-<li><p><strong>is_coupling</strong> – bool, True if id is for a coupling, False if id is for a model</p></li>
+<li><p><strong>context_id</strong> – str, model or coupling context_id to get the dictionary for</p></li>
+<li><p><strong>is_coupling</strong> – bool, True if context_id is for a coupling, False if context_id is for a model</p></li>
 </ul>
 </dd>
 </dl>

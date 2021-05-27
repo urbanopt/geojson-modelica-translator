@@ -68,7 +68,7 @@ a System Parameters file.</p>
 <tbody>
 <tr class="row-odd"><td colspan="4"><p><a class="reference external" href="http://json-schema.org/openstudio-urban-modeling/building_properties">http://json-schema.org/openstudio-urban-modeling/building_properties</a>.json#</p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>Schema for an URBANopt Building object</p></td>
+<tr class="row-even"><td colspan="4"><p>Schema for an URBANopt Building object. Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -88,7 +88,7 @@ a System Parameters file.</p>
 <li><p>project_id</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Project which this feature belongs to.</p></td>
+<td colspan="3"><p>[unused] Project which this feature belongs to.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -109,7 +109,7 @@ a System Parameters file.</p>
 <li><p>source_name</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Name of the original data source.</p></td>
+<td colspan="3"><p>[unused] Name of the original data source.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -118,7 +118,7 @@ a System Parameters file.</p>
 <li><p>source_id</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Id of the feature in original data source.</p></td>
+<td colspan="3"><p>[unused] Id of the feature in original data source.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -127,7 +127,7 @@ a System Parameters file.</p>
 <li><p>name</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Feature name.</p></td>
+<td colspan="3"><p>[unused] Feature name.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -136,7 +136,7 @@ a System Parameters file.</p>
 <li><p>legal_name</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Legal name used to identify this feature.</p></td>
+<td colspan="3"><p>[unused] Legal name used to identify this feature.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -145,7 +145,7 @@ a System Parameters file.</p>
 <li><p>address</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Street address.</p></td>
+<td colspan="3"><p>[unused] Street address.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -154,7 +154,7 @@ a System Parameters file.</p>
 <li><p>building_status</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Building status.</p></td>
+<td colspan="3"><p>[unused] Building status.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -166,7 +166,7 @@ a System Parameters file.</p>
 <li><p>detailed_model_filename</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.</p></td>
+<td colspan="3"><p>[unused] Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -175,7 +175,7 @@ a System Parameters file.</p>
 <li><p>weather_filename</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Name of EPW weather file for this building.  Defaults to site’s weather_filename.</p></td>
+<td colspan="3"><p>[unused] Name of EPW weather file for this building.  Defaults to site’s weather_filename.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -184,7 +184,7 @@ a System Parameters file.</p>
 <li><p>tariff_filename</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Name of the tariff file for this building.  Defaults to site’s tariff_filename.</p></td>
+<td colspan="3"><p>[unused] Name of the tariff file for this building.  Defaults to site’s tariff_filename.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -193,7 +193,7 @@ a System Parameters file.</p>
 <li><p>surface_elevation</p></li>
 </ul>
 </td>
-<td colspan="3"><p>The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site’s surface_elevation.</p></td>
+<td colspan="3"><p>[unused] The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site’s surface_elevation.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -202,7 +202,7 @@ a System Parameters file.</p>
 <li><p>timesteps_per_hour</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Number of timesteps per hour for energy simulations. Defaults to site’s timesteps_per_hour.</p></td>
+<td colspan="3"><p>[unused] Number of timesteps per hour for energy simulations. Defaults to site’s timesteps_per_hour.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -217,7 +217,7 @@ a System Parameters file.</p>
 <li><p>begin_date</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Date to begin simulation, format YYYY-MM-DD. Defaults to site’s begin_date.</p></td>
+<td colspan="3"><p>[unused] Date to begin simulation, format YYYY-MM-DD. Defaults to site’s begin_date.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -226,7 +226,7 @@ a System Parameters file.</p>
 <li><p>end_date</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Date to end simulation, format YYYY-MM-DD. Defaults to site’s end_date.</p></td>
+<td colspan="3"><p>[unused] Date to end simulation, format YYYY-MM-DD. Defaults to site’s end_date.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -235,7 +235,7 @@ a System Parameters file.</p>
 <li><p>climate_zone</p></li>
 </ul>
 </td>
-<td colspan="3"><p>ASHRAE 169 climate zone. Defaults to site’s climate_zone</p></td>
+<td colspan="3"><p>[unused] ASHRAE 169 climate zone. Defaults to site’s climate_zone</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -244,7 +244,7 @@ a System Parameters file.</p>
 <li><p>cec_climate_zone</p></li>
 </ul>
 </td>
-<td colspan="3"><p>CEC Title24 climate zone. Defaults to site’s cec_climate_zone</p></td>
+<td colspan="3"><p>[unused] CEC Title24 climate zone. Defaults to site’s cec_climate_zone</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -280,7 +280,7 @@ a System Parameters file.</p>
 <li><p>maximum_roof_height</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Maximum height of the roof relative to surface elevation (ft)</p></td>
+<td colspan="3"><p>[unused] Maximum height of the roof relative to surface elevation (ft)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -289,7 +289,7 @@ a System Parameters file.</p>
 <li><p>roof_type</p></li>
 </ul>
 </td>
-<td colspan="3"><p>The type of roof. Defaults to flat.</p></td>
+<td colspan="3"><p>[unused] The type of roof. Defaults to flat.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -313,7 +313,7 @@ a System Parameters file.</p>
 <li><p>footprint_area</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Area of the footprint (ft^2).  Calculated on export.</p></td>
+<td colspan="3"><p>[unused] Area of the footprint (ft^2).  Calculated on export.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -322,7 +322,7 @@ a System Parameters file.</p>
 <li><p>footprint_perimeter</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Perimeter of the footprint (ft). Calculated on export.</p></td>
+<td colspan="3"><p>[unused] Perimeter of the footprint (ft). Calculated on export.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -364,7 +364,7 @@ a System Parameters file.</p>
 <li><p>weekday_start_time</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</p></td>
+<td colspan="3"><p>[unused] Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -373,7 +373,7 @@ a System Parameters file.</p>
 <li><p>weekday_duration</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
+<td colspan="3"><p>[unused] Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -382,7 +382,7 @@ a System Parameters file.</p>
 <li><p>weekend_start_time</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</p></td>
+<td colspan="3"><p>[unused] Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -391,7 +391,7 @@ a System Parameters file.</p>
 <li><p>weekend_duration</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
+<td colspan="3"><p>[unused] Length of weekend operating hours in 08:30 format, up to 24:00.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -406,7 +406,7 @@ a System Parameters file.</p>
 <li><p>mixed_type_1_percentage</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Percentage of 1st mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>[unused] Percentage of 1st mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -427,7 +427,7 @@ a System Parameters file.</p>
 <li><p>mixed_type_2_percentage</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>[unused] Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -448,7 +448,7 @@ a System Parameters file.</p>
 <li><p>mixed_type_3_percentage</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>[unused] Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -469,7 +469,7 @@ a System Parameters file.</p>
 <li><p>mixed_type_4_percentage</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Percentage of 4th mixed building space type. Only used when building_type is Mixed use.</p></td>
+<td colspan="3"><p>[unused] Percentage of 4th mixed building space type. Only used when building_type is Mixed use.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -484,7 +484,7 @@ a System Parameters file.</p>
 <li><p>number_of_residential_units</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.</p></td>
+<td colspan="3"><p>[unused] Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -493,7 +493,7 @@ a System Parameters file.</p>
 <li><p>number_of_bedrooms</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.</p></td>
+<td colspan="3"><p>[unused] Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
@@ -502,7 +502,7 @@ a System Parameters file.</p>
 <li><p>exterior_lighting_zone</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Choice of exterior lighting zone.</p></td>
+<td colspan="3"><p>[unused] Choice of exterior lighting zone.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -514,7 +514,7 @@ a System Parameters file.</p>
 <li><p>onsite_parking_fraction</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.</p></td>
+<td colspan="3"><p>[unused] Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -529,7 +529,7 @@ a System Parameters file.</p>
 <li><p>power_factor</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Ratio of the real power used by building to the apparent power seen by grid.</p></td>
+<td colspan="3"><p>[unused] Ratio of the real power used by building to the apparent power seen by grid.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -541,13 +541,13 @@ a System Parameters file.</p>
 <li><p>user_data</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Arbitrary user data</p></td>
+<td colspan="3"><p>[unused] Arbitrary user data</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>ev_charging</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Should be set to true if EV charging is associated with the building.</p></td>
+<td colspan="3"><p>[unused] Should be set to true if EV charging is associated with the building.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>boolean</em></p></td>
@@ -556,7 +556,7 @@ a System Parameters file.</p>
 <li><p>ev_charging_station_type</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station</p></td>
+<td colspan="3"><p>[unused] Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -568,7 +568,7 @@ a System Parameters file.</p>
 <li><p>delay_type</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event.</p></td>
+<td colspan="3"><p>[unused] Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -580,7 +580,7 @@ a System Parameters file.</p>
 <li><p>ev_charging_behavior</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces.</p></td>
+<td colspan="3"><p>[unused] Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -601,7 +601,7 @@ a System Parameters file.</p>
 <li><p>ev_curtailment_frac</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system</p></td>
+<td colspan="3"><p>[unused] Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -652,7 +652,7 @@ a System Parameters file.</p>
 <li><p>buildingType</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Primary building space type.</p></td>
+<td colspan="3"><p>[unused] Primary building space type.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -664,7 +664,7 @@ a System Parameters file.</p>
 <li><p>systemType</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Building HVAC system type.</p></td>
+<td colspan="3"><p>[unused] Building HVAC system type.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -676,7 +676,7 @@ a System Parameters file.</p>
 <li><p>heatingSystemFuelType</p></li>
 </ul>
 </td>
-<td colspan="3"><p>The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps).</p></td>
+<td colspan="3"><p>[unused] The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps).</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -688,7 +688,7 @@ a System Parameters file.</p>
 <li><p>templateType</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Standard template applied to building. Default to site’s default_template</p></td>
+<td colspan="3"><p>[unused] Standard template applied to building. Default to site’s default_template</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -700,7 +700,7 @@ a System Parameters file.</p>
 <li><p>foundationType</p></li>
 </ul>
 </td>
-<td colspan="3"><p>The foundation type of the building. Required for residential buildings.</p></td>
+<td colspan="3"><p>[unused] The foundation type of the building. Required for residential buildings.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -712,7 +712,7 @@ a System Parameters file.</p>
 <li><p>atticType</p></li>
 </ul>
 </td>
-<td colspan="3"><p>The attic type of the building. Required for single-family residential buildings.</p></td>
+<td colspan="3"><p>[unused] The attic type of the building. Required for single-family residential buildings.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -747,7 +747,7 @@ a System Parameters file.</p>
 </td>
 <td colspan="4"><p><em>System Design Parameter Schema</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>Definition of System Design Parameters. (Version 0.1)</p></td>
+<tr class="row-even"><td colspan="4"><p>Definition of System Design Parameters. (Version 0.1). Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -792,7 +792,7 @@ a System Parameters file.</p>
 <li><p>connectors</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Parameters related to the connections between objects.</p></td>
+<td colspan="3"><p>[unused] Parameters related to the connections between objects.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
@@ -834,7 +834,7 @@ a System Parameters file.</p>
 </td>
 <td colspan="3"><p><em>defaults</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>Parameters associated with district topologies.</p></td>
+<tr class="row-odd"><td colspan="3"><p>[unused] Parameters associated with district topologies.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
@@ -930,7 +930,7 @@ a System Parameters file.</p>
 </td>
 <td colspan="4"><p><em>defaults</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>Parameters associated with district topologies.</p></td>
+<tr class="row-even"><td colspan="4"><p>[unused] Parameters associated with district topologies.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -956,7 +956,7 @@ a System Parameters file.</p>
 </td>
 <td colspan="4"><p><em>defaults</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>Possible cost functions for the topology optimization problem</p></td>
+<tr class="row-odd"><td colspan="4"><p>[unused] Possible cost functions for the topology optimization problem</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -982,7 +982,7 @@ a System Parameters file.</p>
 </td>
 <td colspan="4"><p><em>defaults</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>Optimization approach for the topology optimization problem</p></td>
+<tr class="row-even"><td colspan="4"><p>[unused] Optimization approach for the topology optimization problem</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -1101,7 +1101,7 @@ a System Parameters file.</p>
 <li><p>connector_def</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Parameters associated with the connectors in a district system.</p></td>
+<td colspan="4"><p>[unused] Parameters associated with the connectors in a district system.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -1112,7 +1112,7 @@ a System Parameters file.</p>
 <li><p>pipe_diameter</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Pipe diameter. (m)</p></td>
+<td colspan="3"><p>[unused] Pipe diameter. (m)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -1121,7 +1121,7 @@ a System Parameters file.</p>
 <li><p>pipe_insulation_rvalue</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Pipe insulation R-Value. (m2-K/W)</p></td>
+<td colspan="3"><p>[unused] Pipe insulation R-Value. (m2-K/W)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -1130,7 +1130,7 @@ a System Parameters file.</p>
 <li><p>pipe_location</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Location of the pipe.</p></td>
+<td colspan="3"><p>[unused] Location of the pipe.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -1142,7 +1142,7 @@ a System Parameters file.</p>
 <li><p>pipe_material</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Pipe material (to be used for determining surface roughness)</p></td>
+<td colspan="3"><p>[unused] Pipe material (to be used for determining surface roughness)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -1168,7 +1168,7 @@ a System Parameters file.</p>
 <li><p>return_configuration</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.</p></td>
+<td colspan="3"><p>[unused] Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -1180,7 +1180,7 @@ a System Parameters file.</p>
 <li><p>connection_configuration</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Type of connection of buildings to the loop</p></td>
+<td colspan="3"><p>[unused] Type of connection of buildings to the loop</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -1555,7 +1555,7 @@ a System Parameters file.</p>
 <li><p>mos_wet_bulb_filename</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Absolute path or relative path from location where file instance is saved to the wet bulb filename. This field is not currently used.</p></td>
+<td colspan="3"><p>Absolute path or relative path from location where file instance is saved to the wet bulb filename. This is needed for the central cooling plants.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -2056,7 +2056,7 @@ a System Parameters file.</p>
 <li><p>central_heating_plant_parameters</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Central heating plant with maximum number of two boilers. Parameters associated with the model</p></td>
+<td colspan="4"><p>Central heating plant with maximum number of two boilers. Parameters associated with the model.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -2067,7 +2067,7 @@ a System Parameters file.</p>
 <li><p><strong>heat_flow_nominal</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Nominal district heating load. (W)</p></td>
+<td colspan="3"><p>[unused] Nominal district heating load. (W)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2079,7 +2079,7 @@ a System Parameters file.</p>
 <li><p><strong>mass_hw_flow_nominal</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Nominal heating water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>[unused] Nominal heating water mass flow rate. (kg/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2091,10 +2091,7 @@ a System Parameters file.</p>
 <li><p><strong>boiler_water_flow_minimum</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><blockquote>
-<div><p>Boiler minimum  water mass flow rate. (kg/s)</p>
-</div></blockquote>
-</td>
+<td colspan="3"><p>[unused] Boiler minimum  water mass flow rate. (kg/s)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2106,7 +2103,7 @@ a System Parameters file.</p>
 <li><p><strong>pressure_drop_hw_nominal</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Nominal heating water (boiler side) pressure drop. (Pa)</p></td>
+<td colspan="3"><p>[unused] Nominal heating water (boiler side) pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2118,7 +2115,7 @@ a System Parameters file.</p>
 <li><p><strong>pressure_drop_setpoint</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>The heating water circuit pressure drop setpoint. (Pa)</p></td>
+<td colspan="3"><p>[unused] The heating water circuit pressure drop setpoint. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2130,7 +2127,7 @@ a System Parameters file.</p>
 <li><p><strong>temp_setpoint_hw</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>District circuit heating water temperature setpoint. (K)</p></td>
+<td colspan="3"><p>[unused] District circuit heating water temperature setpoint. (K)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2142,7 +2139,7 @@ a System Parameters file.</p>
 <li><p><strong>pressure_drop_hw_valve_nominal</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Chiller isolation valve pressure drop. (Pa)</p></td>
+<td colspan="3"><p>[unused] Boiler isolation valve pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>

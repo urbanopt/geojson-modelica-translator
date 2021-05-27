@@ -109,13 +109,13 @@ with the “{project_name}_” name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>from_path</strong> – string, where the files will move from</p></li>
-<li><p><strong>to_path</strong> – string, where the files will be saved. Will be created if does not exist.</p></li>
+<li><p><strong>from_path</strong> – pathlib.Path, where the files will move from</p></li>
+<li><p><strong>to_path</strong> – pathlib.Path, where the files will be saved. Will be created if does not exist.</p></li>
 <li><p><strong>project_name</strong> – string, name of the project ran in run_in_docker method</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -134,6 +134,9 @@ file that was selected to run.</p>
 <li><p><strong>project_name</strong> – string, name of the project being simulated. Will be used to determine name of results
 directory</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple(bool, str), success status and path to the results directory</p>
 </dd>
 </dl>
 </dd></dl>

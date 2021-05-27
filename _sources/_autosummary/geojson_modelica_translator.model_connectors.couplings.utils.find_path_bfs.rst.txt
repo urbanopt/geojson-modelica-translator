@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.model\_connectors.couplings.utils.find\_path\_bfs
+===============================================================================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.couplings.utils
+
+.. autofunction:: find_path_bfs

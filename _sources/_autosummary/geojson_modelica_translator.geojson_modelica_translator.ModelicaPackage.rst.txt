@@ -1,12 +1,12 @@
 ..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
 
-UrbanOptGeoJson
+ModelicaPackage
 ===============
 
-.. currentmodule:: geojson_modelica_translator.geojson.urbanopt_geojson
+.. currentmodule:: geojson_modelica_translator.geojson_modelica_translator
 
-.. autoclass:: UrbanOptGeoJson
+.. autoclass:: ModelicaPackage
    :members:
    :show-inheritance:
    :inherited-members:
@@ -18,7 +18,8 @@ UrbanOptGeoJson
 
    .. autosummary::
    
-      ~UrbanOptGeoJson.__init__
+      ~ModelicaPackage.__init__
+      ~ModelicaPackage.simulate
    
    
 
