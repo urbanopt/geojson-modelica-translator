@@ -719,11 +719,6 @@
           "type": "number",
           "default": 55000
         },
-        "pressure_drop_setpoint": {
-          "description": "[unused] The heating water circuit pressure drop setpoint. (Pa)",
-          "type": "number",
-          "default": 50000
-        },
         "temp_setpoint_hw": {
           "description": "[unused] District circuit heating water temperature setpoint. (K)",
           "type": "number",
@@ -734,18 +729,18 @@
           "type": "number",
           "default": 6000
         },
-        "with_chp": {
+        "chp_installed": {
           "description": "True if heating plant is a Combined Heat and Power plant",
           "type": "boolean"
         },
-        "thermal_following": {
+        "chp_thermal_following": {
           "description": "True if CHP is thermal_following (prioritized thermal heat over electricity)",
           "type": "boolean"
         }
       },
       "required": [
         "heat_flow_nominal",
-        "mass_hw_flow_nominal",
+        "primary_mass_hw_flow_nominal",
         "boiler_water_flow_minimum",
         "pressure_drop_hw_nominal",
         "pressure_drop_setpoint",
