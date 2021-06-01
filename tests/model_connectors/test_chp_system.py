@@ -36,12 +36,11 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 from pathlib import Path
 
 import pytest
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
@@ -76,13 +75,13 @@ from ..base_test_case import TestCaseBase
 
 @pytest.mark.simulation
 class CombinedHeatingPowerTest(TestCaseBase):
-    def test_heating_plant_with_chp(self):
+    def test_chp_system(self):
         self.project_name = 'heat_with_chp'
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
         filename = Path(self.data_dir) / "time_series_ex1.json"
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = Path(self.data_dir) / "time_series_system_params_ets.json"
@@ -96,7 +95,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         all_couplings = [
             Coupling(network, heating_plant)
         ]
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
             geojson_load_id = geojson_load.feature.properties["id"]
             heating_indirect_system = HeatingIndirect(self.sys_params, geojson_load_id)
@@ -116,7 +115,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         )
         district.to_modelica()
 
-        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+        root_path = Path(district._scaffold.districts_path.files_dir).resolve()
+        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
                                       project_path=district._scaffold.project_path,
                                       project_name=district._scaffold.project_name)
