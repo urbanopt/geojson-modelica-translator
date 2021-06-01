@@ -52,7 +52,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         super().__init__(system_parameters)
         self.id = 'chpPla_' + simple_uuid()
         self.chp_exists = self.system_parameters.get_param(
-            "$.district_system.default.central_heating_plant_parameters.with_chp"
+            "$.district_system.default.central_heating_plant_parameters.chp_installed"
         )
         if not self.chp_exists:
             self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
@@ -97,7 +97,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
                 },
                 "signals": {
                     "thermal_following": str(self.system_parameters.get_param(
-                        "$.district_system.default.central_heating_plant_parameters.thermal_following"
+                        "$.district_system.default.central_heating_plant_parameters.chp_thermal_following"
                     )).lower(),  # Booleans in Python start with a capital letter. Modelica wants it lowercase, hence this.
                 },
             }
