@@ -53,10 +53,8 @@ sphinx-jsonschema = "1.16.7"
 toml = "0.10.2"
 tox = "3.20.0"
 
-
-[build-system]
-requires = ["poetry = 1.1.4"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 uo_des = 'management.uo_des:cli'
