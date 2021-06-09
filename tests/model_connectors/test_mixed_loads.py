@@ -53,9 +53,7 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems import
 )
 from geojson_modelica_translator.model_connectors.load_connectors import (
     Spawn,
-    Teaser
-)
-from geojson_modelica_translator.model_connectors.load_connectors.time_series_mft_ets_coupling import (
+    Teaser,
     TimeSeriesMFT
 )
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
