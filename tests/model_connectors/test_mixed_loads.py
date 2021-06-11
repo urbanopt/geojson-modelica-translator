@@ -53,10 +53,8 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems import
 )
 from geojson_modelica_translator.model_connectors.load_connectors import (
     Spawn,
-    Teaser
-)
-from geojson_modelica_translator.model_connectors.load_connectors.time_series_mft_ets_coupling import (
-    TimeSeriesMFT
+    Teaser,
+    TimeSeries
 )
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
 from geojson_modelica_translator.model_connectors.plants import (
@@ -105,7 +103,7 @@ class MixedLoadsTest(TestCaseBase):
         load_model_map = {
             "spawn": Spawn,
             "rc": Teaser,
-            "time_series": TimeSeriesMFT
+            "time_series": TimeSeries
         }
         for geojson_load in self.gj.buildings:
             load_model_name = self.sys_params.get_param_by_building_id(geojson_load.id, "load_model")
