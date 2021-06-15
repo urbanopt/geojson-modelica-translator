@@ -57,9 +57,9 @@ from geojson_modelica_translator.model_connectors.load_connectors import (
     TimeSeries
 )
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
-from geojson_modelica_translator.model_connectors.plants import (
-    CoolingPlant,
-    HeatingPlant
+from geojson_modelica_translator.model_connectors.plants import CoolingPlant
+from geojson_modelica_translator.model_connectors.plants.chp import (
+    HeatingPlantWithOptionalCHP
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -89,7 +89,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         # create heating network and plant
         heating_network = Network2Pipe(self.sys_params)
-        heating_plant = HeatingPlant(self.sys_params)
+        heating_plant = HeatingPlantWithOptionalCHP(self.sys_params)
 
         # create our load/ets/stubs
         # store all couplings to construct the District system
