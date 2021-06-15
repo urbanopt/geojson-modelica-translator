@@ -115,7 +115,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         )
         district.to_modelica()
 
-        root_path = Path(district._scaffold.districts_path.files_dir).resolve()
-        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+        # root_path = Path(district._scaffold.districts_path.files_dir).resolve()
+        # self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
+        #                               project_path=district._scaffold.project_path,
+        #                               project_name=district._scaffold.project_name)
