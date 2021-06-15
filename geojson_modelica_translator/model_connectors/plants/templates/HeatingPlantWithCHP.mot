@@ -125,7 +125,7 @@ within {{ project_name }}.Plants;
       numBoi),
     redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
-    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hw_valve_nominal"] }} {% raw %},
+    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     num=numBoi,
     l=0.001,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
@@ -135,7 +135,7 @@ within {{ project_name }}.Plants;
     redeclare package Medium=Medium,
     allowFlowReversal=false,
     m_flow_nominal=mHW_flow_nominal*0.05,
-    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hw_valve_nominal"] }} {% raw %},
+    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     l=0.001)
     "Heating water bypass valve"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=90,origin={54,0})));

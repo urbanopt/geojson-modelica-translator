@@ -76,22 +76,22 @@ class HeatingPlantWithOptionalCHP(PlantBase):
                     "heat_flow_nominal": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.heat_flow_nominal"
                     ),
-                    "mass_hw_flow_nominal": self.system_parameters.get_param(
+                    "mass_hhw_flow_nominal": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.mass_hw_flow_nominal"
                     ),
                     "boiler_water_flow_minimum": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.boiler_water_flow_minimum"
                     ),
-                    "pressure_drop_hw_nominal": self.system_parameters.get_param(
+                    "pressure_drop_hhw_nominal": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_nominal"
                     ),
                     "pressure_drop_setpoint": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.pressure_drop_setpoint"
                     ),
-                    "temp_setpoint_hw": self.system_parameters.get_param(
+                    "temp_setpoint_hhw": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hw"
                     ),
-                    "pressure_drop_hw_valve_nominal": self.system_parameters.get_param(
+                    "pressure_drop_hhw_valve_nominal": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.pressure_drop_hw_valve_nominal"
                     ),
                 },
