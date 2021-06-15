@@ -740,12 +740,12 @@
       },
       "required": [
         "heat_flow_nominal",
-        "primary_mass_hw_flow_nominal",
+        "primary_mass_hhw_flow_nominal",
         "boiler_water_flow_minimum",
-        "pressure_drop_hw_nominal",
+        "pressure_drop_hhw_nominal",
         "pressure_drop_setpoint",
-        "temp_setpoint_hw",
-        "pressure_drop_hw_valve_nominal"
+        "temp_setpoint_hhw",
+        "pressure_drop_hhw_valve_nominal"
       ]
     }
   }
