@@ -84,7 +84,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         self.gj = self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = Path(self.data_dir) / "time_series_system_params_ets.json"
+        filename = Path(self.data_dir) / "time_series_system_params_chp.json"
         self.sys_params = SystemParameters(filename)
 
         # create network and plant
