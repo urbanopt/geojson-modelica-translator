@@ -1,2 +1,0 @@
-{{ model.modelica_type }} {{ model.id }}
-annotation (Placement({{ diagram.transformation.chp_plant.plant }}));
