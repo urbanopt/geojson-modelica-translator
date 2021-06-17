@@ -51,11 +51,12 @@ class HeatingPlantWithOptionalCHP(PlantBase):
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
         self.id = 'chpPla_' + simple_uuid()
-        self.chp_exists = self.system_parameters.get_param(
+        self.chp_installed = self.system_parameters.get_param(
             "$.district_system.default.central_heating_plant_parameters.chp_installed"
         )
-        if not self.chp_exists:
+        if not self.chp_installed:
             self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
+            self.id = 'heaPla' + simple_uuid()
 
         self.required_mo_files.append(Path(self.template_dir) / 'Boiler_TParallel.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'BoilerStage.mo')
@@ -70,7 +71,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        if self.chp_exists:
+        if self.chp_installed:
             template_data = {
                 "nominal_values": {
                     "heat_flow_nominal": self.system_parameters.get_param(
