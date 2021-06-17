@@ -147,7 +147,8 @@
         "pressure_drop_setpoint": 50000,
         "temp_setpoint_hhw": 339.15,
         "pressure_drop_hhw_valve_nominal": 6001,
-        "chp_installed": false
+        "chp_installed": true,
+        "chp_thermal_following": true
       }
     }
   }

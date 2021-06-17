@@ -28,4 +28,4 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 from .cooling_plant import CoolingPlant  # noqa: F401
-from .heating_plant import HeatingPlant  # noqa: F401
+from .chp import HeatingPlantWithOptionalCHP  # noqa: F401

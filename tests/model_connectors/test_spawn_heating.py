@@ -63,8 +63,8 @@ from geojson_modelica_translator.model_connectors.load_connectors.spawn import (
 from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (
     Network2Pipe
 )
-from geojson_modelica_translator.model_connectors.plants.heating_plant import (
-    HeatingPlant
+from geojson_modelica_translator.model_connectors.plants.chp import (
+    HeatingPlantWithOptionalCHP
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -89,7 +89,7 @@ class TestSpawnHeating(TestCaseBase):
 
         # create network and plant
         network = Network2Pipe(sys_params)
-        heating_plant = HeatingPlant(sys_params)
+        heating_plant = HeatingPlantWithOptionalCHP(sys_params)
 
         # create our our load/ets/stubs
         all_couplings = [
