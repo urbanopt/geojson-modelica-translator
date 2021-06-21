@@ -720,9 +720,9 @@
           "default": 55000
         },
         "temp_setpoint_hhw": {
-          "description": "[unused] District circuit heating water temperature setpoint. (K)",
+          "description": "[unused] District circuit heating water temperature setpoint. (C)",
           "type": "number",
-          "default": 338.15
+          "default": 68
         },
         "pressure_drop_hhw_valve_nominal": {
           "description": "Boiler isolation valve pressure drop. (Pa)",

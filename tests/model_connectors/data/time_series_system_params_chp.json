@@ -145,7 +145,7 @@
         "boiler_water_flow_minimum": 11,
         "pressure_drop_hhw_nominal": 55001,
         "pressure_drop_setpoint": 50000,
-        "temp_setpoint_hhw": 339.15,
+        "temp_setpoint_hhw": 68,
         "pressure_drop_hhw_valve_nominal": 6001,
         "chp_installed": true,
         "chp_thermal_following": true
