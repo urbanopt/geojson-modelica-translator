@@ -285,8 +285,8 @@ class SystemParameters(object):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
-                    building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
+                    building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)
+                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = building_nominal_mfrt
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
@@ -295,7 +295,7 @@ class SystemParameters(object):
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
         for building in building_list:
-            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
+            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = round(district_nominal_mfrt, 3)
         param_template['buildings']['custom'] = building_list
 
         with open(sys_param_filename, 'w') as outfile:
