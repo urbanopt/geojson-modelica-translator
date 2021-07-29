@@ -132,7 +132,7 @@ class CLIIntegrationTest(TestCase):
         )
 
         assert expected_failure.exit_code != 0
-        self.assertIn("Modelica does not support spaces in project names.", str(expected_failure.exception))
+        self.assertIn("Modelica does not support spaces in project names or paths.", str(expected_failure.exception))
 
     @pytest.mark.simulation
     def test_cli_runs_model(self):
