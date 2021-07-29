@@ -176,7 +176,7 @@ class LoadBase(ModelBase):
                         except KeyError:
                             floor_height = 3  # Default height in meters from sdk
                             print(
-                                f"\nNo floor_height found in geojson feature file for building {self.building_id}. "
+                                f"No floor_height found in geojson feature file for building {self.building_id}. "
                                 f"Using default value of {floor_height}.")
 
                         # UO SDK defaults to current year, however TEASER only supports up to Year 2015
