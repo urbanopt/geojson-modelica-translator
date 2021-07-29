@@ -166,7 +166,8 @@ def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
             raise SystemExit(f"Output dir '{project_path}' already exists and overwrite flag is not given")
     if len(project_path.name.split()) > 1:  # Modelica can't handle spaces in project name
         raise SystemExit(
-            f"\n'{project_path}' failed. Modelica does not support spaces in project names. Please choose a different 'project_path'")
+            f"\n'{project_path}' failed. Modelica does not support spaces in project names or paths. "
+            "Please choose a different 'project_path'")
 
     gmt = GeoJsonModelicaTranslator(
         geojson_feature_file,
@@ -202,6 +203,11 @@ def run_model(modelica_project):
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
     file_to_run = run_path / 'Districts' / 'DistrictEnergySystem.mo'
+
+    if len(str(run_path).split()) > 1:  # Modelica can't handle spaces in project name or path
+        raise SystemExit(
+            f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
+            "Please update your directory tree to not include spaces in any name")
 
     # setup modelica runner
     mr = ModelicaRunner()
