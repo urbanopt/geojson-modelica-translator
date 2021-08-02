@@ -117,6 +117,23 @@ class CLIIntegrationTest(TestCase):
         # If this file exists, the cli command ran successfully
         assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
 
+    def test_cli_returns_graceful_error_on_space(self):
+        bad_project_name = 'modelica project'
+        # (self.output_dir / bad_project_name).mkdir(exist_ok=True)
+
+        expected_failure = self.runner.invoke(
+            cli,
+            [
+                'create-model',
+                str(self.output_dir / 'test_sys_param.json'),
+                str(self.feature_file_path),
+                str(self.output_dir / bad_project_name)
+            ]
+        )
+
+        assert expected_failure.exit_code != 0
+        self.assertIn("Modelica does not support spaces in project names or paths.", str(expected_failure.exception))
+
     @pytest.mark.simulation
     def test_cli_runs_model(self):
         if (self.output_dir / 'modelica_project_results').exists():

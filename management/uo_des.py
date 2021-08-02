@@ -81,7 +81,7 @@ def cli():
     help="Delete and replace any existing file of the same name & location",
     default=False
 )
-def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file, overwrite):
+def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, overwrite: bool):
     """
     Create system parameters file using uo_sdk output
 
@@ -118,7 +118,7 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
     if Path(sys_param_filename).exists():
         print(f"\nSystem parameters file {sys_param_filename} successfully created.")
     else:
-        raise Exception(f"{sys_param_filename} failed. Please check your inputs and try again.")
+        raise SystemExit(f"{sys_param_filename} failed. Please check your inputs and try again.")
 
 
 @cli.command(short_help="Create Modelica model")
@@ -142,7 +142,7 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
     help="Delete and replace any existing folder of the same name & location",
     default=False
 )
-def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
+def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path: Path, overwrite: bool):
     """Build Modelica model from user data
 
     SYS_PARAM_FILE: Path/name to sys-param file, possibly created with this CLI.
@@ -163,7 +163,11 @@ def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
         if overwrite:
             rmtree(project_path, ignore_errors=True)
         else:
-            raise Exception(f"Output dir '{project_path}' already exists and overwrite flag is not given")
+            raise SystemExit(f"Output dir '{project_path}' already exists and overwrite flag is not given")
+    if len(project_path.name.split()) > 1:  # Modelica can't handle spaces in project name
+        raise SystemExit(
+            f"\n'{project_path}' failed. Modelica does not support spaces in project names or paths. "
+            "Please choose a different 'project_path'")
 
     gmt = GeoJsonModelicaTranslator(
         geojson_feature_file,
@@ -182,7 +186,7 @@ def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
     required=True,
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-def run_model(modelica_project):
+def run_model(modelica_project: Path):
     """
     \b
     Run the Modelica project in a docker-based environment.
@@ -200,6 +204,11 @@ def run_model(modelica_project):
     project_name = run_path.stem
     file_to_run = run_path / 'Districts' / 'DistrictEnergySystem.mo'
 
+    if len(str(run_path).split()) > 1:  # Modelica can't handle spaces in project name or path
+        raise SystemExit(
+            f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
+            "Please update your directory tree to not include spaces in any name")
+
     # setup modelica runner
     mr = ModelicaRunner()
     mr.run_in_docker(file_to_run, run_path=run_path.parent, project_name=project_name)
@@ -207,4 +216,4 @@ def run_model(modelica_project):
     if (run_path.parent / f'{project_name}_results' / f'{project_name}_Districts_DistrictEnergySystem_result.mat').exists():
         print(f"\nModelica model {project_name} ran successfully")
     else:
-        raise Exception(f"{project_name} failed. Please check your inputs and try again.")
+        raise SystemExit(f"{project_name} failed. Please check your inputs and try again.")

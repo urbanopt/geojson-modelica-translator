@@ -88,13 +88,13 @@ class ModelicaRunner(object):
         :return: tuple(bool, str), success status and path to the results directory
         """
         if not self.docker_configured:
-            raise Exception('Docker not configured on host computer, unable to run')
+            raise SystemExit('Docker not configured on host computer, unable to run')
 
         if not os.path.exists(file_to_run):
-            raise Exception(f'File not found to run {file_to_run}')
+            raise SystemExit(f'File not found to run {file_to_run}')
 
         if not os.path.isfile(file_to_run):
-            raise Exception(f'Expecting to run a file, not a folder in {file_to_run}')
+            raise SystemExit(f'Expecting to run a file, not a folder in {file_to_run}')
 
         if not run_path:
             # if there is no run_path, then run it in the same directory as the file being run. This works fine for
@@ -102,6 +102,13 @@ class ModelicaRunner(object):
             # to include other project dependencies (e.g., multiple mo files).
             run_path = os.path.dirname(file_to_run)
         run_path = Path(run_path)
+
+        # Modelica can't handle spaces in project name or path
+        if (len(str(run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
+            raise SystemExit(
+                f"\nModelica does not support spaces in project names or paths. "
+                f"You used '{run_path}' for run path and {file_to_run} for model project name. "
+                "Please update your directory path or model name to not include spaces anywhere.")
 
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
