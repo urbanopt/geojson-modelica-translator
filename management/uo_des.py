@@ -81,7 +81,7 @@ def cli():
     help="Delete and replace any existing file of the same name & location",
     default=False
 )
-def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file, overwrite):
+def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, overwrite: bool):
     """
     Create system parameters file using uo_sdk output
 
@@ -142,7 +142,7 @@ def build_sys_param(model_type, sys_param_filename, scenario_file, feature_file,
     help="Delete and replace any existing folder of the same name & location",
     default=False
 )
-def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
+def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path: Path, overwrite: bool):
     """Build Modelica model from user data
 
     SYS_PARAM_FILE: Path/name to sys-param file, possibly created with this CLI.
@@ -186,7 +186,7 @@ def create_model(sys_param_file, geojson_feature_file, project_path, overwrite):
     required=True,
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-def run_model(modelica_project):
+def run_model(modelica_project: Path):
     """
     \b
     Run the Modelica project in a docker-based environment.
