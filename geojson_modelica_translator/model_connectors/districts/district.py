@@ -72,6 +72,12 @@ class District:
         self.system_parameters = system_parameters
         self._coupling_graph = coupling_graph
         self.district_model_filepath = None
+        # Modelica can't handle spaces in project name or path
+        if (len(str(root_dir).split()) > 1) or (len(str(project_name).split()) > 1):
+            raise SystemExit(
+                f"\nModelica does not support spaces in project names or paths. "
+                f"You used '{root_dir}' for run path and {project_name} for model project name. "
+                "Please update your directory path or model name to not include spaces anywhere.")
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
