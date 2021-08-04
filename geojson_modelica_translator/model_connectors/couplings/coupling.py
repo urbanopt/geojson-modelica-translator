@@ -188,6 +188,22 @@ class Coupling(object):
             'connect_statements_template_path': connect_template_path,
         }
 
+    def get_load(self):
+        """If there's a load model in the coupling, it returns the load model. Else
+        it returns None.
+
+        This is used by the district model to find the building's sys params so
+        it can be passed into the coupling templates
+
+        :return: LoadBase | None
+        """
+        if self._get_model_superclass(self.model_a) is LoadBase:
+            return self.model_a
+        elif self._get_model_superclass(self.model_b) is LoadBase:
+            return self.model_b
+
+        return None
+
     @property
     def component_definitions_template_path(self):
         return self._template_env.get_template(self._template_component_definitions).filename

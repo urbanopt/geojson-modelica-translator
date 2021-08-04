@@ -41,6 +41,9 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import (
     Diagram
 )
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
+    LoadBase
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -122,6 +125,12 @@ class District:
                 'diagram': diagram.to_dict(coupling.id, is_coupling=True),
             }
             template_context.update(**common_template_params)
+
+            coupling_load = coupling.get_load()
+            if coupling_load is not None:
+                building_sys_params = self.system_parameters.get_param_by_building_id(coupling_load.building_id, '$')
+                template_context.update({'sys_params': building_sys_params})
+
             templated_result = coupling.render_templates(template_context)
             district_template_params['couplings'].append({
                 'id': coupling.id,
@@ -139,6 +148,11 @@ class District:
                 'diagram': diagram.to_dict(model.id, is_coupling=False),
             }
             template_params.update(**common_template_params)
+
+            if issubclass(type(model), LoadBase):
+                building_sys_params = self.system_parameters.get_param_by_building_id(model.building_id, '$')
+                template_params.update({'sys_params': building_sys_params})
+
             templated_instance, instance_template_path = model.render_instance(template_params)
             district_template_params['models'].append({
                 'id': model.id,
