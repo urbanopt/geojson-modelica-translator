@@ -163,7 +163,7 @@ class Teaser(LoadBase):
         with fdopen(fh, 'w') as new_file:
             with open(f) as old_file:
                 for line in old_file:
-                    if "double Internals(8760" in line:
+                    if "double Internals(8760" in line:  # Finding the line, which may have one of several #s of columns
                         new_file.write("double Internals(8761, 4)\n")
                     elif line.startswith("3600\t"):
                         new_file.write(line.replace('3600\t', '0\t') + line)
@@ -517,6 +517,8 @@ class Teaser(LoadBase):
                 # This needs to result in {{a,b},{x,y}}
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
+
+            print(zone_list)
 
         building_template_data = {
             "thermal_zones": zone_list,
