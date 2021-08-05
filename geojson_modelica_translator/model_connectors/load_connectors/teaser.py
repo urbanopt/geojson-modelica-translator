@@ -531,7 +531,7 @@ class Teaser(LoadBase):
                 print("setting coo flow")
                 print("i")
                 print(i)
-                nom_cool_flow[i] = -100000
+                nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
         print(nom_cool_flow)
         building_template_data = {
             "thermal_zones": zone_list,
