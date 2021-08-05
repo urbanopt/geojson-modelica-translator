@@ -518,7 +518,7 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
-        if "ict" in zone_list:
+        if any(d['instance_name'] == 'ict' for d in zone_list):
             print("ict in zone list")
         else:
             print("not in zone list")
