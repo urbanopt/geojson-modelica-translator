@@ -519,6 +519,7 @@ class Teaser(LoadBase):
             })
 
             print(zone_list)
+            print(type(zone_list))
 
         building_template_data = {
             "thermal_zones": zone_list,
