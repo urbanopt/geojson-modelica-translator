@@ -518,8 +518,8 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
-            print(zone_list)
-            print(type(zone_list))
+            print(zone_list[0])
+            print(type(zone_list[0]))
 
         building_template_data = {
             "thermal_zones": zone_list,
