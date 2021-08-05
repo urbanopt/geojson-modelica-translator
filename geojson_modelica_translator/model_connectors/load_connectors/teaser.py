@@ -518,15 +518,22 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
+        # Handle setting nominal load for IT room zone
         if any(d['instance_name'] == 'ict' for d in zone_list):
             print("ict in zone list")
+
         else:
             print("not in zone list")
+
+        nom_cool_flow = [-10000] * len(zone_list)
+        for i, dic in enumerate(zone_list):
+            if dic["instance_name"] == "ict":
+                nom_cool_flow[i] = 100000
 
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": [10000] * len(zone_list),
-            "nominal_cool_flow": [-10000] * len(zone_list),
+            "nominal_cool_flow": nom_cool_flow,
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
                 "mos_weather_filename": mos_weather_filename,
