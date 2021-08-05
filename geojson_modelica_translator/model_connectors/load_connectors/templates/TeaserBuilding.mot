@@ -54,8 +54,8 @@ within {{project_name}}.Loads.{{model_name}};
     redeclare each package Medium1=MediumW,
     redeclare each package Medium2=MediumA,
     each facSca=facSca,
-    QHea_flow_nominal={{data['nominal_heat_flow'][i]}},
-    QCoo_flow_nominal={{data['nominal_cool_flow'][i]}},
+    QHea_flow_nominal={{data['nominal_heat_flow'][1]}},
+    QCoo_flow_nominal={{data['nominal_cool_flow'][1]}},
     each T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }},
     each T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }},
     each T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp']  }},
@@ -65,6 +65,7 @@ within {{project_name}}.Loads.{{model_name}};
     each mLoaHea_flow_nominal=5,
     each mLoaCoo_flow_nominal=5)
     "Terminal unit"
+  {% for i in nZon %} QCoo_flow_nominal {{data['nominal_cool_flow'][i]}}
     {% raw %} annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
   {% endraw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
