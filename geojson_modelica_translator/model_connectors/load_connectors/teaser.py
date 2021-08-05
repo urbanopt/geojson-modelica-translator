@@ -532,7 +532,7 @@ class Teaser(LoadBase):
                 print("i")
                 print(i)
                 nom_cool_flow[i] = -100000
-
+        print(nom_cool_flow)
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": [10000] * len(zone_list),
