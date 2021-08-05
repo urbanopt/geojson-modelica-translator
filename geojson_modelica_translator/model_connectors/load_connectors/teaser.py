@@ -528,7 +528,10 @@ class Teaser(LoadBase):
         nom_cool_flow = [-10000] * len(zone_list)
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
-                nom_cool_flow[i] = 100000
+                print("setting coo flow")
+                print("i")
+                print(i)
+                nom_cool_flow[i] = -100000
 
         building_template_data = {
             "thermal_zones": zone_list,
