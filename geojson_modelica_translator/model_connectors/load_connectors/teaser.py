@@ -518,11 +518,10 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
-            print(zone_list[0].values())
-
-            if 'ict' in zone_list[0].values():
-                key = [k for k, v in zone_list[0].items() if v == 'ict'][0]
-                print(key)
+        if "ict" in zone_list:
+            print("ict in zone list")
+        else:
+            print("not in zone list")
 
         building_template_data = {
             "thermal_zones": zone_list,
