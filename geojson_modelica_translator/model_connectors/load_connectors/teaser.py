@@ -43,6 +43,7 @@ from os import fdopen, remove
 from shutil import copymode, move
 from tempfile import mkstemp
 
+import numpy as np
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
@@ -534,6 +535,7 @@ class Teaser(LoadBase):
                 nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
         print(nom_cool_flow)
         print(type(nom_cool_flow))
+        nom_cool_flow = list(np.concatenate(nom_cool_flow).flat)
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": [10000] * len(zone_list),
