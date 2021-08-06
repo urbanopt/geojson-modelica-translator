@@ -187,7 +187,9 @@ within {{ project_name }}.Plants;
     m_flow_nominal=0.4,
     nominalValuesDefineDefaultPressureCurve=true)
     annotation (Placement(transformation(extent={{-172,-132},{-152,-110}})));
-  Buildings.HeatTransfer.Sources.FixedTemperature preTem
+  Buildings.HeatTransfer.Sources.FixedTemperature preTem(
+    T(
+      displayUnit="K")=273.15+25)
     annotation (Placement(transformation(extent={{-160,-180},{-140,-160}})));
 protected
   {% endraw %} Modelica.Blocks.Sources.BooleanExpression theFolSig(
@@ -202,9 +204,7 @@ equation
   connect(ElePowDem.y,eleFol.PEleDem)
     annotation (Line(points={{-99,92},{-92,92},{-92,41},{-82,41}},color={0,0,127}));
   connect(eleFol.port_b,port_b)
-    annotation (Line(points={{-99,92},{-92,92},{-92,41},{-82,41}},color={0,0,127}));
-  connect(eleFol.port_a,port_a)
-    annotation (Line(points={{-99,92},{-92,92},{-92,41},{-82,41}},color={0,0,127}));
+    annotation (Line(points={{-106,-136},{-102,-136},{-102,-50},{160,-50}},color={0,0,127}));
   connect(THeaSet,boiHotWat.THeaWatSet)
     annotation (Line(points={{-150,-50},{-72,-50},{-72,-56},{9,-56}},color={0,0,127}));
   connect(on,boiStaCon.on)
