@@ -43,7 +43,6 @@ from os import fdopen, remove
 from shutil import copymode, move
 from tempfile import mkstemp
 
-import numpy as np
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
@@ -526,7 +525,7 @@ class Teaser(LoadBase):
         else:
             print("not in zone list")
 
-        nom_cool_flow = np.array([-10000] * len(zone_list))
+        nom_cool_flow = [-10000] * len(zone_list)
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
                 print("setting coo flow")
@@ -534,7 +533,6 @@ class Teaser(LoadBase):
                 print(i)
                 nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
         print(nom_cool_flow)
-        nom_cool_flow = np.transpose(nom_cool_flow)
         print(type(nom_cool_flow))
         print(nom_cool_flow.shape)
         # nom_cool_flow = np.ravel(np.array(nom_cool_flow))
