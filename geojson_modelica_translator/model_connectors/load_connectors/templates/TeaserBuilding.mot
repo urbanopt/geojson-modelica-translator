@@ -65,7 +65,6 @@ within {{project_name}}.Loads.{{model_name}};
     each mLoaHea_flow_nominal=5,
     each mLoaCoo_flow_nominal=5)
     "Terminal unit"
-  {% for i in nZon %} QCoo_flow_nominal {{data['nominal_cool_flow'][i]}}
     {% raw %} annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
   {% endraw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
