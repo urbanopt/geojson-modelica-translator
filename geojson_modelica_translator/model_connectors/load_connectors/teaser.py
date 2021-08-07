@@ -43,7 +43,7 @@ from os import fdopen, remove
 from shutil import copymode, move
 from tempfile import mkstemp
 
-# import numpy as np
+import numpy as np
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
@@ -520,18 +520,16 @@ class Teaser(LoadBase):
             })
 
         # Handle setting nominal load for IT room zone
-        # nom_cool_flow = np.array([-10000] * len(zone_list))
-        nom_cool_flow = [-10000] * len(zone_list)
+        nom_cool_flow = np.array([-10000] * len(zone_list))
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
                 print("setting coo flow")
                 nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
         print(nom_cool_flow)
         print(type(nom_cool_flow))
-        # print(nom_cool_flow.shape)
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": [10000] * len(zone_list),
+            "nominal_heat_flow": np.array([10000] * len(zone_list)),
             "nominal_cool_flow": nom_cool_flow,
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
