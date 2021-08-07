@@ -530,8 +530,8 @@ class Teaser(LoadBase):
         print(nom_cool_flow.shape)
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": list(np.array([10000] * len(zone_list))),
-            "nominal_cool_flow": list(nom_cool_flow),
+            "nominal_heat_flow": np.array([10000] * len(zone_list)),
+            "nominal_cool_flow": nom_cool_flow,
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
                 "mos_weather_filename": mos_weather_filename,
