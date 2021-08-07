@@ -519,23 +519,14 @@ class Teaser(LoadBase):
             })
 
         # Handle setting nominal load for IT room zone
-        if any(d['instance_name'] == 'ict' for d in zone_list):
-            print("ict in zone list")
-
-        else:
-            print("not in zone list")
-
         nom_cool_flow = [-10000] * len(zone_list)
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
                 print("setting coo flow")
-                print("i")
-                print(i)
                 nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
         print(nom_cool_flow)
         print(type(nom_cool_flow))
         print(nom_cool_flow.shape)
-        # nom_cool_flow = np.ravel(np.array(nom_cool_flow))
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": [10000] * len(zone_list),
