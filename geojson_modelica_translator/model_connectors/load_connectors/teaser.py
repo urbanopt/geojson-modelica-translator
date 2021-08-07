@@ -527,6 +527,7 @@ class Teaser(LoadBase):
                 nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
         print(nom_cool_flow)
         print(type(nom_cool_flow))
+        print(nom_cool_flow.shape)
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": np.array([10000] * len(zone_list)),
