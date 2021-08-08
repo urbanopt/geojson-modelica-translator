@@ -525,14 +525,6 @@ class Teaser(LoadBase):
             if dic["instance_name"] == "ict":
                 print("setting coo flow")
                 nom_cool_flow[i-1] = -50000  # Need to offset for different indexing
-        print(nom_cool_flow)
-        print(type(nom_cool_flow))
-        print(nom_cool_flow.shape)
-        print(str(repr(nom_cool_flow))[1:-1])
-        print(str(repr(nom_cool_flow))[1:-1].replace("[", "{"))
-        print(str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}"))
-        test = str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}")
-        print(test.split("rray(", 1)[-1])
         nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
             "thermal_zones": zone_list,
