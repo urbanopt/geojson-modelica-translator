@@ -524,7 +524,7 @@ class Teaser(LoadBase):
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
                 print("setting coo flow")
-                nom_cool_flow[i-1] = -100000  # Need to offset for different indexing
+                nom_cool_flow[i-1] = -50000  # Need to offset for different indexing
         print(nom_cool_flow)
         print(type(nom_cool_flow))
         print(nom_cool_flow.shape)
