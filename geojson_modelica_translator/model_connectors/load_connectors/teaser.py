@@ -532,7 +532,7 @@ class Teaser(LoadBase):
         print(str(repr(nom_cool_flow))[1:-1].replace("[", "{"))
         print(str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}"))
         test = str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}")
-        print(test.split("array(", 1)[-1])
+        print(test.split("rray(", 1)[-1])
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": np.array([10000] * len(zone_list)),
