@@ -533,9 +533,10 @@ class Teaser(LoadBase):
         print(str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}"))
         test = str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}")
         print(test.split("rray(", 1)[-1])
+        nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": np.array([10000] * len(zone_list)),
+            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
             "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {

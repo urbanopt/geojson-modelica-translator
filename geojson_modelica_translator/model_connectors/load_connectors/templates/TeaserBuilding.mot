@@ -54,7 +54,7 @@ within {{project_name}}.Loads.{{model_name}};
     redeclare each package Medium1=MediumW,
     redeclare each package Medium2=MediumA,
     each facSca=facSca,
-    QHea_flow_nominal={{ data['nominal_heat_flow'][1] }},
+    QHea_flow_nominal={{ data['nominal_heat_flow'] }},
     QCoo_flow_nominal={{ data['nominal_cool_flow'] }},
     each T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }},
     each T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }},
