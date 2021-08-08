@@ -528,7 +528,7 @@ class Teaser(LoadBase):
         print(nom_cool_flow)
         print(type(nom_cool_flow))
         print(nom_cool_flow.shape)
-        print(str(nom_cool_flow)[1:-1])
+        print(str(repr(nom_cool_flow))[1:-1])
         building_template_data = {
             "thermal_zones": zone_list,
             "nominal_heat_flow": np.array([10000] * len(zone_list)),
