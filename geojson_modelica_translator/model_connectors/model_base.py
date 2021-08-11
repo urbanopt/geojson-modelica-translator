@@ -78,6 +78,17 @@ class ModelBase(object):
         self.required_mo_files = []
         # extract data out of the urbanopt_building object and store into the base object
 
+        # Read district-level system params. Used when templating mofiles, for instance in heating_indirect.py
+        if system_parameters is not None:
+            self.district_template_data = {
+                "temp_setpoint_hhw": self.system_parameters.get_param(
+                        "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw"
+                ) + 273.15,
+                "temp_setpoint_chw": self.system_parameters.get_param(
+                    "$.district_system.default.central_cooling_plant_parameters.temp_setpoint_chw"
+                ) + 273.15,
+            }
+
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """
         Converts square feet to square meters

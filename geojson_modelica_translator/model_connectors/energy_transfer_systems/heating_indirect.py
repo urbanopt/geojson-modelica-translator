@@ -70,12 +70,14 @@ class HeatingIndirect(EnergyTransferBase):
             "ets_model_parameters.indirect"
         )
 
+        combined_template_data = {**ets_data, **self.district_template_data}
+
         self.run_template(
             template=heating_indirect_template,
             save_file_name=os.path.join(scaffold.project_path, 'Substations', f'{self._model_filename}.mo'),
             project_name=scaffold.project_name,
             model_filename=self._model_filename,
-            ets_data=ets_data,
+            ets_data=combined_template_data,
         )
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
