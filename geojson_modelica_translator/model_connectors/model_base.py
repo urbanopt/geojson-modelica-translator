@@ -82,7 +82,7 @@ class ModelBase(object):
         if system_parameters is not None:
             self.district_template_data = {
                 "temp_setpoint_hhw": self.system_parameters.get_param(
-                        "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw"
+                    "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw"
                 ) + 273.15,
                 "temp_setpoint_chw": self.system_parameters.get_param(
                     "$.district_system.default.central_cooling_plant_parameters.temp_setpoint_chw"
