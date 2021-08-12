@@ -47,7 +47,7 @@ model {{ model_filename }}
   parameter Modelica.SIunits.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
-    {% endraw %}start={{ets_data["heating_supply_water_temperature_district"]}}+273.15,
+    {% endraw %}start={{ets_data["temp_setpoint_hhw"]}}+273.15,
     {% raw %}final displayUnit="K")
     "Nominal temperature at port a1"
     annotation (Dialog(group="Heat exchanger"));

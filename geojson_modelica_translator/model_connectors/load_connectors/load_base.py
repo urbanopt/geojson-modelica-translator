@@ -98,14 +98,8 @@ class LoadBase(ModelBase):
                     "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heat_exchanger_primary_pressure_drop"
                     ),
-                    "cooling_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_district"
-                    ) + 273.15,
                     "cooling_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
-                    ) + 273.15,
-                    "heating_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_district"
                     ) + 273.15,
                     "heating_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
