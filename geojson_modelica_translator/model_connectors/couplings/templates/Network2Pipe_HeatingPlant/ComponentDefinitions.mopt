@@ -7,7 +7,6 @@
   // TODO: This should not be here, it is entirely plant specific and should be moved elsewhere
   // but since it requires a connect statement we must put it here for now...
   Modelica.Blocks.Sources.RealExpression TDisSetHeaWat_{{ coupling.id }}(
-    // each y=55+273.15)
-    each y=273.15+{{ sys_params.ets_model_parameters.indirect.heating_supply_water_temperature_district }})
+    each y=273.15+{{ sys_params.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw }})
     "District side heating water supply temperature set point."
     annotation (Placement({{ diagram.transformation.t_dis_set_hea_wat.real_expression }}));
