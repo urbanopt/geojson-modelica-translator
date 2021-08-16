@@ -100,7 +100,6 @@ class District:
             model.to_modelica(self._scaffold)
 
         # construct graph of visual components
-        # TODO: use the diagram graph to determine icon and line placements before passing to templates
         diagram = Diagram(self._coupling_graph)
 
         district_template_params = {
@@ -117,7 +116,10 @@ class District:
                 'delHeaWatTemBui': 'delHeaWatTemBui',
                 'delHeaWatTemDis': 'delHeaWatTemDis',
             },
-            'graph': self._coupling_graph
+            'graph': self._coupling_graph,
+            'sys_params': {
+                'district_system': self.system_parameters.get_param('$.district_system')
+            }
         }
         # render each coupling
         for coupling in self._coupling_graph.couplings:
@@ -129,7 +131,7 @@ class District:
             coupling_load = coupling.get_load()
             if coupling_load is not None:
                 building_sys_params = self.system_parameters.get_param_by_building_id(coupling_load.building_id, '$')
-                template_context.update({'sys_params': building_sys_params})
+                template_context['sys_params']['building'] = building_sys_params
 
             templated_result = coupling.render_templates(template_context)
             district_template_params['couplings'].append({
@@ -151,7 +153,7 @@ class District:
 
             if issubclass(type(model), LoadBase):
                 building_sys_params = self.system_parameters.get_param_by_building_id(model.building_id, '$')
-                template_params.update({'sys_params': building_sys_params})
+                template_params['sys_params']['building'] = building_sys_params
 
             templated_instance, instance_template_path = model.render_instance(template_params)
             district_template_params['models'].append({

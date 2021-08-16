@@ -149,7 +149,9 @@ This is the template which defines new components/variables necessary for a coup
 - :code:`globals`: global variables (those defined in the district.py, such as medium_w = MediumW)
 - :code:`coupling`: contains the coupling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append :code:`coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing :code:`parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal` you should do :code:`parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
 - :code:`graph`: an instance of the CouplingGraph class, where all couplings are located. It can provide useful methods for accessing couplings throughout the entire system. Refer to the python class to see what it can do.
-- :code:`sys_params`: if the coupling includes a load, this object will be included as well -- if there's no as part of the coupling this object will not be present. It contains the building-specific system parameters pulled from the system parameters JSON file.
+- :code:`sys_params`: an object containing data from the system parameters file
+  - :code:`district_system`: contains the data from the district_system portion of the system parameters file
+  - :code:`building`:if the coupling includes a load, this object will be included as well -- if there's no as part of the coupling this object will NOT be present. It contains the building-specific system parameters pulled from the system parameters JSON file.
 
 Coupling Connect Statements
 ^^^^^^^^^^^^^^^^^^
@@ -170,7 +172,7 @@ This template is used to declare a model instance.
 - :code:`graph`
 - :code:`couplings`: contains each coupling the model is associated with. For example, if our ETS was coupled to a load and network, couplings would look like :code:`{ load_couplings: [<load coupling>], network_couplings: [<network coupling>] }`. This can be used to access coupling and model ids.
 - :code:`model`: contains info about the model instance, including :code:`modelica_type` and :code:`id`. These should be used to define the model, for example :code:`{{ model.modelica_type }} {{ model.id }}(...)`
-- :code:`sys_params`: if the model is a load, this object will be included as well -- if the model is not a load this object will not be present. It contains the building-specific system parameters pulled from the system parameters JSON file.
+- :code:`sys_params`: same as Coupling Component Definitions context
 
 Simulation Mapper Class / Translator
 ************************************

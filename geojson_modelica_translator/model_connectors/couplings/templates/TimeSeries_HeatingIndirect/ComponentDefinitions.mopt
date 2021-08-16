@@ -14,7 +14,7 @@
   // TODO: move THeaWatSet (and its connection) into a HeatingIndirect specific template file (this component does not depend on the coupling)
   Modelica.Blocks.Sources.RealExpression THeaWatSet_{{ coupling.id }}(
     // y=40+273.15)
-    y=273.15+{{ sys_params.load_model_parameters.time_series.temp_hw_supply }} )
+    y=273.15+{{ sys_params.building.load_model_parameters.time_series.temp_hw_supply }} )
     "Secondary loop (Building side) heating water setpoint temperature."
     //Dehardcode
     annotation (Placement({{ diagram.transformation.t_hea_wat_set.real_expression }}));
