@@ -300,20 +300,10 @@
           "type": "number",
           "default": 6000
         },
-        "cooling_supply_water_temperature_district": {
-          "description": "Chilled water supply temperature district side. (C)",
-          "type": "number",
-          "default": 5
-        },
         "cooling_supply_water_temperature_building": {
           "description": "Chilled water supply temperature building side. (C)",
           "type": "number",
           "default": 7
-        },
-        "heating_supply_water_temperature_district": {
-          "description": "Heating water supply temperature district side. (C)",
-          "type": "number",
-          "default": 55
         },
         "heating_supply_water_temperature_building": {
           "description": "Heating water supply temperature building side. (C)",
@@ -369,9 +359,7 @@
         "nominal_mass_flow_building",
         "nominal_mass_flow_district",
         "valve_pressure_drop",
-        "cooling_supply_water_temperature_district",
         "cooling_supply_water_temperature_building",
-        "heating_supply_water_temperature_district",
         "heating_supply_water_temperature_building",
         "delta_temp_hw_district",
         "delta_temp_hw_building",
@@ -720,9 +708,9 @@
           "default": 55000
         },
         "temp_setpoint_hhw": {
-          "description": "[unused] District circuit heating water temperature setpoint. (C)",
+          "description": "District circuit heating water temperature setpoint. (C)",
           "type": "number",
-          "default": 68
+          "default": 55
         },
         "pressure_drop_hhw_valve_nominal": {
           "description": "Boiler isolation valve pressure drop. (Pa)",

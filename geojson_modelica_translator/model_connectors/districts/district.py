@@ -41,6 +41,9 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import (
     Diagram
 )
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
+    LoadBase
+)
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -97,7 +100,6 @@ class District:
             model.to_modelica(self._scaffold)
 
         # construct graph of visual components
-        # TODO: use the diagram graph to determine icon and line placements before passing to templates
         diagram = Diagram(self._coupling_graph)
 
         district_template_params = {
@@ -114,7 +116,10 @@ class District:
                 'delHeaWatTemBui': 'delHeaWatTemBui',
                 'delHeaWatTemDis': 'delHeaWatTemDis',
             },
-            'graph': self._coupling_graph
+            'graph': self._coupling_graph,
+            'sys_params': {
+                'district_system': self.system_parameters.get_param('$.district_system')
+            }
         }
         # render each coupling
         for coupling in self._coupling_graph.couplings:
@@ -122,6 +127,12 @@ class District:
                 'diagram': diagram.to_dict(coupling.id, is_coupling=True),
             }
             template_context.update(**common_template_params)
+
+            coupling_load = coupling.get_load()
+            if coupling_load is not None:
+                building_sys_params = self.system_parameters.get_param_by_building_id(coupling_load.building_id, '$')
+                template_context['sys_params']['building'] = building_sys_params
+
             templated_result = coupling.render_templates(template_context)
             district_template_params['couplings'].append({
                 'id': coupling.id,
@@ -139,6 +150,11 @@ class District:
                 'diagram': diagram.to_dict(model.id, is_coupling=False),
             }
             template_params.update(**common_template_params)
+
+            if issubclass(type(model), LoadBase):
+                building_sys_params = self.system_parameters.get_param_by_building_id(model.building_id, '$')
+                template_params['sys_params']['building'] = building_sys_params
+
             templated_instance, instance_template_path = model.render_instance(template_params)
             district_template_params['models'].append({
                 'id': model.id,
