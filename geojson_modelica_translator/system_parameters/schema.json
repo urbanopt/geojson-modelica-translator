@@ -174,7 +174,8 @@
             },
             "time_series": {
               "$ref": "#/definitions/time_series_model_parameters"
-            }
+            },
+            "ind": {}
           },
           "additionalProperties": false
         },
