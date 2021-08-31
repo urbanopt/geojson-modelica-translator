@@ -74,7 +74,8 @@ class LoadBase(ModelBase):
         # test_base.py and test_time_series.py test these cases
         if system_parameters is not None:
             if self.system_parameters.get_param_by_building_id(
-                    self.building_id, "ets_model_parameters.indirect") is not None:
+                    self.building_id, "ets_model_parameters.indirect") is not None and self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model") != "ind":
                 self.ets_template_data = {
                     # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
                     "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
