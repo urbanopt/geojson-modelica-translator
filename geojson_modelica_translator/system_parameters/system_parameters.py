@@ -227,7 +227,7 @@ class SystemParameters(object):
 
         if model_type == 'time_series':
             param_template_path = Path(__file__).parent / 'time_series_template.json'
-        elif model_type == 'spawn':
+        elif model_type == 'spawn' or model_type == "ind":
             pass
         else:
             raise Exception(f"No template found. {model_type} is not a valid template")
