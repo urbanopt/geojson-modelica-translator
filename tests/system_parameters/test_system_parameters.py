@@ -115,7 +115,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIn("'temp_hw_supply' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_cooling' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
-        self.assertIn("6 is not one of [1, 2, 3, 4]", sp.validate())
+        self.assertIn("6 is not one of [1, 2, 3, 4, 5]", sp.validate())
 
     def test_get_param(self):
         data = {
