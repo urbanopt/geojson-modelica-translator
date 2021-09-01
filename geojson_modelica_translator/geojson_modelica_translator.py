@@ -107,16 +107,17 @@ def _parse_couplings(geojson, sys_params):
     # create the loads and their ETSes
     for building in geojson.buildings:
         load_model_type = sys_params.get_param_by_building_id(building.id, "load_model")
-        load_class = LOAD_MODEL_TO_CLASS[load_model_type]
-        load = load_class(sys_params, building)
+        if load_model_type != 'ind':  # independent buildings do not require an ETS
+            load_class = LOAD_MODEL_TO_CLASS[load_model_type]
+            load = load_class(sys_params, building)
 
-        cooling_indirect = CoolingIndirect(sys_params, building.id)
-        all_couplings.append(Coupling(load, cooling_indirect))
-        all_couplings.append(Coupling(cooling_indirect, cooling_network))
+            cooling_indirect = CoolingIndirect(sys_params, building.id)
+            all_couplings.append(Coupling(load, cooling_indirect))
+            all_couplings.append(Coupling(cooling_indirect, cooling_network))
 
-        heating_indirect = HeatingIndirect(sys_params, building.id)
-        all_couplings.append(Coupling(load, heating_indirect))
-        all_couplings.append(Coupling(heating_indirect, heating_network))
+            heating_indirect = HeatingIndirect(sys_params, building.id)
+            all_couplings.append(Coupling(load, heating_indirect))
+            all_couplings.append(Coupling(heating_indirect, heating_network))
 
     return all_couplings
 
