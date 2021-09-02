@@ -170,7 +170,7 @@ class Coupling(object):
         template_filename = Path(template.filename).as_posix()
         _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
-        print(updated_template_params)
+        #  print(updated_template_params)
         return template.render(updated_template_params), template_filename
 
     def render_templates(self, template_params):
