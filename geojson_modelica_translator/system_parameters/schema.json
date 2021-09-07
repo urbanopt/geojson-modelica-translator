@@ -427,6 +427,13 @@
           "items": {
             "type": "string"
           }
+        },
+        "thermal_zone_loads": {
+          "description": "Array of zone nominal loads",
+          "type": "array",
+          "items": {
+            "type": "double"
+          }
         }
       },
       "required": [
