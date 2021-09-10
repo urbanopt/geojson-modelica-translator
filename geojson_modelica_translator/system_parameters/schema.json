@@ -432,7 +432,7 @@
           "description": "Array of zone nominal loads",
           "type": "array",
           "items": {
-            "type": "double"
+            "type": "integer"
           }
         }
       },
