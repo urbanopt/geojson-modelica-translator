@@ -137,7 +137,7 @@ class Spawn(LoadBase):
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
             },
-            "nom_zone_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
