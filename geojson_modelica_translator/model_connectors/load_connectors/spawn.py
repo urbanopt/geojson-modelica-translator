@@ -137,7 +137,7 @@ class Spawn(LoadBase):
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
             },
-            "zone_loads": [],
+            "thermal_zone_loads": [],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
@@ -145,7 +145,7 @@ class Spawn(LoadBase):
                 {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
             )
 
-        for tz in thermal_zone_loads:
+        for tz in thermal_zone_loads:  # might need to keep track of these with the zone name instead
             # TODO: method for creating nice zone names for modelica
             building_template_data["thermal_zone_loads"].append(
                 {tz}
