@@ -428,8 +428,8 @@
             "type": "string"
           }
         },
-        "thermal_zone_loads": {
-          "description": "Array of zone nominal loads",
+        "zone_nom_htg_loads": {
+          "description": "Array of zone nominal heating loads",
           "type": "array",
           "items": {
             "type": "integer"
