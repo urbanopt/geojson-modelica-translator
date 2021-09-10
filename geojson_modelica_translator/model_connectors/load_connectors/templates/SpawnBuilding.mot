@@ -38,10 +38,7 @@ model building
     "Supply heating water nominal temperature";
   parameter Modelica.SIunits.Temperature T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp'] }}
     "Return heating water nominal temperature";
-  parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]=fill(
-    //Zone-level noiminal heat flows aren't currently in the schema--extend in future?
-    3000,
-    nZon) ./ facSca
+  parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]={{ data['thermal_zone_loads'] }}
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Nominal condition"));
   parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal[nZon]=fill(
