@@ -41,9 +41,7 @@ model building
   parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]={{ data['zone_nom_htg_loads'] }}
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal[nZon]=fill(
-    -8750,
-    nZon) ./ facSca
+  parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal[nZon]={{ data['zone_nom_clg_loads'] }}
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Nominal condition"));
   parameter String idfName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"

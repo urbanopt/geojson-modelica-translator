@@ -429,14 +429,14 @@
           }
         },
         "zone_nom_htg_loads": {
-          "description": "Array of zone nominal heating loads",
+          "description": "Array of zone nominal heating loads (values should be >0) ",
           "type": "array",
           "items": {
             "type": "integer"
           }
         },
         "zone_nom_clg_loads": {
-          "description": "Array of zone nominal cooling loads",
+          "description": "Array of zone nominal cooling loads (values should be <0)",
           "type": "array",
           "items": {
             "type": "integer"
