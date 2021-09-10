@@ -434,6 +434,13 @@
           "items": {
             "type": "integer"
           }
+        },
+        "zone_nom_clg_loads": {
+          "description": "Array of zone nominal cooling loads",
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
         }
       },
       "required": [
