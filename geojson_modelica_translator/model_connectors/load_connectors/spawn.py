@@ -89,6 +89,9 @@ class Spawn(LoadBase):
         zone_nom_htg_loads = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.zone_nom_htg_loads",
         )
+        zone_nom_clg_loads = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
+        )
         # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
         hhw_supply_temp = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_supply",
@@ -138,6 +141,7 @@ class Spawn(LoadBase):
                 "temp_setpoint_cooling": temp_setpoint_cooling,
             },
             "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
@@ -146,6 +150,7 @@ class Spawn(LoadBase):
             )
 
         print(zone_nom_htg_loads)
+        print(zone_nom_clg_loads)
 
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
