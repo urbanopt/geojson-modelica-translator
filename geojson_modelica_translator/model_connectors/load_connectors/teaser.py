@@ -558,7 +558,8 @@ class Teaser(LoadBase):
                 ) + 273.15
             }
         }
-
+        print("nominal heat flow")
+        print(building_template_data['nominal_heat_flow'])
         # merge ets template values from load_base.py into the building nominal values
         # If there is no ets defined in sys-param file, use the building template data alone
         try:
