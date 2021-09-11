@@ -149,9 +149,6 @@ class Spawn(LoadBase):
                 {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
             )
 
-        print(zone_nom_htg_loads)
-        print(zone_nom_clg_loads)
-
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
         if os.path.exists(building_template_data["idf"]["idf_filename"]):
