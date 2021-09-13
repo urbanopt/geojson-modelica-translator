@@ -140,6 +140,7 @@ class Spawn(LoadBase):
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
             },
+            # Reformatting lists for Modelica
             "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
             "zone_nom_clg_loads": str(repr(zone_nom_clg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
         }
