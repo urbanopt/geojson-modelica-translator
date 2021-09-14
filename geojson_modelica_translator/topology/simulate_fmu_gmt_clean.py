@@ -43,6 +43,9 @@ def simulate(bldg_1_conn):
         ind_energy = pd.read_csv('in.csv')  # Need to specify file name
         elec_ind = sum(ind_energy['Electricity:Facility [J](TimeStep)'])  # Needs to have EnergyPlus column headings preserved
         gas_ind = sum(ind_energy['NaturalGas:Facility [J](TimeStep) '])  # Extra space present at end of clmn heading in csv from E+
+    else:
+        elec_ind = 0
+        gas_ind = 0
 
     with open("sys_param.json", 'w') as fp:
         json.dump(data, fp)
