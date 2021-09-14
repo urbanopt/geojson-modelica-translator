@@ -25,6 +25,12 @@ heat_cap_water = 4182  # J/kg/deg C
 source_site_elec = 2.80
 source_site_gas = 1.05
 
+# update this as needed
+file_path = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/CSV/GMT/geojson-modelica-translator/tests/ \
+    management/data/sdk_project_scraps/'
+
+results_file_name = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/mixed_loads_Districts_DistrictEnergySystem_result.mat'
+
 
 def simulate(bldg_1_conn):
     os.system('poetry run uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json')
@@ -48,7 +54,7 @@ def simulate(bldg_1_conn):
 
     # need to add in post-processing of results, and add in alternative load profile for ind case
 
-    r = Reader('results/mixed_loads_Districts_DistrictEnergySystem_result_rev_HHWST_rev_Spawn.mat', 'dymola')  # subsitute in file name
+    r = Reader(results_file_name, 'dymola')  # subsitute in file name
     # assumes existing structure of CHW plant model
     elec_DES = r.integral('cooPla_9b327f8c.mulChiSys.P[1]') + r.integral('cooPla_9b327f8c.mulChiSys.P[2]')  # result in J
     gas_DES = r.integral('heaPla_65f1ca03.senMasFlo.m_flow') * (r.mean('heaPla_65f1ca03.THWSup.T') - r.mean('heaPla_65f1ca03.THWRet.T')) \
