@@ -56,8 +56,19 @@ def simulate(bldg_1_conn):
 
     r = Reader(results_file_name, 'dymola')  # subsitute in file name
     # assumes existing structure of CHW plant model
-    elec_DES = r.integral('cooPla_9b327f8c.mulChiSys.P[1]') + r.integral('cooPla_9b327f8c.mulChiSys.P[2]')  # result in J
-    gas_DES = r.integral('heaPla_65f1ca03.senMasFlo.m_flow') * (r.mean('heaPla_65f1ca03.THWSup.T') - r.mean('heaPla_65f1ca03.THWRet.T')) \
+
+    # get var names for clg
+    chiller_var_names = r.varNames('mulChiSys.P')
+    # add a test for # of results?
+    elec_DES = r.integral(chiller_var_names[0]) + r.integral(chiller_var_names[1])  # result in J
+    # get var names for htg
+    htg_var_names_mdot = r.varNames('heaPla.*senMasFlo.m_flow')
+    htg_var_names_mdot_int = [i for i in htg_var_names_mdot if not ('pum' in i or 'nominal' in i)]
+    htg_st_var_output = r.varNames('heaPla.*THWSup.T')
+    htg_st_var_int = [i for i in htg_st_var_output if not ('start' in i or 'Amb' in i or 'inflow' in i or 'TMed' in i or 'der' in i)]
+    htg_rt_var_output = r.varNames('heaPla.*THWRet.T')
+    htg_rt_var_int = [i for i in htg_rt_var_output if not ('start' in i or 'Amb' in i or 'inflow' in i or 'TMed' in i or 'der' in i)]
+    gas_DES = r.integral(htg_var_names_mdot_int[0]) * (r.mean(htg_st_var_int[0]) - r.mean(htg_rt_var_int[0])) \
         * heat_cap_water  # result in J
 
     # combine overall gas and elec
