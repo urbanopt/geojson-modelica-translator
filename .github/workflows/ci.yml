@@ -98,10 +98,3 @@ jobs:
             echo "$filename"
             cat "$filename"
           done
-      -
-        name: Store test output
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-output
-          path: tests/model_connectors/output
