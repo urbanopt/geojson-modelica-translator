@@ -13,3 +13,7 @@
     nPorts=1)
     "Heating water sink (district side)"
     annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));
+
+  // NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
+  parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=50000
+    "Differential pressure setpoint";
