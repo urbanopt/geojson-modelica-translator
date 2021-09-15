@@ -447,9 +447,19 @@ class Diagram:
                 elif found_in_model_b:
                     return model_b_id
                 else:
+                    available_names_by_context_id = {
+                        'coupling ' + diagram_context_id: list(diagram_graph_by_id[diagram_context_id].keys()),
+                        model_a_id: list(diagram_graph_by_id[model_a_id].keys()),
+                        model_b_id: list(diagram_graph_by_id[model_b_id].keys())
+                    }
+                    available_names_formatted = 'Available names (source):'
+                    for ctx, available_names in available_names_by_context_id.items():
+                        for available_name in available_names:
+                            available_names_formatted += f'\n  {available_name} ({ctx})'
                     raise Exception(
                         f'Invalid diagram line command: failed to find "{name}" '
-                        f'in the coupling or either of the coupled models ({model_a_id} and {model_b_id})'
+                        f'in the coupling or either of the coupled models ({model_a_id} and {model_b_id}).\n'
+                        f'{available_names_formatted}'
                     )
 
         # add connections between nodes
