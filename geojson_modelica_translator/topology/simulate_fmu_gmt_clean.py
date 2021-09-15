@@ -62,6 +62,9 @@ def simulate(bldg_1_conn):
 
     # get var names for clg
     chiller_var_names = r.varNames('mulChiSys.P')
+    if len(chiller_var_names) != 2:
+        print("Variable names for chiller energy use, printed below, may not have been identified correctly.")
+        print(chiller_var_names)
     # add a test for # of results?
     elec_DES = r.integral(chiller_var_names[0]) + r.integral(chiller_var_names[1])  # result in J
     # get var names for htg
