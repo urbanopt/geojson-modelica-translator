@@ -1,0 +1,18 @@
+  // TODO: these connect statements shouldn't be here, they are plant specific
+  // but since we can't currently make connect statements for single systems, this is what we've got
+  connect(mPum_flow_{{ coupling.id }}.y, {{ coupling.plant.id }}.on)
+    annotation ({{ diagram.line.m_pum_flow.y.heating_plant.on }});
+  connect(TDisSetHeaWat_{{ coupling.id }}.y, {{ coupling.plant.id }}.THeaSet)
+    annotation ({{ diagram.line.t_dis_set_hea_wat.y.heating_plant.t_hea_set }});
+
+  // connect plant to sink and source
+  connect({{ coupling.plant.id }}.port_a, supHeaWat.ports[1])
+    annotation ({{ diagram.line.sup_hea_wat.ports.heating_plant.port_a }});
+  connect({{ coupling.plant.id }}.port_b, sinHeaWat.ports[1])
+    annotation ({{ diagram.line.sin_hea_wat.ports.heating_plant.port_b }});
+
+  // connect additional inputs for plant and the water source
+  connect(TSetDP_{{ coupling.id }}.y, {{ coupling.plant.id }}.dpMea)
+    annotation ({{ diagram.line.t_set_dp.y.heating_plant.dp_mea }});
+  connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
+    annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_hea_wat.m_flow_in }});
