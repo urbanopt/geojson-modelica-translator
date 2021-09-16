@@ -85,6 +85,14 @@
             "thermal_zone_names": [
               "zone a",
               "zone_b"
+            ],
+            "zone_nom_htg_loads": [
+              3000,
+              3000
+            ],
+            "zone_nom_clg_loads": [
+              -8750,
+              -8750
             ]
           }
         },
