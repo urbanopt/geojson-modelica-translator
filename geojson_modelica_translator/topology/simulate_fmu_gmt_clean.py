@@ -24,6 +24,7 @@ heat_cap_water = 4182  # J/kg/deg C
 # Site to source factors, per ESPM 2020: https://portfoliomanager.energystar.gov/pdf/reference/Source%20Energy.pdf
 source_site_elec = 2.80
 source_site_gas = 1.05
+boiler_eff = 0.9
 
 # update this as needed
 file_path = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/CSV/GMT/geojson-modelica-translator/tests/ \
@@ -74,8 +75,8 @@ def simulate(bldg_1_conn):
     htg_st_var_int = [i for i in htg_st_var_output if not ('start' in i or 'Amb' in i or 'inflow' in i or 'TMed' in i or 'der' in i)]
     htg_rt_var_output = r.varNames('heaPla.*THWRet.T')
     htg_rt_var_int = [i for i in htg_rt_var_output if not ('start' in i or 'Amb' in i or 'inflow' in i or 'TMed' in i or 'der' in i)]
-    gas_DES = r.integral(htg_var_names_mdot_int[0]) * (r.mean(htg_st_var_int[0]) - r.mean(htg_rt_var_int[0])) \
-        * heat_cap_water  # result in J
+    gas_DES = (r.integral(htg_var_names_mdot_int[0]) * (r.mean(htg_st_var_int[0]) - r.mean(htg_rt_var_int[0]))
+               * heat_cap_water)/boiler_eff  # result in J
 
     # combine overall gas and elec
     elec_total = elec_DES + elec_ind
