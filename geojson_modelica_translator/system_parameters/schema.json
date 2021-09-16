@@ -427,6 +427,20 @@
           "items": {
             "type": "string"
           }
+        },
+        "zone_nom_htg_loads": {
+          "description": "Array of zone nominal heating loads (values should be >0) ",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "zone_nom_clg_loads": {
+          "description": "Array of zone nominal cooling loads (values should be <0)",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
         }
       },
       "required": [
@@ -439,7 +453,9 @@
         "idf_filename",
         "epw_filename",
         "mos_weather_filename",
-        "thermal_zone_names"
+        "thermal_zone_names",
+        "zone_nom_htg_loads",
+        "zone_nom_clg_loads"
       ],
       "additionalProperties": false
     },

@@ -108,6 +108,12 @@
             "temp_setpoint_heating": 24,
             "thermal_zone_names": [
               "Not Real Zones"
+            ],
+            "zone_nom_htg_loads": [
+              3000
+            ],
+            "zone_nom_clg_loads": [
+              -8750
             ]
           }
         },
@@ -149,6 +155,12 @@
             "temp_setpoint_heating": 24,
             "thermal_zone_names": [
               "Not Real Zones"
+            ],
+            "zone_nom_htg_loads": [
+              3000
+            ],
+            "zone_nom_clg_loads": [
+              -8750
             ]
           }
         },
