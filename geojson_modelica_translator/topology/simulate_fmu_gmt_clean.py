@@ -8,8 +8,8 @@ import pandas as pd
 # import pkg_resources
 from buildingspy.io.outputfile import Reader
 
-from pyfmi import load_fmu
-from pymodelica import compile_fmu
+# from pyfmi import load_fmu
+# from pymodelica import compile_fmu
 
 sys.path.append("/usr/local/JModelica/Python")
 
@@ -60,9 +60,9 @@ def simulate(bldg_1_conn):
 
     os.system('poetry run uo_des create-model sys_param.json example_project.json model_from_sdk')
 
-    fmu = compile_fmu(name, compiler_options=compile_options, compiler_log_level='d', jvm_args='-Xmx10g', target='cs')
-    fmu = load_fmu(fmu)
-    fmu.simulate(start_time=0, final_time=5)  # could assign to res later
+    # fmu = compile_fmu(name, compiler_options=compile_options, compiler_log_level='d', jvm_args='-Xmx10g', target='cs')
+    # fmu = load_fmu(fmu)
+    # fmu.simulate(start_time=0, final_time=5)  # could assign to res later
 
     # os.system('uo_des run-model model_from_sdk')
 
