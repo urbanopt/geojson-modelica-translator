@@ -35,10 +35,6 @@ file_path = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/CSV/GMT/g
 
 results_file_name = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/mixed_loads_Districts_DistrictEnergySystem_result.mat'
 
-name = 'District.DistrictEnergySystem'
-
-compile_options = {'runtime_log_to_file': True, 'generate_html_diagnostics': True, 'log_level': 6}
-
 
 def simulate(bldg_1_conn):
     os.system('poetry run uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json')
@@ -59,10 +55,6 @@ def simulate(bldg_1_conn):
         fp.write('\n')
 
     os.system('poetry run uo_des create-model sys_param.json example_project.json model_from_sdk')
-
-    # fmu = compile_fmu(name, compiler_options=compile_options, compiler_log_level='d', jvm_args='-Xmx10g', target='cs')
-    # fmu = load_fmu(fmu)
-    # fmu.simulate(start_time=0, final_time=5)  # could assign to res later
 
     # os.system('uo_des run-model model_from_sdk')
 
