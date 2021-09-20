@@ -2,8 +2,15 @@
 # make sure this approach works with the measure ! it shouldn't need to pass any files=>should just be persisted in the directory
 #  need to adjust path so that it can find modules
 
+# import pandas as pd
+
 from pyfmi import load_fmu
 from pymodelica import compile_fmu
+
+# import buildingspy
+
+# import pkg_resources
+# from buildingspy.io.outputfile import Reader
 
 name = 'Districts.DistrictEnergySystem'
 
