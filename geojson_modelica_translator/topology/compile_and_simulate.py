@@ -7,14 +7,17 @@
 # import buildingspy
 # import pkg_resources
 # from buildingspy.io.outputfile import Reader
+import os
 
 from pyfmi import load_fmu
 from pymodelica import compile_fmu
 
 name = 'Districts.DistrictEnergySystem'
+file_path = '/opt/openstudio/server/geojson-modelica-translator/tests/management/data/sdk_project_scraps/'
 
 
 def compile_and_simulate(bldg_1_conn):
+    os.chdir(file_path)
 
     compile_options = {'runtime_log_to_file': True, 'generate_html_diagnostics': True, 'log_level': 6}
 
