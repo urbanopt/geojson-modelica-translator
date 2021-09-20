@@ -4,18 +4,23 @@
 
 # import pandas as pd
 
+# import buildingspy
+# import pkg_resources
+from buildingspy.io.outputfile import Reader
+
 from pyfmi import load_fmu
 from pymodelica import compile_fmu
 
-# import buildingspy
-
-# import pkg_resources
-# from buildingspy.io.outputfile import Reader
-
 name = 'Districts.DistrictEnergySystem'
+results_file_name = 'Districts_DistrictEnergySystem.mat'
 
-compile_options = {'runtime_log_to_file': True, 'generate_html_diagnostics': True, 'log_level': 6}
 
-fmu = compile_fmu(name, compiler_options=compile_options, compiler_log_level='d', jvm_args='-Xmx10g', target='cs')
-fmu_sim = load_fmu(fmu)
-fmu_sim.simulate(start_time=0, final_time=5)  # could assign to res later
+def compile_and_simulate(bldg_1_conn):
+
+    compile_options = {'runtime_log_to_file': True, 'generate_html_diagnostics': True, 'log_level': 6}
+
+    fmu = compile_fmu(name, compiler_options=compile_options, compiler_log_level='d', jvm_args='-Xmx10g', target='cs')
+    fmu_sim = load_fmu(fmu)
+    fmu_sim.simulate(start_time=0, final_time=5)  # could assign to res later # update simulation time!
+
+    Reader(results_file_name, 'dymola')  # subsitute in file name
