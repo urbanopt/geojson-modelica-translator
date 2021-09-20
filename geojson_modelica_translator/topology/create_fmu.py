@@ -33,13 +33,13 @@ results_file_name = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/m
 
 def configure(bldg_1_conn):
     os.system('poetry run uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json')
-    with open("sys_param.json", "r+") as jsonFile:
+    with open(file_path + "sys_param.json", "r+") as jsonFile:
         data = json.load(jsonFile)  # returns a dict
 
     if bldg_1_conn < 0.5:  # need to map to a particular bldg, could put these all into some sort of dict
         data['buildings']['custom'][0]['load_model'] = 'ind'  # otherwise, leave it as is
 
-    with open("sys_param.json", 'w') as fp:
+    with open(file_path + "sys_param.json", 'w') as fp:
         json.dump(data, fp)
         fp.write('\n')
 
