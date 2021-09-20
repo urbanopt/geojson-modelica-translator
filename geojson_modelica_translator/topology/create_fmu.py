@@ -25,8 +25,7 @@ source_site_gas = 1.05
 boiler_eff = 0.9
 
 # update this as needed
-file_path = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/CSV/GMT/geojson-modelica-translator/tests/ \
-    management/data/sdk_project_scraps/'
+file_path = '/opt/openstudio/server/geojson-modelica-translator/tests/management/data/sdk_project_scraps/'
 
 results_file_name = '/opt/openstudio/server/MAT_File/mixed_loads_rev_sca_fac_2/mixed_loads_Districts_DistrictEnergySystem_result.mat'
 
