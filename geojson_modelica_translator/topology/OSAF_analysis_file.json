@@ -1,0 +1,178 @@
+{
+  "analysis": {
+    "display_name": "SEB_calibration_PSO_2013_rev_v4",
+    "name": "SEB_calibration_PSO_2013_rev_v4",
+    "output_variables": [
+      {
+        "units": "joules",
+        "objective_function": true,
+        "objective_function_index": 0,
+        "objective_function_target": 0,
+        "objective_function_group": null,
+        "scaling_factor": null,
+        "display_name": "energy_cons",
+        "display_name_short": "energy_cons",
+        "metadata_id": null,
+        "name": "PostProcessFMUSimulation.energy_cons",
+        "visualize": true,
+        "export": true,
+        "variable_type": "double"
+      }
+    ],
+    "problem": {
+      "workflow": [
+        {
+          "name": "ReadFMUResults",
+          "display_name": "ReadFMUResults",
+          "measure_type": "ReportingMeasure",
+          "measure_definition_class_name": "ReadFMUResults",
+          "measure_definition_directory": "./measures/read_fmu_results",
+          "measure_definition_directory_local": "C:\\Users\\aallen\\Documents\\GitHub\\OpenStudio-PAT\\sample_projects\\SEB_calibration_PSO_2013\\measures\\read_fmu_results",
+          "measure_definition_display_name": "ReadFMUResults",
+          "measure_definition_name": "ReadFMUResults",
+          "measure_definition_name_xml": null,
+          "measure_definition_uuid": "cea7d85f-c826-4e15-9ec3-ce56d3b2d89d",
+          "measure_definition_version_uuid": "def0c14d-d3e4-4b44-87da-896878c23c5c",
+          "uuid": "cea7d85f-c826-4e15-9ec3-ce56d3b2d89d",
+          "version_uuid": "def0c14d-d3e4-4b44-87da-896878c23c5c",
+          "description": "Simulates an FMU",
+          "taxonomy": "Reporting.QAQC",
+          "arguments": [],
+          "variables": [
+            {
+              "argument": {
+                "display_name": "Bldg1 Con Status",
+                "display_name_short": "bldg1_con",
+                "name": "bldg1_con",
+                "value_type": "double",
+                "default_value": 0,
+                "value": 0
+              },
+              "display_name": "Bldg1 Con Status",
+              "display_name_short": "bldg1_con",
+              "variable_type": "variable",
+              "minimum": 0,
+              "maximum": 1,
+              "static_value": 0,
+              "uuid": "",
+              "version_uuid": "",
+              "variable": true,
+              "uncertainty_description": {
+                "type": "uniform",
+                "attributes": [
+                  {
+                    "name": "lower_bounds",
+                    "value": 0
+                  },
+                  {
+                    "name": "upper_bounds",
+                    "value": 1
+                  },
+                  {
+                    "name": "stddev",
+                    "value": 0.5
+                  }
+                ]
+              },
+              "workflow_index": 0
+            }
+          ],
+          "workflow_index": 0
+        },
+        {
+          "name": "PostProcessFMUSimulation",
+          "display_name": "PostProcessFMUSimulation",
+          "measure_type": "ReportingMeasure",
+          "measure_definition_class_name": "PostProcessFMUSimulation",
+          "measure_definition_directory": "./measures/post_process_fmu_simulation",
+          "measure_definition_directory_local": "C:\\Users\\aallen\\Documents\\SEB_calibration_PSO_2013\\measures\\post_process_fmu_simulation",
+          "measure_definition_display_name": "PostProcessFMUSimulation",
+          "measure_definition_name": "PostProcessFMUSimulation",
+          "measure_definition_name_xml": null,
+          "measure_definition_uuid": "cd0bf865-a246-4709-8ac6-1823d5aea2e2",
+          "measure_definition_version_uuid": "e2891eea-fe08-45c2-864b-dbc11b81ad1e",
+          "uuid": "cd0bf865-a246-4709-8ac6-1823d5aea2e2",
+          "version_uuid": "e2891eea-fe08-45c2-864b-dbc11b81ad1e",
+          "description": "Simulates an FMU",
+          "taxonomy": "Reporting.QAQC",
+          "arguments": [],
+          "variables": [
+            {
+              "argument": {
+                "display_name": "Bldg1 Con Status",
+                "display_name_short": "bldg1_con",
+                "name": "bldg1_con",
+                "value_type": "double",
+                "default_value": 0,
+                "value": 0
+              },
+              "display_name": "Bldg1 Con Status",
+              "display_name_short": "bldg1_con",
+              "variable_type": "variable",
+              "minimum": 0,
+              "maximum": 1,
+              "static_value": 0,
+              "uuid": "",
+              "version_uuid": "",
+              "variable": true,
+              "uncertainty_description": {
+                "type": "uniform",
+                "attributes": [
+                  {
+                    "name": "lower_bounds",
+                    "value": 0
+                  },
+                  {
+                    "name": "upper_bounds",
+                    "value": 1
+                  },
+                  {
+                    "name": "stddev",
+                    "value": 0.5
+                  }
+                ]
+              },
+              "workflow_index": 1
+            }
+          ],
+          "workflow_index": 1
+        }
+      ],
+      "algorithm": {
+        "npart": 1,
+        "maxit": 1,
+        "maxfn": 3000,
+        "lambda": 0.9,
+        "c_2": 1,
+        "c_1": 1,
+        "boundary": "reflecting",
+        "topology": "random",
+        "xini": "lhs",
+        "vini": "lhs2011",
+        "abstol": 0.01,
+        "reltol": 0.01,
+        "method": "spso2011",
+        "norm_type": "minkowski",
+        "p_power": 2,
+        "exit_on_guideline_14": 0,
+        "failed_f_value": 1000000000000000000,
+        "debug_messages": 1,
+        "max_queued_jobs": 100,
+        "objective_functions": [
+          "PostProcessFMUSimulation.energy_cons"
+        ]
+      },
+      "analysis_type": "pso"
+    },
+    "seed": {
+      "file_type": "OSM",
+      "path": "./seeds/SEB4_baseboard.osm"
+    },
+    "weather_file": {
+      "file_type": "EPW",
+      "path": "./weather/SRRL_2013AMY_60min.epw"
+    },
+    "file_format_version": 1,
+    "server_scripts": {}
+  }
+}
