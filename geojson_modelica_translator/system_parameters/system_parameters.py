@@ -228,6 +228,7 @@ class SystemParameters(object):
         if model_type == 'time_series':
             param_template_path = Path(__file__).parent / 'time_series_template.json'
         elif model_type == 'spawn':
+            # FIXME: We should support spawn as well
             pass
         else:
             raise Exception(f"No template found. {model_type} is not a valid template")
@@ -290,6 +291,7 @@ class SystemParameters(object):
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
+        # FIXME: Another place where we only support time series for now.
         building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'].endswith("populated")]
         if len(building_list) == 0:
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
