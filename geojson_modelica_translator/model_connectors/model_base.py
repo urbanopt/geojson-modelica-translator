@@ -37,8 +37,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import shutil
+from os import environ
 from pathlib import Path
 
+import requests
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
@@ -144,19 +146,34 @@ class ModelBase(object):
         if not do_not_add_to_list:
             self.template_files_to_include.append(Path(save_file_name).stem)
 
-    def modelica_path(self, filename):
+    def modelica_path(self, filename: str) -> str:
         """Write a modelica path string for a given filename"""
         p = Path(filename)
         if p.suffix == ".idf":
             # TODO: This sucks. Not sucking would be good.
             # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
-                                             / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
-                                             / p.name)
-        elif p.suffix == ".epw" or p.suffix == ".mos":
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
-        return outputname
+            modelica_outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
+                                                      / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
+                                                      / p.name)
+        # Assumes the weather file came from an sdk run
+        elif p.suffix == ".epw":
+            # get country & state from weather file name
+            weatherfile_location_info = p.parts[-1].split("_")
+            weatherfile_country = weatherfile_location_info[0]
+            weatherfile_state = weatherfile_location_info[1]
+            # download mos file from energyplus website
+            mos_weatherfile_url = f'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/ \
+                {weatherfile_country}/{weatherfile_state}/{p.stem}/{p.stem}.mos'
+            mos_weatherfile_data = requests.get(mos_weatherfile_url)
+            # Save mos weatherfile into MBL
+            outputname = Path(environ['MODELICAPATH']) / "Buildings" / "Resources" / "weatherdata" / f"{p.stem}.mos"
+            open(outputname, 'wb').write(mos_weatherfile_data.content)
+            modelica_outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / f"{p.stem}.mos")
+        elif p.suffix == ".mos":
+            #  Assuming we already have the mos weather file in the modelica buildings library. Bad assumption?
+            modelica_outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
+        return modelica_outputname
 
     @property
     def instance_template_path(self):
