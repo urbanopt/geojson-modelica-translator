@@ -129,9 +129,9 @@ class CoolingPlant(PlantBase):
                 ),
             },
             "wet_bulb_calc": {
-                "mos_wet_bulb_filename": mos_wet_bulb_filename,
-                "filename": Path(mos_wet_bulb_filename).name,
-                "path": Path(mos_wet_bulb_filename).parent,
+                # "mos_wet_bulb_filename": mos_wet_bulb_filename,
+                # "filename": Path(mos_wet_bulb_filename).name,
+                # "path": Path(mos_wet_bulb_filename).parent,
                 "modelica_path": self.modelica_path(mos_wet_bulb_filename),
             },
         }
