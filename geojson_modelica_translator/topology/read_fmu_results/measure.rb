@@ -111,7 +111,7 @@ class ReadFMUResults < OpenStudio::Measure::ReportingMeasure
 	ENV['PYTHON'] = '/usr/bin/python3'
 	PyCall.init('python3')
 	result = `python3 post_processing.py #{bldg1_con}`  # Hack needed due to hiccup in loading buildingspy.
-    energy_cons = Float(result.split("\n")[2])
+    energy_cons = Float(result.split("\n")[0])
     runner.registerValue("energy_cons", energy_cons, '')
     return true
   end
