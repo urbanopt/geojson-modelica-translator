@@ -18,7 +18,7 @@ def post_process_results(bldg_1_conn):
     if bldg_1_conn < 0.5:
         ind_energy = pd.read_csv('in.csv')  # Need to specify file name
         elec_ind = sum(ind_energy['Electricity:Facility [J](TimeStep)'])  # Needs to have EnergyPlus column headings preserved
-        gas_ind = sum(ind_energy['NaturalGas:Facility [J](TimeStep) '])  # Extra space present at end of clmn heading in csv from E+
+        gas_ind = sum(ind_energy['NaturalGas:Facility [J](TimeStep)'])  # Extra space present at end of clmn heading in csv from E+
         elec_DES = 0
         gas_DES = 0
     else:
