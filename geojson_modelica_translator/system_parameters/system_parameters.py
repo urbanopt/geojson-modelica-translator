@@ -214,7 +214,14 @@ class SystemParameters(object):
         return results
 
     @classmethod
-    def csv_to_sys_param(cls, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
+    def csv_to_sys_param(
+        cls,
+        model_type: str,
+        scenario_dir: Path,
+        feature_file: Path,
+        sys_param_filename: Path,
+        overwrite=True
+    ) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -247,7 +254,7 @@ class SystemParameters(object):
 
         measure_list = []
 
-        # Grab filepaths from sdk output
+        # Grab building load filepaths from sdk output
         for thing in scenario_dir.iterdir():
             if thing.is_dir():
                 for item in thing.iterdir():
@@ -257,10 +264,12 @@ class SystemParameters(object):
                         elif str(item).endswith('_export_modelica_loads'):
                             measure_list.append(Path(item) / "modelica.mos")
 
-        # Parse the FeatureFile
+        # Get each feature id from the SDK FeatureFile
         building_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
+            weather_filename = sdk_input['project']['weather_filename']
+            string_path_to_weather_file = str(Path(feature_file).parent / "weather" / weather_filename)
             for feature in sdk_input['features']:
                 if feature['properties']['type'] != 'Site Origin':
                     building_ids.append(feature['properties']['id'])
@@ -290,15 +299,22 @@ class SystemParameters(object):
                     building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
 
-        # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
+        # Remove template buildings that weren't used or don't have successful simulations with modelica outputs
         # FIXME: Another place where we only support time series for now.
         building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'].endswith("populated")]
         if len(building_list) == 0:
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
+        # Update specific sys-param settings for each building
         for building in building_list:
             building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
+        # Add all buildings to the sys-param file
         param_template['buildings']['custom'] = building_list
+
+        # Update district sys-param settings
+        # Parens are to allow the line break
+        (param_template['district_system']['default']
+            ['central_cooling_plant_parameters']['mos_wet_bulb_filename']) = string_path_to_weather_file
 
         with open(sys_param_filename, 'w') as outfile:
             json.dump(param_template, outfile, indent=2)
