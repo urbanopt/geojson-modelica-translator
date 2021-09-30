@@ -3,16 +3,6 @@ USER root
 
 MAINTAINER Nicholas Long nicholas.long@nrel.gov
 
-# Set environment variables
-ENV SRC_DIR /usr/local/src
-ENV LDFLAGS /usr/local/JModelica/ThirdParty/Sundials/lib
-ENV LIBRARY_PATH /usr/local/JModelica/ThirdParty/Sundials/lib
-ENV LD_LIBRARY_PATH /usr/local/JModelica/ThirdParty/Sundials/lib
-ENV MODELICAPATH /usr/local/JModelica/ThirdParty/MSL:/opt/openstudio/server/modelica-buildings:opt/openstudio/server/modelica-buildings/Buildings:/opt/openstudio/server/geojson-modelica-translator/tests/management/data/sdk_project_scraps:
-/opt/openstudio/server/geojson-modelica-translator/tests/management/data/sdk_project_scraps/model_from_sdk
-ENV JMODELICA_HOME = /usr/local/JModelica
-ENV JAVA_HOME = /usr/lib/jvm/java-8-openjdk-amd64
-
 # Set the version of OpenStudio when building the container. For example `docker build --build-arg
 ARG OPENSTUDIO_VERSION=3.2.1
 ARG OPENSTUDIO_VERSION_EXT=""
@@ -198,9 +188,7 @@ RUN apt-get update && apt-get install -y wget gnupg \
         procps \
         python-numpy \
         python3-numpy \
-		python3-pip \
-		python3.7 -dev \
-		python3-pip python3-setuptools python3.7-venv \
+        python3.7-dev\
         tar \
         unzip \
         wget \
@@ -280,29 +268,6 @@ RUN chmod +x /opt/openstudio/server/bin/*
 ENTRYPOINT ["rails-entrypoint"]
 
 CMD ["/usr/local/bin/start-server"]
-
-# install needed Git repos
-
-RUN cd /opt/openstudio/server
-RUN git clone https://github.com/urbanopt/geojson-modelica-translator.git
-RUN cd geojson-modelica-translator
-RUN git checkout topology
-RUN python3.7 -m pip install cython
-RUN python3.7 -m pip install --upgrade --force-reinstall numpy
-RUN python3.7 -m pip install geojson-modelica-translator
-RUN pip install pandas
-RUN cd /opt/openstudio/server/geojson-modelica-translator/tests/management/data/sdk_project_scraps
-RUN python3.7 -m venv py37-venv
-RUN python3.7 -m pip install poetry
-RUN poetry install
-RUN python3 -m pip install --upgrade Pillow
-RUN python3 -m pip install buildingspy
-
-
-RUN cd /opt/openstudio/server
-RUN git clone https://github.com/lbl-srg/modelica-buildings.git
-RUN cd modelica-buildings
-RUN git checkout issue2204_gmt_mbl
 
 # Expose ports.
 EXPOSE 8080 9090
