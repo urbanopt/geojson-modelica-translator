@@ -165,7 +165,10 @@ class ModelBase(object):
             # download mos file from energyplus website
             mos_weatherfile_url = f'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/ \
                 {weatherfile_country}/{weatherfile_state}/{p.stem}/{p.stem}.mos'
-            mos_weatherfile_data = requests.get(mos_weatherfile_url)
+            try:
+                mos_weatherfile_data = requests.get(mos_weatherfile_url)
+            except requests.exceptions.RequestException as e:
+                raise Exception(f"Could not download weather file: {mos_weatherfile_url}\n{e}")
             # Save mos weatherfile into MBL
             outputname = Path(environ['MODELICAPATH']) / "Buildings" / "Resources" / "weatherdata" / f"{p.stem}.mos"
             open(outputname, 'wb').write(mos_weatherfile_data.content)
