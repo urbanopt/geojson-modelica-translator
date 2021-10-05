@@ -9,7 +9,7 @@ GeoJSON Modelica Translator (GMT)
 
 .. image:: https://badge.fury.io/py/geojson-modelica-translator.svg
     :target: https://badge.fury.io/py/geojson-modelica-translator
-    
+
 Description
 -----------
 
