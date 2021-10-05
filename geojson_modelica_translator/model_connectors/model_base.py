@@ -150,7 +150,6 @@ class ModelBase(object):
         """Write a modelica path string for a given filename"""
         p = Path(filename)
         if p.suffix == ".idf":
-            # TODO: This sucks. Not sucking would be good.
             # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
             # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
             modelica_outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
