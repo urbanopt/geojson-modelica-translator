@@ -38,3 +38,9 @@ cd /opt/openstudio/server
 git clone https://github.com/lbl-srg/modelica-buildings.git
 cd modelica-buildings
 git checkout issue2204_gmt_mbl
+
+export JMODELICA_HOME='/usr/local/JModelica'
+export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64'
+export LDFLAGS='/usr/local/JModelica/ThirdParty/Sundials/lib'
+export LIBRARY_PATH='/usr/local/JModelica/ThirdParty/Sundials/lib'
+export LD_LIBRARY_PATH='/usr/local/JModelica/ThirdParty/Sundials/lib'
