@@ -39,7 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
 import os
 import shutil
-from uuid import uuid4
+# from uuid import uuid4
 
 _log = logging.getLogger(__name__)
 
@@ -154,9 +154,14 @@ class ModelicaPath(object):
             return os.path.join(self.root_dir, self.scripts_relative_dir)
 
 
+counter = 0
 def simple_uuid():
     """Generates a simple string uuid
 
     :return: string, uuid
     """
-    return str(uuid4()).split("-")[0]
+    global counter
+    # return str(uuid4()).split("-")[0]
+    id = str(counter)
+    counter += 1
+    return id
