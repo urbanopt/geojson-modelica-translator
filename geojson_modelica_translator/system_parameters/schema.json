@@ -52,7 +52,6 @@
           "properties": {
             "topology_parameters": {
               "description": "Description of topology style",
-              "type": "string",
               "$ref": "#/definitions/topology_def"
             },
             "topology_optimization": {
@@ -61,12 +60,10 @@
             },
             "cost_function": {
               "description": "Cost function to use in topology optimization",
-              "type": "string",
               "$ref": "#/definitions/cost_function_definition"
             },
             "optimization_approach": {
               "description": "Approach to use for topology optimization",
-              "type": "string",
               "$ref": "#/definitions/optimization_definition"
             },
             "time_period": {
@@ -253,10 +250,10 @@
           "$ref": "#/definitions/central_cooling_plant_parameters"
         },
         "central_heating_plant_parameters": {
-          "ref": "#/definitions/central_heating_plant_parameters"
+          "$ref": "#/definitions/central_heating_plant_parameters"
         },
         "combined_heat_and_power_parameters": {
-          "ref": "#/definitions/combined_heat_and_power_parameters"
+          "$ref": "#/definitions/combined_heat_and_power_parameters"
         }
       },
       "additionalProperties": false
@@ -751,6 +748,251 @@
         "temp_setpoint_hhw",
         "pressure_drop_hhw_valve_nominal"
       ]
+    },
+    "combined_heat_and_power_parameters": {
+        "description": "Combined Heat and power parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "fuel_type": {
+                "description": "Type of fuel used",
+                "type": "string",
+                "enum": [
+                           "Gas",
+                           "Oil"
+                         ]
+            },
+            "number_of_machines": {
+                "description": "Number of machines",
+                "type": "integer"
+            },
+            "single_electricity_generation_capacity": {
+                "description": "Single machine electricity generation capacity (kW)",
+                "type": "number"
+            },
+            "performance_data_path": {
+                "description": "Absolute path or relative path from location where file instance is saved to the performance data file",
+                "type": "string"
+            }
+        },
+        "required": []
+    },
+    "diesel_generator": {
+        "description": "Diesel generator parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "nominal_power_generation": {
+                "description": "Nominal power generation (W)",
+                "type": "number"
+            },
+            "source_phase_shift": {
+                "description": "Phase shift angle of source (degrees)",
+                "type": "number"
+            }
+        }
+    },
+    "electrical_grid": {
+        "description": "Electrical grid parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "frequency": {
+                "description": "Frequency (Hz)",
+                "type": "number",
+                "default": 60
+            },
+            "source_rms_voltage": {
+                "description": "Root mean square (RMS) voltage of source (V)",
+                "type": "number"
+            },
+            "source_phase_shift": {
+                "description": "Phase shift angle of source (degrees)",
+                "type": "number"
+            }
+        }
+    },
+    "photovoltaic_panel": {
+        "description": "Photovoltaic panel parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "net_surface_area": {
+                "description": "Net PV Surface Area (m2)",
+                "type": "number"
+            }, 
+            "suface_tilt": {
+                "description": "PV Surface Tilt (degrees)",
+                "type": "number"
+            },
+            "surface_azimuth": {
+                "description": "PV Surface Azimuth (degrees)",
+                 "type": "number"
+            },
+            "latitude": {
+                "description": "Latitude",
+                 "type": "number"
+            },
+            "nominal_system_voltage": {
+                 "description": "Nominal System Voltage (V)",
+                 "type": "number",
+                 "default" : 480
+            }
+        }
+    },
+    "wind_turbine": {
+        "description": "Wind turbine parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "scaling_factor": {
+                "description": "Scaling Factor",
+                "type": "number"
+            }, 
+            "height_over_ground": {
+                "description": "Height over ground (m)",
+                "type": "number"
+            },
+            "power_curve": {
+                "description": "Power curve (kW)",
+                "type": "number"
+            },
+           "nominal_system_voltage": {
+                 "description": "Nominal System Voltage (V)",
+                 "type": "number",
+                 "default" : 480
+            }
+        }
+    },
+    "capacitor_bank": {
+        "description": "Capacitor bank parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "nominal_capacity": {
+                "description": "Nominal Capacity (var)",
+                "type": "number"
+            }
+        }
+    },
+    "substation": {
+       "description": "Substation parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "RMS_voltage_high_side": {
+                "description": "RMS voltage on high side (V)",
+                "type": "number"
+            },
+            "RMS_voltage_low_side": {
+                "description": "RMS voltage on low side (V)",
+                "type": "number"
+            }
+            
+        }
+    },
+    "transformer": {
+        "description": "Transformer parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "nominal_capacity": {
+                "description": "Nominal Capacity (kVA)",
+                "type": "number"
+            },
+            "reactance_resistance_ratio": {
+                "description": "Ratio between reactance and resistance",
+                "type": "number"
+            }
+        }
+    },
+    "power_converter": {
+        "description": "Power converter parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "converter type": {
+                "description": "Power converter type",
+                "type": "string"
+            },
+            "RMS_voltage_ratio": {
+                "description": "Ratio of RMS voltage on low side/high side",
+                "type": "number"
+            },
+            "converter_efficiency": {
+                "description": "Converter Efficiency",
+                "type": "number"
+            },
+            "nominal_capacity": {
+                "description": "Nominal Capacity (kVA)",
+                "type": "number"
+            }
+        }
+    },
+    "distribution_lines": {
+        "description": "Distribution lines parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "line_length": {
+                "description": "Length of distribution lines (m)",
+                "type": "number"
+            },
+            "maximum_power": {
+                "description": "Maximum power of the lines (W)",
+                "type" : "number"
+            },
+            "nominal_voltage": {
+                "description": "Nominal voltage of the lines (V)",
+                "type": "number",
+                "default": 480
+            },
+            "commercial_line_type": {
+                "description": "Commercial line type",
+                "type" : "string"
+            }
+        }
+    },
+    "ac_inductive_load": {
+        "description": "AC inductive load parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "nominal_voltage": {
+                "description": "Nominal voltage (V)",
+                "type": "number"
+            },
+            "nominal_power_consumption": {
+                "description": "Nominal Power Consumption type",
+                "type": "string",
+                "enum": [
+                    "constant",
+                    "variable load"
+                ]
+            }
+        }
+    },
+    "dc_load": {
+        "description": "DC load parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "nominal_voltage": {
+                "description": "Nominal voltage (V)",
+                "type": "number"
+            },
+            "nominal_power_consumption": {
+                "description": "Nominal Power Consumption type",
+                "type": "string",
+                "enum": [
+                    "constant",
+                    "variable load"
+                ]
+            }
+        }
+    },
+    "battery_bank": {
+        "description": "DC load parameters used by the microgrid model.",
+        "type": "object",
+        "properties": {
+            "capacity": {
+                "description": "Maximum available charge (MWh)",
+                "type": "number"
+            },
+           "nominal_voltage": {
+                "description": "Nominal voltage (V)",
+                "type": "number"
+            }
+        }    
     }
+    
   }
 }
