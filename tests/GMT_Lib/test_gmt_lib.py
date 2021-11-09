@@ -82,6 +82,7 @@ def test_generate_cooling_plant(snapshot):
 
 
 @pytest.mark.mbl_v8
+@pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
