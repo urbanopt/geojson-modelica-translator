@@ -1,25 +1,23 @@
-within {{ project_name }}.CoolingPlant;
+within GMT_Lib.DHC.Components.CentralPlant.Cooling.CoolingPlant;
 model CoolingPlant
   "Isolated central cooling plant template model."
   extends Buildings.Experimental.DHC.CentralPlants.Cooling.Examples.Plant(
-  {% replace %}
-  redeclare {{ ["chiller_performance"] }} perChi(
+  redeclare {$ chiller_performance $} perChi(
     mEva_flow_nominal=mCHW_flow_nominal,
     mCon_flow_nominal=mCW_flow_nominal,
     QEva_flow_nominal=QChi_nominal),
-  redeclare {{ ["plant_type"]}} pla,
-  dTApp={{ ["delta_temp_approach"] }},
-  mCHW_flow_nominal={{ ["chw_mass_flow_nominal"] }},
-  dpCHW_nominal={{ ["chw_pressure_drop_nominal"] }},
-  mMin_flow={{ ["chiller_water_flow_minimum"] }},
-  mCW_flow_nominal={{ ["cw_mass_flow_nominal"] }},
-  dpCW_nominal={{ ["cw_pressure_drop_nominal"] }},
-  PFan_nominal={{ ["fan_power"] }},
-  TCHWSet={{["chw_temp_setpoint"] }}
-  dpCooTowVal_nominal={{ ["cooling_tower_pressure_drop_valve_nominal"] }},
-  dpCHWPumVal_nominal={{ ["chw_pressure_drop_valve_nominal"] }},
-  dpCWPumVal_nominal={{ ["cw_pressure_drop_valve_nominal"] }});
-  {% end_replace %}
+  redeclare {$ plant_type $} pla,
+  dTApp={$ delta_temp_approach $},
+  mCHW_flow_nominal={$ chw_mass_flow_nominal $},
+  dpCHW_nominal={$ chw_pressure_drop_nominal $},
+  mMin_flow={$ chiller_water_flow_minimum $},
+  mCW_flow_nominal={$ cw_mass_flow_nominal $},
+  dpCW_nominal={$ cw_pressure_drop_nominal $},
+  PFan_nominal={$ fan_power $},
+  TCHWSet={$chw_temp_setpoint $}
+  dpCooTowVal_nominal={$ cooling_tower_pressure_drop_valve_nominal $},
+  dpCHWPumVal_nominal={$ chw_pressure_drop_valve_nominal $},
+  dpCWPumVal_nominal={$ cw_pressure_drop_valve_nominal $});
   annotation (
     Icon(
       coordinateSystem(
