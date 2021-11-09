@@ -14,7 +14,7 @@ model CoolingPlant
   mCW_flow_nominal={$ cw_mass_flow_nominal $},
   dpCW_nominal={$ cw_pressure_drop_nominal $},
   PFan_nominal={$ fan_power $},
-  TCHWSet={$chw_temp_setpoint $}
+  TCHWSet={$chw_temp_setpoint $},
   dpCooTowVal_nominal={$ cooling_tower_pressure_drop_valve_nominal $},
   dpCHWPumVal_nominal={$ chw_pressure_drop_valve_nominal $},
   dpCWPumVal_nominal={$ cw_pressure_drop_valve_nominal $});

@@ -16,7 +16,7 @@
     mCW_flow_nominal=34.7,
     dpCW_nominal=46200,
     PFan_nominal=4999,
-    TCHWSet=281.15
+    TCHWSet=281.15,
     dpCooTowVal_nominal=5999,
     dpCHWPumVal_nominal=5999,
     dpCWPumVal_nominal=5999);
