@@ -36,10 +36,15 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 from pathlib import Path
+from shutil import copyfile
 
+import pytest
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-GMT_LIB_PATH = Path(__file__).parent.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'
+PARENT_DIR = Path(__file__).parent
+GMT_LIB_PATH = PARENT_DIR.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'
+COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'CentralPlant' / 'Cooling'
 
 env = Environment(
     loader=FileSystemLoader(GMT_LIB_PATH),
@@ -48,27 +53,50 @@ env = Environment(
     variable_end_string='$}'
 )
 
+COOLING_PLANT_PARAMS = {
+    'chiller_performance':  'Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes',
+    'plant_type': 'Buildings.Experimental.DHC.CentralPlants.Cooling.Plant',
+    'delta_temp_approach': 3,
+    'chw_mass_flow_nominal':  18.3,
+    'chw_pressure_drop_nominal': 44800,
+    'chiller_water_flow_minimum': 0.03,
+    'cw_mass_flow_nominal':  34.7,
+    'cw_pressure_drop_nominal': 46200,
+    'fan_power': 4999,
+    'chw_temp_setpoint': 281.15,
+    'cooling_tower_pressure_drop_valve_nominal': 5999,
+    'chw_pressure_drop_valve_nominal': 5999,
+    'cw_pressure_drop_valve_nominal': 5999
+}
+
 
 def test_generate_cooling_plant(snapshot):
     # -- Setup
-    params = {
-        'chiller_performance':  'Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes',
-        'plant_type': 'Buildings.Experimental.DHC.CentralPlants.Cooling.Plant',
-        'delta_temp_approach': 3,
-        'chw_mass_flow_nominal':  18.3,
-        'chw_pressure_drop_nominal': 44800,
-        'chiller_water_flow_minimum': 0.03,
-        'cw_mass_flow_nominal':  34.7,
-        'cw_pressure_drop_nominal': 46200,
-        'fan_power': 4999,
-        'chw_temp_setpoint': 281.15,
-        'cooling_tower_pressure_drop_valve_nominal': 5999,
-        'chw_pressure_drop_valve_nominal': 5999,
-        'cw_pressure_drop_valve_nominal': 5999
-    }
+    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
 
     # -- Act
-    actual = env.get_template('DHC/Components/CentralPlant/Cooling/CoolingPlant.mot').render(**params)
+    actual = env.get_template(str(template_path)).render(**COOLING_PLANT_PARAMS)
 
     # -- Assert
     assert actual == snapshot
+
+
+@pytest.mark.mbl_v8
+def test_simulate_cooling_plant():
+    # -- Setup
+    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
+    output = env.get_template(str(template_path)).render(**COOLING_PLANT_PARAMS)
+    package_output_dir = PARENT_DIR / 'output' / 'Cooling'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
+        f.write(output)
+
+    # copy over the script
+    copyfile(COOLING_PLANT_PATH / 'CoolingPlant.mos', package_output_dir / 'CoolingPlant.mos')
+
+    # -- Act
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'CoolingPlant.mos', package_output_dir, 'Cooling')
+
+    # -- Assert
+    assert success is True
