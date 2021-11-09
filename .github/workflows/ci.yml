@@ -91,7 +91,7 @@ jobs:
               MARKERS="${MARKERS} -m 'not simulation'"
             fi
             if [ '${{ matrix.mbl_branch }}' == 'v8.0.0' ]; then
-              MARKERS="${MARKERS} -m 'mbl_v8'"
+              MARKERS="${MARKERS} -m mbl_v8"
             else
               MARKERS="${MARKERS} -m 'not mbl_v8'"
             fi
