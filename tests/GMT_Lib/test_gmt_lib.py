@@ -75,7 +75,7 @@ def test_generate_cooling_plant(snapshot):
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
 
     # -- Act
-    actual = env.get_template(str(template_path)).render(**COOLING_PLANT_PARAMS)
+    actual = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
 
     # -- Assert
     assert actual == snapshot
@@ -86,7 +86,7 @@ def test_generate_cooling_plant(snapshot):
 def test_simulate_cooling_plant():
     # -- Setup
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
-    output = env.get_template(str(template_path)).render(**COOLING_PLANT_PARAMS)
+    output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
     package_output_dir = PARENT_DIR / 'output' / 'Cooling'
     package_output_dir.mkdir(parents=True, exist_ok=True)
     with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
