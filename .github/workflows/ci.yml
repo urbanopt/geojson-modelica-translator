@@ -84,22 +84,19 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: |
-          POSARGS=""
           if [ '${{ matrix.test_env }}' == 'python' ]; then
-            MARKERS=""
+            # !! Ugh, this is ugly but necessary (poetry + tox were not passing our args correctly to pytest)
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
               # for windows, skip python tests that require simulation (currently broken)
-              MARKERS="${MARKERS} -m 'not simulation'"
-            fi
-            if [ '${{ matrix.mbl_branch }}' == 'v8.0.0' ]; then
-              MARKERS="${MARKERS} -m mbl_v8"
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
+            elif [ '${{ matrix.mbl_branch }}' == 'v8.0.0' ]; then
+              poetry run tox -e ${{ matrix.test_env }} -- -m mbl_v8 ./tests
             else
-              MARKERS="${MARKERS} -m 'not mbl_v8'"
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v8' ./tests
             fi
-            POSARGS="-- ${MARKERS}"
+          else
+            poetry run tox -e ${{ matrix.test_env }}
           fi
-
-          poetry run tox -e ${{ matrix.test_env }} ${POSARGS}
       -
         name: Coveralls
         env:
