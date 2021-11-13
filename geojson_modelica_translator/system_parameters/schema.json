@@ -45,6 +45,13 @@
           },
           "additionalProperties": false
         },
+        "photovoltaic_panels": {
+          "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pv_parameters"
+          }
+        },
         "topology": {
           "title": "defaults",
           "description": "[unused] Parameters associated with district topologies.",
@@ -191,9 +198,15 @@
             }
           },
           "additionalProperties": false
+        },
+        "photovoltaic_panels": {
+          "description": "Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pv_parameters"
+          }
         }
-      },
-      "additionalProperties": false
+      }
     },
     "connector_def": {
       "description": "[unused] Parameters associated with the connectors in a district system.",
@@ -741,7 +754,7 @@
       },
       "required": [
         "heat_flow_nominal",
-        "primary_mass_hhw_flow_nominal",
+        "mass_hhw_flow_nominal",
         "boiler_water_flow_minimum",
         "pressure_drop_hhw_nominal",
         "pressure_drop_setpoint",
@@ -809,7 +822,7 @@
         }
       }
     },
-    "photovoltaic_panel": {
+    "pv_parameters": {
       "description": "Photovoltaic panel parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -833,7 +846,8 @@
           "description": "Nominal System Voltage (V)",
           "type": "number",
           "default": 480
-        }
+        },
+        "additionalProperties": false
       }
     },
     "wind_turbine": {

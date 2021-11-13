@@ -39,6 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import json
 from copy import deepcopy
 from pathlib import Path
+import os
 
 import pandas as pd
 from jsonpath_ng.ext import parse
@@ -213,8 +214,68 @@ class SystemParameters(object):
 
         return results
 
+    
     @classmethod
-    def csv_to_sys_param(cls, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True) -> None:
+    def process_pv(cls, pv_inputs):
+        """
+        Processes pv inputs
+        :param pv_inputs: object, pv_inputs
+        :return photovoltaic_panels section
+        """
+  
+        pv_systems = []
+        # check if dict or list
+        if type(pv_inputs) is dict:
+            pv_systems.append(pv_inputs)
+        else:
+            pv_systems = pv_inputs
+        
+        return pv_systems
+
+
+    @classmethod
+    def process_building_microgrid_inputs(cls, building, scenario_dir: Path):
+        """
+        Processes microgrid inputs for a single building
+        :param building: list, building
+        :param scenario_dir: Path, location/name of folder with uo_sdk results
+        :return building, updated building list object
+        """
+        feature_opt_file = os.path.join(scenario_dir, building['geojson_id'], 'feature_reports', 'feature_optimization.json')
+        if (os.path.exists(feature_opt_file)):
+            with open(feature_opt_file, "r") as f:
+                reopt_data = json.load(f)
+
+        # PV    
+        if reopt_data['distributed_generation']['solar_pv']:
+            building['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['distributed_generation']['solar_pv'])
+
+        return building
+
+    @classmethod
+    def process_microgrid_inputs(cls, param_template, scenario_dir: Path):
+        """
+        Processes microgrid inputs and adds them to param_template from csv_to_sys_param method
+        :param param_template: list, param_template
+        :param scenario_dir: Path, location/name of folder with uo_sdk results
+        :return param_template, updated param_template list object
+        """
+
+        # look for REopt "scenario_optimization.json file in scenario dir"
+        # TODO: do we want to include any PV timeseries?
+        scenario_opt_file = os.path.join(scenario_dir, 'scenario_optimization.json')
+        if (os.path.exists(scenario_opt_file)):
+            with open(scenario_opt_file, "r") as f:
+                reopt_data = json.load(f)
+
+            # PV    
+            if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
+                param_template['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['scenario_report']['distributed_generation']['solar_pv'])
+
+        return param_template
+
+    @classmethod
+    def csv_to_sys_param(cls, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True, microgrid=False) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -222,6 +283,7 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
+        :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
 
@@ -261,7 +323,8 @@ class SystemParameters(object):
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
             for feature in sdk_input['features']:
-                if feature['properties']['type'] != 'Site Origin':
+                # KAF change: this should only gather features of type 'Building'
+                if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
 
         # Make sys_param template entries for each feature_id
@@ -296,7 +359,15 @@ class SystemParameters(object):
 
         for building in building_list:
             building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
+            if microgrid:
+                building = SystemParameters.process_building_microgrid_inputs(building, scenario_dir)
+
         param_template['buildings']['custom'] = building_list
+        
+        if microgrid:
+            param_template = SystemParameters.process_microgrid_inputs(param_template, scenario_dir)
+
+        print("PARAM TEMPLATE: {}".format(param_template))
 
         with open(sys_param_filename, 'w') as outfile:
             json.dump(param_template, outfile, indent=2)

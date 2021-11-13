@@ -81,7 +81,13 @@ def cli():
     help="Delete and replace any existing file of the same name & location",
     default=False
 )
-def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, overwrite: bool):
+@click.option(
+    '-m',
+    '--microgrid',
+    is_flag=True,
+    help="If specified, microgrid inputs will be added to system parameters file"
+)
+def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, overwrite: bool, microgrid: bool):
     """
     Create system parameters file using uo_sdk output
 
@@ -112,7 +118,8 @@ def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Pa
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
         feature_file=Path(feature_file),
-        overwrite=overwrite
+        overwrite=overwrite,
+        microgrid=microgrid
     )
 
     if Path(sys_param_filename).exists():
