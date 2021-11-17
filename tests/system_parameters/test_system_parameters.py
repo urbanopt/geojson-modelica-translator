@@ -35,7 +35,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
+import json
 import unittest
 from pathlib import Path
 from shutil import rmtree
@@ -267,6 +267,23 @@ class SystemParametersTest(unittest.TestCase):
             feature_file=self.feature_file,
             sys_param_filename=output_sys_param_file)
         self.assertTrue(output_sys_param_file.exists())
+
+    def test_csv_to_sys_param_microgrid(self):
+        output_sys_param_file = self.output_dir / 'test_sys_param_microgrid.json'   
+        SystemParameters.csv_to_sys_param(
+            model_type='time_series',
+            scenario_dir=self.scenario_dir,
+            feature_file=self.feature_file,
+            sys_param_filename=output_sys_param_file,
+            microgrid=True)
+        self.assertTrue(output_sys_param_file.exists())
+        
+        with open(output_sys_param_file, "r") as f:
+            sys_param_data = json.load(f)
+        # assert that the file has a global 'photovoltaic_panels' section (exists and nonempty)
+        self.assertTrue(sys_param_data['photovoltaic_panels'])
+        # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
+        self.assertTrue(sys_param_data['buildings']['custom'][0]['photovoltaic_panels'])
 
     def test_validate_sys_param_template(self):
         output_sys_param_file = self.output_dir / 'bogus_sys_param.json'

@@ -367,7 +367,5 @@ class SystemParameters(object):
         if microgrid:
             param_template = SystemParameters.process_microgrid_inputs(param_template, scenario_dir)
 
-        print("PARAM TEMPLATE: {}".format(param_template))
-
         with open(sys_param_filename, 'w') as outfile:
             json.dump(param_template, outfile, indent=2)
