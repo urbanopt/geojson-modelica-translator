@@ -274,7 +274,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertTrue(output_sys_param_file.exists())
 
     def test_csv_to_sys_param_microgrid(self):
-        output_sys_param_file = self.output_dir / 'test_sys_param_microgrid.json'   
+        output_sys_param_file = self.output_dir / 'test_sys_param_microgrid.json'
         sp = SystemParameters()
         sp.csv_to_sys_param(
             model_type='time_series',
@@ -283,7 +283,7 @@ class SystemParametersTest(unittest.TestCase):
             sys_param_filename=output_sys_param_file,
             microgrid=True)
         self.assertTrue(output_sys_param_file.exists())
-        
+
         with open(output_sys_param_file, "r") as f:
             sys_param_data = json.load(f)
         # assert that the file has a global 'photovoltaic_panels' section (exists and nonempty)

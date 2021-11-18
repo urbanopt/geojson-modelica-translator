@@ -37,9 +37,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import json
+import os
 from copy import deepcopy
 from pathlib import Path
-import os
 
 import pandas as pd
 from jsonpath_ng.ext import parse
@@ -217,14 +217,13 @@ class SystemParameters(object):
 
         return results
 
-
     def process_pv(self, pv_inputs, latitude):
         """
         Processes pv inputs
         :param pv_inputs: object, pv_inputs
         :return photovoltaic_panels section
         """
-  
+
         pv_systems = []
         # check if dict or list
         if type(pv_inputs) is dict:
@@ -237,9 +236,8 @@ class SystemParameters(object):
         for pv in pv_systems:
             pv['nominal_system_voltage'] = 480
             pv['latitude'] = latitude
-        
-        return pv_systems
 
+        return pv_systems
 
     def save(self):
         """
@@ -247,7 +245,6 @@ class SystemParameters(object):
         """
         with open(self.sys_param_filename, 'w') as outfile:
             json.dump(self.param_template, outfile, indent=2)
-
 
     def process_building_microgrid_inputs(self, building, scenario_dir: Path):
         """
@@ -264,12 +261,11 @@ class SystemParameters(object):
         # extract Latitude
         latitude = reopt_data['location']['latitude_deg']
 
-        # PV    
+        # PV
         if reopt_data['distributed_generation']['solar_pv']:
             building['photovoltaic_panels'] = self.process_pv(reopt_data['distributed_generation']['solar_pv'], latitude)
 
         return building
-
 
     def process_microgrid_inputs(self, scenario_dir: Path):
         """
@@ -287,12 +283,22 @@ class SystemParameters(object):
             # extract Latitude
             latitude = reopt_data['scenario_report']['location']['latitude_deg']
 
-            # PV    
+            # PV
             if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-                self.param_template['photovoltaic_panels'] = self.process_pv(reopt_data['scenario_report']['distributed_generation']['solar_pv'], latitude)
+                self.param_template['photovoltaic_panels'] = (
+                    self.process_pv(
+                        reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                        latitude
+                    )
+                )
 
-
-    def csv_to_sys_param(self, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True, microgrid=False) -> None:
+    def csv_to_sys_param(self,
+                         model_type: str,
+                         scenario_dir: Path,
+                         feature_file: Path,
+                         sys_param_filename: Path,
+                         overwrite=True,
+                         microgrid=False) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -375,7 +381,6 @@ class SystemParameters(object):
         if len(building_list) == 0:
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
-
         for building in building_list:
             building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
             if microgrid:
@@ -387,4 +392,3 @@ class SystemParameters(object):
 
         # save
         self.save()
-

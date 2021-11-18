@@ -45,13 +45,6 @@
           },
           "additionalProperties": false
         },
-        "photovoltaic_panels": {
-          "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/pv_parameters"
-          }
-        },
         "topology": {
           "title": "defaults",
           "description": "[unused] Parameters associated with district topologies.",
@@ -96,6 +89,92 @@
             ]
           },
           "additionalProperties": false
+        },
+        "electrical_grid": {
+          "description": "Parameters associated with the electrical grid",
+          "type": "object",
+          "properties": {
+            "default": {
+              "$ref": "#/definitions/electrical_grid_parameters"
+            }
+          }
+        },
+        "photovoltaic_panels": {
+          "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pv_parameters"
+          }
+        },
+        "wind_turbines": {
+          "description": "Wind turbines associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/wind_turbine_parameters"
+          }
+        },
+        "combined_heat_and_power_systems": {
+          "description": "Combined heat and power (CHP) systems associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/combined_heat_and_power_parameters"
+          }
+        },
+        "capacitor_banks": {
+          "description": "Capacitor banks associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/capacitor_bank_parameters"
+          }
+        },
+        "substations": {
+          "description": "Substations associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/substation_parameters"
+          }
+        },
+        "transformers": {
+          "description": "Transformers associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/transformer_parameters"
+          }
+        },
+        "power_converters": {
+          "description": "Power converters associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/power_converter_parameters"
+          }
+        },
+        "distribution_lines": {
+          "description": "Distribution lines associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/distribution_line_parameters"
+          }
+        },
+        "ac_inductive_loads": {
+          "description": "AC Inductive loads associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ac_inductive_load_parameters"
+          }
+        },
+        "dc_load_loads": {
+          "description": "DC loads associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dc_load_parameters"
+          }
+        },
+        "battery_banks": {
+          "description": "Battery banks associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/battery_bank_parameters"
+          }
         }
       },
       "additionalProperties": false
@@ -204,6 +283,27 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/pv_parameters"
+          }
+        },
+        "diesel_generators": {
+          "description": "Diesel generators associated with the building",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/diesel_generator_parameters"
+          }
+        },
+        "transformers": {
+          "description": "Transformers associated with the building",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/transformer_parameters"
+          }
+        },
+        "battery_banks": {
+          "description": "Battery banks associated with the building",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/battery_bank_parameters"
           }
         }
       }
@@ -789,7 +889,7 @@
       },
       "required": []
     },
-    "diesel_generator": {
+    "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -803,7 +903,7 @@
         }
       }
     },
-    "electrical_grid": {
+    "electrical_grid_parameters": {
       "description": "Electrical grid parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -850,7 +950,7 @@
         "additionalProperties": false
       }
     },
-    "wind_turbine": {
+    "wind_turbine_parameters": {
       "description": "Wind turbine parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -873,7 +973,7 @@
         }
       }
     },
-    "capacitor_bank": {
+    "capacitor_bank_parameters": {
       "description": "Capacitor bank parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -883,7 +983,7 @@
         }
       }
     },
-    "substation": {
+    "substation_parameters": {
       "description": "Substation parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -897,7 +997,7 @@
         }
       }
     },
-    "transformer": {
+    "transformer_parameters": {
       "description": "Transformer parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -911,7 +1011,7 @@
         }
       }
     },
-    "power_converter": {
+    "power_converter_parameters": {
       "description": "Power converter parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -933,7 +1033,7 @@
         }
       }
     },
-    "distribution_lines": {
+    "distribution_line_parameters": {
       "description": "Distribution lines parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -956,7 +1056,7 @@
         }
       }
     },
-    "ac_inductive_load": {
+    "ac_inductive_load_parameters": {
       "description": "AC inductive load parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -974,7 +1074,7 @@
         }
       }
     },
-    "dc_load": {
+    "dc_load_parameters": {
       "description": "DC load parameters used by the microgrid model.",
       "type": "object",
       "properties": {
@@ -992,7 +1092,7 @@
         }
       }
     },
-    "battery_bank": {
+    "battery_bank_parameters": {
       "description": "DC load parameters used by the microgrid model.",
       "type": "object",
       "properties": {

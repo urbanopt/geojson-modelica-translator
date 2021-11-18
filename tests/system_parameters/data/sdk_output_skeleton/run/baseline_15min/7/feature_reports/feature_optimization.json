@@ -144,9 +144,7 @@
     "orientation_deg": 0.0,
     "aspect_ratio": 2.1297977548619915
   },
-  "construction_costs": [
-
-  ],
+  "construction_costs": [],
   "reporting_periods": [
     {
       "start_date": {
@@ -366,12 +364,8 @@
         "average_yearly_energy_produced_kwh": 0.0
       }
     ],
-    "wind": [
-
-    ],
-    "generator": [
-
-    ],
+    "wind": [],
+    "generator": [],
     "storage": [
       {
         "size_kw": 3.5530717742610185,
@@ -379,8 +373,6 @@
       }
     ]
   },
-  "power_distribution": {
-  },
-  "thermal_storage": {
-  }
+  "power_distribution": {},
+  "thermal_storage": {}
 }
