@@ -216,7 +216,7 @@ class SystemParameters(object):
 
     
     @classmethod
-    def process_pv(cls, pv_inputs):
+    def process_pv(cls, pv_inputs, latitude):
         """
         Processes pv inputs
         :param pv_inputs: object, pv_inputs
@@ -229,6 +229,12 @@ class SystemParameters(object):
             pv_systems.append(pv_inputs)
         else:
             pv_systems = pv_inputs
+
+        # hardcode nominal_system_voltage 480V
+        # add latitude
+        for pv in pv_systems:
+            pv['nominal_system_voltage'] = 480
+            pv['latitude'] = latitude
         
         return pv_systems
 
@@ -246,9 +252,12 @@ class SystemParameters(object):
             with open(feature_opt_file, "r") as f:
                 reopt_data = json.load(f)
 
+        # extract Latitude
+        latitude = reopt_data['location']['latitude_deg']
+
         # PV    
         if reopt_data['distributed_generation']['solar_pv']:
-            building['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['distributed_generation']['solar_pv'])
+            building['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['distributed_generation']['solar_pv'], latitude)
 
         return building
 
@@ -268,9 +277,12 @@ class SystemParameters(object):
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
 
+            # extract Latitude
+            latitude = reopt_data['scenario_report']['location']['latitude_deg']
+
             # PV    
             if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-                param_template['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['scenario_report']['distributed_generation']['solar_pv'])
+                param_template['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['scenario_report']['distributed_generation']['solar_pv'], latitude)
 
         return param_template
 
