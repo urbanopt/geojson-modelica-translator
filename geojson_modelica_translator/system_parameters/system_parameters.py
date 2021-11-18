@@ -91,6 +91,9 @@ class SystemParameters(object):
             self.resolve_paths()
             # self.resolve_defaults()
 
+        self.param_template = {}
+        self.sys_param_filename = None
+
     @classmethod
     def loadd(cls, d, validate_on_load=True):
         """
@@ -214,9 +217,8 @@ class SystemParameters(object):
 
         return results
 
-    
-    @classmethod
-    def process_pv(cls, pv_inputs, latitude):
+
+    def process_pv(self, pv_inputs, latitude):
         """
         Processes pv inputs
         :param pv_inputs: object, pv_inputs
@@ -239,8 +241,15 @@ class SystemParameters(object):
         return pv_systems
 
 
-    @classmethod
-    def process_building_microgrid_inputs(cls, building, scenario_dir: Path):
+    def save(self):
+        """
+        Write the system parameters file with param_template and save
+        """
+        with open(self.sys_param_filename, 'w') as outfile:
+            json.dump(self.param_template, outfile, indent=2)
+
+
+    def process_building_microgrid_inputs(self, building, scenario_dir: Path):
         """
         Processes microgrid inputs for a single building
         :param building: list, building
@@ -257,17 +266,15 @@ class SystemParameters(object):
 
         # PV    
         if reopt_data['distributed_generation']['solar_pv']:
-            building['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['distributed_generation']['solar_pv'], latitude)
+            building['photovoltaic_panels'] = self.process_pv(reopt_data['distributed_generation']['solar_pv'], latitude)
 
         return building
 
-    @classmethod
-    def process_microgrid_inputs(cls, param_template, scenario_dir: Path):
+
+    def process_microgrid_inputs(self, scenario_dir: Path):
         """
         Processes microgrid inputs and adds them to param_template from csv_to_sys_param method
-        :param param_template: list, param_template
         :param scenario_dir: Path, location/name of folder with uo_sdk results
-        :return param_template, updated param_template list object
         """
 
         # look for REopt "scenario_optimization.json file in scenario dir"
@@ -282,12 +289,10 @@ class SystemParameters(object):
 
             # PV    
             if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-                param_template['photovoltaic_panels'] = SystemParameters.process_pv(reopt_data['scenario_report']['distributed_generation']['solar_pv'], latitude)
+                self.param_template['photovoltaic_panels'] = self.process_pv(reopt_data['scenario_report']['distributed_generation']['solar_pv'], latitude)
 
-        return param_template
 
-    @classmethod
-    def csv_to_sys_param(cls, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True, microgrid=False) -> None:
+    def csv_to_sys_param(self, model_type: str, scenario_dir: Path, feature_file: Path, sys_param_filename: Path, overwrite=True, microgrid=False) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -298,6 +303,7 @@ class SystemParameters(object):
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
+        self.sys_param_filename = sys_param_filename
 
         if model_type == 'time_series':
             param_template_path = Path(__file__).parent / 'time_series_template.json'
@@ -312,11 +318,11 @@ class SystemParameters(object):
         if not Path(feature_file).exists():
             raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
 
-        if Path(sys_param_filename).exists() and not overwrite:
-            raise Exception(f"Output file already exists and overwrite is False: {sys_param_filename}")
+        if Path(self.sys_param_filename).exists() and not overwrite:
+            raise Exception(f"Output file already exists and overwrite is False: {self.sys_param_filename}")
 
         with open(param_template_path, "r") as f:
-            param_template = json.load(f)
+            self.param_template = json.load(f)
 
         measure_list = []
 
@@ -342,7 +348,7 @@ class SystemParameters(object):
         # Make sys_param template entries for each feature_id
         building_list = []
         for building in building_ids:
-            feature_info = deepcopy(param_template['buildings']['custom'][0])
+            feature_info = deepcopy(self.param_template['buildings']['custom'][0])
             feature_info['geojson_id'] = str(building)
             building_list.append(feature_info)
 
@@ -369,15 +375,16 @@ class SystemParameters(object):
         if len(building_list) == 0:
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
+
         for building in building_list:
             building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
             if microgrid:
-                building = SystemParameters.process_building_microgrid_inputs(building, scenario_dir)
+                building = self.process_building_microgrid_inputs(building, scenario_dir)
 
-        param_template['buildings']['custom'] = building_list
-        
+        self.param_template['buildings']['custom'] = building_list
         if microgrid:
-            param_template = SystemParameters.process_microgrid_inputs(param_template, scenario_dir)
+            self.process_microgrid_inputs(scenario_dir)
 
-        with open(sys_param_filename, 'w') as outfile:
-            json.dump(param_template, outfile, indent=2)
+        # save
+        self.save()
+

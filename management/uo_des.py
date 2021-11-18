@@ -113,7 +113,8 @@ def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Pa
     scenario_name = Path(scenario_file).stem
     scenario_dir = Path(scenario_file).parent / 'run' / scenario_name
 
-    SystemParameters.csv_to_sys_param(
+    sp = SystemParameters()
+    sp.csv_to_sys_param(
         model_type=model_type,
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
