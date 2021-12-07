@@ -208,7 +208,7 @@ class SystemParameters(object):
         Validate an instance against a loaded schema
 
         :param instance: dict, json instance to validate
-        :return:
+        :return: validation results
         """
         results = []
         v = LatestValidator(self.schema)
@@ -217,34 +217,71 @@ class SystemParameters(object):
 
         return results
 
-    def process_pv(self, pv_inputs, latitude):
+    def make_list(self, inputs):
+        """ Ensure that format of inputs is a list
+        :param inputs: object, inputs (list or dict)
+        :return: list of inputs
+        """
+        list_inputs = []
+        if type(inputs) is dict and len(inputs) != 0:
+            list_inputs.append(inputs)
+        else:
+            list_inputs = inputs
+
+        return list_inputs
+
+    def process_wind(self, inputs):
+        """
+        Processes global wind inputs and insert into template
+        :param inputs: object, wind inputs
+        """
+        items = self.make_list(inputs)
+
+        for item in items:
+            # add default
+            item['nominal_system_voltage'] = 480
+            # TODO: add scaling factor
+            # TODO: add height over ground
+            # TODO: add power curve
+
+            self.param_template['wind_turbines'] = items
+
+    def process_pv(self, inputs, latitude):
         """
         Processes pv inputs
-        :param pv_inputs: object, pv_inputs
-        :return photovoltaic_panels section
+        :param inputs: object, pv inputs
+        :return photovoltaic_panels section to be inserted per-building or globally
         """
-
-        pv_systems = []
-        # check if dict or list
-        if type(pv_inputs) is dict:
-            pv_systems.append(pv_inputs)
-        else:
-            pv_systems = pv_inputs
+        items = self.make_list(inputs)
 
         # hardcode nominal_system_voltage 480V
         # add latitude
-        for pv in pv_systems:
-            pv['nominal_system_voltage'] = 480
-            pv['latitude'] = latitude
+        for item in items:
+            item['nominal_system_voltage'] = 480
+            item['latitude'] = latitude
 
-        return pv_systems
+        return items
 
-    def save(self):
+    def process_chp(self, inputs):
         """
-        Write the system parameters file with param_template and save
+        Processes global chp inputs and insert into template
+        :param inputs: object, raw inputs
         """
-        with open(self.sys_param_filename, 'w') as outfile:
-            json.dump(self.param_template, outfile, indent=2)
+        # this uses the raw inputs
+        # TODO: for now just returning size_kw and fuel_type
+        items = self.make_list(inputs['outputs']['Scenario']['Site']['CHP'])
+        chps = []
+        for item in items:
+            # fuel type. options are: natural_gas (default), landfill_bio_gas, propane, diesel_oil
+            chp = {}
+            chp['fuel_type'] = 'natural_gas'
+            if inputs['inputs']['Scenario']['Site']['FuelTariff']["chp_fuel_type"]:
+                chp['fuel_type'] = inputs['inputs']['Scenario']['Site']['FuelTariff']["chp_fuel_type"]
+
+            chp['size_kw'] = item['size_kw']
+            chps.append(chp)
+
+        self.param_template['combined_heat_and_power_systems'] = chps
 
     def process_building_microgrid_inputs(self, building, scenario_dir: Path):
         """
@@ -272,25 +309,39 @@ class SystemParameters(object):
         Processes microgrid inputs and adds them to param_template from csv_to_sys_param method
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         """
-
-        # look for REopt "scenario_optimization.json file in scenario dir"
-        # TODO: do we want to include any PV timeseries?
+        reopt_data = {}
+        raw_data = {}
+        # look for REopt scenario_optimization.json file in scenario dir (uo report)
         scenario_opt_file = os.path.join(scenario_dir, 'scenario_optimization.json')
         if (os.path.exists(scenario_opt_file)):
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
+        # also look for raw REopt report with inputs and outputs for non-uo results
+        raw_scenario_file = os.path.join(scenario_dir, 'reopt', 'scenario_report_reopt_scenario_reopt_run.json')
+        if (os.path.exists(raw_scenario_file)):
+            with open(raw_scenario_file, "r") as f:
+                raw_data = json.load(f)
 
-            # extract Latitude
-            latitude = reopt_data['scenario_report']['location']['latitude_deg']
+        # extract Latitude
+        latitude = reopt_data['scenario_report']['location']['latitude_deg']
 
-            # PV
-            if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-                self.param_template['photovoltaic_panels'] = (
-                    self.process_pv(
-                        reopt_data['scenario_report']['distributed_generation']['solar_pv'],
-                        latitude
-                    )
+        # PV
+        if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
+            self.param_template['photovoltaic_panels'] = (
+                self.process_pv(
+                    reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                    latitude
                 )
+            )
+
+        # Wind
+        if reopt_data['scenario_report']['distributed_generation']['wind']:
+            self.process_wind(reopt_data['scenario_report']['distributed_generation']['wind'])
+
+        # CHP (raw data)
+        if raw_data['outputs']['Scenario']['Site']['CHP']['size_kw'] != 0.0:
+            # there is a CHP, process
+            self.process_chp(raw_data)
 
     def csv_to_sys_param(self,
                          model_type: str,
@@ -392,3 +443,10 @@ class SystemParameters(object):
 
         # save
         self.save()
+
+    def save(self):
+        """
+        Write the system parameters file with param_template and save
+        """
+        with open(self.sys_param_filename, 'w') as outfile:
+            json.dump(self.param_template, outfile, indent=2)
