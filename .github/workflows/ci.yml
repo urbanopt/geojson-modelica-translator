@@ -25,7 +25,7 @@ jobs:
           - os: ubuntu-latest
             python-version: 3.7
             test_env: python
-            mbl_branch: v8.0.0
+            mbl_branch: v8.1.0
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -89,7 +89,7 @@ jobs:
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
               # for windows, skip python tests that require simulation (currently broken)
               poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
-            elif [ '${{ matrix.mbl_branch }}' == 'v8.0.0' ]; then
+            elif [ '${{ matrix.mbl_branch }}' == 'v8.1.0' ]; then
               poetry run tox -e ${{ matrix.test_env }} -- -m mbl_v8 ./tests
             else
               poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v8' ./tests
