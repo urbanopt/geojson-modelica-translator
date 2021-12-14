@@ -9,6 +9,28 @@
 Developer Resources
 ===================
 
+Tests
+-----
+
+Tests are run with pytest, e.g.
+
+.. code-block:: bash
+
+    poetry run pytest
+
+
+Snapshot Testing
+****************
+
+Some tests use `syrupy <https://github.com/tophat/syrupy>`_ to compare generated modelica models to saved "snapshots" of the models (saved as .ambr files).
+
+Snapshots should only be updated if we have changed how a model is generated, and we *know* the new version of the model is the correct version. To update all snapshots, you can run the following and commit the new snapshot files.
+
+.. code-block:: bash
+
+    poetry run pytest --snapshot-update
+
+
 Design Overview
 ---------------
 
