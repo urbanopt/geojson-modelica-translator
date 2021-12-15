@@ -67,6 +67,10 @@ Once the MBL is installed, then the CLI can be used to create the model with the
 The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`package.mo` file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.
 
+
+NOTE: The developers of the GMT are currently working on updating the MBL version used. If you are also a developer and need to run the unit tests in this repo, you can instruct pytest to ignore the v8 tests with :code:`poetry run pytest -m 'not mbl_v8'`, which assumes you have the MBL version documented above. To run the MBL v8 tests, you need to checkout :code:`v8.1.0` and run :code:`poetry run pytest -m mbl_v8`.
+
+
 Docker Installation
 -------------------
 
