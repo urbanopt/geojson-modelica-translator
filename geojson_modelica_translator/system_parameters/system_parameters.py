@@ -62,7 +62,8 @@ class SystemParameters(object):
         {"json_path": "$.buildings.*[?load_model=spawn].load_model_parameters.spawn.mos_weather_filename"},
         {"json_path": "$.buildings.*[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
         {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"},
-        {"json_path": "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"}
+        {"json_path": "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"},
+        {"json_path": "$.combined_heat_and_power_systems.*.performance_data_path"}
     ]
 
     def __init__(self, filename=None):
@@ -278,7 +279,14 @@ class SystemParameters(object):
             if inputs['inputs']['Scenario']['Site']['FuelTariff']["chp_fuel_type"]:
                 chp['fuel_type'] = inputs['inputs']['Scenario']['Site']['FuelTariff']["chp_fuel_type"]
 
-            chp['size_kw'] = item['size_kw']
+            # single_electricity_generation_capacity
+            chp['single_electricity_generation_capacity'] = item['size_kw']
+
+            # performance data filename
+            # TODO: not sure how to pass this in.
+            # perhaps a default that can be retrieved from the template?
+            chp['performance_data_path'] = ''
+
             chps.append(chp)
 
         self.param_template['combined_heat_and_power_systems'] = chps
@@ -316,7 +324,7 @@ class SystemParameters(object):
         if (os.path.exists(scenario_opt_file)):
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
-        # also look for raw REopt report with inputs and outputs for non-uo results
+        # also look for raw REopt report with inputs and xzx for non-uo results
         raw_scenario_file = os.path.join(scenario_dir, 'reopt', 'scenario_report_reopt_scenario_reopt_run.json')
         if (os.path.exists(raw_scenario_file)):
             with open(raw_scenario_file, "r") as f:
@@ -363,7 +371,10 @@ class SystemParameters(object):
         self.sys_param_filename = sys_param_filename
 
         if model_type == 'time_series':
-            param_template_path = Path(__file__).parent / 'time_series_template.json'
+            if microgrid:
+                param_template_path = Path(__file__).parent / 'time_series_microgrid_template.json'
+            else:
+                param_template_path = Path(__file__).parent / 'time_series_template.json'
         elif model_type == 'spawn':
             pass
         else:

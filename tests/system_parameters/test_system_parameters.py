@@ -271,6 +271,12 @@ class SystemParametersTest(unittest.TestCase):
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
             sys_param_filename=output_sys_param_file)
+
+        # debug
+        # with open(output_sys_param_file, "r") as f:
+        #     sys_param_data = json.load(f)
+        #     print(sys_param_data)
+
         self.assertTrue(output_sys_param_file.exists())
 
     def test_csv_to_sys_param_microgrid(self):

@@ -883,7 +883,7 @@
           "type": "number"
         },
         "performance_data_path": {
-          "description": "Absolute path or relative path from location where file instance is saved to the performance data file",
+          "description": "Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP",
           "type": "string"
         }
       },
@@ -1024,7 +1024,7 @@
           "type": "number"
         },
         "converter_efficiency": {
-          "description": "Converter Efficiency",
+          "description": "Converter Efficiency (%)",
           "type": "number"
         },
         "nominal_capacity": {
