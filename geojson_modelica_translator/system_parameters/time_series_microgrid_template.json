@@ -41,7 +41,10 @@
             "heating_controller_y_max": 1,
             "heating_controller_y_min": 0
           }
-        }
+        },
+        "photovoltaic_panels": [],
+        "diesel_generators": [],
+        "battery_banks": []
       }
     ]
   },
@@ -79,5 +82,15 @@
         "chp_installed": false
       }
     }
-  }
+  },
+  "electrical_grid": {},
+  "photovoltaic_panels": [],
+  "wind_turbines": [],
+  "combined_heat_and_power_systems": [],
+  "capacitor_banks": [],
+  "substations": [],
+  "transformers": [],
+  "power_converters": [],
+  "distribution_lines": [],
+  "battery_banks": []
 }

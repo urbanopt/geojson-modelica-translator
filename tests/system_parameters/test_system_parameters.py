@@ -50,12 +50,18 @@ class SystemParametersTest(unittest.TestCase):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
         self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
+        self.microgrid_scenario_dir = self.data_dir / 'sdk_microgrid_output_skeleton' / 'run' / 'reopt_scenario'
+        self.microgrid_feature_file = self.data_dir / 'sdk_microgrid_output_skeleton' / 'example_project.json'
+        self.microgrid_output_dir = Path(__file__).parent / 'microgrid_output'
         self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
         self.sys_param_template = Path(__file__).parent.parent.parent / 'geojson_modelica_translator' / \
             'system_parameters' / 'time_series_template.json'
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
+        if self.microgrid_output_dir.exists():
+            rmtree(self.microgrid_output_dir)
+        self.microgrid_output_dir.mkdir(parents=True)
 
     def test_expanded_paths(self):
         filename = self.data_dir / 'system_params_1.json'
@@ -280,20 +286,23 @@ class SystemParametersTest(unittest.TestCase):
         self.assertTrue(output_sys_param_file.exists())
 
     def test_csv_to_sys_param_microgrid(self):
-        output_sys_param_file = self.output_dir / 'test_sys_param_microgrid.json'
+        output_sys_param_file = self.microgrid_output_dir / 'test_sys_param_microgrid.json'
         sp = SystemParameters()
         sp.csv_to_sys_param(
             model_type='time_series',
-            scenario_dir=self.scenario_dir,
-            feature_file=self.feature_file,
+            scenario_dir=self.microgrid_scenario_dir,
+            feature_file=self.microgrid_feature_file,
             sys_param_filename=output_sys_param_file,
             microgrid=True)
         self.assertTrue(output_sys_param_file.exists())
 
         with open(output_sys_param_file, "r") as f:
             sys_param_data = json.load(f)
-        # assert that the file has a global 'photovoltaic_panels' section (exists and nonempty)
-        self.assertTrue(sys_param_data['photovoltaic_panels'])
+
+        self.assertTrue(len(sys_param_data['photovoltaic_panels']) > 0)
+        self.assertTrue(len(sys_param_data['wind_turbines']) > 0)
+        self.assertTrue(sys_param_data['electrical_grid']['frequency'])
+
         # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
         self.assertTrue(sys_param_data['buildings']['custom'][0]['photovoltaic_panels'])
 

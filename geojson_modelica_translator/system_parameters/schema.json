@@ -292,18 +292,28 @@
             "$ref": "#/definitions/diesel_generator_parameters"
           }
         },
-        "transformers": {
-          "description": "Transformers associated with the building",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/transformer_parameters"
-          }
-        },
         "battery_banks": {
           "description": "Battery banks associated with the building",
           "type": "array",
           "items": {
             "$ref": "#/definitions/battery_bank_parameters"
+          }
+        },
+        "load": {
+          "description": "microgrid-related load fields",
+          "properties": {
+            "nominal_voltage": {
+              "description": "Nominal load voltage (V)",
+              "type": "number"
+            },
+            "max_power": {
+              "description": "Maximim load power (kW)",
+              "type": "number"
+            },
+            "max_reactive_power": {
+              "description": "Maximum reactive power (kvar)",
+              "type": "number"
+            }
           }
         }
       }
@@ -942,7 +952,7 @@
           "description": "Latitude",
           "type": "number"
         },
-        "nominal_system_voltage": {
+        "nominal_voltage": {
           "description": "Nominal System Voltage (V)",
           "type": "number",
           "default": 480
@@ -963,10 +973,18 @@
           "type": "number"
         },
         "power_curve": {
-          "description": "Power curve (kW)",
+          "description": "Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).",
+          "type": "array"
+        },
+        "rated_power": {
+          "description": "Wind turbine size (kW)",
           "type": "number"
         },
-        "nominal_system_voltage": {
+        "annual_energy_produced": {
+          "description": "Average yearly energy produced (kWh)",
+          "type": "number"
+        },
+        "nominal_voltage": {
           "description": "Nominal System Voltage (V)",
           "type": "number",
           "default": 480
@@ -1001,6 +1019,10 @@
       "description": "Transformer parameters used by the microgrid model.",
       "type": "object",
       "properties": {
+        "id": {
+          "description": "The transformer ID as defined in the scenario report.",
+          "type": "string"
+        },
         "nominal_capacity": {
           "description": "Nominal Capacity (kVA)",
           "type": "number"
@@ -1041,8 +1063,8 @@
           "description": "Length of distribution lines (m)",
           "type": "number"
         },
-        "maximum_power": {
-          "description": "Maximum power of the lines (W)",
+        "maximum_ampacity": {
+          "description": "Maximum power of the lines. this is defined in Amps",
           "type": "number"
         },
         "nominal_voltage": {
@@ -1051,8 +1073,8 @@
           "default": 480
         },
         "commercial_line_type": {
-          "description": "Commercial line type",
-          "type": "string"
+          "description": "Commercial line type given by the type of each wire making up the line",
+          "type": "array"
         }
       }
     },

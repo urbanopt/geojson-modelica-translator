@@ -233,19 +233,91 @@ class SystemParameters(object):
 
     def process_wind(self, inputs):
         """
-        Processes global wind inputs and insert into template
+        Processes wind inputs and insert into template
         :param inputs: object, wind inputs
         """
-        items = self.make_list(inputs)
+        wind_turbines = []
+        for item in inputs['scenario_report']['distributed_generation']['wind']:
+            # nominal voltage - Default
+            wt = {}
+            wt['nominal_voltage'] = 480
 
-        for item in items:
-            # add default
-            item['nominal_system_voltage'] = 480
-            # TODO: add scaling factor
-            # TODO: add height over ground
-            # TODO: add power curve
+            # scaling factor: parameter used by the wind turbine model
+            # from Modelica Buildings Library, to scale the power output
+            # without changing other parameters. Multiplies "Power curve"
+            # value to get a scaled up power output.
+            # add default = 1
+            wt['scaling_factor'] = 1
 
-            self.param_template['wind_turbines'] = items
+            # calculate height_over_ground and power curve from REopt
+            #  "size_class" (defaults to commercial) res = 2.5kW, com = 100kW, mid = 250kW, large = 2000kW
+            heights = {'residential': 20, 'commercial': 40, 'midsize': 50, 'large': 80}
+            size_class = None
+            if item['size_class']:
+                size_class = item['size_class']
+
+            if size_class is None:
+                size_class = 'commercial'
+
+            # height over ground. default 10m
+            wt['height_over_ground'] = heights[size_class]
+
+            # add power curve
+            curves = self.get_wind_power_curves()
+            wt['power_curve'] = curves[size_class]
+
+            # capture size_kw just in case
+            wt['rated_power'] = item['size_kw']
+            # and yearly energy produced
+            wt['annual_energy_produced'] = item['average_yearly_energy_produced_kwh']
+
+            # append to results array
+            wind_turbines.append(wt)
+
+        self.param_template['wind_turbines'] = wind_turbines
+
+    def get_wind_power_curves(self):
+        # from: https://reopt.nrel.gov/tool/REopt%20Lite%20Web%20Tool%20User%20Manual.pdf#page=61
+        # curves given in Watts (W)
+        power_curves = {}
+        power_curves['residential'] = [[2, 0],
+                                       [3, 70.542773],
+                                       [4, 167.2125],
+                                       [5, 326.586914],
+                                       [6, 564.342188],
+                                       [7, 896.154492],
+                                       [8, 1337.7],
+                                       [9, 1904.654883],
+                                       [10, 2500]]
+        power_curves['commercial'] = [[2, 0],
+                                      [3, 3505.95],
+                                      [4, 8310.4],
+                                      [5, 16231.25],
+                                      [6, 28047.6],
+                                      [7, 44538.55],
+                                      [8, 66483.2],
+                                      [9, 94660.65],
+                                      [10, 100000]]
+        power_curves['midsize'] = [[2, 0],
+                                   [3, 8764.875],
+                                   [4, 20776],
+                                   [5, 40578.125],
+                                   [6, 70119],
+                                   [7, 111346.375],
+                                   [8, 166208],
+                                   [9, 236651.625],
+                                   [10, 250000]]
+
+        power_curves['large'] = [[2, 0],
+                                 [3, 70119],
+                                 [4, 166208],
+                                 [5, 324625],
+                                 [6, 560952],
+                                 [7, 890771],
+                                 [8, 1329664],
+                                 [9, 1893213],
+                                 [10, 2000000]]
+        return power_curves
 
     def process_pv(self, inputs, latitude):
         """
@@ -253,15 +325,39 @@ class SystemParameters(object):
         :param inputs: object, pv inputs
         :return photovoltaic_panels section to be inserted per-building or globally
         """
-        items = self.make_list(inputs)
 
+        items = self.make_list(inputs)
+        pvs = []
         # hardcode nominal_system_voltage 480V
         # add latitude
         for item in items:
-            item['nominal_system_voltage'] = 480
-            item['latitude'] = latitude
+            pv = {}
+            pv['nominal_voltage'] = 480
+            pv['latitude'] = latitude
+            if 'tilt' in item:
+                pv['surface_tilt'] = item['tilt']
+            else:
+                pv['surface_tilt'] = 0
+            if 'azimuth' in item:
+                pv['surface_azimuth'] = item['azimuth']
+            else:
+                pv['surface_azimuth'] = 0
 
-        return items
+            # Size (kW) = Array Area (m²) × 1 kW/m² × Module Efficiency (%)
+            # area = size (kW) / 1 kW/m2 / module efficiency (%)
+            # module efficiency tied to module type: 0 -> standard: 15%, 1-> premium: 19%, 2-> thin film: 10%
+            # defaults to standard
+            efficiencies = {0: 15, 1: 19, 2: 10}
+            module_type = 0
+            if 'module_type' in item:
+                module_type = item['module_type']
+
+            eff = efficiencies[module_type]
+            pv['net_surface_area'] = item['size_kw'] / eff
+
+            pvs.append(pv)
+
+        return pvs
 
     def process_chp(self, inputs):
         """
@@ -269,7 +365,6 @@ class SystemParameters(object):
         :param inputs: object, raw inputs
         """
         # this uses the raw inputs
-        # TODO: for now just returning size_kw and fuel_type
         items = self.make_list(inputs['outputs']['Scenario']['Site']['CHP'])
         chps = []
         for item in items:
@@ -283,13 +378,196 @@ class SystemParameters(object):
             chp['single_electricity_generation_capacity'] = item['size_kw']
 
             # performance data filename
-            # TODO: not sure how to pass this in.
-            # perhaps a default that can be retrieved from the template?
+            # TODO: not sure how to pass this in
+            # how to default this? retrieve from the template, or right here in code?
             chp['performance_data_path'] = ''
+
+            # number of machines
+            # TODO: not in REopt...default?
+            chp['number_of_machines'] = 1
 
             chps.append(chp)
 
         self.param_template['combined_heat_and_power_systems'] = chps
+
+    def process_storage(self, inputs):
+        """
+        Processes global battery bank outputs and insert into template
+        :param inputs: object, raw inputs
+        """
+        # this uses the raw inputs
+        items = []
+        try:
+            items = self.make_list(inputs['scenario_report']['distributed_generation']['storage'])
+        except KeyError:
+            pass
+
+        batts = []
+        for item in items:
+
+            batt = {}
+
+            # energy capacity 'size_kwh' % 1000 to convert to MWh
+            batt['capacity'] = item['size_kwh'] / 1000
+
+            # Nominal Voltage - DEFAULT
+            batt['nominal_voltage'] = 480
+
+            batts.append(batt)
+
+        self.param_template['battery_banks'] = batts
+
+    def process_generators(self, inputs):
+        """
+        Processes generators outputs and insert into template
+        :param inputs: object, raw inputs
+        """
+        # this uses the raw inputs
+        items = []
+        try:
+            items = self.make_list(inputs['scenario_report']['distributed_generation']['generators'])
+        except KeyError:
+            pass
+
+        generators = []
+        for item in items:
+
+            generator = {}
+
+            # size_kw, then convert to W
+            generator['nominal_power_generation'] = item['size_kw'] * 1000
+
+            # source phase shift
+            # TODO: Not in REopt
+            generator['source_phase_shift'] = 0
+
+            generators.append(generator)
+
+        self.param_template['diesel_generators'] = generators
+
+    def process_grid(self):
+        grid = {}
+
+        # frequency - default
+        grid['frequency'] = 60
+        # TODO: RMS voltage source - default
+        # grid['source_rms_voltage'] = 0
+
+        # TODO: phase shift (degrees) - default
+        # grid['source_phase_shift'] = 0
+
+        self.param_template['electrical_grid'] = grid
+
+    def process_electrical_components(self, scenario_dir: Path):
+        """ process electrical results from OpenDSS
+            electrical grid
+            substations
+            transformers
+            distribution lines
+            capacitor banks (todo)
+        """
+        dss_data = {}
+        opendss_json_file = os.path.join(scenario_dir, 'scenario_report_opendss.json')
+        if (os.path.exists(opendss_json_file)):
+            with open(opendss_json_file, "r") as f:
+                dss_data = json.load(f)
+
+        if dss_data:
+            # ELECTRICAL GRID: completely defaulted for now
+            self.process_grid()
+
+            # SUBSTATIONS
+            substations = []
+            try:
+                data = dss_data['scenario_report']['scenario_power_distribution']['substations']
+                for item in data:
+                    try:
+                        s = {}
+                        # TODO: default RNM Voltage (high side?)
+
+                        # RMS Voltage (low side)
+                        s['RMS_voltage_low_side'] = item['nominal_voltage']
+                        substations.append(s)
+                    except KeyError:
+                        pass
+            except KeyError:
+                pass
+
+            self.param_template['substations'] = substations
+
+            # DISTRIBUTION LINES
+            lines = []
+            try:
+                data = dss_data['scenario_report']['scenario_power_distribution']['distribution_lines']
+                for item in data:
+                    try:
+                        line = {}
+                        line['length'] = item['length']
+                        line['ampacity'] = item['ampacity']
+
+                        # nominal voltage is defaulted (data not available in OpenDSS)
+                        line['nominal_voltage'] = 480
+
+                        line['commercial_line_type'] = item['commercial_line_type']
+
+                        lines.append(line)
+                    except KeyError:
+                        pass
+            except KeyError:
+                pass
+
+            self.param_template['distribution_lines'] = lines
+
+            # CAPACITOR BANKS
+            caps = []
+            try:
+                data = dss_data['scenario_report']['scenario_power_distribution']['capacitors']
+                for item in data:
+                    try:
+                        cap = {}
+                        # nominal capacity (var)
+                        cap['nominal_capacity'] = item['nominal_capacity']
+
+                        caps.append(cap)
+                    except KeyError:
+                        pass
+            except KeyError:
+                pass
+
+            self.param_template['capacitor_banks'] = caps
+
+            # TRANSFORMERS
+            transformers = []
+            data = [d for d in dss_data['feature_reports'] if d['id'].startswith('Transformer')]
+            for item in data:
+                t = {}
+                t['id'] = item['id']
+                t['nominal_capacity'] = None
+                if item['power_distribution']['nominal_capacity']:
+                    t['nominal_capacity'] = item['power_distribution']['nominal_capacity']
+
+                t['reactance_resistance_ratio'] = None
+                if item['power_distribution']['reactance_resistance_ratio']:
+                    t['reactance_resistance_ratio'] = item['power_distribution']['reactance_resistance_ratio']
+                transformers.append(t)
+
+            self.param_template['transformers'] = transformers
+
+            # Loads (buildings from geojson file)
+            # grab all the building loads
+            data = [d for d in dss_data['feature_reports'] if d['feature_type'] == 'Building']
+
+            # grab records to modify
+            for bldg in self.param_template['buildings']['custom']:
+                # find match in data
+                match = [d for d in data if d['id'] == bldg['geojson_id']]
+                if match:
+                    # add data
+                    bldg['load'] = {}
+                    # print("Found match for {}: {}".format(bldg['geojson_id'], match[0]['id']))
+                    bldg['load']['nominal_voltage'] = match[0]['power_distribution']['nominal_voltage']
+                    bldg['load']['max_power_kw'] = match[0]['power_distribution']['max_power_kw']
+                    bldg['load']['max_reactive_power_kvar'] = match[0]['power_distribution']['max_reactive_power_kvar']
 
     def process_building_microgrid_inputs(self, building, scenario_dir: Path):
         """
@@ -307,7 +585,7 @@ class SystemParameters(object):
         latitude = reopt_data['location']['latitude_deg']
 
         # PV
-        if reopt_data['distributed_generation']['solar_pv']:
+        if reopt_data['distributed_generation'] and reopt_data['distributed_generation']['solar_pv']:
             building['photovoltaic_panels'] = self.process_pv(reopt_data['distributed_generation']['solar_pv'], latitude)
 
         return building
@@ -330,26 +608,46 @@ class SystemParameters(object):
             with open(raw_scenario_file, "r") as f:
                 raw_data = json.load(f)
 
-        # extract Latitude
+        # PV (add if results are found in scenario_report)
+        # extract latitude
         latitude = reopt_data['scenario_report']['location']['latitude_deg']
-
-        # PV
         if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-            self.param_template['photovoltaic_panels'] = (
-                self.process_pv(
+            self.param_template['photovoltaic_panels'] = self.process_pv(
                     reopt_data['scenario_report']['distributed_generation']['solar_pv'],
                     latitude
-                )
             )
 
-        # Wind
+        # Wind (add if results are found in scenario_report)
         if reopt_data['scenario_report']['distributed_generation']['wind']:
-            self.process_wind(reopt_data['scenario_report']['distributed_generation']['wind'])
+            self.process_wind(reopt_data)
 
-        # CHP (raw data)
+        # CHP (add if results are found in reopt results-raw_data)
+        # this is the only item not in the default URBANopt report file
         if raw_data['outputs']['Scenario']['Site']['CHP']['size_kw'] != 0.0:
             # there is a CHP, process
             self.process_chp(raw_data)
+
+        # Battery Bank
+        try:
+            if reopt_data['scenario_report']['distributed_generation']['storage']:
+                # there is storage, process
+                self.process_storage(reopt_data)
+        except KeyError:
+            pass
+
+        # Generators
+        try:
+            if reopt_data['scenario_report']['distributed_generation']['generators']:
+                # process diesel generators
+                self.process_generators(reopt_data)
+        except KeyError:
+            pass
+
+        # process electrical components (from OpenDSS results)
+        self.process_electrical_components(scenario_dir)
+
+        # Power Converters
+        # TODO: not handled in UO / OpenDSS
 
     def csv_to_sys_param(self,
                          model_type: str,
