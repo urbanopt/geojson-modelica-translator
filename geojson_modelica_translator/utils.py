@@ -154,9 +154,22 @@ class ModelicaPath(object):
             return os.path.join(self.root_dir, self.scripts_relative_dir)
 
 
+# This is used for some test cases where we need deterministic IDs to be generated
+USE_DETERMINISTIC_ID = bool(os.environ.get('GMT_DETERMINISTIC_ID', False))
+
+counter = 0
+
+
 def simple_uuid():
     """Generates a simple string uuid
 
     :return: string, uuid
     """
-    return str(uuid4()).split("-")[0]
+    global counter
+
+    if not USE_DETERMINISTIC_ID:
+        return str(uuid4()).split("-")[0]
+    else:
+        id = str(counter)
+        counter += 1
+        return id
