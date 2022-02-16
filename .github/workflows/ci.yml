@@ -26,6 +26,10 @@ jobs:
             python-version: 3.7
             test_env: python
             mbl_branch: v8.1.0
+          - os: ubuntu-latest
+            python-version: 3.7
+            test_env: check_sys_params
+            mbl_branch: issue2204_gmt_mbl
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
