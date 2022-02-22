@@ -51,18 +51,21 @@ from geojson_modelica_translator.model_connectors.couplings.graph import (
 from geojson_modelica_translator.model_connectors.districts.district import (
     District
 )
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
-    EtsColdWaterStub
-)
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
-    HeatingIndirect
-)
+# from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
+#     EtsColdWaterStub
+# )
+# from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
+#     HeatingIndirect
+# )
 from geojson_modelica_translator.model_connectors.load_connectors.time_series_ets import (
     TimeSeriesETS
 )
-# from geojson_modelica_translator.model_connectors.networks.network_heated_water_stub import (
-#     NetworkHeatedWaterStub
-# )
+from geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub import (
+    NetworkChilledWaterStub
+)
+from geojson_modelica_translator.model_connectors.networks.network_heated_water_stub import (
+    NetworkHeatedWaterStub
+)
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -86,22 +89,22 @@ class TimeSeriesETSTest(TestCaseBase):
 
         # Create the time series load, ets and their coupling
         time_series_load = TimeSeriesETS(sys_params, self.gj.buildings[0])
-        geojson_load_id = self.gj.buildings[0].feature.properties["id"]
+        # geojson_load_id = self.gj.buildings[0].feature.properties["id"]
 
-        heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
-        ts_hi_coupling = Coupling(time_series_load, heating_indirect_system)
+        # heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
+        # ts_hi_coupling = Coupling(time_series_load, heating_indirect_system)
 
         # create heated water stub for the ets
-        # heated_water_stub = NetworkHeatedWaterStub(sys_params)
-        # hi_hw_coupling = Coupling(heating_indirect_system, heated_water_stub)
+        heated_water_stub = NetworkHeatedWaterStub(sys_params)
+        hi_hw_coupling = Coupling(time_series_load, heated_water_stub)
 
         #  create cold water stub for the load
-        cold_water_stub = EtsColdWaterStub(sys_params)
+        cold_water_stub = NetworkChilledWaterStub(sys_params)
         ts_cw_coupling = Coupling(time_series_load, cold_water_stub)
 
         graph = CouplingGraph([
-            ts_hi_coupling,
-            # hi_hw_coupling,
+            # ts_hi_coupling,
+            hi_hw_coupling,
             ts_cw_coupling,
         ])
 
