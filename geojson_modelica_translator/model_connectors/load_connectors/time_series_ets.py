@@ -84,20 +84,38 @@ class TimeSeriesETS(LoadBase):
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "time_series": {
                 "filepath": time_series_filename,
-                "filename": time_series_filename.name(),
+                "filename": time_series_filename.name,
                 "path": time_series_filename.parent,
             },
-            # "nominal_values": {
-            #     "delTDisCoo": self.system_parameters.get_param_by_building_id(
-            #         self.building_id, "load_model_parameters.time_series.delTDisCoo"
-            #     )
-            # }
+            "nominal_values": {
+                # "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                #     self.building_id, "load_model_parameters.time_series.delTDisCoo"
+                # ),
+                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.hhw_supply_temp"
+                ),
+                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.hhw_return_temp"
+                ),
+                "chw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.chw_supply_temp"
+                ),
+                "chw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.chw_return_temp"
+                ),
+                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
+                ),
+                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_setpoint_cooling"
+                ),
+            }
         }
 
         if template_data["time_series"]["filepath"].exists():
             new_file = Path(b_modelica_path.resources_dir) / template_data["time_series"]["filename"]
             new_file.mkdir(parents=True, exist_ok=True)
-            copytree(template_data["time_series"]["filepath"], new_file)
+            copytree(template_data["time_series"]["path"], new_file)
         else:
             raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
@@ -149,7 +167,7 @@ class TimeSeriesETS(LoadBase):
         new_package.save()
 
         # now create the Loads level package and package.order.
-        if not Path(scaffold.loads_path.files_dir / 'package.mo').exists():
+        if not (Path(scaffold.loads_path.files_dir) / 'package.mo').exists():
             load_package = PackageParser.new_from_template(
                 scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
             )
