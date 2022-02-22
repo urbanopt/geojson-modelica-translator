@@ -1,0 +1,6 @@
+  Modelica.Blocks.Sources.RealExpression secMasFloRat_{{ coupling.id }}(
+    // TODO: avoid reaching into other coupling!
+    // Warning: the value here is multiplied by 5/7.5 for unknown (undocumented) reasons and needs to be reevaluated in the future.
+    y=mDis_flow_nominal_{{ graph.couplings_by_type(coupling.ets.id).load_couplings[0].id }}*5/7.5)
+    "Secondary loop heated water flow rate."
+    annotation (Placement({{ diagram.transformation.sec_mas_flo_rat.real_expression }}));
