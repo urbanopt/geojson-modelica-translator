@@ -37,13 +37,16 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from pathlib import Path
-from shutil import copy
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
+from geojson_modelica_translator.utils import (
+    ModelicaPath,
+    copytree,
+    simple_uuid
+)
 
 
 class TimeSeriesETS(LoadBase):
@@ -55,7 +58,7 @@ class TimeSeriesETS(LoadBase):
 
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
-        self.required_mo_files.append(Path(self.template_dir) / 'getPeakMassFlowRate.mo')
+        # self.required_mo_files.append(Path(self.template_dir) / 'getPeakMassFlowRate.mo')
 
     def to_modelica(self, scaffold):
         """
@@ -65,7 +68,7 @@ class TimeSeriesETS(LoadBase):
         """
 
         # MassFlowrate Temperature models
-        time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
+        time_series_ets_template = self.template_env.get_template("TimeSeriesBuildingETS.mot")
 
         b_modelica_path = ModelicaPath(
             self.building_name, scaffold.loads_path.files_dir, True
@@ -84,17 +87,17 @@ class TimeSeriesETS(LoadBase):
                 "filename": time_series_filename.name(),
                 "path": time_series_filename.parent,
             },
-            "nominal_values": {
-                "delTDisCoo": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.delTDisCoo"
-                )
-            }
+            # "nominal_values": {
+            #     "delTDisCoo": self.system_parameters.get_param_by_building_id(
+            #         self.building_id, "load_model_parameters.time_series.delTDisCoo"
+            #     )
+            # }
         }
 
         if template_data["time_series"]["filepath"].exists():
             new_file = Path(b_modelica_path.resources_dir) / template_data["time_series"]["filename"]
             new_file.mkdir(parents=True, exist_ok=True)
-            copy(template_data["time_series"]["filepath"], new_file)
+            copytree(template_data["time_series"]["filepath"], new_file)
         else:
             raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
@@ -111,7 +114,7 @@ class TimeSeriesETS(LoadBase):
             raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
         self.run_template(
-            template=time_series_mft_template,
+            template=time_series_ets_template,
             save_file_name=Path(b_modelica_path.files_dir) / "building.mo",
             project_name=scaffold.project_name,
             model_name=self.building_name,
