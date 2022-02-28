@@ -36,11 +36,19 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import glob
+import logging
 import os
 import shutil
 import subprocess
+from glob import glob
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+    )
 
 
 class ModelicaRunner(object):
@@ -64,6 +72,7 @@ class ModelicaRunner(object):
         if os.environ.get('MODELICAPATH', None):
             print('Using predefined MODELICAPATH')
             self.modelica_lib_path = os.environ['MODELICAPATH']
+            logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
         else:
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
@@ -130,29 +139,31 @@ class ModelicaRunner(object):
             # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
             # but must strip off the .mo extension on the model to run
             run_model = os.path.relpath(file_to_run, run_path)
-            print(f"Running Modelica file: {run_model} in: {run_path}")
-
-            # TODO: Create a logger to show more information such as the actual run command being executed.
+            logger.info(f"Running Modelica file {run_model} in: {run_path}")
             p = subprocess.Popen(
                 ['./jm_ipython.sh', 'jmodelica.py', run_model],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
             )
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
             exitcode = p.wait()
         finally:
             os.chdir(curdir)
             stdout_log.close()
+            logger.debug('Closed stdout.log')
 
+        logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
         self.cleanup_path(run_path)
 
+        logger.debug('moving results to results directory')
         # get the location of the results path
         results_path = Path(run_path) / f'{project_name}_results'
         self.move_results(run_path, results_path, project_name)
         return (exitcode == 0, results_path)
 
-    def move_results(self, from_path, to_path, project_name=None):
+    def move_results(self, from_path: Path, to_path: Path, project_name=None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.
@@ -163,11 +174,7 @@ class ModelicaRunner(object):
         :return: None
         """
         # if there are results, they will simply be overwritten (for now).
-        if not to_path.exists():
-            os.makedirs(to_path)
-        else:
-            shutil.rmtree(to_path)
-            os.makedirs(to_path)
+        to_path.mkdir(parents=True, exist_ok=True)
 
         files_to_move = [
             'stdout.log',
@@ -178,7 +185,7 @@ class ModelicaRunner(object):
                 if (to_move.name in files_to_move) or to_move.name.startswith(f'{project_name}_'):
                     shutil.move(to_move, to_path / to_move.name)
 
-    def cleanup_path(self, path):
+    def cleanup_path(self, path: Path):
         """
         Clean up the files in the path that was presumably used to run the simulation
         """
@@ -191,8 +198,8 @@ class ModelicaRunner(object):
             if os.path.exists(os.path.join(path, f)):
                 os.remove(os.path.join(path, f))
 
-        for g in glob.glob(os.path.join(path, 'tmp-simulation-*')):
-            # print(f"Removing tmp-simulation files {g}")
+        for g in glob(os.path.join(path, 'tmp-simulation-*')):
+            logger.debug(f"Removing tmp-simulation files {g}")
             # This is a complete hack but the name of the other folder that gets created is the
             # globbed directory without the tmp-simulation
             eplus_path = os.path.join(path, os.path.basename(g).replace('tmp-simulation-', ''))
