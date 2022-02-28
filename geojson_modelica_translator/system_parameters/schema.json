@@ -674,7 +674,7 @@
           "type": "number",
           "default": 0.625
         },
-        "mos_wet_bulb_filename": {
+        "weather_filepath": {
           "description": "Filename for weather file",
           "type": "string"
         }

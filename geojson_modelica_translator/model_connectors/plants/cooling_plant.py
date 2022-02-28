@@ -64,12 +64,12 @@ class CoolingPlant(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        mos_wet_bulb_filename = self.system_parameters.get_param(
-            "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"
+        weather_filepath = self.system_parameters.get_param(
+            "$.district_system.default.central_cooling_plant_parameters.weather_filepath"
         )
 
-        if mos_wet_bulb_filename is None:
-            raise FileNotFoundError('Cooling plant\'s mos_wet_bulb_filename was not provided')
+        if weather_filepath is None:
+            raise FileNotFoundError('Cooling plant\'s weather_filepath was not provided')
 
         template_data = {
             "nominal_values": {
@@ -129,10 +129,7 @@ class CoolingPlant(PlantBase):
                 ),
             },
             "wet_bulb_calc": {
-                # "mos_wet_bulb_filename": mos_wet_bulb_filename,
-                # "filename": Path(mos_wet_bulb_filename).name,
-                # "path": Path(mos_wet_bulb_filename).parent,
-                "modelica_path": self.modelica_path(mos_wet_bulb_filename),
+                "modelica_path": self.modelica_path(weather_filepath),
             },
         }
 
