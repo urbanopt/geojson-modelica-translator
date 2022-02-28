@@ -162,7 +162,7 @@
   "district_system": {
     "default": {
       "central_cooling_plant_parameters": {
-        "mos_wet_bulb_filename": "../aaa/weather/USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
+        "weather_filepath": "../aaa/weather/USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
