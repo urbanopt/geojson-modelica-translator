@@ -35,7 +35,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
+import json
 import unittest
 from pathlib import Path
 from shutil import rmtree
@@ -50,12 +50,18 @@ class SystemParametersTest(unittest.TestCase):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
         self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
+        self.microgrid_scenario_dir = self.data_dir / 'sdk_microgrid_output_skeleton' / 'run' / 'reopt_scenario'
+        self.microgrid_feature_file = self.data_dir / 'sdk_microgrid_output_skeleton' / 'example_project.json'
+        self.microgrid_output_dir = Path(__file__).parent / 'microgrid_output'
         self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
         self.sys_param_template = Path(__file__).parent.parent.parent / 'geojson_modelica_translator' / \
             'system_parameters' / 'time_series_template.json'
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
+        if self.microgrid_output_dir.exists():
+            rmtree(self.microgrid_output_dir)
+        self.microgrid_output_dir.mkdir(parents=True)
 
     def test_expanded_paths(self):
         filename = self.data_dir / 'system_params_1.json'
@@ -227,7 +233,8 @@ class SystemParametersTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             output_sys_param_file = self.output_dir / 'going_to_fail_first.json'
             missing_scenario_dir = self.scenario_dir / 'foobar'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=missing_scenario_dir,
                 feature_file=self.feature_file,
@@ -235,7 +242,8 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIn(f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
         with self.assertRaises(Exception) as context:
             missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=missing_feature_file,
@@ -245,13 +253,15 @@ class SystemParametersTest(unittest.TestCase):
     def test_csv_to_sys_param_does_not_overwrite(self):
         with self.assertRaises(Exception) as context:
             output_sys_param_file = self.output_dir / 'test_overwriting_sys_param.json'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file,
                 overwrite=True)
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
@@ -261,17 +271,46 @@ class SystemParametersTest(unittest.TestCase):
 
     def test_csv_to_sys_param(self):
         output_sys_param_file = self.output_dir / 'test_sys_param.json'
-        SystemParameters.csv_to_sys_param(
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
             model_type='time_series',
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
             sys_param_filename=output_sys_param_file)
+
+        # debug
+        # with open(output_sys_param_file, "r") as f:
+        #     sys_param_data = json.load(f)
+        #     print(sys_param_data)
+
         self.assertTrue(output_sys_param_file.exists())
+
+    def test_csv_to_sys_param_microgrid(self):
+        output_sys_param_file = self.microgrid_output_dir / 'test_sys_param_microgrid.json'
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
+            model_type='time_series',
+            scenario_dir=self.microgrid_scenario_dir,
+            feature_file=self.microgrid_feature_file,
+            sys_param_filename=output_sys_param_file,
+            microgrid=True)
+        self.assertTrue(output_sys_param_file.exists())
+
+        with open(output_sys_param_file, "r") as f:
+            sys_param_data = json.load(f)
+
+        self.assertTrue(len(sys_param_data['photovoltaic_panels']) > 0)
+        self.assertTrue(len(sys_param_data['wind_turbines']) > 0)
+        self.assertTrue(sys_param_data['electrical_grid']['frequency'])
+
+        # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
+        self.assertTrue(sys_param_data['buildings']['custom'][0]['photovoltaic_panels'])
 
     def test_validate_sys_param_template(self):
         output_sys_param_file = self.output_dir / 'bogus_sys_param.json'
         with self.assertRaises(Exception) as context:
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
@@ -279,7 +318,8 @@ class SystemParametersTest(unittest.TestCase):
                       str(context.exception))
         with self.assertRaises(Exception) as context:
             bogus_template_type = 'openstudio'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type=bogus_template_type,
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
