@@ -100,6 +100,7 @@ ENV/
 
 # Test outputs
 tests/output
+tests/*/microgrid_output
 tests/output_ets
 tests/*/output
 /geojson_modelica_translator/modelica/buildingslibrary/
