@@ -59,8 +59,7 @@ class TimeSeries(LoadBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        # time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
-        time_series_building_template = self.template_env.get_template("BuildingTimeSeriesWithETS.mot")
+        time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
 
         b_modelica_path = ModelicaPath(
             self.building_name, scaffold.loads_path.files_dir, True
