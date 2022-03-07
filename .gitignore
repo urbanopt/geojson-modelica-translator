@@ -1,6 +1,7 @@
 # Project files
 .idea
 .DS_Store
+.ruby-version
 .vscode/
 
 # Byte-compiled / optimized / DLL files
