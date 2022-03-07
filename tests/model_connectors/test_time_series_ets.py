@@ -35,7 +35,6 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
 from pathlib import Path
 
 import pytest
@@ -51,12 +50,6 @@ from geojson_modelica_translator.model_connectors.couplings.graph import (
 from geojson_modelica_translator.model_connectors.districts.district import (
     District
 )
-# from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
-#     EtsColdWaterStub
-# )
-# from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
-#     HeatingIndirect
-# )
 from geojson_modelica_translator.model_connectors.load_connectors.time_series_ets import (
     TimeSeriesETS
 )
@@ -69,8 +62,7 @@ from geojson_modelica_translator.model_connectors.networks.network_heated_water_
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
-
-from ..base_test_case import TestCaseBase
+from tests.base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
@@ -89,10 +81,6 @@ class TimeSeriesETSTest(TestCaseBase):
 
         # Create the time series load, ets and their coupling
         time_series_load = TimeSeriesETS(sys_params, self.gj.buildings[0])
-        # geojson_load_id = self.gj.buildings[0].feature.properties["id"]
-
-        # heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
-        # ts_hi_coupling = Coupling(time_series_load, heating_indirect_system)
 
         # create heated water stub for the ets
         heated_water_stub = NetworkHeatedWaterStub(sys_params)
