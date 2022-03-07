@@ -1,0 +1,14 @@
+  Modelica.Blocks.Sources.RealExpression TSetDP_{{ coupling.id }}(y=0.70)
+    "Heated water supply temperature set point on district level."
+    annotation (Placement({{ diagram.transformation.t_set_dp.real_expression }}));
+  Modelica.Blocks.Sources.RealExpression secMasFloRat_{{ coupling.id }}(y=32)
+    "Secondary loop heated water flow rate."
+    annotation (Placement({{ diagram.transformation.sec_mas_flo_rat.real_expression }}));
+  Modelica.Blocks.Sources.RealExpression TDisSetHeaWat_{{ coupling.id }}(
+    each y=273.15+{{ sys_params.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw }})
+    "District side heating water supply temperature set point."
+    annotation (Placement({{ diagram.transformation.t_dis_set_hea_wat.real_expression }}));
+  Modelica.Blocks.Sources.BooleanConstant mPum_flow_{{ coupling.id }}(
+    k=true)
+    "Total heating water pump mass flow rate"
+    annotation (Placement({{ diagram.transformation.m_pum_flow.boolean_constant }}));

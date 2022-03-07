@@ -1,0 +1,6 @@
+  Modelica.Blocks.Sources.RealExpression TSetDP_{{ coupling.id }}(y=0.70)
+    "Chilled water supply temperature set point on district level."
+    annotation (Placement({{ diagram.transformation.t_set_dp.real_expression }}));
+  Modelica.Blocks.Sources.RealExpression secMasFloRat_{{ coupling.id }}(y=32)
+    "Secondary loop chilled water flow rate."
+    annotation (Placement({{ diagram.transformation.sec_mas_flo_rat.real_expression }}));

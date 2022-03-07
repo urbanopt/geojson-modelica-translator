@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -57,9 +57,9 @@ from geojson_modelica_translator.model_connectors.load_connectors import (
     TimeSeries
 )
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
-from geojson_modelica_translator.model_connectors.plants import (
-    CoolingPlant,
-    HeatingPlant
+from geojson_modelica_translator.model_connectors.plants import CoolingPlant
+from geojson_modelica_translator.model_connectors.plants.chp import (
+    HeatingPlantWithOptionalCHP
 )
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
@@ -98,7 +98,7 @@ def _parse_couplings(geojson, sys_params):
     cooling_network = Network2Pipe(sys_params)
     cooling_plant = CoolingPlant(sys_params)
     heating_network = Network2Pipe(sys_params)
-    heating_plant = HeatingPlant(sys_params)
+    heating_plant = HeatingPlantWithOptionalCHP(sys_params)
     all_couplings += [
         Coupling(cooling_plant, cooling_network),
         Coupling(heating_plant, heating_network),

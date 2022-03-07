@@ -51,7 +51,7 @@ autosummary_generate = True
 
 # General information about the project.
 project = u"GeoJSON Modelica Translator"
-copyright = u"2019-2021, Alliance for Sustainable Energy, LLC"
+copyright = u"2019-2022, Alliance for Sustainable Energy, LLC"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

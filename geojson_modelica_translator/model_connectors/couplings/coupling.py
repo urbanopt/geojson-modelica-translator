@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -187,6 +187,22 @@ class Coupling(object):
             'component_definitions_template_path': component_template_path,
             'connect_statements_template_path': connect_template_path,
         }
+
+    def get_load(self):
+        """If there's a load model in the coupling, it returns the load model. Else
+        it returns None.
+
+        This is used by the district model to find the building's sys params so
+        it can be passed into the coupling templates
+
+        :return: LoadBase | None
+        """
+        if self._get_model_superclass(self.model_a) is LoadBase:
+            return self.model_a
+        elif self._get_model_superclass(self.model_b) is LoadBase:
+            return self.model_b
+
+        return None
 
     @property
     def component_definitions_template_path(self):

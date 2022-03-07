@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.18596629732914,
+              39.79767675062061
+            ],
+            [
+              -105.18596629732914,
+              39.7973830919949
+            ],
+            [
+              -105.18539945823584,
+              39.7973830919949
+            ],
+            [
+              -105.18539945823584,
+              39.79767675062061
+            ],
+            [
+              -105.18596629732914,
+              39.79767675062061
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "5a6b99ec37f4de7f94020090",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Small Office",
+        "footprint_area": 17059,
+        "footprint_perimeter": 533,
+        "project_id": "5a6b8adf37f4de7f94020084",
+        "updated_at": "2018-01-31T20:36:55.936Z",
+        "created_at": "2018-01-26T21:13:16.655Z",
+        "building_type": "Office",
+        "number_of_stories": 3,
+        "height": 9,
+        "number_of_stories_above_ground": 3,
+        "building_status": "Proposed",
+        "include_in_energy_analysis": true,
+        "floor_area": 51177,
+        "year_built": 2010
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -105.18596629732914,
+              39.79767675062061
+            ],
+            [
+              -105.18596629732914,
+              39.7973830919949
+            ],
+            [
+              -105.18539945823584,
+              39.7973830919949
+            ],
+            [
+              -105.18539945823584,
+              39.79767675062061
+            ],
+            [
+              -105.18596629732914,
+              39.79767675062061
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "abcdefghijklmnopqrstuvwx",
+        "type": "Building",
+        "geometryType": "Rectangle",
+        "name": "Small Office",
+        "footprint_area": 17059,
+        "footprint_perimeter": 533,
+        "project_id": "5a6b8adf37f4de7f94020084",
+        "updated_at": "2018-01-31T20:36:55.936Z",
+        "created_at": "2018-01-26T21:13:16.655Z",
+        "building_type": "Office",
+        "number_of_stories": 3,
+        "height": 9,
+        "number_of_stories_above_ground": 3,
+        "building_status": "Proposed",
+        "include_in_energy_analysis": true,
+        "floor_area": 51177,
+        "year_built": 2010
+      }
+    }
+  ]
+}

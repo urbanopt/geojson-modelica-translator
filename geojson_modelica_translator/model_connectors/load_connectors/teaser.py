@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -43,6 +43,7 @@ from os import fdopen, remove
 from shutil import copymode, move
 from tempfile import mkstemp
 
+import numpy as np
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
@@ -163,7 +164,7 @@ class Teaser(LoadBase):
         with fdopen(fh, 'w') as new_file:
             with open(f) as old_file:
                 for line in old_file:
-                    if "double Internals(8760, 19)" in line:
+                    if "double Internals(8760" in line:  # Finding the line, which may have one of several #s of columns
                         new_file.write("double Internals(8761, 4)\n")
                     elif line.startswith("3600\t"):
                         new_file.write(line.replace('3600\t', '0\t') + line)
@@ -518,10 +519,17 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
+        # Handle setting nominal load for IT room zone
+        nom_cool_flow = np.array([-10000] * len(zone_list))
+        for i, dic in enumerate(zone_list):
+            if dic["instance_name"] == "ict":
+                print("setting coo flow")
+                nom_cool_flow[i - 1] = -50000  # Need to offset for different indexing
+        nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": [10000] * len(zone_list),
-            "nominal_cool_flow": [-10000] * len(zone_list),
+            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
                 "mos_weather_filename": mos_weather_filename,

@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -86,6 +86,12 @@ class Spawn(LoadBase):
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
+        zone_nom_htg_loads = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.zone_nom_htg_loads",
+        )
+        zone_nom_clg_loads = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
+        )
         # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
         hhw_supply_temp = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_supply",
@@ -134,6 +140,9 @@ class Spawn(LoadBase):
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
             },
+            # Reformatting lists for Modelica
+            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
