@@ -52,7 +52,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s: %(message)s',
     datefmt='%d-%b-%y %H:%M:%S',
-    )
+)
 
 
 class ModelBase(object):
@@ -183,7 +183,7 @@ class ModelBase(object):
                     f"Could not download weather file: {mos_weatherfile_url}"
                     "\nAt this time we only support USA weather stations"
                     f"\n{e}"
-                    )
+                )
             # Save mos weatherfile into MBL
             outputname = Path(environ['MODELICAPATH']) / "Buildings" / "Resources" / "weatherdata" / f"{p.stem}.mos"
             open(outputname, 'wb').write(mos_weatherfile_data.content)

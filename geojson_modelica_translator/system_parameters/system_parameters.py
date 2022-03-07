@@ -224,7 +224,7 @@ class SystemParameters(object):
         :return: list of inputs
         """
         list_inputs = []
-        if type(inputs) is dict and len(inputs) != 0:
+        if isinstance(inputs, dict) and len(inputs) != 0:
             list_inputs.append(inputs)
         else:
             list_inputs = inputs
@@ -613,8 +613,8 @@ class SystemParameters(object):
         latitude = reopt_data['scenario_report']['location']['latitude_deg']
         if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
             self.param_template['photovoltaic_panels'] = self.process_pv(
-                    reopt_data['scenario_report']['distributed_generation']['solar_pv'],
-                    latitude
+                reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                latitude
             )
 
         # Wind (add if results are found in scenario_report)
@@ -750,15 +750,15 @@ class SystemParameters(object):
             building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
             if microgrid:
                 building = self.process_building_microgrid_inputs(building, scenario_dir)
-                
+
         # Add all buildings to the sys-param file
         self.param_template['buildings']['custom'] = building_list
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        (param_template['district_system']['default']
+        (self.param_template['district_system']['default']
             ['central_cooling_plant_parameters']['weather_filepath']) = string_path_to_weather_file
-            
+
         if microgrid:
             self.process_microgrid_inputs(scenario_dir)
 
