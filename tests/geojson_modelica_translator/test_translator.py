@@ -87,5 +87,5 @@ class GeoJSONTranslatorTest(TestCaseBase):
         success, results_dir = package.simulate()
 
         # -- Assert
-        self.assertTrue(success)
+        self.assertTrue(success, 'simulation did not complete successfully')
         self.assertTrue((results_dir / 'stdout.log').exists())

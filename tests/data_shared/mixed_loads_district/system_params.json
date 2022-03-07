@@ -33,7 +33,7 @@
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "../../data_shared/STF_Loads_W.mos",
+            "filepath": "../STF_Loads_W.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 10.7,
@@ -70,10 +70,10 @@
       },
       {
         "geojson_id": "abcdefghijklmnopqrstuvwx",
-        "load_model": "time_series",
+        "load_model": "time_series_massflow_temperature",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "../../data_shared/ESIF_Loads_W.mos",
+            "filepath": "../ESIF_Loads_W.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 9.8,
@@ -116,7 +116,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 4,
-            "mos_weather_filename": "../../data_shared/SRRL_2013AMY_60min.mos",
+            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -157,7 +157,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 4,
-            "mos_weather_filename": "../../data_shared/SRRL_2013AMY_60min.mos",
+            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -197,9 +197,9 @@
         "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
-            "idf_filename": "../../data_shared/SEB.idf",
-            "epw_filename": "../../data_shared/SRRL_2013AMY_60min.epw",
-            "mos_weather_filename": "../../data_shared/SRRL_2013AMY_60min.mos",
+            "idf_filename": "../SEB.idf",
+            "epw_filename": "../SRRL_2013AMY_60min.epw",
+            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -295,7 +295,7 @@
   "district_system": {
     "default": {
       "central_cooling_plant_parameters": {
-        "mos_wet_bulb_filename": "../../data_shared/SRRL_2013AMY_60min.mos",
+        "mos_wet_bulb_filename": "../SRRL_2013AMY_60min.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
