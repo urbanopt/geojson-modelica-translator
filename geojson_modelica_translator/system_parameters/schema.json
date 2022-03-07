@@ -537,8 +537,8 @@
           "description": "Relative path from location where file instance is saved to the MOS weather file.",
           "type": "string"
         },
-        "mos_wet_bulb_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved to the wet bulb filename. This is needed for the central cooling plants.",
+        "weather_filepath": {
+          "description": "Absolute path or relative path from location where file instance is saved to the weather filename. This is needed for the central cooling plants.",
           "type": "string"
         },
         "thermal_zone_names": {
