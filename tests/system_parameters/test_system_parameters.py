@@ -347,9 +347,10 @@ class SystemParametersTest(unittest.TestCase):
     def test_download_invalid_savepath(self):
         sdp = SystemParameters()
         weather_filename = 'irrelevant weather file'
+        local_path = os.path.join('not', 'a', 'real', 'path')
         with self.assertRaises(Exception) as context:
-            sdp.download_weatherfile(weather_filename, '/not/a/real/path')
-        self.assertEqual("Save path for the weatherfile does not exist, f/not/a/real/path", str(context.exception))
+            sdp.download_weatherfile(weather_filename, local_path)
+        self.assertEqual(f"Save path for the weatherfile does not exist, {local_path}", str(context.exception))
 
     def test_download_invalid_epw(self):
         sdp = SystemParameters()

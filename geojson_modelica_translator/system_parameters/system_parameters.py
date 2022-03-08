@@ -240,7 +240,7 @@ class SystemParameters(object):
         p_save = Path(save_directory)
 
         if not p_save.exists():
-            raise Exception(f"Save path for the weatherfile does not exist, f{str(p_save)}")
+            raise Exception(f"Save path for the weatherfile does not exist, {str(p_save)}")
 
         # get country & state from weather file name
         try:
