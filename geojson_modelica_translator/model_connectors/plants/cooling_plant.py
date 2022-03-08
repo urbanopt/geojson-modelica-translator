@@ -68,8 +68,10 @@ class CoolingPlant(PlantBase):
             "$.district_system.default.central_cooling_plant_parameters.weather_filepath"
         )
 
+        # TODO: Resolve the weather file, check if it exists locally, try to download, or error
+
         if weather_filepath is None:
-            raise FileNotFoundError('Cooling plant\'s weather_filepath was not provided')
+            raise FileNotFoundError("Cooling plant's weather_filepath was not provided")
 
         template_data = {
             "nominal_values": {
@@ -129,7 +131,7 @@ class CoolingPlant(PlantBase):
                 ),
             },
             "wet_bulb_calc": {
-                "modelica_path": self.modelica_path(weather_filepath),
+                "modelica_path": weather_filepath,
             },
         }
 
