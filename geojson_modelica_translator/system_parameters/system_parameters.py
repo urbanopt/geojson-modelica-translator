@@ -780,11 +780,27 @@ class SystemParameters(object):
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
             weather_filename = sdk_input['project']['weather_filename']
-            string_path_to_weather_file = str(Path(feature_file).parent / "weather" / weather_filename)
+            weather_path = self.sys_param_filename.parent / weather_filename
             for feature in sdk_input['features']:
                 # KAF change: this should only gather features of type 'Building'
                 if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
+
+        # Check if the weatherfile exists, if not, try to download
+        if not weather_path.exists():
+            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # Now check again if the file exists, error if not!
+        if not weather_path.exists():
+            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
+
+        # also download the MOS -- this is the file that will
+        # be set in the sys param file, so make the weather_path object this one
+        weather_path = weather_path.with_suffix('.mos')
+        if not weather_path.exists():
+            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # Now check again if the file exists, error if not!
+        if not weather_path.exists():
+            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
 
         # Make sys_param template entries for each feature_id
         building_list = []
@@ -832,7 +848,7 @@ class SystemParameters(object):
         # Update district sys-param settings
         # Parens are to allow the line break
         (self.param_template['district_system']['default']
-            ['central_cooling_plant_parameters']['weather_filepath']) = string_path_to_weather_file
+            ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
 
         if microgrid:
             self.process_microgrid_inputs(scenario_dir)

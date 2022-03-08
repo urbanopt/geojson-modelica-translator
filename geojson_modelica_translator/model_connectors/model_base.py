@@ -152,25 +152,6 @@ class ModelBase(object):
         if not do_not_add_to_list:
             self.template_files_to_include.append(Path(save_file_name).stem)
 
-    def modelica_path(self, filename: str) -> str:
-        """Write a modelica path string for a given filename"""
-        p = Path(filename)
-        if p.suffix == ".idf":
-            # This builds a path into the buildings library for the example building
-            # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
-            # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            modelica_outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
-                                                      / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
-                                                      / p.name)
-        # Assumes the weather file came from an sdk run
-        elif p.suffix == ".epw":
-            logger.debug(f"Found weather file: {p}")
-            return 'not sure what to do here!'
-        elif p.suffix == ".mos":
-            #  Assuming we already have the mos weather file in the modelica buildings library. Bad assumption?
-            modelica_outputname = f"modelica://Buildings/Resources/weatherdata/{p.name}"
-        return modelica_outputname
-
     @property
     def instance_template_path(self):
         template = self.template_env.get_template(self._template_instance)

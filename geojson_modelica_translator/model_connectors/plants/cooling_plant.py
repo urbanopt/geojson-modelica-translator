@@ -37,6 +37,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
@@ -64,14 +65,24 @@ class CoolingPlant(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        weather_filepath = self.system_parameters.get_param(
+        weather_filepath = Path(self.system_parameters.get_param(
             "$.district_system.default.central_cooling_plant_parameters.weather_filepath"
-        )
+        ))
 
-        # TODO: Resolve the weather file, check if it exists locally, try to download, or error
-
-        if weather_filepath is None:
-            raise FileNotFoundError("Cooling plant's weather_filepath was not provided")
+        # verify that the weather file exists
+        if not weather_filepath.exists():
+            raise FileNotFoundError(
+                f"Missing MOS weather file for CoolingPlant: {str(weather_filepath)}")
+        else:
+            # copy the weather file to resources for the Plant and
+            # update the string that will be in the .mo file (weather_file_modelica_string)
+            shutil.copy(
+                str(weather_filepath),
+                os.path.join(scaffold.plants_path.resources_dir, weather_filepath.name)
+            )
+            weather_file_modelica_string = f'modelica://{scaffold.project_name}/' \
+                                           f'{scaffold.plants_path.resources_relative_dir}/' \
+                                           f'{weather_filepath.name}'
 
         template_data = {
             "nominal_values": {
@@ -131,7 +142,7 @@ class CoolingPlant(PlantBase):
                 ),
             },
             "wet_bulb_calc": {
-                "modelica_path": weather_filepath,
+                "modelica_path": weather_file_modelica_string,
             },
         }
 
