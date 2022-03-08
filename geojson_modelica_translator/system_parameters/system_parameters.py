@@ -49,7 +49,7 @@ from jsonschema.validators import _LATEST_VERSION as LatestValidator
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s: %(message)s',
     datefmt='%d-%b-%y %H:%M:%S',
 )
@@ -267,7 +267,6 @@ class SystemParameters(object):
 
         # Save mos weatherfile into the requested path.
 
-        # outputname = Path(environ['MODELICAPATH']) / "Buildings" / "Resources" / "weatherdata" / f"{p_download.name}"
         outputname = p_save / p_download.name
         open(outputname, 'wb').write(mos_weatherfile_data.content)
         logger.debug(f"Saved weather file to {outputname}")
