@@ -267,7 +267,6 @@ class SystemParameters(object):
 
         # Save mos weatherfile into the requested path.
 
-        # outputname = Path(environ['MODELICAPATH']) / "Buildings" / "Resources" / "weatherdata" / f"{p_download.name}"
         outputname = p_save / p_download.name
         open(outputname, 'wb').write(mos_weatherfile_data.content)
         logger.debug(f"Saved weather file to {outputname}")
