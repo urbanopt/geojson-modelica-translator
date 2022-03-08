@@ -159,7 +159,7 @@ class ModelicaRunner(object):
 
         logger.debug('moving results to results directory')
         # get the location of the results path
-        results_path = Path(run_path) / f'{project_name}_results'
+        results_path = Path(run_path / f'{project_name}_results')
         self.move_results(run_path, results_path, project_name)
         return (exitcode == 0, results_path)
 
@@ -183,7 +183,8 @@ class ModelicaRunner(object):
         for to_move in from_path.iterdir():
             if not to_move == to_path:
                 if (to_move.name in files_to_move) or to_move.name.startswith(f'{project_name}_'):
-                    shutil.move(to_move, to_path / to_move.name)
+                    # typecast back to strings for the shutil method.
+                    shutil.move(str(to_move), str(to_path / to_move.name))
 
     def cleanup_path(self, path: Path):
         """
