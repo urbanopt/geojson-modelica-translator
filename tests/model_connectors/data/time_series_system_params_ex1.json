@@ -113,7 +113,7 @@
   "district_system": {
     "default": {
       "central_cooling_plant_parameters": {
-        "weather_filepath": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+        "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
