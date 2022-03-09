@@ -49,8 +49,8 @@ ROOT_DIR = Path(__file__).parent
 
 
 class GeoJSONTranslatorTest(TestCaseBase):
-    geojson_file = TestCaseBase.SHARED_DATA_DIR / 'mixed_loads_district' / 'geojson.json'
-    sys_params_file = TestCaseBase.SHARED_DATA_DIR / 'mixed_loads_district' / 'system_params.json'
+    geojson_file = TestCaseBase.SHARED_DATA_DIR / 'geojson_district' / 'geojson.json'
+    sys_params_file = TestCaseBase.SHARED_DATA_DIR / 'geojson_district' / 'system_params.json'
 
     def test_to_modelica_is_successful_when_inputs_are_valid(self):
         # -- Setup, Act
