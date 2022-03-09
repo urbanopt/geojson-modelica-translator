@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 .vscode/
+.ruby-version
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

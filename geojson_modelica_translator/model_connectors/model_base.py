@@ -38,11 +38,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
 import shutil
-from os import environ
 from pathlib import Path
-from subprocess import PIPE, Popen
 
-import requests
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
@@ -154,55 +151,6 @@ class ModelBase(object):
         # add to the list of files to include in the package
         if not do_not_add_to_list:
             self.template_files_to_include.append(Path(save_file_name).stem)
-
-    def modelica_path(self, filename: str) -> str:
-        """Write a modelica path string for a given filename"""
-        p = Path(filename)
-        if p.suffix == ".idf":
-            # This builds a path into the buildings library for the example building
-            # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
-            # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            modelica_outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
-                                                      / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
-                                                      / p.name)
-        # Assumes the weather file came from an sdk run
-        elif p.suffix == ".epw":
-            logger.debug(f"Found weather file: {p}")
-            # get country & state from weather file name
-            weatherfile_location_info = p.parts[-1].split("_")
-            weatherfile_country = weatherfile_location_info[0]
-            weatherfile_state = weatherfile_location_info[1]
-            # download mos file from energyplus website
-            mos_weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
-                f'{weatherfile_country}/{weatherfile_state}/{p.stem}/{p.stem}.mos'
-            logger.debug(f"Downloading weather file from {mos_weatherfile_url}")
-            try:
-                mos_weatherfile_data = requests.get(mos_weatherfile_url)
-            except requests.exceptions.RequestException as e:
-                raise Exception(
-                    f"Could not download weather file: {mos_weatherfile_url}"
-                    "\nAt this time we only support USA weather stations"
-                    f"\n{e}"
-                )
-            # Save mos weatherfile into MBL
-            outputname = Path(environ['MODELICAPATH']) / "Buildings" / "Resources" / "weatherdata" / f"{p.stem}.mos"
-            open(outputname, 'wb').write(mos_weatherfile_data.content)
-            logger.debug(f"Saved weather file to {outputname}")
-
-            # Count lines in downloaded mos weather file
-            file_lines = Popen(['wc', '-l', outputname], stdout=PIPE, stderr=PIPE)
-            result, err = file_lines.communicate()
-            if file_lines.returncode != 0:
-                raise IOError(err)
-            lines_in_weather_file = int(result.strip().split()[0])
-            logger.debug(f"Weather file {outputname} has {lines_in_weather_file} lines")
-            if lines_in_weather_file < 8760:  # There should always be header lines above the 8760 data lines
-                raise Exception(f"Weather file {p.stem} does not contain 8760 lines.")
-            modelica_outputname = f"modelica://Buildings/Resources/weatherdata/{p.stem}.mos"
-        elif p.suffix == ".mos":
-            #  Assuming we already have the mos weather file in the modelica buildings library. Bad assumption?
-            modelica_outputname = f"modelica://Buildings/Resources/weatherdata/{p.name}"
-        return modelica_outputname
 
     @property
     def instance_template_path(self):
