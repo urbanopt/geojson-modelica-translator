@@ -33,7 +33,7 @@
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "../STF_Loads_W.mos",
+            "filepath": "STF_Loads_W.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 10.7,
@@ -73,7 +73,7 @@
         "load_model": "time_series_massflow_temperature",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "../ESIF_Loads_W.mos",
+            "filepath": "ESIF_Loads_W.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 9.8,
@@ -116,7 +116,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 4,
-            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
+            "mos_weather_filename": "SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -157,7 +157,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 4,
-            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
+            "mos_weather_filename": "SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -197,9 +197,9 @@
         "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
-            "idf_filename": "../SEB.idf",
-            "epw_filename": "../SRRL_2013AMY_60min.epw",
-            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
+            "idf_filename": "SEB.idf",
+            "epw_filename": "SRRL_2013AMY_60min.epw",
+            "mos_weather_filename": "SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -257,7 +257,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 4,
-            "mos_weather_filename": "../SRRL_2013AMY_60min.mos",
+            "mos_weather_filename": "SRRL_2013AMY_60min.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
