@@ -29,7 +29,7 @@
     },
     "custom": [
       {
-        "geojson_id": "5a6b99ec37f4de7f940200",
+        "geojson_id": "STF",
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
@@ -69,8 +69,8 @@
         }
       },
       {
-        "geojson_id": "abcdefghijklmnopqrstuvwx",
-        "load_model": "time_series_massflow_temperature",
+        "geojson_id": "ESIF",
+        "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
             "filepath": "ESIF_Loads_W.mos",
@@ -193,7 +193,7 @@
         }
       },
       {
-        "geojson_id": "5a6b99ec37f4de7f94020090",
+        "geojson_id": "SEB",
         "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {

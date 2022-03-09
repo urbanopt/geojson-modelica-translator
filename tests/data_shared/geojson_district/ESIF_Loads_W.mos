@@ -11,6 +11,9 @@
 #Third column: space heating loads in Watts
 #Fourth column: water heating in Watts
 
+#Nominal heating water mass flow rate=19.3
+#Nominal chilled water mass flow rate=19.3
+
 #Peak space cooling load = -316260.5724 Watts
 #Peak space heating load = 1414760.291 Watts
 #Peak water heating load = 0 Watts

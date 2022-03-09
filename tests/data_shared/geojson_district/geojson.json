@@ -135,7 +135,7 @@
         ]
       },
       "properties": {
-        "id": "5a6b99ec37f4de7f940200",
+        "id": "STF",
         "type": "Building",
         "geometryType": "Rectangle",
         "name": "Science and Technology Facility",
@@ -255,7 +255,7 @@
         ]
       },
       "properties": {
-        "id": "abcdefghijklmnopqrstuvwx",
+        "id": "ESIF",
         "type": "Building",
         "geometryType": "Rectangle",
         "name": "Energy Systems Integration Facility",
@@ -625,7 +625,7 @@
         ]
       },
       "properties": {
-        "id": "5a6b99ec37f4de7f94020090",
+        "id": "SEB",
         "type": "Building",
         "geometryType": "Rectangle",
         "name": "Site Entrance Building",
