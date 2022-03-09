@@ -57,6 +57,15 @@ def copytree(src, dst, symlinks=False, ignore=None):
             shutil.copy2(s, d)
 
 
+def convert_c_to_k(c):
+    """Converts a temperature in celsius to kelvin
+
+    :param c: float, temperature in celsius
+    :return: float, temperature in kelvin
+    """
+    return c + 273.15
+
+
 class ModelicaPath(object):
     """
     Class for storing Modelica paths. This allows the path to point to
