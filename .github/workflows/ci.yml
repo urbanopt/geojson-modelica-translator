@@ -25,7 +25,7 @@ jobs:
           - os: ubuntu-latest
             python-version: 3.7
             test_env: python
-            mbl_branch: v8.1.0
+            mbl_branch: master
           - os: ubuntu-latest
             python-version: 3.7
             test_env: check_sys_params
@@ -93,10 +93,10 @@ jobs:
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
               # for windows, skip python tests that require simulation (currently broken)
               poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
-            elif [ '${{ matrix.mbl_branch }}' == 'v8.1.0' ]; then
-              poetry run tox -e ${{ matrix.test_env }} -- -m mbl_v8 ./tests
+            elif [ '${{ matrix.mbl_branch }}' == 'master' ]; then
+              poetry run tox -e ${{ matrix.test_env }} -- -m mbl_v9 ./tests
             else
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v8' ./tests
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v9' ./tests
             fi
           else
             poetry run tox -e ${{ matrix.test_env }}

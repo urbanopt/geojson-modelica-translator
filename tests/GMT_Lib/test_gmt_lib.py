@@ -81,7 +81,7 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
-@pytest.mark.mbl_v8
+@pytest.mark.mbl_v9
 @pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
