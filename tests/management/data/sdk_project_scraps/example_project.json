@@ -13,7 +13,7 @@
     "surface_elevation": null,
     "tariff_filename": null,
     "timesteps_per_hour": 1,
-    "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+    "weather_filename": "USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw"
   },
   "scenarios": [
     {
@@ -38,7 +38,7 @@
         "surface_elevation": null,
         "tariff_filename": null,
         "timesteps_per_hour": 1,
-        "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+        "weather_filename": "USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw"
       },
       "geometry": {
         "type": "Point",

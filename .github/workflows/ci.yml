@@ -113,7 +113,6 @@ jobs:
         if: ${{ failure() }}
         run: |
           echo "Maybe these logs will help?"
-          free -tm
           ls -alt $GITHUB_WORKSPACE
           echo "============================================ stdout.log ========================================="
           find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
