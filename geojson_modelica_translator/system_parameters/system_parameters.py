@@ -224,7 +224,7 @@ class SystemParameters(object):
         :return: list of inputs
         """
         list_inputs = []
-        if type(inputs) is dict and len(inputs) != 0:
+        if isinstance(inputs, dict) and len(inputs) != 0:
             list_inputs.append(inputs)
         else:
             list_inputs = inputs
@@ -613,8 +613,8 @@ class SystemParameters(object):
         latitude = reopt_data['scenario_report']['location']['latitude_deg']
         if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
             self.param_template['photovoltaic_panels'] = self.process_pv(
-                    reopt_data['scenario_report']['distributed_generation']['solar_pv'],
-                    latitude
+                reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                latitude
             )
 
         # Wind (add if results are found in scenario_report)
