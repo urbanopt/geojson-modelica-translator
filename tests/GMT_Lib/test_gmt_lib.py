@@ -54,13 +54,13 @@ env = Environment(
 )
 
 COOLING_PLANT_PARAMS = {
-    'chiller_performance':  'Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes',
+    'chiller_performance': 'Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes',
     'plant_type': 'Buildings.Experimental.DHC.CentralPlants.Cooling.Plant',
     'delta_temp_approach': 3,
-    'chw_mass_flow_nominal':  18.3,
+    'chw_mass_flow_nominal': 18.3,
     'chw_pressure_drop_nominal': 44800,
     'chiller_water_flow_minimum': 0.03,
-    'cw_mass_flow_nominal':  34.7,
+    'cw_mass_flow_nominal': 34.7,
     'cw_pressure_drop_nominal': 46200,
     'fan_power': 4999,
     'chw_temp_setpoint': 281.15,

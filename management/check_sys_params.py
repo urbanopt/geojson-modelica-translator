@@ -21,6 +21,7 @@ BASELINE_PACKAGE = 'baseline_package'
 BASELINE_GEOJSON = 'baseline_geojson.json'
 BASELINE_SYS_PARAMS = 'baseline_sys_params.json'
 BASELINE_TIME_SERIES = 'baseline_time_series.mos'
+BASELINE_WEATHER_FILE = 'baseline_weather.mos'
 
 SYS_PARAMS_SCHEMA_PATH = Path(__file__).parent.parent / 'geojson_modelica_translator' / 'system_parameters' / 'schema.json'
 
@@ -222,7 +223,7 @@ def check_sys_params(v, vv, output_file, log_file):
         # some setup in the temp-dir
         BASELINE_GEOJSON_PATH = f'{tmpdirname}/{BASELINE_GEOJSON}'
         BASELINE_SYS_PARAMS_PATH = f'{tmpdirname}/{BASELINE_SYS_PARAMS}'
-        for baseline_file_name in [BASELINE_SYS_PARAMS, BASELINE_GEOJSON, BASELINE_TIME_SERIES]:
+        for baseline_file_name in [BASELINE_SYS_PARAMS, BASELINE_GEOJSON, BASELINE_TIME_SERIES, BASELINE_WEATHER_FILE]:
             source_path = DATA_DIR / baseline_file_name
             destination_path = f'{tmpdirname}/{baseline_file_name}'
             logger.debug(f'Copying {source_path} to {destination_path}')
