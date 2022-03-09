@@ -36,12 +36,20 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+import logging
 import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+)
 
 
 class ModelBase(object):
@@ -143,20 +151,6 @@ class ModelBase(object):
         # add to the list of files to include in the package
         if not do_not_add_to_list:
             self.template_files_to_include.append(Path(save_file_name).stem)
-
-    def modelica_path(self, filename):
-        """Write a modelica path string for a given filename"""
-        p = Path(filename)
-        if p.suffix == ".idf":
-            # TODO: This sucks. Not sucking would be good.
-            # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
-            # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
-                                             / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
-                                             / p.name)
-        elif p.suffix == ".epw" or p.suffix == ".mos":
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
-        return outputname
 
     @property
     def instance_template_path(self):

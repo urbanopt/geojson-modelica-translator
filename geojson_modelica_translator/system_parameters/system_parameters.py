@@ -37,13 +37,22 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import json
+import logging
 import os
 from copy import deepcopy
 from pathlib import Path
 
 import pandas as pd
+import requests
 from jsonpath_ng.ext import parse
 from jsonschema.validators import _LATEST_VERSION as LatestValidator
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+)
 
 
 class SystemParameters(object):
@@ -63,7 +72,7 @@ class SystemParameters(object):
         {"json_path": "$.buildings.*[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
         {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"},
         {"json_path": "$.buildings.*[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
-        {"json_path": "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"},
+        {"json_path": "$.district_system.default.central_cooling_plant_parameters.weather_filepath"},
         {"json_path": "$.combined_heat_and_power_systems.*.performance_data_path"}
     ]
 
@@ -219,13 +228,71 @@ class SystemParameters(object):
 
         return results
 
+    def download_weatherfile(self, filename, save_directory: str) -> str:
+        """Download the MOS or EPW weather file from energyplus.net
+
+        This routine downloads the weather file, either an MOS or EPW, which is selected based
+        on the file extension.
+
+            filename, str: Name of weather file to download, e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos
+            save_directory, str: Location where to save the downloaded content. The path must exist before downloading.
+        """
+        p_download = Path(filename)
+        p_save = Path(save_directory)
+
+        if not p_save.exists():
+            raise Exception(f"Save path for the weatherfile does not exist, {str(p_save)}")
+
+        # get country & state from weather file name
+        try:
+            weatherfile_location_info = p_download.parts[-1].split("_")
+            weatherfile_country = weatherfile_location_info[0]
+            weatherfile_state = weatherfile_location_info[1]
+        except IndexError:
+            raise Exception(
+                "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
+                )
+
+        # download mos file from energyplus website
+        mos_weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
+            f'{weatherfile_country}/{weatherfile_state}/{p_download.stem}/{p_download.name}'
+        logger.debug(f"Downloading weather file from {mos_weatherfile_url}")
+        try:
+            mos_weatherfile_data = requests.get(mos_weatherfile_url)
+        except requests.exceptions.RequestException as e:
+            raise Exception(
+                f"Could not download weather file: {mos_weatherfile_url}"
+                "\nAt this time we only support USA weather stations"
+                f"\n{e}"
+            )
+
+        # Save mos weatherfile into the requested path.
+        outputname = p_save / p_download.name
+        open(outputname, 'wb').write(mos_weatherfile_data.content)
+        logger.debug(f"Saved weather file to {outputname}")
+
+        # Count lines in downloaded weather file to make sure
+        # that at least 8760 lines have been downloaded. This is
+        # commented out for now since wc -l won't work on windows.
+        # file_lines = Popen(['wc', '-l', outputname], stdout=PIPE, stderr=PIPE)
+        # result, err = file_lines.communicate()
+        # if file_lines.returncode != 0:
+        #     raise IOError(err)
+        # lines_in_weather_file = int(result.strip().split()[0])
+        # logger.debug(f"Weather file {outputname} has {lines_in_weather_file} lines")
+        # if lines_in_weather_file < 8760:  # There should always be header lines above the 8760 data lines
+        #     raise Exception(f"Weather file {p_download.name} does not contain 8760 lines.")
+        # modelica_path = f"modelica://Buildings/Resources/weatherdata/{p_download.name}"
+
+        return outputname
+
     def make_list(self, inputs):
         """ Ensure that format of inputs is a list
         :param inputs: object, inputs (list or dict)
         :return: list of inputs
         """
         list_inputs = []
-        if type(inputs) is dict and len(inputs) != 0:
+        if isinstance(inputs, dict) and len(inputs) != 0:
             list_inputs.append(inputs)
         else:
             list_inputs = inputs
@@ -577,7 +644,8 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :return building, updated building list object
         """
-        feature_opt_file = os.path.join(scenario_dir, building['geojson_id'], 'feature_reports', 'feature_optimization.json')
+        feature_opt_file = os.path.join(
+            scenario_dir, building['geojson_id'], 'feature_reports', 'feature_optimization.json')
         if (os.path.exists(feature_opt_file)):
             with open(feature_opt_file, "r") as f:
                 reopt_data = json.load(f)
@@ -587,7 +655,8 @@ class SystemParameters(object):
 
         # PV
         if reopt_data['distributed_generation'] and reopt_data['distributed_generation']['solar_pv']:
-            building['photovoltaic_panels'] = self.process_pv(reopt_data['distributed_generation']['solar_pv'], latitude)
+            building['photovoltaic_panels'] = self.process_pv(
+                reopt_data['distributed_generation']['solar_pv'], latitude)
 
         return building
 
@@ -614,8 +683,8 @@ class SystemParameters(object):
         latitude = reopt_data['scenario_report']['location']['latitude_deg']
         if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
             self.param_template['photovoltaic_panels'] = self.process_pv(
-                    reopt_data['scenario_report']['distributed_generation']['solar_pv'],
-                    latitude
+                reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                latitude
             )
 
         # Wind (add if results are found in scenario_report)
@@ -670,11 +739,13 @@ class SystemParameters(object):
         self.sys_param_filename = sys_param_filename
 
         if model_type == 'time_series':
+            # TODO: delineate between time_series and time_series_mft
             if microgrid:
                 param_template_path = Path(__file__).parent / 'time_series_microgrid_template.json'
             else:
                 param_template_path = Path(__file__).parent / 'time_series_template.json'
         elif model_type == 'spawn':
+            # TODO: We should support spawn as well
             pass
         else:
             raise Exception(f"No template found. {model_type} is not a valid template")
@@ -693,7 +764,7 @@ class SystemParameters(object):
 
         measure_list = []
 
-        # Grab filepaths from sdk output
+        # Grab building load filepaths from sdk output
         for thing in scenario_dir.iterdir():
             if thing.is_dir():
                 for item in thing.iterdir():
@@ -703,14 +774,32 @@ class SystemParameters(object):
                         elif str(item).endswith('_export_modelica_loads'):
                             measure_list.append(Path(item) / "modelica.mos")
 
-        # Parse the FeatureFile
+        # Get each feature id from the SDK FeatureFile
         building_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
+            weather_filename = sdk_input['project']['weather_filename']
+            weather_path = self.sys_param_filename.parent / weather_filename
             for feature in sdk_input['features']:
                 # KAF change: this should only gather features of type 'Building'
                 if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
+
+        # Check if the weatherfile exists, if not, try to download
+        if not weather_path.exists():
+            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # Now check again if the file exists, error if not!
+        if not weather_path.exists():
+            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
+
+        # also download the MOS -- this is the file that will
+        # be set in the sys param file, so make the weather_path object this one
+        weather_path = weather_path.with_suffix('.mos')
+        if not weather_path.exists():
+            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # Now check again if the file exists, error if not!
+        if not weather_path.exists():
+            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
 
         # Make sys_param template entries for each feature_id
         building_list = []
@@ -734,20 +823,32 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
+                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(
+                        building_nominal_mfrt)
                 district_nominal_mfrt += building_nominal_mfrt
 
-        # Remove template buildings that weren't used or don't have successful simulations, with modelica outputs
-        building_list = [x for x in building_list if not x['load_model_parameters']['time_series']['filepath'].endswith("populated")]
+        # Remove template buildings that weren't used or don't have successful simulations with modelica outputs
+        # FIXME: Another place where we only support time series for now.
+        building_list = [x for x in building_list if not x['load_model_parameters']
+                         ['time_series']['filepath'].endswith("populated")]
         if len(building_list) == 0:
             raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
 
+        # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(district_nominal_mfrt.round(3))
+            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(
+                district_nominal_mfrt.round(3))
             if microgrid:
                 building = self.process_building_microgrid_inputs(building, scenario_dir)
 
+        # Add all buildings to the sys-param file
         self.param_template['buildings']['custom'] = building_list
+
+        # Update district sys-param settings
+        # Parens are to allow the line break
+        (self.param_template['district_system']['default']
+            ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
+
         if microgrid:
             self.process_microgrid_inputs(scenario_dir)
 
