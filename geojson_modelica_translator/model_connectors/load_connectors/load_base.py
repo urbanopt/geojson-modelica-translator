@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
+from geojson_modelica_translator.utils import convert_c_to_k
 
 
 class LoadBase(ModelBase):
@@ -76,7 +77,6 @@ class LoadBase(ModelBase):
             if self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect") is not None:
                 self.ets_template_data = {
-                    # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
                     "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heat_flow_nominal"
                     ),
@@ -98,12 +98,12 @@ class LoadBase(ModelBase):
                     "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heat_exchanger_primary_pressure_drop"
                     ),
-                    "cooling_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
+                    "cooling_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
-                    ) + 273.15,
-                    "heating_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
+                    )),
+                    "heating_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
-                    ) + 273.15,
+                    )),
                     "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.delta_temp_chw_building"
                     ),

@@ -170,6 +170,8 @@ class District:
         districts_package = PackageParser.new_from_template(self._scaffold.districts_path.files_dir, "Districts", [
             'DistrictEnergySystem'], within=f"{self._scaffold.project_name}")
         districts_package.save()
+
         root_package = PackageParser(self._scaffold.project_path)
-        root_package.add_model('Districts')
-        root_package.save()
+        if 'Districts' not in root_package.order:
+            root_package.add_model('Districts')
+            root_package.save()

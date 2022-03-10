@@ -240,8 +240,8 @@
           "type": "string",
           "enum": [
             "rc",
-            "ddm",
             "time_series",
+            "time_series_massflow_temperature",
             "spawn"
           ]
         },
