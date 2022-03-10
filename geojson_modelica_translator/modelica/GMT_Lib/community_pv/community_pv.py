@@ -1,8 +1,10 @@
 from pathlib import Path
+
 # from geojson_modelica_translator.model_connectors.districts.district import (
 #     render_template
 # )
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
+
 # from geojson_modelica_translator.system_parameters.system_parameters import (
 #     SystemParameters
 # )
@@ -22,7 +24,7 @@ class CommunityPV(ModelBase):
                     "$.photovoltaic_panels.default.central_heating_plant_parameters.chp_installed"
                 ),
             }
-        # render template to final modelica file
+    # render template to final modelica file
         pv_template = self.template_env.get_template("PVPanels.mot")
             self.run_template(
                 template=pv_template,
