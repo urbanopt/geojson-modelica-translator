@@ -1,7 +1,7 @@
-within GMT_Lib.DHC.Components.CentralPlant.Cooling.CoolingPlant;
+within GMT_Lib.DHC.Components.Plants.Cooling.CoolingPlant;
 model CoolingPlant
   "Isolated central cooling plant template model."
-  extends Buildings.Experimental.DHC.CentralPlants.Cooling.Examples.Plant(
+  extends Buildings.Experimental.DHC.Plants.Cooling.Examples.ElectricChillerParallel(
   redeclare {$ chiller_performance $} perChi(
     mEva_flow_nominal=mCHW_flow_nominal,
     mCon_flow_nominal=mCW_flow_nominal,
@@ -31,8 +31,8 @@ model CoolingPlant
     Documentation(
       info="<html>
       <p>This model validates the district central cooling plant template model implemented in
-<a href=\"GMT_Lib.DHC.Components.CentralPlants.Cooling.CoolingPlant.mo\">
-GMT_Lib.DHC.Components.CentralPlants.Cooling.CoolingPlant.mot</a>.
+<a href=\"GMT_Lib.DHC.Components.Plants.Cooling.CoolingPlant.mo\">
+GMT_Lib.DHC.Components.Plants.Cooling.CoolingPlant.mot</a>.
 </p>
 </html>",
       revisions="<html>
