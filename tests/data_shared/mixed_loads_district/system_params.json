@@ -12,7 +12,7 @@
           "valve_pressure_drop": 6000,
           "heat_exchanger_secondary_pressure_drop": 500,
           "heat_exchanger_primary_pressure_drop": 500,
-          "cooling_supply_water_temperature_building": 7,
+          "cooling_supply_water_temperature_building": 6,
           "heating_supply_water_temperature_building": 50,
           "booster_heater": false,
           "ets_generation": "Fourth Generation",
@@ -53,7 +53,7 @@
             "valve_pressure_drop": 6000,
             "heat_exchanger_secondary_pressure_drop": 500,
             "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
+            "cooling_supply_water_temperature_building": 6,
             "heating_supply_water_temperature_building": 50,
             "booster_heater": false,
             "ets_generation": "Fourth Generation",
@@ -74,8 +74,8 @@
         "load_model_parameters": {
           "spawn": {
             "idf_filename": "../RefBldgSmallOfficeNew2004_Chicago.idf",
-            "epw_filename": "../USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
-            "mos_weather_filename": "../USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "epw_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw",
+            "mos_weather_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
@@ -114,7 +114,7 @@
             "nominal_mass_flow_building": 0.5,
             "nominal_mass_flow_district": 0.5,
             "valve_pressure_drop": 6000,
-            "cooling_supply_water_temperature_building": 7,
+            "cooling_supply_water_temperature_building": 6,
             "heating_supply_water_temperature_building": 50,
             "delta_temp_hw_district": 19,
             "delta_temp_hw_building": 14,
@@ -133,7 +133,7 @@
         "load_model_parameters": {
           "rc": {
             "order": 4,
-            "mos_weather_filename": "../USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "mos_weather_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
@@ -153,7 +153,7 @@
             "valve_pressure_drop": 6000,
             "heat_exchanger_secondary_pressure_drop": 500,
             "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
+            "cooling_supply_water_temperature_building": 6,
             "heating_supply_water_temperature_building": 50,
             "delta_temp_chw_building": 5,
             "delta_temp_chw_district": 8,
@@ -171,7 +171,7 @@
   "district_system": {
     "default": {
       "central_cooling_plant_parameters": {
-        "mos_wet_bulb_filename": "Buildings/resources/weatherdata/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+        "weather_filepath": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,

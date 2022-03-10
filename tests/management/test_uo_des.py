@@ -44,7 +44,7 @@ class CLIIntegrationTest(TestCase):
 
     def test_cli_makes_model(self):
         # WARNING: This test assumes test_cli_builds_sys_params has already run
-        # successfully! This test should be refactored to avoid this
+        # successfully! This test should be refactored to avoid this.
 
         # -- Setup
         # first verify the package can be generated without the CLI (ie verify our

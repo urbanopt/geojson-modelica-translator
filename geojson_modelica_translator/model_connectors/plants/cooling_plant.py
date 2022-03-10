@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -37,6 +37,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
@@ -64,12 +65,24 @@ class CoolingPlant(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        mos_wet_bulb_filename = self.system_parameters.get_param(
-            "$.district_system.default.central_cooling_plant_parameters.mos_wet_bulb_filename"
-        )
+        weather_filepath = Path(self.system_parameters.get_param(
+            "$.district_system.default.central_cooling_plant_parameters.weather_filepath"
+        ))
 
-        if mos_wet_bulb_filename is None:
-            raise FileNotFoundError('Cooling plant\'s mos_wet_bulb_filename was not provided')
+        # verify that the weather file exists
+        if not weather_filepath.exists():
+            raise FileNotFoundError(
+                f"Missing MOS weather file for CoolingPlant: {str(weather_filepath)}")
+        else:
+            # copy the weather file to resources for the Plant and
+            # update the string that will be in the .mo file (weather_file_modelica_string)
+            shutil.copy(
+                str(weather_filepath),
+                os.path.join(scaffold.plants_path.resources_dir, weather_filepath.name)
+            )
+            weather_file_modelica_string = f'modelica://{scaffold.project_name}/' \
+                                           f'{scaffold.plants_path.resources_relative_dir}/' \
+                                           f'{weather_filepath.name}'
 
         template_data = {
             "nominal_values": {
@@ -129,10 +142,7 @@ class CoolingPlant(PlantBase):
                 ),
             },
             "wet_bulb_calc": {
-                "mos_wet_bulb_filename": mos_wet_bulb_filename,
-                "filename": Path(mos_wet_bulb_filename).name,
-                "path": Path(mos_wet_bulb_filename).parent,
-                "modelica_path": self.modelica_path(mos_wet_bulb_filename),
+                "modelica_path": weather_file_modelica_string,
             },
         }
 

@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -36,6 +36,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 import json
+import os
 import unittest
 from pathlib import Path
 from shutil import rmtree
@@ -49,6 +50,7 @@ class SystemParametersTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
+        self.weather_dir = self.output_dir / 'weatherfiles'
         self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
         self.microgrid_scenario_dir = self.data_dir / 'sdk_microgrid_output_skeleton' / 'run' / 'reopt_scenario'
         self.microgrid_feature_file = self.data_dir / 'sdk_microgrid_output_skeleton' / 'example_project.json'
@@ -59,6 +61,9 @@ class SystemParametersTest(unittest.TestCase):
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
+        if self.weather_dir.exists():
+            rmtree(self.weather_dir)
+        self.weather_dir.mkdir(parents=True)
         if self.microgrid_output_dir.exists():
             rmtree(self.microgrid_output_dir)
         self.microgrid_output_dir.mkdir(parents=True)
@@ -239,7 +244,8 @@ class SystemParametersTest(unittest.TestCase):
                 scenario_dir=missing_scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
-        self.assertIn(f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
+        self.assertIn(
+            f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
         with self.assertRaises(Exception) as context:
             missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
             sp = SystemParameters()
@@ -248,7 +254,8 @@ class SystemParametersTest(unittest.TestCase):
                 scenario_dir=self.scenario_dir,
                 feature_file=missing_feature_file,
                 sys_param_filename=output_sys_param_file)
-        self.assertIn(f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
+        self.assertIn(
+            f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
         with self.assertRaises(Exception) as context:
@@ -325,3 +332,31 @@ class SystemParametersTest(unittest.TestCase):
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
         self.assertIn(f"No template found. {bogus_template_type} is not a valid template", str(context.exception))
+
+    def test_download_mos(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+        weather_filename = 'USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw'
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        self.assertTrue(os.path.exists(os.path.join(self.weather_dir, weather_filename)))
+
+        weather_filename = 'USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos'
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        self.assertTrue(os.path.exists(os.path.join(self.weather_dir, weather_filename)))
+
+    def test_download_invalid_savepath(self):
+        sdp = SystemParameters()
+        weather_filename = 'irrelevant weather file'
+        local_path = os.path.join('not', 'a', 'real', 'path')
+        with self.assertRaises(Exception) as context:
+            sdp.download_weatherfile(weather_filename, local_path)
+        self.assertEqual(f"Save path for the weatherfile does not exist, {local_path}", str(context.exception))
+
+    def test_download_invalid_epw(self):
+        sdp = SystemParameters()
+        weather_filename = 'invalid-location.epw'
+        with self.assertRaises(Exception) as context:
+            sdp.download_weatherfile(weather_filename, self.weather_dir)
+        self.assertEqual(
+            "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)",
+            str(context.exception))

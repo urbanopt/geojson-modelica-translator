@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -225,4 +225,4 @@ def run_model(modelica_project: Path):
     if (run_path.parent / f'{project_name}_results' / f'{project_name}_Districts_DistrictEnergySystem_result.mat').exists():
         print(f"\nModelica model {project_name} ran successfully")
     else:
-        raise SystemExit(f"{project_name} failed. Please check your inputs and try again.")
+        raise SystemExit(f"\n{project_name} failed. Check the error log at {project_name}_results/stdout.log for more info.")
