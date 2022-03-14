@@ -293,7 +293,7 @@
   ],
   "combined_heat_and_power_systems": [
     {
-      "fuel_type": "natural_gas",
+      "fuel_type": "Gas",
       "single_electricity_generation_capacity": 265.0,
       "performance_data_path": "",
       "number_of_machines": 1
