@@ -85,6 +85,7 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
+# FIXME: this should be marked v9, once the PR that creates the v9 marker gets merged
 @pytest.mark.mbl_v8
 @pytest.mark.simulation
 def test_simulate_community_pv():
