@@ -43,6 +43,9 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
     CommunityPV
 )
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
@@ -90,18 +93,13 @@ def test_generate_cooling_plant(snapshot):
 @pytest.mark.simulation
 def test_simulate_community_pv():
     # -- Setup
-    # template_path = (COMMUNITY_PV_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
-    # output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
+
     package_output_dir = PARENT_DIR / 'output' / 'CommunityPV'
     package_output_dir.mkdir(parents=True, exist_ok=True)
-    # with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
-    #     f.write(output)
-
-    # copy over the script
-    # copyfile(COOLING_PLANT_PATH / 'CoolingPlant.mos', package_output_dir / 'CoolingPlant.mos')
+    sys_params = SystemParameters(MICROGRID_PARAMS)
 
     # -- Act
-    cpv = CommunityPV(MICROGRID_PARAMS)
+    cpv = CommunityPV(sys_params)
     success, _ = cpv.build_from_template(package_output_dir)
 
     # -- Assert
