@@ -14,15 +14,10 @@ class CommunityPV(SimpleGMT):
         # There can be multiple community pv arrays so we need to loop over them
         for index, pvarray in enumerate(community_pv_params):
             pv_template_params = {
-                f'net_surface_area_m2{index}': f'{pvarray}.net_surface_area',
-                }
-        self.to_modelica(output_dir, 'PVPanels', pv_template_params)
-
-        # # render template to final modelica file
-        #     pv_template = self.template_env.get_template("PVPanels.mot")
-        #     self.run_template(
-        #         template=pv_template,
-        #         save_file_name=output_dir / f"PVPanels_{index}.mo",
-        #         project_name=output_dir.stem,
-        #         data=pv_template_params
-        #     )
+                f'array_{index}_net_surface_area_m2': f'{pvarray}.net_surface_area',
+                f'array_{index}_nominal_voltage_V': f'{pvarray}.nominal_voltage',
+                f'array_{index}_surface_azimuth_deg': f'{pvarray}.surface_azimuth',
+                f'array_{index}_surface_tilt_deg': f'{pvarray}.surface_tilt',
+            }
+        # render template to final modelica file
+        self.to_modelica(output_dir=output_dir, model_name='PVPanels', param_data=pv_template_params)
