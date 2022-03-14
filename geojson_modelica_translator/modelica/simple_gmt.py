@@ -5,8 +5,11 @@ from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 class SimpleGMT(ModelBase):
     """Base class for simple GMT models."""
-    def __init__(self) -> None:
-        pass
+    def __init__(self, system_parameters, template_dir):
+        """
+        Initialize the SimpleGMT object.
+        """
+        super().__init__(system_parameters, template_dir)
 
     def to_modelica(self, output_dir: Path, model_name: str, param_data: dict) -> None:
         """
