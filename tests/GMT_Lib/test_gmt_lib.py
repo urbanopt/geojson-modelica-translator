@@ -39,12 +39,16 @@ from pathlib import Path
 from shutil import copyfile
 
 import pytest
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
+    CommunityPV
+)
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
 GMT_LIB_PATH = PARENT_DIR.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'
 COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'CentralPlant' / 'Cooling'
+MICROGRID_PARAMS = PARENT_DIR.parent / 'data_shared' / 'system_params_microgrid_example.json'
 
 env = Environment(
     loader=FileSystemLoader(GMT_LIB_PATH),
@@ -79,6 +83,28 @@ def test_generate_cooling_plant(snapshot):
 
     # -- Assert
     assert actual == snapshot
+
+
+@pytest.mark.mbl_v8
+@pytest.mark.simulation
+def test_simulate_community_pv():
+    # -- Setup
+    # template_path = (COMMUNITY_PV_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
+    # output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
+    package_output_dir = PARENT_DIR / 'output' / 'CommunityPV'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    # with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
+    #     f.write(output)
+
+    # copy over the script
+    # copyfile(COOLING_PLANT_PATH / 'CoolingPlant.mos', package_output_dir / 'CoolingPlant.mos')
+
+    # -- Act
+    cpv = CommunityPV(MICROGRID_PARAMS)
+    success, _ = cpv.build_from_template(package_output_dir)
+
+    # -- Assert
+    assert success is True
 
 
 @pytest.mark.mbl_v8
