@@ -1,10 +1,9 @@
 within {{ project_name }}.PVPanels;
-{% raw %}model PVPanels
+model {{ data['model_name']}}{% raw %}
   "Isolated PV panels template model for GMT level 1 testing"
 
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.PVPanels(
-  {% endraw %}
-  A={{ data["net_surface_area_m2"] }},
+  {% endraw %}A={{ data["net_surface_area_m2"] }},
   V_nominal={{ data["nominal_voltage_V"] }},
   til={{ data["surface_tilt_deg"] }},
   azi={{ data["surface_azimuth_deg"] }}
@@ -35,5 +34,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end PVPanels;
 {% endraw %}
+end {{ data['model_name']}};
