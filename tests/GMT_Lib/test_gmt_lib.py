@@ -42,6 +42,9 @@ import pytest
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
     CommunityPV
 )
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.wind_turbines import (
+    WindTurbine
+)
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -89,7 +92,7 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
-# FIXME: this should be marked v9, once the PR that creates the v9 marker gets merged
+# FIXME: this should be marked v9, once PR #447 gets merged
 # @pytest.mark.mbl_v9
 @pytest.mark.simulation
 def test_simulate_community_pv():
@@ -130,4 +133,26 @@ def test_simulate_cooling_plant():
     success, _ = runner.run_in_docker(package_output_dir / 'CoolingPlant.mos', package_output_dir, 'Cooling')
 
     # -- Assert
+    assert success is True
+
+
+# FIXME: this should be marked v9, once PR #447 gets merged
+# @pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_simulate_wind_turbine():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'WindTurbine'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = WindTurbine(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'WindTurbine0.mo')
+
+    # -- Assert
+    assert linecount(package_output_dir / 'WindTurbine0.mo') > 20
     assert success is True

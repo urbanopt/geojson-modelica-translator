@@ -1,14 +1,13 @@
 within {{ project_name }}.WindTurbine;
-model WindTurbine
+model {{ data["model_name"] }}{% raw %}
   "Isolated wind turbine template model for GMT level 1 testing"
 
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine(
-  {% replace %}
-  scale={{["scale"] }}
-  h={{ ["h"] }},
-  table[;,2]={{ ["table"] }},
-  V_nominal={{ ["V_nominal"] }});
-  {% end_replace %}
+  {% endraw %}scale={{ data["scaling_factor"] }}
+  h={{ data["height_over_ground"] }},
+  V_nominal={{ data["nominal_voltage"] }},
+  table[:,2]={{ data["power_curve"] }}
+  );{% raw %}
 annotation (
     Icon(
       coordinateSystem(
@@ -34,4 +33,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end WindTurbine;
+{% endraw %}end {{ data['model_name'] }};
