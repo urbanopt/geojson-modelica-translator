@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from geojson_modelica_translator.modelica.simple_gmt import SimpleGMT
+from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 
 
-class CommunityPV(SimpleGMT):
+class CommunityPV(SimpleGMTBase):
     def __init__(self, system_parameters):
         self.system_parameters = system_parameters
         self.template_dir = Path(__file__).parent
