@@ -18,6 +18,7 @@ class CommunityPV(SimpleGMTBase):
                 'nominal_voltage_V': pvarray["nominal_voltage"],
                 'surface_azimuth_deg': pvarray["surface_azimuth"],
                 'surface_tilt_deg': pvarray["surface_tilt"],
+                'model_name': f"PVPanels{index}",
             }
             # render template to final modelica file
             self.to_modelica(output_dir=output_dir, model_name='PVPanels', param_data=pv_params, iteration=index)
