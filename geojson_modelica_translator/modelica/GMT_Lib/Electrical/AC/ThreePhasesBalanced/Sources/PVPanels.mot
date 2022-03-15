@@ -7,8 +7,7 @@ model {{ data['model_name'] }}{% raw %}
   V_nominal={{ data["nominal_voltage_V"] }},
   til={{ data["surface_tilt_deg"] }},
   azi={{ data["surface_azimuth_deg"] }}
-  );
-  {% raw %}
+  );{% raw %}
 annotation (
     Icon(
       coordinateSystem(
@@ -34,5 +33,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-{% endraw %}
-end {{ data['model_name'] }};
+{% endraw %}end {{ data['model_name'] }};
