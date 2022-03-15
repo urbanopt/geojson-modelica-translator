@@ -1,14 +1,12 @@
 within {{ project_name }}.ACLine;
-model ACLine
+model {{ data["model_name"] }}{% raw %}
   "Isolated AC distribution line template model for GMT level 1 testing"
 
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine(
-  {% replace %}
-  l={{["l"] }}
-  perLin={{ ["commercialCable"] }},
-  P_nominal={{ ["P_nominal"] }},
-  V_nominal={{ ["V_nominal"] }});
-  {% end_replace %}
+  {% endraw %}l={{ data["length"] }}
+  perLin={{ data["commercial_line_type"] }},
+  P_nominal={{ data["ampacity"] }},
+  V_nominal={{ data["nominal_voltage"] }});{% raw %}
 annotation (
     Icon(
       coordinateSystem(
@@ -34,4 +32,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end ACLine;
+{% endraw %}end {{ data['model_name'] }};

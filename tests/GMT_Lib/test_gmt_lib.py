@@ -39,6 +39,9 @@ from pathlib import Path
 from shutil import copyfile
 
 import pytest
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Lines.Lines import (
+    DistributionLines
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
     CommunityPV
 )
@@ -155,4 +158,26 @@ def test_simulate_wind_turbine():
 
     # -- Assert
     assert linecount(package_output_dir / 'WindTurbine0.mo') > 20
+    assert success is True
+
+
+# FIXME: this should be marked v9, once PR #447 gets merged
+# @pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_simulate_distribution_lines():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'DistributionLines'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = DistributionLines(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'ACLine0.mo')
+
+    # -- Assert
+    assert linecount(package_output_dir / 'ACLine0.mo') > 20
     assert success is True
