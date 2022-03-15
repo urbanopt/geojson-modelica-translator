@@ -1,5 +1,5 @@
 within {{ project_name }}.PVPanels;
-model {{ data['model_name']}}{% raw %}
+model {{ data['model_name'] }}{% raw %}
   "Isolated PV panels template model for GMT level 1 testing"
 
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.PVPanels(
@@ -35,4 +35,4 @@ First implementation.
 </ul>
 </html>"));
 {% endraw %}
-end {{ data['model_name']}};
+end {{ data['model_name'] }};
