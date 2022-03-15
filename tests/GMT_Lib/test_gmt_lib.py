@@ -103,8 +103,12 @@ def test_simulate_community_pv():
     cpv = CommunityPV(sys_params)
     cpv.build_from_template(package_output_dir)
 
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'PVPanels0.mo')
+
     # -- Assert
     assert linecount(package_output_dir / 'PVPanels1.mo') > 20
+    assert success is True
 
 
 @pytest.mark.mbl_v8
