@@ -113,7 +113,9 @@ def test_simulate_community_pv():
     success, _ = runner.run_in_docker(package_output_dir / 'PVPanels0.mo')
 
     # -- Assert
+    # Did the mofile get created?
     assert linecount(package_output_dir / 'PVPanels1.mo') > 20
+    # Did the simulation run?
     assert success is True
 
 
@@ -157,7 +159,9 @@ def test_simulate_wind_turbine():
     success, _ = runner.run_in_docker(package_output_dir / 'WindTurbine0.mo')
 
     # -- Assert
+    # Did the mofile get created?
     assert linecount(package_output_dir / 'WindTurbine0.mo') > 20
+    # Did the simulation run?
     assert success is True
 
 
@@ -179,5 +183,7 @@ def test_simulate_distribution_lines():
     success, _ = runner.run_in_docker(package_output_dir / 'ACLine0.mo')
 
     # -- Assert
+    # Did the mofile get created?
     assert linecount(package_output_dir / 'ACLine0.mo') > 20
+    # Did the simulation run?
     assert success is True
