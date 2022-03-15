@@ -1,0 +1,37 @@
+within {{ project_name }}.ACLine;
+model ACLine
+  "Isolated AC distribution line template model for GMT level 1 testing"
+
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine(
+  {% replace %}
+  l={{["l"] }}
+  perLin={{ ["commercialCable"] }},
+  P_nominal={{ ["P_nominal"] }},
+  V_nominal={{ ["V_nominal"] }});
+  {% end_replace %}
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the AC distribution line template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 8, 2022 by Mingzhe Liu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end ACLine;

@@ -1,0 +1,8 @@
+{
+  "distribution_line_parameters": {
+    "l": 2000,
+    "P_nominal": 7000,
+    "V_nominal": 480,
+    "commercialCable": "Buildings.Electrical.Transmission.LowVoltageCables.Cu95"
+  }
+}

@@ -1,0 +1,43 @@
+within {{ project_name }}.RenewableSources;
+model RenewableSources
+  "Isolated wind turbine template model for GMT level 1 testing"
+
+  extends Buildings.Electrical.Examples.RenewableSources(
+  {% replace %}
+  scale={{["scale"] }}
+  h={{ ["h"] }},
+  table[;,2]={{ ["table"] }},
+  V_nominal={{ ["V_nominal"] }},
+  A={{["A"] }}
+  til={{ ["til"] }},
+  azi={{ ["azi"] }},
+  l={{ ["l"] }},
+  P_nominal={{["P_nominal"] }}
+  commercialCable={{ ["Buildings.Electrical.Transmission.LowVoltageCables.Cu20"] }});
+  {% end_replace %}
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the wind turbine template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 8, 2022 by Mingzhe Liu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end RenewableSources;
