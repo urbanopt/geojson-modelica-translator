@@ -46,6 +46,7 @@ from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
+from geojson_modelica_translator.utils import linecount
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
@@ -100,10 +101,10 @@ def test_simulate_community_pv():
 
     # -- Act
     cpv = CommunityPV(sys_params)
-    success, _ = cpv.build_from_template(package_output_dir)
+    cpv.build_from_template(package_output_dir)
 
     # -- Assert
-    assert success is True
+    assert linecount(package_output_dir / 'PVPanels1.mo') > 20
 
 
 @pytest.mark.mbl_v8
