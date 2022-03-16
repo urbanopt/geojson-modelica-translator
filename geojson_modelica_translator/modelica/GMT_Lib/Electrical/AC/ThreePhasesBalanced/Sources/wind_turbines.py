@@ -25,7 +25,8 @@ class WindTurbine(SimpleGMTBase):
             # TODO: confirm that modelica chokes on a list of lists - ie comment this whole block out and see if the model will run.
             power_curve_string = '['
             for point in turbine_params["power_curve"]:
-                power_curve_string += f' {point[0]}, {point[1]};'
+                power_curve_string += f'{point[0]}, {point[1]}; '
+            power_curve_string = power_curve_string.rstrip()
             power_curve_string += ']'
             turbine_params["power_curve"] = power_curve_string
             # render template to final modelica file
