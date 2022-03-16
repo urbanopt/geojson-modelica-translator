@@ -26,7 +26,7 @@ class WindTurbine(SimpleGMTBase):
             power_curve_string = '['
             for point in turbine_params["power_curve"]:
                 power_curve_string += f'{point[0]}, {point[1]}; '
-            power_curve_string = power_curve_string.rstrip()
+            power_curve_string = power_curve_string.rstrip('; ')
             power_curve_string += ']'
             turbine_params["power_curve"] = power_curve_string
             # render template to final modelica file
