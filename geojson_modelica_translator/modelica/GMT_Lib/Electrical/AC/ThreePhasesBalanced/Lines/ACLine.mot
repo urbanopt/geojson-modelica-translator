@@ -3,7 +3,7 @@ model {{ data["model_name"] }}{% raw %}
   "Isolated AC distribution line template model for GMT level 1 testing"
 
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine(
-  {% endraw %}l={{ data["length"] }}
+  {% endraw %}l={{ data["length"] }},
   perLin={{ data["commercial_line_type"] }},
   P_nominal={{ data["ampacity"] }},
   V_nominal={{ data["nominal_voltage"] }});{% raw %}

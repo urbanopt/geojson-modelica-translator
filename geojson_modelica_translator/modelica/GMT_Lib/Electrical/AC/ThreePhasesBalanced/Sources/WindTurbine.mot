@@ -3,10 +3,12 @@ model {{ data["model_name"] }}{% raw %}
   "Isolated wind turbine template model for GMT level 1 testing"
 
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine(
-  {% endraw %}scale={{ data["scaling_factor"] }}
+  {% endraw %}scale={{ data["scaling_factor"] }},
   h={{ data["height_over_ground"] }},
   V_nominal={{ data["nominal_voltage"] }},
-  table[:,2]={{ data["power_curve"] }}
+  table[:,2]=
+    {{ data["power_curve"] }}
+    "Table of generated power (first column is wind speed (m/s), second column is power (W))",
   );{% raw %}
 annotation (
     Icon(

@@ -4,15 +4,15 @@ model RenewableSources
 
   extends Buildings.Electrical.Examples.RenewableSources(
   {% replace %}
-  scale={{["scale"] }}
+  scale={{["scale"] }},
   h={{ ["h"] }},
   table[;,2]={{ ["table"] }},
   V_nominal={{ ["V_nominal"] }},
-  A={{["A"] }}
+  A={{["A"] }},
   til={{ ["til"] }},
   azi={{ ["azi"] }},
   l={{ ["l"] }},
-  P_nominal={{["P_nominal"] }}
+  P_nominal={{["P_nominal"] }},
   commercialCable={{ ["Buildings.Electrical.Transmission.LowVoltageCables.Cu20"] }});
   {% end_replace %}
 annotation (
