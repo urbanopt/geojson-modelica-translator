@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "http://json-schema.org/openstudio-urban-modeling/building_properties.json#",
   "title": "URBANopt Building",
-  "description": "Schema for an URBANopt Building object",
+  "description": "Schema for an URBANopt Building object. Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT.",
   "type": "object",
   "properties": {
     "id": {
@@ -10,7 +10,7 @@
       "type": "string"
     },
     "project_id": {
-      "description": "Project which this feature belongs to.",
+      "description": "[unused] Project which this feature belongs to.",
       "type": "string"
     },
     "type": {
@@ -21,27 +21,27 @@
       ]
     },
     "source_name": {
-      "description": "Name of the original data source.",
+      "description": "[unused] Name of the original data source.",
       "type": "string"
     },
     "source_id": {
-      "description": "Id of the feature in original data source.",
+      "description": "[unused] Id of the feature in original data source.",
       "type": "string"
     },
     "name": {
-      "description": "Feature name.",
+      "description": "[unused] Feature name.",
       "type": "string"
     },
     "legal_name": {
-      "description": "Legal name used to identify this feature.",
+      "description": "[unused] Legal name used to identify this feature.",
       "type": "string"
     },
     "address": {
-      "description": "Street address.",
+      "description": "[unused] Street address.",
       "type": "string"
     },
     "building_status": {
-      "description": "Building status.",
+      "description": "[unused] Building status.",
       "type": "string",
       "enum": [
         "Proposed",
@@ -49,41 +49,41 @@
       ]
     },
     "detailed_model_filename": {
-      "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
+      "description": "[unused] Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
       "type": "string"
     },
     "weather_filename": {
-      "description": "Name of EPW weather file for this building.  Defaults to site's weather_filename.",
+      "description": "[unused] Name of EPW weather file for this building.  Defaults to site's weather_filename.",
       "type": "string"
     },
     "tariff_filename": {
-      "description": "Name of the tariff file for this building.  Defaults to site's tariff_filename.",
+      "description": "[unused] Name of the tariff file for this building.  Defaults to site's tariff_filename.",
       "type": "string"
     },
     "surface_elevation": {
-      "description": "The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.",
+      "description": "[unused] The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.",
       "type": "number"
     },
     "timesteps_per_hour": {
-      "description": "Number of timesteps per hour for energy simulations. Defaults to site's timesteps_per_hour.",
+      "description": "[unused] Number of timesteps per hour for energy simulations. Defaults to site's timesteps_per_hour.",
       "type": "integer",
       "minimum": 1,
       "maximum": 60
     },
     "begin_date": {
-      "description": "Date to begin simulation, format YYYY-MM-DD. Defaults to site's begin_date.",
+      "description": "[unused] Date to begin simulation, format YYYY-MM-DD. Defaults to site's begin_date.",
       "type": "string"
     },
     "end_date": {
-      "description": "Date to end simulation, format YYYY-MM-DD. Defaults to site's end_date.",
+      "description": "[unused] Date to end simulation, format YYYY-MM-DD. Defaults to site's end_date.",
       "type": "string"
     },
     "climate_zone": {
-      "description": "ASHRAE 169 climate zone. Defaults to site's climate_zone",
+      "description": "[unused] ASHRAE 169 climate zone. Defaults to site's climate_zone",
       "type": "string"
     },
     "cec_climate_zone": {
-      "description": "CEC Title24 climate zone. Defaults to site's cec_climate_zone",
+      "description": "[unused] CEC Title24 climate zone. Defaults to site's cec_climate_zone",
       "type": "string"
     },
     "floor_area": {
@@ -99,11 +99,11 @@
       "type": "integer"
     },
     "maximum_roof_height": {
-      "description": "Maximum height of the roof relative to surface elevation (ft)",
+      "description": "[unused] Maximum height of the roof relative to surface elevation (ft)",
       "type": "number"
     },
     "roof_type": {
-      "description": "The type of roof. Defaults to flat.",
+      "description": "[unused] The type of roof. Defaults to flat.",
       "type": "string",
       "enum": [
         "Flat",
@@ -118,11 +118,11 @@
       "$ref": "#/definitions/atticType"
     },
     "footprint_area": {
-      "description": "Area of the footprint (ft^2).  Calculated on export.",
+      "description": "[unused] Area of the footprint (ft^2).  Calculated on export.",
       "type": "number"
     },
     "footprint_perimeter": {
-      "description": "Perimeter of the footprint (ft). Calculated on export.",
+      "description": "[unused] Perimeter of the footprint (ft). Calculated on export.",
       "type": "number"
     },
     "year_built": {
@@ -142,26 +142,26 @@
       "$ref": "#/definitions/heatingSystemFuelType"
     },
     "weekday_start_time": {
-      "description": "Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.",
+      "description": "[unused] Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.",
       "type": "string"
     },
     "weekday_duration": {
-      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
+      "description": "[unused] Length of weekend operating hours in 08:30 format, up to 24:00.",
       "type": "string"
     },
     "weekend_start_time": {
-      "description": "Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.",
+      "description": "[unused] Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.",
       "type": "string"
     },
     "weekend_duration": {
-      "description": "Length of weekend operating hours in 08:30 format, up to 24:00.",
+      "description": "[unused] Length of weekend operating hours in 08:30 format, up to 24:00.",
       "type": "string"
     },
     "mixed_type_1": {
       "$ref": "#/definitions/buildingType"
     },
     "mixed_type_1_percentage": {
-      "description": "Percentage of 1st mixed building space type. Only used when building_type is Mixed use.",
+      "description": "[unused] Percentage of 1st mixed building space type. Only used when building_type is Mixed use.",
       "type": "number",
       "minimum": 0,
       "maximum": 100
@@ -170,7 +170,7 @@
       "$ref": "#/definitions/buildingType"
     },
     "mixed_type_2_percentage": {
-      "description": "Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.",
+      "description": "[unused] Percentage of 2nd mixed building space type. Only used when building_type is Mixed use.",
       "type": "number",
       "minimum": 0,
       "maximum": 100
@@ -179,7 +179,7 @@
       "$ref": "#/definitions/buildingType"
     },
     "mixed_type_3_percentage": {
-      "description": "Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.",
+      "description": "[unused] Percentage of 3rd mixed building space type. Only used when building_type is Mixed use.",
       "type": "number",
       "minimum": 0,
       "maximum": 100
@@ -188,21 +188,21 @@
       "$ref": "#/definitions/buildingType"
     },
     "mixed_type_4_percentage": {
-      "description": "Percentage of 4th mixed building space type. Only used when building_type is Mixed use.",
+      "description": "[unused] Percentage of 4th mixed building space type. Only used when building_type is Mixed use.",
       "type": "number",
       "minimum": 0,
       "maximum": 100
     },
     "number_of_residential_units": {
-      "description": "Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.",
+      "description": "[unused] Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.",
       "type": "integer"
     },
     "number_of_bedrooms": {
-      "description": "Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.",
+      "description": "[unused] Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.",
       "type": "integer"
     },
     "exterior_lighting_zone": {
-      "description": "Choice of exterior lighting zone.",
+      "description": "[unused] Choice of exterior lighting zone.",
       "type": "string",
       "enum": [
         "0 - Undeveloped Areas Parks",
@@ -213,25 +213,25 @@
       ]
     },
     "onsite_parking_fraction": {
-      "description": "Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.",
+      "description": "[unused] Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately.",
       "type": "number",
       "minimum": 0,
       "maximum": 1
     },
     "power_factor": {
-      "description": "Ratio of the real power used by building to the apparent power seen by grid.",
+      "description": "[unused] Ratio of the real power used by building to the apparent power seen by grid.",
       "type": "number",
       "minimum": 0
     },
     "user_data": {
-      "description": "Arbitrary user data"
+      "description": "[unused] Arbitrary user data"
     },
     "ev_charging": {
-      "description": "Should be set to true if EV charging is associated with the building.",
+      "description": "[unused] Should be set to true if EV charging is associated with the building.",
       "type": "boolean"
     },
     "ev_charging_station_type": {
-      "description": "Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station",
+      "description": "[unused] Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station",
       "type": "string",
       "enum": [
         "Typical Home",
@@ -240,7 +240,7 @@
       ]
     },
     "delay_type": {
-      "description": "Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event.",
+      "description": "[unused] Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event.",
       "type": "string",
       "enum": [
         "Min Delay",
@@ -249,7 +249,7 @@
       ]
     },
     "ev_charging_behavior": {
-      "description": "Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces.",
+      "description": "[unused] Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces.",
       "type": "string",
       "enum": [
         "Business as Usual",
@@ -262,7 +262,7 @@
       "type": "number"
     },
     "ev_curtailment_frac": {
-      "description": "Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system",
+      "description": "[unused] Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system",
       "type": "number"
     }
   },
@@ -377,7 +377,7 @@
   "additionalProperties": true,
   "definitions": {
     "buildingType": {
-      "description": "Primary building space type.",
+      "description": "[unused] Primary building space type.",
       "type": "string",
       "enum": [
         "Single-Family Detached",
@@ -412,7 +412,7 @@
       ]
     },
     "systemType": {
-      "description": "Building HVAC system type.",
+      "description": "[unused] Building HVAC system type.",
       "type": "string",
       "enum": [
         "PTAC with baseboard electric",
@@ -517,7 +517,7 @@
       ]
     },
     "heatingSystemFuelType": {
-      "description": "The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps).",
+      "description": "[unused] The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps).",
       "type": "string",
       "enum": [
         "electricity",
@@ -528,7 +528,7 @@
       ]
     },
     "templateType": {
-      "description": "Standard template applied to building. Default to site's default_template",
+      "description": "[unused] Standard template applied to building. Default to site's default_template",
       "type": "string",
       "enum": [
         "DOE Ref Pre-1980",
@@ -537,8 +537,7 @@
         "90.1-2007",
         "90.1-2010",
         "90.1-2013",
-        "90.1-2016",
-        "90.1-2019",
+        "NREL ZNE Ready 2017",
         "DEER Pre-1975",
         "DEER 1985",
         "DEER 1996",
@@ -568,7 +567,7 @@
       ]
     },
     "foundationType": {
-      "description": "The foundation type of the building. Required for residential buildings.",
+      "description": "[unused] The foundation type of the building. Required for residential buildings.",
       "type": "string",
       "enum": [
         "slab",
@@ -580,7 +579,7 @@
       ]
     },
     "atticType": {
-      "description": "The attic type of the building. Required for single-family residential buildings.",
+      "description": "[unused] The attic type of the building. Required for single-family residential buildings.",
       "type": "string",
       "enum": [
         "attic - vented",
