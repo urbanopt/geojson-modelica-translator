@@ -219,7 +219,10 @@
         "UG AL 1000kcmil A",
         "UG AL 1000kcmil B",
         "UG AL 1000kcmil C",
-        "UG AL 1000kcmil N"
+        "UG AL 1000kcmil N",
+        "UG AL 1000mcm A",
+        "UG AL 1000mcm B",
+        "UG AL 1000mcm C"
       ]
     }
   }
