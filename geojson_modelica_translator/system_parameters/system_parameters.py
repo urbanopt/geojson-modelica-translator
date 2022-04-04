@@ -251,7 +251,7 @@ class SystemParameters(object):
         except IndexError:
             raise Exception(
                 "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
-                )
+            )
 
         # download mos file from energyplus website
         mos_weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
