@@ -16,10 +16,10 @@ model CoolingTowerParallel
   parameter Boolean show_T=true
     "= true, if actual temperature at port is computed"
     annotation (Dialog(tab="Advanced",group="Diagnostics"));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
     "Nominal mass flow rate of condenser water in each tower"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Pressure dp_nominal
+  parameter Modelica.Units.SI.Pressure dp_nominal
     "Nominal pressure difference of the tower"
     annotation (Dialog(group="Nominal condition"));
   parameter Real ratWatAir_nominal(
@@ -27,16 +27,16 @@ model CoolingTowerParallel
     unit="1")=0.625
     "Design water-to-air ratio"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.Temperature TAirInWB_nominal
+  parameter Modelica.Units.SI.Temperature TAirInWB_nominal
     "Nominal outdoor (air inlet) wetbulb temperature"
     annotation (Dialog(group="Heat transfer"));
-  parameter Modelica.SIunits.Temperature TWatIn_nominal
+  parameter Modelica.Units.SI.Temperature TWatIn_nominal
     "Nominal water inlet temperature"
     annotation (Dialog(group="Heat transfer"));
-  parameter Modelica.SIunits.TemperatureDifference dT_nominal
+  parameter Modelica.Units.SI.TemperatureDifference dT_nominal
     "Temperature difference between inlet and outlet of the tower"
     annotation (Dialog(group="Heat transfer"));
-  parameter Modelica.SIunits.Power PFan_nominal
+  parameter Modelica.Units.SI.Power PFan_nominal
     "Fan power"
     annotation (Dialog(group="Fan"));
   Medium.ThermodynamicState sta_a=Medium.setState_phX(

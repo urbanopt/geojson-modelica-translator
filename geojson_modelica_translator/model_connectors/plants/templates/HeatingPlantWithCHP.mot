@@ -9,22 +9,22 @@ within {{ project_name }}.Plants;
     "= true, if actual temperature at port is computed"
     annotation (Dialog(tab="Advanced",group="Diagnostics"));
   // boiler parameters
-  parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mHW_flow_nominal
     "Nominal heating water mass flow rate"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.Power QBoi_flow_nominal
+  parameter Modelica.Units.SI.Power QBoi_flow_nominal
     "Nominal heating capacity of single boiler"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.MassFlowRate mMin_flow
+  parameter Modelica.Units.SI.MassFlowRate mMin_flow
     "Minimum mass flow rate of single boiler"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.MassFlowRate mBoi_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mBoi_flow_nominal
     "Nominal mass flow rate of single boiler"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.Pressure dpBoi_nominal
+  parameter Modelica.Units.SI.Pressure dpBoi_nominal
     "Pressure difference at the boiler water side"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.TemperatureDifference delT_nominal
+  parameter Modelica.Units.SI.TemperatureDifference delT_nominal
     "Design heating water temperature Difference";
   // pump parameters
   replaceable parameter Buildings.Fluid.Movers.Data.Generic perHWPum
@@ -32,10 +32,10 @@ within {{ project_name }}.Plants;
     "Performance data of heating water pump"
     annotation (Dialog(group="Pump"),choicesAllMatching=true,Placement(transformation(extent={{138,82},{152,96}})));
   // control settings
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time"
     annotation (Dialog(group="Control Settings"));
-  parameter Modelica.SIunits.PressureDifference dpSetPoi(
+  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Demand side pressure difference setpoint"
     annotation (Dialog(group="Control Settings"));
@@ -152,7 +152,7 @@ within {{ project_name }}.Plants;
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
     sta_default)
     "Specific heat capacity of the fluid";
   Buildings.Fluid.Sources.Boundary_pT expTanHW(
