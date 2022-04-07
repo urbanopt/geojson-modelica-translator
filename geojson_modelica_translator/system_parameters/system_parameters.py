@@ -779,9 +779,8 @@ class SystemParameters(object):
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
             weather_filename = sdk_input['project']['weather_filename']
-            weather_path = self.sys_param_filename.parent / weather_filename
+            weather_path = self.sys_param_filename.parent / weather_filename  # Put weather file in same folder as sys_param
             for feature in sdk_input['features']:
-                # KAF change: this should only gather features of type 'Building'
                 if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
 
