@@ -1,4 +1,4 @@
-within Buildings.Experimental.DHC.Loads.Combined;
+within {{ project_name }}.Loads.{{ model_name }};
 {% raw %}model BuildingTimeSeriesWithETS
   "Model of a building with loads provided as time series, connected to an ETS"
   extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
