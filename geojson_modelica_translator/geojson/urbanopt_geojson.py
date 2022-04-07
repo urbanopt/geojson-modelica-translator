@@ -94,7 +94,7 @@ class UrbanOptGeoJson(object):
         for feature in self.data.features:
             if feature["properties"]["type"] == "Building":
                 building = UrbanOptLoad(feature)
-                if feature["properties"]["detailed_model_filename"]:  # Don't run validation on buildings with a detailed model
+                if "detail_model_filename" in feature["properties"]:  # Don't run validation on buildings with a detailed model
                     continue
                 if not building_ids or building.id in building_ids:
                     errors = self.schemas.validate("building", building.feature.properties)
