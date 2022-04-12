@@ -1,5 +1,5 @@
 within {{ project_name }}.Loads.{{ model_name }};
-{% raw %}model BuildingTimeSeriesWithETS
+model BuildingTimeSeriesWithETS
   "Model of a building with loads provided as time series, connected to an ETS"
   extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     redeclare Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.BuildingTimeSeries bui(
@@ -30,7 +30,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
     annotation (Dialog(group="Design parameter"));
-  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+  parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     {% raw %} "Library path of the file with loads as time series";
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     {% raw %} "Heating water inlet temperature at nominal conditions"
