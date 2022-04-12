@@ -104,7 +104,8 @@ class TimeSeriesETSTest(TestCaseBase):
         )
         district.to_modelica()
 
-        root_path = Path(district._scaffold.districts_path.files_dir)
-        self.run_and_assert_in_docker(root_path / 'DistrictEnergySystem.mo',
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+        # Disable running the modelica model until we are off JModelica
+        # root_path = Path(district._scaffold.districts_path.files_dir)
+        # self.run_and_assert_in_docker(root_path / 'DistrictEnergySystem.mo',
+        #                               project_path=district._scaffold.project_path,
+        #                               project_name=district._scaffold.project_name)
