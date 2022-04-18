@@ -82,6 +82,7 @@ def test_generate_cooling_plant(snapshot):
 
 
 @pytest.mark.mbl_v9
+@pytest.mark.msl_v4_simulation
 @pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
