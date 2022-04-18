@@ -42,7 +42,7 @@ from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import convert_c_to_k, simple_uuid
+from geojson_modelica_translator.utils import simple_uuid
 
 
 class HeatingPlantWithOptionalCHP(PlantBase):
@@ -89,9 +89,9 @@ class HeatingPlantWithOptionalCHP(PlantBase):
                     "pressure_drop_setpoint": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.pressure_drop_setpoint"
                     ),
-                    "temp_setpoint_hhw": convert_c_to_k(self.system_parameters.get_param(
+                    "temp_setpoint_hhw": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw"
-                    )),
+                    ) + 273.15,
                     "pressure_drop_hhw_valve_nominal": self.system_parameters.get_param(
                         "$.district_system.default.central_heating_plant_parameters.pressure_drop_hhw_valve_nominal"
                     ),

@@ -75,18 +75,6 @@
       "description": "Name of utility tariff file in IDF or URDB format.",
       "type": "string"
     },
-    "underground_cables_ratio": {
-      "description": "Ratio of overall cables that are underground vs. overhead for RNM analysis.",
-      "type": "number"
-    },
-    "only_lv_consumers": {
-      "description": "If true, only low voltage consumers will be considered in the RNM analysis.",
-      "type": "boolean"
-    },
-    "max_number_of_lv_nodes_per_building": {
-      "description": "Maximum number of low voltage nodes to represent a single building.",
-      "type": "number"
-    },
     "user_data": {
       "description": "Arbitrary user data"
     }

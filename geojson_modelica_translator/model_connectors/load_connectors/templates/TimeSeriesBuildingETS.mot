@@ -1,5 +1,5 @@
-within {{ project_name }}.Loads.{{ model_name }};
-model building
+within Buildings.Experimental.DHC.Loads.Combined;
+{% raw %}model BuildingTimeSeriesWithETS
   "Model of a building with loads provided as time series, connected to an ETS"
   extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     redeclare Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.BuildingTimeSeries bui(
@@ -30,28 +30,28 @@ model building
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
     annotation (Dialog(group="Design parameter"));
-  parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     {% raw %} "Library path of the file with loads as time series";
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     {% raw %} "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal(
+  {% endraw %}parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
     min=273.15,
     displayUnit="degC")=T_aHeaWat_nominal-5
     {% raw %} "Heating water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     {% raw %} "Chilled water inlet temperature at nominal conditions "
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_bChiWat_nominal(
+  {% endraw %}parameter Modelica.SIunits.Temperature T_bChiWat_nominal(
     min=273.15,
     displayUnit="degC")={{ data['nominal_values']['chw_return_temp'] }}
     {% raw %} "Chilled water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition"));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
@@ -149,5 +149,5 @@ First implementation.
       coordinateSystem(
         preserveAspectRatio=false,
         extent={{-300,-300},{300,300}})));
-end building;
+end BuildingTimeSeriesWithETS;
 {% endraw %}

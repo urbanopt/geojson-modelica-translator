@@ -43,11 +43,7 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import (
-    ModelicaPath,
-    convert_c_to_k,
-    simple_uuid
-)
+from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 
 class Spawn(LoadBase):
@@ -96,24 +92,25 @@ class Spawn(LoadBase):
         zone_nom_clg_loads = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
         )
-        hhw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
+        hhw_supply_temp = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_supply",
-        ))
-        hhw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        ) + 273.15
+        hhw_return_temp = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_return",
-        ))
-        chw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        ) + 273.15
+        chw_supply_temp = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_chw_supply",
-        ))
-        chw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        ) + 273.15
+        chw_return_temp = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_chw_return",
-        ))
-        temp_setpoint_cooling = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        ) + 273.15
+        temp_setpoint_cooling = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
-        ))
-        temp_setpoint_heating = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        ) + 273.15
+        temp_setpoint_heating = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
-        ))
+        ) + 273.15
 
         # construct the dict to pass into the template
         building_template_data = {

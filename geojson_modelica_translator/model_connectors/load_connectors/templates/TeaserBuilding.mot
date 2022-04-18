@@ -14,7 +14,7 @@ within {{project_name}}.Loads.{{model_name}};
     {% raw %} "Number of thermal zones";
   parameter Integer facSca=3
     "Scaling factor to be applied to each extensive quantity";
-  {% endraw %}parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
+  {% endraw %}parameter Modelica.SIunits.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
     {% raw %} "Nominal building supply and return chilled water temperature difference";
   {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     {% raw %} "Path of the weather file";

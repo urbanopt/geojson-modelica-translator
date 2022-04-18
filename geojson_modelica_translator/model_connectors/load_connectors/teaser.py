@@ -50,7 +50,6 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import (
     ModelicaPath,
-    convert_c_to_k,
     copytree,
     simple_uuid
 )
@@ -538,24 +537,25 @@ class Teaser(LoadBase):
                 "path": os.path.dirname(mos_weather_filename),
             },
             "nominal_values": {
-                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
+                "chw_supply_temp": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_supply"
-                )),
-                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                ) + 273.15,
+                "chw_return_temp": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_return"
-                )),
-                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                ) + 273.15,
+                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_supply"
-                )),
-                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                ) + 273.15,
+                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_return"
-                )),
-                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                ) + 273.15,
+                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
-                )),
-                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                ) + 273.15,
+                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
-                ))
+                ) + 273.15
             }
         }
 
