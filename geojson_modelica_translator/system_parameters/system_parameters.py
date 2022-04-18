@@ -71,6 +71,7 @@ class SystemParameters(object):
         {"json_path": "$.buildings.*[?load_model=spawn].load_model_parameters.spawn.mos_weather_filename"},
         {"json_path": "$.buildings.*[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
         {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"},
+        {"json_path": "$.buildings.*[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
         {"json_path": "$.district_system.default.central_cooling_plant_parameters.weather_filepath"},
         {"json_path": "$.combined_heat_and_power_systems.*.performance_data_path"}
     ]
@@ -250,7 +251,7 @@ class SystemParameters(object):
         except IndexError:
             raise Exception(
                 "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
-                )
+            )
 
         # download mos file from energyplus website
         mos_weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
@@ -778,9 +779,8 @@ class SystemParameters(object):
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
             weather_filename = sdk_input['project']['weather_filename']
-            weather_path = self.sys_param_filename.parent / weather_filename
+            weather_path = self.sys_param_filename.parent / weather_filename  # Put weather file in same folder as sys_param
             for feature in sdk_input['features']:
-                # KAF change: this should only gather features of type 'Building'
                 if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
 

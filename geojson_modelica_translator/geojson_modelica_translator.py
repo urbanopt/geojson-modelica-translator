@@ -54,7 +54,8 @@ from geojson_modelica_translator.model_connectors.energy_transfer_systems import
 from geojson_modelica_translator.model_connectors.load_connectors import (
     Spawn,
     Teaser,
-    TimeSeries
+    TimeSeries,
+    TimeSeriesMFT
 )
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
@@ -73,7 +74,8 @@ _log = logging.getLogger(__name__)
 LOAD_MODEL_TO_CLASS = {
     "spawn": Spawn,
     "rc": Teaser,
-    "time_series": TimeSeries
+    "time_series": TimeSeries,
+    "time_series_massflow_temperature": TimeSeriesMFT,
 }
 
 
