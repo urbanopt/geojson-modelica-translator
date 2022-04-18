@@ -102,3 +102,11 @@ def test_simulate_cooling_plant():
 
     # -- Assert
     assert success is True
+
+
+@pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_stub_mbl_v9_with_not_msl_v4():
+    """Need to have a stub where mbl_v9 is selected that is simulatable (with
+    MSV V3.2) in order to not create a failed pytest command with exit code 5."""
+    assert False is not True
