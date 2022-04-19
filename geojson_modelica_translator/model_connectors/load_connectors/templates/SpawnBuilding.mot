@@ -77,13 +77,13 @@ model building
     "Latent heat gain"
     annotation (Placement(transformation(extent={{-66,88},{-46,108}})));
   {% endraw %}// TODO: apply a dynamic layout
-  {% for zone in data['thermal_zones'] %}Buildings.ThermalZones.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
+  {% for zone in data['thermal_zones'] %}Buildings.ThermalZonesEnergyPlus_9_6_0ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium=MediumA,
     nPorts=2,
     zoneName="{{zone['spawn_object_name']}}")
     "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{40,-20},{80,20}})));
-  {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus.Building building(
+  {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZonesEnergyPlus_9_6_0Building building(
     idfName=Modelica.Utilities.Files.loadResource(
       idfName),
     weaName=Modelica.Utilities.Files.loadResource(
