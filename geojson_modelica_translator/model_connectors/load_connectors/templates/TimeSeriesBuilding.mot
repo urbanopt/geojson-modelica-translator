@@ -14,45 +14,45 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Water medium";
   {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     {% raw %} "Library path of the file with loads as time series";
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     {% raw %} "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal(
+  {% endraw %}parameter Modelica.SIunits.Temperature T_bHeaWat_nominal(
     min=273.15,
     displayUnit="degC")=T_aHeaWat_nominal-5
     {% raw %} "Heating water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     {% raw %} "Chilled water inlet temperature at nominal conditions "
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_bChiWat_nominal(
+  {% endraw %}parameter Modelica.SIunits.Temperature T_bChiWat_nominal(
     min=273.15,
     displayUnit="degC")={{ data['nominal_values']['chw_return_temp'] }}
     {% raw %} "Chilled water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
+  {% endraw %}parameter Modelica.SIunits.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
+  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=-QCoo_flow_nominal/(cp_air*delTAirCoo)
+  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal=-QCoo_flow_nominal/(cp_air*delTAirCoo)
     "Load side mass flow rate at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
+  parameter Modelica.SIunits.TemperatureDifference delTAirCoo
     "Nominal cooling air temperature difference across the terminal unit heat exchanger";
-  parameter Modelica.Units.SI.TemperatureDifference delTAirHea
+  parameter Modelica.SIunits.TemperatureDifference delTAirHea
     "Nominal heating air temperature difference across the terminal unit heat exchanger";
-  parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
+  parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space cooling load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Design parameter"));
-  parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal(
+  parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal(
     min=Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space heating load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
@@ -61,24 +61,24 @@ within {{ project_name }}.Loads.{{ model_name }};
   parameter Real k(
     min=0)=1
     "Gain of controller";
-  parameter Modelica.Units.SI.Time Ti=60
+  parameter Modelica.SIunits.Time Ti=60
     "Time constant of integrator block";
   parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial
     "Type of energy balance for fan air volume"
     annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
-  parameter Modelica.Units.SI.Time tau=1
+  parameter Modelica.SIunits.Time tau=1
     "Time constant of fan air volume, used if energy or mass balance is dynamic"
     annotation (Dialog(tab="Dynamics",group="Nominal condition",enable=energyDynamics <> Modelica.Fluid.Types.Dynamics.SteadyState));
   parameter Boolean use_inputFilter=true
     "= true, if fan speed is filtered with a 2nd order CriticalDamping filter"
     annotation (Dialog(tab="Dynamics",group="Filtered speed"));
-  parameter Modelica.Units.SI.Time riseTime=30
+  parameter Modelica.SIunits.Time riseTime=30
     "Rise time of the filter (time to reach 99.6 % of the speed)"
     annotation (Dialog(tab="Dynamics",group="Filtered speed",enable=use_inputFilter));
-  parameter Modelica.Units.SI.MassFlowRate mChiWat_flow_nominal=abs(
+  parameter Modelica.SIunits.MassFlowRate mChiWat_flow_nominal=abs(
     QCoo_flow_nominal/cpChiWat_nominal/(T_aChiWat_nominal-T_bChiWat_nominal))
     "Chilled water mass flow rate at nominal conditions";
-  parameter Modelica.Units.SI.MassFlowRate mHeaWat_flow_nominal=abs(
+  parameter Modelica.SIunits.MassFlowRate mHeaWat_flow_nominal=abs(
     QHea_flow_nominal/cpHeaWat_nominal/(T_aHeaWat_nominal-T_bHeaWat_nominal))
     "Heating water mass flow rate at nominal conditions";
   Modelica.Blocks.Sources.CombiTimeTable loa(
@@ -187,14 +187,14 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Sum pump power"
     annotation (Placement(transformation(extent={{222,70},{242,90}})));
 protected
-  parameter Modelica.Units.SI.SpecificHeatCapacity cp_air=1005
+  parameter Modelica.SIunits.SpecificHeatCapacity cp_air=1005
     "Air specific heat capacity";
-  parameter Modelica.Units.SI.SpecificHeatCapacity cpHeaWat_nominal=Medium.specificHeatCapacityCp(
+  parameter Modelica.SIunits.SpecificHeatCapacity cpHeaWat_nominal=Medium.specificHeatCapacityCp(
     Medium.setState_pTX(
       Medium.p_default,
       T_aHeaWat_nominal))
     "Heating water specific heat capacity at nominal conditions";
-  parameter Modelica.Units.SI.SpecificHeatCapacity cpChiWat_nominal=Medium.specificHeatCapacityCp(
+  parameter Modelica.SIunits.SpecificHeatCapacity cpChiWat_nominal=Medium.specificHeatCapacityCp(
     Medium.setState_pTX(
       Medium.p_default,
       T_aChiWat_nominal))

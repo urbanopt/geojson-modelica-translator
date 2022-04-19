@@ -1,13 +1,13 @@
 within geojson_modelica_translator.model_connectors.templates;
 model BoilerStage
   "Stage controller for boilers"
-  parameter Modelica.Units.SI.Time tWai
+  parameter Modelica.SIunits.Time tWai
     "Waiting time";
-  parameter Modelica.Units.SI.Power QBoi_nominal
+  parameter Modelica.SIunits.Power QBoi_nominal
     "Nominal heating capaciaty";
-  parameter Modelica.Units.SI.Power criPoiLoa=0.55*QBoi_nominal
+  parameter Modelica.SIunits.Power criPoiLoa=0.55*QBoi_nominal
     "Critical point of heating load for switching one boiler on or off";
-  parameter Modelica.Units.SI.Power dQ=0.25*QBoi_nominal
+  parameter Modelica.SIunits.Power dQ=0.25*QBoi_nominal
     "Deadband for critical point of heating load";
   parameter Integer numBoi
     "Number of boilers";

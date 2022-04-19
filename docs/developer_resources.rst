@@ -164,19 +164,19 @@ Model Definition
 Each model generates one or more Modelica files to define its model. The templating context is implementation dependent, so refer to its :code:`to_modelica()` method.
 
 Coupling Component Definitions
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is the template which defines new components/variables necessary for a coupling. More specifically, these are the partial template files at model_connectors/couplings/templates/<coupling name>/ComponentDefinitions.mopt. These templates have access to:
 
 - :code:`globals`: global variables (those defined in the district.py, such as medium_w = MediumW)
-- :code:`coupling`: contains the coupling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append :code:`coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing :code:`parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal` you should do :code:`parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
+- :code:`coupling`: contains the coupling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append :code:`coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing :code:`parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal` you should do :code:`parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
 - :code:`graph`: an instance of the CouplingGraph class, where all couplings are located. It can provide useful methods for accessing couplings throughout the entire system. Refer to the python class to see what it can do.
 - :code:`sys_params`: an object containing data from the system parameters file
   - :code:`district_system`: contains the data from the district_system portion of the system parameters file
   - :code:`building`:if the coupling includes a load, this object will be included as well -- if there's no as part of the coupling this object will NOT be present. It contains the building-specific system parameters pulled from the system parameters JSON file.
 
 Coupling Connect Statements
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is the template which defines connect statements to be inserted into the equation section. More specifically, these are the partial template files at model_connectors/couplings/templates/<coupling name>/ConnectStatements.mopt. These templates have access to:
 

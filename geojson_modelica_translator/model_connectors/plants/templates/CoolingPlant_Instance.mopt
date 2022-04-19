@@ -1,20 +1,20 @@
-  parameter Modelica.Units.SI.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ model.id }}.numChi*({{ model.id }}.perChi.mEva_flow_nominal)
+  parameter Modelica.SIunits.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ model.id }}.numChi*({{ model.id }}.perChi.mEva_flow_nominal)
     "Nominal chilled water mass flow rate";
-  parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
     "Nominal condenser water mass flow rate";
-  parameter Modelica.Units.SI.PressureDifference dpCHW_nominal_{{ model.id }}=44.8*1000
+  parameter Modelica.SIunits.PressureDifference dpCHW_nominal_{{ model.id }}=44.8*1000
     "Nominal chilled water side pressure";
-  parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}=46.2*1000
+  parameter Modelica.SIunits.PressureDifference dpCW_nominal_{{ model.id }}=46.2*1000
     "Nominal condenser water side pressure";
-  parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
+  parameter Modelica.SIunits.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
     "Nominal cooling capaciaty (Negative means cooling)";
-  parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
+  parameter Modelica.SIunits.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
     "Minimum mass flow rate of single chiller";
   // control settings
-  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=70000
+  parameter Modelica.SIunits.Pressure dpSetPoi_{{ model.id }}=70000
     "Differential pressure setpoint";
-  parameter Modelica.Units.SI.Pressure pumDP_{{ model.id }}=dpCHW_nominal_{{ model.id }}+dpSetPoi_{{ model.id }}+200000;
-  parameter Modelica.Units.SI.Time tWai_{{ model.id }}=30
+  parameter Modelica.SIunits.Pressure pumDP_{{ model.id }}=dpCHW_nominal_{{ model.id }}+dpSetPoi_{{ model.id }}+200000;
+  parameter Modelica.SIunits.Time tWai_{{ model.id }}=30
     "Waiting time";
   // pumps
   parameter Buildings.Fluid.Movers.Data.Generic perCHWPum_{{ model.id }}(

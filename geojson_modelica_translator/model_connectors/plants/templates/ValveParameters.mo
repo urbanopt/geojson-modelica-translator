@@ -20,7 +20,7 @@ partial model ValveParameters
         false)
     "Cv (US) flow coefficient [USG/min/(psi)^(1/2)]"
     annotation (Dialog(group="Two-way valve",enable=(CvData == Buildings.Fluid.Types.CvTypes.Cv)));
-  parameter Modelica.Units.SI.Area Av(
+  parameter Modelica.SIunits.Area Av(
     each fixed=
       if CvData == Buildings.Fluid.Types.CvTypes.Av then
         true
@@ -31,10 +31,10 @@ partial model ValveParameters
   parameter Real deltaM
     "Fraction of nominal flow rate where linearization starts, if y=1"
     annotation (Dialog(group="Pressure-flow linearization"));
-  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
     "Nominal mass flow rate"
     annotation (Dialog(group="Two-way valve"));
-  parameter Modelica.Units.SI.PressureDifference dpValve_nominal(
+  parameter Modelica.SIunits.PressureDifference dpValve_nominal(
     each displayUnit="Pa",
     each min=0,
     each fixed=
@@ -45,7 +45,7 @@ partial model ValveParameters
     "Nominal pressure drop of fully open valve, used if
     CvData=Buildings.Fluid.Types.CvTypes.OpPoint"
     annotation (Dialog(group="Two-way valve",enable=(CvData == Buildings.Fluid.Types.CvTypes.OpPoint)));
-  parameter Modelica.Units.SI.Density rhoStd
+  parameter Modelica.SIunits.Density rhoStd
     "Inlet density for which valve coefficients are defined"
     annotation (Dialog(group="Two-way valve",tab="Advanced"));
 protected

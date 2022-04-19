@@ -5,12 +5,12 @@ model building
   extends Modelica.Icons.Example;
   {% raw %}package MediumW=Buildings.Media.Water;
   {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}";
-  {% raw %}parameter Modelica.Units.SI.MassFlowRate mChW_flow_nominal=getPeakMassFlowRate(
+  {% raw %}parameter Modelica.SIunits.MassFlowRate mChW_flow_nominal=getPeakMassFlowRate(
     string="#Nominal chilled water mass flow rate",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Nominal cooling water flow rate"
     annotation (Dialog(group="Design parameter"));
-  parameter Modelica.Units.SI.MassFlowRate mHW_flow_nominal=getPeakMassFlowRate(
+  parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal=getPeakMassFlowRate(
     string="#Nominal heating water mass flow rate",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Nominal heating water flow rate"

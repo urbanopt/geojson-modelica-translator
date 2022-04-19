@@ -43,10 +43,6 @@
     "district_system_type": {
       "$ref": "#/definitions/districtSystemType"
     },
-    "footprint_area": {
-      "description": "Area of the footprint (ft^2).  Calculated on export.",
-      "type": "number"
-    },
     "detailed_model_filename": {
       "description": "Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.",
       "type": "string"
@@ -66,10 +62,6 @@
         "$ref": "#/definitions/equipmentType",
         "type": "string"
       }
-    },
-    "associated_building_id": {
-      "description": "ID of the building associated with the Ground-Mount PV System",
-      "type": "string"
     },
     "user_data": {
       "description": "Arbitrary user data"
@@ -91,7 +83,6 @@
         "Central Ambient Water",
         "Central Hot and Cold Water",
         "Community Photovoltaic",
-        "Ground Mount Photovoltaic",
         "Transformer",
         "Transformer with Storage",
         "Capacitor",
@@ -139,8 +130,6 @@
         "Transformer--100KVA PM",
         "Transformer--150KVA PM",
         "Transformer--300KVA PM",
-        "Transformer--500KVA PM",
-        "Transformer--750KVA PM",
         "Waste Heat Source--Hot Water",
         "Waste Heat Source--Ambient Water"
       ]

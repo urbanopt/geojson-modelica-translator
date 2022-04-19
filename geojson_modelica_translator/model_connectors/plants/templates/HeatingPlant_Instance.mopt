@@ -1,18 +1,18 @@
   // heating plant instance
-  parameter Modelica.Units.SI.MassFlowRate mHW_flow_nominal_{{ model.id }}=mBoi_flow_nominal_{{ model.id }}*{{ model.id }}.numBoi
+  parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal_{{ model.id }}=mBoi_flow_nominal_{{ model.id }}*{{ model.id }}.numBoi
     "Nominal heating water mass flow rate";
-  parameter Modelica.Units.SI.MassFlowRate mBoi_flow_nominal_{{ model.id }}=QBoi_nominal_{{ model.id }}/(4200*{{ model.id }}.delT_nominal)
+  parameter Modelica.SIunits.MassFlowRate mBoi_flow_nominal_{{ model.id }}=QBoi_nominal_{{ model.id }}/(4200*{{ model.id }}.delT_nominal)
     "Nominal heating water mass flow rate";
-  parameter Modelica.Units.SI.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
+  parameter Modelica.SIunits.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
     "Nominal heating capaciaty";
-  parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal_{{ model.id }}=1000000*2
+  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal_{{ model.id }}=1000000*2
     "Heating load";
-  parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mBoi_flow_nominal_{{ model.id }}
+  parameter Modelica.SIunits.MassFlowRate mMin_flow_{{ model.id }}=0.2*mBoi_flow_nominal_{{ model.id }}
     "Minimum mass flow rate of single boiler";
   // controls
-  parameter Modelica.Units.SI.Pressure pumDP=({{ model.id }}.dpBoi_nominal+dpSetPoi_{{ couplings.network_couplings[0].network.id }}+50000)
+  parameter Modelica.SIunits.Pressure pumDP=({{ model.id }}.dpBoi_nominal+dpSetPoi_{{ couplings.network_couplings[0].network.id }}+50000)
     "Heating water pump pressure drop";
-  parameter Modelica.Units.SI.Time tWai_{{ model.id }}=30
+  parameter Modelica.SIunits.Time tWai_{{ model.id }}=30
     "Waiting time";
   parameter Buildings.Fluid.Movers.Data.Generic perHWPum_{{ model.id }}(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(

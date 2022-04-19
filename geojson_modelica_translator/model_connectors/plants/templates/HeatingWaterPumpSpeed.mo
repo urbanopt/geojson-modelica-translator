@@ -4,27 +4,27 @@ model HeatingWaterPumpSpeed
     min=1,
     max=2)=2
     "Number of heating water pumps, maximum is 2";
-  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
+  parameter Modelica.SIunits.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Pressure difference setpoint";
-  parameter Modelica.Units.SI.Time tWai
+  parameter Modelica.SIunits.Time tWai
     "Waiting time";
-  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
     "Nominal mass flow rate of single heating water pump";
-  parameter Modelica.Units.SI.MassFlowRate mMin_flow=0.2*m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate mMin_flow=0.2*m_flow_nominal
     "Minimum mass flow rate";
   parameter Real minSpe=0.05
     "Minimum speed ratio required by heating water pumps";
-  parameter Modelica.Units.SI.Time riseTime=120
+  parameter Modelica.SIunits.Time riseTime=120
     "Rise time till the pump reaches its maximum speed";
   parameter Modelica.Blocks.Types.SimpleController controllerType=Modelica.Blocks.Types.SimpleController.PI
     "Type of pump speed controller";
   parameter Real k
     "Gain of controller";
-  parameter Modelica.Units.SI.Time Ti
+  parameter Modelica.SIunits.Time Ti
     "Time constant of Integrator block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PI or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.Units.SI.Time Td(
+  parameter Modelica.SIunits.Time Td(
     min=0)=0.1
     "Time constant of Derivative block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));

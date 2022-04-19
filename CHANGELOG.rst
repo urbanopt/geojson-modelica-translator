@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.2.3 (Unreleased)
+--------------------------
+* Add GMT Lib methods for Level 1 translation of Modelica-templated objects
+* Use MBL v9 (current master branch)
+* Updated Jinja and Sphinx dependencies. Jinja is now a required dependency (no longer a testing dependency)
+
 Version 0.2.2
 -------------
 * Fix bug in CLI which required the user to be in a specific directory to run. Updated CLI is more flexible.

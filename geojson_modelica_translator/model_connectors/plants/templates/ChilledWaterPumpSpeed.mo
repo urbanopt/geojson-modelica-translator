@@ -5,12 +5,12 @@ model ChilledWaterPumpSpeed
     min=1,
     max=2)=2
     "Number of chilled water pumps, maximum is 2";
-  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
+  parameter Modelica.SIunits.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Pressure difference setpoint";
-  parameter Modelica.Units.SI.Time tWai
+  parameter Modelica.SIunits.Time tWai
     "Waiting time";
-  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
+  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
     "Nominal mass flow rate of single chilled water pump";
   parameter Real minSpe(
     unit="1",
@@ -23,11 +23,11 @@ model ChilledWaterPumpSpeed
     unit="1",
     min=0)=1
     "Gain of controller";
-  parameter Modelica.Units.SI.Time Ti(
+  parameter Modelica.SIunits.Time Ti(
     min=Modelica.Constants.small)=60
     "Time constant of Integrator block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PI or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.Units.SI.Time Td(
+  parameter Modelica.SIunits.Time Td(
     min=0)=0.1
     "Time constant of Derivative block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));

@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -104,7 +104,6 @@ class TimeSeriesETSTest(TestCaseBase):
         )
         district.to_modelica()
 
-        # Disable running the modelica model until we are off JModelica
         # root_path = Path(district._scaffold.districts_path.files_dir)
         # self.run_and_assert_in_docker(root_path / 'DistrictEnergySystem.mo',
         #                               project_path=district._scaffold.project_path,
