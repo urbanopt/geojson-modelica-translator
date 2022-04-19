@@ -10,27 +10,27 @@ model {{ model_filename }}
   replaceable package Medium=Modelica.Media.Interfaces.PartialMedium
     "Medium in the component";
   // mass flow rates
-  parameter Modelica.SIunits.MassFlowRate mDis_flow_nominal(
+  parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal(
     final min=0,
     {% endraw %}start={{ets_data["nominal_mass_flow_district"]}})
     {% raw %} "Nominal mass flow rate of primary (district) heating side";
-  parameter Modelica.SIunits.MassFlowRate mBui_flow_nominal(
+  parameter Modelica.Units.SI.MassFlowRate mBui_flow_nominal(
     final min=0,
     {% endraw %}start={{ets_data["nominal_mass_flow_building"]}})
     {% raw %} "Nominal mass flow rate of secondary (building) heating side";
   // Primary supply control valve
-  parameter Modelica.SIunits.PressureDifference dpValve_nominal(
+  parameter Modelica.Units.SI.PressureDifference dpValve_nominal(
     final min=0,
     {% endraw %}final displayUnit="Pa")={{ ets_data["valve_pressure_drop"] }}
     {% raw %} "Nominal pressure drop of fully open control valve";
   // Heat exchanger
-  parameter Modelica.SIunits.PressureDifference dp1_nominal(
+  parameter Modelica.Units.SI.PressureDifference dp1_nominal(
     final min=0,
     {% endraw %}start={{ ets_data["heat_exchanger_primary_pressure_drop"] }},
     {% raw %}final displayUnit="Pa")
     "Nominal pressure difference on primary side"
     annotation (Dialog(group="Heat exchanger"));
-  parameter Modelica.SIunits.PressureDifference dp2_nominal(
+  parameter Modelica.Units.SI.PressureDifference dp2_nominal(
     final min=0,
     {% endraw %}start={{  ets_data["heat_exchanger_secondary_pressure_drop"] }},
     {% raw %}final displayUnit="Pa")
@@ -39,26 +39,26 @@ model {{ model_filename }}
   parameter Boolean use_Q_flow_nominal=true
     "Set to true to specify Q_flow_nominal and temperatures, or to false to specify effectiveness"
     annotation (Dialog(group="Heat exchanger"));
-  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal(
+  parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal(
     final min=0,
     {% endraw %}start={{ ets_data["heat_flow_nominal"]  }})
     {% raw %} "Nominal heat transfer"
     annotation (Dialog(group="Heat exchanger"));
-  parameter Modelica.SIunits.Temperature T_a1_nominal(
+  parameter Modelica.Units.SI.Temperature T_a1_nominal(
     min=0+273,
     max=100+273.15,
     {% endraw %}start={{ets_data["temp_setpoint_hhw"]}}+273.15,
     {% raw %}final displayUnit="K")
     "Nominal temperature at port a1"
     annotation (Dialog(group="Heat exchanger"));
-  parameter Modelica.SIunits.Temperature T_a2_nominal(
+  parameter Modelica.Units.SI.Temperature T_a2_nominal(
     min=0+273,
     max=100+273.15,
     {% endraw %}start={{ets_data["heating_supply_water_temperature_building"]}}+273.15,
     {% raw  %}final displayUnit="K")
     "Nominal temperature at port a2"
     annotation (Dialog(group="Heat exchanger"));
-  parameter Modelica.SIunits.Efficiency eta(
+  parameter Modelica.Units.SI.Efficiency eta(
     final min=0,
     {% endraw %}final max=0.8)={{  ets_data["heat_exchanger_efficiency"]  }}
     {% raw %} "Constant effectiveness"
@@ -72,11 +72,11 @@ model {{ model_filename }}
     final unit="1")=1
     "Gain of controller"
     annotation (Dialog(tab="Controller"));
-  parameter Modelica.SIunits.Time Ti(
+  parameter Modelica.Units.SI.Time Ti(
     min=Modelica.Constants.small)=120
     "Time constant of integrator block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PI or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.SIunits.Time Td(
+  parameter Modelica.Units.SI.Time Td(
     final min=0)=0.1
     "Time constant of derivative block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
@@ -217,7 +217,7 @@ protected
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
     sta_default)
     "Specific heat capacity of the fluid";
 {% endraw %}equation

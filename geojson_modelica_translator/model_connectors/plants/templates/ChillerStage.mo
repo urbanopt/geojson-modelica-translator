@@ -1,13 +1,13 @@
 within geojson_modelica_translator.model_connectors.templates;
 model ChillerStage
   "Stage controller for chillers"
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time";
-  parameter Modelica.SIunits.Power QEva_nominal
+  parameter Modelica.Units.SI.Power QEva_nominal
     "Nominal cooling capaciaty (negative means cooling)";
-  parameter Modelica.SIunits.Power criPoiLoa=0.55*QEva_nominal
+  parameter Modelica.Units.SI.Power criPoiLoa=0.55*QEva_nominal
     "Critical point of cooling load for switching one chiller on or off";
-  parameter Modelica.SIunits.Power dQ=0.25*QEva_nominal
+  parameter Modelica.Units.SI.Power dQ=0.25*QEva_nominal
     "Deadband for critical point of cooling load";
   Modelica.Blocks.Interfaces.RealInput QLoa(
     unit="W")
