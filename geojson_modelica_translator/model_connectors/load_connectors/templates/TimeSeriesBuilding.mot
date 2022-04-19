@@ -39,11 +39,6 @@ within {{ project_name }}.Loads.{{ model_name }};
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=-QCoo_flow_nominal/(cp_air*delTAirCoo)
-    "Load side mass flow rate at nominal conditions in cooling mode"
-    annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
-    "Nominal cooling air temperature difference across the terminal unit heat exchanger";
   parameter Modelica.Units.SI.TemperatureDifference delTAirHea
     "Nominal heating air temperature difference across the terminal unit heat exchanger";
   parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(

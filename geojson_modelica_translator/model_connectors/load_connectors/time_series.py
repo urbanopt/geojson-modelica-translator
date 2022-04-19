@@ -89,9 +89,6 @@ class TimeSeries(LoadBase):
             },
             "nominal_values": {
                 # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
-                "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
-                ),
                 "delta_temp_air_heating": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_heating"
                 ),
