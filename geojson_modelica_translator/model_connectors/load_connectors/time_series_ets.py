@@ -91,17 +91,17 @@ class TimeSeriesETS(LoadBase):
                 # "delTDisCoo": self.system_parameters.get_param_by_building_id(
                 #     self.building_id, "load_model_parameters.time_series.delTDisCoo"
                 # ),
-                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.hhw_supply_temp"
+                "hw_supply_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_hw_supply"
                 ),
-                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.hhw_return_temp"
+                "hw_return_temp": self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.time_series.temp_hw_return"
                 ),
                 "chw_supply_temp": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.chw_supply_temp"
+                    self.building_id, "load_model_parameters.time_series.temp_chw_supply"
                 ),
                 "chw_return_temp": self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.time_series.chw_return_temp"
+                    self.building_id, "load_model_parameters.time_series.temp_chw_return"
                 ),
                 "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
