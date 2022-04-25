@@ -1,0 +1,14 @@
+{
+  "microgrid_system_parameters": {
+    "scale": 14000,
+    "h": 15,
+    "table": "[3.5, 0; 5.5, 0.1; 12, 0.9; 14, 1; 25, 1]",
+    "A": 38,
+    "til": 0.5235987755983,
+    "azi": 0,
+    "l": 300,
+    "P_nominal": 7000,
+    "V_nominal": 480,
+    "commercialCable": "Buildings.Electrical.Transmission.LowVoltageCables.Cu20"
+  }
+}

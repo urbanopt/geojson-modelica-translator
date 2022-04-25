@@ -1,0 +1,39 @@
+within {{ project_name }}.PVPanels;
+model {{ data['model_name'] }}
+  "Isolated PV panels template model for GMT level 1 testing"
+  parameter Modelica.Units.SI.Area A = {{ data["net_surface_area_m2"] }};
+  parameter Modelica.Units.SI.Voltage V_nominal = {{ data["nominal_voltage_V"] }};
+  parameter Modelica.Units.SI.Angle til = {{ data["surface_tilt_deg"] }};
+  parameter Modelica.Units.SI.Angle azi = {{ data["surface_azimuth_deg"] }};{% raw %}
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.PVPanels(
+  pvOriented(
+  A=A,
+  V_nominal=V_nominal,
+  til=til,
+  azi=azi));
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the pv panels template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.PVPanels.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.PVPanels.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 8, 2022 by Mingzhe Liu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+{% endraw %}end {{ data['model_name'] }};

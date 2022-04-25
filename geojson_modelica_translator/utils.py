@@ -39,6 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
 import os
 import shutil
+from pathlib import Path
 from uuid import uuid4
 
 _log = logging.getLogger(__name__)
@@ -64,6 +65,13 @@ def convert_c_to_k(c):
     :return: float, temperature in kelvin
     """
     return c + 273.15
+
+
+def linecount(filename: Path) -> int:
+    """Counts the number of lines in a file
+    Probably not the most efficient way to do this, but it works
+    """
+    return len(open(filename).readlines())
 
 
 class ModelicaPath(object):
