@@ -69,7 +69,7 @@ env = Environment(
 
 COOLING_PLANT_PARAMS = {
     'chiller_performance': 'Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes',
-    'plant_type': 'Buildings.Experimental.DHC.CentralPlants.Cooling.Plant',
+    'plant_type': 'Buildings.Experimental.DHC.Plants.Cooling.ElectricChillerParallel',
     'delta_temp_approach': 3,
     'chw_mass_flow_nominal': 18.3,
     'chw_pressure_drop_nominal': 44800,
@@ -95,8 +95,7 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
-# FIXME: this should be marked v9, once PR #447 gets merged
-# @pytest.mark.mbl_v9
+@pytest.mark.mbl_v9
 @pytest.mark.simulation
 def test_simulate_community_pv():
     # -- Setup
@@ -119,7 +118,7 @@ def test_simulate_community_pv():
     # assert success is True
 
 
-@pytest.mark.mbl_v8
+@pytest.mark.mbl_v9
 @pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
@@ -141,8 +140,7 @@ def test_simulate_cooling_plant():
     assert success is True
 
 
-# FIXME: this should be marked v9, once PR #447 gets merged
-# @pytest.mark.mbl_v9
+@pytest.mark.mbl_v9
 @pytest.mark.simulation
 def test_simulate_wind_turbine():
     # -- Setup
@@ -165,8 +163,7 @@ def test_simulate_wind_turbine():
     # assert success is True
 
 
-# FIXME: this should be marked v9, once PR #447 gets merged
-# @pytest.mark.mbl_v9
+@pytest.mark.mbl_v9
 @pytest.mark.simulation
 def test_simulate_distribution_lines():
     # -- Setup
@@ -187,3 +184,11 @@ def test_simulate_distribution_lines():
     assert linecount(package_output_dir / 'ACLine0.mo') > 20
     # Did the simulation run?
     # assert success is True
+
+    
+@pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_stub_mbl_v9_with_not_msl_v4():
+    """Need to have a stub where mbl_v9 is selected that is simulatable (with
+    MSV V3.2) in order to not create a failed pytest command with exit code 5."""
+    assert False is not True
