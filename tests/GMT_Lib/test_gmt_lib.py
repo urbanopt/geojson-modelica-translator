@@ -44,7 +44,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
 GMT_LIB_PATH = PARENT_DIR.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'
-COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'CentralPlant' / 'Cooling'
+COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'Plants' / 'Cooling'
 
 env = Environment(
     loader=FileSystemLoader(GMT_LIB_PATH),
@@ -55,7 +55,7 @@ env = Environment(
 
 COOLING_PLANT_PARAMS = {
     'chiller_performance': 'Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes',
-    'plant_type': 'Buildings.Experimental.DHC.CentralPlants.Cooling.Plant',
+    'plant_type': 'Buildings.Experimental.DHC.Plants.Cooling.ElectricChillerParallel',
     'delta_temp_approach': 3,
     'chw_mass_flow_nominal': 18.3,
     'chw_pressure_drop_nominal': 44800,
@@ -81,7 +81,8 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
-@pytest.mark.mbl_v8
+@pytest.mark.mbl_v9
+@pytest.mark.msl_v4_simulation
 @pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
@@ -101,3 +102,11 @@ def test_simulate_cooling_plant():
 
     # -- Assert
     assert success is True
+
+
+@pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_stub_mbl_v9_with_not_msl_v4():
+    """Need to have a stub where mbl_v9 is selected that is simulatable (with
+    MSV V3.2) in order to not create a failed pytest command with exit code 5."""
+    assert False is not True
