@@ -57,7 +57,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
 GMT_LIB_PATH = PARENT_DIR.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'
-COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'CentralPlant' / 'Cooling'
+COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'Plants' / 'Cooling'
 MICROGRID_PARAMS = PARENT_DIR.parent / 'data_shared' / 'system_params_microgrid_example.json'
 
 env = Environment(
@@ -120,6 +120,7 @@ def test_simulate_community_pv():
 
 @pytest.mark.mbl_v9
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 def test_simulate_cooling_plant():
     # -- Setup
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
