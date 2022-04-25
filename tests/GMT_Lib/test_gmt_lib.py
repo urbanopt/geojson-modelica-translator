@@ -39,12 +39,26 @@ from pathlib import Path
 from shutil import copyfile
 
 import pytest
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Lines.Lines import (
+    DistributionLines
+)
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
+    CommunityPV
+)
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.wind_turbines import (
+    WindTurbine
+)
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.system_parameters.system_parameters import (
+    SystemParameters
+)
+from geojson_modelica_translator.utils import linecount
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
 GMT_LIB_PATH = PARENT_DIR.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'
 COOLING_PLANT_PATH = GMT_LIB_PATH / 'DHC' / 'Components' / 'Plants' / 'Cooling'
+MICROGRID_PARAMS = PARENT_DIR.parent / 'data_shared' / 'system_params_microgrid_example.json'
 
 env = Environment(
     loader=FileSystemLoader(GMT_LIB_PATH),
@@ -82,8 +96,31 @@ def test_generate_cooling_plant(snapshot):
 
 
 @pytest.mark.mbl_v9
-@pytest.mark.msl_v4_simulation
 @pytest.mark.simulation
+def test_simulate_community_pv():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'CommunityPV'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = CommunityPV(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    # runner = ModelicaRunner()
+    # success, _ = runner.run_in_docker(package_output_dir / 'PVPanels0.mo')
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'PVPanels1.mo') > 20
+    # Did the simulation run?
+    # assert success is True
+
+
+@pytest.mark.mbl_v9
+@pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 def test_simulate_cooling_plant():
     # -- Setup
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
@@ -102,6 +139,52 @@ def test_simulate_cooling_plant():
 
     # -- Assert
     assert success is True
+
+
+@pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_simulate_wind_turbine():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'WindTurbine'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = WindTurbine(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    # runner = ModelicaRunner()
+    # success, _ = runner.run_in_docker(package_output_dir / 'WindTurbine0.mo')
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'WindTurbine0.mo') > 20
+    # Did the simulation run?
+    # assert success is True
+
+
+@pytest.mark.mbl_v9
+@pytest.mark.simulation
+def test_simulate_distribution_lines():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'DistributionLines'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = DistributionLines(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    # runner = ModelicaRunner()
+    # success, _ = runner.run_in_docker(package_output_dir / 'ACLine0.mo')
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'ACLine0.mo') > 20
+    # Did the simulation run?
+    # assert success is True
 
 
 @pytest.mark.mbl_v9

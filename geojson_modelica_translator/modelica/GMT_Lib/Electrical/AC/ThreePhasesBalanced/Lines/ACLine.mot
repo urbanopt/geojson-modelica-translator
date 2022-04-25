@@ -1,0 +1,70 @@
+within {{ project_name }}.ACLine;
+model {{ data["model_name"] }}
+  "Isolated AC distribution line template model for GMT level 1 testing"
+  replaceable parameter {{ data["commercial_line_type"] }} perLin;
+  parameter Modelica.Units.SI.Length l={{ data["length"] }};
+  parameter Modelica.Units.SI.Power P_nominal={{ data["ampacity"] }};
+  parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};{% raw %}
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine(
+  line_1(
+  mode=Types.CableMode.commercial,
+  l=l,
+  perLin=perLin,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_2a(
+  mode=Types.CableMode.commercial,
+  l=l,
+  perLin=perLin,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_2b(
+  mode=Types.CableMode.commercial,
+  l=l,
+  perLin=perLin,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_3a(
+  mode=Types.CableMode.commercial,
+  l=l,
+  perLin=perLin,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_3b(
+  mode=Types.CableMode.commercial,
+  l=l,
+  perLin=perLin,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_sc(
+  mode=Types.CableMode.commercial,
+  l=l,
+  perLin=perLin,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal));
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the AC distribution line template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLine.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 8, 2022 by Mingzhe Liu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+{% endraw %}end {{ data['model_name'] }};
