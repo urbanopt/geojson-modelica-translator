@@ -144,7 +144,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     nPorts_a1=1) if have_watCoo
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{120,-270},{140,-250}})));
-  Buildings.Experimental.DHC.Loads.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
+  Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
     redeclare final package Medium1=MediumW,
     redeclare final package Medium2=MediumA,
     final QCoo_flow_nominal=QCoo_flow_nominal,
