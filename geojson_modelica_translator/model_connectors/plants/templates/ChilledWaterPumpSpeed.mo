@@ -48,7 +48,7 @@ model ChilledWaterPumpSpeed
   Modelica.Blocks.Math.Product pumSpe[numPum]
     "Output pump speed"
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Controls.VariableSpeedPumpStage pumStaCon(
+  Buildings.Applications.BaseClasses.Controls.VariableSpeedPumpStage pumStaCon(
     tWai=tWai,
     m_flow_nominal=m_flow_nominal,
     minSpe=minSpe)
