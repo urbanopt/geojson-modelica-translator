@@ -50,7 +50,7 @@ within {{project_name}}.Loads.{{model_name}};
   {% endfor %}Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
     nin=2) if have_pum
     {% raw %} annotation (Placement(transformation(extent={{260,70},{280,90}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](
     redeclare each package Medium1=MediumW,
     redeclare each package Medium2=MediumA,
     each facSca=facSca,
