@@ -124,7 +124,7 @@ within {{ project_name }}.Plants;
     final unit="Pa")
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-180,-40},{-140,0}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.ElectricChillerParallel mulChiSys(
+  Buildings.Applications.BaseClasses.Equipment.ElectricChillerParallel mulChiSys(
     per=fill(
       perChi,
       numChi),
@@ -149,7 +149,7 @@ within {{ project_name }}.Plants;
     TMin=TMin)
     "Cooling towers with bypass valve"
     annotation (Placement(transformation(extent={{-60,-60},{-40,-40}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_y pumCHW(
+  Buildings.Applications.BaseClasses.Equipment.FlowMachine_y pumCHW(
     redeclare package Medium=Medium,
     per=fill(
       perCHWPum,
@@ -160,7 +160,7 @@ within {{ project_name }}.Plants;
     num=numChi)
     "Chilled water pumps"
     annotation (Placement(transformation(extent={{10,40},{-10,60}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_m pumCW(
+  Buildings.Applications.BaseClasses.Equipment.FlowMachine_m pumCW(
     redeclare package Medium=Medium,
     per=fill(
       perCWPum,
