@@ -10,9 +10,6 @@ model CoolingTowerParallel
     "Number of cooling towers";
   replaceable package Medium=Buildings.Media.Water
     "Condenser water medium";
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial
-    "Type of energy balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
   parameter Boolean show_T=true
     "= true, if actual temperature at port is computed"
     annotation (Dialog(tab="Advanced",group="Diagnostics"));
@@ -100,8 +97,7 @@ model CoolingTowerParallel
       redeclare each final package Medium=Medium,
       each show_T=show_T,
       each final m_flow_nominal=m_flow_nominal,
-      each final dp_nominal=dp_nominal,
-      each final energyDynamics=energyDynamics)
+      each final dp_nominal=dp_nominal)
     "Cooling tower type"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage val[num](

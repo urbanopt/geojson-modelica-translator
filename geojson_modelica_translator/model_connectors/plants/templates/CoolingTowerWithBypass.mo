@@ -6,9 +6,6 @@ model CoolingTowerWithBypass
   parameter Integer num(
     min=1)=2
     "Number of cooling towers";
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial
-    "Type of energy balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
   parameter Boolean show_T=true
     "= true, if actual temperature at port is computed"
     annotation (Dialog(tab="Advanced",group="Diagnostics"));
@@ -115,8 +112,7 @@ model CoolingTowerWithBypass
     TAirInWB_nominal=TAirInWB_nominal,
     TWatIn_nominal=TWatIn_nominal,
     dT_nominal=dT_nominal,
-    PFan_nominal=PFan_nominal,
-    energyDynamics=energyDynamics)
+    PFan_nominal=PFan_nominal)
     "Cooling tower system"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(

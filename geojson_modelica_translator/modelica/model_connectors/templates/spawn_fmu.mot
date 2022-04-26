@@ -24,7 +24,6 @@ model building
     redeclare package Medium = Medium,
     idfName=idfName,
     weaName=weaName,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     usePrecompiledFMU=false,
     fmuName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/EnergyPlus/FMUs/Zones1.fmu"),
     zoneName="{{zone['spawn_object_name']}}") "Thermal zone"

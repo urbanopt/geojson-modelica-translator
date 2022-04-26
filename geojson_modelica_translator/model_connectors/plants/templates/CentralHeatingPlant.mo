@@ -39,13 +39,6 @@ model CentralHeatingPlant
     displayUnit="Pa")
     "Demand side pressure difference setpoint"
     annotation (Dialog(group="Control Settings"));
-  // dynamics
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial
-    "Type of energy balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
-  parameter Modelica.Fluid.Types.Dynamics massDynamics=energyDynamics
-    "Type of mass balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
   // diagnostics
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
@@ -127,8 +120,7 @@ model CentralHeatingPlant
     m_flow_nominal=mBoi_flow_nominal,
     dpValve_nominal=7000,
     num=numBoi,
-    l=0.001,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    l=0.001)
     "Parallel heating water pumps."
     annotation (Placement(transformation(extent={{0,40},{-20,60}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(

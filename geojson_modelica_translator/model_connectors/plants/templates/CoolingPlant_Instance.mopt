@@ -51,7 +51,7 @@
     TCW_nominal=308.15,
     TMin=288.15,
     tWai=tWai_{{ model.id }},
-    dpSetPoi=dpSetPoi_{{ model.id }},
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    dpSetPoi=dpSetPoi_{{ model.id }}
+    )
     "District cooling plant."
     annotation (Placement({{ diagram.transformation.cooling_plant.plant }}));

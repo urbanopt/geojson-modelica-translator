@@ -71,13 +71,6 @@ within {{ project_name }}.Plants;
     displayUnit="Pa")
     "Demand side pressure difference setpoint"
     annotation (Dialog(group="Control Settings"));
-  // dynamics
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial
-    "Type of energy balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
-  parameter Modelica.Fluid.Types.Dynamics massDynamics=energyDynamics
-    "Type of mass balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
     final computeWetBulbTemperature=true,
     filNam=Modelica.Utilities.Files.loadResource(
@@ -154,7 +147,6 @@ within {{ project_name }}.Plants;
     per=fill(
       perCHWPum,
       numChi),
-    energyDynamics=energyDynamics,
     m_flow_nominal=mCHW_flow_nominal,
     dpValve_nominal=dpCHWPum_nominal,
     num=numChi)
@@ -165,7 +157,6 @@ within {{ project_name }}.Plants;
     per=fill(
       perCWPum,
       numChi),
-    energyDynamics=energyDynamics,
     m_flow_nominal=mCW_flow_nominal,
     dpValve_nominal=dpCWPum_nominal,
     num=numChi)

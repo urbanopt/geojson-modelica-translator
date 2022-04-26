@@ -4,7 +4,6 @@ model Boiler_TParallel
   extends PartialPlantParallel(
     num=numBoi,
     redeclare Buildings.Fluid.Boilers.BoilerPolynomial boi(
-      each energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
       each Q_flow_nominal=Q_flow_nominal,
       each m_flow_nominal=m_flow_nominal,
       each dp_nominal=dp_nominal,

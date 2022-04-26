@@ -63,19 +63,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Gain of controller";
   parameter Modelica.SIunits.Time Ti=60
     "Time constant of integrator block";
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial
-    "Type of energy balance for fan air volume"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
-  parameter Modelica.SIunits.Time tau=1
-    "Time constant of fan air volume, used if energy or mass balance is dynamic"
-    annotation (Dialog(tab="Dynamics",group="Nominal condition",enable=energyDynamics <> Modelica.Fluid.Types.Dynamics.SteadyState));
-  parameter Boolean use_inputFilter=true
-    "= true, if fan speed is filtered with a 2nd order CriticalDamping filter"
-    annotation (Dialog(tab="Dynamics",group="Filtered speed"));
-  parameter Modelica.SIunits.Time riseTime=30
-    "Rise time of the filter (time to reach 99.6 % of the speed)"
-    annotation (Dialog(tab="Dynamics",group="Filtered speed",enable=use_inputFilter));
-  parameter Modelica.SIunits.MassFlowRate mChiWat_flow_nominal=abs(
+  parameter Modelica.Units.SI.MassFlowRate mChiWat_flow_nominal=abs(
     QCoo_flow_nominal/cpChiWat_nominal/(T_aChiWat_nominal-T_bChiWat_nominal))
     "Chilled water mass flow rate at nominal conditions";
   parameter Modelica.SIunits.MassFlowRate mHeaWat_flow_nominal=abs(
@@ -118,12 +106,8 @@ within {{ project_name }}.Loads.{{ model_name }};
     final T_bHeaWat_nominal=T_bHeaWat_nominal,
     final T_aLoaHea_nominal=T_aLoaHea_nominal,
     final k=k,
-    final Ti=Ti,
-    final energyDynamics=energyDynamics,
-    final tau=tau,
-    final use_inputFilter=use_inputFilter,
-    final riseTime=riseTime) if have_watHea
-    "Heating terminal unit"
+    final Ti=Ti
+      "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
@@ -155,12 +139,8 @@ within {{ project_name }}.Loads.{{ model_name }};
     final T_bChiWat_nominal=T_bChiWat_nominal,
     final T_aLoaCoo_nominal=T_aLoaCoo_nominal,
     final k=k,
-    final Ti=Ti,
-    final energyDynamics=energyDynamics,
-    final tau=tau,
-    final use_inputFilter=use_inputFilter,
-    final riseTime=riseTime) if have_watCoo
-    "Cooling terminal unit"
+    final Ti=Ti
+      "Cooling terminal unit"
     annotation (Placement(transformation(extent={{70,26},{90,46}})));
   Modelica.Blocks.Interfaces.RealOutput QReqHea_flow(
     final quantity="HeatFlowRate",
