@@ -66,7 +66,7 @@ within {{project_name}}.Loads.{{model_name}};
     each mLoaCoo_flow_nominal=5)
     "Terminal unit"
     {% raw %} annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
       terUni.mHeaWat_flow_nominal .* terUni.facSca),
@@ -77,7 +77,7 @@ within {{project_name}}.Loads.{{model_name}};
     nPorts_b1=nZon)
     "Heating water distribution system"
     {% raw %} annotation (Placement(transformation(extent={{-140,-100},{-120,-80}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloCoo(
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
       terUni.mChiWat_flow_nominal .* terUni.facSca),
