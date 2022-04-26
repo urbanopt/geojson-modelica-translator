@@ -103,8 +103,8 @@ model {{ model_filename }}
     min=100*Modelica.Constants.eps)=10
     "The higher Nd, the more ideal the derivative block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.Blocks.Types.InitPID initType=Modelica.Blocks.Types.InitPID.InitialOutput
-    "Type of initialization (1: no init, 2: steady state, 3: initial state, 4: initial output)"
+  parameter Modelica.Blocks.Types.Init initType=Modelica.Blocks.Types.Init.InitialOutput
+    "Type of initialization (1: NoInit, 2: SteadyState, 3: InitialState, 4: InitialOutput)"
     annotation (Evaluate=true,Dialog(group="Initialization",tab="Controller"));
   parameter Real xi_start=0
     "Initial or guess value value for integrator output (= integrator state)"
@@ -114,7 +114,7 @@ model {{ model_filename }}
     annotation (Dialog(group="Initialization",tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
   parameter Real yCon_start=0
     "Initial value of output from the controller"
-    annotation (Dialog(group="Initialization",tab="Controller",enable=initType == Modelica.Blocks.Types.InitPID.InitialOutput));
+    annotation (Dialog(group="Initialization",tab="Controller",enable=initType == Modelica.Blocks.Types.Init.InitialOutput));
   parameter Boolean reverseActing=true
     annotation (Dialog(tab="Controller"));
   Modelica.Blocks.Interfaces.RealInput TSetBuiSup(
@@ -159,7 +159,7 @@ model {{ model_filename }}
     final wd=wd,
     final Ni=Ni,
     final Nd=Nd,
-    final initType=Modelica.Blocks.Types.InitPID.InitialOutput,
+    final initType=Modelica.Blocks.Types.Init.InitialOutput,
     final xi_start=xi_start,
     final xd_start=xd_start,
     final y_start=yCon_start,
