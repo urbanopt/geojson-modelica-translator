@@ -273,9 +273,7 @@ Release Instructions
     rm -rf dist/*
 
 * Run :code:`git tag <NEW_VERSION>`.
-* Run :code:`git push --tags`
-* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and convert the tag to a release.
-* Copy in the CHANGELOG entries that are relevant to the new version.
+
 * Run the following to release.
 
 .. code-block:: bash
@@ -296,12 +294,10 @@ Release Instructions
     # release using
     ./docs/publish_docs.sh
 
-* Push the tag to GitHub after everything is published to PyPi, then go to GitHub and add in the CHANGELOG.rst notes into the tagged release and officially release.
-
-.. code-block:: bash
-
-    git push origin <NEW_VERSION>
-
+* Run :code:`git push origin <new_tag_version>`
+* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and convert the tag to a release.
+* Copy in the CHANGELOG entries that are relevant to the new version.
+* Verify new documentation on the `docs website <https://docs.urbanopt.net/geojson-modelica-translator/>`_.
 
 Code Documentation
 ------------------
