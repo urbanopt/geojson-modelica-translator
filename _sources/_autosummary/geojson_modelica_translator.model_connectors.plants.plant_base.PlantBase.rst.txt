@@ -21,7 +21,6 @@ PlantBase
       ~PlantBase.__init__
       ~PlantBase.copy_required_mo_files
       ~PlantBase.ft2_to_m2
-      ~PlantBase.modelica_path
       ~PlantBase.render_instance
       ~PlantBase.run_template
       ~PlantBase.to_dict

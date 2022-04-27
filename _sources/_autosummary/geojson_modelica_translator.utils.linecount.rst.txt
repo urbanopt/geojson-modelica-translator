@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.utils.linecount
+=============================================
+
+.. currentmodule:: geojson_modelica_translator.utils
+
+.. autofunction:: linecount

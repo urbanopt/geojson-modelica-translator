@@ -19,6 +19,7 @@ Coupling
    .. autosummary::
    
       ~Coupling.__init__
+      ~Coupling.get_load
       ~Coupling.get_other_model
       ~Coupling.render_templates
       ~Coupling.to_dict

@@ -22,7 +22,6 @@ NetworkHeatedWaterStub
       ~NetworkHeatedWaterStub.copy_required_mo_files
       ~NetworkHeatedWaterStub.ft2_to_m2
       ~NetworkHeatedWaterStub.get_modelica_type
-      ~NetworkHeatedWaterStub.modelica_path
       ~NetworkHeatedWaterStub.render_instance
       ~NetworkHeatedWaterStub.run_template
       ~NetworkHeatedWaterStub.to_dict

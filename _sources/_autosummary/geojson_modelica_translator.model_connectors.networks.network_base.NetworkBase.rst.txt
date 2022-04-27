@@ -21,7 +21,6 @@ NetworkBase
       ~NetworkBase.__init__
       ~NetworkBase.copy_required_mo_files
       ~NetworkBase.ft2_to_m2
-      ~NetworkBase.modelica_path
       ~NetworkBase.render_instance
       ~NetworkBase.run_template
       ~NetworkBase.to_dict

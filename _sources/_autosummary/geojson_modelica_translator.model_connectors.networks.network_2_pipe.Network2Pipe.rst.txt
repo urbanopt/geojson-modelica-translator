@@ -22,7 +22,6 @@ Network2Pipe
       ~Network2Pipe.copy_required_mo_files
       ~Network2Pipe.ft2_to_m2
       ~Network2Pipe.get_modelica_type
-      ~Network2Pipe.modelica_path
       ~Network2Pipe.render_instance
       ~Network2Pipe.run_template
       ~Network2Pipe.to_dict

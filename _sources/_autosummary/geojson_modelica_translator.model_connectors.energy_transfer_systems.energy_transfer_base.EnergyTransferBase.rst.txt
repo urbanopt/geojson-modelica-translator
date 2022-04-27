@@ -21,7 +21,6 @@ EnergyTransferBase
       ~EnergyTransferBase.__init__
       ~EnergyTransferBase.copy_required_mo_files
       ~EnergyTransferBase.ft2_to_m2
-      ~EnergyTransferBase.modelica_path
       ~EnergyTransferBase.render_instance
       ~EnergyTransferBase.run_template
       ~EnergyTransferBase.to_dict

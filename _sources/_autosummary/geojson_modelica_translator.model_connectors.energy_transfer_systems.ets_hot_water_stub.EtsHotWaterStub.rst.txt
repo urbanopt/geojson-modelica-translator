@@ -22,7 +22,6 @@ EtsHotWaterStub
       ~EtsHotWaterStub.copy_required_mo_files
       ~EtsHotWaterStub.ft2_to_m2
       ~EtsHotWaterStub.get_modelica_type
-      ~EtsHotWaterStub.modelica_path
       ~EtsHotWaterStub.render_instance
       ~EtsHotWaterStub.run_template
       ~EtsHotWaterStub.to_dict

@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+simple\_gmt\_base
+=================
+
+.. automodule:: geojson_modelica_translator.modelica.simple_gmt_base
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      SimpleGMTBase
+   
+   
+
+   
+   
+   
+
+
+

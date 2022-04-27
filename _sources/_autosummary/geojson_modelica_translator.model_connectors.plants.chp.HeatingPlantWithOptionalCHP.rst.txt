@@ -1,0 +1,42 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+HeatingPlantWithOptionalCHP
+===========================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.plants.chp
+
+.. autoclass:: HeatingPlantWithOptionalCHP
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HeatingPlantWithOptionalCHP.__init__
+      ~HeatingPlantWithOptionalCHP.copy_required_mo_files
+      ~HeatingPlantWithOptionalCHP.ft2_to_m2
+      ~HeatingPlantWithOptionalCHP.get_modelica_type
+      ~HeatingPlantWithOptionalCHP.render_instance
+      ~HeatingPlantWithOptionalCHP.run_template
+      ~HeatingPlantWithOptionalCHP.to_dict
+      ~HeatingPlantWithOptionalCHP.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HeatingPlantWithOptionalCHP.instance_template_path
+      ~HeatingPlantWithOptionalCHP.model_name
+      ~HeatingPlantWithOptionalCHP.simple_gmt_type
+   
+   

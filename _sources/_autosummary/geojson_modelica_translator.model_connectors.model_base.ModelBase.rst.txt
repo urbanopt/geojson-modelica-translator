@@ -21,7 +21,6 @@ ModelBase
       ~ModelBase.__init__
       ~ModelBase.copy_required_mo_files
       ~ModelBase.ft2_to_m2
-      ~ModelBase.modelica_path
       ~ModelBase.render_instance
       ~ModelBase.run_template
       ~ModelBase.to_dict

@@ -4,17 +4,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Change Log &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Change Log &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="authors.html" title="Contributors"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Change Log</a></li> 
       </ul>
     </div>  
@@ -46,16 +46,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="change-log">
+  <section id="change-log">
 <span id="changelog"></span><h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="version-0-2-2">
+<section id="version-0-2-3">
+<h2>Version 0.2.3<a class="headerlink" href="#version-0-2-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Add GMT Lib methods for Level 1 translation of Modelica-templated objects (for microgrid).</p></li>
+<li><p>Use MBL v9 (current master branch) for GMT Lib. The DES models still require the usage of the <cite>issue2204_gmt_mbl</cite> branch.</p></li>
+<li><p>Updated Jinja and Sphinx dependencies. Jinja is now a required dependency (no longer a testing dependency).</p></li>
+<li><p>Fix bug in CLI where commands only work in Unix-like operating systems, not Windows</p></li>
+<li><p>Fix bug in TEASER model for four-element RC models.</p></li>
+<li><p>Fix bug in TEASER infinite heating/cooling coupling template.</p></li>
+</ul>
+</section>
+<section id="version-0-2-2">
 <h2>Version 0.2.2<a class="headerlink" href="#version-0-2-2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fix bug in CLI which required the user to be in a specific directory to run. Updated CLI is more flexible.</p></li>
 <li><p>Update documentation.</p></li>
 </ul>
-</div>
-<div class="section" id="version-0-2-1">
+</section>
+<section id="version-0-2-1">
 <h2>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>New command line interface (CLI) for scaffolding project using results of URBANopt SDK’s OpenStudio results</p></li>
@@ -70,8 +81,8 @@
 <li><p>Add regression testing to full district energy system</p></li>
 <li><p>Auto-layout of templated components. This is a work in progress and the next version will include “pooling” of components.</p></li>
 </ul>
-</div>
-<div class="section" id="version-0-2-0">
+</section>
+<section id="version-0-2-0">
 <h2>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add ETS data for indirect cooling to system parameters schema</p></li>
@@ -83,8 +94,8 @@
 <li><p>Update scaffolding to allow for mixed models</p></li>
 <li><p>Create initial documentation</p></li>
 </ul>
-</div>
-<div class="section" id="version-0-1-0">
+</section>
+<section id="version-0-1-0">
 <h2>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Permalink to this headline">¶</a></h2>
 <p>This is the initial release of the package and includes the following functionality:</p>
 <ul class="simple">
@@ -92,8 +103,8 @@
 <li><p>Create an RC model using Modelica 3.2.x, Modelica Buildings Library 7.0 and TEASER 0.7.2.</p></li>
 <li><p>Create a Spawn-based models which loads an IDF file.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -102,9 +113,11 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Change Log</a><ul>
+<li><a class="reference internal" href="#version-0-2-3">Version 0.2.3</a></li>
 <li><a class="reference internal" href="#version-0-2-2">Version 0.2.2</a></li>
 <li><a class="reference internal" href="#version-0-2-1">Version 0.2.1</a></li>
 <li><a class="reference internal" href="#version-0-2-0">Version 0.2.0</a></li>
@@ -113,12 +126,17 @@
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="authors.html"
-                        title="previous chapter">Contributors</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="license.html"
-                        title="next chapter">License</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="authors.html"
+                          title="previous chapter">Contributors</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="license.html"
+                          title="next chapter">License</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -130,7 +148,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -155,13 +173,13 @@
         <li class="right" >
           <a href="authors.html" title="Contributors"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Change Log</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

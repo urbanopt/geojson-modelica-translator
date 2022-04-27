@@ -23,7 +23,6 @@ Spawn
       ~Spawn.copy_required_mo_files
       ~Spawn.ft2_to_m2
       ~Spawn.get_modelica_type
-      ~Spawn.modelica_path
       ~Spawn.post_process
       ~Spawn.render_instance
       ~Spawn.run_template

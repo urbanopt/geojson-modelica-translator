@@ -4,21 +4,21 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ModelicaRunner &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ModelicaRunner &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="scaffold" href="geojson_modelica_translator.scaffold.html" />
+    <link rel="next" title="simple_gmt_base" href="geojson_modelica_translator.modelica.simple_gmt_base.html" />
     <link rel="prev" title="modelica_runner" href="geojson_modelica_translator.modelica.modelica_runner.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,12 +31,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="geojson_modelica_translator.scaffold.html" title="scaffold"
+          <a href="geojson_modelica_translator.modelica.simple_gmt_base.html" title="simple_gmt_base"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -50,11 +50,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="modelicarunner">
+  <section id="modelicarunner">
 <h1>ModelicaRunner<a class="headerlink" href="#modelicarunner" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner">
-<em class="property">class </em><code class="sig-prename descclassname">geojson_modelica_translator.modelica.modelica_runner.</code><code class="sig-name descname">ModelicaRunner</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">modelica_lib_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.modelica_runner.</span></span><span class="sig-name descname"><span class="pre">ModelicaRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelica_lib_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to run Modelica models. This is a very simple implementation of what needs to be
 a full CLI to run Modelica easily. At the moment, this probably only works on Linux/Mac
@@ -63,8 +63,8 @@ For Ubuntu, here is the installation instruction: <a class="reference external" 
 <p># TODO: test in windows
 # Document how to install Docker</p>
 <dl class="py method">
-<dt id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">modelica_lib_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelica_lib_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the runner with data needed for simulation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -74,7 +74,7 @@ For Ubuntu, here is the installation instruction: <a class="reference external" 
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -89,20 +89,20 @@ For Ubuntu, here is the installation instruction: <a class="reference external" 
 <tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_results</span></code></a>(from_path, to_path[, project_name])</p></td>
 <td><p>This method moves the results of the simulation that are known for now.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_docker</span></code></a>(file_to_run[, run_path, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_docker</span></code></a>(file_to_run[, run_path, ...])</p></td>
 <td><p>Run the Modelica project in a docker-based environment.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.cleanup_path">
-<code class="sig-name descname">cleanup_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.cleanup_path" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.cleanup_path">
+<span class="sig-name descname"><span class="pre">cleanup_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.cleanup_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clean up the files in the path that was presumably used to run the simulation</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results">
-<code class="sig-name descname">move_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">from_path</span></em>, <em class="sig-param"><span class="n">to_path</span></em>, <em class="sig-param"><span class="n">project_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results">
+<span class="sig-name descname"><span class="pre">move_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method moves the results of the simulation that are known for now.
 This method moves only specific files (stdout.log for now), plus all files and folders beginning
 with the “{project_name}_” name.</p>
@@ -121,8 +121,8 @@ with the “{project_name}_” name.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker">
-<code class="sig-name descname">run_in_docker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_to_run</span></em>, <em class="sig-param"><span class="n">run_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker">
+<span class="sig-name descname"><span class="pre">run_in_docker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_to_run</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the Modelica project in a docker-based environment. Results are saved into the path of the
 file that was selected to run.</p>
 <p>stdout.log will store both stdout and stderr of the simulations</p>
@@ -143,7 +143,7 @@ directory</p></li>
 
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -152,12 +152,16 @@ directory</p></li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="geojson_modelica_translator.modelica.modelica_runner.html"
-                        title="previous chapter">modelica_runner</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="geojson_modelica_translator.scaffold.html"
-                        title="next chapter">scaffold</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.modelica_runner.html"
+                          title="previous chapter">modelica_runner</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.simple_gmt_base.html"
+                          title="next chapter">simple_gmt_base</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -169,7 +173,7 @@ directory</p></li>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -189,12 +193,12 @@ directory</p></li>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="geojson_modelica_translator.scaffold.html" title="scaffold"
+          <a href="geojson_modelica_translator.modelica.simple_gmt_base.html" title="simple_gmt_base"
              >next</a> |</li>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -203,8 +207,8 @@ directory</p></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

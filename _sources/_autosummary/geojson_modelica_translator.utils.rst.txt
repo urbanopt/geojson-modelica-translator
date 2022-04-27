@@ -17,7 +17,9 @@ utils
    .. autosummary::
       :toctree:
    
+      convert_c_to_k
       copytree
+      linecount
       simple_uuid
    
    

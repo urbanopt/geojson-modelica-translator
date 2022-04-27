@@ -25,7 +25,6 @@ Teaser
       ~Teaser.ft2_to_m2
       ~Teaser.get_modelica_type
       ~Teaser.lookup_building_type
-      ~Teaser.modelica_path
       ~Teaser.post_process
       ~Teaser.render_instance
       ~Teaser.run_template

@@ -22,7 +22,6 @@ CoolingPlant
       ~CoolingPlant.copy_required_mo_files
       ~CoolingPlant.ft2_to_m2
       ~CoolingPlant.get_modelica_type
-      ~CoolingPlant.modelica_path
       ~CoolingPlant.render_instance
       ~CoolingPlant.run_template
       ~CoolingPlant.to_dict

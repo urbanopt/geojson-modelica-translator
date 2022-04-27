@@ -22,7 +22,6 @@ NetworkChilledWaterStub
       ~NetworkChilledWaterStub.copy_required_mo_files
       ~NetworkChilledWaterStub.ft2_to_m2
       ~NetworkChilledWaterStub.get_modelica_type
-      ~NetworkChilledWaterStub.modelica_path
       ~NetworkChilledWaterStub.render_instance
       ~NetworkChilledWaterStub.run_template
       ~NetworkChilledWaterStub.to_dict

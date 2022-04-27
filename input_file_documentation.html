@@ -4,17 +4,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>  
@@ -46,17 +46,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="input-file-documentation">
+  <section id="input-file-documentation">
 <span id="documentation"></span><h1>Input File Documentation<a class="headerlink" href="#input-file-documentation" title="Permalink to this headline">¶</a></h1>
 <p>There are two input files that need to be defined to use the GeoJSON to Modelica Translator: a GeoJSON file and
 a System Parameters file.</p>
-<div class="section" id="geojson-documentation">
+<section id="geojson-documentation">
 <h2>GeoJSON Documentation<a class="headerlink" href="#geojson-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Presently only the building_properties.json of URBANopt’s GeoJSON schemas is leveraged in the GMT.</p>
-<div class="section" id="building-properties">
+<section id="building-properties">
 <h3>Building Properties<a class="headerlink" href="#building-properties" title="Permalink to this headline">¶</a></h3>
 <p>Bolded elements are required fields.</p>
-<div class="section" id="urbanopt-building">
+<section id="urbanopt-building">
 <h4>URBANopt Building<a class="headerlink" href="#urbanopt-building" title="Permalink to this headline">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
@@ -722,10 +722,10 @@ a System Parameters file.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
-<div class="section" id="system-parameters-schema">
+</section>
+</section>
+</section>
+<section id="system-parameters-schema">
 <h2>System Parameters Schema<a class="headerlink" href="#system-parameters-schema" title="Permalink to this headline">¶</a></h2>
 <p>Bolded elements are required fields.</p>
 <table class="docutils align-default">
@@ -741,7 +741,7 @@ a System Parameters file.</p>
 </tr>
 <tr class="row-even"><td colspan="5"><p>definitions</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="48"><ul class="simple">
+<tr class="row-odd"><td rowspan="82"><ul class="simple">
 <li><p>system_design_parameter_def</p></li>
 </ul>
 </td>
@@ -828,7 +828,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="24"><ul class="simple">
+<tr class="row-even"><td rowspan="21"><ul class="simple">
 <li><p>topology</p></li>
 </ul>
 </td>
@@ -841,85 +841,225 @@ a System Parameters file.</p>
 </tr>
 <tr class="row-odd"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>topology_parameters</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Description of topology style</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/topology_def</span></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/topology_def</span></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>topology_optimization</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Perform topology optimization?</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>cost_function</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Cost function to use in topology optimization</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
-</tr>
 <tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/cost_function_definition</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>optimization_approach</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Approach to use for topology optimization</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/optimization_definition</span></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/optimization_definition</span></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>time_period</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Time horizon for topology optimization.This parameter is used only if LCC is used as the cost function.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>discount_rate</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Discount rate for topology optimization. This parameter is used only if LCC is used as the cost function.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>convergence_criteria</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>dependencies</p></td>
+<tr class="row-odd"><td colspan="3"><p>dependencies</p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>topology_optimization</p></li>
 </ul>
 </td>
 <td colspan="2"><p>cost_function, optimization_approach, time_period, discount_rate, convergence_criteria</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>electrical_grid</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Parameters associated with the electrical grid</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>default</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/electrical_grid_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>photovoltaic_panels</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/pv_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>wind_turbines</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Wind turbines associated with the district - from scenario optimization</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/wind_turbine_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>combined_heat_and_power_systems</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Combined heat and power (CHP) systems associated with the district - from scenario optimization</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/combined_heat_and_power_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>capacitor_banks</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Capacitor banks associated with the district</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/capacitor_bank_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>substations</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Substations associated with the district</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/substation_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>transformers</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Transformers associated with the district</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/transformer_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>power_converters</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Power converters associated with the district</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/power_converter_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>distribution_lines</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Distribution lines associated with the district</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/distribution_line_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>ac_inductive_loads</p></li>
+</ul>
+</td>
+<td colspan="3"><p>AC Inductive loads associated with the district</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/ac_inductive_load_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>dc_load_loads</p></li>
+</ul>
+</td>
+<td colspan="3"><p>DC loads associated with the district</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/dc_load_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>battery_banks</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Battery banks associated with the district</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/battery_bank_parameters</span></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
@@ -1002,7 +1142,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="22"><ul class="simple">
+<tr class="row-even"><td rowspan="38"><ul class="simple">
 <li><p>building_def</p></li>
 </ul>
 </td>
@@ -1032,7 +1172,7 @@ a System Parameters file.</p>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>enum</p></td>
-<td colspan="2"><p>rc, ddm, time_series, spawn</p></td>
+<td colspan="2"><p>rc, time_series, time_series_massflow_temperature, spawn</p></td>
 </tr>
 <tr class="row-even"><td rowspan="6"><ul class="simple">
 <li><p>load_model_parameters</p></li>
@@ -1094,8 +1234,76 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>photovoltaic_panels</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/pv_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>diesel_generators</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Diesel generators associated with the building</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/diesel_generator_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>battery_banks</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Battery banks associated with the building</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/battery_bank_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td rowspan="8"><ul class="simple">
+<li><p>load</p></li>
+</ul>
+</td>
+<td colspan="3"><p>microgrid-related load fields</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Nominal load voltage (V)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>max_power</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Maximim load power (kW)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>max_reactive_power</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Maximum reactive power (kvar)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="14"><ul class="simple">
 <li><p>connector_def</p></li>
@@ -1153,7 +1361,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="12"><ul class="simple">
+<tr class="row-even"><td rowspan="13"><ul class="simple">
 <li><p>district_system_def</p></li>
 </ul>
 </td>
@@ -1194,91 +1402,86 @@ a System Parameters file.</p>
 </td>
 <td colspan="3"><p><span class="xref std std-ref">#/definitions/central_cooling_plant_parameters</span></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>central_heating_plant_parameters</p></li>
 </ul>
 </td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/central_heating_plant_parameters</span></p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>combined_heat_and_power_parameters</p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/combined_heat_and_power_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="60"><ul class="simple">
+<tr class="row-odd"><td rowspan="54"><ul class="simple">
 <li><p>ets_indirect_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>The parameters associated with the indirect energy transfer station.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>properties</p></td>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>heat_flow_nominal</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal heat flow rate. (W)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>10000</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>heat_exchanger_efficiency</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heat exchanger efficiency. (fraction)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>0.8</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>heat_exchanger_primary_pressure_drop</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heat exchanger primary side pressure drop. (Pa)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>500</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>heat_exchanger_secondary_pressure_drop</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heat exchanger secondary side pressure drop. (Pa)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>500</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>nominal_mass_flow_building</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Building water nominal flow rate. (kg/s)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>nominal_mass_flow_district</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>District water nominal flow rate. (kg/s)</p></td>
-</tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
@@ -1286,28 +1489,28 @@ a System Parameters file.</p>
 <td colspan="2"><p>10</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>valve_pressure_drop</strong></p></li>
+<li><p><strong>nominal_mass_flow_district</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Valve pressure drop. (Pa)</p></td>
+<td colspan="3"><p>District water nominal flow rate. (kg/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>6000</p></td>
+<td colspan="2"><p>10</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>cooling_supply_water_temperature_district</strong></p></li>
+<li><p><strong>valve_pressure_drop</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Chilled water supply temperature district side. (C)</p></td>
+<td colspan="3"><p>Valve pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>5</p></td>
+<td colspan="2"><p>6000</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>cooling_supply_water_temperature_building</strong></p></li>
@@ -1322,502 +1525,279 @@ a System Parameters file.</p>
 <td colspan="2"><p>7</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>heating_supply_water_temperature_district</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating water supply temperature district side. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>55</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>heating_supply_water_temperature_building</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heating water supply temperature building side. (C)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>50</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>delta_temp_hw_district</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heating water temperature difference on on the district side. (deltaC)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>20</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>delta_temp_hw_building</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design temperature differential on the building side. (deltaC)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>15</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>delta_temp_chw_building</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Chilled water temperature difference on the building side. (deltaC)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>5</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>delta_temp_chw_district</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design temperature differential on the district side. (deltaC)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>8</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>cooling_controller_y_max</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Controller upper limit</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>1</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>cooling_controller_y_min</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Controller lower limit</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>heating_controller_y_max</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Controller upper limit</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>1</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>heating_controller_y_min</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Controller lower limit</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-even"><td rowspan="33"><ul class="simple">
+<tr class="row-odd"><td rowspan="39"><ul class="simple">
 <li><p>spawn_model_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Parameters associated with spawn models.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>properties</p></td>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>temp_setpoint_cooling</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Cooling setpoint air temperature. (C)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>24</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>temp_setpoint_heating</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heating setpoint air temperature. (C)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>20</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>temp_hw_supply</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heating water supply temperature. (C)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>40</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>temp_hw_return</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heating water return temperature. (C)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>35</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>temp_chw_supply</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>7</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>temp_chw_return</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Chilled water return temperature. (C)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>12</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>idf_filename</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Absolute path or relative path from location where file instance is saved.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>epw_filename</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Absolute path or relative path from location where file instance is saved.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>mos_weather_filename</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Relative path from location where file instance is saved to the MOS weather file.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>mos_wet_bulb_filename</p></li>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>weather_filepath</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Absolute path or relative path from location where file instance is saved to the wet bulb filename. This is needed for the central cooling plants.</p></td>
+<td colspan="3"><p>Absolute path or relative path from location where file instance is saved to the weather filename. This is needed for the central cooling plants.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>thermal_zone_names</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>List of thermal zones in the Spawn / EnergyPlus model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>zone_nom_htg_loads</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Array of zone nominal heating loads (values should be &gt;0)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>items</p></td>
 <td><p>type</p></td>
-<td><p><em>string</em></p></td>
-</tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="30"><ul class="simple">
-<li><p>rc_model_parameters</p></li>
-</ul>
-</td>
-<td colspan="4"><p>Parameters associated with RC models.</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>object</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<td><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_cooling</strong></p></li>
+<li><p><strong>zone_nom_clg_loads</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Cooling setpoint air temperature. (C)</p></td>
+<td colspan="3"><p>Array of zone nominal cooling loads (values should be &lt;0)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
+<td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>24</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_heating</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating setpoint air temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>20</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_hw_supply</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating water supply temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>40</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p>temp_hw_return</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating water return temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>35</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>temp_chw_supply</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>7</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p>temp_chw_return</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chilled water return temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>12</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>order</p></li>
-</ul>
-</td>
+<tr class="row-even"><td><p>items</p></td>
 <td><p>type</p></td>
-<td colspan="2"><p><em>integer</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>enum</p></td>
-<td colspan="2"><p>1, 2, 3, 4</p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>2</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p><strong>mos_weather_filename</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Relative path from location where file instance is saved to the MOS weather file.</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>fraction_latent_person</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office).</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>1.25</p></td>
-</tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="29"><ul class="simple">
-<li><p>time_series_model_parameters</p></li>
-</ul>
-</td>
-<td colspan="4"><p>Parameters associated with time series models.</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>object</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_cooling</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Cooling setpoint air temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>24</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_heating</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating setpoint air temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>20</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_hw_supply</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating water supply temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>40</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p>temp_hw_return</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heating water return temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>35</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>temp_chw_supply</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>7</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p>temp_chw_return</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chilled water return temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>12</p></td>
-</tr>
-<tr class="row-even"><td><ul class="simple">
-<li><p><strong>filepath</strong></p></li>
-</ul>
-</td>
-<td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>delta_temp_air_cooling</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>delta_temp_air_heating</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>18</p></td>
+<td><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="59"><ul class="simple">
-<li><p>central_cooling_plant_parameters</p></li>
+<tr class="row-even"><td rowspan="30"><ul class="simple">
+<li><p>rc_model_parameters</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Central cooling plant with maximum number of two chillers. Parameters associated with the model</p></td>
+<td colspan="4"><p>Parameters associated with RC models.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -1825,42 +1805,279 @@ a System Parameters file.</p>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p>cooling_tower_fan_power_nominal</p></li>
+<li><p><strong>temp_setpoint_cooling</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Cooling tower fan power (W)</p></td>
+<td colspan="3"><p>Cooling setpoint air temperature. (C)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>5000</p></td>
+<td colspan="2"><p>24</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>heat_flow_nominal</strong></p></li>
+<li><p><strong>temp_setpoint_heating</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Nominal district cooling load. (W)</p></td>
+<td colspan="3"><p>Heating setpoint air temperature. (C)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>8000</p></td>
+<td colspan="2"><p>20</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>mass_chw_flow_nominal</strong></p></li>
+<li><p><strong>temp_hw_supply</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Nominal chilled water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>Heating water supply temperature. (C)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
+<td colspan="2"><p>40</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>temp_hw_return</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Heating water return temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>35</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>temp_chw_supply</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>7</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>temp_chw_return</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chilled water return temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>12</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>order</p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>1, 2, 3, 4</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>2</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>mos_weather_filename</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Relative path from location where file instance is saved to the MOS weather file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>fraction_latent_person</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office).</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>1.25</p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="29"><ul class="simple">
+<li><p>time_series_model_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Parameters associated with time series models.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_setpoint_cooling</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Cooling setpoint air temperature. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>24</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_setpoint_heating</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Heating setpoint air temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>20</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_hw_supply</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Heating water supply temperature. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>40</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>temp_hw_return</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Heating water return temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>35</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>temp_chw_supply</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>7</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>temp_chw_return</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chilled water return temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>12</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>filepath</strong></p></li>
+</ul>
+</td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>delta_temp_air_cooling</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>delta_temp_air_heating</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>18</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="59"><ul class="simple">
+<li><p>central_cooling_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Central cooling plant with maximum number of two chillers. Parameters associated with the model</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>cooling_tower_fan_power_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Cooling tower fan power (W)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>5000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>heat_flow_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal district cooling load. (W)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>8000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>mass_chw_flow_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal chilled water mass flow rate. (kg/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>chiller_water_flow_minimum</strong></p></li>
 </ul>
 </td>
@@ -1869,18 +2086,230 @@ a System Parameters file.</p>
 </div></blockquote>
 </td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>10</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>mass_cw_flow_nominal</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal condenser water mass flow rate. (kg/s)</p></td>
 </tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>chw_pump_head</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chilled water pump head (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>300000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>cw_pump_head</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Cooling water pump head (Pa)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>200000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>pressure_drop_chw_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal chilled water (evaporator) side pressure drop. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>55000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>pressure_drop_cw_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal cooling water (condenser) side pressure drop. (Pa)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>80000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>pressure_drop_setpoint</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The chilled water circuit pressure drop setpoint. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>50000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_setpoint_chw</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>District circuit chilled water temperature setpoint. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>5</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>pressure_drop_chw_valve_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chiller isolation valve pressure drop. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>6000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>pressure_drop_cw_pum_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Cooling tower isolation valve pressure drop. (Pa)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>6000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_air_wb_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design air wet-bulb temperature. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>25</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_cw_in_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal cooling water inlet temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>35</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>cooling_tower_water_temperature_difference_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal water temperature difference of the tower. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>7</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>delta_temp_approach</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Approach temperature difference. (deltaC)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>3</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>ratio_water_air_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>To be defined</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>0.625</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>weather_filepath</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Filename for weather file</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="25"><ul class="simple">
+<li><p>central_heating_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Central heating plant with maximum number of two boilers. Parameters associated with the model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>heat_flow_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Nominal district heating load. (W)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>8000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>mass_hhw_flow_nominal</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Nominal heating water mass flow rate. (kg/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>boiler_water_flow_minimum</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Boiler minimum  water mass flow rate. (kg/s)</p></td>
+</tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
@@ -1888,34 +2317,10 @@ a System Parameters file.</p>
 <td colspan="2"><p>10</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>chw_pump_head</strong></p></li>
+<li><p><strong>pressure_drop_hhw_nominal</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Chilled water pump head (Pa)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>300000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>cw_pump_head</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Cooling water pump head (Pa)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>200000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_chw_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal chilled water (evaporator) side pressure drop. (Pa)</p></td>
+<td colspan="3"><p>[unused] Nominal heating water (boiler side) pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -1924,139 +2329,52 @@ a System Parameters file.</p>
 <td colspan="2"><p>55000</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_cw_nominal</strong></p></li>
+<li><p><strong>temp_setpoint_hhw</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>Nominal cooling water (condenser) side pressure drop. (Pa)</p></td>
+<td colspan="3"><p>District circuit heating water temperature setpoint. (C)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>80000</p></td>
+<td colspan="2"><p>55</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_setpoint</strong></p></li>
+<li><p><strong>pressure_drop_hhw_valve_nominal</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p>The chilled water circuit pressure drop setpoint. (Pa)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>50000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_chw</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>District circuit chilled water temperature setpoint. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>5</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_chw_valve_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chiller isolation valve pressure drop. (Pa)</p></td>
+<td colspan="3"><p>Boiler isolation valve pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>6000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_cw_pum_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Cooling tower isolation valve pressure drop. (Pa)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>6000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_air_wb_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Design air wet-bulb temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>25</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_cw_in_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal cooling water inlet temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>35</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>cooling_tower_water_temperature_difference_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal water temperature difference of the tower. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>7</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>delta_temp_approach</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Approach temperature difference. (deltaC)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>3</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>ratio_water_air_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>To be defined</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>0.625</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>mos_wet_bulb_filename</p></li>
+<li><p>chp_installed</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Filename for weather file</p></td>
+<td colspan="3"><p>True if heating plant is a Combined Heat and Power plant</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="24"><ul class="simple">
-<li><p>central_heating_plant_parameters</p></li>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>chp_thermal_following</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Central heating plant with maximum number of two boilers. Parameters associated with the model.</p></td>
+<td colspan="3"><p>True if CHP is thermal_following (prioritized thermal heat over electricity)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="12"><ul class="simple">
+<li><p>combined_heat_and_power_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Combined Heat and power parameters used by the microgrid model.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -2064,93 +2382,528 @@ a System Parameters file.</p>
 <tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>heat_flow_nominal</strong></p></li>
+<li><p>fuel_type</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal district heating load. (W)</p></td>
+<td colspan="3"><p>Type of fuel used</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>Gas, Oil</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>number_of_machines</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Number of machines</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>single_electricity_generation_capacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Single machine electricity generation capacity (kW)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>performance_data_path</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<li><p>diesel_generator_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Diesel generator parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_power_generation</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal power generation (W)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>8000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>mass_hw_flow_nominal</strong></p></li>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>source_phase_shift</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal heating water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>Phase shift angle of source (degrees)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="10"><ul class="simple">
+<li><p>electrical_grid_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Electrical grid parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>frequency</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Frequency (Hz)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
+<td colspan="2"><p>60</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>boiler_water_flow_minimum</strong></p></li>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>source_rms_voltage</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Boiler minimum  water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>Root mean square (RMS) voltage of source (V)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_hw_nominal</strong></p></li>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>source_phase_shift</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal heating water (boiler side) pressure drop. (Pa)</p></td>
+<td colspan="3"><p>Phase shift angle of source (degrees)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="15"><ul class="simple">
+<li><p>pv_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Photovoltaic panel parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>net_surface_area</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Net PV Surface Area (m2)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>suface_tilt</p></li>
+</ul>
+</td>
+<td colspan="3"><p>PV Surface Tilt (degrees)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>surface_azimuth</p></li>
+</ul>
+</td>
+<td colspan="3"><p>PV Surface Azimuth (degrees)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>latitude</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Latitude</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal System Voltage (V)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>55000</p></td>
+<td colspan="2"><p>480</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_setpoint</strong></p></li>
+<tr class="row-even"><td><ul class="simple">
+<li><p>additionalProperties</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] The heating water circuit pressure drop setpoint. (Pa)</p></td>
+<td colspan="3"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="16"><ul class="simple">
+<li><p>wind_turbine_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Wind turbine parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>scaling_factor</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Scaling Factor</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>height_over_ground</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Height over ground (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>power_curve</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>rated_power</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Wind turbine size (kW)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>annual_energy_produced</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Average yearly energy produced (kWh)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal System Voltage (V)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>50000</p></td>
+<td colspan="2"><p>480</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_hw</strong></p></li>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p>capacitor_bank_parameters</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] District circuit heating water temperature setpoint. (K)</p></td>
+<td colspan="4"><p>Capacitor bank parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_capacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal Capacity (var)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="7"><ul class="simple">
+<li><p>substation_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Substation parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>RMS_voltage_high_side</p></li>
+</ul>
+</td>
+<td colspan="3"><p>RMS voltage on high side (V)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>338.15</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_hw_valve_nominal</strong></p></li>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>RMS_voltage_low_side</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Boiler isolation valve pressure drop. (Pa)</p></td>
+<td colspan="3"><p>RMS voltage on low side (V)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<li><p>transformer_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Transformer parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>id</p></li>
+</ul>
+</td>
+<td colspan="3"><p>The transformer ID as defined in the scenario report.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_capacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal Capacity (kVA)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>reactance_resistance_ratio</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Ratio between reactance and resistance</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="11"><ul class="simple">
+<li><p>power_converter_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Power converter parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>converter type</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Power converter type</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>RMS_voltage_ratio</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Ratio of RMS voltage on low side/high side</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>converter_efficiency</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Converter Efficiency (%)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>nominal_capacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal Capacity (kVA)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="12"><ul class="simple">
+<li><p>distribution_line_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Distribution lines parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>line_length</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Length of distribution lines (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>maximum_ampacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Maximum power of the lines. this is defined in Amps</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal voltage of the lines (V)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>6000</p></td>
+<td colspan="2"><p>480</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>commercial_line_type</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Commercial line type given by the type of each wire making up the line</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="8"><ul class="simple">
+<li><p>ac_inductive_load_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>AC inductive load parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal voltage (V)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>nominal_power_consumption</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal Power Consumption type</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>constant, variable load</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="8"><ul class="simple">
+<li><p>dc_load_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>DC load parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal voltage (V)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>nominal_power_consumption</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal Power Consumption type</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>constant, variable load</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<li><p>battery_bank_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>DC load parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>capacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Maximum available charge (MWh)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_voltage</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal voltage (V)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -2159,8 +2912,9 @@ a System Parameters file.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Input File Documentation</a><ul>
 <li><a class="reference internal" href="#geojson-documentation">GeoJSON Documentation</a><ul>
 <li><a class="reference internal" href="#building-properties">Building Properties</a><ul>
@@ -2174,12 +2928,17 @@ a System Parameters file.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="getting_started.html"
-                        title="previous chapter">Getting Started</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="developer_resources.html"
-                        title="next chapter">Developer Resources</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="getting_started.html"
+                          title="previous chapter">Getting Started</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="developer_resources.html"
+                          title="next chapter">Developer Resources</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -2191,7 +2950,7 @@ a System Parameters file.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -2216,13 +2975,13 @@ a System Parameters file.</p>
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

@@ -4,17 +4,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSVModelica &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>CSVModelica &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
     
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.csv_modelica.html" title="csv_modelica"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -50,15 +50,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="csvmodelica">
+  <section id="csvmodelica">
 <h1>CSVModelica<a class="headerlink" href="#csvmodelica" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="geojson_modelica_translator.modelica.csv_modelica.CSVModelica">
-<em class="property">class </em><code class="sig-prename descclassname">geojson_modelica_translator.modelica.csv_modelica.</code><code class="sig-name descname">CSVModelica</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_csv_file_path</span></em>, <em class="sig-param"><span class="n">sig_fig</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.csv_modelica.CSVModelica">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.csv_modelica.</span></span><span class="sig-name descname"><span class="pre">CSVModelica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_csv_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt id="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_csv_file_path</span></em>, <em class="sig-param"><span class="n">sig_fig</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_csv_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a CSV file into the format required by Modelica. Expects a file resulting from
 <a class="reference external" href="https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica">https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica</a>, which is included
 in the URBANopt SDK (potentially via common-measures-gem).
@@ -83,7 +83,7 @@ this will not add trailing zeroes.</p></li>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -92,14 +92,14 @@ this will not add trailing zeroes.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.__init__" title="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(input_csv_file_path[, sig_fig])</p></td>
 <td><p>Convert a CSV file into the format required by Modelica.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data" title="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeseries_to_modelica_data</span></code></a>(…[, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data" title="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timeseries_to_modelica_data</span></code></a>(...[, ...])</p></td>
 <td><p>Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow rate and the nominal cooling water mass flow rate into the header.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data">
-<code class="sig-name descname">timeseries_to_modelica_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_modelica_file_name</span></em>, <em class="sig-param"><span class="n">energyplus_timesteps_per_hour</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">data_type</span><span class="o">=</span><span class="default_value">'double'</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data">
+<span class="sig-name descname"><span class="pre">timeseries_to_modelica_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_modelica_file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energyplus_timesteps_per_hour</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'double'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.csv_modelica.CSVModelica.timeseries_to_modelica_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
 rate and the nominal cooling water mass flow rate into the header.</p>
 <dl class="field-list simple">
@@ -118,7 +118,7 @@ rate and the nominal cooling water mass flow rate into the header.</p>
 
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -127,12 +127,16 @@ rate and the nominal cooling water mass flow rate into the header.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="geojson_modelica_translator.modelica.csv_modelica.html"
-                        title="previous chapter">csv_modelica</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="geojson_modelica_translator.modelica.input_parser.html"
-                        title="next chapter">input_parser</a></p>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.csv_modelica.html"
+                          title="previous chapter">csv_modelica</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.input_parser.html"
+                          title="next chapter">input_parser</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -144,7 +148,7 @@ rate and the nominal cooling water mass flow rate into the header.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -169,7 +173,7 @@ rate and the nominal cooling water mass flow rate into the header.</p>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.csv_modelica.html" title="csv_modelica"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -178,8 +182,8 @@ rate and the nominal cooling water mass flow rate into the header.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

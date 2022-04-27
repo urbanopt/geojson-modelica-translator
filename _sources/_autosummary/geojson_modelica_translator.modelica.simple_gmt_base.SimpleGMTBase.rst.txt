@@ -1,0 +1,40 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+SimpleGMTBase
+=============
+
+.. currentmodule:: geojson_modelica_translator.modelica.simple_gmt_base
+
+.. autoclass:: SimpleGMTBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SimpleGMTBase.__init__
+      ~SimpleGMTBase.copy_required_mo_files
+      ~SimpleGMTBase.ft2_to_m2
+      ~SimpleGMTBase.render_instance
+      ~SimpleGMTBase.run_template
+      ~SimpleGMTBase.to_dict
+      ~SimpleGMTBase.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SimpleGMTBase.instance_template_path
+      ~SimpleGMTBase.model_name
+   
+   

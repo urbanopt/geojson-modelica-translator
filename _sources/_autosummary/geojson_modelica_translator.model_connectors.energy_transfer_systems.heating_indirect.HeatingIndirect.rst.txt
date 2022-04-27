@@ -22,7 +22,6 @@ HeatingIndirect
       ~HeatingIndirect.copy_required_mo_files
       ~HeatingIndirect.ft2_to_m2
       ~HeatingIndirect.get_modelica_type
-      ~HeatingIndirect.modelica_path
       ~HeatingIndirect.render_instance
       ~HeatingIndirect.run_template
       ~HeatingIndirect.to_dict

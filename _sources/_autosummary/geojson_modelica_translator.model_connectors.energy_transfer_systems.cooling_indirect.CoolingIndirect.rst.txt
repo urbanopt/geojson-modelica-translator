@@ -22,7 +22,6 @@ CoolingIndirect
       ~CoolingIndirect.copy_required_mo_files
       ~CoolingIndirect.ft2_to_m2
       ~CoolingIndirect.get_modelica_type
-      ~CoolingIndirect.modelica_path
       ~CoolingIndirect.render_instance
       ~CoolingIndirect.run_template
       ~CoolingIndirect.to_dict

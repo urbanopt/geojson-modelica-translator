@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.utils.convert\_c\_to\_k
+=====================================================
+
+.. currentmodule:: geojson_modelica_translator.utils
+
+.. autofunction:: convert_c_to_k

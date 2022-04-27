@@ -23,7 +23,6 @@ TimeSeriesMFT
       ~TimeSeriesMFT.copy_required_mo_files
       ~TimeSeriesMFT.ft2_to_m2
       ~TimeSeriesMFT.get_modelica_type
-      ~TimeSeriesMFT.modelica_path
       ~TimeSeriesMFT.post_process
       ~TimeSeriesMFT.render_instance
       ~TimeSeriesMFT.run_template

@@ -4,17 +4,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.2.2 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="overview.html" title="Overview"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>  
@@ -46,7 +46,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="getting-started">
+  <section id="getting-started">
 <span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>There are three major steps to running the GeoJSON to Modelica Translator (GMT):</p>
 <ol class="arabic simple">
@@ -64,7 +64,7 @@ GeoJSON and System Parameter file from results of an URBANopt SDK simulation res
 <li><p>Installing and configuring the Modelica Buildings Library (MBL)</p></li>
 <li><p>Installing and configuring Docker in order to run simulations using JModelica</p></li>
 </ol>
-<div class="section" id="gmt-installation">
+<section id="gmt-installation">
 <h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Permalink to this headline">¶</a></h2>
 <p>You must have PIP and Python 3.7 or later installed (run <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see what version you’re using). After installing Python and PIP run the following in a terminal (requires Python 3):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install geojson-modelica-translator
@@ -79,8 +79,8 @@ uo_des build-system-param -h
 uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 </pre></div>
 </div>
-</div>
-<div class="section" id="mbl-installation">
+</section>
+<section id="mbl-installation">
 <h2>MBL Installation<a class="headerlink" href="#mbl-installation" title="Permalink to this headline">¶</a></h2>
 <p>The Modelica Buildings Library contains many models that are needed to assemble the district systems.
 Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:</p>
@@ -108,8 +108,9 @@ uo_des create-model sys_param.json example_project.json model_from_sdk
 </div>
 <p>The resulting Modelica package will be created and can be opened in a Modelica editor. Open the <code class="code docutils literal notranslate"><span class="pre">package.mo</span></code> file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.</p>
-</div>
-<div class="section" id="docker-installation">
+<p>NOTE: The developers of the GMT are currently working on updating the MBL version used. If you are also a developer and need to run the unit tests in this repo, you can instruct pytest to ignore the v8 tests with <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">mbl_v9'</span></code>, which assumes you have the MBL version documented above. To run the MBL v9 tests, you need to checkout <code class="code docutils literal notranslate"><span class="pre">master</span></code> and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">mbl_v9</span></code>, however several MBL v9 components now require MSL 4.0, which doesn’t work within JModelica.</p>
+</section>
+<section id="docker-installation">
 <h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
 <p>The preferred method of running the simulations would be within Dymola; however, that is not a
 practical solution for many based on the license requirement. The GMT enables the running of the
@@ -129,8 +130,8 @@ command:</p>
 uo_des run-model model_from_sdk
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -139,8 +140,9 @@ uo_des run-model model_from_sdk
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Getting Started</a><ul>
 <li><a class="reference internal" href="#gmt-installation">GMT Installation</a></li>
 <li><a class="reference internal" href="#mbl-installation">MBL Installation</a></li>
@@ -149,12 +151,17 @@ uo_des run-model model_from_sdk
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="overview.html"
-                        title="previous chapter">Overview</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="input_file_documentation.html"
-                        title="next chapter">Input File Documentation</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="overview.html"
+                          title="previous chapter">Overview</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="input_file_documentation.html"
+                          title="next chapter">Input File Documentation</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -166,7 +173,7 @@ uo_des run-model model_from_sdk
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -191,13 +198,13 @@ uo_des run-model model_from_sdk
         <li class="right" >
           <a href="overview.html" title="Overview"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2021, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

@@ -23,7 +23,6 @@ TimeSeries
       ~TimeSeries.copy_required_mo_files
       ~TimeSeries.ft2_to_m2
       ~TimeSeries.get_modelica_type
-      ~TimeSeries.modelica_path
       ~TimeSeries.post_process
       ~TimeSeries.render_instance
       ~TimeSeries.run_template

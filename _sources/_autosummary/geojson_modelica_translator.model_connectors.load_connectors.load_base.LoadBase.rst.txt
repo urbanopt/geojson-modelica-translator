@@ -22,7 +22,6 @@ LoadBase
       ~LoadBase.add_building
       ~LoadBase.copy_required_mo_files
       ~LoadBase.ft2_to_m2
-      ~LoadBase.modelica_path
       ~LoadBase.render_instance
       ~LoadBase.run_template
       ~LoadBase.to_dict
