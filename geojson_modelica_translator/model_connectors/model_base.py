@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -36,12 +36,20 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
+import logging
 import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+)
 
 
 class ModelBase(object):
@@ -77,6 +85,17 @@ class ModelBase(object):
         # the "package.order" will be in.
         self.required_mo_files = []
         # extract data out of the urbanopt_building object and store into the base object
+
+        # Read district-level system params. Used when templating ets mofiles, for instance in heating_indirect.py
+        if system_parameters is not None:
+            self.district_template_data = {
+                "temp_setpoint_hhw": self.system_parameters.get_param(
+                    "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw"
+                ),
+                "temp_setpoint_chw": self.system_parameters.get_param(
+                    "$.district_system.default.central_cooling_plant_parameters.temp_setpoint_chw"
+                ),
+            }
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """
@@ -133,20 +152,6 @@ class ModelBase(object):
         if not do_not_add_to_list:
             self.template_files_to_include.append(Path(save_file_name).stem)
 
-    def modelica_path(self, filename):
-        """Write a modelica path string for a given filename"""
-        p = Path(filename)
-        if p.suffix == ".idf":
-            # TODO: This sucks. Not sucking would be good.
-            # FIXME: String is hideous, but without stringifying it Pathlib thinks double slashes are "spurious"
-            # https://docs.python.org/3/library/pathlib.html#pathlib.PurePath
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "Data"
-                                             / "ThermalZones" / "EnergyPlus" / "Validation" / "RefBldgSmallOffice"
-                                             / p.name)
-        elif p.suffix == ".epw" or p.suffix == ".mos":
-            outputname = "modelica://" + str(Path("Buildings") / "Resources" / "weatherdata" / p.name)
-        return outputname
-
     @property
     def instance_template_path(self):
         template = self.template_env.get_template(self._template_instance)
@@ -166,8 +171,8 @@ class ModelBase(object):
             raise Exception(f"Could not find mopt template '{self._template_instance}' in {self.template_dir}")
 
         # get template path relative to the package
-        template_filename = template.filename
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+        template_filename = Path(template.filename).as_posix()
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
         return template.render(template_params), template_filename
 

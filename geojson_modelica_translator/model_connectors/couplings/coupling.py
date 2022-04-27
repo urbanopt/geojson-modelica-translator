@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -35,7 +35,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-import os
+from pathlib import Path
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
@@ -67,8 +67,8 @@ class Coupling(object):
         self._model_b = model_b
         self._template_base_name = f'{model_a.model_name}_{model_b.model_name}'
 
-        self._template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", self._template_base_name)
-        if not os.path.exists(self._template_dir):
+        self._template_dir = Path(__file__).parent / "templates" / self._template_base_name
+        if not Path(self._template_dir).exists():
             raise Exception(f'Invalid coupling. Missing {self._template_dir} directory.')
 
         self._template_env = Environment(
@@ -167,8 +167,8 @@ class Coupling(object):
         updated_template_params.update(template_params)
 
         # get the template file path relative to the package
-        template_filename = template.filename
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator/', 1)
+        template_filename = Path(template.filename).as_posix()
+        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
 
         return template.render(updated_template_params), template_filename
 
@@ -187,6 +187,22 @@ class Coupling(object):
             'component_definitions_template_path': component_template_path,
             'connect_statements_template_path': connect_template_path,
         }
+
+    def get_load(self):
+        """If there's a load model in the coupling, it returns the load model. Else
+        it returns None.
+
+        This is used by the district model to find the building's sys params so
+        it can be passed into the coupling templates
+
+        :return: LoadBase | None
+        """
+        if self._get_model_superclass(self.model_a) is LoadBase:
+            return self.model_a
+        elif self._get_model_superclass(self.model_b) is LoadBase:
+            return self.model_b
+
+        return None
 
     @property
     def component_definitions_template_path(self):

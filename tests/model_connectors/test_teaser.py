@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -38,8 +38,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+import pytest
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
@@ -66,6 +67,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
     def test_teaser_single(self):
         project_name = "teaser_single"
@@ -73,14 +75,14 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "teaser_geojson_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "teaser_system_params_ex1.json")
         sys_params = SystemParameters(filename)
 
         # build spawn model with hot and cold water stubbed out
-        teaser = Teaser(sys_params, self.gj.json_loads[0])
+        teaser = Teaser(sys_params, self.gj.buildings[0])
         hot_stub = EtsHotWaterStub(sys_params)
         cold_stub = EtsColdWaterStub(sys_params)
 

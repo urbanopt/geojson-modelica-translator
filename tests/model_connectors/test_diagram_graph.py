@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -28,7 +28,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 from geojson_modelica_translator.model_connectors.couplings.diagram import (
-    Diagram
+    Diagram,
+    DiagramNode
 )
 from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramLine,
@@ -148,22 +149,13 @@ end Simple;"""
         # Assert
         expected_diagram_graph = {
             load_a_id: {
-                'some_load': {
-                    'type': 'load',
-                    'edges': {}
-                }
+                'some_load': DiagramNode(load_a_id, 'some_load', 'load')
             },
             ets_a_id: {
-                'some_ets': {
-                    'type': 'ets',
-                    'edges': {}
-                }
+                'some_ets': DiagramNode(ets_a_id, 'some_ets', 'ets')
             },
             coupling_id: {
-                'some_real_expression': {
-                    'type': 'real_expression',
-                    'edges': {}
-                }
+                'some_real_expression': DiagramNode(coupling_id, 'some_real_expression', 'real_expression')
             }
         }
 
@@ -219,39 +211,24 @@ end Simple;"""
         )
 
         # Assert
+        # create expected nodes and their connections
+        load_node = DiagramNode(load_a_id, 'some_load', 'load')
+        ets_node = DiagramNode(ets_a_id, 'some_ets', 'ets')
+        real_expression_node = DiagramNode(coupling_id, 'some_real_expression', 'real_expression')
+        load_node.add_connection('port_a', ets_node, 'port_b')
+        ets_node.add_connection('port_b', load_node, 'port_a')
+        ets_node.add_connection('control_in', real_expression_node, 'y')
+        real_expression_node.add_connection('y', ets_node, 'control_in')
+
         expected_diagram_graph = {
             load_a_id: {
-                'some_load': {
-                    'type': 'load',
-                    'edges': {
-                        'port_a': [
-                            (ets_a_id, 'some_ets', 'port_b')
-                        ]
-                    }
-                }
+                'some_load': load_node
             },
             ets_a_id: {
-                'some_ets': {
-                    'type': 'ets',
-                    'edges': {
-                        'port_b': [
-                            (load_a_id, 'some_load', 'port_a')
-                        ],
-                        'control_in': [
-                            (coupling_id, 'some_real_expression', 'y')
-                        ]
-                    }
-                }
+                'some_ets': ets_node
             },
             coupling_id: {
-                'some_real_expression': {
-                    'type': 'real_expression',
-                    'edges': {
-                        'y': [
-                            (ets_a_id, 'some_ets', 'control_in')
-                        ]
-                    }
-                }
+                'some_real_expression': real_expression_node
             }
         }
 

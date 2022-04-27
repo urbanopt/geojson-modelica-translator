@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -35,7 +35,7 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-
+import json
 import os
 import unittest
 from pathlib import Path
@@ -50,39 +50,49 @@ class SystemParametersTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / 'data'
         self.output_dir = Path(__file__).parent / 'output'
+        self.weather_dir = self.output_dir / 'weatherfiles'
         self.scenario_dir = self.data_dir / 'sdk_output_skeleton' / 'run' / 'baseline_15min'
+        self.microgrid_scenario_dir = self.data_dir / 'sdk_microgrid_output_skeleton' / 'run' / 'reopt_scenario'
+        self.microgrid_feature_file = self.data_dir / 'sdk_microgrid_output_skeleton' / 'example_project.json'
+        self.microgrid_output_dir = Path(__file__).parent / 'microgrid_output'
         self.feature_file = self.data_dir / 'sdk_output_skeleton' / 'example_project.json'
         self.sys_param_template = Path(__file__).parent.parent.parent / 'geojson_modelica_translator' / \
             'system_parameters' / 'time_series_template.json'
         if self.output_dir.exists():
             rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
+        if self.weather_dir.exists():
+            rmtree(self.weather_dir)
+        self.weather_dir.mkdir(parents=True)
+        if self.microgrid_output_dir.exists():
+            rmtree(self.microgrid_output_dir)
+        self.microgrid_output_dir.mkdir(parents=True)
 
     def test_expanded_paths(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         for s in sdp.validate():
             print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model.idf'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_model.idf')
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_weather.mos'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.mos')
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_weather.epw'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.epw')
 
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
-        self.assertEqual(value, os.path.join(os.path.dirname(filename), 'example_model_2.idf'))
+        self.assertEqual(Path(value), Path(filename).parent / 'example_model_2.idf')
 
     def test_load_system_parameters_1(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.assertEqual(
             sdp.data["buildings"]["default"]["load_model_parameters"]["rc"]["order"], 2
         )
 
     def test_load_system_parameters_2(self):
-        filename = os.path.join(self.data_dir, 'system_params_2.json')
+        filename = self.data_dir / 'system_params_2.json'
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
@@ -181,7 +191,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual(2, value)
 
     def test_get_param_with_building_id_defaults(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
@@ -200,9 +210,7 @@ class SystemParametersTest(unittest.TestCase):
             "valve_pressure_drop": 6000,
             "heat_exchanger_secondary_pressure_drop": 500,
             "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50,
             "delta_temp_chw_building": 5,
             "delta_temp_chw_district": 8,
@@ -219,7 +227,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertEqual(24815, value)
 
     def test_get_param_with_none_building_id(self):
-        filename = os.path.join(self.data_dir, 'system_params_1.json')
+        filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         with self.assertRaises(SystemExit) as context:
@@ -230,31 +238,37 @@ class SystemParametersTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             output_sys_param_file = self.output_dir / 'going_to_fail_first.json'
             missing_scenario_dir = self.scenario_dir / 'foobar'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=missing_scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
-        self.assertIn(f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
+        self.assertIn(
+            f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
         with self.assertRaises(Exception) as context:
             missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=missing_feature_file,
                 sys_param_filename=output_sys_param_file)
-        self.assertIn(f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
+        self.assertIn(
+            f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
         with self.assertRaises(Exception) as context:
             output_sys_param_file = self.output_dir / 'test_overwriting_sys_param.json'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file,
                 overwrite=True)
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
@@ -264,17 +278,46 @@ class SystemParametersTest(unittest.TestCase):
 
     def test_csv_to_sys_param(self):
         output_sys_param_file = self.output_dir / 'test_sys_param.json'
-        SystemParameters.csv_to_sys_param(
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
             model_type='time_series',
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
             sys_param_filename=output_sys_param_file)
+
+        # debug
+        # with open(output_sys_param_file, "r") as f:
+        #     sys_param_data = json.load(f)
+        #     print(sys_param_data)
+
         self.assertTrue(output_sys_param_file.exists())
+
+    def test_csv_to_sys_param_microgrid(self):
+        output_sys_param_file = self.microgrid_output_dir / 'test_sys_param_microgrid.json'
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
+            model_type='time_series',
+            scenario_dir=self.microgrid_scenario_dir,
+            feature_file=self.microgrid_feature_file,
+            sys_param_filename=output_sys_param_file,
+            microgrid=True)
+        self.assertTrue(output_sys_param_file.exists())
+
+        with open(output_sys_param_file, "r") as f:
+            sys_param_data = json.load(f)
+
+        self.assertTrue(len(sys_param_data['photovoltaic_panels']) > 0)
+        self.assertTrue(len(sys_param_data['wind_turbines']) > 0)
+        self.assertTrue(sys_param_data['electrical_grid']['frequency'])
+
+        # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
+        self.assertTrue(sys_param_data['buildings']['custom'][0]['photovoltaic_panels'])
 
     def test_validate_sys_param_template(self):
         output_sys_param_file = self.output_dir / 'bogus_sys_param.json'
         with self.assertRaises(Exception) as context:
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
@@ -282,9 +325,38 @@ class SystemParametersTest(unittest.TestCase):
                       str(context.exception))
         with self.assertRaises(Exception) as context:
             bogus_template_type = 'openstudio'
-            SystemParameters.csv_to_sys_param(
+            sp = SystemParameters()
+            sp.csv_to_sys_param(
                 model_type=bogus_template_type,
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
                 sys_param_filename=output_sys_param_file)
         self.assertIn(f"No template found. {bogus_template_type} is not a valid template", str(context.exception))
+
+    def test_download_mos(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+        weather_filename = 'USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw'
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        self.assertTrue(os.path.exists(os.path.join(self.weather_dir, weather_filename)))
+
+        weather_filename = 'USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos'
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        self.assertTrue(os.path.exists(os.path.join(self.weather_dir, weather_filename)))
+
+    def test_download_invalid_savepath(self):
+        sdp = SystemParameters()
+        weather_filename = 'irrelevant weather file'
+        local_path = os.path.join('not', 'a', 'real', 'path')
+        with self.assertRaises(Exception) as context:
+            sdp.download_weatherfile(weather_filename, local_path)
+        self.assertEqual(f"Save path for the weatherfile does not exist, {local_path}", str(context.exception))
+
+    def test_download_invalid_epw(self):
+        sdp = SystemParameters()
+        weather_filename = 'invalid-location.epw'
+        with self.assertRaises(Exception) as context:
+            sdp.download_weatherfile(weather_filename, self.weather_dir)
+        self.assertEqual(
+            "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)",
+            str(context.exception))

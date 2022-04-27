@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -39,6 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
 import os
 import shutil
+from pathlib import Path
 from uuid import uuid4
 
 _log = logging.getLogger(__name__)
@@ -55,6 +56,22 @@ def copytree(src, dst, symlinks=False, ignore=None):
             shutil.copytree(s, d, symlinks, ignore)
         else:
             shutil.copy2(s, d)
+
+
+def convert_c_to_k(c):
+    """Converts a temperature in celsius to kelvin
+
+    :param c: float, temperature in celsius
+    :return: float, temperature in kelvin
+    """
+    return c + 273.15
+
+
+def linecount(filename: Path) -> int:
+    """Counts the number of lines in a file
+    Probably not the most efficient way to do this, but it works
+    """
+    return len(open(filename).readlines())
 
 
 class ModelicaPath(object):
@@ -154,9 +171,22 @@ class ModelicaPath(object):
             return os.path.join(self.root_dir, self.scripts_relative_dir)
 
 
+# This is used for some test cases where we need deterministic IDs to be generated
+USE_DETERMINISTIC_ID = bool(os.environ.get('GMT_DETERMINISTIC_ID', False))
+
+counter = 0
+
+
 def simple_uuid():
     """Generates a simple string uuid
 
     :return: string, uuid
     """
-    return str(uuid4()).split("-")[0]
+    global counter
+
+    if not USE_DETERMINISTIC_ID:
+        return str(uuid4()).split("-")[0]
+    else:
+        id = str(counter)
+        counter += 1
+        return id

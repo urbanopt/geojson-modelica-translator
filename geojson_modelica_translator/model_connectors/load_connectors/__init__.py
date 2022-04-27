@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -30,3 +30,4 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from .spawn import Spawn  # noqa: F401
 from .teaser import Teaser  # noqa: F401
 from .time_series import TimeSeries  # noqa: F401
+from .time_series_mft_ets_coupling import TimeSeriesMFT  # noqa: F401

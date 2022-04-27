@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
+from geojson_modelica_translator.utils import convert_c_to_k
 
 
 class LoadBase(ModelBase):
@@ -76,7 +77,6 @@ class LoadBase(ModelBase):
             if self.system_parameters.get_param_by_building_id(
                     self.building_id, "ets_model_parameters.indirect") is not None:
                 self.ets_template_data = {
-                    # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
                     "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heat_flow_nominal"
                     ),
@@ -98,18 +98,12 @@ class LoadBase(ModelBase):
                     "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heat_exchanger_primary_pressure_drop"
                     ),
-                    "cooling_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_district"
-                    ) + 273.15,
-                    "cooling_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
+                    "cooling_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
-                    ) + 273.15,
-                    "heating_supply_water_temperature_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_district"
-                    ) + 273.15,
-                    "heating_supply_water_temperature_building": self.system_parameters.get_param_by_building_id(
+                    )),
+                    "heating_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
-                    ) + 273.15,
+                    )),
                     "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
                         self.building_id, "ets_model_parameters.indirect.delta_temp_chw_building"
                     ),
@@ -176,8 +170,8 @@ class LoadBase(ModelBase):
                         except KeyError:
                             floor_height = 3  # Default height in meters from sdk
                             print(
-                                f"\nNo floor_height found in geojson feature file for building {self.building_id}. \
-    Using default value of {floor_height}.")
+                                f"No floor_height found in geojson feature file for building {self.building_id}. "
+                                f"Using default value of {floor_height}.")
 
                         # UO SDK defaults to current year, however TEASER only supports up to Year 2015
                         # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
@@ -188,8 +182,8 @@ class LoadBase(ModelBase):
                         except KeyError:
                             year_built = 2015
                             print(
-                                f"No 'year_built' found in geojson feature file for building {self.building_id}. \
-    Using default value of {year_built}.")
+                                f"No year_built found in geojson feature file for building {self.building_id}. "
+                                f"Using default value of {year_built}.")
 
                         try:
                             return {
@@ -202,8 +196,9 @@ class LoadBase(ModelBase):
                                 "year_built": year_built,
                             }
                         except UnboundLocalError:
-                            print(f"Geojson feature file is missing data for building {self.building_id}. \
-                            This may be caused by referencing a detailed osm in the feature file.")
+                            print(
+                                f"Geojson feature file is missing data for building {self.building_id}. "
+                                "This may be caused by referencing a detailed osm in the feature file.")
                     else:
                         continue
 
@@ -212,4 +207,8 @@ class LoadBase(ModelBase):
 
     @property
     def building_name(self):
-        return f"B{self.building_id}"
+        # teaser will prepend a "B" if the name is numeric, so accounting for that
+        if self.building_id[0].isnumeric():
+            return f"B{self.building_id}"
+
+        return self.building_id

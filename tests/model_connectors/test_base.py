@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -38,8 +38,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import \
     LoadBase as model_connector_base
@@ -55,17 +55,17 @@ class TestModelConnectorBase(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "spawn_geojson_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
     def test_init(self):
-        mc = model_connector_base(None, self.gj.json_loads[0])
+        mc = model_connector_base(None, self.gj.buildings[0])
         self.assertIsNotNone(mc)
 
     def test_ft2_to_m2(self):
         self.assertEqual(model_connector_base.ft2_to_m2(self, area_in_ft2=1000), 92.936)
 
     def test_template(self):
-        mc = model_connector_base(None, self.gj.json_loads[0])
+        mc = model_connector_base(None, self.gj.buildings[0])
 
         with open(os.path.join(self.data_dir, 'template_ex.tmpl')) as f:
             template = Template(f.read())

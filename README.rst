@@ -7,8 +7,8 @@ GeoJSON Modelica Translator (GMT)
 .. image:: https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop
     :target: https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop
 
-.. image:: https://badge.fury.io/py/GeoJSON-Modelica-Translator.svg
-    :target: https://pypi.org/project/GeoJSON-Modelica-Translator/
+.. image:: https://badge.fury.io/py/geojson-modelica-translator.svg
+    :target: https://badge.fury.io/py/geojson-modelica-translator
 
 Description
 -----------
@@ -26,7 +26,7 @@ It is possible to test the GeoJSON to Modelica Translator (GMT) by simpling inst
 command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the
 functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings
 library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available
-`here <docs/getting_started.rst>`_
+`here <docs/getting_started.rst>`_.
 
 To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola) then
 run the following code below up to the point of run-model. The example generates a complete 4th Generation District
@@ -44,7 +44,7 @@ OpenStudio/EnergyPlus simulations.
     uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 
     # create the modelica package (requires installation of the MBL)
-    uo_des create-model sys_param.json
+    uo_des create-model sys_param.json example_project.json model_from_sdk
 
     # test running the new Modelica package (requires installation of Docker)
     uo_des run-model model_from_sdk
@@ -65,34 +65,16 @@ GMT project.
 
 .. image:: https://raw.githubusercontent.com/urbanopt/geojson-modelica-translator/develop/docs/images/des-connections.png
 
-There are various models that exist in the GMT and are described in the subsections below. See the more `comprehensive
+As shown in the image, there are multiple building loads that can be deployed with the GMT and are described in the `Building Load Models`_ section below. These models, and the associated design parameters, are required to create a fully runnable Modelica model. The GMT leverages two file formats for generating the Modelica project and are the GeoJSON feature file and a System Parameter JSON file. See the more `comprehensive
 documentation on the GMT <https://docs.urbanopt.net/geojson-modelica-translator/>`_ or the `documentation on
 URBANopt SDK  <https://docs.urbanopt.net/>`_.
 
-GeoJSON and System Parameter Files
-++++++++++++++++++++++++++++++++++
+Building Load Models
+++++++++++++++++++++
 
-This module manages the connection to the GeoJSON file including any calculations that are needed. Calculations
-can include distance calculations, number of buildings, number of connections, etc.
+The building loads can be defined multiple ways depending on the fidelity of the required models. Each of the building load models are easily replaced using configuration settings within the System Parameters file. The 4 different building load models include:
 
-The GeoJSON model should include checks for ensuring the accuracy of the area calculations, non-overlapping building
-areas and coordinates, and various others.
-
-Load Model Connectors
-+++++++++++++++++++++
-
-The Model Connectors are libraries that are used to connect between the data that exist in the GeoJSON with a
-model-based engine for calculating loads (and potentially energy consumption). Examples includes, TEASER,
-Data-Driven Model (DDM), CSV, Spawn, etc.
-
-Simulation Mapper Class / Translator
-++++++++++++++++++++++++++++++++++++
-
-The Simulation Mapper Class can operate at mulitple levels:
-
-1. The GeoJSON level -- input: geojson, output: geojson+
-2. The Load Model Connection -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
-3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
-
-In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a
-simulation mapper class from existing at that level.
+#. Time Series in Watts: This building load is the total heating, cooling, and domestic hot water loads represented in a CSV type file (MOS file). The units are Watts and should be reported at an hour interval; however, finer resolution is possible. The load is defined as the load seen by the ETS.
+#. Time Series as mass flow rate and delta temperature: This building load is similar to the other Time Series model but uses the load as seen by the ETS in the form of mass flow rate and delta temperature. The file format is similar to the other Time Series model but the columns are mass flow rate and delta temperature for heating and cooling separately.
+#. RC Model: This model leverages the TEASER framework to generate an RC model with the correct coefficients based on high level parameters that are extracted from the GeoJSON file including building area and building type.
+#. Spawn of EnergyPlus: This model uses EnergyPlus models to represent the thermal zone heat balance portion of the models while using Modelica for the remaining components. Spawn of EnergyPlus is still under development and currently only works on Linux-based systems.

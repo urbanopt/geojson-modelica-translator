@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -38,13 +38,14 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
     TimeSeries
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -59,16 +60,17 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
-        # use the GeoJson translator to scaffold out the directory
-        self.gj.scaffold_directory(self.output_dir, project_name)
+        self.gj = UrbanOptGeoJson(filename)
+        # scaffold the project ourselves
+        scaffold = Scaffold(self.output_dir, project_name)
+        scaffold.create()
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
         sys_params = SystemParameters(filename)
 
         # now test the connector (independent of the larger geojson translator)
-        self.time_series = TimeSeries(sys_params, self.gj.json_loads[0])
+        self.time_series = TimeSeries(sys_params, self.gj.buildings[0])
 
         self.assertIsNotNone(self.time_series)
         self.assertIsNotNone(self.time_series.building)
@@ -77,11 +79,11 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(
-            self.gj.scaffold.project_path, self.gj.scaffold.project_name, order=[])
+            scaffold.project_path, scaffold.project_name, order=[])
         package.save()
-        self.time_series.to_modelica(self.gj.scaffold)
+        self.time_series.to_modelica(scaffold)
 
-        root_path = os.path.abspath(os.path.join(self.gj.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
+        root_path = os.path.abspath(os.path.join(scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
             os.path.join(root_path, 'building.mo'),
         ]
@@ -91,5 +93,5 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
         # self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
-        #                               project_path=self.gj.scaffold.project_path,
-        #                               project_name=self.gj.scaffold.project_name)
+        #                               project_path=scaffold.project_path,
+        #                               project_name=scaffold.project_name)

@@ -1,0 +1,40 @@
+within {{ project_name }}.WindTurbine;
+model {{ data["model_name"] }}
+  "Isolated wind turbine template model for GMT level 1 testing"
+  parameter Real scale={{ data["scaling_factor"] }} "Scale factor";
+  parameter Modelica.Units.SI.Length h={{ data["height_over_ground"] }} "Height over ground";
+  parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }} "Nominal voltage";
+  parameter Real table[:,2]={{ data["power_curve"] }} "Table of generated power (first column is wind speed, second column is power)";
+  {% raw %}
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine(
+  tur(
+  scale=scale,
+  h=h,
+  table=table,
+  V_nominal=V_nominal));
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the wind turbine template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 8, 2022 by Mingzhe Liu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+{% endraw %}end {{ data['model_name'] }};

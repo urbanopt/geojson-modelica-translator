@@ -62,10 +62,13 @@ Once the MBL is installed, then the CLI can be used to create the model with the
 
     # the command below is only an example; however, it will run if the repository
     # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
-    uo_des create-model sys_param.json
+    uo_des create-model sys_param.json example_project.json model_from_sdk
 
 The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`package.mo` file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.
+
+NOTE: The developers of the GMT are currently working on updating the MBL version used. If you are also a developer and need to run the unit tests in this repo, you can instruct pytest to ignore the v8 tests with :code:`poetry run pytest -m 'not mbl_v9'`, which assumes you have the MBL version documented above. To run the MBL v9 tests, you need to checkout :code:`master` and run :code:`poetry run pytest -m mbl_v9`, however several MBL v9 components now require MSL 4.0, which doesn't work within JModelica.
+
 
 Docker Installation
 -------------------

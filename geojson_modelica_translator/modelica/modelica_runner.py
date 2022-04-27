@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -36,10 +36,19 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import glob
+import logging
 import os
 import shutil
 import subprocess
+from glob import glob
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+)
 
 
 class ModelicaRunner(object):
@@ -63,6 +72,7 @@ class ModelicaRunner(object):
         if os.environ.get('MODELICAPATH', None):
             print('Using predefined MODELICAPATH')
             self.modelica_lib_path = os.environ['MODELICAPATH']
+            logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
         else:
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
@@ -84,21 +94,30 @@ class ModelicaRunner(object):
         :param run_path: string, location where the Modelica simulation will start
         :param project_name: string, name of the project being simulated. Will be used to determine name of results
                                      directory
+        :return: tuple(bool, str), success status and path to the results directory
         """
         if not self.docker_configured:
-            raise Exception('Docker not configured on host computer, unable to run')
+            raise SystemExit('Docker not configured on host computer, unable to run')
 
         if not os.path.exists(file_to_run):
-            raise Exception(f'File not found to run {file_to_run}')
+            raise SystemExit(f'File not found to run {file_to_run}')
 
         if not os.path.isfile(file_to_run):
-            raise Exception(f'Expecting to run a file, not a folder in {file_to_run}')
+            raise SystemExit(f'Expecting to run a file, not a folder in {file_to_run}')
 
         if not run_path:
             # if there is no run_path, then run it in the same directory as the file being run. This works fine for
             # simple Modelica projects but typically the run_path needs to be a few levels higher in order
             # to include other project dependencies (e.g., multiple mo files).
             run_path = os.path.dirname(file_to_run)
+        run_path = Path(run_path)
+
+        # Modelica can't handle spaces in project name or path
+        if (len(str(run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
+            raise SystemExit(
+                f"\nModelica does not support spaces in project names or paths. "
+                f"You used '{run_path}' for run path and {file_to_run} for model project name. "
+                "Please update your directory path or model name to not include spaces anywhere.")
 
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
@@ -120,57 +139,54 @@ class ModelicaRunner(object):
             # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
             # but must strip off the .mo extension on the model to run
             run_model = os.path.relpath(file_to_run, run_path)
-            print(f"Running Modelica file: {run_model} in: {run_path}")
-
-            # TODO: Create a logger to show more information such as the actual run command being executed.
+            logger.info(f"Running Modelica file {run_model} in: {run_path}")
             p = subprocess.Popen(
                 ['./jm_ipython.sh', 'jmodelica.py', run_model],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
             )
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
             exitcode = p.wait()
         finally:
             os.chdir(curdir)
             stdout_log.close()
+            logger.debug('Closed stdout.log')
 
+        logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
         self.cleanup_path(run_path)
 
+        logger.debug('moving results to results directory')
         # get the location of the results path
-        results_path = os.path.join(run_path, f'{project_name}_results')
+        results_path = Path(run_path / f'{project_name}_results')
         self.move_results(run_path, results_path, project_name)
-        return exitcode
+        return (exitcode == 0, results_path)
 
-    def move_results(self, from_path, to_path, project_name=None):
+    def move_results(self, from_path: Path, to_path: Path, project_name=None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.
 
-        :param from_path: string, where the files will move from
-        :param to_path: string, where the files will be saved. Will be created if does not exist.
+        :param from_path: pathlib.Path, where the files will move from
+        :param to_path: pathlib.Path, where the files will be saved. Will be created if does not exist.
         :param project_name: string, name of the project ran in run_in_docker method
-        :return:
+        :return: None
         """
         # if there are results, they will simply be overwritten (for now).
-        if not os.path.exists(to_path):
-            os.makedirs(to_path)
-        else:
-            shutil.rmtree(to_path)
-            os.makedirs(to_path)
+        to_path.mkdir(parents=True, exist_ok=True)
 
         files_to_move = [
             'stdout.log',
         ]
 
-        # print(f"Moving simulation results from {from_path} to {to_path}")
-        for f in os.listdir(from_path):
-            to_move = os.path.join(from_path, f)
+        for to_move in from_path.iterdir():
             if not to_move == to_path:
-                if (os.path.basename(to_move) in files_to_move) or (f.startswith(f'{project_name}_')):
-                    shutil.move(to_move, os.path.join(to_path, f))
+                if (to_move.name in files_to_move) or to_move.name.startswith(f'{project_name}_'):
+                    # typecast back to strings for the shutil method.
+                    shutil.move(str(to_move), str(to_path / to_move.name))
 
-    def cleanup_path(self, path):
+    def cleanup_path(self, path: Path):
         """
         Clean up the files in the path that was presumably used to run the simulation
         """
@@ -183,8 +199,8 @@ class ModelicaRunner(object):
             if os.path.exists(os.path.join(path, f)):
                 os.remove(os.path.join(path, f))
 
-        for g in glob.glob(os.path.join(path, 'tmp-simulation-*')):
-            # print(f"Removing tmp-simulation files {g}")
+        for g in glob(os.path.join(path, 'tmp-simulation-*')):
+            logger.debug(f"Removing tmp-simulation files {g}")
             # This is a complete hack but the name of the other folder that gets created is the
             # globbed directory without the tmp-simulation
             eplus_path = os.path.join(path, os.path.basename(g).replace('tmp-simulation-', ''))

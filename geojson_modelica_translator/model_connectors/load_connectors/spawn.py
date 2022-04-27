@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -43,7 +43,11 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
+from geojson_modelica_translator.utils import (
+    ModelicaPath,
+    convert_c_to_k,
+    simple_uuid
+)
 
 
 class Spawn(LoadBase):
@@ -86,25 +90,30 @@ class Spawn(LoadBase):
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
-        # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
-        hhw_supply_temp = self.system_parameters.get_param_by_building_id(
+        zone_nom_htg_loads = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.zone_nom_htg_loads",
+        )
+        zone_nom_clg_loads = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
+        )
+        hhw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_supply",
-        ) + 273.25
-        hhw_return_temp = self.system_parameters.get_param_by_building_id(
+        ))
+        hhw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_return",
-        ) + 273.25
-        chw_supply_temp = self.system_parameters.get_param_by_building_id(
+        ))
+        chw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_chw_supply",
-        ) + 273.25
-        chw_return_temp = self.system_parameters.get_param_by_building_id(
+        ))
+        chw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_chw_return",
-        ) + 273.25
-        temp_setpoint_cooling = self.system_parameters.get_param_by_building_id(
+        ))
+        temp_setpoint_cooling = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
-        ) + 273.15
-        temp_setpoint_heating = self.system_parameters.get_param_by_building_id(
+        ))
+        temp_setpoint_heating = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
-        ) + 273.15
+        ))
 
         # construct the dict to pass into the template
         building_template_data = {
@@ -134,6 +143,9 @@ class Spawn(LoadBase):
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
             },
+            # Reformatting lists for Modelica
+            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
@@ -241,10 +253,10 @@ class Spawn(LoadBase):
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
-        pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
-        )
-        pp.save()
+        package = PackageParser(scaffold.project_path)
+        if 'Loads' not in package.order:
+            package.add_model('Loads')
+            package.save()
 
     def get_modelica_type(self, scaffold):
         return f'{scaffold.project_name}.Loads.{self.building_name}.building'

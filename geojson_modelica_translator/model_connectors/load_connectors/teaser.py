@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -43,12 +43,14 @@ from os import fdopen, remove
 from shutil import copymode, move
 from tempfile import mkstemp
 
+import numpy as np
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import (
     ModelicaPath,
+    convert_c_to_k,
     copytree,
     simple_uuid
 )
@@ -124,7 +126,7 @@ class Teaser(LoadBase):
             prj.add_non_residential(
                 method="bmvbs",
                 usage=self.lookup_building_type(self.building["building_type"]),
-                name=self.building_id,
+                name=self.building_name,
                 year_of_construction=self.building["year_built"],
                 number_of_floors=self.building["num_stories"],
                 height_of_floors=self.building["floor_height"],
@@ -163,7 +165,7 @@ class Teaser(LoadBase):
         with fdopen(fh, 'w') as new_file:
             with open(f) as old_file:
                 for line in old_file:
-                    if "double Internals(8760, 19)" in line:
+                    if "double Internals(8760" in line:  # Finding the line, which may have one of several #s of columns
                         new_file.write("double Internals(8761, 4)\n")
                     elif line.startswith("3600\t"):
                         new_file.write(line.replace('3600\t', '0\t') + line)
@@ -363,8 +365,8 @@ class Teaser(LoadBase):
             mofile.remove_connect('weaDat.weaBus', 'weaBus')
 
             # add new port connections
-            rc_order = self.system_parameters.get_param(
-                "buildings.default.load_model_parameters.rc.order", default=2
+            rc_order = self.system_parameters.get_param_by_building_id(
+                self.building_id, "load_model_parameters.rc.order", default=2
             )
             thermal_zone_name = None
             thermal_zone_type = None
@@ -481,7 +483,7 @@ class Teaser(LoadBase):
                     index_identifier="i",
                     expression_raw="1:nPorts",
                     loop_body_raw_list=[
-                        "connect(ports[i], thermalZoneFourElements.ports[i])",
+                        f"connect(ports[i], {thermal_zone_name}.ports[i])",
                         "\tannotation (Line(",
                         "\tpoints={{-18,-102},{-18,-84},{83,-84},{83,-1.95}},",
                         "\tcolor={0,127,255},",
@@ -518,10 +520,17 @@ class Teaser(LoadBase):
                 "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
             })
 
+        # Handle setting nominal load for IT room zone
+        nom_cool_flow = np.array([-10000] * len(zone_list))
+        for i, dic in enumerate(zone_list):
+            if dic["instance_name"] == "ict":
+                print("setting coo flow")
+                nom_cool_flow[i - 1] = -50000  # Need to offset for different indexing
+        nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": [10000] * len(zone_list),
-            "nominal_cool_flow": [-10000] * len(zone_list),
+            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
                 "mos_weather_filename": mos_weather_filename,
@@ -529,25 +538,24 @@ class Teaser(LoadBase):
                 "path": os.path.dirname(mos_weather_filename),
             },
             "nominal_values": {
-                # Adding 273.15 to convert from C to K (for absolute temps, not relative temps)
-                "chw_supply_temp": self.system_parameters.get_param_by_building_id(
+                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_supply"
-                ) + 273.15,
-                "chw_return_temp": self.system_parameters.get_param_by_building_id(
+                )),
+                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_return"
-                ) + 273.15,
-                "hhw_supply_temp": self.system_parameters.get_param_by_building_id(
+                )),
+                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_supply"
-                ) + 273.15,
-                "hhw_return_temp": self.system_parameters.get_param_by_building_id(
+                )),
+                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_return"
-                ) + 273.15,
-                "temp_setpoint_heating": self.system_parameters.get_param_by_building_id(
+                )),
+                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
-                ) + 273.15,
-                "temp_setpoint_cooling": self.system_parameters.get_param_by_building_id(
+                )),
+                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
-                ) + 273.15
+                ))
             }
         }
 
@@ -629,10 +637,10 @@ class Teaser(LoadBase):
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
-        pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
-        )
-        pp.save()
+        package = PackageParser(scaffold.project_path)
+        if 'Loads' not in package.order:
+            package.add_model('Loads')
+            package.save()
 
     def get_modelica_type(self, scaffold):
         return f'{scaffold.project_name}.Loads.{self.building_name}.building'

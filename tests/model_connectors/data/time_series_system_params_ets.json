@@ -12,9 +12,7 @@
           "valve_pressure_drop": 6000,
           "heat_exchanger_secondary_pressure_drop": 500,
           "heat_exchanger_primary_pressure_drop": 500,
-          "cooling_supply_water_temperature_district": 5,
           "cooling_supply_water_temperature_building": 7,
-          "heating_supply_water_temperature_district": 55,
           "heating_supply_water_temperature_building": 50,
           "booster_heater": false,
           "ets_generation": "Fourth Generation",
@@ -35,7 +33,7 @@
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "time_series_large_office_2013_5B.mos",
+            "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 7,
@@ -55,9 +53,7 @@
             "valve_pressure_drop": 6000,
             "heat_exchanger_secondary_pressure_drop": 500,
             "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50,
             "booster_heater": false,
             "ets_generation": "Fourth Generation",
@@ -77,7 +73,7 @@
         "load_model": "time_series",
         "load_model_parameters": {
           "time_series": {
-            "filepath": "time_series_large_office_2013_5B.mos",
+            "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 7,
@@ -97,9 +93,7 @@
             "valve_pressure_drop": 6000,
             "heat_exchanger_secondary_pressure_drop": 500,
             "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_district": 5,
             "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_district": 55,
             "heating_supply_water_temperature_building": 50,
             "booster_heater": false,
             "ets_generation": "Fourth Generation",
@@ -119,7 +113,7 @@
   "district_system": {
     "default": {
       "central_cooling_plant_parameters": {
-        "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+        "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
@@ -138,6 +132,16 @@
         "cooling_tower_water_temperature_difference_nominal": 6.56,
         "delta_temp_approach": 3.25,
         "ratio_water_air_nominal": 0.6
+      },
+      "central_heating_plant_parameters": {
+        "heat_flow_nominal": 8001,
+        "mass_hhw_flow_nominal": 11,
+        "boiler_water_flow_minimum": 11,
+        "pressure_drop_hhw_nominal": 55001,
+        "pressure_drop_setpoint": 50000,
+        "temp_setpoint_hhw": 68,
+        "pressure_drop_hhw_valve_nominal": 6001,
+        "chp_installed": false
       }
     }
   }

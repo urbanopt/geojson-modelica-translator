@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -39,9 +39,10 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import re
 
+import pytest
 from buildingspy.io.outputfile import Reader
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
@@ -71,6 +72,7 @@ from modelica_builder.model import Model
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
     def test_mft_time_series_to_modelica_and_run(self):
         project_name = "time_series_massflow"
@@ -78,15 +80,15 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_massflow_ex1.json")
         sys_params = SystemParameters(filename)
 
         # create the load, ETSes and their couplings
-        time_series_mft_load = TimeSeriesMFT(sys_params, self.gj.json_loads[0])
-        geojson_load_id = self.gj.json_loads[0].feature.properties["id"]
+        time_series_mft_load = TimeSeriesMFT(sys_params, self.gj.buildings[0])
+        geojson_load_id = self.gj.buildings[0].feature.properties["id"]
 
         heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
         ts_hi_coupling = Coupling(time_series_mft_load, heating_indirect_system)

@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -36,12 +36,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
+from pathlib import Path
 
 import numpy as np
+import pytest
 from buildingspy.io.outputfile import Reader
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings import (
     Coupling,
@@ -56,9 +57,9 @@ from geojson_modelica_translator.model_connectors.load_connectors import (
     TimeSeries
 )
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
-from geojson_modelica_translator.model_connectors.plants import (
-    CoolingPlant,
-    HeatingPlant
+from geojson_modelica_translator.model_connectors.plants import CoolingPlant
+from geojson_modelica_translator.model_connectors.plants.chp import (
+    HeatingPlantWithOptionalCHP
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -67,17 +68,18 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def setUp(self):
         self.project_name = 'district_heating_and_cooling_systems'
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), self.project_name)
+        self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
-        filename = os.path.join(self.data_dir, "time_series_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        filename = Path(self.data_dir) / "time_series_ex1.json"
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
+        filename = Path(self.data_dir) / "time_series_system_params_ets.json"
         self.sys_params = SystemParameters(filename)
 
     def test_district_heating_and_cooling_systems(self):
@@ -87,7 +89,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
         # create heating network and plant
         heating_network = Network2Pipe(self.sys_params)
-        heating_plant = HeatingPlant(self.sys_params)
+        heating_plant = HeatingPlantWithOptionalCHP(self.sys_params)
 
         # create our load/ets/stubs
         # store all couplings to construct the District system
@@ -100,7 +102,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         loads = []
         heat_etses = []
         cool_etses = []
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
             loads.append(time_series_load)
             geojson_load_id = geojson_load.feature.properties["id"]
@@ -126,8 +128,8 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         )
         district.to_modelica()
 
-        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
+        root_path = Path(district._scaffold.districts_path.files_dir).resolve()
+        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
                                       project_path=district._scaffold.project_path,
                                       project_name=district._scaffold.project_name)
 
@@ -163,20 +165,18 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
         )
 
-        # check the overall thermal load between the first load and its ETSes
-        heating_indirect = heat_etses[0]
-        cooling_indirect = cool_etses[0]
-        (_, heating_indirect_q_flow) = mat_results.values(f'{heating_indirect.id}.Q_flow')
-        (_, cooling_indirect_q_flow) = mat_results.values(f'{cooling_indirect.id}.Q_flow')
+        # check the thermal load
+        (_, load_q_req_hea_flow) = mat_results.values(f'{load.id}.QReqHea_flow')
+        (_, load_q_req_coo_flow) = mat_results.values(f'{load.id}.QReqCoo_flow')
         (_, load_q_heat_flow) = mat_results.values(f'{load.id}.QHea_flow')
         (_, load_q_cool_flow) = mat_results.values(f'{load.id}.QCoo_flow')
 
         # make sure the q flow is positive
-        heating_indirect_q_flow, cooling_indirect_q_flow = np.abs(heating_indirect_q_flow), np.abs(cooling_indirect_q_flow)
+        load_q_req_hea_flow, load_q_req_coo_flow = np.abs(load_q_req_hea_flow), np.abs(load_q_req_coo_flow)
         load_q_heat_flow, load_q_cool_flow = np.abs(load_q_heat_flow), np.abs(load_q_cool_flow)
 
-        cool_cvrmsd = self.cvrmsd(load_q_cool_flow, cooling_indirect_q_flow)
-        heat_cvrmsd = self.cvrmsd(load_q_heat_flow, heating_indirect_q_flow)
+        cool_cvrmsd = self.cvrmsd(load_q_cool_flow, load_q_req_coo_flow)
+        heat_cvrmsd = self.cvrmsd(load_q_heat_flow, load_q_req_hea_flow)
 
         CVRMSD_MAX = 0.3
         # TODO: fix q flows to meet the CVRMSD maximum, then make these assertions rather than warnings

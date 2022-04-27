@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -38,8 +38,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
+import pytest
+from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.couplings.coupling import (
     Coupling
@@ -72,6 +73,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
 class DistrictCoolingSystemTest(TestCaseBase):
     def test_district_cooling_system(self):
         project_name = 'district_cooling_system'
@@ -79,7 +81,7 @@ class DistrictCoolingSystemTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
-        self.gj = GeoJsonModelicaTranslator.from_geojson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         params_filename = os.path.join(self.data_dir, "time_series_system_params_ets.json")
@@ -93,7 +95,7 @@ class DistrictCoolingSystemTest(TestCaseBase):
         all_couplings = [
             Coupling(network, cooling_plant)
         ]
-        for geojson_load in self.gj.json_loads:
+        for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(sys_params, geojson_load)
             geojson_load_id = geojson_load.feature.properties["id"]
             cooling_indirect_system = CoolingIndirect(sys_params, geojson_load_id)

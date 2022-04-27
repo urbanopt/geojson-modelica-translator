@@ -3,15 +3,34 @@ name: CI
 on:
   pull_request:
   push:
+    branches:
+      - 'develop'
+      - 'main'
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   test:
-    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-latest]
         # 3.9 does not work as of 2020-02-01
         python-version: [3.7]
         test_env: [python, precommit, docs]
+        mbl_branch: [issue2204_gmt_mbl]
+        include:
+          - os: ubuntu-latest
+            python-version: 3.7
+            test_env: python
+            mbl_branch: master
+          - os: ubuntu-latest
+            python-version: 3.7
+            test_env: check_sys_params
+            mbl_branch: issue2204_gmt_mbl
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       -
@@ -36,41 +55,67 @@ jobs:
         name: Print Environment
         run: poetry --version
       -
-        name: Install dependencies
-        env:
-          MODELICAPATH: /home/runner/work/modelica-buildings
+        name: Install modelicafmt
         run: |
-          # Install modelicafmt (hard code the version for now)
-          curl -SLO https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.1/modelica-fmt_0.2-pr.1_Linux_x86_64.tar.gz
-          tar xzf modelica-fmt_0.2-pr.1_Linux_x86_64.tar.gz
+          RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
+          curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.2/modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz"
+          tar xzf modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz
           chmod +x modelicafmt
-          sudo mv modelicafmt /usr/local/bin/
-          # Install MBL
-          git clone --single-branch --branch issue2204_gmt_mbl https://github.com/lbl-srg/modelica-buildings.git $MODELICAPATH
-          cd $MODELICAPATH
+          if [[ $RUNNER_SYSTEM == 'Linux' ]]; then
+            sudo mv modelicafmt /usr/local/bin/
+          else
+            mv modelicafmt '/c/Program Files/'
+          fi
+      -
+        name: Install MBL
+        env:
+          MATRIX_OS: ${{ matrix.os }}
+          MBL_BRANCH: ${{ matrix.mbl_branch }}
+        run: |
+          if [[ "${MATRIX_OS}" == 'ubuntu-latest' ]]; then
+            MODELICAPATH='/home/runner/work/modelica-buildings'
+          else
+            echo $GITHUB_WORKSPACE
+            MODELICAPATH='/c/Program Files/modelica-buildings'
+          fi
+          git clone --single-branch --branch ${MBL_BRANCH} https://github.com/lbl-srg/modelica-buildings.git "${MODELICAPATH}"
+          cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
+          # export MODELICAPATH for subsequent steps
+          echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
       -
         name: Tox ${{ matrix.test_env }}
         env:
-          MODELICAPATH: /home/runner/work/modelica-buildings
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: poetry run tox -e ${{ matrix.test_env }}
+        run: |
+          if [ '${{ matrix.test_env }}' == 'python' ]; then
+            # !! Ugh, this is ugly but necessary (poetry + tox were not passing our args correctly to pytest)
+            if [ '${{ matrix.os }}' == 'windows-latest' ]; then
+              # for windows, skip python tests that require simulation (currently broken)
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
+            elif [ '${{ matrix.mbl_branch }}' == 'master' ]; then
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'mbl_v9 and not msl_v4_simulation' ./tests
+            else
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v9' ./tests
+            fi
+          else
+            poetry run tox -e ${{ matrix.test_env }}
+          fi
+      -
+        name: Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'issue2204_gmt_mbl' }}
+        run: |
+          poetry run coveralls
       -
         name: Job Failed
         if: ${{ failure() }}
         run: |
           echo "Maybe these logs will help?"
-          free -tm
           ls -alt $GITHUB_WORKSPACE
           echo "============================================ stdout.log ========================================="
           find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
             echo "$filename"
             cat "$filename"
           done
-      -
-        name: Store test output
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-output
-          path: tests/model_connectors/output

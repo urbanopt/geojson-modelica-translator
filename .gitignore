@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 .vscode/
+.ruby-version
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -100,6 +101,7 @@ ENV/
 
 # Test outputs
 tests/output
+tests/*/microgrid_output
 tests/output_ets
 tests/*/output
 /geojson_modelica_translator/modelica/buildingslibrary/

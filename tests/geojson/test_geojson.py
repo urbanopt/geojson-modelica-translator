@@ -1,6 +1,6 @@
 """
 ****************************************************************************************************
-:copyright (c) 2019-2021 URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
 
 All rights reserved.
 
@@ -40,6 +40,7 @@ import os
 import unittest
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
+    GeoJsonValidationError,
     UrbanOptGeoJson
 )
 
@@ -57,10 +58,6 @@ class GeoJSONTest(unittest.TestCase):
         self.assertIsNotNone(json.data)
         self.assertEqual(len(json.data.features), 4)
 
-        valid, results = json.validate()
-        self.assertTrue(valid)
-        self.assertEqual(len(results["building"]), 0)
-
     def test_missing_file(self):
         fn = "non-existent-path"
         with self.assertRaises(Exception) as exc:
@@ -70,17 +67,13 @@ class GeoJSONTest(unittest.TestCase):
         )
 
     def test_valid_instance(self):
+        """No exception should be raised when the geojson file is valid"""
         filename = os.path.join(self.data_dir, "geojson_1.json")
-        json = UrbanOptGeoJson(filename)
-        valid, results = json.validate()
-        self.assertTrue(valid)
-        self.assertEqual(len(results["building"]), 0)
+        UrbanOptGeoJson(filename)
 
     def test_validate(self):
         filename = os.path.join(self.data_dir, "geojson_1_invalid.json")
-        json = UrbanOptGeoJson(filename)
-        valid, results = json.validate()
-        self.assertFalse(valid)
-        self.assertEqual(len(results["building"]), 1)
-        # err = ["'footprint_area' is a required property", "'name' is a required property"]
-        self.assertIn("is not valid under any of the given schemas", results["building"][0]["errors"][0])
+        with self.assertRaises(GeoJsonValidationError) as ctx:
+            UrbanOptGeoJson(filename)
+
+        self.assertIn("is not valid under any of the given schemas", str(ctx.exception))

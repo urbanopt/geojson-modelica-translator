@@ -27,6 +27,9 @@ div.sphinxsidebar ul, div.sphinxsidebar ul ul {
     list-style-type: none;
 }
 
+div.body {
+    max-width: 1600px;
+}
 div.footer, div.footer a {
     color: #2c3e50;
 }
