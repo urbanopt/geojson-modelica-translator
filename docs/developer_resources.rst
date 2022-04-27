@@ -272,8 +272,10 @@ Release Instructions
     # Remove old dist packages
     rm -rf dist/*
 
-* Run `git tag <NEW_VERSION>`.
-
+* Run :code:`git tag <NEW_VERSION>`.
+* Run :code:`git push --tags`
+* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and convert the tag to a release.
+* Copy in the CHANGELOG entries that are relevant to the new version.
 * Run the following to release.
 
 .. code-block:: bash
