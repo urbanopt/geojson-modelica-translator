@@ -12,8 +12,6 @@ within {{project_name}}.Loads.{{model_name}};
     "Load side medium";
   {% endraw %}parameter Integer nZon={{data['thermal_zones'] | count}}
     {% raw %} "Number of thermal zones";
-  parameter Integer facSca=3
-    "Scaling factor to be applied to each extensive quantity";
   {% endraw %}parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
     {% raw %} "Nominal building supply and return chilled water temperature difference";
   {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
@@ -53,7 +51,6 @@ within {{project_name}}.Loads.{{model_name}};
   {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](
     redeclare each package Medium1=MediumW,
     redeclare each package Medium2=MediumA,
-    each facSca=facSca,
     QHea_flow_nominal={{ data['nominal_heat_flow'] }},
     QCoo_flow_nominal={{ data['nominal_cool_flow'] }},
     each T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }},
@@ -69,7 +66,7 @@ within {{project_name}}.Loads.{{model_name}};
   {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni.facSca),
+      terUni.mHeaWat_flow_nominal .* terUni),
     dp_nominal(
       displayUnit="Pa")=100000,
     have_pum=have_pum,
@@ -80,7 +77,7 @@ within {{project_name}}.Loads.{{model_name}};
   {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni.facSca),
+      terUni.mChiWat_flow_nominal .* terUni),
     typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
     dp_nominal(
       displayUnit="Pa")=100000,
