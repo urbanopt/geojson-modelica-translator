@@ -482,7 +482,7 @@ class Teaser(LoadBase):
                     index_identifier="i",
                     expression_raw="1:nPorts",
                     loop_body_raw_list=[
-                        "connect(ports[i], thermalZoneFourElements.ports[i])",
+                        f"connect(ports[i], {thermal_zone_name}.ports[i])",
                         "\tannotation (Line(",
                         "\tpoints={{-18,-102},{-18,-84},{83,-84},{83,-1.95}},",
                         "\tcolor={0,127,255},",

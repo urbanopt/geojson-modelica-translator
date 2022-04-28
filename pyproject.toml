@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.2.2"
+version = "0.2.3"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -27,7 +27,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7.1"
 BuildingsPy = "2.1.0"
 click = "7.1.2"
 geojson = "2.5.0"
@@ -35,6 +35,7 @@ jinja2 = "3.1.1"
 jsonpath-ng = "1.5.2"
 jsonschema = "3.2.0"
 modelica-builder = "^0.2.1"
+pandas = "1.3.5"
 requests = "2.25.1"
 teaser = "0.7.5"
 
