@@ -87,8 +87,7 @@ model building
     idfName=Modelica.Utilities.Files.loadResource(
       idfName),
     weaName=Modelica.Utilities.Files.loadResource(
-      weaName),
-    showWeatherData=false)
+      weaName))
     "Building outer component"
     annotation (Placement(transformation(extent={{40,60},{60,80}})));
   Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
