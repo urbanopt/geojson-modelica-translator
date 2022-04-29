@@ -283,7 +283,7 @@ typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.8\""
 
 [[package]]
 name = "identify"
-version = "2.4.12"
+version = "2.5.0"
 description = "File identification library for Python"
 category = "dev"
 optional = false
@@ -451,7 +451,7 @@ python-versions = "*"
 
 [[package]]
 name = "modelica-builder"
-version = "0.2.1"
+version = "0.2.2rc1"
 description = "Modelica builder enables parsing and modification of Modelica files"
 category = "main"
 optional = false
@@ -1046,7 +1046,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "081a2f1be59dd77249a7fbe5773d4620a069a7018183b029b83bc58abd01a830"
+content-hash = "589537940fc39156a9bcd8af2b987f24fc4514449c3b418a7db11dfc2b945b5c"
 
 [metadata.files]
 alabaster = [
@@ -1203,8 +1203,8 @@ gitpython = [
     {file = "GitPython-3.1.27.tar.gz", hash = "sha256:1c885ce809e8ba2d88a29befeb385fcea06338d3640712b59ca623c220bb5704"},
 ]
 identify = [
-    {file = "identify-2.4.12-py2.py3-none-any.whl", hash = "sha256:5f06b14366bd1facb88b00540a1de05b69b310cbc2654db3c7e07fa3a4339323"},
-    {file = "identify-2.4.12.tar.gz", hash = "sha256:3f3244a559290e7d3deb9e9adc7b33594c1bc85a9dd82e0f1be519bf12a1ec17"},
+    {file = "identify-2.5.0-py2.py3-none-any.whl", hash = "sha256:3acfe15a96e4272b4ec5662ee3e231ceba976ef63fd9980ed2ce9cc415df393f"},
+    {file = "identify-2.5.0.tar.gz", hash = "sha256:c83af514ea50bf2be2c4a3f2fb349442b59dc87284558ae9ff54191bff3541d2"},
 ]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
@@ -1371,7 +1371,7 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 modelica-builder = [
-    {file = "modelica-builder-0.2.1.tar.gz", hash = "sha256:d2f55baf9c045396ce433e7a655f637a3501770604b3338c32e3fce533aecf2e"},
+    {file = "modelica-builder-0.2.2rc1.tar.gz", hash = "sha256:f4bb8877c8b1fc7249b2daedbaa442888e51a95159ab9ed766c4cb53445258b2"},
 ]
 nodeenv = [
     {file = "nodeenv-1.6.0-py2.py3-none-any.whl", hash = "sha256:621e6b7076565ddcacd2db0294c0381e01fd28945ab36bcf00f41c5daf63bef7"},
