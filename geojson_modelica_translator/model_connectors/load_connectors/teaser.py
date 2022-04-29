@@ -256,6 +256,12 @@ class Teaser(LoadBase):
             # remove ReaderTMY3
             mofile.remove_component("Buildings.BoundaryConditions.WeatherData.ReaderTMY3", "weaDat")
 
+            # Remove `lat` from diffuse & direct solar gains (removed from MBL in version 9)
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTil", "lat")
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTilRoof", "lat")
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTil", "lat")
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTilRoof", "lat")
+
             # updating path to internal loads
             for s in string_replace_list:
                 new_file_path = s[1]
