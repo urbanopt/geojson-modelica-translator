@@ -5,15 +5,14 @@ within {{project_name}}.Loads.{{model_name}};
     redeclare package Medium=MediumW,
     have_fan=false,
     have_eleHea=false,
-    have_eleCoo=false);
+    have_eleCoo=false,
+    facMul=3);
   package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
   {% endraw %}parameter Integer nZon={{data['thermal_zones'] | count}}
     {% raw %} "Number of thermal zones";
-  parameter Integer facMul=3
-    "Scaling factor to be applied to each extensive quantity";
   {% endraw %}parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
     {% raw %} "Nominal building supply and return chilled water temperature difference";
   {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
