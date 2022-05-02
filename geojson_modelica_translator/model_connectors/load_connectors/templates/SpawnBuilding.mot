@@ -12,6 +12,10 @@ model building
     "Load side medium";
   parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of conditioned thermal zones";
+  parameter Integer facSca[nZon]=fill(
+    5,
+    nZon)
+    "Scaling factor to be applied to each extensive quantity";
   parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal[nZon]
     "Load side mass flow rate at cooling nominal conditions"
     annotation (Dialog(group="Nominal condition"));
@@ -99,6 +103,7 @@ model building
     redeclare each final package Medium2=MediumA,
     each fan(
       show_T=true),
+    final facSca=facSca,
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
     {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
@@ -112,7 +117,7 @@ model building
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni),
+      terUni.mHeaWat_flow_nominal .* terUni.facSca),
     have_pum=have_pum,
     dp_nominal=100000,
     nPorts_a1=nZon,
@@ -122,7 +127,7 @@ model building
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni),
+      terUni.mChiWat_flow_nominal .* terUni.facSca),
     typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
     dp_nominal=100000,
     have_pum=have_pum,
