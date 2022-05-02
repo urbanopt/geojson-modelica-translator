@@ -12,7 +12,7 @@ model building
     "Load side medium";
   parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of conditioned thermal zones";
-  parameter Integer facSca[nZon]=fill(
+  parameter Integer facMulZon[nZon]=fill(
     5,
     nZon)
     "Scaling factor to be applied to each extensive quantity";
@@ -38,10 +38,10 @@ model building
     "Supply heating water nominal temperature";
   parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp'] }}
     "Return heating water nominal temperature";
-  parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal[nZon]={{ data['zone_nom_htg_loads'] }} ./ facSca
+  parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal[nZon]={{ data['zone_nom_htg_loads'] }} ./ facMulZon
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal[nZon]={{ data['zone_nom_clg_loads'] }} ./ facSca
+  parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal[nZon]={{ data['zone_nom_clg_loads'] }} ./ facMulZon
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Nominal condition"));
   parameter String idfName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
@@ -103,7 +103,7 @@ model building
     redeclare each final package Medium2=MediumA,
     each fan(
       show_T=true),
-    final facSca=facSca,
+    final facMulZon=facMulZon,
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
     {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
@@ -117,7 +117,7 @@ model building
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni.facSca),
+      terUni.mHeaWat_flow_nominal .* terUni.facMulZon),
     have_pum=have_pum,
     dp_nominal=100000,
     nPorts_a1=nZon,
@@ -127,7 +127,7 @@ model building
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni.facSca),
+      terUni.mChiWat_flow_nominal .* terUni.facMulZon),
     typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
     dp_nominal=100000,
     have_pum=have_pum,
