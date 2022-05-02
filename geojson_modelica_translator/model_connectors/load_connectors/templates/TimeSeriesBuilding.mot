@@ -115,7 +115,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     have_pum=true,
     dp_nominal=100000,
     nPorts_a1=1,
-    nPorts_b1=1) if have_watHea
+    nPorts_b1=1) if have_heaWat
     "Heating water distribution system"
     annotation (Placement(transformation(extent={{120,-80},{140,-60}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
@@ -125,7 +125,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     have_pum=true,
     dp_nominal=100000,
     nPorts_b1=1,
-    nPorts_a1=1) if have_watCoo
+    nPorts_a1=1) if have_chiWat
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{120,-270},{140,-250}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
@@ -153,11 +153,11 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Cooling load"
     annotation (Placement(transformation(extent={{300,-20},{340,20}}),iconTransformation(extent={{-20,-20},{20,20}},rotation=-90,origin={260,-320})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant noHea(
-    k=0) if not have_watHea
+    k=0) if not have_heaWat
     "No heating system"
     annotation (Placement(transformation(extent={{80,120},{100,140}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant noCoo(
-    k=0) if not have_watCoo
+    k=0) if not have_chiWat
     "No cooling system"
     annotation (Placement(transformation(extent={{80,78},{100,98}})));
   Buildings.Controls.OBC.CDL.Continuous.Add addPFan
