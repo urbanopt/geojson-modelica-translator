@@ -80,7 +80,7 @@ within {{project_name}}.Loads.{{model_name}};
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
       terUni.mChiWat_flow_nominal .* terUni.facMul),
-    typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
+    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     dp_nominal(
       displayUnit="Pa")=100000,
     have_pum=have_pum,

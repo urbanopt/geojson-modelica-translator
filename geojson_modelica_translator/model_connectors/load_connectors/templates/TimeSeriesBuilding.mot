@@ -121,7 +121,7 @@ within {{ project_name }}.Loads.{{ model_name }};
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=mChiWat_flow_nominal,
-    typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
+    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     have_pum=true,
     dp_nominal=100000,
     nPorts_b1=1,
