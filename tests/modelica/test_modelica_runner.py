@@ -50,14 +50,22 @@ class ModelicaRunnerTest(unittest.TestCase):
         # create a run directory and copy in a project to test run
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.run_path = os.path.join(os.path.dirname(__file__), 'output', 'simdir')
+        self.fmu_run_path = os.path.join(os.path.dirname(__file__), 'output', 'fmudir')
         if os.path.exists(self.run_path):
             shutil.rmtree(self.run_path)
+        if os.path.exists(self.fmu_run_path):
+            shutil.rmtree(self.fmu_run_path)
         os.makedirs(self.run_path)
+        os.makedirs(self.fmu_run_path)
 
-        # copy in the test modelica file (teaser model)
+        # copy in the test modelica file
         shutil.copyfile(
             os.path.join(self.data_dir, 'BouncingBall.mo'),
             os.path.join(self.run_path, 'BouncingBall.mo')
+        )
+        shutil.copyfile(
+            os.path.join(self.data_dir, 'BouncingBall.fmu'),
+            os.path.join(self.fmu_run_path, 'BouncingBall.fmu')
         )
 
     def test_run_setup(self):
@@ -76,6 +84,13 @@ class ModelicaRunnerTest(unittest.TestCase):
     def test_docker_enabled(self):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
+
+    def test_invalid_action(self):
+        mr = ModelicaRunner()
+        with self.assertRaises(AssertionError) as excinfo:
+            mr._subprocess_call_to_docker(None, None, 'unreal')
+        self.assertIn('unreal', str(excinfo.exception))
+        self.assertIn('needs to be [\'compile_and_run\'', str(excinfo.exception))
 
     @pytest.mark.simulation
     def test_run_in_docker_errors(self):
@@ -96,6 +111,42 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr.run_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
 
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))
+
+    @pytest.mark.simulation
+    def test_compile_in_docker(self):
+        # cleanup output path
+        results_path = os.path.join(self.run_path, 'BouncingBall_results')
+        shutil.rmtree(results_path, ignore_errors=True)
+        # remove old FMU
+        fmu_path = os.path.join(self.run_path, 'BouncingBall.fmu')
+        if os.path.exists(fmu_path):
+            os.remove(fmu_path)
+        if os.path.exists(os.path.join(self.run_path, 'stdout.log')):
+            os.remove(os.path.join(self.run_path, 'stdout.log'))
+
+        # compile the project
+        mr = ModelicaRunner()
+        mr.compile_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
+
+        self.assertTrue(os.path.exists(fmu_path))
+        self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))
+
+    @pytest.mark.simulation
+    def test_run_only_in_docker(self):
+        # cleanup output path
+        results_path = os.path.join(self.fmu_run_path, 'BouncingBall_results')
+        shutil.rmtree(results_path, ignore_errors=True)
+
+        # run the project
+        mr = ModelicaRunner()
+        mr.run_fmu_in_docker(os.path.join(self.fmu_run_path, 'BouncingBall.fmu'))
+
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
