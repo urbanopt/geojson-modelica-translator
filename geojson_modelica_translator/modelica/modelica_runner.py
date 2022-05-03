@@ -113,7 +113,7 @@ class ModelicaRunner(object):
                 "Please update your directory path or model name to not include spaces anywhere.")
         return run_path
 
-    def _copy_over_docker_resources(self, run_path: Str) -> None:
+    def _copy_over_docker_resources(self, run_path: Path) -> None:
         """Copy over ipython and jmodelica needed to run the simulation
         """
         new_jm_ipython = os.path.join(run_path, os.path.basename(self.jm_ipython_path))
