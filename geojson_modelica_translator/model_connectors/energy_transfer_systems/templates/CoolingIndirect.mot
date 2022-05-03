@@ -103,7 +103,7 @@ model {{ model_filename }}
     min=100*Modelica.Constants.eps)=10
     "The higher Nd, the more ideal the derivative block"
     annotation (Dialog(tab="Controller",enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.Blocks.Types.Init initType=Modelica.Blocks.Types.Init.DoNotUse_InitialIntegratorState
+  parameter Modelica.Blocks.Types.Init initType=Modelica.Blocks.Types.Init.InitialOutput
     "Type of initialization (1: NoInit, 2: SteadyState, 3: InitialState, 4: InitialOutput)"
     annotation (Evaluate=true,Dialog(group="Initialization",tab="Controller"));
   parameter Real xi_start=0
