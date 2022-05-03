@@ -85,6 +85,13 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
 
+    def test_invalid_action(self):
+        mr = ModelicaRunner()
+        with self.assertRaises(AssertionError) as excinfo:
+            mr._subprocess_call_to_docker(None, None, 'unreal')
+        self.assertIn('unreal', str(excinfo.exception))
+        self.assertIn('needs to be [\'compile_and_run\'', str(excinfo.exception))
+
     @pytest.mark.simulation
     def test_run_in_docker_errors(self):
         mr = ModelicaRunner()
