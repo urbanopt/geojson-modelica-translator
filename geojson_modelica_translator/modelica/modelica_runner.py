@@ -83,6 +83,42 @@ class ModelicaRunner(object):
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
+    def _verify_docker_run_capability(self, file_to_run):
+        if not self.docker_configured:
+            raise SystemExit('Docker not configured on host computer, unable to run')
+
+        if not os.path.exists(file_to_run):
+            raise SystemExit(f'File not found to run {file_to_run}')
+
+        if not os.path.isfile(file_to_run):
+            raise SystemExit(f'Expecting to run a file, not a folder in {file_to_run}')
+
+    def _verify_run_path_for_docker(self, run_path, file_to_run):
+        """if there is no run_path, then run it in the same directory as the
+        file being run. This works fine for simple Modelica projects but typically
+        the run_path needs to be a few levels higher in order to include other
+        project dependencies (e.g., multiple mo files).
+        """
+        if not run_path:
+            run_path = os.path.dirname(file_to_run)
+        run_path = Path(run_path)
+
+        # Modelica can't handle spaces in project name or path
+        if (len(str(run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
+            raise SystemExit(
+                f"\nModelica does not support spaces in project names or paths. "
+                f"You used '{run_path}' for run path and {file_to_run} for model project name. "
+                "Please update your directory path or model name to not include spaces anywhere.")
+        return run_path
+
+    def _copy_over_docker_resources(self, run_path):
+        """Copy over ipython and jmodelica needed to run the simulation
+        """
+        new_jm_ipython = os.path.join(run_path, os.path.basename(self.jm_ipython_path))
+        shutil.copyfile(self.jm_ipython_path, new_jm_ipython)
+        os.chmod(new_jm_ipython, 0o775)
+        shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
+
     def run_in_docker(self, file_to_run, run_path=None, project_name=None):
         """
         Run the Modelica project in a docker-based environment. Results are saved into the path of the
@@ -96,37 +132,13 @@ class ModelicaRunner(object):
                                      directory
         :return: tuple(bool, str), success status and path to the results directory
         """
-        if not self.docker_configured:
-            raise SystemExit('Docker not configured on host computer, unable to run')
-
-        if not os.path.exists(file_to_run):
-            raise SystemExit(f'File not found to run {file_to_run}')
-
-        if not os.path.isfile(file_to_run):
-            raise SystemExit(f'Expecting to run a file, not a folder in {file_to_run}')
-
-        if not run_path:
-            # if there is no run_path, then run it in the same directory as the file being run. This works fine for
-            # simple Modelica projects but typically the run_path needs to be a few levels higher in order
-            # to include other project dependencies (e.g., multiple mo files).
-            run_path = os.path.dirname(file_to_run)
-        run_path = Path(run_path)
-
-        # Modelica can't handle spaces in project name or path
-        if (len(str(run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
-            raise SystemExit(
-                f"\nModelica does not support spaces in project names or paths. "
-                f"You used '{run_path}' for run path and {file_to_run} for model project name. "
-                "Please update your directory path or model name to not include spaces anywhere.")
+        self._verify_docker_run_capability(file_to_run)
+        run_path = self._verify_run_path_for_docker(run_path, file_to_run)
 
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        # Copy over ipython and jmodelica needed to run the simulation
-        new_jm_ipython = os.path.join(run_path, os.path.basename(self.jm_ipython_path))
-        shutil.copyfile(self.jm_ipython_path, new_jm_ipython)
-        os.chmod(new_jm_ipython, 0o775)
-        shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
+        self._copy_over_docker_resources(run_path)
 
         # Set up the run content
         curdir = os.getcwd()
@@ -139,9 +151,111 @@ class ModelicaRunner(object):
             # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
             # but must strip off the .mo extension on the model to run
             run_model = os.path.relpath(file_to_run, run_path)
-            logger.info(f"Running Modelica file {run_model} in: {run_path}")
+            logger.info(f"Building and running Modelica file {run_model} in: {run_path}")
             p = subprocess.Popen(
-                ['./jm_ipython.sh', 'jmodelica.py', run_model],
+                ['./jm_ipython.sh', 'jmodelica.py', 'compile_and_run', run_model],
+                stdout=stdout_log,
+                stderr=subprocess.STDOUT,
+                cwd=run_path
+            )
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
+            exitcode = p.wait()
+        finally:
+            os.chdir(curdir)
+            stdout_log.close()
+            logger.debug('Closed stdout.log')
+
+        logger.debug('removing temporary files')
+        # Cleanup all of the temporary files that get created
+        self.cleanup_path(run_path)
+
+        logger.debug('moving results to results directory')
+        # get the location of the results path
+        results_path = Path(run_path / f'{project_name}_results')
+        self.move_results(run_path, results_path, project_name)
+        return (exitcode == 0, results_path)
+
+    def compile_in_docker(self, file_to_run, save_path=None):
+        """
+        Build/compile the Modelica project in a docker-based environment using JModelica. The resulting
+        FMU is saved to the save_path.
+
+        stdout.log will store both stdout and stderr of the simulations
+
+        :param file_to_run: string, name of the file (could be directory?) to simulate
+        :param run_psave_pathath: string, location where the Modelica FMU will be saved
+        :return: bool, success status
+        """
+        self._verify_docker_run_capability(file_to_run)
+        save_path = self._verify_run_path_for_docker(save_path, file_to_run)
+
+        self._copy_over_docker_resources(save_path)
+
+        # Set up the run content
+        curdir = os.getcwd()
+        os.chdir(save_path)
+        stdout_log = open('stdout.log', 'w')
+        try:
+            # get the relative difference between the file to run and the path which everything is running in.
+            # make sure to simulate at a directory above the project directory!
+
+            # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
+            # but must strip off the .mo extension on the model to run
+            run_model = os.path.relpath(file_to_run, save_path)
+            logger.info(f"Building Modelica file {run_model} and saving in {save_path}")
+            p = subprocess.Popen(
+                ['./jm_ipython.sh', 'jmodelica.py', 'compile', run_model],
+                stdout=stdout_log,
+                stderr=subprocess.STDOUT,
+                cwd=save_path
+            )
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
+            exitcode = p.wait()
+        finally:
+            os.chdir(curdir)
+            stdout_log.close()
+            logger.debug('Closed stdout.log')
+
+        logger.debug('removing temporary files')
+        # Cleanup all of the temporary files that get created
+        self.cleanup_path(save_path)
+
+        logger.debug('moving results to results directory')
+        return exitcode == 0
+
+    def run_fmu_in_docker(self, file_to_run, run_path=None):
+        """
+        Run the FMU in a docker-based environment. Results are saved into the path of the
+        file that was selected to run.
+
+        stdout.log will store both stdout and stderr of the simulations
+
+        :param file_to_run: string, name of the file (could be directory?) to simulate
+        :param run_path: string, location where the Modelica simulation will start
+        :param project_name: string, name of the project being simulated. Will be used to determine name of results
+                                     directory
+        :return: tuple(bool, str), success status and path to the results directory
+        """
+        self._verify_docker_run_capability(file_to_run)
+        run_path = self._verify_run_path_for_docker(run_path, file_to_run)
+        project_name = os.path.splitext(os.path.basename(file_to_run))[0]
+
+        self._copy_over_docker_resources(run_path)
+
+        # Set up the run content
+        curdir = os.getcwd()
+        os.chdir(run_path)
+        stdout_log = open('stdout.log', 'w')
+        try:
+            # get the relative difference between the file to run and the path which everything is running in.
+            # make sure to simulate at a directory above the project directory!
+
+            # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
+            # but must strip off the .mo extension on the model to run
+            run_model = os.path.relpath(file_to_run, run_path)
+            logger.info(f"Building and running Modelica file {run_model} in: {run_path}")
+            p = subprocess.Popen(
+                ['./jm_ipython.sh', 'jmodelica.py', 'run', run_model],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
