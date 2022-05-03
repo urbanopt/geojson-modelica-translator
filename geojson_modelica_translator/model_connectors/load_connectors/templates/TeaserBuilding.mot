@@ -1,13 +1,14 @@
 within {{project_name}}.Loads.{{model_name}};
-{% raw %}model building
+model building
   "n-zone RC building model based on URBANopt's use of TEASER export, with distribution pumps"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=MediumW,
     have_fan=false,
-    have_eleHea=false,
-    have_eleCoo=false,
-    facMul=3);
-  package MediumW=Buildings.Media.Water
+    have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
+    have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
+    have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
+    have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }};
+  {% raw %}package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";

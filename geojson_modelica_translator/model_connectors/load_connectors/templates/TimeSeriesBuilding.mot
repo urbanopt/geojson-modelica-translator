@@ -1,14 +1,16 @@
 within {{ project_name }}.Loads.{{ model_name }};
-{% raw %}model building
+model building
   "Building model with heating and cooling loads provided as time series"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=MediumW,
     final have_fan=false,
     final have_pum=true,
-    final have_eleHea=false,
-    final have_eleCoo=false,
+    final have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
+    final have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }},
+    final have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
+    final have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
     final have_weaBus=false);
-  package MediumA=Buildings.Media.Air
+  {% raw %}package MediumA=Buildings.Media.Air
     "Air medium";
   package MediumW=Buildings.Media.Water
     "Water medium";
