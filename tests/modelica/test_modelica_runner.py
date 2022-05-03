@@ -143,7 +143,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         results_path = os.path.join(self.fmu_run_path, 'BouncingBall_results')
         shutil.rmtree(results_path, ignore_errors=True)
 
-        # compile the project
+        # run the project
         mr = ModelicaRunner()
         mr.run_fmu_in_docker(os.path.join(self.fmu_run_path, 'BouncingBall.fmu'))
 
