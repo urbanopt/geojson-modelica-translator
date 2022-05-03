@@ -123,9 +123,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('action', help='Action to perform on the model, complile, run, compile_and_run')
     parser.add_argument('model', help='Name of the model to run, if debug, then will use test PID model.')
-    # Note since this is passed with jm_ipython, you can't use the -- args.
-    # So we are just passing in the action and then the model with string
-    # compares on the action (e.g., complile, run, compile_and_run)
+    # Since this command is passed with jm_ipython, you can't use the -- args (e.g., --compile).
+    # So we are just passing in the action and then the model to act on.
+    # The actions can be (e.g., complile, run, compile_and_run)
     args = parser.parse_args()
 
     if args.action == 'help':
