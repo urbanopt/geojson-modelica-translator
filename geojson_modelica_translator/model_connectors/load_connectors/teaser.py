@@ -565,16 +565,16 @@ class Teaser(LoadBase):
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
                 "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.spawn.has_liquid_heating",
+                    self.building_id, "load_model_parameters.rc.has_liquid_heating",
                 ) else "false",
                 "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.spawn.has_liquid_cooling",
+                    self.building_id, "load_model_parameters.rc.has_liquid_cooling",
                 ) else "false",
                 "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.spawn.has_electric_heating",
+                    self.building_id, "load_model_parameters.rc.has_electric_heating",
                 ) else "false",
                 "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
-                    self.building_id, "load_model_parameters.spawn.has_electric_cooling",
+                    self.building_id, "load_model_parameters.rc.has_electric_cooling",
                 ) else "false",
             }
         }
