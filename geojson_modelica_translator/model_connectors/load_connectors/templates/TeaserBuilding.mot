@@ -4,10 +4,11 @@ model building
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=MediumW,
     have_fan=false,
+    have_pum=true,
     have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
     have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
     have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
-    have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }};
+    have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }});
   {% raw %}package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
