@@ -114,6 +114,7 @@ model building
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=mHeaWat_flow_nominal,
+    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.HeatingWater,
     have_pum=true,
     dp_nominal=100000,
     nPorts_a1=1,
