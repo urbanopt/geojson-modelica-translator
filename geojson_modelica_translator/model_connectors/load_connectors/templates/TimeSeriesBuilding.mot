@@ -108,8 +108,8 @@ model building
     final T_bHeaWat_nominal=T_bHeaWat_nominal,
     final T_aLoaHea_nominal=T_aLoaHea_nominal,
     final k=k,
-    final Ti=Ti
-      "Heating terminal unit"
+    final Ti=Ti)
+    "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
@@ -142,8 +142,8 @@ model building
     final T_bChiWat_nominal=T_bChiWat_nominal,
     final T_aLoaCoo_nominal=T_aLoaCoo_nominal,
     final k=k,
-    final Ti=Ti
-      "Cooling terminal unit"
+    final Ti=Ti)
+    "Cooling terminal unit"
     annotation (Placement(transformation(extent={{70,26},{90,46}})));
   Modelica.Blocks.Interfaces.RealOutput QReqHea_flow(
     final quantity="HeatFlowRate",
