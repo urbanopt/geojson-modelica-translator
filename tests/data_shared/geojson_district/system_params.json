@@ -34,6 +34,10 @@
         "load_model_parameters": {
           "time_series": {
             "filepath": "STF_Loads_W.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 10.7,
@@ -74,6 +78,10 @@
         "load_model_parameters": {
           "time_series": {
             "filepath": "ESIF_Loads_W.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
             "temp_chw_supply": 9.8,
@@ -117,6 +125,10 @@
           "rc": {
             "order": 4,
             "mos_weather_filename": "SRRL_2013AMY_60min.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -158,6 +170,10 @@
           "rc": {
             "order": 4,
             "mos_weather_filename": "SRRL_2013AMY_60min.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 70,
@@ -262,6 +278,10 @@
           "rc": {
             "order": 4,
             "mos_weather_filename": "SRRL_2013AMY_60min.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
