@@ -832,7 +832,10 @@ class SystemParameters(object):
         building_list = [x for x in building_list if not x['load_model_parameters']
                          ['time_series']['filepath'].endswith("populated")]
         if len(building_list) == 0:
-            raise Exception("No Modelica files found. The UO SDK simulations may not have been successful")
+            raise SystemExit("No Modelica files found. Modelica files are expected to be found within each feature in folders "
+                             "with names that include '_modelica'\n"
+                             f"For instance: {scenario_dir / '2' / '016_export_modelica_loads'}\n"
+                             "If these files don't exist the UO SDK simulations may not have been successful")
 
         # Update specific sys-param settings for each building
         for building in building_list:
