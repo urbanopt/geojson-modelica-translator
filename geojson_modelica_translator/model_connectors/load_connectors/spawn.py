@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import shutil
+from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
@@ -84,9 +85,10 @@ class Spawn(LoadBase):
         epw_filename = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.epw_filename"
         )
-        mos_weather_filename = self.system_parameters.get_param_by_building_id(
-            self.building_id, "load_model_parameters.spawn.mos_weather_filename",
-        )
+        mos_weather_filename = Path(self.system_parameters.get_param(
+            "$.buildings.default.weather_filepath"
+        ))
+
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
