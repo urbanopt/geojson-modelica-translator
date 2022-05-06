@@ -66,7 +66,7 @@ class CoolingPlant(PlantBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         weather_filepath = Path(self.system_parameters.get_param(
-            "$.district_system.default.central_cooling_plant_parameters.weather_filepath"
+            "$.buildings.default.weather_filepath"
         ))
 
         # verify that the weather file exists

@@ -2,6 +2,7 @@
   "buildings": {
     "default": {
       "load_model": "time_series",
+      "weather_filepath": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
       "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "indirect": {
