@@ -20,7 +20,8 @@ model ChillerStage
     "On/off signal for the chillers - 0: off; 1: on"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.StateGraph.InitialStep off(
-    nIn=1)
+    nIn=1,
+    nOut=1)
     "No cooling is demanded"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={-50,70})));
   Modelica.StateGraph.StepWithSignal oneOn(
@@ -28,7 +29,9 @@ model ChillerStage
     nIn=2)
     "One chiller is on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-50,0})));
-  Modelica.StateGraph.StepWithSignal twoOn
+  Modelica.StateGraph.StepWithSignal twoOn(
+    nIn=1,
+    nOut=1)
     "Two chillers are on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-50,-70})));
   Modelica.StateGraph.Transition offToOne(

@@ -12,7 +12,8 @@ model BoilerStage
   parameter Integer numBoi
     "Number of boilers";
   Modelica.StateGraph.InitialStep off(
-    nIn=1)
+    nIn=1,
+    nOut=1)
     "No heating is demanded"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={-52,56})));
   Modelica.StateGraph.StepWithSignal oneOn(
@@ -20,7 +21,9 @@ model BoilerStage
     nIn=2)
     "One boiler is on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-52,-14})));
-  Modelica.StateGraph.StepWithSignal twoOn
+  Modelica.StateGraph.StepWithSignal twoOn(
+    nIn=1,
+    nOut=1)
     "Two boilers are on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-52,-84})));
   Modelica.StateGraph.Transition offToOne(
