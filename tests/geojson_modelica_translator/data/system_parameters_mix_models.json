@@ -5,6 +5,10 @@
       "load_model_parameters": {
         "rc": {
           "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+          "has_liquid_heating": true,
+          "has_electric_heating": false,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
           "temp_chw_supply": 7,
           "temp_chw_return": 12,
           "temp_hw_supply": 40,
@@ -46,6 +50,10 @@
             "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
             "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
             "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
@@ -106,6 +114,10 @@
             "filepath": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
             "delta_temp_air_cooling": 10,
             "delta_temp_air_heating": 18,
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
@@ -143,6 +155,10 @@
         "load_model_parameters": {
           "rc": {
             "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
+            "has_liquid_heating": true,
+            "has_electric_heating": false,
+            "has_liquid_cooling": true,
+            "has_electric_cooling": false,
             "temp_chw_supply": 7,
             "temp_chw_return": 12,
             "temp_hw_supply": 40,
