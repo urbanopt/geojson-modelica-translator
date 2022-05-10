@@ -141,6 +141,7 @@ model building
     final T_aChiWat_nominal=T_aChiWat_nominal,
     final T_bChiWat_nominal=T_bChiWat_nominal,
     final T_aLoaCoo_nominal=T_aLoaCoo_nominal,
+    QRooHea_flow_nominal=1e4,
     final k=k,
     final Ti=Ti)
     "Cooling terminal unit"
