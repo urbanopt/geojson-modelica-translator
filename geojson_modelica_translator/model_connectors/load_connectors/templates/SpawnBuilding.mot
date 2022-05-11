@@ -49,7 +49,9 @@ model building
   parameter String idfName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
     "Path of the IDF file";
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
-    "Path of the weather file";
+    "Path of the mos weather file";
+  parameter String epwName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['epw']['filename']}}"
+    "Name of the epw weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
   // Set these based on cooling and heating setpoints for now based on current parameters in schema.
   {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
@@ -88,6 +90,8 @@ model building
   {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus_9_6_0.Building building(
     idfName=Modelica.Utilities.Files.loadResource(
       idfName),
+    epwName=Modelica.Utilities.Files.loadResource(
+      epwName),
     weaName=Modelica.Utilities.Files.loadResource(
       weaName))
     "Building outer component"
