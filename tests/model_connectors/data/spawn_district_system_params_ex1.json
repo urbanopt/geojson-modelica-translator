@@ -31,7 +31,7 @@
         "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
-            "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_Chicago.idf",
+            "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_v1.4_9.6_5A_USA_IL_CHICAGO-OHARE.idf",
             "epw_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
             "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
             "has_liquid_heating": true,

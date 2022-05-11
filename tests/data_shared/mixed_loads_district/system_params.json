@@ -77,7 +77,7 @@
         "load_model": "spawn",
         "load_model_parameters": {
           "spawn": {
-            "idf_filename": "../RefBldgSmallOfficeNew2004_Chicago.idf",
+            "idf_filename": "../RefBldgSmallOfficeNew2004_v1.4_9.6_5A_USA_IL_CHICAGO-OHARE.idf",
             "epw_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw",
             "mos_weather_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
             "has_liquid_heating": true,
