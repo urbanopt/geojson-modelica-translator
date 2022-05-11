@@ -1,5 +1,5 @@
 within {{ project_name }}.ACLine;
-model {{ data["model_name"] }}
+model AC{{ data["model_name"] }}
   "Isolated AC distribution line template model for GMT level 1 testing"
   replaceable parameter {{ data["commercial_line_type"] }} perLin;
   parameter Modelica.Units.SI.Length l={{ data["length"] }};
@@ -67,4 +67,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-{% endraw %}end {{ data['model_name'] }};
+{% endraw %}end AC{{ data['model_name'] }};
