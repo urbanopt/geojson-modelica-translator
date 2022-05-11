@@ -69,6 +69,8 @@ class CoolingPlant(PlantBase):
             "$.buildings.default.weather_filepath"
         ))
 
+        print(f"weather_filepath: {str(weather_filepath)}")
+
         # verify that the weather file exists
         if not weather_filepath.exists():
             raise FileNotFoundError(
