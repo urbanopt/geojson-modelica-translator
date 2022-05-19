@@ -10,40 +10,20 @@
         "buildings": {
           "title": "custom",
           "description": "Parameters for all or individual buildings.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/building_def"
-            },
-            "custom": {
-              "description": "List of individual buildings and their custom parameters.",
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/building_def"
-              }
-            }
-          },
-          "additionalProperties": false
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/building_def"
+          }
         },
         "connectors": {
-          "description": "[unused] Parameters related to the connections between objects.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/connector_def"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/definitions/connector_def"
         },
-        "district_system": {
+        "district_systems": {
           "description": "Parameters associated with district systems.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/district_system_def"
-            }
-          },
-          "additionalProperties": false
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/district_system_def"
+          }
         },
         "topology": {
           "title": "defaults",
@@ -91,13 +71,7 @@
           "additionalProperties": false
         },
         "electrical_grid": {
-          "description": "Parameters associated with the electrical grid",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/electrical_grid_parameters"
-            }
-          }
+          "$ref": "#/definitions/electrical_grid_parameters"
         },
         "photovoltaic_panels": {
           "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
@@ -156,13 +130,13 @@
           }
         },
         "ac_inductive_loads": {
-          "description": "AC Inductive loads associated with the district",
+          "description": "AC inductive loads associated with the district",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ac_inductive_load_parameters"
           }
         },
-        "dc_load_loads": {
+        "dc_loads": {
           "description": "DC loads associated with the district",
           "type": "array",
           "items": {
@@ -228,7 +202,7 @@
       "additionalProperties": false
     },
     "building_def": {
-      "description": "The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.",
+      "description": "Specific building parameters for each building.",
       "type": "object",
       "properties": {
         "geojson_id": {
@@ -927,13 +901,13 @@
         "mass_hhw_flow_nominal",
         "boiler_water_flow_minimum",
         "pressure_drop_hhw_nominal",
-        "pressure_drop_setpoint",
         "temp_setpoint_hhw",
-        "pressure_drop_hhw_valve_nominal"
+        "pressure_drop_hhw_valve_nominal",
+        "pressure_drop_setpoint"
       ]
     },
     "combined_heat_and_power_parameters": {
-      "description": "Combined Heat and power parameters used by the microgrid model.",
+      "description": "Combined heat and power (CHP) parameters used by the microgrid model.",
       "type": "object",
       "properties": {
         "fuel_type": {
@@ -956,8 +930,7 @@
           "description": "Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP",
           "type": "string"
         }
-      },
-      "required": []
+      }
     },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
@@ -1174,7 +1147,7 @@
       }
     },
     "battery_bank_parameters": {
-      "description": "DC load parameters used by the microgrid model.",
+      "description": "Battery bank associated with the district",
       "type": "object",
       "properties": {
         "capacity": {
