@@ -1016,8 +1016,7 @@
           "description": "Nominal System Voltage (V)",
           "type": "number",
           "default": 480
-        },
-        "additionalProperties": false
+        }
       }
     },
     "wind_turbine_parameters": {
