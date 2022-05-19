@@ -21,9 +21,18 @@
         "district_systems": {
           "description": "Parameters associated with district systems.",
           "type": "array",
-          "items": {
-            "$ref": "#/definitions/district_system_def"
-          }
+          "items": [
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/4GDHC_def"
+                },
+                {
+                  "$ref": "#/definitions/5GDHC_def"
+                }
+              ]
+            }
+          ]
         },
         "topology": {
           "title": "defaults",
@@ -240,17 +249,20 @@
           "enum": [
             "None",
             "Indirect Heating and Cooling",
-            "Direct Heating and Cooling"
+            "5G Heat Pump"
           ]
         },
         "ets_model_parameters": {
           "type": "object",
-          "properties": {
-            "indirect": {
+          "additionalProperties": false,
+          "oneOf": [
+            {
               "$ref": "#/definitions/ets_indirect_parameters"
+            },
+            {
+              "$ref": "#/definitions/5G_ets_parameters"
             }
-          },
-          "additionalProperties": false
+          ]
         },
         "photovoltaic_panels": {
           "description": "Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization",
@@ -273,7 +285,7 @@
             "$ref": "#/definitions/battery_bank_parameters"
           }
         },
-        "load": {
+        "electric_load": {
           "description": "microgrid-related load fields",
           "properties": {
             "nominal_voltage": {
@@ -356,6 +368,7 @@
       "additionalProperties": false
     },
     "ets_indirect_parameters": {
+      "id": "indirect",
       "description": "The parameters associated with the indirect energy transfer station.",
       "type": "object",
       "properties": {
@@ -1159,6 +1172,75 @@
           "type": "number"
         }
       }
+    },
+    "4GDHC_def": {
+      "properties": {
+        "4GDHC": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "5GDHC_def": {
+      "properties": {
+        "5GDHC": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "5G_ets_parameters": {
+      "id": "5G_ets",
+      "properties": {
+        "supply_water_temperature_building": {
+          "description": "Water supply temperature building side. (C)",
+          "type": "number",
+          "default": 15
+        }
+      },
+      "required": [
+        "supply_water_temperature_building"
+      ]
     }
   }
 }
