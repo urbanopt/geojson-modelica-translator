@@ -45,15 +45,15 @@ jobs:
           docker --version
           docker-compose --version
       -
-        name: Set up Poetry
-        run: |
-          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-          # NOTE: Poetry won't be in PATH until following steps
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-          $HOME/.poetry/bin/poetry install
+        name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.13
       -
-        name: Print Environment
-        run: poetry --version
+        name: Run Poetry install
+        run: |
+          poetry --version
+          poetry install
       -
         name: Install modelicafmt
         run: |
