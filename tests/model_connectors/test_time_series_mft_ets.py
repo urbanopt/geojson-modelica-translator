@@ -73,6 +73,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
     def test_mft_time_series_to_modelica_and_run(self):
         project_name = "time_series_massflow"

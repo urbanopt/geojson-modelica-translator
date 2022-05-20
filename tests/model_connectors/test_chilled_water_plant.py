@@ -63,6 +63,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class DistrictSystemTest(TestCaseBase):
     def test_district_system(self):
         project_name = "chilled_water_plant_stub"

@@ -74,6 +74,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class CombinedHeatingPowerTest(TestCaseBase):
     def test_chp_system(self):
         self.project_name = 'heat_with_chp'

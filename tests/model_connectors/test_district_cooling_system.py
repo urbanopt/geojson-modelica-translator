@@ -74,6 +74,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class DistrictCoolingSystemTest(TestCaseBase):
     def test_district_cooling_system(self):
         project_name = 'district_cooling_system'

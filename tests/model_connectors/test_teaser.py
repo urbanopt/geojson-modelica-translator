@@ -68,6 +68,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
     def test_teaser_single(self):
         project_name = "teaser_single"

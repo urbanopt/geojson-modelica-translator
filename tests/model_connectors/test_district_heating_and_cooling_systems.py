@@ -69,6 +69,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def setUp(self):
         self.project_name = 'district_heating_and_cooling_systems'

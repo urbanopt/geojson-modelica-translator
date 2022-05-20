@@ -74,6 +74,7 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class TestSpawnCooling(TestCaseBase):
     def test_spawn_cooling(self):
         project_name = 'spawn_district_cooling'

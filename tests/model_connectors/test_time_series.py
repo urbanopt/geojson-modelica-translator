@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+import pytest
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
@@ -53,6 +54,8 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
+@pytest.mark.simulation
+@pytest.mark.msl_v4_simulation
 class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
     def test_no_ets_and_run(self):
         project_name = "time_series_no_ets"
@@ -92,6 +95,6 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        # self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
-        #                               project_path=scaffold.project_path,
-        #                               project_name=scaffold.project_name)
+        self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
+                                      project_path=scaffold.project_path,
+                                      project_name=scaffold.project_name)
