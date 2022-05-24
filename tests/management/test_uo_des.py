@@ -135,7 +135,6 @@ class CLIIntegrationTest(TestCase):
         self.assertIn("Modelica does not support spaces in project names or paths.", str(expected_failure.exception))
 
     @pytest.mark.simulation
-    @pytest.mark.msl_v4_simulation
     def test_cli_runs_model(self):
         if (self.output_dir / 'modelica_project_results').exists():
             rmtree(self.output_dir / 'modelica_project_results')

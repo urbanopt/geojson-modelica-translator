@@ -69,9 +69,10 @@ from ..base_test_case import TestCaseBase
 
 
 @pytest.mark.simulation
-@pytest.mark.msl_v4_simulation
 class MixedLoadsTest(TestCaseBase):
     def setUp(self):
+        super().setUp()
+
         self.project_name = 'mixed_loads'
         _, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
@@ -82,7 +83,6 @@ class MixedLoadsTest(TestCaseBase):
         filename = self.SHARED_DATA_DIR / 'mixed_loads_district' / 'system_params.json'
         self.sys_params = SystemParameters(filename)
 
-    def test_mixed_loads_district_energy_system(self):
         # create cooling network and plant
         cooling_network = Network2Pipe(self.sys_params)
         cooling_plant = CoolingPlant(self.sys_params)
@@ -131,15 +131,21 @@ class MixedLoadsTest(TestCaseBase):
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
 
-        district = District(
+        self.district = District(
             root_dir=self.output_dir,
             project_name=self.project_name,
             system_parameters=self.sys_params,
             coupling_graph=graph
         )
-        district.to_modelica()
+        self.district.to_modelica()
 
-        root_path = Path(district._scaffold.districts_path.files_dir).resolve()
+    def test_build_mixed_loads_district_energy_system(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
+        assert ((root_path) / 'DistrictEnergySystem.mo').exists()
+
+    @pytest.mark.simulation
+    def test_simulate_mixed_loads_district_energy_system(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+                                      project_path=self.district._scaffold.project_path,
+                                      project_name=self.district._scaffold.project_name)

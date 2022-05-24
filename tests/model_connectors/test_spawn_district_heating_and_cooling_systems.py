@@ -65,8 +65,6 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-@pytest.mark.simulation
-@pytest.mark.msl_v4_simulation
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def setUp(self):
         self.project_name = 'spawn_district_heating_and_cooling_systems'
@@ -79,7 +77,6 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         filename = Path(self.data_dir) / "spawn_district_system_params_ex1.json"
         self.sys_params = SystemParameters(filename)
 
-    def test_spawn_district_heating_and_cooling_systems(self):
         # create cooling network and plant
         cooling_network = Network2Pipe(self.sys_params)
         cooling_plant = CoolingPlant(self.sys_params)
@@ -96,12 +93,12 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         ]
 
         # keep track of separate loads and etses for testing purposes
-        loads = []
+        self.loads = []
         heat_etses = []
         cool_etses = []
         for geojson_load in self.gj.buildings:
             spawn_load = Spawn(self.sys_params, geojson_load)
-            loads.append(spawn_load)
+            self.loads.append(spawn_load)
             geojson_load_id = geojson_load.feature.properties["id"]
 
             cooling_indirect = CoolingIndirect(self.sys_params, geojson_load_id)
@@ -117,28 +114,34 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
 
-        district = District(
+        self.district = District(
             root_dir=self.output_dir,
             project_name=self.project_name,
             system_parameters=self.sys_params,
             coupling_graph=graph
         )
-        district.to_modelica()
+        self.district.to_modelica()
 
-        root_path = Path(district._scaffold.districts_path.files_dir).resolve()
+    def test_build_spawn_cooling(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
+        assert ((root_path) / 'DistrictEnergySystem.mo').exists()
+
+    @pytest.mark.simulation
+    def test_simulate_spawn_district_heating_and_cooling_systems(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+                                      project_path=self.district._scaffold.project_path,
+                                      project_name=self.district._scaffold.project_name)
 
         #
         # Validate model outputs
         #
-        results_dir = f'{district._scaffold.project_path}_results'
+        results_dir = f'{self.district._scaffold.project_path}_results'
         mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_result.mat'
         mat_results = Reader(mat_file, 'dymola')
 
         # check the mass flow rates of the first load are in the expected range
-        load = loads[0]
+        load = self.loads[0]
         (_, heat_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
         (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aChiWat[1].m_flow')
         self.assertTrue((heat_m_flow >= 0).all(), 'Heating mass flow rate must be greater than or equal to zero')
