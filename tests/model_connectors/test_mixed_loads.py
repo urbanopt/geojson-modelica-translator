@@ -141,7 +141,7 @@ class MixedLoadsTest(TestCaseBase):
 
     def test_build_mixed_loads_district_energy_system(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        assert ((root_path) / 'DistrictEnergySystem.mo').exists()
+        assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
     def test_simulate_mixed_loads_district_energy_system(self):

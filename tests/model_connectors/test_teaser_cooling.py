@@ -119,7 +119,7 @@ class TestTeaserCooling(TestCaseBase):
 
     def test_simulate_teaser_cooling(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        assert ((root_path) / 'DistrictEnergySystem.mo').exists()
+        assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
     def test_build_teaser_cooling(self):

@@ -126,7 +126,7 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
 
     def test_build_teaser_district_heating_and_cooling_systems(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        assert ((root_path) / 'DistrictEnergySystem.mo').exists()
+        assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
     def test_teaser_district_heating_and_cooling_systems(self):
