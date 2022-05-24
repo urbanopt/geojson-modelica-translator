@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import re
+from pathlib import Path
 
 import pytest
 from buildingspy.io.outputfile import Reader
@@ -72,10 +73,10 @@ from modelica_builder.model import Model
 from ..base_test_case import TestCaseBase
 
 
-@pytest.mark.simulation
-@pytest.mark.msl_v4_simulation
 class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
-    def test_mft_time_series_to_modelica_and_run(self):
+    def setUp(self):
+        super().setUp()
+
         project_name = "time_series_massflow"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
@@ -105,7 +106,7 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
         ci_cw_coupling = Coupling(cooling_indirect_system, chilled_water_stub)
 
         # build the district system
-        district = District(
+        self.district = District(
             root_dir=self.output_dir,
             project_name=project_name,
             system_parameters=sys_params,
@@ -116,20 +117,26 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
                 ci_cw_coupling,
             ])
         )
-        district.to_modelica()
+        self.district.to_modelica()
 
-        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        mo_file_name = os.path.join(root_path, 'DistrictEnergySystem.mo')
+    def test_build_district_system(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
+        assert (root_path / 'DistrictEnergySystem.mo').exists()
+
+    @pytest.mark.simulation
+    def test_mft_time_series_to_modelica_and_run(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
+        mo_file_name = Path(root_path) / 'DistrictEnergySystem.mo'
         # set the run time to 31536000 (full year in seconds)
         mofile = Model(mo_file_name)
         mofile.update_model_annotation({"experiment": {"StopTime": 31536000}})
         mofile.save()
         self.run_and_assert_in_docker(mo_file_name,
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+                                      project_path=self.district._scaffold.project_path,
+                                      project_name=self.district._scaffold.project_name)
 
         # Check the results
-        results_dir = f'{district._scaffold.project_path}_results'
+        results_dir = f'{self.district._scaffold.project_path}_results'
         mat_file = f'{results_dir}/time_series_massflow_Districts_DistrictEnergySystem_result.mat'
         mat_results = Reader(mat_file, 'dymola')
 

@@ -3,9 +3,10 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - 'develop'
-      - 'main'
+    # re-enable all branches until we start simulating again.
+    # branches:
+    #   - 'develop'
+    #   - 'main'
 
 defaults:
   run:
@@ -20,16 +21,12 @@ jobs:
         # 3.9 does not work as of 2020-02-01
         python-version: [3.7]
         test_env: [python, precommit, docs]
-        mbl_branch: [issue2204_gmt_mbl]
+        mbl_branch: [master]
         include:
           - os: ubuntu-latest
             python-version: 3.7
             test_env: python
             mbl_branch: master
-          - os: ubuntu-latest
-            python-version: 3.7
-            test_env: check_sys_params
-            mbl_branch: issue2204_gmt_mbl
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -95,10 +92,10 @@ jobs:
               poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             elif [ '${{ matrix.mbl_branch }}' == 'master' ]; then
               # we can no longer run any msl v4 simulations with JModelica
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'mbl_v9 and not msl_v4_simulation' ./tests
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             else
               # we can no longer run any msl v4 simulations with JModelica
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v9 and not msl_v4_simulation' ./tests
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             fi
           else
             poetry run tox -e ${{ matrix.test_env }}
@@ -107,7 +104,7 @@ jobs:
         name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'issue2204_gmt_mbl' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'master' }}
         run: |
           poetry run coveralls
       -

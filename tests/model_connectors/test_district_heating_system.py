@@ -37,6 +37,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+from pathlib import Path
 
 import pytest
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
@@ -73,10 +74,10 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
 from ..base_test_case import TestCaseBase
 
 
-@pytest.mark.simulation
-@pytest.mark.msl_v4_simulation
 class DistrictHeatingSystemNewTest(TestCaseBase):
-    def test_district_heating_system(self):
+    def setUp(self):
+        super().setUp()
+
         project_name = 'district_heating_system'
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
@@ -108,15 +109,21 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
 
-        district = District(
+        self.district = District(
             root_dir=self.output_dir,
             project_name=project_name,
             system_parameters=sys_params,
             coupling_graph=graph
         )
-        district.to_modelica()
+        self.district.to_modelica()
 
-        root_path = os.path.abspath(os.path.join(district._scaffold.districts_path.files_dir))
-        self.run_and_assert_in_docker(os.path.join(root_path, 'DistrictEnergySystem.mo'),
-                                      project_path=district._scaffold.project_path,
-                                      project_name=district._scaffold.project_name)
+    def test_build_district_heating_system(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
+        assert (root_path / 'DistrictEnergySystem.mo').exists()
+
+    @pytest.mark.simulation
+    def test_simulate_district_heating_system(self):
+        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
+        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
+                                      project_path=self.district._scaffold.project_path,
+                                      project_name=self.district._scaffold.project_name)
