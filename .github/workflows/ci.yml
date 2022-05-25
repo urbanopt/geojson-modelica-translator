@@ -3,9 +3,10 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - 'develop'
-      - 'main'
+    # re-enable all branches until we start simulating again.
+    # branches:
+    #   - 'develop'
+    #   - 'main'
 
 defaults:
   run:
@@ -17,19 +18,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        # 3.9 does not work as of 2020-02-01
-        python-version: [3.7]
+        python-version: [3.9, 3.7]
         test_env: [python, precommit, docs]
-        mbl_branch: [issue2204_gmt_mbl]
+        mbl_branch: [master]
         include:
           - os: ubuntu-latest
-            python-version: 3.7
             test_env: python
             mbl_branch: master
-          - os: ubuntu-latest
-            python-version: 3.7
-            test_env: check_sys_params
-            mbl_branch: issue2204_gmt_mbl
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -45,15 +40,15 @@ jobs:
           docker --version
           docker-compose --version
       -
-        name: Set up Poetry
-        run: |
-          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-          # NOTE: Poetry won't be in PATH until following steps
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-          $HOME/.poetry/bin/poetry install
+        name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.1.13
       -
-        name: Print Environment
-        run: poetry --version
+        name: Run Poetry install
+        run: |
+          poetry --version
+          poetry install
       -
         name: Install modelicafmt
         run: |
@@ -94,9 +89,11 @@ jobs:
               # for windows, skip python tests that require simulation (currently broken)
               poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             elif [ '${{ matrix.mbl_branch }}' == 'master' ]; then
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'mbl_v9 and not msl_v4_simulation' ./tests
+              # we can no longer run any msl v4 simulations with JModelica
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             else
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not mbl_v9' ./tests
+              # we can no longer run any msl v4 simulations with JModelica
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             fi
           else
             poetry run tox -e ${{ matrix.test_env }}
@@ -105,7 +102,7 @@ jobs:
         name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'issue2204_gmt_mbl' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'master' }}
         run: |
           poetry run coveralls
       -

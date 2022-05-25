@@ -95,7 +95,22 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
-@pytest.mark.mbl_v9
+def test_build_community_pv():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'CommunityPV'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = CommunityPV(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'PVPanels1.mo') > 20
+
+
 @pytest.mark.simulation
 def test_simulate_community_pv():
     # -- Setup
@@ -108,19 +123,33 @@ def test_simulate_community_pv():
     cpv = CommunityPV(sys_params)
     cpv.build_from_template(package_output_dir)
 
-    # runner = ModelicaRunner()
-    # success, _ = runner.run_in_docker(package_output_dir / 'PVPanels0.mo')
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'PVPanels0.mo')
 
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'PVPanels1.mo') > 20
     # Did the simulation run?
-    # assert success is True
+    assert success is True
 
 
-@pytest.mark.mbl_v9
+def test_build_cooling_plant():
+    # -- Setup
+    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
+
+    # -- Act
+    output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
+    package_output_dir = PARENT_DIR / 'output' / 'Cooling'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
+        f.write(output)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'CoolingPlant.mo') > 20
+
+
 @pytest.mark.simulation
-@pytest.mark.msl_v4_simulation
 def test_simulate_cooling_plant():
     # -- Setup
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
@@ -141,7 +170,21 @@ def test_simulate_cooling_plant():
     assert success is True
 
 
-@pytest.mark.mbl_v9
+def test_build_wind_turbine():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'WindTurbine'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = WindTurbine(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'WindTurbine0.mo') > 20
+
+
 @pytest.mark.simulation
 def test_simulate_wind_turbine():
     # -- Setup
@@ -154,21 +197,34 @@ def test_simulate_wind_turbine():
     cpv = WindTurbine(sys_params)
     cpv.build_from_template(package_output_dir)
 
-    # runner = ModelicaRunner()
-    # success, _ = runner.run_in_docker(package_output_dir / 'WindTurbine0.mo')
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'WindTurbine0.mo')
 
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'WindTurbine0.mo') > 20
     # Did the simulation run?
-    # assert success is True
+    assert success is True
 
 
-@pytest.mark.mbl_v9
+def test_build_distribution_lines():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'DistributionLines'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cpv = DistributionLines(sys_params)
+    cpv.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'ACLine0.mo') > 20
+
+
 @pytest.mark.simulation
 def test_simulate_distribution_lines():
     # -- Setup
-
     package_output_dir = PARENT_DIR / 'output' / 'DistributionLines'
     package_output_dir.mkdir(parents=True, exist_ok=True)
     sys_params = SystemParameters(MICROGRID_PARAMS)
@@ -187,9 +243,9 @@ def test_simulate_distribution_lines():
     # assert success is True
 
 
-@pytest.mark.mbl_v9
-@pytest.mark.simulation
-def test_stub_mbl_v9_with_not_msl_v4():
-    """Need to have a stub where mbl_v9 is selected that is simulatable (with
-    MSV V3.2) in order to not create a failed pytest command with exit code 5."""
-    assert False is not True
+# Keeping the code below because it may come back and this was a weird issue.
+# @pytest.mark.simulation
+# def test_stub_mbl_v9_with_not_msl_v4():
+#     """Need to have a stub where mbl_v9 is selected that is simulatable (with
+#     MSV V3.2) in order to not create a failed pytest command with exit code 5."""
+#     assert False is not True

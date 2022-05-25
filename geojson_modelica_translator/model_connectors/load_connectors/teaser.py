@@ -530,7 +530,6 @@ class Teaser(LoadBase):
         nom_cool_flow = np.array([-10000] * len(zone_list))
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
-                print("setting coo flow")
                 nom_cool_flow[i - 1] = -50000  # Need to offset for different indexing
         nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
