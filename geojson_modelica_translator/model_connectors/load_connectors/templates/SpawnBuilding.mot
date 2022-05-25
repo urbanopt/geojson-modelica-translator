@@ -3,51 +3,55 @@ model building
   "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=Buildings.Media.Water,
-    final have_eleHea=false,
-    final have_eleCoo=false,
-    final have_weaBus=false);
+    final have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
+    final have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
+    final have_weaBus=false,
+    final have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
+    final have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }});
   package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
   parameter Integer nZon={{data['thermal_zones'] | count}}
     "Number of conditioned thermal zones";
-  parameter Integer facSca[nZon]=fill(
+  parameter Integer facMulZon[nZon]=fill(
     5,
     nZon)
     "Scaling factor to be applied to each extensive quantity";
-  parameter Modelica.SIunits.MassFlowRate mLoaCoo_flow_nominal[nZon]
+  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal[nZon]
     "Load side mass flow rate at cooling nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.MassFlowRate mLoaHea_flow_nominal[nZon]
+  parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal[nZon]
     "Load side mass flow rate at heating nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.TemperatureDifference delTBuiCoo={{data['delta_temp_chw_building']}}
+  parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{data['delta_temp_chw_building']}}
     "Nominal building supply and return chilled water temperature difference";
-  parameter Modelica.SIunits.TemperatureDifference delTDisCoo={{data['delta_temp_chw_district']}}
+  parameter Modelica.Units.SI.TemperatureDifference delTDisCoo={{data['delta_temp_chw_district']}}
     "Nominal district supply and return water temperature difference";
-  parameter Modelica.SIunits.TemperatureDifference delTBuiHea={{data['delta_temp_hw_building']}}
+  parameter Modelica.Units.SI.TemperatureDifference delTBuiHea={{data['delta_temp_hw_building']}}
     "Nominal building supply and return water temperature difference";
-  parameter Modelica.SIunits.TemperatureDifference delTDisHea={{data['delta_temp_hw_district']}}
+  parameter Modelica.Units.SI.TemperatureDifference delTDisHea={{data['delta_temp_hw_district']}}
     "Nominal district supply and return water temperature difference";
-  parameter Modelica.SIunits.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
+  parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     "Supply chilled water nominal temperature";
-  parameter Modelica.SIunits.Temperature T_bChiWat_nominal={{ data['nominal_values']['chw_return_temp'] }}
+  parameter Modelica.Units.SI.Temperature T_bChiWat_nominal={{ data['nominal_values']['chw_return_temp'] }}
     "Return chilled water nominal temperature";
-  parameter Modelica.SIunits.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
+  parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     "Supply heating water nominal temperature";
-  parameter Modelica.SIunits.Temperature T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp'] }}
+  parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal={{ data['nominal_values']['hhw_return_temp'] }}
     "Return heating water nominal temperature";
-  parameter Modelica.SIunits.HeatFlowRate QHea_flow_nominal[nZon]={{ data['zone_nom_htg_loads'] }} ./ facSca
+  parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal[nZon]={{ data['zone_nom_htg_loads'] }} ./ facMulZon
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.SIunits.HeatFlowRate QCoo_flow_nominal[nZon]={{ data['zone_nom_clg_loads'] }} ./ facSca
+  parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal[nZon]={{ data['zone_nom_clg_loads'] }} ./ facMulZon
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Nominal condition"));
   parameter String idfName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}"
     "Path of the IDF file";
   parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
-    "Path of the weather file";
+    "Path of the mos weather file";
+  parameter String epwName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['epw']['filename']}}"
+    "Name of the epw weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
   // Set these based on cooling and heating setpoints for now based on current parameters in schema.
   {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
@@ -77,18 +81,19 @@ model building
     "Latent heat gain"
     annotation (Placement(transformation(extent={{-66,88},{-46,108}})));
   {% endraw %}// TODO: apply a dynamic layout
-  {% for zone in data['thermal_zones'] %}Buildings.ThermalZones.EnergyPlus.ThermalZone {{zone['modelica_object_name']}}(
+  {% for zone in data['thermal_zones'] %}Buildings.ThermalZones.EnergyPlus_9_6_0.ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium=MediumA,
     nPorts=2,
     zoneName="{{zone['spawn_object_name']}}")
     "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{40,-20},{80,20}})));
-  {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus.Building building(
+  {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus_9_6_0.Building building(
     idfName=Modelica.Utilities.Files.loadResource(
       idfName),
+    epwName=Modelica.Utilities.Files.loadResource(
+      epwName),
     weaName=Modelica.Utilities.Files.loadResource(
-      weaName),
-    showWeatherData=false)
+      weaName))
     "Building outer component"
     annotation (Placement(transformation(extent={{40,60},{60,80}})));
   Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
@@ -97,14 +102,14 @@ model building
   Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum3(
     nin=2) if have_pum
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
-  Buildings.Experimental.DHC.Loads.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
+  Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
     each T_aChiWat_nominal=T_aChiWat_nominal,
     each T_bChiWat_nominal=T_bChiWat_nominal,
     redeclare each final package Medium1=MediumW,
     redeclare each final package Medium2=MediumA,
     each fan(
       show_T=true),
-    final facSca=facSca,
+    final facMulZon=facMulZon,
     final QHea_flow_nominal=QHea_flow_nominal,
     final QCoo_flow_nominal=QCoo_flow_nominal,
     {% endraw %}each T_aLoaHea_nominal={{ data["nominal_values"]["temp_setpoint_heating"] }},
@@ -115,21 +120,21 @@ model building
     final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
     "Terminal unit"
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
-  Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
+  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni.facSca),
+      terUni.mHeaWat_flow_nominal .* terUni.facMulZon),
     have_pum=have_pum,
     dp_nominal=100000,
     nPorts_a1=nZon,
     nPorts_b1=nZon)
     "Heating water distribution system"
     annotation (Placement(transformation(extent={{-236,-188},{-216,-168}})));
-  Buildings.Experimental.DHC.Loads.FlowDistribution disFloCoo(
+  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni.facSca),
-    typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
+      terUni.mChiWat_flow_nominal .* terUni.facMulZon),
+    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     dp_nominal=100000,
     have_pum=have_pum,
     nPorts_a1=nZon,

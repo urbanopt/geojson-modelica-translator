@@ -525,6 +525,26 @@
           "type": "number",
           "default": 12
         },
+        "has_liquid_heating": {
+          "description": "Whether the building has liquid heating.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_liquid_cooling": {
+          "description": "Whether the building has liquid cooling.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_electric_heating": {
+          "description": "Whether the building has electric heating.",
+          "type": "boolean",
+          "default": false
+        },
+        "has_electric_cooling": {
+          "description": "Whether the building has electric cooling.",
+          "type": "boolean",
+          "default": false
+        },
         "idf_filename": {
           "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
@@ -613,6 +633,26 @@
           "type": "number",
           "default": 12
         },
+        "has_liquid_heating": {
+          "description": "Whether the building has liquid heating.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_liquid_cooling": {
+          "description": "Whether the building has liquid cooling.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_electric_heating": {
+          "description": "Whether the building has electric heating.",
+          "type": "boolean",
+          "default": false
+        },
+        "has_electric_cooling": {
+          "description": "Whether the building has electric cooling.",
+          "type": "boolean",
+          "default": false
+        },
         "order": {
           "type": "integer",
           "enum": [
@@ -675,6 +715,26 @@
           "description": "Chilled water return temperature. (C)",
           "type": "number",
           "default": 12
+        },
+        "has_liquid_heating": {
+          "description": "Whether the building has liquid heating.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_liquid_cooling": {
+          "description": "Whether the building has liquid cooling.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_electric_heating": {
+          "description": "Whether the building has electric heating.",
+          "type": "boolean",
+          "default": false
+        },
+        "has_electric_cooling": {
+          "description": "Whether the building has electric cooling.",
+          "type": "boolean",
+          "default": false
         },
         "filepath": {
           "type": "string"

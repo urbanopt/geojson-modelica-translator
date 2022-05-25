@@ -5,12 +5,12 @@ model ChilledWaterPumpSpeed
     min=1,
     max=2)=2
     "Number of chilled water pumps, maximum is 2";
-  parameter Modelica.SIunits.PressureDifference dpSetPoi(
+  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Pressure difference setpoint";
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time";
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
     "Nominal mass flow rate of single chilled water pump";
   parameter Real minSpe(
     unit="1",
@@ -23,11 +23,11 @@ model ChilledWaterPumpSpeed
     unit="1",
     min=0)=1
     "Gain of controller";
-  parameter Modelica.SIunits.Time Ti(
+  parameter Modelica.Units.SI.Time Ti(
     min=Modelica.Constants.small)=60
     "Time constant of Integrator block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PI or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.SIunits.Time Td(
+  parameter Modelica.Units.SI.Time Td(
     min=0)=0.1
     "Time constant of Derivative block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
@@ -48,7 +48,7 @@ model ChilledWaterPumpSpeed
   Modelica.Blocks.Math.Product pumSpe[numPum]
     "Output pump speed"
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Controls.VariableSpeedPumpStage pumStaCon(
+  Buildings.Applications.BaseClasses.Controls.VariableSpeedPumpStage pumStaCon(
     tWai=tWai,
     m_flow_nominal=m_flow_nominal,
     minSpe=minSpe)

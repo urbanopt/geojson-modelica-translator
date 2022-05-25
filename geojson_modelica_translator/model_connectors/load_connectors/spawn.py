@@ -96,6 +96,20 @@ class Spawn(LoadBase):
         zone_nom_clg_loads = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
         )
+        # TODO: pick up default value from schema if not specified in system_parameters,
+        # to avoid the inline if/then statement in nominal_values below
+        has_liquid_heating = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.has_liquid_heating",
+        )
+        has_liquid_cooling = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.has_liquid_cooling",
+        )
+        has_electric_heating = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.has_electric_heating",
+        )
+        has_electric_cooling = self.system_parameters.get_param_by_building_id(
+            self.building_id, "load_model_parameters.spawn.has_electric_cooling",
+        )
         hhw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_supply",
         ))
@@ -142,6 +156,10 @@ class Spawn(LoadBase):
                 "chw_return_temp": chw_return_temp,
                 "temp_setpoint_heating": temp_setpoint_heating,
                 "temp_setpoint_cooling": temp_setpoint_cooling,
+                "has_liquid_heating": "true" if has_liquid_heating else "false",
+                "has_liquid_cooling": "true" if has_liquid_cooling else "false",
+                "has_electric_heating": "true" if has_electric_heating else "false",
+                "has_electric_cooling": "true" if has_electric_cooling else "false",
             },
             # Reformatting lists for Modelica
             "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],

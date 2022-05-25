@@ -451,7 +451,7 @@ python-versions = "*"
 
 [[package]]
 name = "modelica-builder"
-version = "0.2.1"
+version = "0.2.2rc1"
 description = "Modelica builder enables parsing and modification of Modelica files"
 category = "main"
 optional = false
@@ -1405,7 +1405,7 @@ mccabe = [
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
 modelica-builder = [
-    {file = "modelica-builder-0.2.1.tar.gz", hash = "sha256:d2f55baf9c045396ce433e7a655f637a3501770604b3338c32e3fce533aecf2e"},
+    {file = "modelica-builder-0.2.2rc1.tar.gz", hash = "sha256:f4bb8877c8b1fc7249b2daedbaa442888e51a95159ab9ed766c4cb53445258b2"},
 ]
 mypy = [
     {file = "mypy-0.950-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:cf9c261958a769a3bd38c3e133801ebcd284ffb734ea12d01457cb09eacf7d7b"},

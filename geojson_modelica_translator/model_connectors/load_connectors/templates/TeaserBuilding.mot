@@ -1,20 +1,21 @@
 within {{project_name}}.Loads.{{model_name}};
-{% raw %}model building
+model building
   "n-zone RC building model based on URBANopt's use of TEASER export, with distribution pumps"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=MediumW,
     have_fan=false,
-    have_eleHea=false,
-    have_eleCoo=false);
-  package MediumW=Buildings.Media.Water
+    have_pum=true,
+    have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
+    have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
+    have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
+    have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }});
+  {% raw %}package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
   {% endraw %}parameter Integer nZon={{data['thermal_zones'] | count}}
     {% raw %} "Number of thermal zones";
-  parameter Integer facSca=3
-    "Scaling factor to be applied to each extensive quantity";
-  {% endraw %}parameter Modelica.SIunits.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
+  {% endraw %}parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
     {% raw %} "Nominal building supply and return chilled water temperature difference";
   {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     {% raw %} "Path of the weather file";
@@ -50,10 +51,10 @@ within {{project_name}}.Loads.{{model_name}};
   {% endfor %}Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
     nin=2) if have_pum
     {% raw %} annotation (Placement(transformation(extent={{260,70},{280,90}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](
     redeclare each package Medium1=MediumW,
     redeclare each package Medium2=MediumA,
-    each facSca=facSca,
+    each facMul=facMul,
     QHea_flow_nominal={{ data['nominal_heat_flow'] }},
     QCoo_flow_nominal={{ data['nominal_cool_flow'] }},
     each T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }},
@@ -66,10 +67,10 @@ within {{project_name}}.Loads.{{model_name}};
     each mLoaCoo_flow_nominal=5)
     "Terminal unit"
     {% raw %} annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloHea(
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni.facSca),
+      terUni.mHeaWat_flow_nominal .* terUni.facMul),
     dp_nominal(
       displayUnit="Pa")=100000,
     have_pum=have_pum,
@@ -77,11 +78,11 @@ within {{project_name}}.Loads.{{model_name}};
     nPorts_b1=nZon)
     "Heating water distribution system"
     {% raw %} annotation (Placement(transformation(extent={{-140,-100},{-120,-80}})));
-  {% endraw %}Buildings.Experimental.DHC.Loads.FlowDistribution disFloCoo(
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni.facSca),
-    typDis=Buildings.Experimental.DHC.Loads.Types.DistributionType.ChilledWater,
+      terUni.mChiWat_flow_nominal .* terUni.facMul),
+    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     dp_nominal(
       displayUnit="Pa")=100000,
     have_pum=have_pum,
