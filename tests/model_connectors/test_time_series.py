@@ -38,6 +38,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+import pytest
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
@@ -54,7 +55,9 @@ from ..base_test_case import TestCaseBase
 
 
 class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
-    def test_no_ets_and_run(self):
+    def setUp(self):
+        super().setUp()
+
         project_name = "time_series_no_ets"
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
@@ -62,9 +65,10 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         filename = os.path.join(self.data_dir, "time_series_ex1.json")
         self.gj = UrbanOptGeoJson(filename)
         # scaffold the project ourselves
-        scaffold = Scaffold(self.output_dir, project_name)
-        scaffold.create()
+        self.scaffold = Scaffold(self.output_dir, project_name)
+        self.scaffold.create()
 
+    def test_build_model(self):
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
         sys_params = SystemParameters(filename)
@@ -79,19 +83,48 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, order=[])
+            self.scaffold.project_path, self.scaffold.project_name, order=[])
         package.save()
-        self.time_series.to_modelica(scaffold)
+        self.time_series.to_modelica(self.scaffold)
 
-        root_path = os.path.abspath(os.path.join(scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
+        self.root_path = os.path.abspath(os.path.join(self.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
-            os.path.join(root_path, 'building.mo'),
+            os.path.join(self.root_path, 'building.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        # self.run_and_assert_in_docker(os.path.join(root_path, 'building.mo'),
-        #                               project_path=scaffold.project_path,
-        #                               project_name=scaffold.project_name)
+    @pytest.mark.simulation
+    def test_build_and_simulate_no_ets(self):
+        # load system parameter data
+        filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
+        sys_params = SystemParameters(filename)
+
+        # now test the connector (independent of the larger geojson translator)
+        self.time_series = TimeSeries(sys_params, self.gj.buildings[0])
+
+        self.assertIsNotNone(self.time_series)
+        self.assertIsNotNone(self.time_series.building)
+        self.assertEqual("time_series",
+                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+
+        # currently we must setup the root project before we can run to_modelica
+        package = PackageParser.new_from_template(
+            self.scaffold.project_path, self.scaffold.project_name, order=[])
+        package.save()
+        self.time_series.to_modelica(self.scaffold)
+
+        self.root_path = os.path.abspath(os.path.join(self.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
+        files = [
+            os.path.join(self.root_path, 'building.mo'),
+        ]
+
+        # verify that there are only 2 files that matter (coupling and building)
+        for file in files:
+            self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
+
+        self.run_and_assert_in_docker(os.path.join(self.root_path, 'building.mo'),
+                                      project_path=self.scaffold.project_path,
+                                      project_name=self.scaffold.project_name)
