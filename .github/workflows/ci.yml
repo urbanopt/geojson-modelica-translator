@@ -18,11 +18,18 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        # 3.9 does not work as of 2020-02-01
-        python-version: [3.7]
+        python-version: [3.9, 3.8, 3.7]
         test_env: [python, precommit, docs]
         mbl_branch: [master]
         include:
+          - os: ubuntu-latest
+            python-version: 3.9
+            test_env: python
+            mbl_branch: master
+          - os: ubuntu-latest
+            python-version: 3.8
+            test_env: python
+            mbl_branch: master
           - os: ubuntu-latest
             python-version: 3.7
             test_env: python
