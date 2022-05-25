@@ -8,10 +8,10 @@ model DistrictEnergySystem
     "Load side medium";
 
   // TODO: dehardcode? Also, add display units to the other parameters.
-  parameter Modelica.SIunits.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
-  parameter Modelica.SIunits.TemperatureDifference delChiWatTemBui=5;
-  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemDis=12;
-  parameter Modelica.SIunits.TemperatureDifference delHeaWatTemBui=5;
+  parameter Modelica.Units.SI.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
+  parameter Modelica.Units.SI.TemperatureDifference delChiWatTemBui=5;
+  parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemDis=12;
+  parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemBui=5;
 
   // Models
 {% for model in models %}

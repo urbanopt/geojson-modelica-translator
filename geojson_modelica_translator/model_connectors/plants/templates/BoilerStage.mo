@@ -1,18 +1,19 @@
 within geojson_modelica_translator.model_connectors.templates;
 model BoilerStage
   "Stage controller for boilers"
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time";
-  parameter Modelica.SIunits.Power QBoi_nominal
+  parameter Modelica.Units.SI.Power QBoi_nominal
     "Nominal heating capaciaty";
-  parameter Modelica.SIunits.Power criPoiLoa=0.55*QBoi_nominal
+  parameter Modelica.Units.SI.Power criPoiLoa=0.55*QBoi_nominal
     "Critical point of heating load for switching one boiler on or off";
-  parameter Modelica.SIunits.Power dQ=0.25*QBoi_nominal
+  parameter Modelica.Units.SI.Power dQ=0.25*QBoi_nominal
     "Deadband for critical point of heating load";
   parameter Integer numBoi
     "Number of boilers";
   Modelica.StateGraph.InitialStep off(
-    nIn=1)
+    nIn=1,
+    nOut=1)
     "No heating is demanded"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={-52,56})));
   Modelica.StateGraph.StepWithSignal oneOn(
@@ -20,7 +21,9 @@ model BoilerStage
     nIn=2)
     "One boiler is on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-52,-14})));
-  Modelica.StateGraph.StepWithSignal twoOn
+  Modelica.StateGraph.StepWithSignal twoOn(
+    nIn=1,
+    nOut=1)
     "Two boilers are on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-52,-84})));
   Modelica.StateGraph.Transition offToOne(

@@ -9,22 +9,22 @@ within {{ project_name }}.Plants;
     "= true, if actual temperature at port is computed"
     annotation (Dialog(tab="Advanced",group="Diagnostics"));
   // boiler parameters
-  parameter Modelica.SIunits.MassFlowRate mHW_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mHW_flow_nominal
     "Nominal heating water mass flow rate"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.Power QBoi_flow_nominal
+  parameter Modelica.Units.SI.Power QBoi_flow_nominal
     "Nominal heating capacity of single boiler"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.MassFlowRate mMin_flow
+  parameter Modelica.Units.SI.MassFlowRate mMin_flow
     "Minimum mass flow rate of single boiler"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.MassFlowRate mBoi_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mBoi_flow_nominal
     "Nominal mass flow rate of single boiler"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.Pressure dpBoi_nominal
+  parameter Modelica.Units.SI.Pressure dpBoi_nominal
     "Pressure difference at the boiler water side"
     annotation (Dialog(group="Boiler"));
-  parameter Modelica.SIunits.TemperatureDifference delT_nominal
+  parameter Modelica.Units.SI.TemperatureDifference delT_nominal
     "Design heating water temperature Difference";
   // pump parameters
   replaceable parameter Buildings.Fluid.Movers.Data.Generic perHWPum
@@ -32,20 +32,13 @@ within {{ project_name }}.Plants;
     "Performance data of heating water pump"
     annotation (Dialog(group="Pump"),choicesAllMatching=true,Placement(transformation(extent={{138,82},{152,96}})));
   // control settings
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time"
     annotation (Dialog(group="Control Settings"));
-  parameter Modelica.SIunits.PressureDifference dpSetPoi(
+  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Demand side pressure difference setpoint"
     annotation (Dialog(group="Control Settings"));
-  // dynamics
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial
-    "Type of energy balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
-  parameter Modelica.Fluid.Types.Dynamics massDynamics=energyDynamics
-    "Type of mass balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
   // diagnostics
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
@@ -119,7 +112,7 @@ within {{ project_name }}.Plants;
     m_flow_nominal=mHW_flow_nominal)
     "Heating water return temperature"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=0,origin={104,50})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_y pumHW(
+  Buildings.Applications.BaseClasses.Equipment.FlowMachine_y pumHW(
     per=fill(
       perHWPum,
       numBoi),
@@ -127,8 +120,7 @@ within {{ project_name }}.Plants;
     m_flow_nominal=mBoi_flow_nominal,
     {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     num=numBoi,
-    l=0.001,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    l=0.001)
     "Parallel heating water pumps."
     annotation (Placement(transformation(extent={{0,40},{-20,60}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(
@@ -152,7 +144,7 @@ within {{ project_name }}.Plants;
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
     sta_default)
     "Specific heat capacity of the fluid";
   Buildings.Fluid.Sources.Boundary_pT expTanHW(
@@ -171,7 +163,6 @@ within {{ project_name }}.Plants;
   Buildings.Fluid.CHPs.ThermalElectricalFollowing eleFol(
     redeclare package Medium=Medium,
     m_flow_nominal=0.4,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     redeclare Buildings.Fluid.CHPs.Data.Senertech5_5kW per,
     TEngIni=273.15+69.55,
     waitTime=0)

@@ -42,7 +42,6 @@ model B5a6b99ec37f4de7f94020090_Floor
     CInt={573809361.8851968},
     RWin=0.002198739011727672,
     RExtRem=0.0012526070384860479,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     extWallRC(thermCapExt(each der_T(fixed=true))),
     intWallRC(thermCapInt(each der_T(fixed=true))),
     nOrientations=6,

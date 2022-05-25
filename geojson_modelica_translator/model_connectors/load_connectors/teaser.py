@@ -256,6 +256,12 @@ class Teaser(LoadBase):
             # remove ReaderTMY3
             mofile.remove_component("Buildings.BoundaryConditions.WeatherData.ReaderTMY3", "weaDat")
 
+            # Remove `lat` from diffuse & direct solar gains (removed from MBL in version 9)
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTil", "lat")
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTilRoof", "lat")
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTil", "lat")
+            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTilRoof", "lat")
+
             # updating path to internal loads
             for s in string_replace_list:
                 new_file_path = s[1]
@@ -524,7 +530,6 @@ class Teaser(LoadBase):
         nom_cool_flow = np.array([-10000] * len(zone_list))
         for i, dic in enumerate(zone_list):
             if dic["instance_name"] == "ict":
-                print("setting coo flow")
                 nom_cool_flow[i - 1] = -50000  # Need to offset for different indexing
         nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
@@ -555,7 +560,21 @@ class Teaser(LoadBase):
                 )),
                 "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
-                ))
+                )),
+                # FIXME: pick up default value from schema if not specified in system_parameters,
+                # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
+                "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.has_liquid_heating",
+                ) else "false",
+                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.has_liquid_cooling",
+                ) else "false",
+                "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.has_electric_heating",
+                ) else "false",
+                "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                    self.building_id, "load_model_parameters.rc.has_electric_cooling",
+                ) else "false",
             }
         }
 

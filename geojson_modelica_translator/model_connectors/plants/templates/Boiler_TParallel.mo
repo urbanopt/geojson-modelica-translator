@@ -4,16 +4,15 @@ model Boiler_TParallel
   extends PartialPlantParallel(
     num=numBoi,
     redeclare Buildings.Fluid.Boilers.BoilerPolynomial boi(
-      each energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
       each Q_flow_nominal=Q_flow_nominal,
       each m_flow_nominal=m_flow_nominal,
       each dp_nominal=dp_nominal,
       each effCur=Buildings.Fluid.Types.EfficiencyCurves.Constant,
       each a={0.9},
       each fue=Buildings.Fluid.Data.Fuels.NaturalGasHigherHeatingValue()));
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal;
-  parameter Modelica.SIunits.PressureDifference dp_nominal;
-  parameter Modelica.SIunits.HeatFlowRate Q_flow_nominal;
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal;
+  parameter Modelica.Units.SI.PressureDifference dp_nominal;
+  parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal;
   parameter Integer numBoi;
   Modelica.Blocks.Interfaces.RealOutput TBoiLvg[num](
     unit="K",
