@@ -1,13 +1,13 @@
 within geojson_modelica_translator.model_connectors.templates;
 model ChillerStage
   "Stage controller for chillers"
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time";
-  parameter Modelica.SIunits.Power QEva_nominal
+  parameter Modelica.Units.SI.Power QEva_nominal
     "Nominal cooling capaciaty (negative means cooling)";
-  parameter Modelica.SIunits.Power criPoiLoa=0.55*QEva_nominal
+  parameter Modelica.Units.SI.Power criPoiLoa=0.55*QEva_nominal
     "Critical point of cooling load for switching one chiller on or off";
-  parameter Modelica.SIunits.Power dQ=0.25*QEva_nominal
+  parameter Modelica.Units.SI.Power dQ=0.25*QEva_nominal
     "Deadband for critical point of cooling load";
   Modelica.Blocks.Interfaces.RealInput QLoa(
     unit="W")
@@ -20,7 +20,8 @@ model ChillerStage
     "On/off signal for the chillers - 0: off; 1: on"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.StateGraph.InitialStep off(
-    nIn=1)
+    nIn=1,
+    nOut=1)
     "No cooling is demanded"
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={-50,70})));
   Modelica.StateGraph.StepWithSignal oneOn(
@@ -28,7 +29,9 @@ model ChillerStage
     nIn=2)
     "One chiller is on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-50,0})));
-  Modelica.StateGraph.StepWithSignal twoOn
+  Modelica.StateGraph.StepWithSignal twoOn(
+    nIn=1,
+    nOut=1)
     "Two chillers are on"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={-50,-70})));
   Modelica.StateGraph.Transition offToOne(

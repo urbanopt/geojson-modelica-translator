@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.3.0
+-------------
+* Use MBL v9 (current master branch) for all models. Note that JModelica no longer works with this version. User must now use either Dymola or Optimica. A new solution is forthcoming.
+* Update unit tests to break out building the tests and running the tests.
+
 Version 0.2.3
 -------------
 * Add GMT Lib methods for Level 1 translation of Modelica-templated objects (for microgrid).

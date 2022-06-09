@@ -14,38 +14,38 @@ within {{ project_name }}.Plants;
   replaceable parameter Buildings.Fluid.Chillers.Data.ElectricEIR.Generic perChi
     "Performance data of chiller"
     annotation (Dialog(group="Chiller"),choicesAllMatching=true,Placement(transformation(extent={{98,82},{112,96}})));
-  parameter Modelica.SIunits.MassFlowRate mCHW_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mCHW_flow_nominal
     "Nominal chilled water mass flow rate"
     annotation (Dialog(group="Chiller"));
-  parameter Modelica.SIunits.Pressure dpCHW_nominal
+  parameter Modelica.Units.SI.Pressure dpCHW_nominal
     "Pressure difference at the chilled water side"
     annotation (Dialog(group="Chiller"));
-  parameter Modelica.SIunits.Power QEva_nominal
+  parameter Modelica.Units.SI.Power QEva_nominal
     "Nominal cooling capacity of single chiller (negative means cooling)"
     annotation (Dialog(group="Chiller"));
-  parameter Modelica.SIunits.MassFlowRate mMin_flow
+  parameter Modelica.Units.SI.MassFlowRate mMin_flow
     "Minimum mass flow rate of single chiller"
     annotation (Dialog(group="Chiller"));
   // cooling tower parameters
-  parameter Modelica.SIunits.MassFlowRate mCW_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal
     "Nominal condenser water mass flow rate"
     annotation (Dialog(group="Cooling Tower"));
-  parameter Modelica.SIunits.Pressure dpCW_nominal
+  parameter Modelica.Units.SI.Pressure dpCW_nominal
     "Pressure difference at the condenser water side"
     annotation (Dialog(group="Cooling Tower"));
-  parameter Modelica.SIunits.Temperature TAirInWB_nominal
+  parameter Modelica.Units.SI.Temperature TAirInWB_nominal
     "Nominal air wetbulb temperature"
     annotation (Dialog(group="Cooling Tower"));
-  parameter Modelica.SIunits.Temperature TCW_nominal
+  parameter Modelica.Units.SI.Temperature TCW_nominal
     "Nominal condenser water temperature at tower inlet"
     annotation (Dialog(group="Cooling Tower"));
-  {% endraw %}parameter Modelica.SIunits.TemperatureDifference dT_nominal={{ data["nominal_values"]["delta_temp"] }}
+  {% endraw %}parameter Modelica.Units.SI.TemperatureDifference dT_nominal={{ data["nominal_values"]["delta_temp"] }}
     {% raw %} "Temperature difference between inlet and outlet of the tower"
     annotation (Dialog(group="Cooling Tower"));
-  parameter Modelica.SIunits.Temperature TMin
+  parameter Modelica.Units.SI.Temperature TMin
     "Minimum allowed water temperature entering chiller"
     annotation (Dialog(group="Cooling Tower"));
-  {% endraw %}parameter Modelica.SIunits.Power PFan_nominal={{ data["nominal_values"]["fan_power"] }}
+  {% endraw %}parameter Modelica.Units.SI.Power PFan_nominal={{ data["nominal_values"]["fan_power"] }}
     {% raw %} "Fan power"
     annotation (Dialog(group="Cooling Tower"));
   // pump parameters
@@ -57,27 +57,20 @@ within {{ project_name }}.Plants;
     constrainedby Buildings.Fluid.Movers.Data.Generic
     "Performance data of condenser water pump"
     annotation (Dialog(group="Pump"),choicesAllMatching=true,Placement(transformation(extent={{142,82},{156,96}})));
-  {% endraw %}parameter Modelica.SIunits.Pressure dpCHWPum_nominal={{ data["nominal_values"]["chilled_water_pump_pressure_head"] }}
+  {% endraw %}parameter Modelica.Units.SI.Pressure dpCHWPum_nominal={{ data["nominal_values"]["chilled_water_pump_pressure_head"] }}
     {% raw %} "Nominal pressure drop of chilled water pumps"
     annotation (Dialog(group="Pump"));
-  {% endraw %}parameter Modelica.SIunits.Pressure dpCWPum_nominal={{ data["nominal_values"]["condenser_water_pump_pressure_head"] }}
+  {% endraw %}parameter Modelica.Units.SI.Pressure dpCWPum_nominal={{ data["nominal_values"]["condenser_water_pump_pressure_head"] }}
     {% raw %} "Nominal pressure drop of condenser water pumps"
     annotation (Dialog(group="Pump"));
   // control settings
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time"
     annotation (Dialog(group="Control Settings"));
-  parameter Modelica.SIunits.PressureDifference dpSetPoi(
+  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Demand side pressure difference setpoint"
     annotation (Dialog(group="Control Settings"));
-  // dynamics
-  parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial
-    "Type of energy balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
-  parameter Modelica.Fluid.Types.Dynamics massDynamics=energyDynamics
-    "Type of mass balance: dynamic (3 initialization options) or steady state"
-    annotation (Evaluate=true,Dialog(tab="Dynamics",group="Equations"));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
     final computeWetBulbTemperature=true,
     filNam=Modelica.Utilities.Files.loadResource(
@@ -124,7 +117,7 @@ within {{ project_name }}.Plants;
     final unit="Pa")
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-180,-40},{-140,0}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.ElectricChillerParallel mulChiSys(
+  Buildings.Applications.BaseClasses.Equipment.ElectricChillerParallel mulChiSys(
     per=fill(
       perChi,
       numChi),
@@ -149,23 +142,21 @@ within {{ project_name }}.Plants;
     TMin=TMin)
     "Cooling towers with bypass valve"
     annotation (Placement(transformation(extent={{-60,-60},{-40,-40}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_y pumCHW(
+  Buildings.Applications.BaseClasses.Equipment.FlowMachine_y pumCHW(
     redeclare package Medium=Medium,
     per=fill(
       perCHWPum,
       numChi),
-    energyDynamics=energyDynamics,
     m_flow_nominal=mCHW_flow_nominal,
     dpValve_nominal=dpCHWPum_nominal,
     num=numChi)
     "Chilled water pumps"
     annotation (Placement(transformation(extent={{10,40},{-10,60}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Equipment.FlowMachine_m pumCW(
+  Buildings.Applications.BaseClasses.Equipment.FlowMachine_m pumCW(
     redeclare package Medium=Medium,
     per=fill(
       perCWPum,
       numChi),
-    energyDynamics=energyDynamics,
     m_flow_nominal=mCW_flow_nominal,
     dpValve_nominal=dpCWPum_nominal,
     num=numChi)
@@ -263,7 +254,7 @@ protected
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.SIunits.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
     sta_default)
     "Specific heat capacity of the fluid";
 equation

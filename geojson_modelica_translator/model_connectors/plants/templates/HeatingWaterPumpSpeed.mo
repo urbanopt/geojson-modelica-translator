@@ -4,27 +4,27 @@ model HeatingWaterPumpSpeed
     min=1,
     max=2)=2
     "Number of heating water pumps, maximum is 2";
-  parameter Modelica.SIunits.PressureDifference dpSetPoi(
+  parameter Modelica.Units.SI.PressureDifference dpSetPoi(
     displayUnit="Pa")
     "Pressure difference setpoint";
-  parameter Modelica.SIunits.Time tWai
+  parameter Modelica.Units.SI.Time tWai
     "Waiting time";
-  parameter Modelica.SIunits.MassFlowRate m_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal
     "Nominal mass flow rate of single heating water pump";
-  parameter Modelica.SIunits.MassFlowRate mMin_flow=0.2*m_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mMin_flow=0.2*m_flow_nominal
     "Minimum mass flow rate";
   parameter Real minSpe=0.05
     "Minimum speed ratio required by heating water pumps";
-  parameter Modelica.SIunits.Time riseTime=120
+  parameter Modelica.Units.SI.Time riseTime=120
     "Rise time till the pump reaches its maximum speed";
   parameter Modelica.Blocks.Types.SimpleController controllerType=Modelica.Blocks.Types.SimpleController.PI
     "Type of pump speed controller";
   parameter Real k
     "Gain of controller";
-  parameter Modelica.SIunits.Time Ti
+  parameter Modelica.Units.SI.Time Ti
     "Time constant of Integrator block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PI or controllerType == Modelica.Blocks.Types.SimpleController.PID));
-  parameter Modelica.SIunits.Time Td(
+  parameter Modelica.Units.SI.Time Td(
     min=0)=0.1
     "Time constant of Derivative block"
     annotation (Dialog(enable=controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID));
@@ -55,7 +55,7 @@ model HeatingWaterPumpSpeed
   Modelica.Blocks.Math.Product pumSpe[numPum]
     "Output pump speed"
     annotation (Placement(transformation(extent={{34,-10},{54,10}})));
-  Buildings.Applications.DataCenters.ChillerCooled.Controls.VariableSpeedPumpStage pumStaCon(
+  Buildings.Applications.BaseClasses.Controls.VariableSpeedPumpStage pumStaCon(
     tWai=tWai,
     m_flow_nominal=m_flow_nominal,
     minSpe=minSpe)
