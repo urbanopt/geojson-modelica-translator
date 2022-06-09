@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -14,6 +14,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
@@ -36,7 +37,7 @@
         <li class="right" >
           <a href="overview.html" title="Overview"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>  
@@ -47,7 +48,7 @@
           <div class="body" role="main">
             
   <section id="getting-started">
-<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
 <p>There are three major steps to running the GeoJSON to Modelica Translator (GMT):</p>
 <ol class="arabic simple">
 <li><p>generating the GeoJSON and System Parameter JSON files,</p></li>
@@ -65,7 +66,7 @@ GeoJSON and System Parameter file from results of an URBANopt SDK simulation res
 <li><p>Installing and configuring Docker in order to run simulations using JModelica</p></li>
 </ol>
 <section id="gmt-installation">
-<h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Permalink to this headline">¶</a></h2>
+<h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Permalink to this heading">¶</a></h2>
 <p>You must have PIP and Python 3.7 or later installed (run <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see what version you’re using). After installing Python and PIP run the following in a terminal (requires Python 3):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install geojson-modelica-translator
 </pre></div>
@@ -81,7 +82,7 @@ uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 </div>
 </section>
 <section id="mbl-installation">
-<h2>MBL Installation<a class="headerlink" href="#mbl-installation" title="Permalink to this headline">¶</a></h2>
+<h2>MBL Installation<a class="headerlink" href="#mbl-installation" title="Permalink to this heading">¶</a></h2>
 <p>The Modelica Buildings Library contains many models that are needed to assemble the district systems.
 Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:</p>
 <ul class="simple">
@@ -108,10 +109,10 @@ uo_des create-model sys_param.json example_project.json model_from_sdk
 </div>
 <p>The resulting Modelica package will be created and can be opened in a Modelica editor. Open the <code class="code docutils literal notranslate"><span class="pre">package.mo</span></code> file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.</p>
-<p>NOTE: The developers of the GMT are currently working on updating the MBL version used. If you are also a developer and need to run the unit tests in this repo, you can instruct pytest to ignore the v8 tests with <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">mbl_v9'</span></code>, which assumes you have the MBL version documented above. To run the MBL v9 tests, you need to checkout <code class="code docutils literal notranslate"><span class="pre">master</span></code> and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">mbl_v9</span></code>, however several MBL v9 components now require MSL 4.0, which doesn’t work within JModelica.</p>
+<p>The latest version of this repository uses MBL v9 (not yet released, but current master branch). This version does not support running JModelica due to the upgrade to Modelica Standard Library (MSL) version 4. For this reason, the unit tests no longer run the models; therefore, you will need to mark the pytest to not run the simulations with <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">simulation'</span></code>.</p>
 </section>
 <section id="docker-installation">
-<h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this headline">¶</a></h2>
+<h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this heading">¶</a></h2>
 <p>The preferred method of running the simulations would be within Dymola; however, that is not a
 practical solution for many based on the license requirement. The GMT enables the running of the
 models using JModelica which requires the installation of <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a>. To configure Docker, do the
@@ -178,7 +179,7 @@ uo_des run-model model_from_sdk
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -198,13 +199,13 @@ uo_des run-model model_from_sdk
         <li class="right" >
           <a href="overview.html" title="Overview"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.1.
     </div>
   </body>
 </html>

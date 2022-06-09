@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.2.3 documentation</title>
+    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.3.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -14,6 +14,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
@@ -36,7 +37,7 @@
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>  
@@ -47,17 +48,17 @@
           <div class="body" role="main">
             
   <section id="input-file-documentation">
-<span id="documentation"></span><h1>Input File Documentation<a class="headerlink" href="#input-file-documentation" title="Permalink to this headline">¶</a></h1>
+<span id="documentation"></span><h1>Input File Documentation<a class="headerlink" href="#input-file-documentation" title="Permalink to this heading">¶</a></h1>
 <p>There are two input files that need to be defined to use the GeoJSON to Modelica Translator: a GeoJSON file and
 a System Parameters file.</p>
 <section id="geojson-documentation">
-<h2>GeoJSON Documentation<a class="headerlink" href="#geojson-documentation" title="Permalink to this headline">¶</a></h2>
+<h2>GeoJSON Documentation<a class="headerlink" href="#geojson-documentation" title="Permalink to this heading">¶</a></h2>
 <p>Presently only the building_properties.json of URBANopt’s GeoJSON schemas is leveraged in the GMT.</p>
 <section id="building-properties">
-<h3>Building Properties<a class="headerlink" href="#building-properties" title="Permalink to this headline">¶</a></h3>
+<h3>Building Properties<a class="headerlink" href="#building-properties" title="Permalink to this heading">¶</a></h3>
 <p>Bolded elements are required fields.</p>
 <section id="urbanopt-building">
-<h4>URBANopt Building<a class="headerlink" href="#urbanopt-building" title="Permalink to this headline">¶</a></h4>
+<h4>URBANopt Building<a class="headerlink" href="#urbanopt-building" title="Permalink to this heading">¶</a></h4>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -726,7 +727,7 @@ a System Parameters file.</p>
 </section>
 </section>
 <section id="system-parameters-schema">
-<h2>System Parameters Schema<a class="headerlink" href="#system-parameters-schema" title="Permalink to this headline">¶</a></h2>
+<h2>System Parameters Schema<a class="headerlink" href="#system-parameters-schema" title="Permalink to this heading">¶</a></h2>
 <p>Bolded elements are required fields.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1632,7 +1633,7 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="39"><ul class="simple">
+<tr class="row-odd"><td rowspan="51"><ul class="simple">
 <li><p>spawn_model_parameters</p></li>
 </ul>
 </td>
@@ -1715,6 +1716,54 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>12</p></td>
 </tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>has_liquid_heating</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has liquid heating.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>has_liquid_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has liquid cooling.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>has_electric_heating</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has electric heating.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>has_electric_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has electric cooling.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>idf_filename</strong></p></li>
 </ul>
@@ -1793,7 +1842,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="30"><ul class="simple">
+<tr class="row-even"><td rowspan="42"><ul class="simple">
 <li><p>rc_model_parameters</p></li>
 </ul>
 </td>
@@ -1877,6 +1926,54 @@ a System Parameters file.</p>
 <td colspan="2"><p>12</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>has_liquid_heating</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has liquid heating.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>has_liquid_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has liquid cooling.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>has_electric_heating</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has electric heating.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>has_electric_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has electric cooling.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>order</p></li>
 </ul>
 </td>
@@ -1913,7 +2010,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="29"><ul class="simple">
+<tr class="row-even"><td rowspan="41"><ul class="simple">
 <li><p>time_series_model_parameters</p></li>
 </ul>
 </td>
@@ -1995,6 +2092,54 @@ a System Parameters file.</p>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>12</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>has_liquid_heating</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has liquid heating.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>has_liquid_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has liquid cooling.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>has_electric_heating</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has electric heating.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>has_electric_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Whether the building has electric cooling.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>False</p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p><strong>filepath</strong></p></li>
@@ -2955,7 +3100,7 @@ a System Parameters file.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -2975,13 +3120,13 @@ a System Parameters file.</p>
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.3.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.1.
     </div>
   </body>
 </html>
