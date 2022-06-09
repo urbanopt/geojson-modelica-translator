@@ -1,5 +1,5 @@
 # name: test_generate_cooling_plant
-  '
+  '''
   within GMT_Lib.DHC.Components.Plants.Cooling.CoolingPlant;
   model CoolingPlant
     "Isolated central cooling plant template model."
@@ -49,5 +49,5 @@
         file="CoolingPlant.mos"
         "Simulate and Plot"));
   end CoolingPlant;
-  '
----
+  '''
+# ---

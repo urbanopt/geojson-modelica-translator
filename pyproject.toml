@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.2.3"
+version = "0.3.0"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -28,32 +28,30 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.7.1, <3.10"
-BuildingsPy = "2.1.0"
-click = "7.1.2"
+BuildingsPy = "3.0.0"
+click = "8.1.3"
 geojson = "2.5.0"
-jinja2 = "3.1.1"
-jsonpath-ng = "1.5.2"
-jsonschema = "3.2.0"
-modelica-builder = "^0.2.2rc2"
+jinja2 = "3.1.2"
+jsonpath-ng = "1.5.3"
+jsonschema = "4.6.0"
+modelica-builder = "^0.2.2"
 pandas = "1.3.5"
-requests = "2.25.1"
+requests = "2.27.1"
 teaser = "0.7.5"
 #teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
 
 [tool.poetry.dev-dependencies]
-autopep8 = "1.5.4"
-coveralls = "3.0.1"
-flake8 = "3.8.3"
-mypy = "^0.950"
-nose = "1.3.7"
-pre-commit = "2.7.1"
-pytest = "6.1.0"
-pytest-cov = "2.11.1"
-sphinx = "4.5.0"
-sphinx_rtd_theme = "0.5.0"
-sphinx-jsonschema = "1.16.7"
-syrupy = "^1.5.0"
+autopep8 = "1.6.0"
+coveralls = "3.3.1"
+mypy = "^0.961"
+pre-commit = "2.19.0"
+pytest = "7.1.2"
+pytest-cov = "3.0.0"
+sphinx = "5.0.1"
+sphinx_rtd_theme = "1.0.0"
+sphinx-jsonschema = "1.19.1"
+syrupy = "^2.3.0"
 toml = "0.10.2"
 tox = "3.25.0"
 
