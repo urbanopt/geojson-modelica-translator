@@ -7,7 +7,7 @@ from pathlib import Path
 def compile_fmu(model_name, modelica_path, compiler):
     """
     Compile a modelica model.
-    This function shamelessly stolen from https://github.com/NREL/MegaBOP/blob/main/main/ pymodelica/compiler.py#L11
+    This function shamelessly stolen from https://github.com/NREL/MegaBOP/blob/main/main/pymodelica/compiler.py#L11
     """
     # Spawn's implementation doesn't currently handle *.mo files in the modelica_path,
     # it is expecting only directories,
