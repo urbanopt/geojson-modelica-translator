@@ -497,6 +497,13 @@ class Teaser(LoadBase):
                     ],
                 )
 
+                # Fix the thermalZone medium model
+                mofile.overwrite_component_redeclaration(
+                    f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
+                    thermal_zone_name,
+                    "Medium = Buildings.Media.Air"
+                )
+
             # change the name of the modelica model to remove the building id, update in package too!
             original_model_name = mofile.get_name()
             new_model_name = original_model_name.split("_")[1]

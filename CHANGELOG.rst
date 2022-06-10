@@ -1,9 +1,9 @@
 Change Log
 ==========
 
-Version 0.2.4 (unreleased)
---------------------------
-* Use MBL v9 (current master branch) for all models. Note that JModelica no longer works with this version. User must now use either Dymola or Optimica--A new solution is forthcoming.
+Version 0.3.0
+-------------
+* Use MBL v9 (current master branch) for all models. Note that JModelica no longer works with this version. User must now use either Dymola or Optimica. A new solution is forthcoming.
 * Update unit tests to break out building the tests and running the tests.
 
 Version 0.2.3
