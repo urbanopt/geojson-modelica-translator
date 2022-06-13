@@ -10,6 +10,6 @@
 
 <!--If appropriate, fill in the versions of the dependencies that may be causing the issue.-->
 
-Modelica Buildings Library: `7.0.0 or GithubBranch/SHA (e.g., issue2204_gmt_mbl /SHA_XYZ)`
+Modelica Buildings Library: `9.0.0 or GithubBranch/SHA (e.g., issue2204_gmt_mbl /SHA_XYZ)`
 TEASER: `URBANopt/0.6.9`
-Python: `3.6.5`
+Python: `3.7.9`
