@@ -63,7 +63,7 @@ GeoJSON and System Parameter file from results of an URBANopt SDK simulation res
 <ol class="arabic simple">
 <li><p>Installing the GMT from PyPi</p></li>
 <li><p>Installing and configuring the Modelica Buildings Library (MBL)</p></li>
-<li><p>Installing and configuring Docker in order to run simulations using JModelica</p></li>
+<li><p>Installing and configuring Docker in order to run simulations using JModelica. This step is currently not required due to the MSL v4 upgrade not supporting JModelica. Therefore, it is recommended to run the models in Dymola.</p></li>
 </ol>
 <section id="gmt-installation">
 <h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Permalink to this heading">¶</a></h2>
@@ -96,7 +96,7 @@ Installation of the MBL is done through Git and GitHub. Follow the instructions 
 </dd>
 </dl>
 </li>
-<li><p>Pull the correct staging branch for this project with: <code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">issue2204_gmt_mbl</span></code></p></li>
+<li><p>The GMT code works with the <code class="code docutils literal notranslate"><span class="pre">master</span></code> branch of the MBL, which is currently version 9.0.0. If the <code class="code docutils literal notranslate"><span class="pre">master</span></code> branch has been updated, then use the tag <code class="code docutils literal notranslate"><span class="pre">v9.0.0</span></code> to install the MBL.</p></li>
 <li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings). Restart your terminal to ensure that the MBL library is exported correctly.</p></li>
 </ul>
 <p>Once the MBL is installed, then the CLI can be used to create the model with the following command:</p>
@@ -109,7 +109,8 @@ uo_des create-model sys_param.json example_project.json model_from_sdk
 </div>
 <p>The resulting Modelica package will be created and can be opened in a Modelica editor. Open the <code class="code docutils literal notranslate"><span class="pre">package.mo</span></code> file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.</p>
-<p>The latest version of this repository uses MBL v9 (not yet released, but current master branch). This version does not support running JModelica due to the upgrade to Modelica Standard Library (MSL) version 4. For this reason, the unit tests no longer run the models; therefore, you will need to mark the pytest to not run the simulations with <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">simulation'</span></code>.</p>
+<p>The latest version of this repository uses MBL v9.0.0. This version does not support running JModelica due to the upgrade to Modelica Standard Library (MSL) version 4. For this reason, the unit tests no longer run the models; therefore, you will need to mark the pytest to not run the simulations with <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">simulation'</span></code>.</p>
+<p>Test running the models with Dymola or OpenModelica. Dymola is used to test these models during development.</p>
 </section>
 <section id="docker-installation">
 <h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this heading">¶</a></h2>
