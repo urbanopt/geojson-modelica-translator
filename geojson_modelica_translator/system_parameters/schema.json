@@ -11,6 +11,10 @@
           "title": "custom",
           "description": "Parameters for all or individual buildings.",
           "type": "array",
+          "weather_filepath": {
+            "description": "Path to weather file for the site",
+            "type": "string"
+          },
           "items": {
             "$ref": "#/definitions/building_def"
           }
