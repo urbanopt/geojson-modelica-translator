@@ -148,10 +148,10 @@ class ModelicaRunner(object):
 
             # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
             # but must strip off the .mo extension on the model to run
-            run_model = os.path.relpath(file_to_run, run_path)
+            run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
             p = subprocess.Popen(
-                ['spawn.py', '--buildings-library /working/buildings-library', '--compile',
+                ['spawn_docker.sh', 'spawn.py', '--buildings-library /working/buildings-library', '--compile',
                     '--optimica', '--optimica-license-file=mylicense.txt', '/gmt/my-model', ],
                 # ^-- generates an FMU
                 # below runs the fmu
