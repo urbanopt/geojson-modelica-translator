@@ -13,8 +13,9 @@ def compile_fmu(model_name, modelica_path, compiler):
 
     # Spawn's implementation doesn't currently handle *.mo files in the modelica_path.
     # It is expecting only directories.
-    # However BOPTEST's parser will include wrapped.mo in the modelica_path.
+    # However GMT will include wrapped.mo in the modelica_path.
     # This is a workaround to eliminate .mo items from modelica_path
+    # FIXME: GMT is passing a dir, correct? So this modelica_path line isn't necessary?
     modelica_path = ' '.join([p for p in modelica_path if not re.match(r'.*\.mo$', p)])
     mbl_path = f"{os.environ['MODELICAPATH']}/Buildings"
 
