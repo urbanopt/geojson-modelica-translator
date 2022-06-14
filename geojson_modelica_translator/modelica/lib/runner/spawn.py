@@ -38,6 +38,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('action', help='Action to perform on the model: complile, run, compile_and_run')
     parser.add_argument('model', help='Name of the model to run, if debug, then will use test PID model.')
+    parser.add_argument('fmu_name', help='Optional, name of pre-built FMU to simulate.')
     parser.add_argument('modelica_path', help='Path to the project folder.')
     parser.add_argument('compiler', help='Compiler to use.', default='optimica')
     # Since this command is passed with jm_ipython, you can't use the -- args (e.g., --compile).
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     if args.action == 'help':
         print(parser.print_help())
 
-    fmu_name = None
+    # fmu_name = None
     if args.action == 'compile' or args.action == 'compile_and_run':
         model = args.model
         if args.model == 'debug':
