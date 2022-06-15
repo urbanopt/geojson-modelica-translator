@@ -1,0 +1,5 @@
+services:
+  volumes:
+  - name: compiler-license
+    hostPath:
+      path: ~/Documents/projects/gmt/license.lic
