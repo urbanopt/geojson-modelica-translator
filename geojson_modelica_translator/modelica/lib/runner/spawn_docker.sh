@@ -1,5 +1,8 @@
 #!/bin/bash
 
+IMG_NAME=spawn_docker
+DOCKER_USERNAME=urbanopt
+
 # Catch signals to kill the container if it is interrupted
 # https://www.shellscript.sh/trap.html
 # Addresses https://github.com/urbanopt/geojson-modelica-translator/issues/384
@@ -54,16 +57,33 @@ fi
 MOD_MOUNT=`create_mount_command ${MODELICAPATH}`
 # b) for PYTHONPATH
 PYT_MOUNT=`create_mount_command ${PYTHONPATH}`
+LIC_MOUNT=`create_mount_command ${MODELON_LICENSE_PATH}`
 
 # Prepend /mnt/ in front of each entry, which will then be used as the MODELICAPATH
 DOCKER_MODELICAPATH=`update_path_variable ${MODELICAPATH}`
 DOCKER_PYTHONPATH=`update_path_variable ${PYTHONPATH}`
 
 # If the current directory is part of the argument list,
-# replace it with . as the docker may have a different file structure
+# replace it with . as the container may have a different file structure
 cur_dir=`pwd`
 bas_nam=`basename ${cur_dir}`
 arg_lis=`echo $@ | sed -e "s|${cur_dir}|.|g"`
 
 # Set variable for shared directory
 sha_dir=`dirname ${cur_dir}`
+
+docker run \
+  -it \
+  ${MOD_MOUNT} \
+  ${PYT_MOUNT} \
+  ${LIC_MOUNT} \
+  -v ${sha_dir}:/mnt/shared \
+  -e DISPLAY=${DISPLAY} \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  --rm \
+  ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
+  "export MODELICAPATH=${DOCKER_MODELICAPATH} && \
+   export PYTHONPATH=${DOCKER_PYTHONPATH} && \
+  cd /mnt/shared/${bas_nam} && \
+  python spawn.py ${arg_lis}"
+exit $?
