@@ -151,13 +151,11 @@ class ModelicaRunner(object):
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
             p = subprocess.Popen(
-                ['spawn_docker.sh', 'spawn.py', '--buildings-library /working/buildings-library', '--compile',
-                    '--optimica', '--optimica-license-file=mylicense.txt', '/gmt/my-model', ],
+                ['spawn_docker.sh', 'spawn.py', '--action', 'compile', '--model',
+                    run_model, '--modelica_path', run_path, '--compiler', 'optimica'],
                 # ^-- generates an FMU
-                # below runs the fmu
-                ['spawn.py', '--buildings-library /working/buildings-library', '--run', '/gmt/my-model',
-                    '--start-time=0', '--end-time=86400'],
-                # ['./jm_ipython.sh', 'jmodelica.py', action, run_model],
+                # ⋎-- runs the generated FMU
+                ['spawn_docker.sh', 'spawn.py', '--action', 'run'],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
