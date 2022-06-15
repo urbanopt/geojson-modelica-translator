@@ -121,12 +121,13 @@ class ModelicaRunner(object):
         os.chmod(new_jm_ipython, 0o775)
         shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
 
-    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str, compiler=None) -> int:
         """Call out to a subprocess to run the command in docker
 
         :param file_to_run: string, name of the file or directory to simulate
         :param run_path: string, location where the Modelica simulatio or compilation will start
         :param action: string, action to run either compile_and_run, compile, or run
+        :param compiler: string, compiler to use, if None, then use the default in spawn.py
         :returns: int, exit code of the subprocess
         """
         action_log_map = {
@@ -151,11 +152,7 @@ class ModelicaRunner(object):
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
             p = subprocess.Popen(
-                ['spawn_docker.sh', 'spawn.py', '--action', 'compile', '--model',
-                    run_model, '--modelica_path', run_path, '--compiler', 'optimica'],
-                # ^-- generates an FMU
-                # ⋎-- runs the generated FMU
-                ['spawn_docker.sh', 'spawn.py', '--action', 'run'],
+                ['spawn_docker.sh', action, run_model, run_path, compiler],
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
