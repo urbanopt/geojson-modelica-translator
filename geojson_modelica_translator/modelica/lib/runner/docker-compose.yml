@@ -1,5 +1,7 @@
 services:
+  image: urbanopt/spawn_docker:latest
+  environment:
+    - SPAWN_DOCKER_IMAGE=urbanopt/spawn_docker:latest
   volumes:
   - name: compiler-license
-    hostPath:
-      path: ~/Documents/projects/gmt/license.lic
+    hostPath: ${MODELON_LICENSE_PATH}:/mnt/license
