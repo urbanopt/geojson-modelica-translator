@@ -12,12 +12,4 @@ RUN wget https://spawn.s3.amazonaws.com/custom/$SPAWN.tar.gz \
 
 COPY modelica-buildings /sim/modelica-buildings
 
-# copy the examples into the container, these are also used in the tests
-# COPY examples /sim/examples
-
-# If using Optimica, then copy license file here. The license must match
-# the mac address that is configured when launching this container
-RUN mkdir /home/simulator
-COPY README.md license.l* /home/simulator/
-
 WORKDIR /sim
