@@ -41,7 +41,7 @@ if __name__ == "__main__":
     parser.add_argument('fmu_name', help='Optional, name of pre-built FMU to simulate.')
     parser.add_argument('modelica_path', help='Path to the project folder.')
     parser.add_argument('compiler', help='Compiler to use.', default='optimica')
-    # Since this command is passed with jm_ipython, you can't use the -- args (e.g., --compile).
+    # Since this command is passed with spawn.py, you can't use the -- args (e.g., --compile).
     # So we are just passing in the action and then the model to act on.
     # The actions can be (e.g., complile, run, compile_and_run)
     args = parser.parse_args()
