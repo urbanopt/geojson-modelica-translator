@@ -13,7 +13,6 @@ def compile_fmu(model_name, modelica_path, compiler):
 
     # Spawn's implementation doesn't currently handle *.mo files in the modelica_path.
     # It is expecting only directories.
-    # However GMT will include wrapped.mo in the modelica_path.
     # This is a workaround to eliminate .mo items from modelica_path
     # FIXME: GMT is passing a dir, correct? So this modelica_path line isn't necessary?
     modelica_path = ' '.join([p for p in modelica_path if not re.match(r'.*\.mo$', p)])
@@ -37,7 +36,7 @@ def run(fmu_name):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', help='Action to perform on the model: complile, run, compile_and_run')
+    parser.add_argument('action', help='Action to perform on the model: compile, run, compile_and_run')
     parser.add_argument('model', help='Name of the model to run, if debug, then will use test PID model.')
     parser.add_argument('fmu_name', help='Optional, name of pre-built FMU to simulate.')
     parser.add_argument('modelica_path', help='Path to the project folder.')
@@ -67,4 +66,4 @@ if __name__ == "__main__":
         if Path(fmu_name).exists():
             run(fmu_name)
         else:
-            print("FMU model does not exist: {}".format(fmu_name))
+            print(f"FMU model does not exist: {fmu_name}")
