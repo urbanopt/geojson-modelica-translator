@@ -9,6 +9,8 @@ RUN wget https://spawn.s3.amazonaws.com/custom/$SPAWN.tar.gz \
     && ln -s /spawn/bin/spawn /usr/local/bin/ \
     && ln -s /spawn/bin/$SPAWN_EXE /usr/local/bin/
 
+# Do we need to copy the whole MBL into the image?
 COPY modelica-buildings /mnt/modelica-buildings
 
+# Why is this here?
 WORKDIR /mnt
