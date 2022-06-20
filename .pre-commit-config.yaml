@@ -30,7 +30,8 @@ repos:
     rev: v4.3.4
     hooks:
       - id: isort
-        args: ['-m 3']  # vertical hanging
+        #args: ['-m 3']  # vertical hanging
+        args: ['3']
   - repo: local
     hooks:
       - id: modelica-fmt
