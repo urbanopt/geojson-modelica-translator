@@ -1,7 +1,9 @@
 services:
-  image: urbanopt/spawn_docker:latest
-  environment:
-    - SPAWN_DOCKER_IMAGE=urbanopt/spawn_docker:latest
-  volumes:
-  - name: compiler-license
-    hostPath: ${MODELON_LICENSE_PATH}:/mnt/license
+  spawn_in_docker:  # https://docs.docker.com/compose/gettingstarted/#step-3-define-services-in-a-compose-file
+    # image: urbanopt/spawn_docker:latest
+    build: .  # Or do we want to push an image to docker hub?
+    environment:
+      - SPAWN_DOCKER_IMAGE=urbanopt/spawn_docker:latest
+    volumes:
+    - name: compiler-license
+      hostPath: ${MODELON_LICENSE_PATH}:/mnt/license
