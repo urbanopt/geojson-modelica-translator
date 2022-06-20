@@ -75,7 +75,7 @@ class SystemParametersTest(unittest.TestCase):
             print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
         self.assertEqual(Path(value), Path(filename).parent / 'example_model.idf')
-        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
+        value = sdp.get_param_by_building_id("ijk678", "buildings.weather_filepath")
         self.assertEqual(Path(value), Path(filename).parent / 'example_weather.mos')
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
         self.assertEqual(Path(value), Path(filename).parent / 'example_weather.epw')
