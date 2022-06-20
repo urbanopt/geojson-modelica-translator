@@ -77,13 +77,13 @@ docker run \
   ${MOD_MOUNT} \
   ${PYT_MOUNT} \
   ${LIC_MOUNT} \
-  -v ${sha_dir}:/mnt/shared \
   -e DISPLAY=${DISPLAY} \
+  -v ${sha_dir}:/mnt/shared \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
   "export MODELICAPATH=${DOCKER_MODELICAPATH} && \
    export PYTHONPATH=${DOCKER_PYTHONPATH} && \
   cd /mnt/shared/${bas_nam} && \
-  python spawn.py ${arg_lis}"
+  python spawn.py ${arg_lis}"  # is this the same spawn.py inside the container as outside?
 exit $?
