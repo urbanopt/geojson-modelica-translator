@@ -85,5 +85,5 @@ docker run \
   "export MODELICAPATH=${DOCKER_MODELICAPATH} && \
    export PYTHONPATH=${DOCKER_PYTHONPATH} && \
   cd /mnt/shared/${bas_nam} && \
-  python spawn.py ${arg_lis}"  # is this the same spawn.py inside the container as outside?
+  python /mnt/lib/spawn.py ${arg_lis}"
 exit $?
