@@ -121,13 +121,13 @@ class ModelicaRunner(object):
         os.chmod(new_jm_ipython, 0o775)
         shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
 
-    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str, compiler=None) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str, compiler: Str = 'optimica') -> int:
         """Call out to a subprocess to run the command in docker
 
         :param file_to_run: string, name of the file or directory to simulate
         :param run_path: string, location where the Modelica simulatio or compilation will start
         :param action: string, action to run either compile_and_run, compile, or run
-        :param compiler: string, compiler to use, if None, then use the default in spawn.py
+        :param compiler: string, compiler to use
         :returns: int, exit code of the subprocess
         """
         action_log_map = {
@@ -138,6 +138,10 @@ class ModelicaRunner(object):
         # Verify that the action is in the list of valid actions
         assert action in action_log_map.keys(), \
             f'Invalid action of {action} in _subprocess_call_to_docker, needs to be {[k for k in action_log_map.keys()]}'
+
+        valid_compilers = ['optimica']  # , 'jmodelica', 'openmodelica'
+        assert compiler in valid_compilers, \
+            f'Invalid compiler of {compiler} in _subprocess_call_to_docker, needs to be {valid_compilers}'
 
         # Set up the run content
         curdir = os.getcwd()
