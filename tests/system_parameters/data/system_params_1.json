@@ -200,16 +200,12 @@
     ]
   },
   "connectors": {
-    "default": {
-      "pipe_diameter": 12,
-      "pipe_insulation_rvalue": 5,
-      "pipe_location": "Tunnel"
-    }
+    "pipe_diameter": 12,
+    "pipe_insulation_rvalue": 5,
+    "pipe_location": "Tunnel"
   },
   "district_system": {
-    "default": {
-      "return_configuration": "Reverse Return"
-    }
+    "return_configuration": "Reverse Return"
   },
   "topology": {
     "topology_parameters": {
