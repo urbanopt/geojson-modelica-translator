@@ -97,9 +97,9 @@ class SystemParameters(object):
             else:
                 raise Exception(f"System design parameters file does not exist: {self.filename}")
 
-            errors = self.validate()
-            if len(errors) != 0:
-                raise Exception(f"Invalid system parameter file. Errors: {errors}")
+            # errors = self.validate()
+            # if len(errors) != 0:
+                # raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
             self.resolve_paths()
             # self.resolve_defaults()
