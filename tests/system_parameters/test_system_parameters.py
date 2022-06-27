@@ -133,20 +133,22 @@ class SystemParametersTest(unittest.TestCase):
             "buildings": {
                     "load_model": "rc",
                     "load_model_parameters": {
-                        "rc": {
-                            "order": 4,
-                            "mos_weather_filename": "path-to-file",
-                            "fraction_latent_person": 1.25,
-                            "temp_hw_supply": 40,
-                            "temp_setpoint_heating": 40,
-                            "temp_setpoint_cooling": 24
-                        }
+                        "properties": {
+                            "rc": {
+                                "order": 4,
+                                "mos_weather_filename": "path-to-file",
+                                "fraction_latent_person": 1.25,
+                                "temp_hw_supply": 40,
+                                "temp_setpoint_heating": 40,
+                                "temp_setpoint_cooling": 24
+                                }
+                            }
                     }
             }
         }
         sp = SystemParameters.loadd(data)
         # $.buildings.*[?load_model=spawn].load_model_parameters.spawn.idf_filename
-        value = sp.get_param("$.buildings.load_model_parameters.rc.order")
+        value = sp.get_param("$.buildings.load_model_parameters.properties.rc.order")
         self.assertEqual(value, 4)
 
         value = sp.get_param("buildings.load_model")
