@@ -90,7 +90,7 @@
       }
     ]
   },
-  "district_system": {
+  "district_systems": {
     "default": {
       "central_cooling_plant_parameters": {
         "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
