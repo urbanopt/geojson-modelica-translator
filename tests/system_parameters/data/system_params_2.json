@@ -126,7 +126,7 @@
       }
     ]
   },
-  "district_system_def": {
+  "district_system": {
     "central_cooling_plant_parameters": {
       "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
       "heat_flow_nominal": 7999,
