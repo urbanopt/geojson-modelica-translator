@@ -131,7 +131,6 @@ class SystemParametersTest(unittest.TestCase):
     def test_get_param(self):
         data = {
             "buildings": {
-                "default": {
                     "load_model": "rc",
                     "load_model_parameters": {
                         "rc": {
@@ -143,15 +142,14 @@ class SystemParametersTest(unittest.TestCase):
                             "temp_setpoint_cooling": 24
                         }
                     },
-                }
             }
         }
         sp = SystemParameters.loadd(data)
         # $.buildings.*[?load_model=spawn].load_model_parameters.spawn.idf_filename
-        value = sp.get_param("$.buildings.default.load_model_parameters.rc.order")
+        value = sp.get_param("$.buildings.load_model_parameters.rc.order")
         self.assertEqual(value, 4)
 
-        value = sp.get_param("buildings.default.load_model")
+        value = sp.get_param("buildings.load_model")
         self.assertEqual(value, "rc")
 
         value = sp.get_param("buildings.default")
