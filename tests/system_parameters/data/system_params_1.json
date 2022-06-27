@@ -204,7 +204,7 @@
     "pipe_insulation_rvalue": 5,
     "pipe_location": "Tunnel"
   },
-  "district_system": {
+  "district_system_def": {
     "return_configuration": "Reverse Return"
   },
   "topology": {
