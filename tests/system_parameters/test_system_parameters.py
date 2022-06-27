@@ -141,7 +141,7 @@ class SystemParametersTest(unittest.TestCase):
                             "temp_setpoint_heating": 40,
                             "temp_setpoint_cooling": 24
                         }
-                    },
+                    }
             }
         }
         sp = SystemParameters.loadd(data)
