@@ -75,6 +75,7 @@ class SystemParameters(object):
         {"json_path": "$.district_system.default.central_cooling_plant_parameters.weather_filepath"},
         {"json_path": "$.buildings.default.weather_filepath"},
         {"json_path": "$.buildings.weather_filepath"},
+        {"json_path": "$.weather_filepath"},
         {"json_path": "$.combined_heat_and_power_systems.*.performance_data_path"}
     ]
 

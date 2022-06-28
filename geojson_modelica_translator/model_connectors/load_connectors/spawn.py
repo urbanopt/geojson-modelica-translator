@@ -86,7 +86,7 @@ class Spawn(LoadBase):
             self.building_id, "load_model_parameters.spawn.epw_filename"
         )
         mos_weather_filename = Path(self.system_parameters.get_param(
-            "$.buildings.weather_filepath"
+            "$.weather_filepath"
         ))
 
         thermal_zones = self.system_parameters.get_param_by_building_id(
