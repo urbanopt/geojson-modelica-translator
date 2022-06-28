@@ -41,7 +41,7 @@
           "has_electric_cooling": false
         }
       },
-      "ets_model": "indirect",
+      "ets_model": "Indirect Heating and Cooling",
       "ets_model_parameters": {
         "heat_flow_nominal": 10000,
         "heat_exchanger_efficiency": 0.8,
