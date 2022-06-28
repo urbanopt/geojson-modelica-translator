@@ -42,7 +42,7 @@
         }
       },
       "ets_model": "Indirect Heating and Cooling",
-      "ets_model_parameters": {
+      "ets_indirect_parameters": {
         "heat_flow_nominal": 10000,
         "heat_exchanger_efficiency": 0.8,
         "heat_exchanger_primary_pressure_drop": 500,
