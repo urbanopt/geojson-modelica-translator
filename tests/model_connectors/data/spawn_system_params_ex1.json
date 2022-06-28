@@ -66,6 +66,11 @@
   "district_systems": [
     {
       "4GDHC": {
+        "connected_buildings": [
+          {
+            "building_id": "5a6b99ec37f4de7f94020090"
+          }
+        ],
         "central_cooling_plant_parameters": {
           "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
           "heat_flow_nominal": 7999,
