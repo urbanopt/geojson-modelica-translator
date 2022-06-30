@@ -36,7 +36,6 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
 
-import os
 import shutil
 from pathlib import Path
 from unittest import TestCase
@@ -76,7 +75,7 @@ class TestCaseBase(GMTTestCase):
 
         return data_dir, output_dir
 
-    def run_and_assert_in_docker(self, file_to_run, project_path, project_name):
+    def run_and_assert_in_docker(self, file_to_run: str, project_path: Path, project_name: str):
         """Run the test in docker.
 
         :param file_to_run: Full path to the file to run. Typically this is the .mo file of interest (e.g., coupling.mo)
@@ -87,7 +86,7 @@ class TestCaseBase(GMTTestCase):
         :return: None
         """
         mr = ModelicaRunner()
-        run_path = Path(os.path.abspath(project_path)).parent
+        run_path = Path(project_path).parent.resolve()
         success, results_path = mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
         # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
         # Look at the stdout.log if this is non-zero.
