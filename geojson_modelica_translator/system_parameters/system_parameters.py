@@ -744,6 +744,7 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
+        :param overwrite: Boolean, whether to overwrite existing sys-param file
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
@@ -873,11 +874,11 @@ class SystemParameters(object):
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
-            try:
-                self.process_microgrid_inputs(scenario_dir)
-            except UnboundLocalError:
-                raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
-                                 "Perhaps you haven't run REopt post-processing step in the UO sdk?")
+        try:
+            self.process_microgrid_inputs(scenario_dir)
+        except UnboundLocalError:
+            raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
+                             "Perhaps you haven't run REopt post-processing step in the UO sdk?")
 
         # save
         self.save()
