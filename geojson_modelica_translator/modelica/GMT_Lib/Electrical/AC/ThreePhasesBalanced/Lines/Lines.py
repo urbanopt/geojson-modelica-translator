@@ -11,13 +11,20 @@ class DistributionLines(SimpleGMTBase):
 
     def build_from_template(self, output_dir: Path):
         distribution_line_params = self.system_parameters.get_param("$.distribution_lines")
-        # There can be multiple community pv arrays so we need to loop over them
+        # Each segment of cable gets its own mofile, numbered with 'iteration'
         for index, line in enumerate(distribution_line_params):
+            # This is how we map from ditto-reader to mbl. It's pretty brittle, and will need updating in this state
+            # https://github.com/urbanopt/urbanopt-ditto-reader/blob/develop/example/extended_catalog.json
+            for wire in line["commercial_line_type"]:
+                if '477kcmil' in wire:
+                    mbl_wire = 'Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_500'
+                if '750kcmil' in wire:
+                    mbl_wire = 'Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000'
             line_params = {
                 'length': line["length"],
                 'ampacity': line["ampacity"],
                 'nominal_voltage': line["nominal_voltage"],
-                'commercial_line_type': line["commercial_line_type"],
+                'commercial_line_type': mbl_wire,
                 'model_name': f"Line{index}",
             }
             # render template to final modelica file
