@@ -65,6 +65,7 @@
   ],
   "district_systems": [
     {
+      "4G_system_type": "4GDHC",
       "4GDHC": {
         "connected_buildings": [
           {
