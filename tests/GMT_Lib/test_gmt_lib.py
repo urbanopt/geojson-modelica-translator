@@ -233,14 +233,14 @@ def test_simulate_distribution_lines():
     cpv = DistributionLines(sys_params)
     cpv.build_from_template(package_output_dir)
 
-    # runner = ModelicaRunner()
-    # success, _ = runner.run_in_docker(package_output_dir / 'ACLine0.mo')
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(package_output_dir / 'ACLine0.mo')
 
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'ACLine0.mo') > 20
     # Did the simulation run?
-    # assert success is True
+    assert success is True
 
 
 # Keeping the code below because it may come back and this was a weird issue.
