@@ -1,30 +1,41 @@
 within {{ project_name }}.ACLine;
 model AC{{ data["model_name"] }}
   "Isolated AC distribution line template model for GMT level 1 testing"
-  // replaceable parameter perLin={{ data["commercial_line_type"] }};
   parameter Modelica.Units.SI.Length l={{ data["length"] }};
   parameter Modelica.Units.SI.Power P_nominal={{ data["ampacity"] }};
   parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};{% raw %}
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
-  line_1a(
+  line_1(
   mode=Types.CableMode.commercial,
   l=l,
   {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
   P_nominal=P_nominal,
   V_nominal=V_nominal),
-  line_1b(
+  line_2a(
   mode=Types.CableMode.commercial,
   l=l,
   {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
   P_nominal=P_nominal,
   V_nominal=V_nominal),
-  line_1c(
+  line_2b(
   mode=Types.CableMode.commercial,
   l=l,
   {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
   P_nominal=P_nominal,
   V_nominal=V_nominal),
-  line_1n(
+  line_3a(
+  mode=Types.CableMode.commercial,
+  l=l,
+  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_3b(
+  mode=Types.CableMode.commercial,
+  l=l,
+  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_sc(
   mode=Types.CableMode.commercial,
   l=l,
   {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},

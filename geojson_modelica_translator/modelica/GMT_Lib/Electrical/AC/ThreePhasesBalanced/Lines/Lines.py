@@ -19,6 +19,9 @@ class DistributionLines(SimpleGMTBase):
                 if '477kcmil' in wire:
                     mbl_wire = 'Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_500'
                 if '750kcmil' in wire:
+                    # FIXME: This mapping from 750kcmil to 1000kcmil is not ideal
+                    # A 750kcmil has been proposed for the MBL
+                    # The temporary alternative is to map to 5000 kcmil, which didn't seem right to me
                     mbl_wire = 'Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000'
             line_params = {
                 'length': line["length"],
