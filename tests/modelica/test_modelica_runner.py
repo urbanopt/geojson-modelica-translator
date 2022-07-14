@@ -131,7 +131,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         # compile the project
         mr = ModelicaRunner()
         mr.compile_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
-
+        
         self.assertTrue(os.path.exists(fmu_path))
         self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))

@@ -65,3 +65,7 @@ format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
 update_schemas = 'management.update_schemas:update_schemas'
 update_licenses = 'management.update_licenses:update_licenses'
 check_sys_params = 'management.check_sys_params:check_sys_params'
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"

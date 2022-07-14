@@ -18,9 +18,8 @@ cleanup()
 
 # Function declarations
 function create_mount_command()
-'''
-Split path somehow. Replace double-slashes with single-slashes, to ensure compatibility with Windows paths.
-'''
+# Split path somehow. Replace double-slashes with single-slashes, to ensure compatibility with
+# Windows paths.
 {
    local pat="$1"
    # Each entry in pat will be a mounted read-only volume
@@ -28,6 +27,13 @@ Split path somehow. Replace double-slashes with single-slashes, to ensure compat
    for ele in ${pat//:/ }; do
       mnt_cmd="${mnt_cmd} -v ${ele}:/mnt${ele}:ro"
    done
+
+   # On Darwin, the exported temporary folder needs to be /private/var/folders, not /var/folders
+   # see https://askubuntu.com/questions/600018/how-to-display-the-paths-in-path-separately
+   if [ `uname` == "Darwin" ]; then
+       mnt_cmd=`echo ${mnt_cmd} | sed -e 's| /var/folders/| /private/var/folders/|g'`
+   fi
+   echo "${mnt_cmd}"
 }
 
 function update_path_variable()
@@ -57,11 +63,13 @@ fi
 MOD_MOUNT=`create_mount_command ${MODELICAPATH}`
 # b) for PYTHONPATH
 PYT_MOUNT=`create_mount_command ${PYTHONPATH}`
+# c) for MODELON_LICENSE_PATH
 LIC_MOUNT=`create_mount_command ${MODELON_LICENSE_PATH}`
 
 # Prepend /mnt/ in front of each entry, which will then be used as the MODELICAPATH
 DOCKER_MODELICAPATH=`update_path_variable ${MODELICAPATH}`
 DOCKER_PYTHONPATH=`update_path_variable ${PYTHONPATH}`
+DOCKER_MODELON_LICENSE_PATH=`update_path_variable ${MODELON_LICENSE_PATH}`
 
 # If the current directory is part of the argument list,
 # replace it with . as the container may have a different file structure
@@ -78,12 +86,13 @@ docker run \
   ${PYT_MOUNT} \
   ${LIC_MOUNT} \
   -e DISPLAY=${DISPLAY} \
+  -e MODELICAPATH=${DOCKER_MODELICAPATH} \
+  -e PYTHONPATH=${DOCKER_PYTHONPATH} \
+  -e MODELON_LICENSE_PATH=${DOCKER_MODELON_LICENSE_PATH} \
   -v ${sha_dir}:/mnt/shared \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
-  "export MODELICAPATH=${DOCKER_MODELICAPATH} && \
-   export PYTHONPATH=${DOCKER_PYTHONPATH} && \
-  cd /mnt/shared/${bas_nam} && \
+  "cd /mnt/shared/${bas_nam} && \
   python /mnt/lib/spawn.py ${arg_lis}"
 exit $?

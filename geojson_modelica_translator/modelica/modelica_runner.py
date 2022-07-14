@@ -78,8 +78,11 @@ class ModelicaRunner(object):
         else:
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
+        # TODO: Remove these
         self.jmodelica_py_path = os.path.join(local_path, 'lib', 'runner', 'jmodelica.py')
         self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.sh')
+        # TODO: End remove these
+        self.spawn_docker_path = os.path.join(local_path, 'lib', 'runner', 'spawn_docker.sh')
 
         # Verify that docker is up and running
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -120,6 +123,9 @@ class ModelicaRunner(object):
         shutil.copyfile(self.jm_ipython_path, new_jm_ipython)
         os.chmod(new_jm_ipython, 0o775)
         shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
+        new_spawn_docker = os.path.join(run_path, os.path.basename(self.spawn_docker_path))
+        shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
+        os.chmod(new_spawn_docker, 0o775)
 
     def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str, compiler: Str = 'optimica') -> int:
         """Call out to a subprocess to run the command in docker
@@ -155,8 +161,10 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
+            exec_call = ['./spawn_docker.sh', action, run_model, run_path, compiler]
+            logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
-                ['spawn_docker.sh', action, run_model, run_path, compiler],
+                exec_call,
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
@@ -179,8 +187,7 @@ class ModelicaRunner(object):
 
         :param file_to_run: string, name of the file (could be directory?) to simulate
         :param run_path: string, location where the Modelica simulation will start
-        :param project_name: string, name of the project being simulated. Will be used to determine name of results
-                                     directory
+        :param project_name: string, name of the project being simulated. Will be used to determine name of results directory
         :returns: tuple(bool, str), success status and path to the results directory
         """
         self._verify_docker_run_capability(file_to_run)

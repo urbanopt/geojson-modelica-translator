@@ -7,14 +7,19 @@ ENV SPAWN_EXE=spawn-0.3.0-8d93151657
 RUN apt update && apt install -y \
         # libncurses5 \
         # clang-8 \
-        vim \
-        wget \
-        build-essential
         # qemu-kvm \
         # bridge-utils \
         # libvirt-clients \
         # libvirt-daemon-system
+        vim \
+        wget \
+        build-essential && \
+    apt install -y python3 python3-pip && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip && \
+    rm -rf /var/lib/apt/lists/*
 
+# Install spawn from S3.
 RUN wget https://spawn.s3.amazonaws.com/custom/$SPAWN.tar.gz \
     && tar -xzf $SPAWN.tar.gz \
     && ln -s /$SPAWN /spawn \
