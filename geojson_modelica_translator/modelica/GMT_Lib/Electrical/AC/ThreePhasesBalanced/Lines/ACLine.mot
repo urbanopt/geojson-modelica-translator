@@ -3,42 +3,44 @@ model AC{{ data["model_name"] }}
   "Isolated AC distribution line template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Length l={{ data["length"] }};
   parameter Modelica.Units.SI.Power P_nominal={{ data["ampacity"] }};
-  parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};{% raw %}
-  extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
+  parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};
+  redeclare {{ data["commercial_line_type"] }} commercialCable;{% raw %}
+  extends
+    Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
   line_1(
-  mode=Types.CableMode.commercial,
+      mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  commercialCable=commercialCable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_2a(
-  mode=Types.CableMode.commercial,
+      mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  commercialCable=commercialCable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_2b(
-  mode=Types.CableMode.commercial,
+      mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  commercialCable=commercialCable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_3a(
-  mode=Types.CableMode.commercial,
+      mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  commercialCable=commercialCable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_3b(
-  mode=Types.CableMode.commercial,
+      mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  commercialCable=commercialCable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_sc(
-  mode=Types.CableMode.commercial,
+      mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  {% endraw %}commercialCable={{ data["commercial_line_type"] }}{% raw %},
+  commercialCable=commercialCable,
   P_nominal=P_nominal,
   V_nominal=V_nominal)
   );
