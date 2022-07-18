@@ -1179,7 +1179,6 @@
     },
     "4GDHC_def": {
       "properties": {
-        "4G_system_type": {},
         "4GDHC": {
           "properties": {
             "central_cooling_plant_parameters": {
@@ -1206,12 +1205,11 @@
         }
       },
       "required": [
-        "4G_system_type"
+        "4GDHC"
       ]
     },
     "5GDHC_def": {
       "properties": {
-        "5G_system_type": {},
         "5GDHC": {
           "properties": {
             "central_cooling_plant_parameters": {
@@ -1238,7 +1236,7 @@
         }
       },
       "required": [
-        "5G_system_type"
+        "5GDHC"
       ]
     },
     "5G_ets_parameters": {
