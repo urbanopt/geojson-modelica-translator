@@ -368,7 +368,6 @@
       "additionalProperties": false
     },
     "ets_indirect_parameters": {
-      "id": "indirect",
       "description": "The parameters associated with the indirect energy transfer station.",
       "type": "object",
       "properties": {
@@ -1199,7 +1198,10 @@
             }
           }
         }
-      }
+      },
+      "required": [
+        "4GDHC"
+      ]
     },
     "5GDHC_def": {
       "properties": {
@@ -1227,10 +1229,12 @@
             }
           }
         }
-      }
+      },
+      "required": [
+        "5GDHC"
+      ]
     },
     "5G_ets_parameters": {
-      "id": "5G_ets",
       "properties": {
         "supply_water_temperature_building": {
           "description": "Water supply temperature building side. (C)",
