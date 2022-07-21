@@ -75,6 +75,26 @@ class TestCaseBase(GMTTestCase):
 
         return data_dir, output_dir
 
+    def compile_and_assert_in_docker(self, file_to_run: str, project_path: Path, project_name: str):
+        """Run the compilation test in docker
+
+        :param file_to_run: Full path to the file to run. Typically this is the .mo file of interest (e.g., coupling.mo)
+        :param project_path: Full path to the location of the project to run. This is typically the the full path to
+        where the directory named with the `project_name` comes come from.
+        :param project_name: The name of the project that is running. This is the directory where the root package.mo
+        lives.
+        :return: None
+        """
+        mr = ModelicaRunner()
+        run_path = Path(project_path).parent.resolve()
+        success, results_path = mr.compile_in_docker(file_to_run, save_path=run_path)
+        # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
+        # Look at the stdout.log if this is non-zero.
+        self.assertTrue(success)
+
+        # make sure that the results log exist
+        self.assertTrue((Path(results_path) / 'stdout.log').exists())
+
     def run_and_assert_in_docker(self, file_to_run: str, project_path: Path, project_name: str):
         """Run the test in docker.
 

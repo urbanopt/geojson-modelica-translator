@@ -70,5 +70,6 @@ check_sys_params = 'management.check_sys_params:check_sys_params'
 log_cli = true
 log_cli_level = "DEBUG"
 markers = [
-    "simulation: marks tests that run a simulation with docker/jmodelica (deselect with '-m \"not simulation\"'). All simulations now require MSL v4."
+    "simulation: marks tests that run a simulation with docker/optimica (deselect with '-m \"not simulation\"'). All simulations now require MSL v4.",
+    "compilation: marks tests that are for compiling a simulation with docker/optimica (deselect with '-m \"not compilation\"'). All simulations now require MSL v4."
 ]

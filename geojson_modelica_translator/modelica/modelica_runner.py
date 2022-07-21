@@ -227,8 +227,8 @@ class ModelicaRunner(object):
 
         exitcode = self._subprocess_call_to_docker(save_path, file_to_run, 'compile')
 
-        logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
+        logger.debug('removing temporary files')
         self._cleanup_path(save_path)
 
         logger.debug('moving results to results directory')
@@ -293,6 +293,7 @@ class ModelicaRunner(object):
         remove_files = [
             'jm_ipython.sh',
             'jmodelica.py',
+            'spawn_docker.sh',
         ]
 
         for f in remove_files:

@@ -58,6 +58,16 @@ else
     MODELICAPATH=`pwd`:${MODELICAPATH}
 fi
 
+# Create the mac address for the container, which is needed by the
+# Optimica compiler
+if [ -z ${MODELON_MAC_ADDRESS+x} ]; then
+    # set the mac address to empty string, so that the docker will generate a new one
+    MODELON_MAC_ADDRESS=""
+else
+    # Prepend the docker command line option to the MAC address from the env var
+    MODELON_MAC_ADDRESS="--mac-address=${MODELON_MAC_ADDRESS}"
+fi
+
 # Create the command to mount all directories in read-only mode
 # a) for MODELICAPATH
 MOD_MOUNT=`create_mount_command ${MODELICAPATH}`
@@ -81,10 +91,10 @@ arg_lis=`echo $@ | sed -e "s|${cur_dir}|.|g"`
 sha_dir=`dirname ${cur_dir}`
 
 docker run \
-  -it \
   ${MOD_MOUNT} \
   ${PYT_MOUNT} \
   ${LIC_MOUNT} \
+  ${MODELON_MAC_ADDRESS} \
   -e DISPLAY=${DISPLAY} \
   -e MODELICAPATH=${DOCKER_MODELICAPATH} \
   -e PYTHONPATH=${DOCKER_PYTHONPATH} \

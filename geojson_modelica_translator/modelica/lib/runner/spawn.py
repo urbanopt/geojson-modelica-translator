@@ -33,14 +33,13 @@ def compile_fmu(model_name, modelica_path, compiler):
     # with a colon. Need to split this back out to space separated paths.
     mbl_path = ' '.join([p for p in f"{os.environ['MODELICAPATH']}/Buildings".split(':')])
     logger.info(f"MBL path is {mbl_path}")
-
     cmd = f"spawn modelica --create-fmu {model_name} --modelica-path {modelica_path} {mbl_path} --fmu-type ME --{compiler}"
     logger.info(f"Calling spawn compile with '{cmd}'")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
     # import time
     # time.sleep(10000)
-    # os.system(cmd)
+    os.system(cmd)
     return f"{model_name}.fmu"
 
 

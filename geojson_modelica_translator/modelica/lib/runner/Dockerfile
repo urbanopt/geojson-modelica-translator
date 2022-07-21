@@ -1,9 +1,10 @@
 FROM ubuntu:18.04
 
-ENV SPAWN=Spawn-0.3.0-8d93151657-Linux
-ENV SPAWN_EXE=spawn-0.3.0-8d93151657
+ENV SPAWN=Spawn-0.3.0-69040695f9-Linux
+ENV SPAWN_EXE=spawn-0.3.0-69040695f9
 
 # Tried installing qemu to resolve spawn dependencies.
+# gfortran can be removed after Spawn is updated.
 RUN apt update && apt install -y \
         # libncurses5 \
         # clang-8 \
@@ -11,6 +12,7 @@ RUN apt update && apt install -y \
         # bridge-utils \
         # libvirt-clients \
         # libvirt-daemon-system
+        gfortran \
         vim \
         wget \
         build-essential && \
