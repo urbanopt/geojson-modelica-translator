@@ -14,9 +14,15 @@ model BuildingTimeSeries
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "Load side medium";
   parameter Boolean have_hotWat=false
-    "Set to true if DHW load is included in the time series"
+    "Set to true if SHW load is included in the time series"
   {% endraw %} parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     {% raw %} "Library path of the file with loads as time series";
+  parameter Real facMulHea=1
+    "Heating terminal unit multiplier factor"
+    annotation (Dialog(enable=have_heaWat,group="Scaling"));
+  parameter Real facMulCoo=1
+    "Cooling terminal unit scaling factor"
+    annotation (Dialog(enable=have_chiWat,group="Scaling"));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     {% raw %} "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition"));
@@ -42,13 +48,13 @@ model BuildingTimeSeries
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=-QCoo_flow_nominal/(cp_air*delTAirCoo)
+  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=mLoaHea_flow_nominal
     "Load side mass flow rate at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
-    "Nominal cooling air temperature difference across the terminal unit heat exchanger";
-  parameter Modelica.Units.SI.TemperatureDifference delTAirHea
-    "Nominal heating air temperature difference across the terminal unit heat exchanger";
+  // parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
+  //   "Nominal cooling air temperature difference across the terminal unit heat exchanger";
+  // parameter Modelica.Units.SI.TemperatureDifference delTAirHea
+  //   "Nominal heating air temperature difference across the terminal unit heat exchanger";
   parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space cooling load",
@@ -62,16 +68,19 @@ model BuildingTimeSeries
     "Design heating heat flow rate (>=0)"
     annotation (Dialog(group="Design parameter"));
   parameter Real k(
-    min=0)=1
+    min=0)=0.1
     "Gain of controller";
-  parameter Modelica.Units.SI.Time Ti=60
+  parameter Modelica.Units.SI.Time Ti(
+    min=Modelica.Constants.small)=10
     "Time constant of integrator block";
   parameter Modelica.Units.SI.MassFlowRate mChiWat_flow_nominal=abs(
-    QCoo_flow_nominal/cpChiWat_nominal/(T_aChiWat_nominal-T_bChiWat_nominal))
-    "Chilled water mass flow rate at nominal conditions";
+    QCoo_flow_nominal/cp_default/(T_aChiWat_nominal-T_bChiWat_nominal))
+    "Chilled water mass flow rate at nominal conditions (all units)"
+    annotation (Dialog(group="Nominal condition"));
   parameter Modelica.Units.SI.MassFlowRate mHeaWat_flow_nominal=abs(
-    QHea_flow_nominal/cpHeaWat_nominal/(T_aHeaWat_nominal-T_bHeaWat_nominal))
-    "Heating water mass flow rate at nominal conditions";
+    QHea_flow_nominal/cp_default/(T_aHeaWat_nominal-T_bHeaWat_nominal))
+    "Heating water mass flow rate at nominal conditions (all units)"
+    annotation (Dialog(group="Nominal condition"));
   Modelica.Blocks.Sources.CombiTimeTable loa(
     tableOnFile=true,
     tableName="tab1",
@@ -84,7 +93,7 @@ model BuildingTimeSeries
     columns={2,3,4},
     smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1)
     "Reader for thermal loads (y[1] is cooling load, y[2] is heating load)"
-    annotation (Placement(transformation(extent={{0,-10},{20,10}})));
+    annotation (Placement(transformation(extent={{-280,-10},{-260,10}})));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
     k={{ data['nominal_values']['temp_setpoint_heating']  }},
     {% raw %}y(
@@ -116,20 +125,23 @@ model BuildingTimeSeries
     "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
-    redeclare package Medium=MediumW,
+    redeclare final package Medium=Medium,
+    final allowFlowReversal=allowFlowReversal,
     m_flow_nominal=mHeaWat_flow_nominal,
-    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.HeatingWater,
     have_pum=true,
+    typCtr=Buildings.Experimental.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
     dp_nominal=100000,
     nPorts_a1=1,
     nPorts_b1=1) if have_heaWat
     "Heating water distribution system"
-    annotation (Placement(transformation(extent={{120,-80},{140,-60}})));
+    annotation (Placement(transformation(extent={{120,-70},{140,-50}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
-    redeclare package Medium=MediumW,
+    redeclare final package Medium=Medium,
+    final allowFlowReversal=allowFlowReversal,
     m_flow_nominal=mChiWat_flow_nominal,
     typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     have_pum=true,
+    typCtr=Buildings.Experimental.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
     dp_nominal=100000,
     nPorts_b1=1,
     nPorts_a1=1) if have_chiWat
@@ -156,6 +168,10 @@ model BuildingTimeSeries
       final w_aLoaCoo_nominal=w_aLoaCoo_nominal)
     "Cooling terminal unit"
     annotation (Placement(transformation(extent={{70,26},{90,46}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealOutput QReqHotWat_flow(
+    final unit="W") if have_hotWat
+    "SHW load"
+    annotation (Placement(transformation(extent={{300,-140},{340,-100}}),iconTransformation(extent={{-40,-40},{40,40}},rotation=-90,origin={280,-340})));
   Modelica.Blocks.Interfaces.RealOutput QReqHea_flow(
     final quantity="HeatFlowRate",
     final unit="W") if have_heaLoa
@@ -180,6 +196,18 @@ model BuildingTimeSeries
   Buildings.Controls.OBC.CDL.Continuous.Add addPPum
     "Sum pump power"
     annotation (Placement(transformation(extent={{222,70},{242,90}})));
+  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter mulQReqHea_flow(
+    u(
+      final unit="W"),
+    final k=facMul) if have_heaLoa
+    "Scaling"
+    annotation (Placement(transformation(extent={{272,30},{292,50}})));
+  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter mulQReqCoo_flow(
+    u(
+      final unit="W"),
+    final k=facMul) if have_cooLoa
+    "Scaling"
+    annotation (Placement(transformation(extent={{272,-10},{292,10}})));
 protected
   parameter Modelica.Units.SI.SpecificHeatCapacity cp_air=1005
     "Air specific heat capacity";
