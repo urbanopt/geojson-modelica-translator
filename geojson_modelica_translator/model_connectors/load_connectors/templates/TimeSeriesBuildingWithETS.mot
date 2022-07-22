@@ -3,8 +3,8 @@ within {{ project_name }}.Loads.{{ model_name }};
   "Model of a building with loads provided as time series, connected to an ETS"
   extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     // redeclare Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.BuildingTimeSeries bui(
-    redeclare {% endraw %} {{ project_name }}.Loads.{{ model_name }} {% raw %} bui(
-      final filNam=filNam,
+    {% endraw %}redeclare {{ project_name }}.Loads.{{ model_name }}.BuildingTimeSeries bui(
+      {% raw %}final filNam=filNam,
       have_hotWat=false,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
@@ -17,8 +17,6 @@ within {{ project_name }}.Loads.{{ model_name }};
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
       QHotWat_flow_nominal=QHot_flow_nominal));
-  parameter String filNam
-    "Library path of the file with thermal loads as time series";
   final parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=bui.facMul*bui.QCoo_flow_nominal
     "Space cooling design load (<=0)"
