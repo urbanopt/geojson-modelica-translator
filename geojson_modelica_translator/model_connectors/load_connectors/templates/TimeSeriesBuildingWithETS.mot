@@ -1,10 +1,11 @@
 within {{ project_name }}.Loads.{{ model_name }};
-model BuildingTimeSeriesWithETS
+{% raw %}model building
   "Model of a building with loads provided as time series, connected to an ETS"
   extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
-    redeclare Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.BuildingTimeSeries bui(
+    // redeclare Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.BuildingTimeSeries bui(
+    redeclare {% endraw %} {{ project_name }}.Loads.{{ model_name }} {% raw %} bui(
       final filNam=filNam,
-      have_hotWat=true,
+      have_hotWat=false,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
       T_aChiWat_nominal=ets.TChiWatSup_nominal,
@@ -12,7 +13,7 @@ model BuildingTimeSeriesWithETS
       facMulHea=10*QHea_flow_nominal/(1.7E5),
       facMulCoo=40*QCoo_flow_nominal/(-1.5E5)),
     ets(
-      have_hotWat=true,
+      have_hotWat=false,
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
       QHotWat_flow_nominal=QHot_flow_nominal));
@@ -113,4 +114,5 @@ First implementation.
       coordinateSystem(
         preserveAspectRatio=false,
         extent={{-300,-300},{300,300}})));
-end BuildingTimeSeriesWithETS;
+end building;
+{% endraw %}
