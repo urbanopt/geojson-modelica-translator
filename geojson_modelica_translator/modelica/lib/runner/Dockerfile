@@ -1,7 +1,12 @@
 FROM ubuntu:18.04
 
-ENV SPAWN=Spawn-0.3.0-69040695f9-Linux
-ENV SPAWN_EXE=spawn-0.3.0-69040695f9
+# New version no worky with Bouncing Ball nor DES Models
+# ENV SPAWN=Spawn-0.3.0-69040695f9-Linux
+# ENV SPAWN_EXE=spawn-0.3.0-69040695f9
+
+# Version below works with bouncing ball but not DES
+ENV SPAWN=Spawn-0.3.0-8d93151657-Linux
+ENV SPAWN_EXE=spawn-0.3.0-8d93151657
 
 # Tried installing qemu to resolve spawn dependencies.
 # gfortran can be removed after Spawn is updated.
