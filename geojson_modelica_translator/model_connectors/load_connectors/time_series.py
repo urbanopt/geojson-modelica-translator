@@ -64,6 +64,11 @@ class TimeSeries(LoadBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
+        time_series_building_with_ets_template = self.template_env.get_template("TimeSeriesBuildingWithETS.mot")
+        # These templates will be rendered in order.
+        building_templates = []
+        building_templates.append(time_series_building_template)
+        building_templates.append(time_series_building_with_ets_template)
 
         b_modelica_path = ModelicaPath(
             self.building_name, scaffold.loads_path.files_dir, True
@@ -147,13 +152,14 @@ class TimeSeries(LoadBase):
         os.makedirs(os.path.dirname(new_file), exist_ok=True)
         shutil.copy(time_series_filename, new_file)
 
-        self.run_template(
-            template=time_series_building_template,
-            save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
-            project_name=scaffold.project_name,
-            model_name=self.building_name,
-            data=combined_template_data
-        )
+        for template in building_templates:
+            self.run_template(
+                template=template,
+                save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
+                project_name=scaffold.project_name,
+                model_name=self.building_name,
+                data=combined_template_data
+            )
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold)
