@@ -66,9 +66,9 @@ class TimeSeries(LoadBase):
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
         time_series_building_with_ets_template = self.template_env.get_template("TimeSeriesBuildingWithETS.mot")
         # These templates will be rendered in order.
-        building_templates = []
-        building_templates.append(time_series_building_template)
-        building_templates.append(time_series_building_with_ets_template)
+        building_templates = {}
+        building_templates['BuildingTimeSeries'] = time_series_building_template
+        building_templates['building'] = time_series_building_with_ets_template
 
         b_modelica_path = ModelicaPath(
             self.building_name, scaffold.loads_path.files_dir, True
@@ -152,10 +152,10 @@ class TimeSeries(LoadBase):
         os.makedirs(os.path.dirname(new_file), exist_ok=True)
         shutil.copy(time_series_filename, new_file)
 
-        for template in building_templates:
+        for k, v in building_templates.items():
             self.run_template(
-                template=template,
-                save_file_name=os.path.join(b_modelica_path.files_dir, "building.mo"),
+                template=v,
+                save_file_name=os.path.join(b_modelica_path.files_dir, f"{k}.mo"),
                 project_name=scaffold.project_name,
                 model_name=self.building_name,
                 data=combined_template_data
