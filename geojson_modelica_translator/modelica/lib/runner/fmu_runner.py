@@ -105,7 +105,7 @@ class FmuRunner():
 
         return var_metadata
 
-    def _get_sim_options(self) -> List[dict, dict]:
+    def _get_sim_options(self) -> List[dict]:
         """render the sim options as needed for the .fmu.simulate command. This returns a list, the
         first element are the options to flatten/pass to the call, and the second are the sim options
 
