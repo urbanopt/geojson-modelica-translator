@@ -5,6 +5,7 @@ import logging
 import os
 import re
 from pathlib import Path
+from typing import Optional
 
 from fmu_runner import FmuRunner
 
@@ -46,7 +47,7 @@ def compile_fmu(model_name, modelica_path, compiler):
 
 
 # TODO: Pass the start, stop, and step as arguments.
-def run(fmu_name, start=None, stop=None, step=None):
+def run(fmu_name, start: Optional[int], stop: Optional[int], step: Optional[int]):
     """Run a modelica model with Spawn."""
 
     # TODO: Decide if start, stop, or step should be exposed to the user.
@@ -68,9 +69,9 @@ if __name__ == "__main__":
     parser.add_argument('model', help='Name of the model to run, if debug, then will use test PID model. Can be an mo file or an FMU')
     parser.add_argument('modelica_path', help='Path to the project folder.')
     parser.add_argument('compiler', help='Compiler to use.', default='optimica')
-    parser.add_argument('start_time', help='Start time of the simulation.', default=None)
-    parser.add_argument('end_time', help='End time of the simulation.', default=None)
-    parser.add_argument('sim_step', help='Time step of the simulation.', default=None)
+    parser.add_argument('start_time', help='Start time of the simulation.', required=False)
+    parser.add_argument('end_time', help='End time of the simulation.', required=False)
+    parser.add_argument('sim_step', help='Time step of the simulation.', required=False)
 
     # Since this command is passed with spawn.py, you can't use the -- args (e.g., --compile).
     # So we are just passing in the action and then the model to act on.
