@@ -69,9 +69,9 @@ if __name__ == "__main__":
     parser.add_argument('model', help='Name of the model to run, if debug, then will use test PID model. Can be an mo file or an FMU')
     parser.add_argument('modelica_path', help='Path to the project folder.')
     parser.add_argument('compiler', help='Compiler to use.', default='optimica')
-    parser.add_argument('start_time', help='Start time of the simulation.', required=False)
-    parser.add_argument('end_time', help='End time of the simulation.', required=False)
-    parser.add_argument('sim_step', help='Time step of the simulation.', required=False)
+    parser.add_argument('start_time', help='Start time of the simulation.', nargs='?')
+    parser.add_argument('end_time', help='End time of the simulation.', nargs='?')
+    parser.add_argument('sim_step', help='Time step of the simulation.', nargs='?')
 
     # Since this command is passed with spawn.py, you can't use the -- args (e.g., --compile).
     # So we are just passing in the action and then the model to act on.
