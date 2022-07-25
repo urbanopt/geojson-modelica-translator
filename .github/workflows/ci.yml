@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  pull_request:
   push:
     # re-enable all branches until we start simulating again.
     # branches:
