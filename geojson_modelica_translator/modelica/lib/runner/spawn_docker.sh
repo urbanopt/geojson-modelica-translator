@@ -104,5 +104,5 @@ docker run \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
   "cd /mnt/shared/${bas_nam} && \
-  python /mnt/lib/spawn.py ${arg_lis}"
+  python /mnt/lib/spawn.py '$1' '$2' '$3' '$4'"
 exit $?
