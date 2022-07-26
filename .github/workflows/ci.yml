@@ -92,6 +92,7 @@ jobs:
       #     docker-compose build
       -
         name: Save license to file
+        shell: bash
         run: |
           mkdir -p /home/runner/modelon
           echo "${{ secrets.MODELON_LICENSE_FILE }}" > /home/runner/modelon/license.lic
