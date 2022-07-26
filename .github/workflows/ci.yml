@@ -82,13 +82,14 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      -
-        name: Build Spawn Modelica Docker Container
-        env:
-          MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
-        run: |
-          cd geojson_modelica_translator/modelica/lib/runner
-          docker-compose build
+      # Don't build the container anymore, just have it pull from docker hub.
+      # -
+      #   name: Build Spawn Modelica Docker Container
+      #   env:
+      #     MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
+      #   run: |
+      #     cd geojson_modelica_translator/modelica/lib/runner
+      #     docker-compose build
       -
         name: Save license to file
         run: |
