@@ -85,7 +85,6 @@ DOCKER_MODELON_LICENSE_PATH=`update_path_variable ${MODELON_LICENSE_PATH}`
 # replace it with . as the container may have a different file structure
 cur_dir=`pwd`
 bas_nam=`basename ${cur_dir}`
-arg_lis=`echo $@ | sed -e "s|${cur_dir}|.|g"`
 
 # Set variable for shared directory
 sha_dir=`dirname ${cur_dir}`
