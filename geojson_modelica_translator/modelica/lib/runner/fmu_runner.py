@@ -15,7 +15,7 @@ class FmuRunner():
     """Run a modelica model with Spawn."""
 
     # TODO Fix typing to access None or Int!
-    def __init__(self, fmu_path,  start: Optional[int] = None, stop: Optional[int] = None, step: Optional[int] = None):
+    def __init__(self, fmu_path, start: Optional[int] = None, stop: Optional[int] = None, step: Optional[int] = None):
         """Initialize the FMU runner.
 
         Args:
