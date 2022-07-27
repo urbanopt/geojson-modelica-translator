@@ -241,7 +241,8 @@ class SystemParameters(object):
         p_save = Path(save_directory)
 
         if not p_save.exists():
-            raise Exception(f"Save path for the weatherfile does not exist, {str(p_save)}")
+            print(f"Creating directory to save weather file, {str(p_save)}")
+            p_save.mkdir(parents=True, exist_ok=True)
 
         # get country & state from weather file name
         try:
@@ -253,36 +254,31 @@ class SystemParameters(object):
                 "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
             )
 
-        # download mos file from energyplus website
-        mos_weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
+        # download file from energyplus website
+        weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
             f'{weatherfile_country}/{weatherfile_state}/{p_download.stem}/{p_download.name}'
-        logger.debug(f"Downloading weather file from {mos_weatherfile_url}")
+        outputname = p_save / p_download.name
+        logger.debug(f"Downloading weather file from {weatherfile_url}")
         try:
-            mos_weatherfile_data = requests.get(mos_weatherfile_url)
+            weatherfile_data = requests.get(weatherfile_url)
+            logger.debug(f"Finished downloading weather file for {p_download.name}")
+            if weatherfile_data.status_code == 200:
+                logger.debug(f"Saving weather file contents to {outputname}")
+                with open(outputname, 'wb') as f:
+                    f.write(weatherfile_data.content)
+
+                logger.debug(f"Saved weather file to {outputname}")
+            else:
+                raise Exception(f"Returned non 200 status code trying to download weather file: {weatherfile_data.status_code}")
         except requests.exceptions.RequestException as e:
             raise Exception(
-                f"Could not download weather file: {mos_weatherfile_url}"
+                f"Could not download weather file: {weatherfile_url}"
                 "\nAt this time we only support USA weather stations"
                 f"\n{e}"
             )
 
-        # Save mos weatherfile into the requested path.
-        outputname = p_save / p_download.name
-        open(outputname, 'wb').write(mos_weatherfile_data.content)
-        logger.debug(f"Saved weather file to {outputname}")
-
-        # Count lines in downloaded weather file to make sure
-        # that at least 8760 lines have been downloaded. This is
-        # commented out for now since wc -l won't work on windows.
-        # file_lines = Popen(['wc', '-l', outputname], stdout=PIPE, stderr=PIPE)
-        # result, err = file_lines.communicate()
-        # if file_lines.returncode != 0:
-        #     raise IOError(err)
-        # lines_in_weather_file = int(result.strip().split()[0])
-        # logger.debug(f"Weather file {outputname} has {lines_in_weather_file} lines")
-        # if lines_in_weather_file < 8760:  # There should always be header lines above the 8760 data lines
-        #     raise Exception(f"Weather file {p_download.name} does not contain 8760 lines.")
-        # modelica_path = f"modelica://Buildings/Resources/weatherdata/{p_download.name}"
+        if not outputname.exists():
+            raise Exception(f"Could not find or download weather file for {str(p_download)}")
 
         return outputname
 
@@ -785,21 +781,15 @@ class SystemParameters(object):
                 if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
 
-        # Check if the weatherfile exists, if not, try to download
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
-        # Now check again if the file exists, error if not!
-        if not weather_path.exists():
-            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
+        # Check if the EPW weatherfile exists, if not, try to download
+        # if not weather_path.exists():
+        self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # also download the MOS -- this is the file that will
         # be set in the sys param file, so make the weather_path object this one
-        weather_path = weather_path.with_suffix('.mos')
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
-        # Now check again if the file exists, error if not!
-        if not weather_path.exists():
-            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
+        # weather_path = weather_path.with_suffix('.mos')
+        # # if not weather_path.exists():
+        # self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []
