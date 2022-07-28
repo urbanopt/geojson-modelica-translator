@@ -54,6 +54,14 @@ jobs:
           poetry --version
           poetry install
       -
+        name: Save Optimica license to file
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          mkdir -p /home/runner/modelon
+          echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
+          echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
+      -
         name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
@@ -82,7 +90,7 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      # Don't build the container anymore, just have it pull from docker hub.
+      # #Don't build the container anymore, just have it pull from docker hub.
       # -
       #   name: Build Spawn Modelica Docker Container
       #   env:
@@ -90,12 +98,6 @@ jobs:
       #   run: |
       #     cd geojson_modelica_translator/modelica/lib/runner
       #     docker-compose build
-      -
-        name: Save license to file
-        shell: bash
-        run: |
-          mkdir -p /home/runner/modelon
-          echo "${{ secrets.MODELON_LICENSE_FILE }}" > /home/runner/modelon/license.lic
       -
         name: Tox ${{ matrix.test_env }}
         env:
@@ -131,8 +133,9 @@ jobs:
         run: |
           echo "Maybe these logs will help?"
           ls -alt $GITHUB_WORKSPACE
-          echo "============================================ stdout.log ========================================="
+          ls -alt /home/runner/modelon
           find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
+            echo "============================================ stdout.log ========================================="
             echo "$filename"
             cat "$filename"
           done
