@@ -782,14 +782,14 @@ class SystemParameters(object):
                     building_ids.append(feature['properties']['id'])
 
         # Check if the EPW weatherfile exists, if not, try to download
-        # if not weather_path.exists():
-        self.download_weatherfile(weather_path.name, weather_path.parent)
+        if not weather_path.exists():
+            self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # also download the MOS -- this is the file that will
         # be set in the sys param file, so make the weather_path object this one
-        # weather_path = weather_path.with_suffix('.mos')
-        # # if not weather_path.exists():
-        # self.download_weatherfile(weather_path.name, weather_path.parent)
+        weather_path = weather_path.with_suffix('.mos')
+        if not weather_path.exists():
+            self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []
