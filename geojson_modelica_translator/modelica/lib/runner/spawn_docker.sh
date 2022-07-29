@@ -1,7 +1,7 @@
 #!/bin/bash
 
-IMG_NAME=spawn_docker
-DOCKER_USERNAME=urbanopt
+DOCKER_USERNAME=nrel
+IMG_NAME=spawn_modelica_docker
 
 # Catch signals to kill the container if it is interrupted
 # https://www.shellscript.sh/trap.html
