@@ -261,13 +261,9 @@ class SystemParameters(object):
         logger.debug(f"Downloading weather file from {weatherfile_url}")
         try:
             weatherfile_data = requests.get(weatherfile_url)
-            logger.debug(f"Finished downloading weather file for {p_download.name}")
             if weatherfile_data.status_code == 200:
-                logger.debug(f"Saving weather file contents to {outputname}")
                 with open(outputname, 'wb') as f:
                     f.write(weatherfile_data.content)
-
-                logger.debug(f"Saved weather file to {outputname}")
             else:
                 raise Exception(f"Returned non 200 status code trying to download weather file: {weatherfile_data.status_code}")
         except requests.exceptions.RequestException as e:
