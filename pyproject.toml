@@ -67,6 +67,10 @@ update_licenses = 'management.update_licenses:update_licenses'
 check_sys_params = 'management.check_sys_params:check_sys_params'
 
 [tool.pytest.ini_options]
+# There is a bug/issue with pytest and click where the test tries to write to the
+# log after the log file has been closed. This causes the test to fail. The --capture=no
+# is a workaround for this issue for now see https://github.com/pytest-dev/pytest/issues/5502#issuecomment-1020761655.
+addopts = "--capture=no"
 log_cli = true
 log_cli_level = "DEBUG"
 markers = [

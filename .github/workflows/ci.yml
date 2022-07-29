@@ -24,11 +24,11 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python-version: [3.9, 3.7]
         test_env: [python, precommit, docs]
-        mbl_branch: [v9.0.0]
+        mbl_branch: [master]
         include:
           - os: ubuntu-latest
             test_env: python
-            mbl_branch: v9.0.0
+            mbl_branch: master
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -53,6 +53,14 @@ jobs:
         run: |
           poetry --version
           poetry install
+      -
+        name: Save Optimica license to file
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          mkdir -p /home/runner/modelon
+          echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
+          echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
       -
         name: Install modelicafmt
         run: |
@@ -82,17 +90,27 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
+      # #Don't build the container anymore, just have it pull from docker hub.
+      # -
+      #   name: Build Spawn Modelica Docker Container
+      #   env:
+      #     MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
+      #   run: |
+      #     cd geojson_modelica_translator/modelica/lib/runner
+      #     docker-compose build
       -
         name: Tox ${{ matrix.test_env }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
+          MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
             # !! Ugh, this is ugly but necessary (poetry + tox were not passing our args correctly to pytest)
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
               # for windows, skip python tests that require simulation (currently broken)
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
-            elif [ '${{ matrix.mbl_branch }}' == 'v9.0.0' ]; then
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation and not compilation' ./tests
+            elif [ '${{ matrix.mbl_branch }}' == 'master' ]; then
               # we can no longer run any msl v4 simulations with JModelica
               poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             else
@@ -106,7 +124,7 @@ jobs:
         name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'v9.0.0' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'master' }}
         run: |
           poetry run coveralls
       -
@@ -115,8 +133,9 @@ jobs:
         run: |
           echo "Maybe these logs will help?"
           ls -alt $GITHUB_WORKSPACE
-          echo "============================================ stdout.log ========================================="
+          ls -alt /home/runner/modelon
           find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
+            echo "============================================ stdout.log ========================================="
             echo "$filename"
             cat "$filename"
           done

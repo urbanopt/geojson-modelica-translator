@@ -3,7 +3,6 @@
 import argparse
 import logging
 import os
-import re
 from pathlib import Path
 from typing import Optional
 
@@ -26,17 +25,16 @@ def compile_fmu(model_name, modelica_path, compiler):
     and only lightly modified.
     """
 
-    # Spawn's implementation doesn't currently handle *.mo files in the modelica_path.
+    # FYI Spawn's implementation doesn't currently handle *.mo files in the modelica_path.
     # It is expecting only directories.
-    # This is a workaround to eliminate .mo items from modelica_path
-    # FIXME: GMT is passing a dir, correct? So this modelica_path line isn't necessary?
-    modelica_path = ' '.join([p for p in modelica_path if not re.match(r'.*\.mo$', p)])
     logger.info(f"Modelica path is {modelica_path}")
     # The MBL path can be passed in from docker (spawn_docker.sh) which joins paths
     # with a colon. Need to split this back out to space separated paths.
+    # FIXME: I don't know how env vars work in Docker. The container version of both the modelica_path and the mbl_path
+    # are inside the mbl_path variable. We need both, but somehow they're both in the mbl_path variable.
     mbl_path = ' '.join([p for p in f"{os.environ['MODELICAPATH']}/Buildings".split(':')])
     logger.info(f"MBL path is {mbl_path}")
-    cmd = f"spawn modelica --create-fmu {model_name} --modelica-path {modelica_path} {mbl_path} --fmu-type ME --{compiler}"
+    cmd = f"spawn modelica --create-fmu {model_name} --modelica-path {mbl_path} --fmu-type ME --{compiler}"
     logger.info(f"Calling spawn compile with '{cmd}'")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
