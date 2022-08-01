@@ -1,19 +1,25 @@
 #!/bin/bash
-#################################################
-# Shell script that simulates JModelica using
-# a docker image of JModelica.
-#
-# The main purpose of this script is to export
-# MODELICAPATH and PYTHONPATH with their values
-# updated for the docker, and to mount the
-# required directories.
-#################################################
-set -e
-IMG_NAME=ubuntu-1804_jmodelica_trunk
-DOCKER_USERNAME=michaelwetter
+
+DOCKER_USERNAME=nrel
+IMG_NAME=spawn_modelica_docker
+
+# Catch signals to kill the container if it is interrupted
+# https://www.shellscript.sh/trap.html
+# Addresses https://github.com/urbanopt/geojson-modelica-translator/issues/384
+trap cleanup 1 2 3 6
+
+cleanup()
+{
+  echo "Caught Signal ... cleaning up."
+  rm -rf /tmp/temp_*.$$
+  echo "Done cleanup ... quitting."
+  exit 1
+}
 
 # Function declarations
 function create_mount_command()
+# Split path somehow. Replace double-slashes with single-slashes, to ensure compatibility with
+# Windows paths.
 {
    local pat="$1"
    # Each entry in pat will be a mounted read-only volume
@@ -52,54 +58,50 @@ else
     MODELICAPATH=`pwd`:${MODELICAPATH}
 fi
 
+# Create the mac address for the container, which is needed by the
+# Optimica compiler
+if [ -z ${MODELON_MAC_ADDRESS+x} ]; then
+    # set the mac address to empty string, so that the docker will generate a new one
+    MODELON_MAC_ADDRESS=""
+else
+    # Prepend the docker command line option to the MAC address from the env var
+    MODELON_MAC_ADDRESS="--mac-address=${MODELON_MAC_ADDRESS}"
+fi
+
 # Create the command to mount all directories in read-only mode
 # a) for MODELICAPATH
 MOD_MOUNT=`create_mount_command ${MODELICAPATH}`
 # b) for PYTHONPATH
 PYT_MOUNT=`create_mount_command ${PYTHONPATH}`
+# c) for MODELON_LICENSE_PATH
+LIC_MOUNT=`create_mount_command ${MODELON_LICENSE_PATH}`
 
 # Prepend /mnt/ in front of each entry, which will then be used as the MODELICAPATH
 DOCKER_MODELICAPATH=`update_path_variable ${MODELICAPATH}`
 DOCKER_PYTHONPATH=`update_path_variable ${PYTHONPATH}`
+DOCKER_MODELON_LICENSE_PATH=`update_path_variable ${MODELON_LICENSE_PATH}`
 
 # If the current directory is part of the argument list,
-# replace it with . as the docker may have a different file structure
+# replace it with . as the container may have a different file structure
 cur_dir=`pwd`
 bas_nam=`basename ${cur_dir}`
-arg_lis=`echo $@ | sed -e "s|${cur_dir}|.|g"`
 
 # Set variable for shared directory
 sha_dir=`dirname ${cur_dir}`
 
-# Check if the python script should be run interactively (if -i is specified)
-while [ $# -ne 0 ]
-do
-    arg="$1"
-    case "$arg" in
-        -i)
-            interactive=true
-            DOCKER_INTERACTIVE=-t
-            ;;
-    esac
-    shift
-done
-
-# --user=${UID} \
-
 docker run \
-  --user=${UID} \
-  -i \
-  $DOCKER_INTERACTIVE \
-  --detach=false \
   ${MOD_MOUNT} \
   ${PYT_MOUNT} \
-  -v ${sha_dir}:/mnt/shared \
+  ${LIC_MOUNT} \
+  ${MODELON_MAC_ADDRESS} \
   -e DISPLAY=${DISPLAY} \
+  -e MODELICAPATH=${DOCKER_MODELICAPATH} \
+  -e PYTHONPATH=${DOCKER_PYTHONPATH} \
+  -e MODELON_LICENSE_PATH=${DOCKER_MODELON_LICENSE_PATH} \
+  -v ${sha_dir}:/mnt/shared \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
-  "export MODELICAPATH=${DOCKER_MODELICAPATH}:/usr/local/JModelica/ThirdParty/MSL && \
-   export PYTHONPATH=${DOCKER_PYTHONPATH} && \
-  cd /mnt/shared/${bas_nam} && \
-  /usr/local/JModelica/bin/jm_ipython.sh ${arg_lis}"
+  "cd /mnt/shared/${bas_nam} && \
+  python /mnt/lib/spawn.py '$1' '$2' '$3' '$4'"
 exit $?

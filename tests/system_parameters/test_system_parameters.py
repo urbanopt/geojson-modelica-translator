@@ -353,7 +353,9 @@ class SystemParametersTest(unittest.TestCase):
         local_path = os.path.join('not', 'a', 'real', 'path')
         with self.assertRaises(Exception) as context:
             sdp.download_weatherfile(weather_filename, local_path)
-        self.assertEqual(f"Save path for the weatherfile does not exist, {local_path}", str(context.exception))
+        self.assertEqual("Malformed location, needs underscores of location "
+                         "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)",
+                         str(context.exception))
 
     def test_download_invalid_epw(self):
         sdp = SystemParameters()
