@@ -78,8 +78,7 @@ class ModelicaRunner(object):
         else:
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
-        self.jmodelica_py_path = os.path.join(local_path, 'lib', 'runner', 'jmodelica.py')
-        self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.sh')
+        self.spawn_docker_path = os.path.join(local_path, 'lib', 'runner', 'spawn_docker.sh')
 
         # Verify that docker is up and running
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -116,17 +115,17 @@ class ModelicaRunner(object):
     def _copy_over_docker_resources(self, run_path: Path) -> None:
         """Copy over ipython and jmodelica needed to run the simulation
         """
-        new_jm_ipython = os.path.join(run_path, os.path.basename(self.jm_ipython_path))
-        shutil.copyfile(self.jm_ipython_path, new_jm_ipython)
-        os.chmod(new_jm_ipython, 0o775)
-        shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
+        new_spawn_docker = os.path.join(run_path, os.path.basename(self.spawn_docker_path))
+        shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
+        os.chmod(new_spawn_docker, 0o775)
 
-    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str, compiler: Str = 'optimica') -> int:
         """Call out to a subprocess to run the command in docker
 
         :param file_to_run: string, name of the file or directory to simulate
         :param run_path: string, location where the Modelica simulatio or compilation will start
         :param action: string, action to run either compile_and_run, compile, or run
+        :param compiler: string, compiler to use
         :returns: int, exit code of the subprocess
         """
         action_log_map = {
@@ -138,6 +137,10 @@ class ModelicaRunner(object):
         assert action in action_log_map.keys(), \
             f'Invalid action of {action} in _subprocess_call_to_docker, needs to be {[k for k in action_log_map.keys()]}'
 
+        valid_compilers = ['optimica']  # , 'jmodelica', 'openmodelica'
+        assert compiler in valid_compilers, \
+            f'Invalid compiler of {compiler} in _subprocess_call_to_docker, needs to be {valid_compilers}'
+
         # Set up the run content
         curdir = os.getcwd()
         os.chdir(run_path)
@@ -148,10 +151,12 @@ class ModelicaRunner(object):
 
             # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
             # but must strip off the .mo extension on the model to run
-            run_model = os.path.relpath(file_to_run, run_path)
+            run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
+            exec_call = ['./spawn_docker.sh', action, run_model, run_path, compiler]
+            logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
-                ['./jm_ipython.sh', 'jmodelica.py', action, run_model],
+                exec_call,
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
@@ -174,8 +179,7 @@ class ModelicaRunner(object):
 
         :param file_to_run: string, name of the file (could be directory?) to simulate
         :param run_path: string, location where the Modelica simulation will start
-        :param project_name: string, name of the project being simulated. Will be used to determine name of results
-                                     directory
+        :param project_name: string, name of the project being simulated. Will be used to determine name of results directory
         :returns: tuple(bool, str), success status and path to the results directory
         """
         self._verify_docker_run_capability(file_to_run)
@@ -215,8 +219,8 @@ class ModelicaRunner(object):
 
         exitcode = self._subprocess_call_to_docker(save_path, file_to_run, 'compile')
 
-        logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
+        logger.debug('removing temporary files')
         self._cleanup_path(save_path)
 
         logger.debug('moving results to results directory')
@@ -279,8 +283,7 @@ class ModelicaRunner(object):
         """Clean up the files in the path that was presumably used to run the simulation
         """
         remove_files = [
-            'jm_ipython.sh',
-            'jmodelica.py',
+            'spawn_docker.sh',
         ]
 
         for f in remove_files:

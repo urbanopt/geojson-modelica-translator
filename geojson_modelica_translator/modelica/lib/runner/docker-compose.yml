@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  spawn_in_docker:
+    image: nrel/spawn_modelica_docker:latest
+    build: .
+    environment:
+      - SPAWN_DOCKER_IMAGE=nrel/spawn_modelica_docker:latest
+    volumes:
+      - "${MODELON_LICENSE_PATH}:/mnt/license:ro"
