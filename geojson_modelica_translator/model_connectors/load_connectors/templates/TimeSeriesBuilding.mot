@@ -15,7 +15,8 @@ model BuildingTimeSeries
     "Load side medium";
   parameter Boolean have_hotWat=false
     "Set to true if SHW load is included in the time series"
-  {% endraw %} parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+    annotation (Evaluate=true,Dialog(group="Configuration"));
+  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
     {% raw %} "Library path of the file with loads as time series";
   parameter Real facMulHea=1
     "Heating terminal unit multiplier factor"
@@ -25,32 +26,32 @@ model BuildingTimeSeries
     annotation (Dialog(enable=have_chiWat,group="Scaling"));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
     {% raw %} "Heating water inlet temperature at nominal conditions"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_heaWat));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal(
     min=273.15,
     displayUnit="degC")=T_aHeaWat_nominal-5
     {% raw %} "Heating water outlet temperature at nominal conditions"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_heaWat));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     {% raw %} "Chilled water inlet temperature at nominal conditions "
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_bChiWat_nominal(
     min=273.15,
     displayUnit="degC")={{ data['nominal_values']['chw_return_temp'] }}
     {% raw %} "Chilled water outlet temperature at nominal conditions"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in heating mode"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_heaWat));
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in cooling mode"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_heaWat));
   parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=mLoaHea_flow_nominal
     "Load side mass flow rate at nominal conditions in cooling mode"
-    annotation (Dialog(group="Nominal condition"));
+    annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   // parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
   //   "Nominal cooling air temperature difference across the terminal unit heat exchanger";
   // parameter Modelica.Units.SI.TemperatureDifference delTAirHea
@@ -60,13 +61,13 @@ model BuildingTimeSeries
     string="#Peak space cooling load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design cooling heat flow rate (<=0)"
-    annotation (Dialog(group="Design parameter"));
+    annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal(
     min=Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space heating load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design heating heat flow rate (>=0)"
-    annotation (Dialog(group="Design parameter"));
+    annotation (Dialog(group="Nominal condition"));
   parameter Real k(
     min=0)=0.1
     "Gain of controller";
