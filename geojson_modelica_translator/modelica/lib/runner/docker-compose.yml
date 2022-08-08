@@ -1,9 +1,9 @@
 version: '3.9'
 services:
   spawn_in_docker:
-    image: urbanopt/spawn_docker:latest
+    image: nrel/spawn_modelica_docker:latest
     build: .
     environment:
-      - SPAWN_DOCKER_IMAGE=urbanopt/spawn_docker:latest
+      - SPAWN_DOCKER_IMAGE=nrel/spawn_modelica_docker:latest
     volumes:
       - "${MODELON_LICENSE_PATH}:/mnt/license:ro"

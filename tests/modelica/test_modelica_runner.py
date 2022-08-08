@@ -39,11 +39,18 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import shutil
 import unittest
+import logging
 
 import pytest
 
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+)
 
 class ModelicaRunnerTest(unittest.TestCase):
     def setUp(self):
@@ -77,9 +84,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         finally:
             if prev_mod_path:
                 os.environ['MODELICAPATH'] = prev_mod_path
-        # print(mr.jmodelica_py_path)
-        self.assertTrue(os.path.exists(mr.jmodelica_py_path))
-        self.assertTrue(os.path.exists(mr.jm_ipython_path))
+        self.assertTrue(os.path.exists(mr.spawn_docker_path))
 
     def test_docker_enabled(self):
         mr = ModelicaRunner()
@@ -113,10 +118,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))
-
-    @pytest.mark.simulation
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
+        
+    @pytest.mark.compilation
     def test_compile_in_docker(self):
         # cleanup output path
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
@@ -134,9 +138,14 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         self.assertTrue(os.path.exists(fmu_path))
         self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))
-
+        # Write out the log to the logger for debugging
+        with open(os.path.join(self.run_path, 'stdout.log')) as f:
+            logger.info(f.read())
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
+        self.assertTrue(os.path.exists(fmu_path))
+        
+        
+        
     @pytest.mark.simulation
     def test_run_only_in_docker(self):
         # cleanup output path
@@ -149,5 +158,4 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'jm_ipython.sh')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'jmodelica.py')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))

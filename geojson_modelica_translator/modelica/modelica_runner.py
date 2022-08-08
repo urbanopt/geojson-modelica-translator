@@ -78,10 +78,6 @@ class ModelicaRunner(object):
         else:
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
-        # TODO: Remove these
-        self.jmodelica_py_path = os.path.join(local_path, 'lib', 'runner', 'jmodelica.py')
-        self.jm_ipython_path = os.path.join(local_path, 'lib', 'runner', 'jm_ipython.sh')
-        # TODO: End remove these
         self.spawn_docker_path = os.path.join(local_path, 'lib', 'runner', 'spawn_docker.sh')
 
         # Verify that docker is up and running
@@ -119,10 +115,6 @@ class ModelicaRunner(object):
     def _copy_over_docker_resources(self, run_path: Path) -> None:
         """Copy over ipython and jmodelica needed to run the simulation
         """
-        new_jm_ipython = os.path.join(run_path, os.path.basename(self.jm_ipython_path))
-        shutil.copyfile(self.jm_ipython_path, new_jm_ipython)
-        os.chmod(new_jm_ipython, 0o775)
-        shutil.copyfile(self.jmodelica_py_path, os.path.join(run_path, os.path.basename(self.jmodelica_py_path)))
         new_spawn_docker = os.path.join(run_path, os.path.basename(self.spawn_docker_path))
         shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
         os.chmod(new_spawn_docker, 0o775)
@@ -291,8 +283,6 @@ class ModelicaRunner(object):
         """Clean up the files in the path that was presumably used to run the simulation
         """
         remove_files = [
-            'jm_ipython.sh',
-            'jmodelica.py',
             'spawn_docker.sh',
         ]
 

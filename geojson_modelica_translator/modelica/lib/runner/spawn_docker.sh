@@ -1,7 +1,7 @@
 #!/bin/bash
 
-IMG_NAME=spawn_docker
-DOCKER_USERNAME=urbanopt
+DOCKER_USERNAME=nrel
+IMG_NAME=spawn_modelica_docker
 
 # Catch signals to kill the container if it is interrupted
 # https://www.shellscript.sh/trap.html
@@ -85,7 +85,6 @@ DOCKER_MODELON_LICENSE_PATH=`update_path_variable ${MODELON_LICENSE_PATH}`
 # replace it with . as the container may have a different file structure
 cur_dir=`pwd`
 bas_nam=`basename ${cur_dir}`
-arg_lis=`echo $@ | sed -e "s|${cur_dir}|.|g"`
 
 # Set variable for shared directory
 sha_dir=`dirname ${cur_dir}`
@@ -104,5 +103,5 @@ docker run \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
   "cd /mnt/shared/${bas_nam} && \
-  python /mnt/lib/spawn.py ${arg_lis}"
+  python /mnt/lib/spawn.py '$1' '$2' '$3' '$4'"
 exit $?
