@@ -52,6 +52,7 @@ logging.basicConfig(
     datefmt='%d-%b-%y %H:%M:%S',
 )
 
+
 class ModelicaRunnerTest(unittest.TestCase):
     def setUp(self):
         # create a run directory and copy in a project to test run
@@ -119,7 +120,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
-        
+
     @pytest.mark.compilation
     def test_compile_in_docker(self):
         # cleanup output path
@@ -143,9 +144,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             logger.info(f.read())
         self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
         self.assertTrue(os.path.exists(fmu_path))
-        
-        
-        
+
     @pytest.mark.simulation
     def test_run_only_in_docker(self):
         # cleanup output path
