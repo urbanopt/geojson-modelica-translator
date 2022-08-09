@@ -3,13 +3,13 @@ model BuildingTimeSeries
   "Building model with heating and cooling loads provided as time series"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=Buildings.Media.Water,
-    final have_fan=false,
-    final have_pum=true,
-    final have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
-    final have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }},
-    final have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
-    final have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
-    final have_weaBus=false);
+    have_fan=false,
+    have_pum=true,
+    have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
+    have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }},
+    have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
+    have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
+    have_weaBus=false);
   {% raw %}replaceable package Medium2=Buildings.Media.Air
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "Load side medium";
@@ -98,36 +98,36 @@ model BuildingTimeSeries
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
     k={{ data['nominal_values']['temp_setpoint_heating']  }},
     {% raw %}y(
-      final unit="K",
+      unit="K",
       displayUnit="degC"))
     "Minimum temperature set point"
     annotation (Placement(transformation(extent={{-280,170},{-260,190}})));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
     k={{ data['nominal_values']['temp_setpoint_cooling']  }},
     {% raw %}y(
-      final unit="K",
+      unit="K",
       displayUnit="degC"))
     "Maximum temperature set point"
     annotation (Placement(transformation(extent={{-280,210},{-260,230}})));
   replaceable Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
-    final k=k,
-    final Ti=Ti) if have_heaWat
+    k=k,
+    Ti=Ti) if have_heaWat
     constrainedby Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit(
-      redeclare final package Medium1=Medium,
-      redeclare final package Medium2=Medium2,
-      final allowFlowReversal=allowFlowReversal,
-      final facMul=facMulHea,
-      final facMulZon=1,
-      final QHea_flow_nominal=QHea_flow_nominal/facMulHea,
-      final mLoaHea_flow_nominal=mLoaHea_flow_nominal,
-      final T_aHeaWat_nominal=T_aHeaWat_nominal,
-      final T_bHeaWat_nominal=T_bHeaWat_nominal,
-      final T_aLoaHea_nominal=T_aLoaHea_nominal)
+      redeclare package Medium1=Medium,
+      redeclare package Medium2=Medium2,
+      allowFlowReversal=allowFlowReversal,
+      facMul=facMulHea,
+      facMulZon=1,
+      QHea_flow_nominal=QHea_flow_nominal/facMulHea,
+      mLoaHea_flow_nominal=mLoaHea_flow_nominal,
+      T_aHeaWat_nominal=T_aHeaWat_nominal,
+      T_bHeaWat_nominal=T_bHeaWat_nominal,
+      T_aLoaHea_nominal=T_aLoaHea_nominal)
     "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
-    redeclare final package Medium=Medium,
-    final allowFlowReversal=allowFlowReversal,
+    redeclare package Medium=Medium,
+    allowFlowReversal=allowFlowReversal,
     m_flow_nominal=mHeaWat_flow_nominal,
     have_pum=true,
     typCtr=Buildings.Experimental.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
@@ -137,8 +137,8 @@ model BuildingTimeSeries
     "Heating water distribution system"
     annotation (Placement(transformation(extent={{120,-70},{140,-50}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
-    redeclare final package Medium=Medium,
-    final allowFlowReversal=allowFlowReversal,
+    redeclare package Medium=Medium,
+    allowFlowReversal=allowFlowReversal,
     m_flow_nominal=mChiWat_flow_nominal,
     typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     have_pum=true,
@@ -149,38 +149,38 @@ model BuildingTimeSeries
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{120,-270},{140,-250}})));
   replaceable Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
-    final QHea_flow_nominal=QHea_flow_nominal/facMulHea,
-    final T_aLoaHea_nominal=T_aLoaHea_nominal,
-    final k=k,
-    final Ti=Ti,
-    final TRooHea_nominal=T_aLoaHea_nominal,
-    final QRooHea_flow_nominal=QHea_flow_nominal/facMulCoo) if have_chiWat
+    QHea_flow_nominal=QHea_flow_nominal/facMulHea,
+    T_aLoaHea_nominal=T_aLoaHea_nominal,
+    k=k,
+    Ti=Ti,
+    TRooHea_nominal=T_aLoaHea_nominal,
+    QRooHea_flow_nominal=QHea_flow_nominal/facMulCoo) if have_chiWat
     constrainedby Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit(
-      redeclare final package Medium1=Medium,
-      redeclare final package Medium2=Medium2,
-      final allowFlowReversal=allowFlowReversal,
-      final facMul=facMulCoo,
-      final facMulZon=1,
-      final QCoo_flow_nominal=QCoo_flow_nominal/facMulCoo,
-      final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
-      final T_aChiWat_nominal=T_aChiWat_nominal,
-      final T_bChiWat_nominal=T_bChiWat_nominal,
-      final T_aLoaCoo_nominal=T_aLoaCoo_nominal,
-      final w_aLoaCoo_nominal=w_aLoaCoo_nominal)
+      redeclare package Medium1=Medium,
+      redeclare package Medium2=Medium2,
+      allowFlowReversal=allowFlowReversal,
+      facMul=facMulCoo,
+      facMulZon=1,
+      QCoo_flow_nominal=QCoo_flow_nominal/facMulCoo,
+      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+      T_aChiWat_nominal=T_aChiWat_nominal,
+      T_bChiWat_nominal=T_bChiWat_nominal,
+      T_aLoaCoo_nominal=T_aLoaCoo_nominal,
+      w_aLoaCoo_nominal=w_aLoaCoo_nominal)
     "Cooling terminal unit"
     annotation (Placement(transformation(extent={{70,26},{90,46}})));
   Buildings.Controls.OBC.CDL.Interfaces.RealOutput QReqHotWat_flow(
-    final unit="W") if have_hotWat
+    unit="W") if have_hotWat
     "SHW load"
     annotation (Placement(transformation(extent={{300,-140},{340,-100}}),iconTransformation(extent={{-40,-40},{40,40}},rotation=-90,origin={280,-340})));
   Modelica.Blocks.Interfaces.RealOutput QReqHea_flow(
-    final quantity="HeatFlowRate",
-    final unit="W") if have_heaLoa
+    quantity="HeatFlowRate",
+    unit="W") if have_heaLoa
     "Heating load"
     annotation (Placement(transformation(extent={{300,20},{340,60}}),iconTransformation(extent={{-20,-20},{20,20}},rotation=-90,origin={200,-320})));
   Modelica.Blocks.Interfaces.RealOutput QReqCoo_flow(
-    final quantity="HeatFlowRate",
-    final unit="W") if have_cooLoa
+    quantity="HeatFlowRate",
+    unit="W") if have_cooLoa
     "Cooling load"
     annotation (Placement(transformation(extent={{300,-20},{340,20}}),iconTransformation(extent={{-20,-20},{20,20}},rotation=-90,origin={260,-320})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant noHea(
@@ -199,14 +199,14 @@ model BuildingTimeSeries
     annotation (Placement(transformation(extent={{222,70},{242,90}})));
   Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter mulQReqHea_flow(
     u(
-      final unit="W"),
-    final k=facMul) if have_heaLoa
+      unit="W"),
+    k=facMul) if have_heaLoa
     "Scaling"
     annotation (Placement(transformation(extent={{272,30},{292,50}})));
   Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter mulQReqCoo_flow(
     u(
-      final unit="W"),
-    final k=facMul) if have_cooLoa
+      unit="W"),
+    k=facMul) if have_cooLoa
     "Scaling"
     annotation (Placement(transformation(extent={{272,-10},{292,10}})));
 protected
