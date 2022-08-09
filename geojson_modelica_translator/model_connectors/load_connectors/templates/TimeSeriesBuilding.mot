@@ -13,11 +13,11 @@ model BuildingTimeSeries
   {% raw %}replaceable package Medium2=Buildings.Media.Air
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "Load side medium";
+  parameter String filNam
+    "Library path of the file with loads as time series";
   parameter Boolean have_hotWat=false
     "Set to true if SHW load is included in the time series"
     annotation (Evaluate=true,Dialog(group="Configuration"));
-  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
-    {% raw %} "Library path of the file with loads as time series";
   parameter Real facMulHea=1
     "Heating terminal unit multiplier factor"
     annotation (Dialog(enable=have_heaWat,group="Scaling"));
@@ -46,16 +46,19 @@ model BuildingTimeSeries
   {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
     {% raw %} "Load side inlet temperature at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
+  parameter Modelica.Units.SI.MassFraction w_aLoaCoo_nominal=0.0095
+    "Load side inlet humidity ratio at nominal conditions in cooling mode"
+    annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition",enable=have_heaWat));
   parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=mLoaHea_flow_nominal
     "Load side mass flow rate at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
-  // parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
-  //   "Nominal cooling air temperature difference across the terminal unit heat exchanger";
-  // parameter Modelica.Units.SI.TemperatureDifference delTAirHea
-  //   "Nominal heating air temperature difference across the terminal unit heat exchanger";
+  parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
+    "Nominal cooling air temperature difference across the terminal unit heat exchanger";
+  parameter Modelica.Units.SI.TemperatureDifference delTAirHea
+    "Nominal heating air temperature difference across the terminal unit heat exchanger";
   parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space cooling load",
