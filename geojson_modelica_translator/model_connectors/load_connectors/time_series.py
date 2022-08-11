@@ -96,6 +96,9 @@ class TimeSeries(LoadBase):
                 "filename": os.path.basename(time_series_filename),
                 "path": os.path.dirname(time_series_filename),
             },
+            "district_type": self.system_parameters.get_param(
+                "district_system"
+            ),
             "nominal_values": {
                 "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
