@@ -10,40 +10,29 @@
         "buildings": {
           "title": "custom",
           "description": "Parameters for all or individual buildings.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/building_def"
-            },
-            "custom": {
-              "description": "List of individual buildings and their custom parameters.",
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/building_def"
-              }
-            }
-          },
-          "additionalProperties": false
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/building_def"
+          }
         },
         "connectors": {
-          "description": "[unused] Parameters related to the connections between objects.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/connector_def"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/definitions/connector_def"
         },
-        "district_system": {
+        "district_systems": {
           "description": "Parameters associated with district systems.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/district_system_def"
+          "type": "array",
+          "items": [
+            {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/4GDHC_def"
+                },
+                {
+                  "$ref": "#/definitions/5GDHC_def"
+                }
+              ]
             }
-          },
-          "additionalProperties": false
+          ]
         },
         "topology": {
           "title": "defaults",
@@ -91,13 +80,7 @@
           "additionalProperties": false
         },
         "electrical_grid": {
-          "description": "Parameters associated with the electrical grid",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/electrical_grid_parameters"
-            }
-          }
+          "$ref": "#/definitions/electrical_grid_parameters"
         },
         "photovoltaic_panels": {
           "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
@@ -156,13 +139,13 @@
           }
         },
         "ac_inductive_loads": {
-          "description": "AC Inductive loads associated with the district",
+          "description": "AC inductive loads associated with the district",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ac_inductive_load_parameters"
           }
         },
-        "dc_load_loads": {
+        "dc_loads": {
           "description": "DC loads associated with the district",
           "type": "array",
           "items": {
@@ -228,7 +211,7 @@
       "additionalProperties": false
     },
     "building_def": {
-      "description": "The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.",
+      "description": "Specific building parameters for each building.",
       "type": "object",
       "properties": {
         "geojson_id": {
@@ -266,17 +249,20 @@
           "enum": [
             "None",
             "Indirect Heating and Cooling",
-            "Direct Heating and Cooling"
+            "5G Heat Pump"
           ]
         },
         "ets_model_parameters": {
           "type": "object",
-          "properties": {
-            "indirect": {
+          "additionalProperties": false,
+          "oneOf": [
+            {
               "$ref": "#/definitions/ets_indirect_parameters"
+            },
+            {
+              "$ref": "#/definitions/5G_ets_parameters"
             }
-          },
-          "additionalProperties": false
+          ]
         },
         "photovoltaic_panels": {
           "description": "Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization",
@@ -299,7 +285,7 @@
             "$ref": "#/definitions/battery_bank_parameters"
           }
         },
-        "load": {
+        "electric_load": {
           "description": "microgrid-related load fields",
           "properties": {
             "nominal_voltage": {
@@ -927,13 +913,13 @@
         "mass_hhw_flow_nominal",
         "boiler_water_flow_minimum",
         "pressure_drop_hhw_nominal",
-        "pressure_drop_setpoint",
         "temp_setpoint_hhw",
-        "pressure_drop_hhw_valve_nominal"
+        "pressure_drop_hhw_valve_nominal",
+        "pressure_drop_setpoint"
       ]
     },
     "combined_heat_and_power_parameters": {
-      "description": "Combined Heat and power parameters used by the microgrid model.",
+      "description": "Combined heat and power (CHP) parameters used by the microgrid model.",
       "type": "object",
       "properties": {
         "fuel_type": {
@@ -956,8 +942,7 @@
           "description": "Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP",
           "type": "string"
         }
-      },
-      "required": []
+      }
     },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
@@ -1016,8 +1001,7 @@
           "description": "Nominal System Voltage (V)",
           "type": "number",
           "default": 480
-        },
-        "additionalProperties": false
+        }
       }
     },
     "wind_turbine_parameters": {
@@ -1175,7 +1159,7 @@
       }
     },
     "battery_bank_parameters": {
-      "description": "DC load parameters used by the microgrid model.",
+      "description": "Battery bank associated with the district",
       "type": "object",
       "properties": {
         "capacity": {
@@ -1187,6 +1171,80 @@
           "type": "number"
         }
       }
+    },
+    "4GDHC_def": {
+      "properties": {
+        "4GDHC": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "4GDHC"
+      ]
+    },
+    "5GDHC_def": {
+      "properties": {
+        "5GDHC": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "5GDHC"
+      ]
+    },
+    "5G_ets_parameters": {
+      "properties": {
+        "supply_water_temperature_building": {
+          "description": "Water supply temperature building side. (C)",
+          "type": "number",
+          "default": 15
+        }
+      },
+      "required": [
+        "supply_water_temperature_building"
+      ]
     }
   }
 }
