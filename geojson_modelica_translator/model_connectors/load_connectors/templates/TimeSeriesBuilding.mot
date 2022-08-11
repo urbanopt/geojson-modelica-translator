@@ -52,7 +52,7 @@ model BuildingTimeSeries
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal=QHea_flow_nominal/(cp_air*delTAirHea)
     "Load side mass flow rate at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition",enable=have_heaWat));
-  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=mLoaHea_flow_nominal
+  parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal=-QCoo_flow_nominal/(cp_air*delTAirCoo)
     "Load side mass flow rate at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   parameter Modelica.Units.SI.TemperatureDifference delTAirCoo
