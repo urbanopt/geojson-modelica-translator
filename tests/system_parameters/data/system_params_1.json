@@ -204,7 +204,7 @@
     }
   },
   "district_system": {
-    "default": {
+    "4GDHC": {
       "return_configuration": "Reverse Return"
     }
   },
