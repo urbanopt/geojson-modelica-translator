@@ -72,7 +72,7 @@ class SystemParameters(object):
         {"json_path": "$.buildings.*[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
         {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"},
         {"json_path": "$.buildings.*[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
-        {"json_path": "$.district_system.default.central_cooling_plant_parameters.weather_filepath"},
+        {"json_path": "$.district_system.4GDHC.central_cooling_plant_parameters.weather_filepath"},
         {"json_path": "$.combined_heat_and_power_systems.*.performance_data_path"}
     ]
 
@@ -840,7 +840,7 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        (self.param_template['district_system']['default']
+        (self.param_template['district_system']['4GDHC']
             ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
 
         if microgrid:
