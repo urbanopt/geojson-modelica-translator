@@ -8,7 +8,6 @@
       "type": "object",
       "properties": {
         "buildings": {
-          "title": "custom",
           "description": "Parameters for all or individual buildings.",
           "type": "array",
           "items": {
@@ -302,7 +301,10 @@
             }
           }
         }
-      }
+      },
+      "required": [
+        "ets_model"
+      ]
     },
     "connector_def": {
       "description": "[unused] Parameters associated with the connectors in a district system.",
