@@ -196,16 +196,9 @@ class SystemParameters(object):
         :return: variant, the value from the data
         """
 
-        # This will get reworked after moving to jsonpath. but for now, hack in the default. First return the default
-        # dict from the system parameter file.
-        # Grab first the default data block, then find the path in the default data block.
-        # "building.default" might need to reconsider, as it is fixed for flake8 currently.
-        default_data = self.get_param("$.buildings.default", impute_default=False)
-        schema_default = self.get_param(jsonpath, default_data, impute_default=False)
-        default = schema_default or default
-        for b in self.data.get("buildings", {}):
+        for b in self.data.get("buildings", []):
             if b.get("geojson_id", None) == building_id:
-                return self.get_param(jsonpath, b, default=default)
+                return self.get_param(jsonpath, data=b)
         else:
             raise SystemExit("No building_id submitted. Please retry and include the feature_id")
 
