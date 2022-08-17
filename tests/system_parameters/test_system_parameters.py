@@ -74,15 +74,15 @@ class SystemParametersTest(unittest.TestCase):
         for s in sdp.validate():
             print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_model.idf')
+        self.assertEqual(Path(value), Path((filename.parent / 'example_model.idf').name))
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.mos')
+        self.assertEqual(Path(value), Path((filename.parent / 'example_weather.mos').name))
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.epw')
+        self.assertEqual(Path(value), Path((filename.parent / 'example_weather.epw').name))
 
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_model_2.idf')
+        self.assertEqual(Path(value), Path((filename.parent / 'example_model_2.idf').name))
 
     def test_load_system_parameters_1(self):
         filename = self.data_dir / 'system_params_1.json'
