@@ -151,10 +151,10 @@ class SystemParametersTest(unittest.TestCase):
             ]
         }
         sp = SystemParameters.loadd(data)
-        value = sp.get_param("$.buildings.*.load_model_parameters.rc.order")
+        value = sp.get_param("$.buildings.[*].load_model_parameters.rc.order")
         self.assertEqual(value, 4)
 
-        value = sp.get_param("buildings.*.load_model")
+        value = sp.get_param("buildings.[*].load_model")
         self.assertEqual(value, "rc")
 
         value = sp.get_param("buildings")
