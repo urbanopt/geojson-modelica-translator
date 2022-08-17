@@ -8,7 +8,7 @@
       "type": "object",
       "properties": {
         "buildings": {
-          "description": "Parameters for all or individual buildings.",
+          "description": "Parameters for individual buildings.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/building_def"
@@ -17,19 +17,15 @@
         "connectors": {
           "$ref": "#/definitions/connector_def"
         },
-        "district_systems": {
+        "district_system": {
           "description": "Parameters associated with district systems.",
-          "type": "array",
-          "items": [
+          "type": "object",
+          "oneOf": [
             {
-              "oneOf": [
-                {
-                  "$ref": "#/definitions/4GDHC_def"
-                },
-                {
-                  "$ref": "#/definitions/5GDHC_def"
-                }
-              ]
+              "$ref": "#/definitions/4GDHC_def"
+            },
+            {
+              "$ref": "#/definitions/5GDHC_def"
             }
           ]
         },
@@ -210,7 +206,7 @@
       "additionalProperties": false
     },
     "building_def": {
-      "description": "Specific building parameters for each building.",
+      "description": "Specific parameters for each building.",
       "type": "object",
       "properties": {
         "geojson_id": {
@@ -303,6 +299,7 @@
         }
       },
       "required": [
+        "geojson_id",
         "ets_model"
       ]
     },
