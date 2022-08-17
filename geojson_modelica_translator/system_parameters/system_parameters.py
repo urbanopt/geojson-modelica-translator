@@ -185,7 +185,7 @@ class SystemParameters(object):
         # otherwise return the list of values
         return results
 
-    def get_param_by_building_id(self, building_id, jsonpath, default=None):
+    def get_param_by_building_id(self, building_id, jsonpath):
         """
         return a parameter for a specific building_id. This is similar to get_param but allows the user
         to constrain the data based on the building id.
