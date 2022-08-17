@@ -203,7 +203,7 @@ class SystemParameters(object):
         default_data = self.get_param("$.buildings.default", impute_default=False)
         schema_default = self.get_param(jsonpath, default_data, impute_default=False)
         default = schema_default or default
-        for b in self.data.get("buildings", {}).get("custom", {}):
+        for b in self.data.get("buildings", {}):
             if b.get("geojson_id", None) == building_id:
                 return self.get_param(jsonpath, b, default=default)
         else:
