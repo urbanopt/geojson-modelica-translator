@@ -214,12 +214,12 @@ class SystemParameters(object):
         Validate an instance against a loaded schema
 
         :param instance: dict, json instance to validate
-        :return: validation results dict {location: error}
+        :return: validation results
         """
-        results = {}
+        results = []
         v = LatestValidator(self.schema)
         for error in sorted(v.iter_errors(self.data), key=str):
-            results[error.json_path] = error.message
+            results.append(error.message)
 
         return results
 
