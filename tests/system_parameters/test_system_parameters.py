@@ -105,33 +105,37 @@ class SystemParametersTest(unittest.TestCase):
         )
 
     def test_errors(self):
-        data = {
-            "buildings": {
-                "default": {
+        incomplete_teaser_params = {
+            "buildings": [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "None",
                     "load_model": "rc",
                     "load_model_parameters": {
-                        "rc": {"order": 6}},
+                        "rc": {"order": 5}},
                 }
-            }
+            ]
         }
 
         with self.assertRaises(Exception) as exc:
-            SystemParameters.loadd(data)
+            SystemParameters.loadd(incomplete_teaser_params)
         self.assertRegex(str(exc.exception), "Invalid system parameter file.*")
 
-        sp = SystemParameters.loadd(data, validate_on_load=False)
+        sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
         self.assertEqual(len(sp.validate()), 6)
         self.assertIn("'fraction_latent_person' is a required property", sp.validate())
         self.assertIn("'mos_weather_filename' is a required property", sp.validate())
         self.assertIn("'temp_hw_supply' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_cooling' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
-        self.assertIn("6 is not one of [1, 2, 3, 4]", sp.validate())
+        self.assertIn("5 is not one of [1, 2, 3, 4]", sp.validate())
 
     def test_get_param(self):
         data = {
-            "buildings": {
-                "default": {
+            "buildings": [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "None",
                     "load_model": "rc",
                     "load_model_parameters": {
                         "rc": {
@@ -142,34 +146,37 @@ class SystemParametersTest(unittest.TestCase):
                             "temp_setpoint_heating": 40,
                             "temp_setpoint_cooling": 24
                         }
-                    },
-                }
-            }
-        }
-        sp = SystemParameters.loadd(data)
-        # $.buildings.*[?load_model=spawn].load_model_parameters.spawn.idf_filename
-        value = sp.get_param("$.buildings.default.load_model_parameters.rc.order")
-        self.assertEqual(value, 4)
-
-        value = sp.get_param("buildings.default.load_model")
-        self.assertEqual(value, "rc")
-
-        value = sp.get_param("buildings.default")
-        self.assertDictEqual(
-            value,
-            {
-                "load_model": "rc",
-                "load_model_parameters": {
-                    "rc": {
-                        "order": 4,
-                        "mos_weather_filename": "path-to-file",
-                        "fraction_latent_person": 1.25,
-                        "temp_hw_supply": 40,
-                        "temp_setpoint_heating": 40,
-                        "temp_setpoint_cooling": 24
                     }
                 }
-            }
+            ]
+        }
+        sp = SystemParameters.loadd(data)
+        value = sp.get_param("$.buildings.*.load_model_parameters.rc.order")
+        self.assertEqual(value, 4)
+
+        value = sp.get_param("buildings.*.load_model")
+        self.assertEqual(value, "rc")
+
+        value = sp.get_param("buildings")
+        self.assertEqual(
+            value,
+            [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "None",
+                    "load_model": "rc",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "mos_weather_filename": "path-to-file",
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24
+                        }
+                    }
+                }
+            ]
         )
 
         value = sp.get_param("")
@@ -179,11 +186,18 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIsNone(value)
 
     def test_get_param_with_default(self):
-        data = {"buildings": {"default": {"load_model": "spawn"}}}
+        data = {"buildings": [
+                        {
+                            "load_model": "spawn",
+                            "geojson_id": "asdf",
+                            "ets_model": "None"
+                        }
+                    ]
+                }
         sp = SystemParameters.loadd(data)
         # this path doesn't exist, but there is a default
         value = sp.get_param(
-            "buildings.default.load_model_parameters.rc.order", default=2
+            "buildings.*.load_model_parameters.rc.order", default=2
         )
         self.assertEqual(2, value)
 
@@ -201,8 +215,8 @@ class SystemParametersTest(unittest.TestCase):
         # grab the schema default
         value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
         self.assertEqual("Indirect Heating and Cooling", value)
-        value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
-        self.assertEqual({"indirect": {
+        value = sdp.get_param_by_building_id("defgh2345", "ets_indirect_parameters", "Not None")
+        self.assertEqual({
             "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
@@ -220,7 +234,7 @@ class SystemParametersTest(unittest.TestCase):
             "cooling_controller_y_min": 0,
             "heating_controller_y_max": 1,
             "heating_controller_y_min": 0
-        }}, value)
+        }, value)
 
         # respect the passed default value
         value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
