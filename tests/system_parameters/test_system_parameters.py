@@ -209,13 +209,13 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.maxDiff = None
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
-        value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None")
+        value = sdp.get_param_by_building_id("abcd1234", "ets_model")
         self.assertEqual("None", value)
 
         # grab the schema default
-        value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
+        value = sdp.get_param_by_building_id("defgh2345", "ets_model")
         self.assertEqual("Indirect Heating and Cooling", value)
-        value = sdp.get_param_by_building_id("defgh2345", "ets_indirect_parameters", "Not None")
+        value = sdp.get_param_by_building_id("defgh2345", "ets_indirect_parameters")
         self.assertEqual({
             "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
@@ -237,15 +237,16 @@ class SystemParametersTest(unittest.TestCase):
         }, value)
 
         # respect the passed default value
-        value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
-        self.assertEqual(24815, value)
+        # value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
+        # self.assertEqual(24815, value)
+        # FYI! Default sys-param values (in the sys-param file) are being eliminated in this PR
 
     def test_get_param_with_none_building_id(self):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         with self.assertRaises(SystemExit) as context:
-            sdp.get_param_by_building_id(None, "ets_model", "Not None")
+            sdp.get_param_by_building_id(None, "ets_model")
         self.assertIn("No building_id submitted. Please retry and include the feature_id", str(context.exception))
 
     def test_missing_files(self):
@@ -337,7 +338,7 @@ class SystemParametersTest(unittest.TestCase):
                 sys_param_filename=output_sys_param_file)
         self.assertIn("csv_to_sys_param() missing 1 required positional argument: 'model_type'",
                       str(context.exception))
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             bogus_template_type = 'openstudio'
             sp = SystemParameters()
             sp.csv_to_sys_param(
