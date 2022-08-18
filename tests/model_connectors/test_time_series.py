@@ -79,7 +79,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.assertIsNotNone(self.time_series)
         self.assertIsNotNone(self.time_series.building)
         self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+                         self.time_series.system_parameters.get_param("buildings")[0]["load_model"])
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(
@@ -108,7 +108,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.assertIsNotNone(self.time_series)
         self.assertIsNotNone(self.time_series.building)
         self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+                         self.time_series.system_parameters.get_param("buildings")[0]["load_model"])
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(
