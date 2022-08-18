@@ -249,7 +249,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIn("No building_id submitted. Please retry and include the feature_id", str(context.exception))
 
     def test_missing_files(self):
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             output_sys_param_file = self.output_dir / 'going_to_fail_first.json'
             missing_scenario_dir = self.scenario_dir / 'foobar'
             sp = SystemParameters()
@@ -260,7 +260,7 @@ class SystemParametersTest(unittest.TestCase):
                 sys_param_filename=output_sys_param_file)
         self.assertIn(
             f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
             sp = SystemParameters()
             sp.csv_to_sys_param(
@@ -272,7 +272,7 @@ class SystemParametersTest(unittest.TestCase):
             f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             output_sys_param_file = self.output_dir / 'test_overwriting_sys_param.json'
             sp = SystemParameters()
             sp.csv_to_sys_param(
@@ -304,7 +304,7 @@ class SystemParametersTest(unittest.TestCase):
         #     sys_param_data = json.load(f)
         #     print(sys_param_data)
 
-        self.assertTrue(output_sys_param_file.exists())
+        self.assertTrue(output_sys_param_file.is_file())
 
     def test_csv_to_sys_param_microgrid(self):
         output_sys_param_file = self.microgrid_output_dir / 'test_sys_param_microgrid.json'
@@ -325,7 +325,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertTrue(sys_param_data['electrical_grid']['frequency'])
 
         # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
-        self.assertTrue(sys_param_data['buildings']['custom'][0]['photovoltaic_panels'])
+        self.assertTrue(sys_param_data['buildings'][0]['photovoltaic_panels'])
 
     def test_validate_sys_param_template(self):
         output_sys_param_file = self.output_dir / 'bogus_sys_param.json'
