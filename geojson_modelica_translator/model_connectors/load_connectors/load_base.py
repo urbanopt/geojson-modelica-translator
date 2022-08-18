@@ -148,7 +148,7 @@ class LoadBase(ModelBase):
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
             if self.system_parameters:
-                for building in self.system_parameters.get_default('$.buildings.custom', []):
+                for building in self.system_parameters.get_default('$.buildings', []):
                     # Only look at buildings in the sys-param file, not necessarily the entire feature file
                     if urbanopt_building.feature.properties["id"] == building["geojson_id"]:
                         try:
