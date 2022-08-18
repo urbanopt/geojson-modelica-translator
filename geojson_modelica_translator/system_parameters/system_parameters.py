@@ -84,7 +84,7 @@ class SystemParameters(object):
         self.filename = filename
 
         if self.filename:
-            if Path(self.filename).exists():
+            if Path(self.filename).is_file():
                 with open(self.filename, "r") as f:
                     self.data = json.load(f)
             else:
@@ -95,7 +95,6 @@ class SystemParameters(object):
                 raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
             self.resolve_paths()
-            # self.resolve_defaults()
 
         self.param_template = {}
         self.sys_param_filename = None
@@ -228,7 +227,7 @@ class SystemParameters(object):
         p_download = Path(filename)
         p_save = Path(save_directory)
 
-        if not p_save.exists():
+        if not p_save.is_dir():
             print(f"Creating directory to save weather file, {str(p_save)}")
             p_save.mkdir(parents=True, exist_ok=True)
 
@@ -606,7 +605,7 @@ class SystemParameters(object):
             data = [d for d in dss_data['feature_reports'] if d['feature_type'] == 'Building']
 
             # grab records to modify
-            for bldg in self.param_template['buildings']['custom']:
+            for bldg in self.param_template['buildings']:
                 # find match in data
                 match = [d for d in data if d['id'] == bldg['geojson_id']]
                 if match:
@@ -713,6 +712,7 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
+        :param overwrite: Boolean, determines if an existing file of same name/location should be overwritten
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
@@ -726,18 +726,18 @@ class SystemParameters(object):
                 param_template_path = Path(__file__).parent / 'time_series_template.json'
         elif model_type == 'spawn':
             # TODO: We should support spawn as well
-            pass
+            raise SystemExit('Spawn models are not implemented at this time.')
         else:
-            raise Exception(f"No template found. {model_type} is not a valid template")
+            raise SystemExit(f"No template found. {model_type} is not a valid template")
 
-        if not Path(scenario_dir).exists():
-            raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
+        if not Path(scenario_dir).is_dir():
+            raise SystemExit(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
 
-        if not Path(feature_file).exists():
-            raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
+        if not Path(feature_file).is_file():
+            raise SystemExit(f"Unable to find your feature file. The path you provided was: {feature_file}")
 
-        if Path(self.sys_param_filename).exists() and not overwrite:
-            raise Exception(f"Output file already exists and overwrite is False: {self.sys_param_filename}")
+        if Path(self.sys_param_filename).is_file() and not overwrite:
+            raise SystemExit(f"Output file already exists and overwrite is False: {self.sys_param_filename}")
 
         with open(param_template_path, "r") as f:
             self.param_template = json.load(f)
@@ -778,7 +778,7 @@ class SystemParameters(object):
         # Make sys_param template entries for each feature_id
         building_list = []
         for building in building_ids:
-            feature_info = deepcopy(self.param_template['buildings']['custom'][0])
+            feature_info = deepcopy(self.param_template['buildings'][0])
             feature_info['geojson_id'] = str(building)
             building_list.append(feature_info)
 
@@ -798,7 +798,7 @@ class SystemParameters(object):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
                         building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                        building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(
                             building_nominal_mfrt)
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
@@ -818,17 +818,17 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = float(
                 district_nominal_mfrt.round(3))
             if microgrid:
                 building = self.process_building_microgrid_inputs(building, scenario_dir)
 
         # Add all buildings to the sys-param file
-        self.param_template['buildings']['custom'] = building_list
+        self.param_template['buildings'] = building_list
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        (self.param_template['district_system']['4GDHC']
+        (self.param_template['district_system']['fourthGDHC']
             ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
 
         if microgrid:
