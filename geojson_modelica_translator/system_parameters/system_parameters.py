@@ -83,19 +83,18 @@ class SystemParameters(object):
         self.data = {}
         self.filename = filename
 
-        if self.filename:
-            if Path(self.filename).exists():
-                with open(self.filename, "r") as f:
-                    self.data = json.load(f)
-            else:
-                raise Exception(f"System design parameters file does not exist: {self.filename}")
+        if Path(self.filename).is_file():
+            with open(self.filename, "r") as f:
+                self.data = json.load(f)
+        else:
+            raise Exception(f"System design parameters file does not exist: {self.filename}")
 
-            errors = self.validate()
-            if len(errors) != 0:
-                raise Exception(f"Invalid system parameter file. Errors: {errors}")
+        errors = self.validate()
+        if len(errors) != 0:
+            raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
-            self.resolve_paths()
-            # self.resolve_defaults()
+        self.resolve_paths()
+        # self.resolve_defaults()
 
         self.param_template = {}
         self.sys_param_filename = None
