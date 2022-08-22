@@ -306,6 +306,9 @@ class SystemParametersTest(unittest.TestCase):
         with open(output_sys_param_file, "r") as f:
             sys_param_data = json.load(f)
 
+        # pv on a building
+        self.assertTrue(len(sys_param_data['buildings']['custom'][0]['photovoltaic_panels']) > 0)
+        # pv for the district
         self.assertTrue(len(sys_param_data['photovoltaic_panels']) > 0)
         self.assertTrue(len(sys_param_data['wind_turbines']) > 0)
         self.assertTrue(sys_param_data['electrical_grid']['frequency'])
