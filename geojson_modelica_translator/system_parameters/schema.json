@@ -8,8 +8,7 @@
       "type": "object",
       "properties": {
         "buildings": {
-          "title": "custom",
-          "description": "Parameters for all or individual buildings.",
+          "description": "Parameters for individual buildings.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/building_def"
@@ -18,19 +17,15 @@
         "connectors": {
           "$ref": "#/definitions/connector_def"
         },
-        "district_systems": {
+        "district_system": {
           "description": "Parameters associated with district systems.",
-          "type": "array",
-          "items": [
+          "type": "object",
+          "oneOf": [
             {
-              "oneOf": [
-                {
-                  "$ref": "#/definitions/4GDHC_def"
-                },
-                {
-                  "$ref": "#/definitions/5GDHC_def"
-                }
-              ]
+              "$ref": "#/definitions/fourthGDHC_def"
+            },
+            {
+              "$ref": "#/definitions/fifthGDHC_def"
             }
           ]
         },
@@ -211,7 +206,7 @@
       "additionalProperties": false
     },
     "building_def": {
-      "description": "Specific building parameters for each building.",
+      "description": "Specific parameters for each building.",
       "type": "object",
       "properties": {
         "geojson_id": {
@@ -249,7 +244,7 @@
           "enum": [
             "None",
             "Indirect Heating and Cooling",
-            "5G Heat Pump"
+            "Fifth Gen Heat Pump"
           ]
         },
         "ets_model_parameters": {
@@ -260,7 +255,7 @@
               "$ref": "#/definitions/ets_indirect_parameters"
             },
             {
-              "$ref": "#/definitions/5G_ets_parameters"
+              "$ref": "#/definitions/fifth_gen_ets_parameters"
             }
           ]
         },
@@ -302,7 +297,11 @@
             }
           }
         }
-      }
+      },
+      "required": [
+        "geojson_id",
+        "ets_model"
+      ]
     },
     "connector_def": {
       "description": "[unused] Parameters associated with the connectors in a district system.",
@@ -1172,9 +1171,9 @@
         }
       }
     },
-    "4GDHC_def": {
+    "fourthGDHC_def": {
       "properties": {
-        "4GDHC": {
+        "fourthGDHC": {
           "properties": {
             "central_cooling_plant_parameters": {
               "$ref": "#/definitions/central_cooling_plant_parameters"
@@ -1200,12 +1199,12 @@
         }
       },
       "required": [
-        "4GDHC"
+        "fourthGDHC"
       ]
     },
-    "5GDHC_def": {
+    "fifthGDHC_def": {
       "properties": {
-        "5GDHC": {
+        "fifthGDHC": {
           "properties": {
             "central_cooling_plant_parameters": {
               "$ref": "#/definitions/central_cooling_plant_parameters"
@@ -1231,10 +1230,10 @@
         }
       },
       "required": [
-        "5GDHC"
+        "fifthGDHC"
       ]
     },
-    "5G_ets_parameters": {
+    "fifth_gen_ets_parameters": {
       "properties": {
         "supply_water_temperature_building": {
           "description": "Water supply temperature building side. (C)",

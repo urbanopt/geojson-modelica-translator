@@ -1,6 +1,11 @@
 {
-  "buildings": {
-    "default": {
+  "buildings": [
+    {
+      "geojson_id": "abcd1234",
+      "ets_model": "None"
+    },
+    {
+      "geojson_id": "defgh2345",
       "load_model": "rc",
       "load_model_parameters": {
         "rc": {
@@ -13,204 +18,199 @@
         }
       },
       "ets_model": "Indirect Heating and Cooling",
-      "ets_model_parameters": {
-        "indirect": {
-          "heat_flow_nominal": 8000,
-          "heat_exchanger_efficiency": 0.8,
-          "nominal_mass_flow_district": 0.5,
-          "nominal_mass_flow_building": 0.5,
-          "valve_pressure_drop": 6000,
-          "heat_exchanger_secondary_pressure_drop": 500,
-          "heat_exchanger_primary_pressure_drop": 500,
-          "cooling_supply_water_temperature_building": 7,
-          "heating_supply_water_temperature_building": 50,
-          "delta_temp_chw_building": 5,
-          "delta_temp_chw_district": 8,
-          "delta_temp_hw_building": 15,
-          "delta_temp_hw_district": 20,
-          "cooling_controller_y_max": 1,
-          "cooling_controller_y_min": 0,
-          "heating_controller_y_max": 1,
-          "heating_controller_y_min": 0
-        }
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
       }
     },
-    "custom": [
-      {
-        "geojson_id": "abcd1234",
-        "ets_model": "None"
-      },
-      {
-        "geojson_id": "defgh2345",
-        "load_model": "rc",
-        "ets_model": "Indirect Heating and Cooling",
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 8000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 0.5,
-            "nominal_mass_flow_building": 0.5,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "delta_temp_hw_building": 15,
-            "delta_temp_hw_district": 20,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
+    {
+      "geojson_id": "building_merge_defaults",
+      "load_model": "rc",
+      "load_model_parameters": {
+        "rc": {
+          "order": 2,
+          "mos_weather_filename": "example_weather_2.mos",
+          "fraction_latent_person": 1.25,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 20,
+          "temp_setpoint_heating": 24
         }
       },
-      {
-        "geojson_id": "building_merge_defaults",
-        "load_model": "rc",
-        "ets_model": "Indirect Heating and Cooling",
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 8000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 0.5,
-            "nominal_mass_flow_building": 0.5,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "delta_temp_hw_building": 15,
-            "delta_temp_hw_district": 20,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
-        }
-      },
-      {
-        "geojson_id": "ijk678",
-        "load_model": "spawn",
-        "load_model_parameters": {
-          "spawn": {
-            "idf_filename": "example_model.idf",
-            "mos_weather_filename": "example_weather.mos",
-            "epw_filename": "example_weather.epw",
-            "has_liquid_heating": true,
-            "has_electric_heating": false,
-            "has_liquid_cooling": true,
-            "has_electric_cooling": false,
-            "temp_chw_supply": 7,
-            "temp_chw_return": 12,
-            "temp_hw_supply": 40,
-            "temp_hw_return": 35,
-            "temp_setpoint_cooling": 20,
-            "temp_setpoint_heating": 24,
-            "thermal_zone_names": [
-              "Not Real Zones"
-            ],
-            "zone_nom_htg_loads": [
-              3000
-            ],
-            "zone_nom_clg_loads": [
-              -8750
-            ]
-          }
-        },
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 8000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 0.5,
-            "nominal_mass_flow_building": 0.5,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "delta_temp_hw_building": 15,
-            "delta_temp_hw_district": 20,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
-        }
-      },
-      {
-        "geojson_id": "lmn000",
-        "load_model": "spawn",
-        "load_model_parameters": {
-          "spawn": {
-            "idf_filename": "example_model_2.idf",
-            "mos_weather_filename": "example_weather_2.mos",
-            "epw_filename": "example_weather_2.epw",
-            "has_liquid_heating": true,
-            "has_electric_heating": false,
-            "has_liquid_cooling": true,
-            "has_electric_cooling": false,
-            "temp_chw_supply": 7,
-            "temp_chw_return": 12,
-            "temp_hw_supply": 40,
-            "temp_hw_return": 35,
-            "temp_setpoint_cooling": 20,
-            "temp_setpoint_heating": 24,
-            "thermal_zone_names": [
-              "Not Real Zones"
-            ],
-            "zone_nom_htg_loads": [
-              3000
-            ],
-            "zone_nom_clg_loads": [
-              -8750
-            ]
-          }
-        },
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 8000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 0.5,
-            "nominal_mass_flow_building": 0.5,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "delta_temp_hw_building": 15,
-            "delta_temp_hw_district": 20,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
-        }
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
       }
-    ]
-  },
-  "connectors": {
-    "default": {
-      "pipe_diameter": 12,
-      "pipe_insulation_rvalue": 5,
-      "pipe_location": "Tunnel"
+    },
+    {
+      "geojson_id": "ijk678",
+      "load_model": "spawn",
+      "load_model_parameters": {
+        "spawn": {
+          "idf_filename": "example_model.idf",
+          "mos_weather_filename": "example_weather.mos",
+          "epw_filename": "example_weather.epw",
+          "has_liquid_heating": true,
+          "has_electric_heating": false,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 7,
+          "temp_chw_return": 12,
+          "temp_hw_supply": 40,
+          "temp_hw_return": 35,
+          "temp_setpoint_cooling": 20,
+          "temp_setpoint_heating": 24,
+          "thermal_zone_names": [
+            "Not Real Zones"
+          ],
+          "zone_nom_htg_loads": [
+            3000
+          ],
+          "zone_nom_clg_loads": [
+            -8750
+          ]
+        }
+      },
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
+      }
+    },
+    {
+      "geojson_id": "lmn000",
+      "load_model": "spawn",
+      "load_model_parameters": {
+        "spawn": {
+          "idf_filename": "example_model_2.idf",
+          "mos_weather_filename": "example_weather_2.mos",
+          "epw_filename": "example_weather_2.epw",
+          "has_liquid_heating": true,
+          "has_electric_heating": false,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 7,
+          "temp_chw_return": 12,
+          "temp_hw_supply": 40,
+          "temp_hw_return": 35,
+          "temp_setpoint_cooling": 20,
+          "temp_setpoint_heating": 24,
+          "thermal_zone_names": [
+            "Not Real Zones"
+          ],
+          "zone_nom_htg_loads": [
+            3000
+          ],
+          "zone_nom_clg_loads": [
+            -8750
+          ]
+        }
+      },
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
+      }
     }
+  ],
+  "connectors": {
+    "pipe_diameter": 12,
+    "pipe_insulation_rvalue": 5,
+    "pipe_location": "Tunnel"
   },
   "district_system": {
-    "default": {
-      "return_configuration": "Reverse Return"
-    }
-  },
-  "topology": {
-    "topology_parameters": {
-      "configuration": "Radial"
+    "fourthGDHC": {
+      "central_cooling_plant_parameters": {
+        "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+        "heat_flow_nominal": 7999,
+        "cooling_tower_fan_power_nominal": 4999,
+        "mass_chw_flow_nominal": 9.9,
+        "chiller_water_flow_minimum": 9.9,
+        "mass_cw_flow_nominal": 9.9,
+        "chw_pump_head": 300000,
+        "cw_pump_head": 200000,
+        "pressure_drop_chw_nominal": 5999,
+        "pressure_drop_cw_nominal": 5999,
+        "pressure_drop_setpoint": 49999,
+        "temp_setpoint_chw": 6,
+        "pressure_drop_chw_valve_nominal": 5999,
+        "pressure_drop_cw_pum_nominal": 5999,
+        "temp_air_wb_nominal": 24.9,
+        "temp_cw_in_nominal": 34.9,
+        "cooling_tower_water_temperature_difference_nominal": 6.56,
+        "delta_temp_approach": 3.25,
+        "ratio_water_air_nominal": 0.6
+      },
+      "central_heating_plant_parameters": {
+        "heat_flow_nominal": 8001,
+        "mass_hhw_flow_nominal": 11,
+        "boiler_water_flow_minimum": 11,
+        "pressure_drop_hhw_nominal": 55001,
+        "pressure_drop_setpoint": 50000,
+        "temp_setpoint_hhw": 54,
+        "pressure_drop_hhw_valve_nominal": 6001,
+        "chp_installed": false
+      }
     }
   }
 }

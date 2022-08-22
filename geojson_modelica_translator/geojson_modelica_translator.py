@@ -172,7 +172,7 @@ class GeoJsonModelicaTranslator(object):
         self._system_parameters = SystemParameters(sys_params_filepath)
 
         geojson_ids = self._system_parameters.get_default(
-            '$.buildings.custom[*].geojson_id',
+            '$.buildings.[*].geojson_id',
             []
         )
         self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)

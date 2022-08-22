@@ -75,58 +75,58 @@ class LoadBase(ModelBase):
         # test_base.py and test_time_series.py test these cases
         if system_parameters is not None:
             if self.system_parameters.get_param_by_building_id(
-                    self.building_id, "ets_model_parameters.indirect") is not None:
+                    self.building_id, "ets_indirect_parameters") is not None:
                 self.ets_template_data = {
                     "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_flow_nominal"
+                        self.building_id, "ets_indirect_parameters.heat_flow_nominal"
                     ),
                     "heat_exchanger_efficiency": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_exchanger_efficiency"
+                        self.building_id, "ets_indirect_parameters.heat_exchanger_efficiency"
                     ),
                     "nominal_mass_flow_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.nominal_mass_flow_district"
+                        self.building_id, "ets_indirect_parameters.nominal_mass_flow_district"
                     ),
                     "nominal_mass_flow_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.nominal_mass_flow_building"
+                        self.building_id, "ets_indirect_parameters.nominal_mass_flow_building"
                     ),
                     "valve_pressure_drop": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.valve_pressure_drop"
+                        self.building_id, "ets_indirect_parameters.valve_pressure_drop"
                     ),
                     "heat_exchanger_secondary_pressure_drop": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_exchanger_secondary_pressure_drop"
+                        self.building_id, "ets_indirect_parameters.heat_exchanger_secondary_pressure_drop"
                     ),
                     "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heat_exchanger_primary_pressure_drop"
+                        self.building_id, "ets_indirect_parameters.heat_exchanger_primary_pressure_drop"
                     ),
                     "cooling_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_supply_water_temperature_building"
+                        self.building_id, "ets_indirect_parameters.cooling_supply_water_temperature_building"
                     )),
                     "heating_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_supply_water_temperature_building"
+                        self.building_id, "ets_indirect_parameters.heating_supply_water_temperature_building"
                     )),
                     "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_chw_building"
+                        self.building_id, "ets_indirect_parameters.delta_temp_chw_building"
                     ),
                     "delta_temp_chw_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_chw_district"
+                        self.building_id, "ets_indirect_parameters.delta_temp_chw_district"
                     ),
                     "delta_temp_hw_building": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_hw_building"
+                        self.building_id, "ets_indirect_parameters.delta_temp_hw_building"
                     ),
                     "delta_temp_hw_district": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.delta_temp_hw_district"
+                        self.building_id, "ets_indirect_parameters.delta_temp_hw_district"
                     ),
                     "cooling_controller_y_max": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_controller_y_max"
+                        self.building_id, "ets_indirect_parameters.cooling_controller_y_max"
                     ),
                     "cooling_controller_y_min": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.cooling_controller_y_min"
+                        self.building_id, "ets_indirect_parameters.cooling_controller_y_min"
                     ),
                     "heating_controller_y_max": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_controller_y_max"
+                        self.building_id, "ets_indirect_parameters.heating_controller_y_max"
                     ),
                     "heating_controller_y_min": self.system_parameters.get_param_by_building_id(
-                        self.building_id, "ets_model_parameters.indirect.heating_controller_y_min"
+                        self.building_id, "ets_indirect_parameters.heating_controller_y_min"
                     )
                 }
             else:
@@ -148,7 +148,7 @@ class LoadBase(ModelBase):
         # TODO: Abstract out the GeoJSON functionality
         if mapper is None:
             if self.system_parameters:
-                for building in self.system_parameters.get_default('$.buildings.custom', []):
+                for building in self.system_parameters.get_default('$.buildings', []):
                     # Only look at buildings in the sys-param file, not necessarily the entire feature file
                     if urbanopt_building.feature.properties["id"] == building["geojson_id"]:
                         try:

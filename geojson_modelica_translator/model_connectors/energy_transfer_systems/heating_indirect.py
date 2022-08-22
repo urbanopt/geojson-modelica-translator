@@ -67,7 +67,7 @@ class HeatingIndirect(EnergyTransferBase):
 
         ets_data = self.system_parameters.get_param_by_building_id(
             self._geojson_load_id,
-            "ets_model_parameters.indirect"
+            "ets_indirect_parameters"
         )
 
         combined_template_data = {**ets_data, **self.district_template_data}
