@@ -630,7 +630,12 @@ class SystemParameters(object):
                 reopt_data = json.load(f)
 
         # extract Latitude
-        latitude = reopt_data['location']['latitude_deg']
+        try:
+            latitude = reopt_data['location']['latitude_deg']
+        except KeyError:
+            logger.info(f"Latitude not found in {feature_opt_file}. Skipping PV.")
+        except UnboundLocalError:
+            logger.info(f"REopt data not found in {feature_opt_file}. Skipping PV.")
 
         # PV
         if reopt_data['distributed_generation'] and reopt_data['distributed_generation']['solar_pv']:
@@ -652,27 +657,33 @@ class SystemParameters(object):
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
         # also look for raw REopt report with inputs and xzx for non-uo results
-        raw_scenario_file = os.path.join(scenario_dir, 'reopt', 'scenario_report_reopt_scenario_reopt_run.json')
+        raw_scenario_file = os.path.join(scenario_dir, 'reopt', f'scenario_report_{scenario_dir.name}_reopt_run.json')
         if (os.path.exists(raw_scenario_file)):
             with open(raw_scenario_file, "r") as f:
                 raw_data = json.load(f)
 
         # PV (add if results are found in scenario_report)
         # extract latitude
-        latitude = reopt_data['scenario_report']['location']['latitude_deg']
-        if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-            self.param_template['photovoltaic_panels'] = self.process_pv(
-                reopt_data['scenario_report']['distributed_generation']['solar_pv'],
-                latitude
-            )
+        try:
+            latitude = reopt_data['scenario_report']['location']['latitude_deg']
+            if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
+                self.param_template['photovoltaic_panels'] = self.process_pv(
+                    reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                    latitude
+                )
+        except KeyError:
+            logger.info("Latitude not found in scenario_report. Skipping PV.")
 
         # Wind (add if results are found in scenario_report)
-        if reopt_data['scenario_report']['distributed_generation']['wind']:
+        # if reopt_data['scenario_report']['distributed_generation']['wind']:
+        try:
             self.process_wind(reopt_data)
+        except KeyError:
+            logger.info("Wind data not found in scenario_report. Skipping wind.")
 
         # CHP (add if results are found in reopt results-raw_data)
         # this is the only item not in the default URBANopt report file
-        if raw_data['outputs']['Scenario']['Site']['CHP']['size_kw'] != 0.0:
+        if Path(raw_scenario_file).exists() and raw_data['outputs']['Scenario']['Site']['CHP']['size_kw'] != 0.0:
             # there is a CHP, process
             self.process_chp(raw_data)
 
@@ -682,7 +693,7 @@ class SystemParameters(object):
                 # there is storage, process
                 self.process_storage(reopt_data)
         except KeyError:
-            pass
+            logger.info("Energy storage data not found in scenario_report. Skipping storage.")
 
         # Generators
         try:
@@ -690,7 +701,7 @@ class SystemParameters(object):
                 # process diesel generators
                 self.process_generators(reopt_data)
         except KeyError:
-            pass
+            logger.info("Generator data not found in scenario_report. Skipping generator.")
 
         # process electrical components (from OpenDSS results)
         self.process_electrical_components(scenario_dir)
@@ -712,7 +723,7 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
-        :param overwrite: Boolean, determines if an existing file of same name/location should be overwritten
+        :param overwrite: Boolean, whether to overwrite existing sys-param file
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
@@ -820,7 +831,10 @@ class SystemParameters(object):
         for building in building_list:
             building['ets_indirect_parameters']['nominal_mass_flow_district'] = float(
                 district_nominal_mfrt.round(3))
-            if microgrid:
+            feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
+            if microgrid and not feature_opt_file.exists():
+                logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
+            elif microgrid and feature_opt_file.exists():
                 building = self.process_building_microgrid_inputs(building, scenario_dir)
 
         # Add all buildings to the sys-param file
@@ -830,9 +844,14 @@ class SystemParameters(object):
         # Parens are to allow the line break
         (self.param_template['district_system']['fourthGDHC']
             ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
-
-        if microgrid:
+        if microgrid and not feature_opt_file.exists():
+            logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
+                        "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
+        try:
             self.process_microgrid_inputs(scenario_dir)
+        except UnboundLocalError:
+            raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
+                             "Perhaps you haven't run REopt post-processing step in the UO sdk?")
 
         # save
         self.save()
