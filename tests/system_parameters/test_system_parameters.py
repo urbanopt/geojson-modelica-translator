@@ -187,13 +187,13 @@ class SystemParametersTest(unittest.TestCase):
 
     def test_get_param_with_default(self):
         data = {"buildings": [
-                        {
-                            "load_model": "spawn",
-                            "geojson_id": "asdf",
-                            "ets_model": "None"
-                        }
-                    ]
-                }
+            {
+                "load_model": "spawn",
+                "geojson_id": "asdf",
+                "ets_model": "None"
+            }
+        ]
+        }
         sp = SystemParameters.loadd(data)
         # this path doesn't exist, but there is a default
         value = sp.get_param(
