@@ -5,7 +5,7 @@
     "Secondary loop heated water flow rate."
     annotation (Placement({{ diagram.transformation.sec_mas_flo_rat.real_expression }}));
   Modelica.Blocks.Sources.RealExpression TDisSetHeaWat_{{ coupling.id }}(
-    each y=273.15+{{ sys_params.district_system.fourthGDHC.central_heating_plant_parameters.temp_setpoint_hhw }})
+    each y=273.15+{{ sys_params.district_system.fourth_generation.central_heating_plant_parameters.temp_setpoint_hhw }})
     "District side heating water supply temperature set point."
     annotation (Placement({{ diagram.transformation.t_dis_set_hea_wat.real_expression }}));
   Modelica.Blocks.Sources.BooleanConstant mPum_flow_{{ coupling.id }}(

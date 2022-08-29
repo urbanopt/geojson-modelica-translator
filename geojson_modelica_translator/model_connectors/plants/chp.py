@@ -52,7 +52,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         super().__init__(system_parameters)
         self.id = 'chpPla_' + simple_uuid()
         self.chp_installed = self.system_parameters.get_param(
-            "$.district_system.fourthGDHC.central_heating_plant_parameters.chp_installed"
+            "$.district_system.fourth_generation.central_heating_plant_parameters.chp_installed"
         )
         if not self.chp_installed:
             self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
@@ -75,30 +75,30 @@ class HeatingPlantWithOptionalCHP(PlantBase):
             template_data = {
                 "nominal_values": {
                     "heat_flow_nominal": self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.heat_flow_nominal"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.heat_flow_nominal"
                     ),
                     "mass_hhw_flow_nominal": self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.mass_hhw_flow_nominal"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.mass_hhw_flow_nominal"
                     ),
                     "boiler_water_flow_minimum": self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.boiler_water_flow_minimum"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.boiler_water_flow_minimum"
                     ),
                     "pressure_drop_hhw_nominal": self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.pressure_drop_hhw_nominal"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.pressure_drop_hhw_nominal"
                     ),
                     "pressure_drop_setpoint": self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.pressure_drop_setpoint"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.pressure_drop_setpoint"
                     ),
                     "temp_setpoint_hhw": convert_c_to_k(self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.temp_setpoint_hhw"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.temp_setpoint_hhw"
                     )),
                     "pressure_drop_hhw_valve_nominal": self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.pressure_drop_hhw_valve_nominal"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.pressure_drop_hhw_valve_nominal"
                     ),
                 },
                 "signals": {
                     "thermal_following": str(self.system_parameters.get_param(
-                        "$.district_system.fourthGDHC.central_heating_plant_parameters.chp_thermal_following"
+                        "$.district_system.fourth_generation.central_heating_plant_parameters.chp_thermal_following"
                     )).lower(),  # Booleans in Python start with a capital letter. Modelica wants it lowercase, hence this.
                 },
             }
