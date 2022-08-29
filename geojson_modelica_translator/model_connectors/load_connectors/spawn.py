@@ -201,12 +201,9 @@ class Spawn(LoadBase):
             raise Exception(
                 f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
         # merge ets template values from load_base.py into the building nominal values
-        # If there is no ets defined in sys-param file, use the building template data alone
-        try:
-            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
-            combined_template_data = {**building_template_data, **nominal_values}
-        except AttributeError:
-            combined_template_data = building_template_data
+        # As of 2022-08-29 we require ETS parameters defined for each building
+        nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+        combined_template_data = {**building_template_data, **nominal_values}
 
         self.run_template(
             spawn_building_template,
