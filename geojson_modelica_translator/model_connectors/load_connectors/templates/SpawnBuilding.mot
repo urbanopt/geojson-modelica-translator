@@ -24,14 +24,6 @@ model building
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal[nZon]
     "Load side mass flow rate at heating nominal conditions"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{data['delta_temp_chw_building']}}
-    "Nominal building supply and return chilled water temperature difference";
-  parameter Modelica.Units.SI.TemperatureDifference delTDisCoo={{data['delta_temp_chw_district']}}
-    "Nominal district supply and return water temperature difference";
-  parameter Modelica.Units.SI.TemperatureDifference delTBuiHea={{data['delta_temp_hw_building']}}
-    "Nominal building supply and return water temperature difference";
-  parameter Modelica.Units.SI.TemperatureDifference delTDisHea={{data['delta_temp_hw_district']}}
-    "Nominal district supply and return water temperature difference";
   parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
     "Supply chilled water nominal temperature";
   parameter Modelica.Units.SI.Temperature T_bChiWat_nominal={{ data['nominal_values']['chw_return_temp'] }}
