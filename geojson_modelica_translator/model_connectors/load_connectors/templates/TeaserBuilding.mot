@@ -15,8 +15,6 @@ model building
     "Load side medium";
   {% endraw %}parameter Integer nZon={{data['thermal_zones'] | count}}
     {% raw %} "Number of thermal zones";
-  {% endraw %}parameter Modelica.Units.SI.TemperatureDifference delTBuiCoo={{ data['delta_temp_chw_building'] }}
-    {% raw %} "Nominal building supply and return chilled water temperature difference";
   {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
     {% raw %} "Path of the weather file";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
