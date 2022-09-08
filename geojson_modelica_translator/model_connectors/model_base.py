@@ -46,7 +46,7 @@ from modelica_builder.model import Model
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s: %(message)s',
     datefmt='%d-%b-%y %H:%M:%S',
 )
@@ -90,10 +90,10 @@ class ModelBase(object):
         if system_parameters is not None:
             self.district_template_data = {
                 "temp_setpoint_hhw": self.system_parameters.get_param(
-                    "$.district_system.fourthGDHC.central_heating_plant_parameters.temp_setpoint_hhw"
+                    "$.district_system.fourth_generation.central_heating_plant_parameters.temp_setpoint_hhw"
                 ),
                 "temp_setpoint_chw": self.system_parameters.get_param(
-                    "$.district_system.fourthGDHC.central_cooling_plant_parameters.temp_setpoint_chw"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.temp_setpoint_chw"
                 ),
             }
 

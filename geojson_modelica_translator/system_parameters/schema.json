@@ -22,10 +22,10 @@
           "type": "object",
           "oneOf": [
             {
-              "$ref": "#/definitions/fourthGDHC_def"
+              "$ref": "#/definitions/fourth_generation_def"
             },
             {
-              "$ref": "#/definitions/fifthGDHC_def"
+              "$ref": "#/definitions/fifth_generation_def"
             }
           ]
         },
@@ -1171,9 +1171,9 @@
         }
       }
     },
-    "fourthGDHC_def": {
+    "fourth_generation_def": {
       "properties": {
-        "fourthGDHC": {
+        "fourth_generation": {
           "properties": {
             "central_cooling_plant_parameters": {
               "$ref": "#/definitions/central_cooling_plant_parameters"
@@ -1199,12 +1199,12 @@
         }
       },
       "required": [
-        "fourthGDHC"
+        "fourth_generation"
       ]
     },
-    "fifthGDHC_def": {
+    "fifth_generation_def": {
       "properties": {
-        "fifthGDHC": {
+        "fifth_generation": {
           "properties": {
             "central_cooling_plant_parameters": {
               "$ref": "#/definitions/central_cooling_plant_parameters"
@@ -1230,7 +1230,7 @@
         }
       },
       "required": [
-        "fifthGDHC"
+        "fifth_generation"
       ]
     },
     "fifth_gen_ets_parameters": {

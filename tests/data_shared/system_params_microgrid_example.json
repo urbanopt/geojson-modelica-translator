@@ -194,7 +194,7 @@
     }
   ],
   "district_system": {
-    "fourthGDHC": {
+    "fourth_generation": {
       "central_cooling_plant_parameters": {
         "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
@@ -339,264 +339,249 @@
   "distribution_lines": [
     {
       "length": 647.7,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 409.6512,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 118.872,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 607.1616,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 192.6336,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 370.6368,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 197.2056,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
-      ]
-    },
-    {
-      "length": 28.041600000000003,
-      "ampacity": 880.0,
-      "nominal_voltage": 480,
-      "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 24.384,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 55.778400000000005,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 215.49360000000001,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 93.5736,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 77.724,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 180.13680000000002,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 79.5528,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N",
-        "OH_TPLX_2-0_S1"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 132.8928,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_2-0_C",
-        "UG_TPLX_2-0_B",
-        "UG_TPLX_2-0_A"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 49.3776,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_2-0_A",
-        "UG_TPLX_2-0_B",
-        "UG_TPLX_2-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 69.4944,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_N",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_S1"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 111.25200000000001,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 158.8008,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 96.9264,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 179.83200000000002,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 39.0144,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_1-0_A",
-        "OH_AL_1-0_B",
-        "OH_AL_1-0_C",
-        "OH_AL_1-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 69.7992,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_1-0_A",
-        "OH_AL_1-0_B",
-        "OH_AL_1-0_C",
-        "OH_AL_1-0_N"
-      ]
-    },
-    {
-      "length": 36.8808,
-      "ampacity": 880.0,
-      "nominal_voltage": 480,
-      "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     }
   ],

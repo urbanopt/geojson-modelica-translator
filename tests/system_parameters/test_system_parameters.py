@@ -185,25 +185,6 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("not.a.real.path")
         self.assertIsNone(value)
 
-    def test_get_param_with_default(self):
-        data = {"buildings": [
-                        {
-                            "load_model": "spawn",
-                            "geojson_id": "asdf",
-                            "ets_model": "None"
-                        }
-                    ]
-                }
-        sp = SystemParameters.loadd(data)
-        # this path doesn't exist, but there is a default
-        value = sp.get_param(
-            "buildings.*.load_model_parameters.rc.order", default=2
-        )
-        self.assertEqual(2, value)
-
-        value = sp.get_param("not.a.real.path", default=2)
-        self.assertEqual(2, value)
-
     def test_get_param_with_building_id_defaults(self):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
@@ -321,6 +302,9 @@ class SystemParametersTest(unittest.TestCase):
         with open(output_sys_param_file, "r") as f:
             sys_param_data = json.load(f)
 
+        # pv on a building
+        self.assertTrue(len(sys_param_data['buildings'][0]['photovoltaic_panels']) > 0)
+        # pv for the district
         self.assertTrue(len(sys_param_data['photovoltaic_panels']) > 0)
         self.assertTrue(len(sys_param_data['wind_turbines']) > 0)
         self.assertTrue(sys_param_data['electrical_grid']['frequency'])
