@@ -167,12 +167,12 @@ class TimeSeries(LoadBase):
                 )
         elif list(building_template_data['district_type'].keys())[0] == 'fourth_generation':
             self.run_template(
-                    template=time_series_building_template,
-                    save_file_name=os.path.join(b_modelica_path.files_dir, "BuildingTimeSeries.mo"),
-                    project_name=scaffold.project_name,
-                    model_name=self.building_name,
-                    data=combined_template_data
-                )
+                template=time_series_building_template,
+                save_file_name=os.path.join(b_modelica_path.files_dir, "BuildingTimeSeries.mo"),
+                project_name=scaffold.project_name,
+                model_name=self.building_name,
+                data=combined_template_data
+            )
         else:
             raise SystemExit("Invalid district type (generation). We currently support fourth_generation & fifth_generation.")
 
