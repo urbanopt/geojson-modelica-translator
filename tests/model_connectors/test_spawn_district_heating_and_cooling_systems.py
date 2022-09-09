@@ -74,7 +74,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = Path(self.data_dir) / "spawn_district_system_params_ex1.json"
+        filename = Path(self.data_dir) / "spawn_system_params_ex1.json"
         self.sys_params = SystemParameters(filename)
 
         # create cooling network and plant

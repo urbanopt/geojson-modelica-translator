@@ -93,13 +93,18 @@ class UrbanOptGeoJson(object):
         self.buildings = []
         for feature in self.data.features:
             if feature["properties"]["type"] == "Building":
-                building = UrbanOptLoad(feature)
-                if not building_ids or building.id in building_ids:
-                    errors = self.schemas.validate("building", building.feature.properties)
-                    if errors:
-                        building_errors[building.id] = errors
-                    else:
-                        self.buildings.append(building)
+                # Don't validate features with 'detailed_model_filename' in the building properties
+                # Buildings defined by an osm don't have all keys in geojson, they'll always fail validation
+                if "detailed_model_filename" in feature["properties"]:
+                    continue
+                else:
+                    building = UrbanOptLoad(feature)
+                    if not building_ids or building.id in building_ids:
+                        errors = self.schemas.validate("building", building.feature.properties)
+                        if errors:
+                            building_errors[building.id] = errors
+                        else:
+                            self.buildings.append(building)
 
         if building_errors:
             formatted_errors = ''
