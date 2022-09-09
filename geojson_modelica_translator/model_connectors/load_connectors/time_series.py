@@ -156,17 +156,7 @@ class TimeSeries(LoadBase):
         shutil.copy(time_series_filename, new_file)
 
         # This if statement exists only because we can't use the 5G model to run a 4G building.
-        if 'fifth_generation' in building_template_data['district_type'].keys():
-            for k, v in building_templates.items():
-                self.run_template(
-                    template=v,
-                    save_file_name=os.path.join(b_modelica_path.files_dir, f"{k}.mo"),
-                    project_name=scaffold.project_name,
-                    model_name=self.building_name,
-                    data=combined_template_data
-                )
-        # TODO: This is perhaps slightly less worse. Will change as choice of district system is developed
-        elif 'fifth_generation' not in building_template_data['district_type'].keys():
+        if 'fifth_generation' not in building_template_data['district_type'].keys():
             self.run_template(
                 template=time_series_building_template,
                 save_file_name=os.path.join(b_modelica_path.files_dir, "BuildingTimeSeries.mo"),
@@ -175,7 +165,14 @@ class TimeSeries(LoadBase):
                 data=combined_template_data
             )
         else:
-            raise SystemExit("Invalid district type (generation). We currently support fourth_generation & fifth_generation.")
+            for k, v in building_templates.items():
+                self.run_template(
+                    template=v,
+                    save_file_name=os.path.join(b_modelica_path.files_dir, f"{k}.mo"),
+                    project_name=scaffold.project_name,
+                    model_name=self.building_name,
+                    data=combined_template_data
+                )
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold)
