@@ -214,4 +214,8 @@ class TimeSeries(LoadBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+        district_params = self.system_parameters.get_param("district_system")
+        if 'fifth_generation' not in district_params.keys():
+            return f'{scaffold.project_name}.Loads.{self.building_name}.BuildingTimeSeries'
+        else:
+            return f'{scaffold.project_name}.Loads.{self.building_name}.building'
