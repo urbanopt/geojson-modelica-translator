@@ -121,6 +121,15 @@ class District:
                 'district_system': self.system_parameters.get_param('$.district_system')
             }
         }
+
+        if 'fifth_generation' in common_template_params['sys_params']['district_system'].keys():
+            # 'bui' is how a 5G model refers to the 4G model while the templates build the model.
+            # 4G model is already self-sufficient so it needs that string to not exist.
+            # This is templated in TimeSeries component definitions, in the coupling templates
+            # FIXME: need a better variable name than 'is_5g_district' to be clearer in the template
+            common_template_params['globals']['is_5g_district'] = 'bui.'
+        else:
+            common_template_params['globals']['is_5g_district'] = ''
         # render each coupling
         for coupling in self._coupling_graph.couplings:
             template_context = {

@@ -177,10 +177,20 @@ class ModelBase(object):
         return template.render(template_params), template_filename
 
     def to_dict(self, scaffold):
-        return {
+        output_dict = {
             'id': self.id,
             'modelica_type': self.get_modelica_type(scaffold)
         }
+        district_params = self.system_parameters.get_param("district_system")
+        if 'fifth_generation' in district_params.keys():
+            # 'bui' is how a 5G model refers to the 4G model while the templates build the model.
+            # 4G model is already self-sufficient so it needs that string to not exist.
+            # This is templated in TimeSeries_Instance.mopt
+            # FIXME: need a better variable name than 'is_5g_district' to be clearer in the template
+            output_dict['is_5g_district'] = 'bui'
+        else:
+            output_dict['is_5g_district'] = ''
+        return output_dict
 
     # TODO: this should be implemented here, not in individual classes
     # def get_modelica_type(self, scaffold)
