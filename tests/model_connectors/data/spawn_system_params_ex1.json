@@ -3,6 +3,7 @@
     {
       "geojson_id": "5a6b99ec37f4de7f94020090",
       "load_model": "spawn",
+      "mos_weather_filename": "example_weather.mos",
       "load_model_parameters": {
         "spawn": {
           "idf_filename": "../../data_shared/RefBldgSmallOfficeNew2004_v1.4_9.6_5A_USA_IL_CHICAGO-OHARE.idf",
