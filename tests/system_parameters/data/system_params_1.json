@@ -2,7 +2,8 @@
   "buildings": [
     {
       "geojson_id": "abcd1234",
-      "ets_model": "None"
+      "ets_model": "None",
+      "mos_weather_filename": "example_weather.mos"
     },
     {
       "geojson_id": "defgh2345",
