@@ -187,6 +187,7 @@ class ModelBase(object):
             # 4G model is already self-sufficient so it needs that string to not exist.
             # This is templated in TimeSeries_Instance.mopt
             # FIXME: need a better variable name than 'is_5g_district' to be clearer in the template
+            # TODO: A better if statement using Jinja conditionals in the above file might allow us to remove the 'else' block here
             output_dict['is_5g_district'] = 'bui'
         else:
             output_dict['is_5g_district'] = ''
