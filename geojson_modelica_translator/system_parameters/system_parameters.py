@@ -69,7 +69,7 @@ class SystemParameters(object):
         {"json_path": "$.buildings[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
         {"json_path": "$.district_system.fourth_generation.central_cooling_plant_parameters.weather_filepath"},
         {"json_path": "$.combined_heat_and_power_systems.[*].performance_data_path"},
-        {"json_path": "$.buildings[*].mos_weather_filename"}
+        {"json_path": "$.buildings.mos_weather_filename"}
     ]
 
     def __init__(self, filename=None):
