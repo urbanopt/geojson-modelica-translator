@@ -88,14 +88,18 @@ class ModelBase(object):
 
         # Read district-level system params. Used when templating ets mofiles, for instance in heating_indirect.py
         if system_parameters is not None:
-            self.district_template_data = {
-                "temp_setpoint_hhw": self.system_parameters.get_param(
-                    "$.district_system.fourth_generation.central_heating_plant_parameters.temp_setpoint_hhw"
-                ),
-                "temp_setpoint_chw": self.system_parameters.get_param(
-                    "$.district_system.fourth_generation.central_cooling_plant_parameters.temp_setpoint_chw"
-                ),
-            }
+            # TODO: DRY up this handling of different generations
+            district_params = self.system_parameters.get_param("district_system")
+            if 'fifth_generation' in district_params.keys():
+                self.district_template_data = {
+                    "temp_setpoint_hhw": district_params['fifth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
+                    "temp_setpoint_chw": district_params['fifth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
+                }
+            elif 'fourth_generation' in district_params.keys():
+                self.district_template_data = {
+                    "temp_setpoint_hhw": district_params['fourth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
+                    "temp_setpoint_chw": district_params['fourth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
+                }
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """
