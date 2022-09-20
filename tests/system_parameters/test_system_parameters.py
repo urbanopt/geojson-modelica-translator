@@ -75,10 +75,8 @@ class SystemParametersTest(unittest.TestCase):
             print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
         self.assertEqual(Path(value), Path(filename).parent / 'example_model.idf')
-        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.mos')
-        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.epw')
+        value = sdp.get_param("$.weather")
+        self.assertEqual(Path(value), Path(filename).parent / '../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos')
 
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
@@ -124,7 +122,6 @@ class SystemParametersTest(unittest.TestCase):
         sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
         self.assertEqual(len(sp.validate()), 6)
         self.assertIn("'fraction_latent_person' is a required property", sp.validate())
-        self.assertIn("'mos_weather_filename' is a required property", sp.validate())
         self.assertIn("'temp_hw_supply' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_cooling' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
@@ -132,6 +129,7 @@ class SystemParametersTest(unittest.TestCase):
 
     def test_get_param(self):
         data = {
+            "weather": "path/to/weatherfile.mos",
             "buildings": [
                 {
                     "geojson_id": "asdf",
@@ -140,7 +138,6 @@ class SystemParametersTest(unittest.TestCase):
                     "load_model_parameters": {
                         "rc": {
                             "order": 4,
-                            "mos_weather_filename": "path-to-file",
                             "fraction_latent_person": 1.25,
                             "temp_hw_supply": 40,
                             "temp_setpoint_heating": 40,
@@ -168,7 +165,6 @@ class SystemParametersTest(unittest.TestCase):
                     "load_model_parameters": {
                         "rc": {
                             "order": 4,
-                            "mos_weather_filename": "path-to-file",
                             "fraction_latent_person": 1.25,
                             "temp_hw_supply": 40,
                             "temp_setpoint_heating": 40,

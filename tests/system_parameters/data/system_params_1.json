@@ -1,4 +1,5 @@
 {
+  "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
   "buildings": [
     {
       "geojson_id": "abcd1234",
@@ -10,7 +11,6 @@
       "load_model_parameters": {
         "rc": {
           "order": 2,
-          "mos_weather_filename": "example_weather_2.mos",
           "fraction_latent_person": 1.25,
           "temp_hw_supply": 40,
           "temp_setpoint_cooling": 20,
@@ -44,7 +44,6 @@
       "load_model_parameters": {
         "rc": {
           "order": 2,
-          "mos_weather_filename": "example_weather_2.mos",
           "fraction_latent_person": 1.25,
           "temp_hw_supply": 40,
           "temp_setpoint_cooling": 20,
@@ -78,8 +77,6 @@
       "load_model_parameters": {
         "spawn": {
           "idf_filename": "example_model.idf",
-          "mos_weather_filename": "example_weather.mos",
-          "epw_filename": "example_weather.epw",
           "has_liquid_heating": true,
           "has_electric_heating": false,
           "has_liquid_cooling": true,
@@ -128,8 +125,6 @@
       "load_model_parameters": {
         "spawn": {
           "idf_filename": "example_model_2.idf",
-          "mos_weather_filename": "example_weather_2.mos",
-          "epw_filename": "example_weather_2.epw",
           "has_liquid_heating": true,
           "has_electric_heating": false,
           "has_liquid_cooling": true,
@@ -181,7 +176,6 @@
   "district_system": {
     "fourth_generation": {
       "central_cooling_plant_parameters": {
-        "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,

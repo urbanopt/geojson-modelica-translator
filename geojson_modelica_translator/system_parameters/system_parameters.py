@@ -67,7 +67,7 @@ class SystemParameters(object):
         {"json_path": "$.buildings[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
         {"json_path": "$.buildings[?load_model=time_series].load_model_parameters.time_series.filepath"},
         {"json_path": "$.buildings[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
-        {"json_path": "$.district_system.fourth_generation.central_cooling_plant_parameters.weather_filepath"},
+        {"json_path": "$.weather"},
         {"json_path": "$.combined_heat_and_power_systems.[*].performance_data_path"}
     ]
 
@@ -842,8 +842,7 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        (self.param_template['district_system']['fourth_generation']
-            ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
+        self.param_template['weather'] = str(weather_path)
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")

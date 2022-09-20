@@ -47,8 +47,6 @@
       "load_model_parameters": {
         "spawn": {
           "idf_filename": "../RefBldgSmallOfficeNew2004_v1.4_9.6_5A_USA_IL_CHICAGO-OHARE.idf",
-          "epw_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw",
-          "mos_weather_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
           "has_liquid_heating": true,
           "has_electric_heating": false,
           "has_liquid_cooling": true,
@@ -109,7 +107,6 @@
       "load_model_parameters": {
         "rc": {
           "order": 4,
-          "mos_weather_filename": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
           "has_liquid_heating": true,
           "has_electric_heating": false,
           "has_liquid_cooling": true,
@@ -148,7 +145,6 @@
   "district_system": {
     "fourth_generation": {
       "central_cooling_plant_parameters": {
-        "weather_filepath": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
@@ -179,5 +175,6 @@
         "chp_installed": false
       }
     }
-  }
+  },
+  "weather": "../USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"
 }
