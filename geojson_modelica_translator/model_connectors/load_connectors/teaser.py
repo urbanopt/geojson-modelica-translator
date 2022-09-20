@@ -206,8 +206,7 @@ class Teaser(LoadBase):
         # Need to investigate moving this into a more testable location.
         # create a list of strings that we need to replace in all the file as we go along
         string_replace_list = []
-        mos_weather_filename = self.system_parameters.get_param_by_building_id(
-            self.building_id, "load_model_parameters.rc.mos_weather_filename")
+        mos_weather_filename = self.system_parameters.get_param("$.weather")
         # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
         b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
 

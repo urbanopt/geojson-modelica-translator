@@ -29,6 +29,10 @@
             }
           ]
         },
+        "weather": {
+          "description": "Path, relative or absolute, to a weather file for the district",
+          "type": "string"
+        },
         "topology": {
           "title": "defaults",
           "description": "[unused] Parameters associated with district topologies.",
@@ -155,7 +159,10 @@
           }
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": [
+        "weather"
+      ]
     },
     "topology_def": {
       "title": "defaults",
@@ -534,18 +541,6 @@
           "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
         },
-        "epw_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved.",
-          "type": "string"
-        },
-        "mos_weather_filename": {
-          "description": "Relative path from location where file instance is saved to the MOS weather file.",
-          "type": "string"
-        },
-        "weather_filepath": {
-          "description": "Absolute path or relative path from location where file instance is saved to the weather filename. This is needed for the central cooling plants.",
-          "type": "string"
-        },
         "thermal_zone_names": {
           "description": "List of thermal zones in the Spawn / EnergyPlus model.",
           "type": "array",
@@ -576,8 +571,6 @@
         "temp_chw_supply",
         "temp_chw_return",
         "idf_filename",
-        "epw_filename",
-        "mos_weather_filename",
         "thermal_zone_names",
         "zone_nom_htg_loads",
         "zone_nom_clg_loads"
@@ -648,10 +641,6 @@
           ],
           "default": 2
         },
-        "mos_weather_filename": {
-          "description": "Relative path from location where file instance is saved to the MOS weather file.",
-          "type": "string"
-        },
         "fraction_latent_person": {
           "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office).",
           "type": "number",
@@ -662,7 +651,6 @@
         "temp_setpoint_cooling",
         "temp_setpoint_heating",
         "temp_hw_supply",
-        "mos_weather_filename",
         "fraction_latent_person"
       ],
       "additionalProperties": false
@@ -838,10 +826,6 @@
           "description": "To be defined",
           "type": "number",
           "default": 0.625
-        },
-        "weather_filepath": {
-          "description": "Filename for weather file",
-          "type": "string"
         }
       },
       "required": [

@@ -75,17 +75,16 @@ class Spawn(LoadBase):
             self.building_name, scaffold.loads_path.files_dir, True
         )
 
+        mos_weather_filename = self.system_parameters.get_param("$.weather")
+        epw_filename = os.path.splitext(mos_weather_filename)[0] + '.epw'
+        # This assumes the epw and mos files are named the same and in the same directory.
+        # If coming from the SDK, this is a safe assumption.
+
         # grab the data from the system_parameter file for this building id
-        # TODO: create method in system_parameter class to make this easier and respect the defaults
+        # TODO: create method in system_parameter class to make this easier
 
         idf_filename = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.idf_filename"
-        )
-        epw_filename = self.system_parameters.get_param_by_building_id(
-            self.building_id, "load_model_parameters.spawn.epw_filename"
-        )
-        mos_weather_filename = self.system_parameters.get_param_by_building_id(
-            self.building_id, "load_model_parameters.spawn.mos_weather_filename",
         )
         thermal_zones = self.system_parameters.get_param_by_building_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
