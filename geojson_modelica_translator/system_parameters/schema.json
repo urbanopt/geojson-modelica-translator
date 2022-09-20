@@ -30,7 +30,7 @@
           ]
         },
         "weather": {
-          "description": "Path, relative or absolute, to a weather file for the district",
+          "description": "Path, relative or absolute, to a weather file for the district in Modelica format (MOS).",
           "type": "string"
         },
         "topology": {
