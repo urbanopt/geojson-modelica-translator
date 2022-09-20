@@ -1,4 +1,5 @@
 {
+  "weather": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
   "buildings": [
     {
       "geojson_id": "5a6b99ec37f4de7f94020090",
@@ -6,7 +7,6 @@
       "load_model_parameters": {
         "rc": {
           "order": 4,
-          "mos_weather_filename": "../../data_shared/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos",
           "has_liquid_heating": true,
           "has_electric_heating": false,
           "has_liquid_cooling": true,
@@ -45,7 +45,6 @@
   "district_system": {
     "fourth_generation": {
       "central_cooling_plant_parameters": {
-        "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,

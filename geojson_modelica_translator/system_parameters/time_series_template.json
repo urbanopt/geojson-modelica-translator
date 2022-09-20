@@ -45,7 +45,6 @@
   "district_system": {
     "fourth_generation": {
       "central_cooling_plant_parameters": {
-        "weather_filepath": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
@@ -76,5 +75,6 @@
         "chp_installed": false
       }
     }
-  }
+  },
+  "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"
 }
