@@ -54,6 +54,7 @@ jobs:
         run: |
           poetry --version
           poetry install
+          poetry update
       -
         name: Save Optimica license to file
         if: matrix.os == 'ubuntu-latest'
