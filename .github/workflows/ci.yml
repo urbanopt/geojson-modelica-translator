@@ -110,13 +110,13 @@ jobs:
             # !! Ugh, this is ugly but necessary (poetry + tox were not passing our args correctly to pytest)
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
               # for windows, skip python tests that require simulation (currently broken)
-              poetry run tox -e ${{ matrix.test_env }} -m 'not simulation and not compilation' ./tests
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation and not compilation' ./tests
             elif [ '${{ matrix.mbl_branch }}' == 'master' ]; then
               # we can no longer run any msl v4 simulations with JModelica
-              poetry run tox -e ${{ matrix.test_env }} -m 'not simulation' ./tests
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             else
               # we can no longer run any msl v4 simulations with JModelica
-              poetry run tox -e ${{ matrix.test_env }} -m 'not simulation' ./tests
+              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
             fi
           else
             poetry run tox -e ${{ matrix.test_env }}
