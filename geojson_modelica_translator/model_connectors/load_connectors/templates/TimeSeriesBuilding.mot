@@ -262,6 +262,12 @@ equation
     annotation (Line(points={{21,0},{320,0},{320,0}},color={0,0,127}));
   connect(loa.y[2],QReqHea_flow)
     annotation (Line(points={{21,0},{280,0},{280,40},{320,40}},color={0,0,127}));
+  connect(loa.y[1],mulQReqCoo_flow.u)
+    annotation (Line(points={{-259,0},{270,0}},color={0,0,127}));
+  connect(loa.y[2],mulQReqHea_flow.u)
+    annotation (Line(points={{-259,0},{260,0},{260,40},{270,40}},color={0,0,127}));
+  connect(loa.y[3],QReqHotWat_flow)
+    annotation (Line(points={{-259,0},{40,0},{40,-120},{320,-120}},color={0,0,127}));
   connect(disFloHea.PPum,addPPum.u1)
     annotation (Line(points={{141,-78},{170,-78},{170,86},{220,86}},color={0,0,127}));
   connect(disFloCoo.PPum,addPPum.u2)
