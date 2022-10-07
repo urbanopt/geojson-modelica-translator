@@ -22,7 +22,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: [3.9, 3.7]
+        # Test with 3.10 as UO SDK is moving to that version
+        python-version: ["3.7", "3.9", "3.10"]
         test_env: [python, precommit, docs]
         mbl_branch: [master]
         include:
