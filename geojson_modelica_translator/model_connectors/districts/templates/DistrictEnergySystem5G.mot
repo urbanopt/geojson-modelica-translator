@@ -22,7 +22,7 @@ model DistrictEnergySystem
     dp_length_nominal=250,
     epsPla=0.935,
     final mCon_flow_nominal={18})
-    "Design data";
+    "Design data"
     annotation (Placement(transformation(extent={{-70,34},{-50,54}})));
   // Models
   {% for model in models %}//
