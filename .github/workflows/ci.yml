@@ -23,7 +23,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         # Test with 3.10 as UO SDK is moving to that version
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.10"]
         test_env: [python, precommit, docs]
         mbl_branch: [master]
         include:
