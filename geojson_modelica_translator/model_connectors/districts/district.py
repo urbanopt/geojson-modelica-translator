@@ -122,7 +122,7 @@ class District:
             }
         }
 
-        if 'fifth_generation' in common_template_params['sys_params']['district_system'].keys():
+        if 'fifth_generation' in common_template_params['sys_params']['district_system']:
             # 'bui' is how a 5G model refers to the 4G model while the templates build the model.
             # 4G model is already self-sufficient so it needs that string to not exist.
             # This is templated in TimeSeries component definitions, in the coupling templates
@@ -172,7 +172,10 @@ class District:
             })
 
         # render the full district file
-        final_result = render_template('DistrictEnergySystem.mot', district_template_params)
+        if 'fifth_generation' in common_template_params['sys_params']['district_system']:
+            final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
+        else:
+            final_result = render_template('DistrictEnergySystem.mot', district_template_params)
         with open(self.district_model_filepath, 'w') as f:
             f.write(final_result)
 
