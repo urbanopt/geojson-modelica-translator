@@ -108,7 +108,7 @@ jobs:
           MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
-            poetry run tox -e ${{ matrix.test_env }} -- "-m 'not simulation and not compilation'" ./tests
+            poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation and not compilation' ./tests
           else
             poetry run tox -e ${{ matrix.test_env }}
           fi
