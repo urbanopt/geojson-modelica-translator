@@ -101,14 +101,14 @@ jobs:
       #     cd geojson_modelica_translator/modelica/lib/runner
       #     docker-compose build
       -
-        name: Tox ${{ matrix.test_env }}
+        name: Test/Tox ${{ matrix.test_env }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
           MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
-            poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation and not compilation' ./tests
+            poetry run pytest -m 'not simulation and not compilation' ./tests
           else
             poetry run tox -e ${{ matrix.test_env }}
           fi
