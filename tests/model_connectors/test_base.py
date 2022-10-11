@@ -38,12 +38,13 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+from jinja2 import Template
+
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import \
     LoadBase as model_connector_base
-from jinja2 import Template
 
 from ..base_test_case import TestCaseBase
 
