@@ -101,7 +101,7 @@ jobs:
       #     cd geojson_modelica_translator/modelica/lib/runner
       #     docker-compose build
       -
-        name: Test/Tox ${{ matrix.test_env }}
+        name: Tox ${{ matrix.test_env }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
