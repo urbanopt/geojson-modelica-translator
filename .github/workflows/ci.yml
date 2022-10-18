@@ -116,7 +116,9 @@ jobs:
           extra_args: --all-files
       - name: Build docs
         run: |
-          poetry run make html
+          if [ '${{ matrix.test_env }}' == 'docs' ]; then
+            poetry run make html
+          fi
       -
         name: Coveralls
         env:
