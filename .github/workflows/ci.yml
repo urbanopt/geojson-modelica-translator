@@ -117,6 +117,7 @@ jobs:
       - name: Build docs
         run: |
           if [ '${{ matrix.test_env }}' == 'docs' ]; then
+            cd docs
             poetry run make html
           fi
       -
