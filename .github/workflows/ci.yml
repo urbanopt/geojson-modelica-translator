@@ -115,7 +115,7 @@ jobs:
         with:
           extra_args: --all-files
       - name: Build docs
-        Run: |
+        run: |
           poetry run make html
       -
         name: Coveralls
