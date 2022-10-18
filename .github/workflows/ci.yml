@@ -46,11 +46,11 @@ jobs:
           docker-compose --version
       -
         name: Install and configure Poetry
-        uses: snok/install-poetry@v1
+        uses: abatilo/actions-poetry@v2
         with:
-          version: 1.2.2
+          poetry-version: 1.2.2
       -
-        name: Run Poetry install
+        name: Install dependencies with Poetry
         run: |
           poetry --version
           poetry install
@@ -101,7 +101,7 @@ jobs:
       #     cd geojson_modelica_translator/modelica/lib/runner
       #     docker-compose build
       -
-        name: Tox ${{ matrix.test_env }}
+        name: Run PyTest
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
@@ -109,9 +109,14 @@ jobs:
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
             poetry run pytest --doctest-modules -v --cov-report term-missing --cov . -m 'not simulation and not compilation' ./tests
-          else
-            poetry run tox -e ${{ matrix.test_env }}
           fi
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: --all-files
+      - name: Build docs
+        Run: |
+          poetry run make html
       -
         name: Coveralls
         env:
