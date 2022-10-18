@@ -61,10 +61,11 @@ class Coupling(object):
     _template_component_definitions = 'ComponentDefinitions.mopt'
     _template_connect_statements = 'ConnectStatements.mopt'
 
-    def __init__(self, model_a, model_b):
+    def __init__(self, model_a, model_b, district_type=None):
         model_a, model_b = self._sort_models(model_a, model_b)
         self._model_a = model_a
         self._model_b = model_b
+        self.district_type = district_type
         self._template_base_name = f'{model_a.model_name}_{model_b.model_name}'
 
         self._template_dir = Path(__file__).parent / "templates" / self._template_base_name
@@ -178,6 +179,8 @@ class Coupling(object):
         :param template_params: dict, parameters for the templates
         :return: dict, containing key, values: component_definitions, string; connect_statements, string
         """
+        if self.district_type == '5G':
+            self._template_connect_statements = 'ConnectStatements5G.mopt'
         component_result, component_template_path = self._render_template(self._template_component_definitions, template_params)
         connect_result, connect_template_path = self._render_template(self._template_connect_statements, template_params)
 
