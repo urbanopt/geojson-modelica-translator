@@ -91,15 +91,15 @@ class DistrictSystemTest(TestCaseBase):
         time_series_load = TimeSeries(sys_params, single_building)
         geojson_load_id = single_building.feature.properties["id"]
         heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
-        ts_hi_coupling = Coupling(time_series_load, heating_indirect_system)
+        ts_hi_coupling = Coupling(time_series_load, heating_indirect_system, district_type='5G')
 
         # create heated water stub for the ets
         heated_water_stub = NetworkHeatedWaterStub(sys_params)
-        hi_hw_coupling = Coupling(heating_indirect_system, heated_water_stub)
+        hi_hw_coupling = Coupling(heating_indirect_system, heated_water_stub, district_type='5G')
 
         #  create cold water stub for the load
         cold_water_stub = EtsColdWaterStub(sys_params)
-        ts_cw_coupling = Coupling(time_series_load, cold_water_stub)
+        ts_cw_coupling = Coupling(time_series_load, cold_water_stub, district_type='5G')
 
         graph = CouplingGraph([
             ts_hi_coupling,
