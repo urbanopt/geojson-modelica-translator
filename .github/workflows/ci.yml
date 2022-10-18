@@ -55,14 +55,14 @@ jobs:
           poetry --version
           poetry install
           poetry update
-      -
-        name: Save Optimica license to file
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        run: |
-          mkdir -p /home/runner/modelon
-          echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
-          echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
+      # -
+      #   name: Save Optimica license to file
+      #   if: matrix.os == 'ubuntu-latest'
+      #   shell: bash
+      #   run: |
+      #     mkdir -p /home/runner/modelon
+      #     echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
+      #     echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
       -
         name: Install modelicafmt
         run: |
@@ -104,8 +104,8 @@ jobs:
         name: Run PyTest
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
-          MODELON_LICENSE_PATH: /home/runner/modelon
+          # MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
+          # MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
             poetry run pytest --doctest-modules -v --cov-report term-missing --cov . -m 'not simulation and not compilation' ./tests
@@ -130,7 +130,6 @@ jobs:
         run: |
           echo "Maybe these logs will help?"
           ls -alt $GITHUB_WORKSPACE
-          ls -alt /home/runner/modelon
           find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
             echo "============================================ stdout.log ========================================="
             echo "$filename"
