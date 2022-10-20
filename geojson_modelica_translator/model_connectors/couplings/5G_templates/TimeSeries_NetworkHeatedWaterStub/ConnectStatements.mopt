@@ -2,6 +2,6 @@
   connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
     annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_hea_wat.m_flow_in }});
   connect({{ coupling.id }}.port_a1,supHeaWat.ports[1])
-    annotation ({{ diagram.line.hea_ets.port_a1.sup_hea_wat.ports }});
+    annotation ({{ diagram.line.sup_hea_wat.port_a1.sup_hea_wat.ports }});
   connect(sinHeaWat.ports[1],{{ coupling.id }}.port_b1)
-    annotation ({{ diagram.line.sin_hea_wat.ports.hea_ets.port_b1 }});
+    annotation ({{ diagram.line.sin_hea_wat.ports.ts_load.port_b1 }});
