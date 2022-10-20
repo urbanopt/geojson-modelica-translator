@@ -182,8 +182,6 @@ class Coupling(object):
         :param template_params: dict, parameters for the templates
         :return: dict, containing key, values: component_definitions, string; connect_statements, string
         """
-        if self.district_type == '5G':
-            self._template_connect_statements = 'ConnectStatements5G.mopt'
         component_result, component_template_path = self._render_template(self._template_component_definitions, template_params)
         connect_result, connect_template_path = self._render_template(self._template_connect_statements, template_params)
 
