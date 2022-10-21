@@ -41,6 +41,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 from buildingspy.io.outputfile import Reader
+
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )

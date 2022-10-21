@@ -4,6 +4,7 @@ from unittest import TestCase
 
 import pytest
 from click.testing import CliRunner
+
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )

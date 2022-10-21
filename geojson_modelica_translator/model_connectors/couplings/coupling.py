@@ -37,6 +37,8 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 from pathlib import Path
 
+from jinja2 import Environment, FileSystemLoader, StrictUndefined, meta
+
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
@@ -51,7 +53,6 @@ from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
 from geojson_modelica_translator.utils import simple_uuid
-from jinja2 import Environment, FileSystemLoader, StrictUndefined, meta
 
 
 class Coupling(object):
