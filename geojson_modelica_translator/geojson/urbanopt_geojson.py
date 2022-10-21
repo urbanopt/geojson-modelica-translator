@@ -40,6 +40,7 @@ import logging
 from pathlib import Path
 
 import geojson
+
 from geojson_modelica_translator.geojson.schemas import Schemas
 
 _log = logging.getLogger(__name__)

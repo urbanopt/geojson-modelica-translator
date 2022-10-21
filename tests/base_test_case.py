@@ -41,6 +41,7 @@ from pathlib import Path
 from unittest import TestCase
 
 import numpy as np
+
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
 

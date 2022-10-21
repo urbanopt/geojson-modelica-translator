@@ -42,6 +42,7 @@ import shutil
 import unittest
 
 import pytest
+
 from management.format_modelica_files import (
     SKIP_FILES,
     TEMPLATE_FILES,

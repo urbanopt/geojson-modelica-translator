@@ -44,6 +44,9 @@ from shutil import copymode, move
 from tempfile import mkstemp
 
 import numpy as np
+from modelica_builder.model import Model
+from teaser.project import Project
+
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
@@ -54,8 +57,6 @@ from geojson_modelica_translator.utils import (
     copytree,
     simple_uuid
 )
-from modelica_builder.model import Model
-from teaser.project import Project
 
 
 class Teaser(LoadBase):
