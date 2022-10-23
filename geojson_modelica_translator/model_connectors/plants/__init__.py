@@ -27,5 +27,5 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISI
 OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************************************************
 """
-from .cooling_plant import CoolingPlant  # noqa: F401
 from .chp import HeatingPlantWithOptionalCHP  # noqa: F401
+from .cooling_plant import CoolingPlant  # noqa: F401

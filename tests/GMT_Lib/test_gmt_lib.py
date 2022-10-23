@@ -39,6 +39,8 @@ from pathlib import Path
 from shutil import copyfile
 
 import pytest
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
+
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Lines.Lines import (
     DistributionLines
 )
@@ -53,7 +55,6 @@ from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
 from geojson_modelica_translator.utils import linecount
-from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 PARENT_DIR = Path(__file__).parent
 GMT_LIB_PATH = PARENT_DIR.parent.parent / 'geojson_modelica_translator' / 'modelica' / 'GMT_Lib'

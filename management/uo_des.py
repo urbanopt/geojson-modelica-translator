@@ -40,6 +40,7 @@ from pathlib import Path
 from shutil import rmtree
 
 import click
+
 from geojson_modelica_translator.geojson_modelica_translator import (
     GeoJsonModelicaTranslator
 )

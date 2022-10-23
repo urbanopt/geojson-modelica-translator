@@ -40,6 +40,7 @@ import os
 from pathlib import Path
 
 import pytest
+
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
