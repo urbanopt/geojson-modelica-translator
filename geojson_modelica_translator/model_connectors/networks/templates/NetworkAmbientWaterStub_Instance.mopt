@@ -1,0 +1,19 @@
+  // heated water stub
+  // TODO: move these components into a single component
+  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat(
+    redeclare package Medium={{ globals.medium_w }},
+    use_m_flow_in=true,
+    use_T_in=false,
+    T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
+    nPorts=1)
+    "Heating water supply temperature (district side)."
+    annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+    redeclare package Medium={{ globals.medium_w }},
+    nPorts=1)
+    "Heating water sink (district side)"
+    annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));
+
+  // NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
+  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=50000
+    "Differential pressure setpoint";
