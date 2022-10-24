@@ -1,15 +1,18 @@
-// 5G ambient, timeseries coupling connections
-connect(THeaWatSet_{{ coupling.id }}.y, TimeSerLoa_{{ model.id }}.THeaWatSupMinSet)
-  annotation (Line(points={{-49,50},{4,50},{4,57},{56,57}}, color={0,0,127}));
-connect(THeaWatSet_{{ coupling.id }}.y, TimeSerLoa_{{ model.id }}.THeaWatSupMaxSet)
-  annotation (Line(points={{-49,50},{4,50},{4,55},{56,55}}, color={0,0,127}));
-connect(THeaWatSet_{{ coupling.id }}.y, TimeSerLoa_{{ model.id }}.THotWatSupSet)
-  annotation (Line(points={{-49,50},{4,50},{4,51},{56,51}}, color={0,0,127}));
-connect(THeaWatSet_{{ coupling.id }}.y, TimeSerLoa_{{ model.id }}.TChiWatSupSet)
-  annotation (Line(points={{-49,50},{4,50},{4,53},{56,53}}, color={0,0,127}));
-connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
-  annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_hea_wat.m_flow_in }});
-connect(secMasFloRat_{{ coupling.id }}supHeaWat.ports[1], TimeSerLoa_{{ model.id }}.port_aSerAmb)
-  annotation (Line(points={{-50,-22},{0,-22},{0,40},{50,40}}, color={0,127,255}));
-connect(TimeSerLoa_{{ model.id }}.port_bSerAmb, sinHeaWat.ports[1])
-  annotation (Line(points={{70,40},{74,40},{74,-60},{-10,-60}}, color={0,127,255}));
+{% raw %}// 5G ambient, timeseries coupling connections
+{% endraw %}connect(THeaWatSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMinSet)
+  {% raw %}annotation (Line(points={{-49,50},{4,50},{4,57},{56,57}}, color={0,0,127}));
+{% endraw %}connect(THeaWatSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMaxSet)
+  {% raw %}annotation (Line(points={{-49,50},{4,50},{4,55},{56,55}}, color={0,0,127}));
+{% endraw %}connect(THeaWatSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THotWatSupSet)
+  {% raw %}annotation (Line(points={{-49,50},{4,50},{4,51},{56,51}}, color={0,0,127}));
+{% endraw %}connect(THeaWatSet_{{ coupling.id }}.y, {{ coupling.load.id }}.TChiWatSupSet)
+  {% raw %}annotation (Line(points={{-49,50},{4,50},{4,53},{56,53}}, color={0,0,127}));
+{% endraw %}connect(THeaWatSet_{{ coupling.id }}.y, TimeSerLoa_{{ coupling.load.id }}.TColWat)
+  {% raw %}annotation (Line(points={{39,-12},{46,-12},{46,28},{52,28}}, color={0,0,127}));
+{% endraw %}connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
+  {% raw %}annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_hea_wat.m_flow_in }});
+{% endraw %}connect(supHeaWat.ports[1], {{ coupling.load.id }}.port_aSerAmb)
+  {% raw %}annotation (Line(points={{-50,-22},{0,-22},{0,40},{50,40}}, color={0,127,255}));
+{% endraw %}connect({{ coupling.load.id }}.port_bSerAmb, sinHeaWat.ports[1])
+  {% raw %}annotation (Line(points={{70,40},{74,40},{74,-60},{-10,-60}}, color={0,127,255}));
+{% endraw %}
