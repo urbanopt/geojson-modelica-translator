@@ -13,7 +13,7 @@
           "has_electric_heating": false,
           "has_liquid_cooling": true,
           "has_electric_cooling": false,
-          "temp_chw_supply": 7,
+          "temp_chw_supply": 15,
           "temp_chw_return": 12,
           "temp_hw_supply": 40,
           "temp_hw_return": 35,
