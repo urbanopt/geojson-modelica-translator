@@ -91,7 +91,6 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.root_path = os.path.abspath(os.path.join(self.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
             os.path.join(self.root_path, 'BuildingTimeSeries.mo'),
-            # TODO: adapt this for 5G systems (looking for building.mo instead of BuildingTimeSeries.mo), or have a whole new test file
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
@@ -121,7 +120,6 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.root_path = os.path.abspath(os.path.join(self.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
             os.path.join(self.root_path, 'BuildingTimeSeries.mo'),
-            # TODO: adapt this for 5G systems (looking for building.mo instead of BuildingTimeSeries.mo), or have a whole new test file
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
