@@ -156,7 +156,7 @@ class TimeSeries(LoadBase):
         shutil.copy(time_series_filename, new_file)
 
         # This if statement exists only because we can't use the 5G model to run a 4G building.
-        if 'fifth_generation' not in building_template_data['district_type'].keys():
+        if 'fifth_generation' not in building_template_data['district_type']:
             self.run_template(
                 template=time_series_building_template,
                 save_file_name=os.path.join(b_modelica_path.files_dir, "BuildingTimeSeries.mo"),
@@ -215,7 +215,7 @@ class TimeSeries(LoadBase):
 
     def get_modelica_type(self, scaffold):
         district_params = self.system_parameters.get_param("district_system")
-        if 'fifth_generation' not in district_params.keys():
+        if 'fifth_generation' not in district_params:
             return f'{scaffold.project_name}.Loads.{self.building_name}.BuildingTimeSeries'
         else:
             return f'{scaffold.project_name}.Loads.{self.building_name}.building'
