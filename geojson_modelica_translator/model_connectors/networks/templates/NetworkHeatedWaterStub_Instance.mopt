@@ -4,13 +4,7 @@
     redeclare package Medium={{ globals.medium_w }},
     use_m_flow_in=true,
     use_T_in=false,
-    {% for k, _ in sys_params.district_system.items() %}
-      {% if k == 'fifth_generation' %}
-    T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
-      {% else %}
     T={{ sys_params.district_system.fourth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
-      {% endif %}
-    {% endfor %}
     nPorts=1)
     "Heating water supply temperature (district side)."
     annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
