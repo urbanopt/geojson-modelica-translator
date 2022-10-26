@@ -2,7 +2,7 @@
   {{ model.modelica_type }} {{ model.id }}(
     {% if model.is_5g_district == 'bui' %}
     {{ model.is_5g_district }}(T_aHeaWat_nominal(displayUnit="K")=318.15,
-    T_aChiWat_nominal(displayUnit="K")=290.15,
+    T_aChiWat_nominal(displayUnit="K")=291.15,
     delTAirCoo(displayUnit="degC")=10,
     delTAirHea(displayUnit="degC")=20,
     k=0.1,
