@@ -43,8 +43,7 @@ After installation of the GMT, a new command line interface (called the URBANopt
 MBL Installation
 ----------------
 
-The Modelica Buildings Library contains many models that are needed to assemble the district systems.
-Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:
+The Modelica Buildings Library contains many models that are needed to assemble the district systems. Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:
 
 * Clone the `MBL`_ into a working directory outside of the GMT directory
 * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)

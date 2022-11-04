@@ -1,0 +1,42 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+NetworkAmbientWaterStub
+=======================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.networks.network_ambient_water_stub
+
+.. autoclass:: NetworkAmbientWaterStub
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NetworkAmbientWaterStub.__init__
+      ~NetworkAmbientWaterStub.copy_required_mo_files
+      ~NetworkAmbientWaterStub.ft2_to_m2
+      ~NetworkAmbientWaterStub.get_modelica_type
+      ~NetworkAmbientWaterStub.render_instance
+      ~NetworkAmbientWaterStub.run_template
+      ~NetworkAmbientWaterStub.to_dict
+      ~NetworkAmbientWaterStub.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NetworkAmbientWaterStub.instance_template_path
+      ~NetworkAmbientWaterStub.model_name
+      ~NetworkAmbientWaterStub.simple_gmt_type
+   
+   

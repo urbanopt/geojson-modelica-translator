@@ -30,5 +30,6 @@ runner
    :toctree:
    :recursive:
 
-   geojson_modelica_translator.modelica.lib.runner.jmodelica
+   geojson_modelica_translator.modelica.lib.runner.fmu_runner
+   geojson_modelica_translator.modelica.lib.runner.spawn
 

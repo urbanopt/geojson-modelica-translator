@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.3.0 documentation</title>
+    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.4.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>  
@@ -742,7 +742,7 @@ a System Parameters file.</p>
 </tr>
 <tr class="row-even"><td colspan="5"><p>definitions</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="82"><ul class="simple">
+<tr class="row-odd"><td rowspan="70"><ul class="simple">
 <li><p>system_design_parameter_def</p></li>
 </ul>
 </td>
@@ -755,61 +755,25 @@ a System Parameters file.</p>
 </tr>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>buildings</p></li>
 </ul>
 </td>
-<td colspan="3"><p><em>custom</em></p></td>
+<td colspan="3"><p>Parameters for individual buildings.</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Parameters for all or individual buildings.</p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>object</em></p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>properties</p></td>
-</tr>
-<tr class="row-odd"><td><ul class="simple">
-<li><p>default</p></li>
-</ul>
-</td>
+<tr class="row-odd"><td><p>items</p></td>
 <td colspan="2"><p><span class="xref std std-ref">#/definitions/building_def</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>custom</p></li>
-</ul>
-</td>
-<td colspan="2"><p>List of individual buildings and their custom parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>array</em></p></td>
-</tr>
-<tr class="row-even"><td><p>items</p></td>
-<td><p><span class="xref std std-ref">#/definitions/building_def</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
-</tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>connectors</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Parameters related to the connections between objects.</p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/connector_def</span></p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>object</em></p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>properties</p></td>
-</tr>
-<tr class="row-odd"><td><ul class="simple">
-<li><p>default</p></li>
-</ul>
-</td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/connector_def</span></p></td>
-</tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>district_system</p></li>
 </ul>
 </td>
@@ -818,117 +782,109 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-odd"><td rowspan="2"><p>oneOf</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/fourth_generation_def</span></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
-<li><p>default</p></li>
+<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/fifth_generation_def</span></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>weather</strong></p></li>
 </ul>
 </td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/district_system_def</span></p></td>
+<td colspan="3"><p>Path, relative or absolute, to a weather file for the district in Modelica format (MOS).</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="21"><ul class="simple">
+<tr class="row-odd"><td rowspan="21"><ul class="simple">
 <li><p>topology</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>defaults</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>[unused] Parameters associated with district topologies.</p></td>
+<tr class="row-even"><td colspan="3"><p>[unused] Parameters associated with district topologies.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>topology_parameters</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Description of topology style</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/topology_def</span></p></td>
+<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/topology_def</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>topology_optimization</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Perform topology optimization?</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>cost_function</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Cost function to use in topology optimization</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/cost_function_definition</span></p></td>
+<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/cost_function_definition</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>optimization_approach</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Approach to use for topology optimization</p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p><span class="xref std std-ref">#/definitions/optimization_definition</span></p></td>
+<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/optimization_definition</span></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>time_period</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Time horizon for topology optimization.This parameter is used only if LCC is used as the cost function.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>discount_rate</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Discount rate for topology optimization. This parameter is used only if LCC is used as the cost function.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>convergence_criteria</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>dependencies</p></td>
+<tr class="row-even"><td colspan="3"><p>dependencies</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>topology_optimization</p></li>
 </ul>
 </td>
 <td colspan="2"><p>cost_function, optimization_approach, time_period, discount_rate, convergence_criteria</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>electrical_grid</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Parameters associated with the electrical grid</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>object</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
-</tr>
-<tr class="row-even"><td><ul class="simple">
-<li><p>default</p></li>
-</ul>
-</td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/electrical_grid_parameters</span></p></td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/electrical_grid_parameters</span></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>photovoltaic_panels</p></li>
@@ -1030,7 +986,7 @@ a System Parameters file.</p>
 <li><p>ac_inductive_loads</p></li>
 </ul>
 </td>
-<td colspan="3"><p>AC Inductive loads associated with the district</p></td>
+<td colspan="3"><p>AC inductive loads associated with the district</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
@@ -1039,7 +995,7 @@ a System Parameters file.</p>
 <td colspan="2"><p><span class="xref std std-ref">#/definitions/ac_inductive_load_parameters</span></p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>dc_load_loads</p></li>
+<li><p>dc_loads</p></li>
 </ul>
 </td>
 <td colspan="3"><p>DC loads associated with the district</p></td>
@@ -1147,7 +1103,7 @@ a System Parameters file.</p>
 <li><p>building_def</p></li>
 </ul>
 </td>
-<td colspan="4"><p>The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.</p></td>
+<td colspan="4"><p>Specific parameters for each building.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -1155,7 +1111,7 @@ a System Parameters file.</p>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>geojson_id</p></li>
+<li><p><strong>geojson_id</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.</p></td>
@@ -1206,7 +1162,7 @@ a System Parameters file.</p>
 <td colspan="2"><p>False</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>ets_model</p></li>
+<li><p><strong>ets_model</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.</p></td>
@@ -1215,7 +1171,7 @@ a System Parameters file.</p>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>enum</p></td>
-<td colspan="2"><p>None, Indirect Heating and Cooling, Direct Heating and Cooling</p></td>
+<td colspan="2"><p>None, Indirect Heating and Cooling, Fifth Gen Heat Pump</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>ets_model_parameters</p></li>
@@ -1224,16 +1180,13 @@ a System Parameters file.</p>
 <td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>properties</p></td>
-</tr>
-<tr class="row-odd"><td><ul class="simple">
-<li><p>indirect</p></li>
-</ul>
-</td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/ets_indirect_parameters</span></p></td>
-</tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>oneOf</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/ets_indirect_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><span class="xref std std-ref">#/definitions/fifth_gen_ets_parameters</span></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>photovoltaic_panels</p></li>
@@ -1272,7 +1225,7 @@ a System Parameters file.</p>
 <td colspan="2"><p><span class="xref std std-ref">#/definitions/battery_bank_parameters</span></p></td>
 </tr>
 <tr class="row-even"><td rowspan="8"><ul class="simple">
-<li><p>load</p></li>
+<li><p>electric_load</p></li>
 </ul>
 </td>
 <td colspan="3"><p>microgrid-related load fields</p></td>
@@ -1633,7 +1586,7 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>0</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="51"><ul class="simple">
+<tr class="row-odd"><td rowspan="45"><ul class="simple">
 <li><p>spawn_model_parameters</p></li>
 </ul>
 </td>
@@ -1773,33 +1726,6 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p><strong>epw_filename</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Absolute path or relative path from location where file instance is saved.</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p><strong>mos_weather_filename</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Relative path from location where file instance is saved to the MOS weather file.</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p>weather_filepath</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Absolute path or relative path from location where file instance is saved to the weather filename. This is needed for the central cooling plants.</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>thermal_zone_names</strong></p></li>
 </ul>
@@ -1842,7 +1768,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="42"><ul class="simple">
+<tr class="row-even"><td rowspan="40"><ul class="simple">
 <li><p>rc_model_parameters</p></li>
 </ul>
 </td>
@@ -1985,15 +1911,6 @@ a System Parameters file.</p>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>2</p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p><strong>mos_weather_filename</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Relative path from location where file instance is saved to the MOS weather file.</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>fraction_latent_person</strong></p></li>
@@ -2175,7 +2092,7 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="59"><ul class="simple">
+<tr class="row-odd"><td rowspan="57"><ul class="simple">
 <li><p>central_cooling_plant_parameters</p></li>
 </ul>
 </td>
@@ -2405,15 +2322,6 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>0.625</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p>weather_filepath</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Filename for weather file</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
 <tr class="row-even"><td rowspan="25"><ul class="simple">
 <li><p>central_heating_plant_parameters</p></li>
 </ul>
@@ -2519,7 +2427,7 @@ a System Parameters file.</p>
 <li><p>combined_heat_and_power_parameters</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Combined Heat and power parameters used by the microgrid model.</p></td>
+<td colspan="4"><p>Combined heat and power (CHP) parameters used by the microgrid model.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -2635,7 +2543,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="15"><ul class="simple">
+<tr class="row-even"><td rowspan="14"><ul class="simple">
 <li><p>pv_parameters</p></li>
 </ul>
 </td>
@@ -2694,172 +2602,128 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>480</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
-<li><p>additionalProperties</p></li>
-</ul>
-</td>
-<td colspan="3"><p>False</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="16"><ul class="simple">
+<tr class="row-even"><td rowspan="16"><ul class="simple">
 <li><p>wind_turbine_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Wind turbine parameters used by the microgrid model.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>scaling_factor</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Scaling Factor</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>height_over_ground</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Height over ground (m)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>power_curve</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>rated_power</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Wind turbine size (kW)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>annual_energy_produced</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Average yearly energy produced (kWh)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>nominal_voltage</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal System Voltage (V)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>480</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>capacitor_bank_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Capacitor bank parameters used by the microgrid model.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>nominal_capacity</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal Capacity (var)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="7"><ul class="simple">
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>substation_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Substation parameters used by the microgrid model.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>properties</p></td>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>RMS_voltage_high_side</p></li>
 </ul>
 </td>
 <td colspan="3"><p>RMS voltage on high side (V)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>RMS_voltage_low_side</p></li>
 </ul>
 </td>
 <td colspan="3"><p>RMS voltage on low side (V)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="9"><ul class="simple">
+<tr class="row-even"><td rowspan="9"><ul class="simple">
 <li><p>transformer_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Transformer parameters used by the microgrid model.</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>object</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p>id</p></li>
-</ul>
-</td>
-<td colspan="3"><p>The transformer ID as defined in the scenario report.</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p>nominal_capacity</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal Capacity (kVA)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
-<li><p>reactance_resistance_ratio</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Ratio between reactance and resistance</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td rowspan="11"><ul class="simple">
-<li><p>power_converter_parameters</p></li>
-</ul>
-</td>
-<td colspan="4"><p>Power converter parameters used by the microgrid model.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -2867,31 +2731,13 @@ a System Parameters file.</p>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>converter type</p></li>
+<li><p>id</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Power converter type</p></td>
+<td colspan="3"><p>The transformer ID as defined in the scenario report.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>RMS_voltage_ratio</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Ratio of RMS voltage on low side/high side</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>converter_efficiency</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Converter Efficiency (%)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>nominal_capacity</p></li>
@@ -2902,148 +2748,292 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="12"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>reactance_resistance_ratio</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Ratio between reactance and resistance</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="11"><ul class="simple">
+<li><p>power_converter_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Power converter parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>converter type</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Power converter type</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>RMS_voltage_ratio</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Ratio of RMS voltage on low side/high side</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>converter_efficiency</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Converter Efficiency (%)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>nominal_capacity</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal Capacity (kVA)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="12"><ul class="simple">
 <li><p>distribution_line_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Distribution lines parameters used by the microgrid model.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>line_length</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Length of distribution lines (m)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>maximum_ampacity</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Maximum power of the lines. this is defined in Amps</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>nominal_voltage</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal voltage of the lines (V)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>480</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>commercial_line_type</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Commercial line type given by the type of each wire making up the line</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="8"><ul class="simple">
+<tr class="row-even"><td rowspan="8"><ul class="simple">
 <li><p>ac_inductive_load_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>AC inductive load parameters used by the microgrid model.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>nominal_voltage</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal voltage (V)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>nominal_power_consumption</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal Power Consumption type</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>enum</p></td>
+<tr class="row-odd"><td><p>enum</p></td>
 <td colspan="2"><p>constant, variable load</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="8"><ul class="simple">
+<tr class="row-even"><td rowspan="8"><ul class="simple">
 <li><p>dc_load_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>DC load parameters used by the microgrid model.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>nominal_voltage</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal voltage (V)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>nominal_power_consumption</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal Power Consumption type</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>enum</p></td>
+<tr class="row-odd"><td><p>enum</p></td>
 <td colspan="2"><p>constant, variable load</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<tr class="row-even"><td rowspan="7"><ul class="simple">
 <li><p>battery_bank_parameters</p></li>
 </ul>
 </td>
-<td colspan="4"><p>DC load parameters used by the microgrid model.</p></td>
+<td colspan="4"><p>Battery bank associated with the district</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>capacity</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Maximum available charge (MWh)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>nominal_voltage</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal voltage (V)</p></td>
 </tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<li><p>fourth_generation_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="5"><ul class="simple">
+<li><p><strong>fourth_generation</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>central_cooling_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/central_cooling_plant_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>central_heating_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/central_heating_plant_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>combined_heat_and_power_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/combined_heat_and_power_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><ul class="simple">
+<li><p>connected_buildings</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<li><p>fifth_generation_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="5"><ul class="simple">
+<li><p><strong>fifth_generation</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>central_cooling_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/central_cooling_plant_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>central_heating_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/central_heating_plant_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>combined_heat_and_power_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/combined_heat_and_power_parameters</span></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><ul class="simple">
+<li><p>connected_buildings</p></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>fifth_gen_ets_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>supply_water_temperature_building</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Water supply temperature building side. (C)</p></td>
+</tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>15</p></td>
 </tr>
 </tbody>
 </table>
@@ -3120,7 +3110,7 @@ a System Parameters file.</p>
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.3.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>

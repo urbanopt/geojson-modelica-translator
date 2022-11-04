@@ -1,4 +1,4 @@
-..
+﻿..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
 
 networks
@@ -31,6 +31,7 @@ networks
    :recursive:
 
    geojson_modelica_translator.model_connectors.networks.network_2_pipe
+   geojson_modelica_translator.model_connectors.networks.network_ambient_water_stub
    geojson_modelica_translator.model_connectors.networks.network_base
    geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub
    geojson_modelica_translator.model_connectors.networks.network_heated_water_stub
