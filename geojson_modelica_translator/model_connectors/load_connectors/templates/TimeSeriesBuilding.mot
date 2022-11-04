@@ -1,5 +1,5 @@
 within {{ project_name }}.Loads.{{ model_name }};
-model BuildingTimeSeries
+model TimeSeriesBuilding
   "Building model with heating and cooling loads provided as time series"
   extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=Buildings.Media.Water,
@@ -325,5 +325,5 @@ First implementation.
       coordinateSystem(
         preserveAspectRatio=false,
         extent={{-300,-300},{300,300}})));
-end BuildingTimeSeries;
+end TimeSeriesBuilding;
 {% endraw %}

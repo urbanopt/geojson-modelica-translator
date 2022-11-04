@@ -67,7 +67,7 @@ class TimeSeries(LoadBase):
         time_series_building_with_ets_template = self.template_env.get_template("TimeSeriesBuildingWithETS.mot")
         # These templates will be rendered in order for a 5G system. 4G system uses only the first.
         building_templates = {}
-        building_templates['BuildingTimeSeries'] = time_series_building_template
+        building_templates['TimeSeriesBuilding'] = time_series_building_template
         building_templates['building'] = time_series_building_with_ets_template
 
         b_modelica_path = ModelicaPath(
@@ -159,7 +159,7 @@ class TimeSeries(LoadBase):
         if 'fifth_generation' not in building_template_data['district_type']:
             self.run_template(
                 template=time_series_building_template,
-                save_file_name=os.path.join(b_modelica_path.files_dir, "BuildingTimeSeries.mo"),
+                save_file_name=os.path.join(b_modelica_path.files_dir, "TimeSeriesBuilding.mo"),
                 project_name=scaffold.project_name,
                 model_name=self.building_name,
                 data=combined_template_data
@@ -216,6 +216,6 @@ class TimeSeries(LoadBase):
     def get_modelica_type(self, scaffold):
         district_params = self.system_parameters.get_param("district_system")
         if 'fifth_generation' not in district_params:
-            return f'{scaffold.project_name}.Loads.{self.building_name}.BuildingTimeSeries'
+            return f'{scaffold.project_name}.Loads.{self.building_name}.TimeSeriesBuilding'
         else:
             return f'{scaffold.project_name}.Loads.{self.building_name}.building'
