@@ -6,6 +6,7 @@ changelog:
       - ignore-for-release
       - DO NOT MERGE
       - invalid
+      - dependencies
     authors:
       - octocat
       - dependabot
