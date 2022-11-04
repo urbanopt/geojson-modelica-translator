@@ -38,8 +38,9 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
-from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader
+
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 
 class PackageParser(object):

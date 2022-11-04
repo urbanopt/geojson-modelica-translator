@@ -42,6 +42,8 @@ from pathlib import Path
 
 import pytest
 from buildingspy.io.outputfile import Reader
+from modelica_builder.model import Model
+
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
@@ -68,7 +70,6 @@ from geojson_modelica_translator.model_connectors.networks import (
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
-from modelica_builder.model import Model
 
 from ..base_test_case import TestCaseBase
 

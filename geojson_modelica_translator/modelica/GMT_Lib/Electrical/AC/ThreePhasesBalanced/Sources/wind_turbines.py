@@ -11,7 +11,7 @@ class WindTurbine(SimpleGMTBase):
 
     def build_from_template(self, output_dir: Path):
         wind_turbine_params = self.system_parameters.get_param("$.wind_turbines")
-        # There can be multiple community pv arrays so we need to loop over them
+        # There can be multiple wind turbines so we need to loop over them
         for index, turbine in enumerate(wind_turbine_params):
             turbine_params = {
                 'scaling_factor': turbine["scaling_factor"],

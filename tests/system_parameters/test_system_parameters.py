@@ -75,10 +75,8 @@ class SystemParametersTest(unittest.TestCase):
             print(s)
         value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.idf_filename")
         self.assertEqual(Path(value), Path(filename).parent / 'example_model.idf')
-        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.mos_weather_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.mos')
-        value = sdp.get_param_by_building_id("ijk678", "load_model_parameters.spawn.epw_filename")
-        self.assertEqual(Path(value), Path(filename).parent / 'example_weather.epw')
+        value = sdp.get_param("$.weather")
+        self.assertEqual(Path(value), Path(filename).parent / '../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos')
 
         # verify that the second spawn paths resolve too.
         value = sdp.get_param_by_building_id("lmn000", "load_model_parameters.spawn.idf_filename")
@@ -88,7 +86,7 @@ class SystemParametersTest(unittest.TestCase):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.assertEqual(
-            sdp.data["buildings"]["default"]["load_model_parameters"]["rc"]["order"], 2
+            sdp.data["buildings"][1]["load_model_parameters"]["rc"]["order"], 2
         )
 
     def test_load_system_parameters_2(self):
@@ -105,71 +103,76 @@ class SystemParametersTest(unittest.TestCase):
         )
 
     def test_errors(self):
-        data = {
-            "buildings": {
-                "default": {
+        incomplete_teaser_params = {
+            "buildings": [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "None",
                     "load_model": "rc",
                     "load_model_parameters": {
-                        "rc": {"order": 6}},
+                        "rc": {"order": 5}},
                 }
-            }
+            ]
         }
 
         with self.assertRaises(Exception) as exc:
-            SystemParameters.loadd(data)
+            SystemParameters.loadd(incomplete_teaser_params)
         self.assertRegex(str(exc.exception), "Invalid system parameter file.*")
 
-        sp = SystemParameters.loadd(data, validate_on_load=False)
+        sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
         self.assertEqual(len(sp.validate()), 6)
         self.assertIn("'fraction_latent_person' is a required property", sp.validate())
-        self.assertIn("'mos_weather_filename' is a required property", sp.validate())
         self.assertIn("'temp_hw_supply' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_cooling' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
-        self.assertIn("6 is not one of [1, 2, 3, 4]", sp.validate())
+        self.assertIn("5 is not one of [1, 2, 3, 4]", sp.validate())
 
     def test_get_param(self):
         data = {
-            "buildings": {
-                "default": {
+            "weather": "path/to/weatherfile.mos",
+            "buildings": [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "None",
                     "load_model": "rc",
                     "load_model_parameters": {
                         "rc": {
                             "order": 4,
-                            "mos_weather_filename": "path-to-file",
                             "fraction_latent_person": 1.25,
                             "temp_hw_supply": 40,
                             "temp_setpoint_heating": 40,
                             "temp_setpoint_cooling": 24
                         }
-                    },
-                }
-            }
-        }
-        sp = SystemParameters.loadd(data)
-        # $.buildings.*[?load_model=spawn].load_model_parameters.spawn.idf_filename
-        value = sp.get_param("$.buildings.default.load_model_parameters.rc.order")
-        self.assertEqual(value, 4)
-
-        value = sp.get_param("buildings.default.load_model")
-        self.assertEqual(value, "rc")
-
-        value = sp.get_param("buildings.default")
-        self.assertDictEqual(
-            value,
-            {
-                "load_model": "rc",
-                "load_model_parameters": {
-                    "rc": {
-                        "order": 4,
-                        "mos_weather_filename": "path-to-file",
-                        "fraction_latent_person": 1.25,
-                        "temp_hw_supply": 40,
-                        "temp_setpoint_heating": 40,
-                        "temp_setpoint_cooling": 24
                     }
                 }
-            }
+            ]
+        }
+        sp = SystemParameters.loadd(data)
+        value = sp.get_param("$.buildings.[*].load_model_parameters.rc.order")
+        self.assertEqual(value, 4)
+
+        value = sp.get_param("buildings.[*].load_model")
+        self.assertEqual(value, "rc")
+
+        value = sp.get_param("buildings")
+        self.assertEqual(
+            value,
+            [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "None",
+                    "load_model": "rc",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24
+                        }
+                    }
+                }
+            ]
         )
 
         value = sp.get_param("")
@@ -178,31 +181,19 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("not.a.real.path")
         self.assertIsNone(value)
 
-    def test_get_param_with_default(self):
-        data = {"buildings": {"default": {"load_model": "spawn"}}}
-        sp = SystemParameters.loadd(data)
-        # this path doesn't exist, but there is a default
-        value = sp.get_param(
-            "buildings.default.load_model_parameters.rc.order", default=2
-        )
-        self.assertEqual(2, value)
-
-        value = sp.get_param("not.a.real.path", default=2)
-        self.assertEqual(2, value)
-
     def test_get_param_with_building_id_defaults(self):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         # ensure the defaults are respected. abcd1234 has NO metamodel defined
-        value = sdp.get_param_by_building_id("abcd1234", "ets_model", "Not None")
+        value = sdp.get_param_by_building_id("abcd1234", "ets_model")
         self.assertEqual("None", value)
 
         # grab the schema default
-        value = sdp.get_param_by_building_id("defgh2345", "ets_model", "Not None")
+        value = sdp.get_param_by_building_id("defgh2345", "ets_model")
         self.assertEqual("Indirect Heating and Cooling", value)
-        value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters", "Not None")
-        self.assertEqual({"indirect": {
+        value = sdp.get_param_by_building_id("defgh2345", "ets_indirect_parameters")
+        self.assertEqual({
             "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
@@ -220,22 +211,23 @@ class SystemParametersTest(unittest.TestCase):
             "cooling_controller_y_min": 0,
             "heating_controller_y_max": 1,
             "heating_controller_y_min": 0
-        }}, value)
+        }, value)
 
         # respect the passed default value
-        value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
-        self.assertEqual(24815, value)
+        # value = sdp.get_param_by_building_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
+        # self.assertEqual(24815, value)
+        # FYI! Default sys-param values (in the sys-param file) are being eliminated in this PR
 
     def test_get_param_with_none_building_id(self):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
         with self.assertRaises(SystemExit) as context:
-            sdp.get_param_by_building_id(None, "ets_model", "Not None")
+            sdp.get_param_by_building_id(None, "ets_model")
         self.assertIn("No building_id submitted. Please retry and include the feature_id", str(context.exception))
 
     def test_missing_files(self):
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             output_sys_param_file = self.output_dir / 'going_to_fail_first.json'
             missing_scenario_dir = self.scenario_dir / 'foobar'
             sp = SystemParameters()
@@ -246,7 +238,7 @@ class SystemParametersTest(unittest.TestCase):
                 sys_param_filename=output_sys_param_file)
         self.assertIn(
             f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             missing_feature_file = self.data_dir / 'sdk_output_skeleton' / 'foobar.json'
             sp = SystemParameters()
             sp.csv_to_sys_param(
@@ -258,7 +250,7 @@ class SystemParametersTest(unittest.TestCase):
             f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
 
     def test_csv_to_sys_param_does_not_overwrite(self):
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             output_sys_param_file = self.output_dir / 'test_overwriting_sys_param.json'
             sp = SystemParameters()
             sp.csv_to_sys_param(
@@ -290,7 +282,7 @@ class SystemParametersTest(unittest.TestCase):
         #     sys_param_data = json.load(f)
         #     print(sys_param_data)
 
-        self.assertTrue(output_sys_param_file.exists())
+        self.assertTrue(output_sys_param_file.is_file())
 
     def test_csv_to_sys_param_microgrid(self):
         output_sys_param_file = self.microgrid_output_dir / 'test_sys_param_microgrid.json'
@@ -306,12 +298,15 @@ class SystemParametersTest(unittest.TestCase):
         with open(output_sys_param_file, "r") as f:
             sys_param_data = json.load(f)
 
+        # pv on a building
+        self.assertTrue(len(sys_param_data['buildings'][0]['photovoltaic_panels']) > 0)
+        # pv for the district
         self.assertTrue(len(sys_param_data['photovoltaic_panels']) > 0)
         self.assertTrue(len(sys_param_data['wind_turbines']) > 0)
         self.assertTrue(sys_param_data['electrical_grid']['frequency'])
 
         # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
-        self.assertTrue(sys_param_data['buildings']['custom'][0]['photovoltaic_panels'])
+        self.assertTrue(sys_param_data['buildings'][0]['photovoltaic_panels'])
 
     def test_validate_sys_param_template(self):
         output_sys_param_file = self.output_dir / 'bogus_sys_param.json'
@@ -323,7 +318,7 @@ class SystemParametersTest(unittest.TestCase):
                 sys_param_filename=output_sys_param_file)
         self.assertIn("csv_to_sys_param() missing 1 required positional argument: 'model_type'",
                       str(context.exception))
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(SystemExit) as context:
             bogus_template_type = 'openstudio'
             sp = SystemParameters()
             sp.csv_to_sys_param(
@@ -350,7 +345,9 @@ class SystemParametersTest(unittest.TestCase):
         local_path = os.path.join('not', 'a', 'real', 'path')
         with self.assertRaises(Exception) as context:
             sdp.download_weatherfile(weather_filename, local_path)
-        self.assertEqual(f"Save path for the weatherfile does not exist, {local_path}", str(context.exception))
+        self.assertEqual("Malformed location, needs underscores of location "
+                         "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)",
+                         str(context.exception))
 
     def test_download_invalid_epw(self):
         sdp = SystemParameters()

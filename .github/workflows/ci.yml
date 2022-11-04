@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  pull_request:
   push:
     # re-enable all branches until we start simulating again.
     # branches:
@@ -23,19 +22,19 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: [3.9, 3.7]
+        python-version: ["3.7.1", "3.10"]
         test_env: [python, precommit, docs]
-        mbl_branch: [v9.0.0]
+        mbl_branch: [master]
         include:
           - os: ubuntu-latest
             test_env: python
-            mbl_branch: v9.0.0
+            mbl_branch: master
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       -
         name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       -
@@ -46,14 +45,23 @@ jobs:
           docker-compose --version
       -
         name: Install and configure Poetry
-        uses: snok/install-poetry@v1
+        uses: abatilo/actions-poetry@v2
         with:
-          version: 1.1.13
+          poetry-version: 1.2.2
       -
-        name: Run Poetry install
+        name: Install dependencies with Poetry
         run: |
           poetry --version
           poetry install
+          poetry update
+      # -
+      #   name: Save Optimica license to file
+      #   if: matrix.os == 'ubuntu-latest'
+      #   shell: bash
+      #   run: |
+      #     mkdir -p /home/runner/modelon
+      #     echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
+      #     echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
       -
         name: Install modelicafmt
         run: |
@@ -83,31 +91,39 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
+      # #Don't build the container anymore, just have it pull from docker hub.
+      # -
+      #   name: Build Spawn Modelica Docker Container
+      #   env:
+      #     MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
+      #   run: |
+      #     cd geojson_modelica_translator/modelica/lib/runner
+      #     docker-compose build
       -
-        name: Tox ${{ matrix.test_env }}
+        name: Run PyTest
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          # MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
+          # MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
-            # !! Ugh, this is ugly but necessary (poetry + tox were not passing our args correctly to pytest)
-            if [ '${{ matrix.os }}' == 'windows-latest' ]; then
-              # for windows, skip python tests that require simulation (currently broken)
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
-            elif [ '${{ matrix.mbl_branch }}' == 'v9.0.0' ]; then
-              # we can no longer run any msl v4 simulations with JModelica
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
-            else
-              # we can no longer run any msl v4 simulations with JModelica
-              poetry run tox -e ${{ matrix.test_env }} -- -m 'not simulation' ./tests
-            fi
-          else
-            poetry run tox -e ${{ matrix.test_env }}
+            poetry run pytest --doctest-modules -v --cov-report term-missing --cov . -m 'not simulation and not compilation' ./tests
+          fi
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: --all-files
+      - name: Build docs
+        run: |
+          if [ '${{ matrix.test_env }}' == 'docs' ]; then
+            cd docs
+            poetry run make html
           fi
       -
         name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'v9.0.0' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'master' }}
         run: |
           poetry run coveralls
       -
@@ -116,8 +132,8 @@ jobs:
         run: |
           echo "Maybe these logs will help?"
           ls -alt $GITHUB_WORKSPACE
-          echo "============================================ stdout.log ========================================="
           find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
+            echo "============================================ stdout.log ========================================="
             echo "$filename"
             cat "$filename"
           done

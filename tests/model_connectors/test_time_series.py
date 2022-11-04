@@ -39,6 +39,7 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 
 import pytest
+
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
@@ -79,7 +80,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.assertIsNotNone(self.time_series)
         self.assertIsNotNone(self.time_series.building)
         self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+                         self.time_series.system_parameters.get_param("buildings")[0]["load_model"])
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(
@@ -89,7 +90,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
 
         self.root_path = os.path.abspath(os.path.join(self.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
-            os.path.join(self.root_path, 'building.mo'),
+            os.path.join(self.root_path, 'TimeSeriesBuilding.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
@@ -108,7 +109,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.assertIsNotNone(self.time_series)
         self.assertIsNotNone(self.time_series.building)
         self.assertEqual("time_series",
-                         self.time_series.system_parameters.get_param("buildings.custom")[0]["load_model"])
+                         self.time_series.system_parameters.get_param("buildings")[0]["load_model"])
 
         # currently we must setup the root project before we can run to_modelica
         package = PackageParser.new_from_template(
@@ -118,13 +119,13 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
 
         self.root_path = os.path.abspath(os.path.join(self.scaffold.loads_path.files_dir, 'B5a6b99ec37f4de7f94020090'))
         files = [
-            os.path.join(self.root_path, 'building.mo'),
+            os.path.join(self.root_path, 'TimeSeriesBuilding.mo'),
         ]
 
         # verify that there are only 2 files that matter (coupling and building)
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        self.run_and_assert_in_docker(os.path.join(self.root_path, 'building.mo'),
+        self.run_and_assert_in_docker(os.path.join(self.root_path, 'TimeSeriesBuilding.mo'),
                                       project_path=self.scaffold.project_path,
                                       project_name=self.scaffold.project_name)

@@ -65,9 +65,7 @@ class CoolingPlant(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        weather_filepath = Path(self.system_parameters.get_param(
-            "$.district_system.default.central_cooling_plant_parameters.weather_filepath"
-        ))
+        weather_filepath = Path(self.system_parameters.get_param("$.weather"))
 
         # verify that the weather file exists
         if not weather_filepath.exists():
@@ -87,58 +85,58 @@ class CoolingPlant(PlantBase):
         template_data = {
             "nominal_values": {
                 "delta_temp": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.cooling_tower_water_temperature_difference_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.cooling_tower_water_temperature_difference_nominal"  # noqa: E501
                 ),
                 "fan_power": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.cooling_tower_fan_power_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.cooling_tower_fan_power_nominal"
                 ),
                 "chilled_water_pump_pressure_head": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.chw_pump_head"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.chw_pump_head"
                 ),
                 "condenser_water_pump_pressure_head": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.cw_pump_head"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.cw_pump_head"
                 ),
                 "heat_flow_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.heat_flow_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.heat_flow_nominal"
                 ),
                 "mass_chw_flow_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.mass_chw_flow_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.mass_chw_flow_nominal"
                 ),
                 "mass_cw_flow_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.mass_cw_flow_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.mass_cw_flow_nominal"
                 ),
                 "chiller_water_flow_minimum": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.chiller_water_flow_minimum"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.chiller_water_flow_minimum"
                 ),
                 "pressure_drop_chw_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.pressure_drop_chw_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_chw_nominal"
                 ),
                 "pressure_drop_cw_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.pressure_drop_cw_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_cw_nominal"
                 ),
                 "pressure_drop_setpoint": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.pressure_drop_setpoint"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_setpoint"
                 ),
                 "temp_setpoint_chw": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.temp_setpoint_chw"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.temp_setpoint_chw"
                 ),
                 "pressure_drop_chw_valve_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.pressure_drop_chw_valve_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_chw_valve_nominal"
                 ),
                 "pressure_drop_cw_pum_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.pressure_drop_cw_pum_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_cw_pum_nominal"
                 ),
                 "temp_air_wb_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.temp_air_wb_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.temp_air_wb_nominal"
                 ),
                 "temp_cw_in_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.temp_cw_in_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.temp_cw_in_nominal"
                 ),
                 "delta_temp_approach": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.delta_temp_approach"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.delta_temp_approach"
                 ),
                 "ratio_water_air_nominal": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.ratio_water_air_nominal"
+                    "$.district_system.fourth_generation.central_cooling_plant_parameters.ratio_water_air_nominal"
                 ),
             },
             "wet_bulb_calc": {

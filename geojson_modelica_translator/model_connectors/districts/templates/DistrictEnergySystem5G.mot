@@ -1,0 +1,69 @@
+within {{ district_within_path }};
+model DistrictEnergySystem
+  extends Modelica.Icons.Example;
+  // District Parameters
+  package MediumW=Buildings.Media.Water
+    "Source side medium";
+  package MediumA=Buildings.Media.Air
+    "Load side medium";
+  // TODO: dehardcode these
+  parameter Modelica.Units.SI.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
+  parameter Modelica.Units.SI.TemperatureDifference delChiWatTemBui(displayUnit="degC")=5;
+  parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemDis(displayUnit="degC")=12;
+  parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemBui(displayUnit="degC")=5;
+  inner parameter Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries datDes(
+    nBui=1,
+    mPumDis_flow_nominal=95,
+    mPipDis_flow_nominal=95,
+    dp_length_nominal=250,
+    epsPla=0.935,
+    final mCon_flow_nominal={18})
+    "Design data";
+  // Models
+  {% for model in models %}
+  //
+  // Begin Model Instance for {{ model.id }}
+  // Source template: {{ model.instance_template_path }}
+  //
+  {{ model.instance }}
+  //
+  // End Model Instance for {{ model.id }}
+  //
+  {% endfor %} // Model dependencies
+  {% for coupling in couplings %}
+  //
+  // Begin Component Definitions for {{ coupling.id }}
+  // Source template: {{ coupling.coupling_definitions_template_path }}
+  //
+  {{ coupling.component_definitions }}
+  //
+// End Component Definitions for {{ coupling.id }}
+//
+{% endfor %} equation
+// Connections
+{% for coupling in couplings %}
+//
+// Begin Connect Statements for {{ coupling.id }}
+// Source template: {{ coupling.connect_statements_template_path }}
+//
+{{ coupling.connect_statements }}
+//
+// End Connect Statements for {{ coupling.id }}
+//
+{% endfor %} annotation (
+  experiment(
+    StopTime=86400,
+    Interval=3600,
+    Tolerance=1e-06),
+  Diagram(
+    coordinateSystem(
+      preserveAspectRatio=false,
+      extent={{ diagram.extent }})),
+  Documentation(
+    revisions="<html>
+ <li>
+ May 10, 2020: Hagar Elarga<br/>
+Updated implementation to handle template needed for GeoJSON to Modelica.
+</li>
+</html>"));
+end DistrictEnergySystem;

@@ -40,13 +40,14 @@ import logging
 import shutil
 from pathlib import Path
 
-from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
 
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s: %(message)s',
     datefmt='%d-%b-%y %H:%M:%S',
 )
@@ -88,14 +89,18 @@ class ModelBase(object):
 
         # Read district-level system params. Used when templating ets mofiles, for instance in heating_indirect.py
         if system_parameters is not None:
-            self.district_template_data = {
-                "temp_setpoint_hhw": self.system_parameters.get_param(
-                    "$.district_system.default.central_heating_plant_parameters.temp_setpoint_hhw"
-                ),
-                "temp_setpoint_chw": self.system_parameters.get_param(
-                    "$.district_system.default.central_cooling_plant_parameters.temp_setpoint_chw"
-                ),
-            }
+            # TODO: DRY up this handling of different generations
+            district_params = self.system_parameters.get_param("district_system")
+            if 'fifth_generation' in district_params:
+                self.district_template_data = {
+                    "temp_setpoint_hhw": district_params['fifth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
+                    "temp_setpoint_chw": district_params['fifth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
+                }
+            elif 'fourth_generation' in district_params:
+                self.district_template_data = {
+                    "temp_setpoint_hhw": district_params['fourth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
+                    "temp_setpoint_chw": district_params['fourth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
+                }
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """
@@ -177,10 +182,21 @@ class ModelBase(object):
         return template.render(template_params), template_filename
 
     def to_dict(self, scaffold):
-        return {
+        output_dict = {
             'id': self.id,
             'modelica_type': self.get_modelica_type(scaffold)
         }
+        district_params = self.system_parameters.get_param("district_system")
+        if 'fifth_generation' in district_params:
+            # 'bui' is how a 5G model refers to the 4G model while the templates build the model.
+            # 4G model is already self-sufficient so it needs that string to not exist.
+            # This is templated in TimeSeries_Instance.mopt
+            # FIXME: need a better variable name than 'is_5g_district' to be clearer in the template
+            # TODO: A better if statement using Jinja conditionals in the above file might allow us to remove the 'else' block here
+            output_dict['is_5g_district'] = 'bui'
+        else:
+            output_dict['is_5g_district'] = ''
+        return output_dict
 
     # TODO: this should be implemented here, not in individual classes
     # def get_modelica_type(self, scaffold)

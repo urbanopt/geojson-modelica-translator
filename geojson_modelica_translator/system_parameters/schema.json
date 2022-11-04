@@ -8,42 +8,30 @@
       "type": "object",
       "properties": {
         "buildings": {
-          "title": "custom",
-          "description": "Parameters for all or individual buildings.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/building_def"
-            },
-            "custom": {
-              "description": "List of individual buildings and their custom parameters.",
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/building_def"
-              }
-            }
-          },
-          "additionalProperties": false
+          "description": "Parameters for individual buildings.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/building_def"
+          }
         },
         "connectors": {
-          "description": "[unused] Parameters related to the connections between objects.",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/connector_def"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/definitions/connector_def"
         },
         "district_system": {
           "description": "Parameters associated with district systems.",
           "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/district_system_def"
+          "oneOf": [
+            {
+              "$ref": "#/definitions/fourth_generation_def"
+            },
+            {
+              "$ref": "#/definitions/fifth_generation_def"
             }
-          },
-          "additionalProperties": false
+          ]
+        },
+        "weather": {
+          "description": "Path, relative or absolute, to a weather file for the district in Modelica format (MOS).",
+          "type": "string"
         },
         "topology": {
           "title": "defaults",
@@ -91,13 +79,7 @@
           "additionalProperties": false
         },
         "electrical_grid": {
-          "description": "Parameters associated with the electrical grid",
-          "type": "object",
-          "properties": {
-            "default": {
-              "$ref": "#/definitions/electrical_grid_parameters"
-            }
-          }
+          "$ref": "#/definitions/electrical_grid_parameters"
         },
         "photovoltaic_panels": {
           "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
@@ -156,13 +138,13 @@
           }
         },
         "ac_inductive_loads": {
-          "description": "AC Inductive loads associated with the district",
+          "description": "AC inductive loads associated with the district",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ac_inductive_load_parameters"
           }
         },
-        "dc_load_loads": {
+        "dc_loads": {
           "description": "DC loads associated with the district",
           "type": "array",
           "items": {
@@ -177,7 +159,10 @@
           }
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": [
+        "weather"
+      ]
     },
     "topology_def": {
       "title": "defaults",
@@ -228,7 +213,7 @@
       "additionalProperties": false
     },
     "building_def": {
-      "description": "The default system parameters for all of the buildings. These can be overwritten on a building by building basis by setting values in objects in the array with the geojson_id defined.",
+      "description": "Specific parameters for each building.",
       "type": "object",
       "properties": {
         "geojson_id": {
@@ -266,17 +251,20 @@
           "enum": [
             "None",
             "Indirect Heating and Cooling",
-            "Direct Heating and Cooling"
+            "Fifth Gen Heat Pump"
           ]
         },
         "ets_model_parameters": {
           "type": "object",
-          "properties": {
-            "indirect": {
+          "additionalProperties": false,
+          "oneOf": [
+            {
               "$ref": "#/definitions/ets_indirect_parameters"
+            },
+            {
+              "$ref": "#/definitions/fifth_gen_ets_parameters"
             }
-          },
-          "additionalProperties": false
+          ]
         },
         "photovoltaic_panels": {
           "description": "Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization",
@@ -299,7 +287,7 @@
             "$ref": "#/definitions/battery_bank_parameters"
           }
         },
-        "load": {
+        "electric_load": {
           "description": "microgrid-related load fields",
           "properties": {
             "nominal_voltage": {
@@ -316,7 +304,11 @@
             }
           }
         }
-      }
+      },
+      "required": [
+        "geojson_id",
+        "ets_model"
+      ]
     },
     "connector_def": {
       "description": "[unused] Parameters associated with the connectors in a district system.",
@@ -549,18 +541,6 @@
           "description": "Absolute path or relative path from location where file instance is saved.",
           "type": "string"
         },
-        "epw_filename": {
-          "description": "Absolute path or relative path from location where file instance is saved.",
-          "type": "string"
-        },
-        "mos_weather_filename": {
-          "description": "Relative path from location where file instance is saved to the MOS weather file.",
-          "type": "string"
-        },
-        "weather_filepath": {
-          "description": "Absolute path or relative path from location where file instance is saved to the weather filename. This is needed for the central cooling plants.",
-          "type": "string"
-        },
         "thermal_zone_names": {
           "description": "List of thermal zones in the Spawn / EnergyPlus model.",
           "type": "array",
@@ -591,8 +571,6 @@
         "temp_chw_supply",
         "temp_chw_return",
         "idf_filename",
-        "epw_filename",
-        "mos_weather_filename",
         "thermal_zone_names",
         "zone_nom_htg_loads",
         "zone_nom_clg_loads"
@@ -663,10 +641,6 @@
           ],
           "default": 2
         },
-        "mos_weather_filename": {
-          "description": "Relative path from location where file instance is saved to the MOS weather file.",
-          "type": "string"
-        },
         "fraction_latent_person": {
           "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office).",
           "type": "number",
@@ -677,7 +651,6 @@
         "temp_setpoint_cooling",
         "temp_setpoint_heating",
         "temp_hw_supply",
-        "mos_weather_filename",
         "fraction_latent_person"
       ],
       "additionalProperties": false
@@ -853,10 +826,6 @@
           "description": "To be defined",
           "type": "number",
           "default": 0.625
-        },
-        "weather_filepath": {
-          "description": "Filename for weather file",
-          "type": "string"
         }
       },
       "required": [
@@ -927,13 +896,13 @@
         "mass_hhw_flow_nominal",
         "boiler_water_flow_minimum",
         "pressure_drop_hhw_nominal",
-        "pressure_drop_setpoint",
         "temp_setpoint_hhw",
-        "pressure_drop_hhw_valve_nominal"
+        "pressure_drop_hhw_valve_nominal",
+        "pressure_drop_setpoint"
       ]
     },
     "combined_heat_and_power_parameters": {
-      "description": "Combined Heat and power parameters used by the microgrid model.",
+      "description": "Combined heat and power (CHP) parameters used by the microgrid model.",
       "type": "object",
       "properties": {
         "fuel_type": {
@@ -956,8 +925,7 @@
           "description": "Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP",
           "type": "string"
         }
-      },
-      "required": []
+      }
     },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
@@ -1016,8 +984,7 @@
           "description": "Nominal System Voltage (V)",
           "type": "number",
           "default": 480
-        },
-        "additionalProperties": false
+        }
       }
     },
     "wind_turbine_parameters": {
@@ -1175,7 +1142,7 @@
       }
     },
     "battery_bank_parameters": {
-      "description": "DC load parameters used by the microgrid model.",
+      "description": "Battery bank associated with the district",
       "type": "object",
       "properties": {
         "capacity": {
@@ -1187,6 +1154,80 @@
           "type": "number"
         }
       }
+    },
+    "fourth_generation_def": {
+      "properties": {
+        "fourth_generation": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "fourth_generation"
+      ]
+    },
+    "fifth_generation_def": {
+      "properties": {
+        "fifth_generation": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "fifth_generation"
+      ]
+    },
+    "fifth_gen_ets_parameters": {
+      "properties": {
+        "supply_water_temperature_building": {
+          "description": "Water supply temperature building side. (C)",
+          "type": "number",
+          "default": 15
+        }
+      },
+      "required": [
+        "supply_water_temperature_building"
+      ]
     }
   }
 }

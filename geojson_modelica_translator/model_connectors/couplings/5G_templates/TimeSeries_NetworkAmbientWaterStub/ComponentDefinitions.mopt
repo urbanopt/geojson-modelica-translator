@@ -1,0 +1,28 @@
+  // TimeSeries 5G Component Definitions
+  // TODO: the components below need to be fixed!
+  parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.bui.mHeaWat_flow_nominal*{{ globals.delHeaWatTemBui }}/{{ globals.delHeaWatTemDis }}
+    "Nominal mass flow rate of primary (district) district heating side";
+  parameter Modelica.Units.SI.MassFlowRate mBui_flow_nominal_{{ coupling.id }}={{ coupling.load.id }}.bui.mHeaWat_flow_nominal
+    "Nominal mass flow rate of secondary (building) district heating side";
+  parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal_{{ coupling.id }}=({{ coupling.load.id }}.bui.QHea_flow_nominal);
+  // Modelica.Fluid.Sources.FixedBoundary pressure_source_{{ coupling.id }}(
+  //   redeclare package Medium={{ globals.medium_w }},
+  //   use_T=false,
+  //   nPorts=1)
+  //   "Pressure source"
+  //   annotation (Placement({{ diagram.transformation.pressure_source.fixed_boundary }}));
+    Modelica.Blocks.Sources.RealExpression secMasFloRat_{{ coupling.id }}(
+    // TODO: avoid reaching into other coupling!
+    // Removed the unexplained *5/7.5, and added a multiplier of 15, to have a flow rate closer to the datDes nominal value
+    y=15*mDis_flow_nominal_{{ graph.couplings_by_type(coupling.load.id).network_couplings[0].id }})
+    "Secondary loop conditioned water flow rate."
+    annotation (Placement({{ diagram.transformation.sec_mas_flo_rat.real_expression }}));
+    // TODO: move THeaWatSet (and its connection) into a specific template file (this component does not depend on the coupling)
+  Modelica.Blocks.Sources.RealExpression THeaWatSet_{{ coupling.id }}(
+    y=273.15+{{ sys_params.building.load_model_parameters.time_series.temp_hw_supply }})
+    "Secondary loop (Building side) heating setpoint temperature."
+    annotation (Placement({{ diagram.transformation.t_hea_wat_set.real_expression }}));
+  Modelica.Blocks.Sources.RealExpression TCooWatSet_{{ coupling.id }}(
+    y=273.15+{{ sys_params.building.load_model_parameters.time_series.temp_chw_supply }})
+    "Secondary loop (Building side) cooling setpoint temperature."
+    annotation (Placement({{ diagram.transformation.t_coo_wat_set.real_expression }}));

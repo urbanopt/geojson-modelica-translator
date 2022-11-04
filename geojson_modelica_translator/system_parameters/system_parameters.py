@@ -61,19 +61,14 @@ class SystemParameters(object):
     """
 
     PATH_ELEMENTS = [
-        {"json_path": "$.buildings.default.load_model_parameters.spawn.idf_filename"},
-        {"json_path": "$.buildings.default.load_model_parameters.spawn.epw_filename"},
-        {"json_path": "$.buildings.default.load_model_parameters.spawn.mos_weather_filename"},
-        {"json_path": "$.buildings.default.load_model_parameters.rc.mos_weather_filename"},
-        {"json_path": "$.buildings.default.load_model_parameters.time_series.filepath"},
-        {"json_path": "$.buildings.*[?load_model=spawn].load_model_parameters.spawn.idf_filename"},
-        {"json_path": "$.buildings.*[?load_model=spawn].load_model_parameters.spawn.epw_filename"},
-        {"json_path": "$.buildings.*[?load_model=spawn].load_model_parameters.spawn.mos_weather_filename"},
-        {"json_path": "$.buildings.*[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
-        {"json_path": "$.buildings.*[?load_model=time_series].load_model_parameters.time_series.filepath"},
-        {"json_path": "$.buildings.*[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
-        {"json_path": "$.district_system.default.central_cooling_plant_parameters.weather_filepath"},
-        {"json_path": "$.combined_heat_and_power_systems.*.performance_data_path"}
+        {"json_path": "$.buildings[?load_model=spawn].load_model_parameters.spawn.idf_filename"},
+        {"json_path": "$.buildings[?load_model=spawn].load_model_parameters.spawn.epw_filename"},
+        {"json_path": "$.buildings[?load_model=spawn].load_model_parameters.spawn.mos_weather_filename"},
+        {"json_path": "$.buildings[?load_model=rc].load_model_parameters.rc.mos_weather_filename"},
+        {"json_path": "$.buildings[?load_model=time_series].load_model_parameters.time_series.filepath"},
+        {"json_path": "$.buildings[?load_model=time_series_massflow_temperature].load_model_parameters.time_series.filepath"},
+        {"json_path": "$.weather"},
+        {"json_path": "$.combined_heat_and_power_systems.[*].performance_data_path"}
     ]
 
     def __init__(self, filename=None):
@@ -89,7 +84,7 @@ class SystemParameters(object):
         self.filename = filename
 
         if self.filename:
-            if Path(self.filename).exists():
+            if Path(self.filename).is_file():
                 with open(self.filename, "r") as f:
                     self.data = json.load(f)
             else:
@@ -100,7 +95,6 @@ class SystemParameters(object):
                 raise Exception(f"Invalid system parameter file. Errors: {errors}")
 
             self.resolve_paths()
-            # self.resolve_defaults()
 
         self.param_template = {}
         self.sys_param_filename = None
@@ -190,7 +184,7 @@ class SystemParameters(object):
         # otherwise return the list of values
         return results
 
-    def get_param_by_building_id(self, building_id, jsonpath, default=None):
+    def get_param_by_building_id(self, building_id, jsonpath):
         """
         return a parameter for a specific building_id. This is similar to get_param but allows the user
         to constrain the data based on the building id.
@@ -201,16 +195,9 @@ class SystemParameters(object):
         :return: variant, the value from the data
         """
 
-        # This will get reworked after moving to jsonpath. but for now, hack in the default. First return the default
-        # dict from the system parameter file.
-        # Grab first the default data block, then find the path in the default data block.
-        # "building.default" might need to reconsider, as it is fixed for flake8 currently.
-        default_data = self.get_param("$.buildings.default", impute_default=False)
-        schema_default = self.get_param(jsonpath, default_data, impute_default=False)
-        default = schema_default or default
-        for b in self.data.get("buildings", {}).get("custom", {}):
+        for b in self.data.get("buildings", []):
             if b.get("geojson_id", None) == building_id:
-                return self.get_param(jsonpath, b, default=default)
+                return self.get_param(jsonpath, data=b)
         else:
             raise SystemExit("No building_id submitted. Please retry and include the feature_id")
 
@@ -240,8 +227,9 @@ class SystemParameters(object):
         p_download = Path(filename)
         p_save = Path(save_directory)
 
-        if not p_save.exists():
-            raise Exception(f"Save path for the weatherfile does not exist, {str(p_save)}")
+        if not p_save.is_dir():
+            print(f"Creating directory to save weather file, {str(p_save)}")
+            p_save.mkdir(parents=True, exist_ok=True)
 
         # get country & state from weather file name
         try:
@@ -253,36 +241,27 @@ class SystemParameters(object):
                 "Malformed location, needs underscores of location (e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
             )
 
-        # download mos file from energyplus website
-        mos_weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
+        # download file from energyplus website
+        weatherfile_url = 'https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/' \
             f'{weatherfile_country}/{weatherfile_state}/{p_download.stem}/{p_download.name}'
-        logger.debug(f"Downloading weather file from {mos_weatherfile_url}")
+        outputname = p_save / p_download.name
+        logger.debug(f"Downloading weather file from {weatherfile_url}")
         try:
-            mos_weatherfile_data = requests.get(mos_weatherfile_url)
+            weatherfile_data = requests.get(weatherfile_url)
+            if weatherfile_data.status_code == 200:
+                with open(outputname, 'wb') as f:
+                    f.write(weatherfile_data.content)
+            else:
+                raise Exception(f"Returned non 200 status code trying to download weather file: {weatherfile_data.status_code}")
         except requests.exceptions.RequestException as e:
             raise Exception(
-                f"Could not download weather file: {mos_weatherfile_url}"
+                f"Could not download weather file: {weatherfile_url}"
                 "\nAt this time we only support USA weather stations"
                 f"\n{e}"
             )
 
-        # Save mos weatherfile into the requested path.
-        outputname = p_save / p_download.name
-        open(outputname, 'wb').write(mos_weatherfile_data.content)
-        logger.debug(f"Saved weather file to {outputname}")
-
-        # Count lines in downloaded weather file to make sure
-        # that at least 8760 lines have been downloaded. This is
-        # commented out for now since wc -l won't work on windows.
-        # file_lines = Popen(['wc', '-l', outputname], stdout=PIPE, stderr=PIPE)
-        # result, err = file_lines.communicate()
-        # if file_lines.returncode != 0:
-        #     raise IOError(err)
-        # lines_in_weather_file = int(result.strip().split()[0])
-        # logger.debug(f"Weather file {outputname} has {lines_in_weather_file} lines")
-        # if lines_in_weather_file < 8760:  # There should always be header lines above the 8760 data lines
-        #     raise Exception(f"Weather file {p_download.name} does not contain 8760 lines.")
-        # modelica_path = f"modelica://Buildings/Resources/weatherdata/{p_download.name}"
+        if not outputname.exists():
+            raise Exception(f"Could not find or download weather file for {str(p_download)}")
 
         return outputname
 
@@ -626,7 +605,7 @@ class SystemParameters(object):
             data = [d for d in dss_data['feature_reports'] if d['feature_type'] == 'Building']
 
             # grab records to modify
-            for bldg in self.param_template['buildings']['custom']:
+            for bldg in self.param_template['buildings']:
                 # find match in data
                 match = [d for d in data if d['id'] == bldg['geojson_id']]
                 if match:
@@ -651,7 +630,12 @@ class SystemParameters(object):
                 reopt_data = json.load(f)
 
         # extract Latitude
-        latitude = reopt_data['location']['latitude_deg']
+        try:
+            latitude = reopt_data['location']['latitude_deg']
+        except KeyError:
+            logger.info(f"Latitude not found in {feature_opt_file}. Skipping PV.")
+        except UnboundLocalError:
+            logger.info(f"REopt data not found in {feature_opt_file}. Skipping PV.")
 
         # PV
         if reopt_data['distributed_generation'] and reopt_data['distributed_generation']['solar_pv']:
@@ -673,27 +657,33 @@ class SystemParameters(object):
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
         # also look for raw REopt report with inputs and xzx for non-uo results
-        raw_scenario_file = os.path.join(scenario_dir, 'reopt', 'scenario_report_reopt_scenario_reopt_run.json')
+        raw_scenario_file = os.path.join(scenario_dir, 'reopt', f'scenario_report_{scenario_dir.name}_reopt_run.json')
         if (os.path.exists(raw_scenario_file)):
             with open(raw_scenario_file, "r") as f:
                 raw_data = json.load(f)
 
         # PV (add if results are found in scenario_report)
         # extract latitude
-        latitude = reopt_data['scenario_report']['location']['latitude_deg']
-        if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
-            self.param_template['photovoltaic_panels'] = self.process_pv(
-                reopt_data['scenario_report']['distributed_generation']['solar_pv'],
-                latitude
-            )
+        try:
+            latitude = reopt_data['scenario_report']['location']['latitude_deg']
+            if reopt_data['scenario_report']['distributed_generation']['solar_pv']:
+                self.param_template['photovoltaic_panels'] = self.process_pv(
+                    reopt_data['scenario_report']['distributed_generation']['solar_pv'],
+                    latitude
+                )
+        except KeyError:
+            logger.info("Latitude not found in scenario_report. Skipping PV.")
 
         # Wind (add if results are found in scenario_report)
-        if reopt_data['scenario_report']['distributed_generation']['wind']:
+        # if reopt_data['scenario_report']['distributed_generation']['wind']:
+        try:
             self.process_wind(reopt_data)
+        except KeyError:
+            logger.info("Wind data not found in scenario_report. Skipping wind.")
 
         # CHP (add if results are found in reopt results-raw_data)
         # this is the only item not in the default URBANopt report file
-        if raw_data['outputs']['Scenario']['Site']['CHP']['size_kw'] != 0.0:
+        if Path(raw_scenario_file).exists() and raw_data['outputs']['Scenario']['Site']['CHP']['size_kw'] != 0.0:
             # there is a CHP, process
             self.process_chp(raw_data)
 
@@ -703,7 +693,7 @@ class SystemParameters(object):
                 # there is storage, process
                 self.process_storage(reopt_data)
         except KeyError:
-            pass
+            logger.info("Energy storage data not found in scenario_report. Skipping storage.")
 
         # Generators
         try:
@@ -711,7 +701,7 @@ class SystemParameters(object):
                 # process diesel generators
                 self.process_generators(reopt_data)
         except KeyError:
-            pass
+            logger.info("Generator data not found in scenario_report. Skipping generator.")
 
         # process electrical components (from OpenDSS results)
         self.process_electrical_components(scenario_dir)
@@ -733,6 +723,7 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
+        :param overwrite: Boolean, whether to overwrite existing sys-param file
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
@@ -746,18 +737,18 @@ class SystemParameters(object):
                 param_template_path = Path(__file__).parent / 'time_series_template.json'
         elif model_type == 'spawn':
             # TODO: We should support spawn as well
-            pass
+            raise SystemExit('Spawn models are not implemented at this time.')
         else:
-            raise Exception(f"No template found. {model_type} is not a valid template")
+            raise SystemExit(f"No template found. {model_type} is not a valid template")
 
-        if not Path(scenario_dir).exists():
-            raise Exception(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
+        if not Path(scenario_dir).is_dir():
+            raise SystemExit(f"Unable to find your scenario. The path you provided was: {scenario_dir}")
 
-        if not Path(feature_file).exists():
-            raise Exception(f"Unable to find your feature file. The path you provided was: {feature_file}")
+        if not Path(feature_file).is_file():
+            raise SystemExit(f"Unable to find your feature file. The path you provided was: {feature_file}")
 
-        if Path(self.sys_param_filename).exists() and not overwrite:
-            raise Exception(f"Output file already exists and overwrite is False: {self.sys_param_filename}")
+        if Path(self.sys_param_filename).is_file() and not overwrite:
+            raise SystemExit(f"Output file already exists and overwrite is False: {self.sys_param_filename}")
 
         with open(param_template_path, "r") as f:
             self.param_template = json.load(f)
@@ -785,26 +776,20 @@ class SystemParameters(object):
                 if feature['properties']['type'] == 'Building':
                     building_ids.append(feature['properties']['id'])
 
-        # Check if the weatherfile exists, if not, try to download
+        # Check if the EPW weatherfile exists, if not, try to download
         if not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
-        # Now check again if the file exists, error if not!
-        if not weather_path.exists():
-            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
 
         # also download the MOS -- this is the file that will
         # be set in the sys param file, so make the weather_path object this one
         weather_path = weather_path.with_suffix('.mos')
         if not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
-        # Now check again if the file exists, error if not!
-        if not weather_path.exists():
-            raise SystemExit(f"Could not find or download weatherfile for {str(weather_path)}")
 
         # Make sys_param template entries for each feature_id
         building_list = []
         for building in building_ids:
-            feature_info = deepcopy(self.param_template['buildings']['custom'][0])
+            feature_info = deepcopy(self.param_template['buildings'][0])
             feature_info['geojson_id'] = str(building)
             building_list.append(feature_info)
 
@@ -822,9 +807,14 @@ class SystemParameters(object):
                     building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
-                    building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                    building['ets_model_parameters']['indirect']['nominal_mass_flow_building'] = float(
-                        building_nominal_mfrt)
+                    try:
+                        building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(
+                            building_nominal_mfrt)
+                    except KeyError:
+                        # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
+                        # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
+                        continue
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove template buildings that weren't used or don't have successful simulations with modelica outputs
@@ -839,21 +829,28 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_model_parameters']['indirect']['nominal_mass_flow_district'] = float(
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = float(
                 district_nominal_mfrt.round(3))
-            if microgrid:
+            feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
+            if microgrid and not feature_opt_file.exists():
+                logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
+            elif microgrid and feature_opt_file.exists():
                 building = self.process_building_microgrid_inputs(building, scenario_dir)
 
         # Add all buildings to the sys-param file
-        self.param_template['buildings']['custom'] = building_list
+        self.param_template['buildings'] = building_list
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        (self.param_template['district_system']['default']
-            ['central_cooling_plant_parameters']['weather_filepath']) = str(weather_path)
-
-        if microgrid:
+        self.param_template['weather'] = str(weather_path)
+        if microgrid and not feature_opt_file.exists():
+            logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
+                        "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
+        try:
             self.process_microgrid_inputs(scenario_dir)
+        except UnboundLocalError:
+            raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
+                             "Perhaps you haven't run REopt post-processing step in the UO sdk?")
 
         # save
         self.save()

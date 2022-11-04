@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.3.0"
+version = "0.4.0"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -17,9 +17,10 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering",
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.7.1",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
 ]
 packages = [
     { include = "management" },
@@ -27,7 +28,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7.1, <3.10"
+# Urbanopt SDK requires Python 3.10 as of UOv0.9.0
+python = ">=3.7.1, <3.11"
 BuildingsPy = "3.0.0"
 click = "8.1.3"
 geojson = "2.5.0"
@@ -45,7 +47,7 @@ teaser = "0.7.5"
 autopep8 = "1.6.0"
 coveralls = "3.3.1"
 mypy = "^0.961"
-pre-commit = "2.19.0"
+pre-commit = "2.20.0"
 pytest = "7.1.2"
 pytest-cov = "3.0.0"
 sphinx = "5.0.1"
@@ -59,9 +61,24 @@ tox = "3.25.0"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.isort]
+multi_line_output = 3
+
 [tool.poetry.scripts]
 uo_des = 'management.uo_des:cli'
 format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
 update_schemas = 'management.update_schemas:update_schemas'
 update_licenses = 'management.update_licenses:update_licenses'
 check_sys_params = 'management.check_sys_params:check_sys_params'
+
+[tool.pytest.ini_options]
+# There is a bug/issue with pytest and click where the test tries to write to the
+# log after the log file has been closed. This causes the test to fail. The --capture=no
+# is a workaround for this issue for now see https://github.com/pytest-dev/pytest/issues/5502#issuecomment-1020761655.
+addopts = "--capture=no"
+log_cli = true
+log_cli_level = "DEBUG"
+markers = [
+    "simulation: marks tests that run a simulation with docker/optimica (deselect with '-m \"not simulation\"'). All simulations now require MSL v4.",
+    "compilation: marks tests that are for compiling a simulation with docker/optimica (deselect with '-m \"not compilation\"'). All simulations now require MSL v4."
+]

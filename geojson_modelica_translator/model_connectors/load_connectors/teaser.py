@@ -44,6 +44,9 @@ from shutil import copymode, move
 from tempfile import mkstemp
 
 import numpy as np
+from modelica_builder.model import Model
+from teaser.project import Project
+
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
@@ -54,8 +57,6 @@ from geojson_modelica_translator.utils import (
     copytree,
     simple_uuid
 )
-from modelica_builder.model import Model
-from teaser.project import Project
 
 
 class Teaser(LoadBase):
@@ -139,7 +140,7 @@ class Teaser(LoadBase):
 
             prj.used_library_calc = "IBPSA"
             prj.number_of_elements_calc = self.system_parameters.get_param_by_building_id(
-                self.building_id, "load_model_parameters.rc.order", default=2
+                self.building_id, "load_model_parameters.rc.order"
             )
             prj.merge_windows_calc = False
 
@@ -206,8 +207,7 @@ class Teaser(LoadBase):
         # Need to investigate moving this into a more testable location.
         # create a list of strings that we need to replace in all the file as we go along
         string_replace_list = []
-        mos_weather_filename = self.system_parameters.get_param_by_building_id(
-            self.building_id, "load_model_parameters.rc.mos_weather_filename")
+        mos_weather_filename = self.system_parameters.get_param("$.weather")
         # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
         b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
 
@@ -310,15 +310,15 @@ class Teaser(LoadBase):
             )
 
             fraction_latent_person = self.system_parameters.get_param(
-                "buildings.default.load_model_parameters.rc.fraction_latent_person", default=1.25
+                "buildings.load_model_parameters.rc.fraction_latent_person", default=1.25
             )
 
             use_moisture_balance = self.system_parameters.get_param(
-                "buildings.default.load_model_parameters.rc.use_moisture_balance", default='false'
+                "buildings.load_model_parameters.rc.use_moisture_balance", default='false'
             )
 
             n_ports = self.system_parameters.get_param(
-                "buildings.default.load_model_parameters.rc.nPorts", default=0
+                "buildings.load_model_parameters.rc.nPorts", default=0
             )
 
             # create a new parameter for fraction latent person
@@ -372,7 +372,7 @@ class Teaser(LoadBase):
 
             # add new port connections
             rc_order = self.system_parameters.get_param_by_building_id(
-                self.building_id, "load_model_parameters.rc.order", default=2
+                self.building_id, "load_model_parameters.rc.order"
             )
             thermal_zone_name = None
             thermal_zone_type = None
@@ -643,7 +643,7 @@ class Teaser(LoadBase):
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
+                f"Missing MOS weather file for Teaser: {building_template_data['mos_weather']['mos_weather_filename']}")
         # end of what AA added 9/24
 
         # remaining clean up tasks across the entire exported project

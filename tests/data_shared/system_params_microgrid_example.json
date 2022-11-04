@@ -1,211 +1,202 @@
 {
-  "buildings": {
-    "default": {
+  "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+  "buildings": [
+    {
+      "geojson_id": "1",
       "load_model": "time_series",
-      "ets_model": "Indirect Heating and Cooling"
-    },
-    "custom": [
-      {
-        "geojson_id": "1",
-        "load_model": "time_series",
-        "load_model_parameters": {
-          "time_series": {
-            "filepath": "/Users/kflemin/repos/geojson-modelica-translator/tests/system_parameters/data/sdk_microgrid_output_skeleton/run/REopt_scenario/1/017_export_modelica_loads/modelica.mos",
-            "delta_temp_air_cooling": 10,
-            "delta_temp_air_heating": 18,
-            "temp_setpoint_cooling": 24,
-            "temp_setpoint_heating": 20,
-            "temp_hw_supply": 40,
-            "temp_hw_return": 35,
-            "has_liquid_heating": true,
-            "has_electric_heating": false,
-            "has_liquid_cooling": true,
-            "has_electric_cooling": false,
-            "temp_chw_supply": 7,
-            "temp_chw_return": 12
-          }
-        },
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 10000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 196.86,
-            "nominal_mass_flow_building": 37.507,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_hw_district": 20,
-            "delta_temp_hw_building": 15,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
-        },
-        "photovoltaic_panels": [
-          {
-            "nominal_voltage": 480,
-            "latitude": 42.81428490645774,
-            "surface_tilt": 10.0,
-            "surface_azimuth": 180.0,
-            "net_surface_area": 93.97343333333333
-          },
-          {
-            "nominal_voltage": 480,
-            "latitude": 42.81428490645774,
-            "surface_tilt": 42.81428490645774,
-            "surface_azimuth": 180.0,
-            "net_surface_area": 8.8241
-          }
-        ],
-        "diesel_generators": [],
-        "battery_banks": [],
-        "load": {
-          "nominal_voltage": 207.84609690826525,
-          "max_power_kw": 4995.075,
-          "max_reactive_power_kvar": 1145.9487968634955
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "/Users/kflemin/repos/geojson-modelica-translator/tests/system_parameters/data/sdk_microgrid_output_skeleton/run/REopt_scenario/1/017_export_modelica_loads/modelica.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20,
+          "temp_hw_supply": 40,
+          "temp_hw_return": 35,
+          "has_liquid_heating": true,
+          "has_electric_heating": false,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 7,
+          "temp_chw_return": 12
         }
       },
-      {
-        "geojson_id": "7",
-        "load_model": "time_series",
-        "load_model_parameters": {
-          "time_series": {
-            "filepath": "/Users/kflemin/repos/geojson-modelica-translator/tests/system_parameters/data/sdk_microgrid_output_skeleton/run/REopt_scenario/7/017_export_modelica_loads/modelica.mos",
-            "delta_temp_air_cooling": 10,
-            "delta_temp_air_heating": 18,
-            "temp_setpoint_cooling": 24,
-            "temp_setpoint_heating": 20,
-            "temp_hw_supply": 40,
-            "temp_hw_return": 35,
-            "has_liquid_heating": true,
-            "has_electric_heating": false,
-            "has_liquid_cooling": true,
-            "has_electric_cooling": false,
-            "temp_chw_supply": 7,
-            "temp_chw_return": 12
-          }
-        },
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 10000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 196.86,
-            "nominal_mass_flow_building": 18.941,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_hw_district": 20,
-            "delta_temp_hw_building": 15,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
-        },
-        "photovoltaic_panels": [
-          {
-            "nominal_voltage": 480,
-            "latitude": 42.81618451565706,
-            "surface_tilt": 10.0,
-            "surface_azimuth": 180.0,
-            "net_surface_area": 93.97343333333333
-          },
-          {
-            "nominal_voltage": 480,
-            "latitude": 42.81618451565706,
-            "surface_tilt": 42.81428490645774,
-            "surface_azimuth": 180.0,
-            "net_surface_area": 8.8241
-          }
-        ],
-        "diesel_generators": [],
-        "battery_banks": [],
-        "load": {
-          "nominal_voltage": 207.84609690826525,
-          "max_power_kw": 1010.946,
-          "max_reactive_power_kvar": 231.9269184935088
-        }
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
       },
-      {
-        "geojson_id": "8",
-        "load_model": "time_series",
-        "load_model_parameters": {
-          "time_series": {
-            "filepath": "/Users/kflemin/repos/geojson-modelica-translator/tests/system_parameters/data/sdk_microgrid_output_skeleton/run/REopt_scenario/8/017_export_modelica_loads/modelica.mos",
-            "delta_temp_air_cooling": 10,
-            "delta_temp_air_heating": 18,
-            "temp_setpoint_cooling": 24,
-            "temp_setpoint_heating": 20,
-            "temp_hw_supply": 40,
-            "temp_hw_return": 35,
-            "has_liquid_heating": true,
-            "has_electric_heating": false,
-            "has_liquid_cooling": true,
-            "has_electric_cooling": false,
-            "temp_chw_supply": 7,
-            "temp_chw_return": 12
-          }
+      "photovoltaic_panels": [
+        {
+          "nominal_voltage": 480,
+          "latitude": 42.81428490645774,
+          "surface_tilt": 10.0,
+          "surface_azimuth": 180.0,
+          "net_surface_area": 93.97343333333333
         },
-        "ets_model_parameters": {
-          "indirect": {
-            "heat_flow_nominal": 10000,
-            "heat_exchanger_efficiency": 0.8,
-            "nominal_mass_flow_district": 196.86,
-            "nominal_mass_flow_building": 41.982,
-            "valve_pressure_drop": 6000,
-            "heat_exchanger_secondary_pressure_drop": 500,
-            "heat_exchanger_primary_pressure_drop": 500,
-            "cooling_supply_water_temperature_building": 7,
-            "heating_supply_water_temperature_building": 50,
-            "delta_temp_hw_district": 20,
-            "delta_temp_hw_building": 15,
-            "delta_temp_chw_building": 5,
-            "delta_temp_chw_district": 8,
-            "cooling_controller_y_max": 1,
-            "cooling_controller_y_min": 0,
-            "heating_controller_y_max": 1,
-            "heating_controller_y_min": 0
-          }
-        },
-        "photovoltaic_panels": [
-          {
-            "nominal_voltage": 480,
-            "latitude": 42.81565185353203,
-            "surface_tilt": 10.0,
-            "surface_azimuth": 180.0,
-            "net_surface_area": 93.97343333333333
-          },
-          {
-            "nominal_voltage": 480,
-            "latitude": 42.81565185353203,
-            "surface_tilt": 42.81428490645774,
-            "surface_azimuth": 180.0,
-            "net_surface_area": 8.8241
-          }
-        ],
-        "diesel_generators": [],
-        "battery_banks": [],
-        "load": {
-          "nominal_voltage": 480.0,
-          "max_power_kw": 2185.3232000000003,
-          "max_reactive_power_kvar": 501.34752567236416
+        {
+          "nominal_voltage": 480,
+          "latitude": 42.81428490645774,
+          "surface_tilt": 42.81428490645774,
+          "surface_azimuth": 180.0,
+          "net_surface_area": 8.8241
         }
+      ],
+      "diesel_generators": [],
+      "battery_banks": [],
+      "load": {
+        "nominal_voltage": 207.84609690826525,
+        "max_power_kw": 4995.075,
+        "max_reactive_power_kvar": 1145.9487968634955
       }
-    ]
-  },
+    },
+    {
+      "geojson_id": "7",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "/Users/kflemin/repos/geojson-modelica-translator/tests/system_parameters/data/sdk_microgrid_output_skeleton/run/REopt_scenario/7/017_export_modelica_loads/modelica.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20,
+          "temp_hw_supply": 40,
+          "temp_hw_return": 35,
+          "has_liquid_heating": true,
+          "has_electric_heating": false,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 7,
+          "temp_chw_return": 12
+        }
+      },
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
+      },
+      "photovoltaic_panels": [
+        {
+          "nominal_voltage": 480,
+          "latitude": 42.81618451565706,
+          "surface_tilt": 10.0,
+          "surface_azimuth": 180.0,
+          "net_surface_area": 93.97343333333333
+        },
+        {
+          "nominal_voltage": 480,
+          "latitude": 42.81618451565706,
+          "surface_tilt": 42.81428490645774,
+          "surface_azimuth": 180.0,
+          "net_surface_area": 8.8241
+        }
+      ],
+      "diesel_generators": [],
+      "battery_banks": [],
+      "load": {
+        "nominal_voltage": 207.84609690826525,
+        "max_power_kw": 1010.946,
+        "max_reactive_power_kvar": 231.9269184935088
+      }
+    },
+    {
+      "geojson_id": "8",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "/Users/kflemin/repos/geojson-modelica-translator/tests/system_parameters/data/sdk_microgrid_output_skeleton/run/REopt_scenario/8/017_export_modelica_loads/modelica.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20,
+          "temp_hw_supply": 40,
+          "temp_hw_return": 35,
+          "has_liquid_heating": true,
+          "has_electric_heating": false,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 7,
+          "temp_chw_return": 12
+        }
+      },
+      "ets_model": "Indirect Heating and Cooling",
+      "ets_indirect_parameters": {
+        "heat_flow_nominal": 8000,
+        "heat_exchanger_efficiency": 0.8,
+        "nominal_mass_flow_district": 0.5,
+        "nominal_mass_flow_building": 0.5,
+        "valve_pressure_drop": 6000,
+        "heat_exchanger_secondary_pressure_drop": 500,
+        "heat_exchanger_primary_pressure_drop": 500,
+        "cooling_supply_water_temperature_building": 7,
+        "heating_supply_water_temperature_building": 50,
+        "delta_temp_chw_building": 5,
+        "delta_temp_chw_district": 8,
+        "delta_temp_hw_building": 15,
+        "delta_temp_hw_district": 20,
+        "cooling_controller_y_max": 1,
+        "cooling_controller_y_min": 0,
+        "heating_controller_y_max": 1,
+        "heating_controller_y_min": 0
+      },
+      "photovoltaic_panels": [
+        {
+          "nominal_voltage": 480,
+          "latitude": 42.81565185353203,
+          "surface_tilt": 10.0,
+          "surface_azimuth": 180.0,
+          "net_surface_area": 93.97343333333333
+        },
+        {
+          "nominal_voltage": 480,
+          "latitude": 42.81565185353203,
+          "surface_tilt": 42.81428490645774,
+          "surface_azimuth": 180.0,
+          "net_surface_area": 8.8241
+        }
+      ],
+      "diesel_generators": [],
+      "battery_banks": [],
+      "load": {
+        "nominal_voltage": 480.0,
+        "max_power_kw": 2185.3232000000003,
+        "max_reactive_power_kvar": 501.34752567236416
+      }
+    }
+  ],
   "district_system": {
-    "default": {
+    "fourth_generation": {
       "central_cooling_plant_parameters": {
-        "mos_wet_bulb_filename": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
         "mass_chw_flow_nominal": 9.9,
@@ -348,264 +339,249 @@
   "distribution_lines": [
     {
       "length": 647.7,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 409.6512,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 118.872,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 607.1616,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 192.6336,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 370.6368,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 197.2056,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
-      ]
-    },
-    {
-      "length": 28.041600000000003,
-      "ampacity": 880.0,
-      "nominal_voltage": 480,
-      "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 24.384,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 55.778400000000005,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 215.49360000000001,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 93.5736,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 77.724,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_1-0_A",
-        "UG_TPLX_1-0_B",
-        "UG_TPLX_1-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 180.13680000000002,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 79.5528,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N",
-        "OH_TPLX_2-0_S1"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 132.8928,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_2-0_C",
-        "UG_TPLX_2-0_B",
-        "UG_TPLX_2-0_A"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 49.3776,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "UG_TPLX_2-0_A",
-        "UG_TPLX_2-0_B",
-        "UG_TPLX_2-0_C"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 69.4944,
-      "ampacity": 600.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_N",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_S1"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 111.25200000000001,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 158.8008,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 96.9264,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 179.83200000000002,
-      "ampacity": 600.0,
+      "ampacity": 1920.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_TPLX_2-0_S1",
-        "OH_TPLX_2-0_S2",
-        "OH_TPLX_2-0_N"
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV",
+        "UG_AL_750kcmil_15_kV"
       ]
     },
     {
       "length": 39.0144,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_1-0_A",
-        "OH_AL_1-0_B",
-        "OH_AL_1-0_C",
-        "OH_AL_1-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     },
     {
       "length": 69.7992,
-      "ampacity": 880.0,
+      "ampacity": 2640.0,
       "nominal_voltage": 480,
       "commercial_line_type": [
-        "OH_AL_1-0_A",
-        "OH_AL_1-0_B",
-        "OH_AL_1-0_C",
-        "OH_AL_1-0_N"
-      ]
-    },
-    {
-      "length": 36.8808,
-      "ampacity": 880.0,
-      "nominal_voltage": 480,
-      "commercial_line_type": [
-        "OH_AL_2-0_A",
-        "OH_AL_2-0_B",
-        "OH_AL_2-0_C",
-        "OH_AL_2-0_N"
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil",
+        "OH_ACSR_477kcmil"
       ]
     }
   ],

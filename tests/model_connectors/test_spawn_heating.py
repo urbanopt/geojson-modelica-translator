@@ -40,6 +40,7 @@ import os
 from pathlib import Path
 
 import pytest
+
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
 )
@@ -86,7 +87,7 @@ class TestSpawnHeating(TestCaseBase):
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "spawn_district_system_params_ex1.json")
+        filename = os.path.join(self.data_dir, "spawn_system_params_ex1.json")
         sys_params = SystemParameters(filename)
 
         # create network and plant
