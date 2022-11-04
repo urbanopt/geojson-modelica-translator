@@ -137,6 +137,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         mr.compile_in_docker(os.path.join(self.run_path, 'BouncingBall.mo'))
 
+        self.assertTrue(os.path.exists(fmu_path))
         self.assertTrue(os.path.exists(os.path.join(self.run_path, 'stdout.log')))
         # Write out the log to the logger for debugging
         with open(os.path.join(self.run_path, 'stdout.log')) as f:

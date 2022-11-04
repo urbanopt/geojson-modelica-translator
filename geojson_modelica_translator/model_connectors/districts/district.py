@@ -122,6 +122,7 @@ class District:
                 'district_system': self.system_parameters.get_param('$.district_system')
             }
         }
+
         # render each coupling
         for coupling in self._coupling_graph.couplings:
             template_context = {
@@ -164,7 +165,10 @@ class District:
             })
 
         # render the full district file
-        final_result = render_template('DistrictEnergySystem.mot', district_template_params)
+        if 'fifth_generation' in common_template_params['sys_params']['district_system']:
+            final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
+        else:
+            final_result = render_template('DistrictEnergySystem.mot', district_template_params)
         with open(self.district_model_filepath, 'w') as f:
             f.write(final_result)
 

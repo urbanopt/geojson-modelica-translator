@@ -1,0 +1,17 @@
+// 5G ambient, timeseries coupling connections
+connect({{ coupling.load.id }}.THeaWatSupMinSet, THeaWatSet_{{ coupling.id }}.y)
+  annotation ({{ diagram.line.ts_load.t_hea_wat_min_set.t_hea_wat_set.y }});
+connect({{ coupling.load.id }}.THeaWatSupMaxSet, THeaWatSet_{{ coupling.id }}.y)
+  annotation ({{ diagram.line.ts_load.t_hea_wat_max_set.t_hea_wat_set.y }});
+connect({{ coupling.load.id }}.THotWatSupSet, THeaWatSet_{{ coupling.id }}.y)
+  annotation ({{ diagram.line.ts_load.t_hot_wat_set.t_hea_wat_set.y }});
+connect({{ coupling.load.id }}.TChiWatSupSet, THeaWatSet_{{ coupling.id }}.y)
+  annotation ({{ diagram.line.ts_load.t_chi_wat_set.t_hea_wat_set.y }});
+connect(TCooWatSet_{{ coupling.id }}.y, {{ coupling.load.id }}.TColWat)
+  annotation ({{ diagram.line.t_coo_wat_set.y.ts_load.t_col_wat }});
+connect(secMasFloRat_{{ coupling.id }}.y, supHeaWat.m_flow_in)
+  annotation ({{ diagram.line.sec_mas_flo_rat.y.sup_hea_wat.m_flow_in }});
+connect(supHeaWat.ports[1], {{ coupling.load.id }}.port_aSerAmb)
+  annotation ({{ diagram.line.sup_hea_wat.ports.ts_load.port_a_amb }});
+connect({{ coupling.load.id }}.port_bSerAmb, sinHeaWat.ports[1])
+  annotation ({{ diagram.line.ts_load.port_b_amb.sin_hea_wat.ports }});

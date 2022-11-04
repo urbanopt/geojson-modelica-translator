@@ -4,7 +4,7 @@
     redeclare package Medium={{ globals.medium_w }},
     use_m_flow_in=true,
     use_T_in=false,
-    T=281.15,
+    T={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.temp_setpoint_chw }}+273.15,
     nPorts=1)
     "Chilled water supply (district side)."
     annotation (Placement({{ diagram.transformation.sup_chi_wat.boundary_pt }}));
