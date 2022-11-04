@@ -1,6 +1,30 @@
 Change Log
 ==========
 
+Version 0.4.0
+-------------
+As of version 0.4.0 changes will be published using Github automated formatting at the release itself. Those changes are copied here.
+
+Exciting New Features 🎉
+* Redeclare the teaser model to use buildings.media.air medium
+* Fmu runner
+* Spawn docker named args
+* Compile & run with spawn & optimica
+* Microgrid lines
+* Add 5g to sysparams
+* Weather file at top level
+* Test with 3.10
+* 4G or 5G timeseries in Dymola
+Other Changes
+* Breakout run in docker command
+* Better error message if modelica timeseries files from sdk are not found
+* Break out build and simulate tests
+* Use mblv9
+* Point tests to latest mbl release
+* Cli less brittle
+* Run compilation tasks on CI using spawn Modelica and optimica
+* Update schema.json
+
 Version 0.3.0
 -------------
 * Use MBL v9 (current master branch) for all models. Note that JModelica no longer works with this version. User must now use either Dymola or Optimica. A new solution is forthcoming.
