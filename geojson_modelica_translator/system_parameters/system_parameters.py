@@ -780,11 +780,10 @@ class SystemParameters(object):
         if not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
 
-        # also download the MOS -- this is the file that will
-        # be set in the sys param file, so make the weather_path object this one
-        weather_path = weather_path.with_suffix('.mos')
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # also download the MOS weatherfile -- this is the file that will be set in the sys param file
+        mos_weather_path = weather_path.with_suffix('.mos')
+        if not mos_weather_path.exists():
+            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []
@@ -841,7 +840,7 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        self.param_template['weather'] = str(weather_path)
+        self.param_template['weather'] = str(mos_weather_path)
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
