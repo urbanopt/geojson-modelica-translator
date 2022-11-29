@@ -809,11 +809,11 @@ class SystemParameters(object):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
                         building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(
-                            building_nominal_mfrt)
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = building_nominal_mfrt
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
                         # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
+                        logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
                         continue
                 district_nominal_mfrt += building_nominal_mfrt
 
@@ -829,8 +829,7 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = float(
-                district_nominal_mfrt.round(3))
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt.round(3)
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
