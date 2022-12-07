@@ -807,7 +807,7 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
-                        building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
+                        building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
                         building['ets_indirect_parameters']['nominal_mass_flow_building'] = building_nominal_mfrt
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
@@ -828,7 +828,7 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt.round(3)
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
