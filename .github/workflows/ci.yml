@@ -80,7 +80,7 @@ jobs:
           MATRIX_OS: ${{ matrix.os }}
           MBL_BRANCH: ${{ matrix.mbl_branch }}
         run: |
-          if [[ "${MATRIX_OS}" == 'ubuntu-latest' ]]; then
+          if [[ "${MATRIX_OS}" == 'ubuntu-20.04' ]]; then
             MODELICAPATH='/home/runner/work/modelica-buildings'
           else
             echo $GITHUB_WORKSPACE
