@@ -62,7 +62,7 @@ Follow the instructions below in order to configure your local environment:
 * (optional/as-needed) Add Python 3 to the environment variables
 * For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
 * Return to the GMT root directory and run :code:`poetry install`
-* Test if everything is installed correctly by running :code:`poetry run pytest`. This will run all the unit and integration tests.
+* Test if everything is installed correctly by running :code:`poetry run pytest -m 'not compilation and not simulation'`. This will run all the unit and integration tests.
 * Follow the instructions below to install pre-commit.
 * To test pre-commit and building the documentation, you can run :code:`poetry run tox`
 
