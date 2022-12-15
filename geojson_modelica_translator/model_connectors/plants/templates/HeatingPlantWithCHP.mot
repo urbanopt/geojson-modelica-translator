@@ -153,8 +153,8 @@ within {{ project_name }}.Plants;
     "Heating water expansion tank"
     annotation (Placement(transformation(extent={{-8,6},{12,26}})));
   Modelica.Blocks.Interfaces.RealInput THeaSet(
-    final unit="K",
-    displayUnit="degC")
+    each final unit="K",
+    each displayUnit="degC")
     "Heating water setpoint."
     annotation (Placement(transformation(extent={{-160,-60},{-140,-40}}),iconTransformation(extent={{-140,-104},{-100,-64}})));
   Modelica.Blocks.Math.Product pumOn[numBoi]
