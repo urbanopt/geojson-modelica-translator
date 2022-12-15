@@ -780,11 +780,10 @@ class SystemParameters(object):
         if not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
 
-        # also download the MOS -- this is the file that will
-        # be set in the sys param file, so make the weather_path object this one
-        weather_path = weather_path.with_suffix('.mos')
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # also download the MOS weatherfile -- this is the file that will be set in the sys param file
+        mos_weather_path = weather_path.with_suffix('.mos')
+        if not mos_weather_path.exists():
+            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []
@@ -808,12 +807,12 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
-                        building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(
-                            building_nominal_mfrt)
+                        building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = building_nominal_mfrt
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
                         # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
+                        logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
                         continue
                 district_nominal_mfrt += building_nominal_mfrt
 
@@ -829,8 +828,7 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = float(
-                district_nominal_mfrt.round(3))
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
@@ -842,7 +840,7 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        self.param_template['weather'] = str(weather_path)
+        self.param_template['weather'] = str(mos_weather_path)
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
