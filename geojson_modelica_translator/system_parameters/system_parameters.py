@@ -808,7 +808,9 @@ class SystemParameters(object):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
                         building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = building_nominal_mfrt
+                        # Multiply by 1.000 to force casting to float in cases where building_nominal_mfrt == 0
+                        # This might be related to building_type == `lodging` for non-zero building percentages
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = building_nominal_mfrt * 1.000
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
                         # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
