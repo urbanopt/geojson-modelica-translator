@@ -1,3 +1,6 @@
+# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
+
 import re
 from collections import deque, namedtuple
 
