@@ -105,5 +105,6 @@ tests/*/microgrid_output
 tests/output_ets
 tests/*/output
 /geojson_modelica_translator/modelica/buildingslibrary/
+not/a/real/**
 # TODO: this file shoud not be writtent out, but it is... fix this eventually
 /geojson_modelica_translator/modelica/ets_cooling_indirect_templated.mo
