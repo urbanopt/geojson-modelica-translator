@@ -132,7 +132,6 @@ class FmuRunner():
         Returns:
             dict: Contains the measurement data at the end of the step.
         """
-        pass
 
     def run(self):
         """Run the FMU from start to stop with step interval"""

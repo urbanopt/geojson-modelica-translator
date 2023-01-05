@@ -111,14 +111,6 @@ project. A developer can run this command by calling
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
-Updating Licenses
-^^^^^^^^^^^^^^^^^
-
-To apply the copyright/license to all the files, run the following managed task
-
-.. code-block:: bash
-
-    poetry run update_licenses
 
 Adding New Models
 -----------------
@@ -226,7 +218,7 @@ desired, a user can run the simulations manually using JModelica (via Docker). F
 the runner to work locally.
 
 * Make sure jm_ipython.sh is in your local path.
-* After running the :code:`py.test`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
+* After running the :code:`pytest`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
 * Copy :code:`jmodelica.py` to the :code:`tests/model_connectors/output` directory.
 * From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
     * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
