@@ -54,11 +54,20 @@ Getting Started as a Developer
 ------------------------------
 
 There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
-to follow the detailed instructions for setting up MBL and Docker in the `getting started <getting_started>`_ guide.
+to follow the detailed instructions for :ref:`Docker Installation` in the Getting Started guide.
 
 Follow the instructions below in order to configure your local environment:
 
-* Clone this repo into a working directory
+* If you need a custom Modelica Buildings Library:
+    * Clone the `MBL <https://github.com/lbl-srg/modelica-buildings>`_ into a working directory outside of the GMT directory
+    * Ensure your MODELICAPATH env var is set to the MBL you want to use! See the documentation at :ref:`MBL Installation`
+    * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
+    * Install git-lfs
+        * Mac: :code:`brew install git-lfs; git lfs install`
+        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
+    * The current GMT code works with the :code:`maint_9.1.x` branch of the MBL. GMT version :code:`0.2.3`, which uses JModelica, requires the :code:`issue2204_gmt_mbl` branch of the MBL.
+
+* Clone `the GMT repo <https://github.com/urbanopt/geojson-modelica-translator>`_ into a working directory
 * (optional/as-needed) Add Python 3 to the environment variables
 * For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
 * Return to the GMT root directory and run :code:`poetry install`
