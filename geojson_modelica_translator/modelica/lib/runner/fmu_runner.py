@@ -1,3 +1,6 @@
+# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
+
 import logging
 from typing import List, Optional
 
@@ -132,7 +135,6 @@ class FmuRunner():
         Returns:
             dict: Contains the measurement data at the end of the step.
         """
-        pass
 
     def run(self):
         """Run the FMU from start to stop with step interval"""
