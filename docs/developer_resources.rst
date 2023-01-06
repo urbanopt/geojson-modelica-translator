@@ -54,15 +54,24 @@ Getting Started as a Developer
 ------------------------------
 
 There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
-to follow the detailed instructions for setting up MBL and Docker in the `getting started <getting_started>`_ guide.
+to follow the detailed instructions for :ref:`Docker Installation` in the Getting Started guide.
 
 Follow the instructions below in order to configure your local environment:
 
-* Clone this repo into a working directory
+* If you need a custom Modelica Buildings Library:
+    * Clone the `MBL <https://github.com/lbl-srg/modelica-buildings>`_ into a working directory outside of the GMT directory
+    * Ensure your MODELICAPATH env var is set to the MBL you want to use! See the documentation at :ref:`MBL Installation`
+    * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
+    * Install git-lfs
+        * Mac: :code:`brew install git-lfs; git lfs install`
+        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
+    * The current GMT code works with the :code:`maint_9.1.x` branch of the MBL. GMT version :code:`0.2.3`, which uses JModelica, requires the :code:`issue2204_gmt_mbl` branch of the MBL.
+
+* Clone `the GMT repo <https://github.com/urbanopt/geojson-modelica-translator>`_ into a working directory
 * (optional/as-needed) Add Python 3 to the environment variables
 * For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
 * Return to the GMT root directory and run :code:`poetry install`
-* Test if everything is installed correctly by running :code:`poetry run pytest`. This will run all the unit and integration tests.
+* Test if everything is installed correctly by running :code:`poetry run pytest -m 'not compilation and not simulation'`. This will run all the unit and integration tests.
 * Follow the instructions below to install pre-commit.
 * To test pre-commit and building the documentation, you can run :code:`poetry run tox`
 
@@ -102,14 +111,6 @@ project. A developer can run this command by calling
 
 The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
 
-Updating Licenses
-^^^^^^^^^^^^^^^^^
-
-To apply the copyright/license to all the files, run the following managed task
-
-.. code-block:: bash
-
-    poetry run update_licenses
 
 Adding New Models
 -----------------
@@ -217,7 +218,7 @@ desired, a user can run the simulations manually using JModelica (via Docker). F
 the runner to work locally.
 
 * Make sure jm_ipython.sh is in your local path.
-* After running the :code:`py.test`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
+* After running the :code:`pytest`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
 * Copy :code:`jmodelica.py` to the :code:`tests/model_connectors/output` directory.
 * From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
     * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`

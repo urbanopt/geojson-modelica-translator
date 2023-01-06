@@ -45,12 +45,7 @@ MBL Installation
 
 The Modelica Buildings Library contains many models that are needed to assemble the district systems. Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:
 
-* Clone the `MBL`_ into a working directory outside of the GMT directory
-* Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
-* Install git-lfs
-    * Mac: :code:`brew install git-lfs; git lfs install`
-    * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-* The GMT code works with the :code:`master` branch of the MBL, which is currently version 9.0.0. If the :code:`master` branch has been updated, then use the tag :code:`v9.0.0` to install the MBL.
+* Download and extract the newest 9.1 version of the MBL from `<https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html>`_
 * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings). Restart your terminal to ensure that the MBL library is exported correctly.
 
 Once the MBL is installed, then the CLI can be used to create the model with the following command:
@@ -75,7 +70,7 @@ Docker Installation
 -------------------
 
 The preferred method of running the simulations would be within Dymola; however, that is not a
-practical solution for many based on the license requirement. The GMT enables the running of the
+practical solution for many based on the license requirement. Version 0.2.3 of the GMT enables the running of the
 models using JModelica which requires the installation of `Docker`_. To configure Docker, do the
 following:
 

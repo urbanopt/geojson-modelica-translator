@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
+
 DOCKER_USERNAME=nrel
 IMG_NAME=spawn_modelica_docker
 

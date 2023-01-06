@@ -1,40 +1,5 @@
-"""
-****************************************************************************************************
-:copyright (c) 2019-2022, Alliance for Sustainable Energy, LLC, and other contributors.
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted
-provided that the following conditions are met:
-
-Redistributions of source code must retain the above copyright notice, this list of conditions
-and the following disclaimer.
-
-Redistributions in binary form must reproduce the above copyright notice, this list of conditions
-and the following disclaimer in the documentation and/or other materials provided with the
-distribution.
-
-Neither the name of the copyright holder nor the names of its contributors may be used to endorse
-or promote products derived from this software without specific prior written permission.
-
-Redistribution of this software, without modification, must refer to the software by the same
-designation. Redistribution of a modified version of this software (i) may not refer to the
-modified version by the same designation, or by any confusingly similar designation, and
-(ii) must refer to the underlying software originally provided by Alliance as “URBANopt”. Except
-to comply with the foregoing, the term “URBANopt”, or any confusingly similar designation may
-not be used to refer to any modified version of this software or any modified version of the
-underlying software originally provided by Alliance without the prior written consent of Alliance.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-****************************************************************************************************
-"""
+# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import json
 import logging
@@ -780,11 +745,10 @@ class SystemParameters(object):
         if not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
 
-        # also download the MOS -- this is the file that will
-        # be set in the sys param file, so make the weather_path object this one
-        weather_path = weather_path.with_suffix('.mos')
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
+        # also download the MOS weatherfile -- this is the file that will be set in the sys param file
+        mos_weather_path = weather_path.with_suffix('.mos')
+        if not mos_weather_path.exists():
+            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []
@@ -808,17 +772,19 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
-                        building_nominal_mfrt = mfrt_df['massFlowRateHeating'].max().round(3)
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(
-                            building_nominal_mfrt)
+                        building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
+                        # Force casting to float even if building_nominal_mfrt == 0
+                        # FIXME: This might be related to building_type == `lodging` for non-zero building percentages
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
                         # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
+                        logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
                         continue
                 district_nominal_mfrt += building_nominal_mfrt
 
         # Remove template buildings that weren't used or don't have successful simulations with modelica outputs
-        # FIXME: Another place where we only support time series for now.
+        # TODO: Another place where we only support time series for now.
         building_list = [x for x in building_list if not x['load_model_parameters']
                          ['time_series']['filepath'].endswith("populated")]
         if len(building_list) == 0:
@@ -829,8 +795,7 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = float(
-                district_nominal_mfrt.round(3))
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
@@ -842,7 +807,7 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        self.param_template['weather'] = str(weather_path)
+        self.param_template['weather'] = str(mos_weather_path)
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")

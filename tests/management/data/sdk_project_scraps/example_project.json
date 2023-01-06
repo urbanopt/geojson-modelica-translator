@@ -13,7 +13,14 @@
     "surface_elevation": null,
     "tariff_filename": null,
     "timesteps_per_hour": 1,
-    "weather_filename": "USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw"
+    "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
+    "emissions": true,
+    "electricity_emissions_future_subregion": "NYSTc",
+    "electricity_emissions_hourly_historical_subregion": "New York",
+    "electricity_emissions_annual_historical_subregion": "NYCW",
+    "electricity_emissions_future_year": "2030",
+    "electricity_emissions_hourly_historical_year": "2019",
+    "electricity_emissions_annual_historical_year": "2019"
   },
   "scenarios": [
     {
@@ -38,7 +45,7 @@
         "surface_elevation": null,
         "tariff_filename": null,
         "timesteps_per_hour": 1,
-        "weather_filename": "USA_CA_San.Francisco.Intl.AP.724940_TMY3.epw"
+        "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
       },
       "geometry": {
         "type": "Point",
@@ -120,7 +127,8 @@
         "ev_charging": true,
         "ev_charging_behavior": "Business as Usual",
         "ev_percent": 100,
-        "ev_curtailment_frac": 0.5
+        "ev_curtailment_frac": 0.5,
+        "ev_use_model_occupancy": true
       },
       "geometry": {
         "type": "Polygon",
