@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.4.1
+-------------
+## What's Changed
+* Cli bugfixing
+* Detailed models
+* End-of-year updates to GMT docs
+* Remove support for 3.7 in development, update development dependencies
+* Update copyrights to 2023
+
 Version 0.4.0
 -------------
 As of version 0.4.0 changes will be published using Github automated formatting at the release itself. Those changes are copied here.
