@@ -6,7 +6,11 @@
     delTAirCoo(displayUnit="degC")=10,
     delTAirHea(displayUnit="degC")=20,
     k=0.1,
-    Ti=120
+    Ti=120,
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1
     ), ets(have_hotWat = false)
     {% else %}
     T_aHeaWat_nominal(displayUnit="K")=318.15,
@@ -14,7 +18,11 @@
     delTAirCoo(displayUnit="degC")=10,
     delTAirHea(displayUnit="degC")=20,
     k=0.1,
-    Ti=120
+    Ti=120,
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1
     {% endif %}
     )
     "Building model integrating multiple time series thermal zones."
