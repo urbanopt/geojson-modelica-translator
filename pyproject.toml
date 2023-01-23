@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.4.1"
+version = "0.5.0"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 packages = [
     { include = "management" },
@@ -28,7 +29,7 @@ packages = [
 
 [tool.poetry.dependencies]
 # Urbanopt SDK requires Python 3.10 as of UOv0.9.0
-python = ">=3.8, <3.11"
+python = ">=3.8, <3.12"
 BuildingsPy = "4.0.0"
 click = "8.1.3"
 geojson = "2.5.0"
