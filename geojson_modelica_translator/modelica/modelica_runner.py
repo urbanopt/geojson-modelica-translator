@@ -99,12 +99,14 @@ class ModelicaRunner(object):
             'run': 'Running FMU',
         }
         # Verify that the action is in the list of valid actions
-        assert action in action_log_map.keys(), \
-            f'Invalid action of {action} in _subprocess_call_to_docker, needs to be {[k for k in action_log_map.keys()]}'
+        if action not in action_log_map:
+            raise SystemExit(f'Invalid action {action}, must be one of {list(action_log_map.keys())}')
 
         valid_compilers = ['optimica']  # , 'jmodelica', 'openmodelica'
-        assert compiler in valid_compilers, \
-            f'Invalid compiler of {compiler} in _subprocess_call_to_docker, needs to be {valid_compilers}'
+        if compiler not in valid_compilers:
+            raise SystemExit(
+                f'Invalid compiler {compiler} in _subprocess_call_to_docker, needs to be one of {valid_compilers}'
+            )
 
         # Set up the run content
         curdir = os.getcwd()
