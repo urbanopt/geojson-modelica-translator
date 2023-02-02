@@ -32,7 +32,7 @@ class TimeSeriesMFT(LoadBase):
 
         # MassFlowrate Temperature models
         time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
-        peak_mfr_template = self.template_env.get_template("getPeakMassFlowRate.mo")
+        peak_mfr_template = self.template_env.get_template("getPeakMassFlowRate.mot")
         templates = {"building.mo": time_series_mft_template, "getPeakMassFlowRate.mo": peak_mfr_template}
 
         b_modelica_path = ModelicaPath(
