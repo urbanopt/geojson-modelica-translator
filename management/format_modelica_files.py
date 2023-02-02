@@ -9,7 +9,7 @@ from tempfile import mkstemp
 
 import click
 
-SKIP_FILES = ['DistrictEnergySystem.mot', 'DistrictEnergySystem5G.mot']  # , 'getPeakMassFlowRate.mo'
+SKIP_FILES = ['DistrictEnergySystem.mot', 'DistrictEnergySystem5G.mot']
 TEMPLATE_FILES = Path('geojson_modelica_translator/model_connectors').glob('**/templates/*')
 
 
