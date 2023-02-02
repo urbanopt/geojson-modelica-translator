@@ -1,3 +1,4 @@
+within {{ project_name }}.Loads.{{ model_name }};
 function getPeakMassFlowRate
   "Function that reads the peak mass flow Rate from the load profile"
   input String string
