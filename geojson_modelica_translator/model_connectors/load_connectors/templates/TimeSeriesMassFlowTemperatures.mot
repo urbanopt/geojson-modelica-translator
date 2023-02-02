@@ -1,4 +1,4 @@
-within {{project_name}}.Loads.{{ model_name }};
+within {{ project_name }}.Loads.{{ model_name }};
 model building
   "Time series water mass flow rates and temperatures for a building thermal
   loads generated from Energy PLus."
