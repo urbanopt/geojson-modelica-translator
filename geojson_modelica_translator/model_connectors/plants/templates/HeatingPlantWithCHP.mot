@@ -125,7 +125,7 @@ within {{ project_name }}.Plants;
     annotation (Placement(transformation(extent={{0,40},{-20,60}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(
     redeclare package Medium=Medium,
-    allowFlowReversal=false,
+    allowFlowReversal=true,
     m_flow_nominal=mHW_flow_nominal*0.05,
     {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     l=0.001)

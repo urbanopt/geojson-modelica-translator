@@ -125,7 +125,7 @@ model CentralHeatingPlant
     annotation (Placement(transformation(extent={{0,40},{-20,60}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(
     redeclare package Medium=Medium,
-    allowFlowReversal=false,
+    allowFlowReversal=true,
     m_flow_nominal=mHW_flow_nominal*0.05,
     dpValve_nominal=7000,
     l=0.001)
