@@ -60,6 +60,11 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
+    def test_load_system_parameters_3(self):
+        filename = self.data_dir / 'system_params_3.json'
+        sdp = SystemParameters(filename)
+        self.assertIsNotNone(sdp)
+
     def test_missing_file(self):
         fn = "non-existent-path"
         with self.assertRaises(Exception) as exc:
@@ -92,6 +97,7 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIn("'temp_setpoint_cooling' is a required property", sp.validate())
         self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
         self.assertIn("5 is not one of [1, 2, 3, 4]", sp.validate())
+
 
     def test_get_param(self):
         data = {
