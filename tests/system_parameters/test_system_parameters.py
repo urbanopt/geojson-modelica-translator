@@ -60,10 +60,11 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
-    def test_load_system_parameters_3(self):
-        filename = self.data_dir / 'system_params_3.json'
+    def test_load_system_parameters_ghe(self):
+        filename = self.data_dir / 'system_params_ghe.json'
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
+        self.assertEqual([], sdp.validate())
 
     def test_missing_file(self):
         fn = "non-existent-path"
