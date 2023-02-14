@@ -159,70 +159,13 @@
           }
         },
         "soil": {
-          "description": "Soil properties for Ground Heat Exchanger sizing",
-          "type": "object",
-          "properties": {
-            "conductivity": {
-              "description": "The conductivity of the soil, in units of W/m-K.",
-              "type": "number"
-            },
-            "rho_cp": {
-              "description": "The volumetric heat capacity of the soil, in units of J/m^3-K",
-              "type": "number"
-            },
-            "undisturbed_temp": {
-              "description": "The undisturbed average soil temperature, in units of degrees Celsius.",
-              "type": "number"
-            }
-          }
+          "$ref": "#/definitions/soil_def"
         },
         "pipe": {
-          "description": "Pipe properties for Ground Heat Exchanger sizing",
-          "type": "object",
-          "properties": {
-            "inner_radius": {
-              "description": "The radius of the inner pipe surface, in meters.",
-              "type": "number"
-            },
-            "outer_radius": {
-              "description": "The radius of the outer pipe surface, in meters.",
-              "type": "number"
-            },
-            "shank_spacing": {
-              "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e. not referenced from each pipes respective centerline), in meters.",
-              "type": "number"
-            },
-            "roughness": {
-              "description": "The surface roughness of the pipe, in meters.",
-              "type": "number"
-            },
-            "conductivity": {
-              "description": "The conductivity of the pipe material, in W/m-K.",
-              "type": "number"
-            },
-            "rho_cp": {
-              "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
-              "type": "number"
-            }
-          }
+          "$ref": "#/definitions/pipe_def"
         },
         "borehole": {
-          "description": "Pipe properties for Ground Heat Exchanger sizing",
-          "type": "object",
-          "properties": {
-            "length": {
-              "description": "The length of the borehole, in meters.",
-              "type": "number"
-            },
-            "buried_depth": {
-              "description": "The depth below the ground surface to the top of the borehole, in meters.",
-              "type": "number"
-            },
-            "radius": {
-              "description": "The radius of the borehole, in meters",
-              "type": "number"
-            }
-          }
+          "$ref": "#/definitions/borehole_def"
         }
       },
       "required": [
@@ -1294,6 +1237,72 @@
       "required": [
         "supply_water_temperature_building"
       ]
+    },
+    "soil_def": {
+      "description": "Soil properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "conductivity": {
+          "description": "The conductivity of the soil, in units of W/m-K.",
+          "type": "number"
+        },
+        "rho_cp": {
+          "description": "The volumetric heat capacity of the soil, in units of J/m^3-K",
+          "type": "number"
+        },
+        "undisturbed_temp": {
+          "description": "The undisturbed average soil temperature, in units of degrees Celsius.",
+          "type": "number"
+        }
+      }
+    },
+    "pipe_def": {
+      "description": "Pipe properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "inner_radius": {
+          "description": "The radius of the inner pipe surface, in meters.",
+          "type": "number"
+        },
+        "outer_radius": {
+          "description": "The radius of the outer pipe surface, in meters.",
+          "type": "number"
+        },
+        "shank_spacing": {
+          "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e. not referenced from each pipes respective centerline), in meters.",
+          "type": "number"
+        },
+        "roughness": {
+          "description": "The surface roughness of the pipe, in meters.",
+          "type": "number"
+        },
+        "conductivity": {
+          "description": "The conductivity of the pipe material, in W/m-K.",
+          "type": "number"
+        },
+        "rho_cp": {
+          "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
+          "type": "number"
+        }
+      }
+    },
+    "borehole_def": {
+      "description": "Borehole properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "length": {
+          "description": "The length of the borehole, in meters.",
+          "type": "number"
+        },
+        "buried_depth": {
+          "description": "The depth below the ground surface to the top of the borehole, in meters.",
+          "type": "number"
+        },
+        "radius": {
+          "description": "The radius of the borehole, in meters",
+          "type": "number"
+        }
+      }
     }
   }
 }

@@ -124,7 +124,7 @@
     "inner_radius": 0.0108,
     "outer_radius": 0.0133,
     "shank_spacing": 0.0323,
-    "roughness": 0.000001,
+    "roughness": 1e-06,
     "conductivity": 0.4,
     "rho_cp": 1542000
   },

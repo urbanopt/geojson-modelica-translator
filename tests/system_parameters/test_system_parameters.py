@@ -99,7 +99,6 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIn("'temp_setpoint_heating' is a required property", sp.validate())
         self.assertIn("5 is not one of [1, 2, 3, 4]", sp.validate())
 
-
     def test_get_param(self):
         data = {
             "weather": "path/to/weatherfile.mos",
