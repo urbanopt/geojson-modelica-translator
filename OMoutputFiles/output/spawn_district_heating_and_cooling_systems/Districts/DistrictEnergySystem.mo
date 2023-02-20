@@ -47,7 +47,7 @@ parameter Integer nBui_disNet_c8ba1673=1;
     iConDpSen=nBui_disNet_c8ba1673,
     final mDis_flow_nominal=mDis_flow_nominal_disNet_c8ba1673,
     final mCon_flow_nominal=mCon_flow_nominal_disNet_c8ba1673,
-    final allowFlowReversal=false,
+    final allowFlowReversal=true,
     dpDis_nominal=dpDis_nominal_disNet_c8ba1673)
     "Distribution network."
     annotation (Placement(transformation(extent={{-30.0,60.0},{-10.0,70.0}})));
@@ -82,7 +82,8 @@ parameter Integer nBui_disNet_c8ba1673=1;
   // pumps
   parameter Buildings.Fluid.Movers.Data.Generic perCHWPum_cooPla_f1477eff(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=((mCHW_flow_nominal_cooPla_f1477eff/cooPla_f1477eff.numChi)/1000)*{0.1,1,1.2},
+      //V_flow=((mCHW_flow_nominal_cooPla_f1477eff/cooPla_f1477eff.numChi)/1000)*{0.1,1,1.2},
+      V_flow=((mCHW_flow_nominal_cooPla_f1477eff/2)/1000)*{0.1,1,1.2},
       dp=pumDP_cooPla_f1477eff*{1.2,1,0.1}))
     "Performance data for chilled water pumps";
   parameter Buildings.Fluid.Movers.Data.Generic perCWPum_cooPla_f1477eff(
@@ -156,7 +157,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
     iConDpSen=nBui_disNet_87ea6b5d,
     final mDis_flow_nominal=mDis_flow_nominal_disNet_87ea6b5d,
     final mCon_flow_nominal=mCon_flow_nominal_disNet_87ea6b5d,
-    final allowFlowReversal=false,
+    final allowFlowReversal=true,
     dpDis_nominal=dpDis_nominal_disNet_87ea6b5d)
     "Distribution network."
     annotation (Placement(transformation(extent={{-30.0,20.0},{-10.0,30.0}})));
@@ -220,6 +221,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
   parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal_SpawnLoad_a951c97a[SpawnLoad_a951c97a.nZon]={(-1*SpawnLoad_a951c97a.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:SpawnLoad_a951c97a.nZon};
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal_SpawnLoad_a951c97a[SpawnLoad_a951c97a.nZon]={(SpawnLoad_a951c97a.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:SpawnLoad_a951c97a.nZon};
   spawn_district_heating_and_cooling_systems.Loads.B5a6b99ec37f4de7f94020090.building SpawnLoad_a951c97a(
+    allowFlowReversal = true,
     mLoaCoo_flow_nominal=mLoaCoo_flow_nominal_SpawnLoad_a951c97a,
     mLoaHea_flow_nominal=mLoaHea_flow_nominal_SpawnLoad_a951c97a,
     nPorts_aHeaWat=1,

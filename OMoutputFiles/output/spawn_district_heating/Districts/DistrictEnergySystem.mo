@@ -47,7 +47,7 @@ parameter Integer nBui_disNet_1e8cfb72=1;
     iConDpSen=nBui_disNet_1e8cfb72,
     final mDis_flow_nominal=mDis_flow_nominal_disNet_1e8cfb72,
     final mCon_flow_nominal=mCon_flow_nominal_disNet_1e8cfb72,
-    final allowFlowReversal=false,
+    final allowFlowReversal=true,
     dpDis_nominal=dpDis_nominal_disNet_1e8cfb72)
     "Distribution network."
     annotation (Placement(transformation(extent={{-30.0,40.0},{-10.0,50.0}})));
@@ -111,6 +111,7 @@ parameter Integer nBui_disNet_1e8cfb72=1;
   parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal_SpawnLoad_b8198b05[SpawnLoad_b8198b05.nZon]={(-1*SpawnLoad_b8198b05.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:SpawnLoad_b8198b05.nZon};
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal_SpawnLoad_b8198b05[SpawnLoad_b8198b05.nZon]={(SpawnLoad_b8198b05.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:SpawnLoad_b8198b05.nZon};
   spawn_district_heating.Loads.B5a6b99ec37f4de7f94020090.building SpawnLoad_b8198b05(
+    allowFlowReversal=true,
     mLoaCoo_flow_nominal=mLoaCoo_flow_nominal_SpawnLoad_b8198b05,
     mLoaHea_flow_nominal=mLoaHea_flow_nominal_SpawnLoad_b8198b05,
     nPorts_aHeaWat=1,
@@ -168,6 +169,7 @@ parameter Integer nBui_disNet_1e8cfb72=1;
     annotation (Placement(transformation(extent={{-30.0,-50.0},{-10.0,-30.0}})));
   Buildings.Fluid.Sources.Boundary_pT sinChiWat_etsColWatStub_ff41590e(
     redeclare package Medium=MediumW,
+    p = 50000,
     nPorts=1)
     "Chilled water sink"
     annotation (Placement(transformation(extent={{10.0,-50.0},{30.0,-30.0}})));
@@ -237,8 +239,10 @@ parameter Integer nBui_disNet_1e8cfb72=1;
   // Source template: /model_connectors/couplings/templates/Spawn_EtsColdWaterStub/ComponentDefinitions.mopt
   //
   Modelica.Blocks.Sources.RealExpression TChiWatSup_c0a2ac14(
-    y=min(
-      SpawnLoad_b8198b05.terUni.T_aChiWat_nominal))
+    y=
+    //y=min(
+      //SpawnLoad_b8198b05.terUni.T_aChiWat_nominal))
+      280)
     "Chilled water supply temperature"
     annotation (Placement(transformation(extent={{-70.0,-50.0},{-50.0,-30.0}})));
 
