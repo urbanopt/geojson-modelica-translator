@@ -84,7 +84,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   // pumps
   parameter Buildings.Fluid.Movers.Data.Generic perCHWPum_cooPla_e68f0b80(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=((mCHW_flow_nominal_cooPla_e68f0b80/cooPla_e68f0b80.numChi)/1000)*{0.1,1,1.2},
+      V_flow=((mCHW_flow_nominal_cooPla_e68f0b80/2)/1000)*{0.1,1,1.2},
       dp=pumDP_cooPla_e68f0b80*{1.2,1,0.1}))
     "Performance data for chilled water pumps";
   parameter Buildings.Fluid.Movers.Data.Generic perCWPum_cooPla_e68f0b80(

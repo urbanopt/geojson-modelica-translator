@@ -1,4 +1,3 @@
- 
 within teaser_district_cooling.Loads.B5a72287837f4de77124f946a;
 model Storage
   "This is the simulation model of Storage within building B5a72287837f4de77124f946a with traceable ID None"
@@ -186,7 +185,8 @@ model Storage
     azi={0.0})
     "Calculates diffuse solar radiation on titled surface for both directions"
     annotation (Placement(transformation(extent={{-68,48},{-48,68}})));
-  Buildings.Controls.OBC.CDL.Interfaces.RealOutput TAir(quantity="ThermodynamicTemperature", unit="K", displayUnit="degC") if thermalZoneFourElements.ATot > 0 or thermalZoneFourElements.VAir > 0 "Room air temperature" annotation(Placement(transformation(extent={{100,38},{120,58}})));
+  //Buildings.Controls.OBC.CDL.Interfaces.RealOutput TAir(quantity="ThermodynamicTemperature", unit="K", displayUnit="degC") if thermalZoneFourElements.ATot > 0 or thermalZoneFourElements.VAir > 0 "Room air temperature" annotation(Placement(transformation(extent={{100,38},{120,58}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealOutput TAir(quantity="ThermodynamicTemperature", unit="K", displayUnit="degC") if thermalZoneFourElements.VAir > 0 "Room air temperature" annotation(Placement(transformation(extent={{100,38},{120,58}})));
   
   Buildings.Controls.OBC.CDL.Interfaces.RealOutput TRad(quantity="ThermodynamicTemperature", unit="K", displayUnit="degC") "Mean indoor radiation temperature" annotation(Placement(transformation(extent={{100,-10},{120,10}})));
   
