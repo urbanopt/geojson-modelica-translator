@@ -66,6 +66,12 @@ class SystemParametersTest(unittest.TestCase):
         self.assertIsNotNone(sdp)
         self.assertEqual([], sdp.validate())
 
+    def test_load_system_parameters_ghe(self):
+        filename = self.data_dir / 'system_params_ghe_2.json'
+        sdp = SystemParameters(filename)
+        self.assertIsNotNone(sdp)
+        self.assertEqual([], sdp.validate())
+
     def test_missing_file(self):
         fn = "non-existent-path"
         with self.assertRaises(Exception) as exc:

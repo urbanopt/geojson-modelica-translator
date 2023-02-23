@@ -110,27 +110,30 @@
       }
     }
   },
-  "connectors": {
-    "pipe_diameter": 12,
-    "pipe_insulation_rvalue": 5,
-    "pipe_location": "Tunnel"
-  },
-  "soil": {
-    "conductivity": 2.0,
-    "rho_cp": 2343493,
-    "undisturbed_temp": 18.3
-  },
-  "pipe": {
-    "inner_radius": 0.0108,
-    "outer_radius": 0.0133,
-    "shank_spacing": 0.0323,
-    "roughness": 1e-06,
-    "conductivity": 0.4,
-    "rho_cp": 1542000
-  },
-  "borehole": {
-    "length": 96.0,
-    "buried_depth": 2.0,
-    "radius": 0.075
+  "ghe_parameters": {
+    "connectors": {
+      "pipe_diameter": 12,
+      "pipe_insulation_rvalue": 5,
+      "pipe_location": "Tunnel"
+    },
+    "soil": {
+      "conductivity": 2.0,
+      "rho_cp": 2343493,
+      "undisturbed_temp": 18.3
+    },
+    "pipe": {
+      "inner_radius": 0.0108,
+      "outer_radius": 0.0133,
+      "shank_spacing": 0.0323,
+      "roughness": 1e-06,
+      "conductivity": 0.4,
+      "rho_cp": 1542000
+    },
+    "borehole": {
+      "length": 96.0,
+      "buried_depth": 2.0,
+      "radius": 0.075
+    }
   }
+
 }

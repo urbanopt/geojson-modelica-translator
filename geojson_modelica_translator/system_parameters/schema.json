@@ -158,14 +158,42 @@
             "$ref": "#/definitions/battery_bank_parameters"
           }
         },
-        "soil": {
-          "$ref": "#/definitions/soil_def"
-        },
-        "pipe": {
-          "$ref": "#/definitions/pipe_def"
-        },
-        "borehole": {
-          "$ref": "#/definitions/borehole_def"
+        "ghe_parameters": {
+          "description": "Parameters associated with Ground Heat Exchangers.",
+          "type": "object",
+          "properties": {
+            "version": {
+              "description": "Version of GHE Designer",
+              "type": "string"
+            },
+            "soil": {
+              "$ref": "#/definitions/soil_def"
+            },
+            "pipe": {
+              "$ref": "#/definitions/pipe_def"
+            },
+            "borehole": {
+              "$ref": "#/definitions/borehole_def"
+            },
+            "fluid": {
+              "$ref": "#/definitions/fluid_def"
+            },
+            "grout": {
+              "$ref": "#/definitions/grout_def"
+            },
+            "simulation": {
+              "$ref": "#/definitions/simulation_def"
+            },
+            "geometric_constraints": {
+              "$ref": "#/definitions/geometric_constraints_def"
+            },
+            "design": {
+              "$ref": "#/definitions/design_def"
+            },
+            "ground_loads": {
+              "$ref": "#/definitions/ground_loads_def"
+            }
+          }
         }
       },
       "required": [
@@ -1283,6 +1311,15 @@
         "rho_cp": {
           "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
           "type": "number"
+        },
+        "arrangement": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "singleutube",
+            "coaxial",
+            "doubleutube"
+          ]
         }
       }
     },
@@ -1302,6 +1339,113 @@
           "description": "The radius of the borehole, in meters",
           "type": "number"
         }
+      }
+    },
+    "fluid_def": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "fluid_name": {
+          "description": "",
+          "type": "string",
+          "enum": [
+            "Water"
+          ]
+        },
+        "concentration_percent": {
+          "description": "",
+          "type": "number"
+        }
+      }
+    },
+    "grout_def": {
+      "description": "",
+      "type": "object",
+      "properties": {
+        "conductivity": {
+          "description": "",
+          "type": "number"
+        },
+        "rho_cp": {
+          "description": "",
+          "type": "number"
+        }
+      }
+    },
+    "simulation_def": {
+      "description": "",
+      "type": "object",
+      "num_months": {
+        "description": "",
+        "type": "integer"
+      },
+      "timestep": {
+        "description": "",
+        "type": "string",
+        "enum": [
+          "hybrid"
+        ]
+      }
+    },
+    "geometric_constraints_def": {
+      "length": {
+        "description": "",
+        "type": "number"
+      },
+      "width": {
+        "description": "",
+        "type": "number"
+      },
+      "b_min": {
+        "description": "",
+        "type": "number"
+      },
+      "b_max": {
+        "description": "",
+        "type": "number"
+      },
+      "max_height": {
+        "description": "",
+        "type": "number"
+      },
+      "min_height": {
+        "description": "",
+        "type": "number"
+      },
+      "method": {
+        "description": "",
+        "type": "string",
+        "enum": [
+          "nearsquare"
+        ]
+      }
+    },
+    "design_def": {
+      "flow_rate": {
+        "description": "",
+        "type": "number"
+      },
+      "flow_type": {
+        "description": "",
+        "type": "string",
+        "enum": [
+          "borehole"
+        ]
+      },
+      "max_eft": {
+        "description": "",
+        "type": "number"
+      },
+      "min_eft": {
+        "description": "",
+        "type": "number"
+      }
+    },
+    "ground_loads_def": {
+      "description": "",
+      "type": "array",
+      "items": {
+        "type": "number"
       }
     }
   }
