@@ -19,7 +19,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         self.chp_installed = self.system_parameters.get_param(
             "$.district_system.fourth_generation.central_heating_plant_parameters.chp_installed"
         )
-        if not self.chp_installed:
+        if self.chp_installed is False:
             self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
             self.id = 'heaPla' + simple_uuid()
 
