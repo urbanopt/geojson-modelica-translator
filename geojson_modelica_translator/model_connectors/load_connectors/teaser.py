@@ -399,7 +399,7 @@ class Teaser(LoadBase):
                         'unit': '"K"',
                         'displayUnit': '"degC"',
                     },
-                    conditional=f'if {thermal_zone_name}.ATot > 0 or {thermal_zone_name}.VAir > 0',
+                    conditional=f'if {thermal_zone_name}.VAir > 0',
                     string_comment='Room air temperature',
                     annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
                 )
