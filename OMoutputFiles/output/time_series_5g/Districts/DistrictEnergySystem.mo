@@ -20,14 +20,14 @@ model DistrictEnergySystem
     final mCon_flow_nominal={18})
     "Design data";
   // Models
-  
+
   //
   // Begin Model Instance for TimeSerLoa_eff53284
   // Source template: /model_connectors/load_connectors/templates/TimeSeries_Instance.mopt
   //
     // time series load
   time_series_5g.Loads.B5a6b99ec37f4de7f94020090.building TimeSerLoa_eff53284(
-    
+
     allowFlowReversalBui = true,
     allowFlowReversalSer = true,
     bui(T_aHeaWat_nominal(displayUnit="K")=318.15,
@@ -37,14 +37,14 @@ model DistrictEnergySystem
     k=0.1,
     Ti=120
     ), ets(have_hotWat = false)
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,30.0},{70.0,50.0}})));
   //
   // End Model Instance for TimeSerLoa_eff53284
   //
-  
+
   //
   // Begin Model Instance for MyNetworkAmbientWaterStub
   // Source template: /model_connectors/networks/templates/NetworkAmbientWaterStub_Instance.mopt
@@ -72,7 +72,7 @@ model DistrictEnergySystem
   // End Model Instance for MyNetworkAmbientWaterStub
   //
    // Model dependencies
-  
+
   //
   // Begin Component Definitions for fba60755
   // Source template: /model_connectors/couplings/5G_templates/TimeSeries_NetworkAmbientWaterStub/ComponentDefinitions.mopt

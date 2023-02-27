@@ -58,7 +58,7 @@ parameter Integer nBui_disNet_b19be277=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_16803a71
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -125,7 +125,7 @@ parameter Integer nBui_disNet_b19be277=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for disNet_77c66200
   // Source template: /model_connectors/networks/templates/Network2Pipe_Instance.mopt
@@ -169,7 +169,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPla2c906da4
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -216,7 +216,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TeaserLoad_2a880683
   // Source template: /model_connectors/load_connectors/templates/Teaser_Instance.mopt
@@ -233,7 +233,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_66ab1bcf
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -260,7 +260,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_01742131
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -289,7 +289,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TeaserLoad_fc0ac7c8
   // Source template: /model_connectors/load_connectors/templates/Teaser_Instance.mopt
@@ -306,7 +306,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_e0ceb13d
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -333,7 +333,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_6a617e11
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -362,7 +362,7 @@ parameter Integer nBui_disNet_77c66200=2;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -639,7 +639,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_b19be277.ports_bCon[1],cooInd_66ab1bcf.port_a1)
     annotation (Line(points={{-20.43943700912699,99.10187573416509},{-0.4394370091269906,99.10187573416509},{-0.4394370091269906,79.10187573416509},{19.56056299087301,79.10187573416509}},color={0,0,127}));
   connect(disNet_b19be277.ports_aCon[1],cooInd_66ab1bcf.port_b1)
@@ -677,7 +677,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_77c66200.ports_bCon[1],heaInd_01742131.port_a1)
     annotation (Line(points={{-10.14695938853464,105.39822178072276},{9.85304061146536,105.39822178072276},{9.85304061146536,125.39822178072276},{29.85304061146536,125.39822178072276}},color={0,0,127}));
   connect(disNet_77c66200.ports_aCon[1],heaInd_01742131.port_b1)
@@ -715,7 +715,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_b19be277.ports_bCon[2],cooInd_e0ceb13d.port_a1)
     annotation (Line(points={{-16.621661984496654,99.33190223842034},{3.3783380155033456,99.33190223842034},{3.3783380155033456,79.33190223842034},{3.3783380155033456,59.33190223842034},{3.3783380155033456,39.33190223842034},{23.378338015503346,39.33190223842034}},color={0,0,127}));
   connect(disNet_b19be277.ports_aCon[2],cooInd_e0ceb13d.port_b1)
@@ -753,7 +753,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_77c66200.ports_bCon[2],heaInd_6a617e11.port_a1)
     annotation (Line(points={{-16.465126121653398,68.0345168074926},{-16.465126121653398,48.034516807492594},{-16.465126121653398,28.034516807492594},{-16.465126121653398,8.034516807492594},{3.534873878346602,8.034516807492594},{23.534873878346602,8.034516807492594}},color={0,0,127}));
   connect(disNet_77c66200.ports_aCon[2],heaInd_6a617e11.port_b1)

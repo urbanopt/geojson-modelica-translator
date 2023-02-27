@@ -32,7 +32,7 @@ model DistrictEnergySystem
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
     nPorts_bChiWat=1
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,30.0},{70.0,50.0}})));
@@ -41,7 +41,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_3ea744ee
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -68,7 +68,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for MyNetworkChilledWaterStub
   // Source template: /model_connectors/networks/templates/NetworkChilledWaterStub_Instance.mopt
@@ -93,7 +93,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for etsHotWatStub_031959d2
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsHotWaterStub_Instance.mopt
@@ -115,7 +115,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
 
   // Model dependencies
 

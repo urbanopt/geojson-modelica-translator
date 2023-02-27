@@ -26,7 +26,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_dd88c6b9
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -55,7 +55,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_793c5f8e
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -82,7 +82,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for MyNetworkHeatedWaterStub
   // Source template: /model_connectors/networks/templates/NetworkHeatedWaterStub_Instance.mopt
@@ -111,7 +111,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for MyNetworkChilledWaterStub
   // Source template: /model_connectors/networks/templates/NetworkChilledWaterStub_Instance.mopt
@@ -136,7 +136,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
 
   // Model dependencies
 

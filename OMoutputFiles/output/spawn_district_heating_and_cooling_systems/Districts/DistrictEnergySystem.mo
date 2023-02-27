@@ -56,7 +56,7 @@ parameter Integer nBui_disNet_c8ba1673=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_f1477eff
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -124,7 +124,7 @@ parameter Integer nBui_disNet_c8ba1673=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for disNet_87ea6b5d
   // Source template: /model_connectors/networks/templates/Network2Pipe_Instance.mopt
@@ -166,7 +166,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPla436da72a
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -213,7 +213,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for SpawnLoad_a951c97a
   // Source template: /model_connectors/load_connectors/templates/Spawn_Instance.mopt
@@ -236,7 +236,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_4d682cda
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -263,7 +263,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_6a5974be
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -292,7 +292,7 @@ parameter Integer nBui_disNet_87ea6b5d=1;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -488,7 +488,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_c8ba1673.ports_bCon[1],cooInd_4d682cda.port_a1)
     annotation (Line(points={{1.4738424002183592,69.89689479839637},{21.47384240021836,69.89689479839637}},color={0,0,127}));
   connect(disNet_c8ba1673.ports_aCon[1],cooInd_4d682cda.port_b1)
@@ -526,7 +526,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_87ea6b5d.ports_bCon[1],heaInd_6a5974be.port_a1)
     annotation (Line(points={{8.90300150620277,14.688100745958423},{28.90300150620277,14.688100745958423}},color={0,0,127}));
   connect(disNet_87ea6b5d.ports_aCon[1],heaInd_6a5974be.port_b1)

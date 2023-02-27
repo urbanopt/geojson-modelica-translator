@@ -1,5 +1,0 @@
-Log-file of program ./dymosim
-(generated: Wed Feb  8 09:50:15 2023)
-
-dymosim started
-... "dsin.txt" creating (dymosim input file).

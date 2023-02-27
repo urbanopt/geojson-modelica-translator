@@ -58,7 +58,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPlaa91d5909
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -105,7 +105,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TeaserLoad_39de86a4
   // Source template: /model_connectors/load_connectors/templates/Teaser_Instance.mopt
@@ -122,7 +122,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_fa103f20
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -151,7 +151,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_9be4c379
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -173,7 +173,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TeaserLoad_0f0b1663
   // Source template: /model_connectors/load_connectors/templates/Teaser_Instance.mopt
@@ -190,7 +190,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_56d24392
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -219,7 +219,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_ce6dff20
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -241,7 +241,7 @@ parameter Integer nBui_disNet_86cd77f9=2;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -452,7 +452,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_86cd77f9.ports_bCon[1],heaInd_fa103f20.port_a1)
     annotation (Line(points={{8.027452827552096,74.88825806533},{28.027452827552096,74.88825806533}},color={0,0,127}));
   connect(disNet_86cd77f9.ports_aCon[1],heaInd_fa103f20.port_b1)
@@ -509,7 +509,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_86cd77f9.ports_bCon[2],heaInd_56d24392.port_a1)
     annotation (Line(points={{-21.71440551073951,60.03530146199461},{-21.71440551073951,40.03530146199461},{-1.7144055107395104,40.03530146199461},{18.28559448926049,40.03530146199461}},color={0,0,127}));
   connect(disNet_86cd77f9.ports_aCon[2],heaInd_56d24392.port_b1)

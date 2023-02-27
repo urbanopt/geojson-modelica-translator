@@ -43,7 +43,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPla5ad49efc
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -90,7 +90,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
 
   // Model dependencies
 

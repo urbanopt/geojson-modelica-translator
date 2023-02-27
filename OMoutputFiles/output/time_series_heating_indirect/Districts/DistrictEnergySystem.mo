@@ -21,7 +21,7 @@ model DistrictEnergySystem
   //
   // time series load
   time_series_heating_indirect.Loads.B5a6b99ec37f4de7f94020090.TimeSeriesBuilding TimeSerLoa_65361aa9(
-    
+
     T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=280.15,
     delTAirCoo(displayUnit="degC")=10,
@@ -32,7 +32,7 @@ model DistrictEnergySystem
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
     nPorts_bChiWat=1
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,30.0},{70.0,50.0}})));
@@ -41,7 +41,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_19a82808
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -70,7 +70,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for MyNetworkHeatedWaterStub
   // Source template: /model_connectors/networks/templates/NetworkHeatedWaterStub_Instance.mopt
@@ -99,7 +99,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_6ec5ff91
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -121,7 +121,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
 
   // Model dependencies
 

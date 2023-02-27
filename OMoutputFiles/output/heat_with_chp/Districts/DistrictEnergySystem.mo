@@ -58,7 +58,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for chpPla_0ae5a21c
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -105,14 +105,14 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TimeSerLoa_9024af11
   // Source template: /model_connectors/load_connectors/templates/TimeSeries_Instance.mopt
   //
   // time series load
   heat_with_chp.Loads.B5a6b99ec37f4de7f94020090.TimeSeriesBuilding TimeSerLoa_9024af11(
-    
+
     T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=280.15,
     delTAirCoo(displayUnit="degC")=10,
@@ -123,7 +123,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
     nPorts_bChiWat=1
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,70.0},{70.0,90.0}})));
@@ -132,7 +132,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_0f7bb650
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -161,7 +161,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_89ee5ba9
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -183,14 +183,14 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TimeSerLoa_a93a5f30
   // Source template: /model_connectors/load_connectors/templates/TimeSeries_Instance.mopt
   //
   // time series load
   heat_with_chp.Loads.abcdefghijklmnopqrstuvwx.TimeSeriesBuilding TimeSerLoa_a93a5f30(
-    
+
     T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=280.15,
     delTAirCoo(displayUnit="degC")=10,
@@ -201,7 +201,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
     nPorts_bChiWat=1
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,30.0},{70.0,50.0}})));
@@ -210,7 +210,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_b40e7a31
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -239,7 +239,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_dfc050f9
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -261,7 +261,7 @@ parameter Integer nBui_disNet_b3d86b1a=2;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -475,7 +475,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_b3d86b1a.ports_bCon[1],heaInd_0f7bb650.port_a1)
     annotation (Line(points={{2.1417570179701357,77.65854358336676},{22.141757017970136,77.65854358336676}},color={0,0,127}));
   connect(disNet_b3d86b1a.ports_aCon[1],heaInd_0f7bb650.port_b1)
@@ -533,7 +533,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_b3d86b1a.ports_bCon[2],heaInd_b40e7a31.port_a1)
     annotation (Line(points={{-12.374268558036064,55.550016175272035},{-12.374268558036064,35.550016175272035},{7.625731441963936,35.550016175272035},{27.625731441963936,35.550016175272035}},color={0,0,127}));
   connect(disNet_b3d86b1a.ports_aCon[2],heaInd_b40e7a31.port_b1)

@@ -42,7 +42,7 @@ parameter Integer nBui_disNet_ab4120b7=1;
     "Differential pressure setpoint";
 
   Buildings.Experimental.DHC.Networks.Distribution2Pipe disNet_ab4120b7(
-    
+
     redeclare final package Medium=MediumW,
     final nCon=nBui_disNet_ab4120b7,
     iConDpSen=nBui_disNet_ab4120b7,
@@ -57,7 +57,7 @@ parameter Integer nBui_disNet_ab4120b7=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_eb62225f
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -125,7 +125,7 @@ parameter Integer nBui_disNet_ab4120b7=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for SpawnLoad_909d187e
   // Source template: /model_connectors/load_connectors/templates/Spawn_Instance.mopt
@@ -148,7 +148,7 @@ parameter Integer nBui_disNet_ab4120b7=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_4e81dd87
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -175,7 +175,7 @@ parameter Integer nBui_disNet_ab4120b7=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsHotWatStub_3d70d616
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsHotWaterStub_Instance.mopt
@@ -197,7 +197,7 @@ parameter Integer nBui_disNet_ab4120b7=1;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -342,7 +342,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_ab4120b7.ports_bCon[1],cooInd_4e81dd87.port_a1)
     annotation (Line(points={{0.35862565150237913,31.243765761584207},{20.35862565150238,31.243765761584207}},color={0,0,127}));
   connect(disNet_ab4120b7.ports_aCon[1],cooInd_4e81dd87.port_b1)

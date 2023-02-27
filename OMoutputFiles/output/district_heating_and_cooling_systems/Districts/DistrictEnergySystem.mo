@@ -58,7 +58,7 @@ parameter Integer nBui_disNet_fbbfd6aa=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_b9d0bc6b
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -127,7 +127,7 @@ parameter Integer nBui_disNet_fbbfd6aa=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for disNet_16bb913e
   // Source template: /model_connectors/networks/templates/Network2Pipe_Instance.mopt
@@ -171,7 +171,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPlab5a32a5d
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -218,7 +218,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TimeSerLoa_dc1e9bbe
   // Source template: /model_connectors/load_connectors/templates/TimeSeries_Instance.mopt
@@ -236,7 +236,7 @@ parameter Integer nBui_disNet_16bb913e=2;
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
     nPorts_bChiWat=1
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,110.0},{70.0,130.0}})));
@@ -245,7 +245,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_64f9e9cf
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -272,7 +272,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_9e07b389
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -301,7 +301,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TimeSerLoa_b0f547d0
   // Source template: /model_connectors/load_connectors/templates/TimeSeries_Instance.mopt
@@ -319,7 +319,7 @@ parameter Integer nBui_disNet_16bb913e=2;
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,
     nPorts_bChiWat=1
-    
+
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement(transformation(extent={{50.0,30.0},{70.0,50.0}})));
@@ -328,7 +328,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_17448693
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -355,7 +355,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_9562514f
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -384,7 +384,7 @@ parameter Integer nBui_disNet_16bb913e=2;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -668,7 +668,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_fbbfd6aa.ports_bCon[1],cooInd_64f9e9cf.port_a1)
     annotation (Line(points={{7.4185747562136015,120.21953850489571},{27.4185747562136,120.21953850489571}},color={0,0,127}));
   connect(disNet_fbbfd6aa.ports_aCon[1],cooInd_64f9e9cf.port_b1)
@@ -707,7 +707,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_16bb913e.ports_bCon[1],heaInd_9e07b389.port_a1)
     annotation (Line(points={{3.38557096037421,79.13058280144048},{23.38557096037421,79.13058280144048}},color={0,0,127}));
   connect(disNet_16bb913e.ports_aCon[1],heaInd_9e07b389.port_b1)
@@ -746,7 +746,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_fbbfd6aa.ports_bCon[2],cooInd_17448693.port_a1)
     annotation (Line(points={{-28.363310075607068,106.05826882114084},{-8.363310075607075,106.05826882114084},{-8.363310075607075,86.05826882114084},{-8.363310075607075,66.05826882114084},{-8.363310075607075,46.05826882114084},{-8.363310075607075,26.058268821140842},{-8.363310075607075,6.058268821140842},{11.636689924392925,6.058268821140842}},color={0,0,127}));
   connect(disNet_fbbfd6aa.ports_aCon[2],cooInd_17448693.port_b1)
@@ -785,7 +785,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_16bb913e.ports_bCon[2],heaInd_9562514f.port_a1)
     annotation (Line(points={{-18.109988262797884,63.73005129228129},{-18.109988262797884,43.73005129228129},{1.8900117372021157,43.73005129228129},{21.890011737202116,43.73005129228129}},color={0,0,127}));
   connect(disNet_16bb913e.ports_aCon[2],heaInd_9562514f.port_b1)

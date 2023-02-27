@@ -39,7 +39,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_8def2263
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -106,7 +106,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
 
   // Model dependencies
 

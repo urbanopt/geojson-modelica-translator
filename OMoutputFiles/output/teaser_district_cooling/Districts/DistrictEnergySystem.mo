@@ -58,7 +58,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_e68f0b80
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -125,7 +125,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TeaserLoad_67f392ce
   // Source template: /model_connectors/load_connectors/templates/Teaser_Instance.mopt
@@ -142,7 +142,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_6e4db825
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -169,7 +169,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsHotWatStub_7b28baa9
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsHotWaterStub_Instance.mopt
@@ -191,7 +191,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for TeaserLoad_b55dcf3b
   // Source template: /model_connectors/load_connectors/templates/Teaser_Instance.mopt
@@ -208,7 +208,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_7f48d218
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -235,7 +235,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsHotWatStub_414cc5a1
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsHotWaterStub_Instance.mopt
@@ -257,7 +257,7 @@ parameter Integer nBui_disNet_9bd50e4a=2;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -458,7 +458,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_9bd50e4a.ports_bCon[1],cooInd_6e4db825.port_a1)
     annotation (Line(points={{-4.563034033187435,71.05126463640107},{15.436965966812565,71.05126463640107}},color={0,0,127}));
   connect(disNet_9bd50e4a.ports_aCon[1],cooInd_6e4db825.port_b1)
@@ -515,7 +515,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_9bd50e4a.ports_bCon[2],cooInd_7f48d218.port_a1)
     annotation (Line(points={{-14.577424456112624,69.46440771749565},{-14.577424456112624,49.46440771749565},{5.422575543887376,49.46440771749565},{25.422575543887376,49.46440771749565}},color={0,0,127}));
   connect(disNet_9bd50e4a.ports_aCon[2],cooInd_7f48d218.port_b1)
