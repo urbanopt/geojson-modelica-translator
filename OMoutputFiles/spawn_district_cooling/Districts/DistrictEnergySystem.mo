@@ -56,7 +56,7 @@ parameter Integer nBui_disNet_90e09dae=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_64b500d1
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -124,7 +124,7 @@ parameter Integer nBui_disNet_90e09dae=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for SpawnLoad_aed2da14
   // Source template: /model_connectors/load_connectors/templates/Spawn_Instance.mopt
@@ -147,7 +147,7 @@ parameter Integer nBui_disNet_90e09dae=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_78fb87ae
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -174,7 +174,7 @@ parameter Integer nBui_disNet_90e09dae=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsHotWatStub_a784c189
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsHotWaterStub_Instance.mopt
@@ -196,7 +196,7 @@ parameter Integer nBui_disNet_90e09dae=1;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -341,7 +341,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_90e09dae.ports_bCon[1],cooInd_78fb87ae.port_a1)
     annotation (Line(points={{-4.138882684674996,33.15234051313274},{15.861117315325004,33.15234051313274}},color={0,0,127}));
   connect(disNet_90e09dae.ports_aCon[1],cooInd_78fb87ae.port_b1)

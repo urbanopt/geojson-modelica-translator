@@ -56,7 +56,7 @@ parameter Integer nBui_disNet_97fa5a54=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPla899b43a2
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -103,7 +103,7 @@ parameter Integer nBui_disNet_97fa5a54=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for SpawnLoad_b8f8936d
   // Source template: /model_connectors/load_connectors/templates/Spawn_Instance.mopt
@@ -111,7 +111,7 @@ parameter Integer nBui_disNet_97fa5a54=1;
   parameter Modelica.Units.SI.MassFlowRate mLoaCoo_flow_nominal_SpawnLoad_b8f8936d[SpawnLoad_b8f8936d.nZon]={(-1*SpawnLoad_b8f8936d.QCoo_flow_nominal[i]*(0.06)/1000) for i in 1:SpawnLoad_b8f8936d.nZon};
   parameter Modelica.Units.SI.MassFlowRate mLoaHea_flow_nominal_SpawnLoad_b8f8936d[SpawnLoad_b8f8936d.nZon]={(SpawnLoad_b8f8936d.QHea_flow_nominal[i]*(0.05)/1000) for i in 1:SpawnLoad_b8f8936d.nZon};
   spawn_district_heating.Loads.B5a6b99ec37f4de7f94020090.building SpawnLoad_b8f8936d(
-    allowFlowReversal = true, 
+    allowFlowReversal = true,
     mLoaCoo_flow_nominal=mLoaCoo_flow_nominal_SpawnLoad_b8f8936d,
     mLoaHea_flow_nominal=mLoaHea_flow_nominal_SpawnLoad_b8f8936d,
     nPorts_aHeaWat=1,
@@ -126,7 +126,7 @@ parameter Integer nBui_disNet_97fa5a54=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_92c83b84
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -155,7 +155,7 @@ parameter Integer nBui_disNet_97fa5a54=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_f93069c2
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -177,7 +177,7 @@ parameter Integer nBui_disNet_97fa5a54=1;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -331,7 +331,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_97fa5a54.ports_bCon[1],heaInd_92c83b84.port_a1)
     annotation (Line(points={{-5.788607091647194,32.82104079930156},{14.211392908352806,32.82104079930156}},color={0,0,127}));
   connect(disNet_97fa5a54.ports_aCon[1],heaInd_92c83b84.port_b1)

@@ -56,7 +56,7 @@ parameter Integer nBui_disNet_3350e94e=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooPla_ba42f06c
   // Source template: /model_connectors/plants/templates/CoolingPlant_Instance.mopt
@@ -124,7 +124,7 @@ parameter Integer nBui_disNet_3350e94e=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for disNet_979594dc
   // Source template: /model_connectors/networks/templates/Network2Pipe_Instance.mopt
@@ -166,7 +166,7 @@ parameter Integer nBui_disNet_979594dc=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaPla5df27525
   // Source template: /model_connectors/plants/templates/HeatingPlant_Instance.mopt
@@ -213,7 +213,7 @@ parameter Integer nBui_disNet_979594dc=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for SpawnLoad_b76aa4b6
   // Source template: /model_connectors/load_connectors/templates/Spawn_Instance.mopt
@@ -236,7 +236,7 @@ parameter Integer nBui_disNet_979594dc=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for cooInd_a42a34c4
   // Source template: /model_connectors/energy_transfer_systems/templates/CoolingIndirect_Instance.mopt
@@ -263,7 +263,7 @@ parameter Integer nBui_disNet_979594dc=1;
   //
 
 
-  
+
   //
   // Begin Model Instance for heaInd_d49f98b9
   // Source template: /model_connectors/energy_transfer_systems/templates/HeatingIndirect_Instance.mopt
@@ -292,7 +292,7 @@ parameter Integer nBui_disNet_979594dc=1;
   //
 
 
-  
+
 
   // Model dependencies
 
@@ -488,7 +488,7 @@ equation
   //
 
   // cooling indirect and network 2 pipe
-  
+
   connect(disNet_3350e94e.ports_bCon[1],cooInd_a42a34c4.port_a1)
     annotation (Line(points={{-23.31877925762018,44.81984952976077},{-3.3187792576201787,44.81984952976077},{-3.3187792576201787,24.819849529760774},{16.68122074237982,24.819849529760774}},color={0,0,127}));
   connect(disNet_3350e94e.ports_aCon[1],cooInd_a42a34c4.port_b1)
@@ -526,7 +526,7 @@ equation
   //
 
   // heating indirect and network 2 pipe
-  
+
   connect(disNet_979594dc.ports_bCon[1],heaInd_d49f98b9.port_a1)
     annotation (Line(points={{-24.246241199665164,43.0275842788144},{-4.246241199665164,43.0275842788144},{-4.246241199665164,63.0275842788144},{15.753758800334836,63.0275842788144}},color={0,0,127}));
   connect(disNet_979594dc.ports_aCon[1],heaInd_d49f98b9.port_b1)

@@ -37,7 +37,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for etsHotWatStub_bce3ec86
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsHotWaterStub_Instance.mopt
@@ -59,7 +59,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
   //
   // Begin Model Instance for etsColWatStub_1e23eac0
   // Source template: /model_connectors/energy_transfer_systems/templates/EtsColdWaterStub_Instance.mopt
@@ -81,7 +81,7 @@ model DistrictEnergySystem
   //
 
 
-  
+
 
   // Model dependencies
 
