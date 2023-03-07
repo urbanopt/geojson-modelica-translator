@@ -17,7 +17,8 @@
           "has_liquid_cooling": true,
           "has_electric_cooling": false,
           "temp_chw_supply": 7,
-          "temp_chw_return": 12
+          "temp_chw_return": 12,
+          "max_electrical_load": 0
         }
       },
       "ets_model": "Indirect Heating and Cooling",
