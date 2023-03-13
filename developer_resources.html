@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.4.0 documentation</title>
+    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.4.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="input_file_documentation.html" title="Input File Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>  
@@ -63,14 +63,14 @@
 <section id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">¶</a></h2>
 <p>Tests are run with pytest, e.g.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run pytest
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest
 </pre></div>
 </div>
 <section id="snapshot-testing">
 <h3>Snapshot Testing<a class="headerlink" href="#snapshot-testing" title="Permalink to this heading">¶</a></h3>
 <p>Some tests use <a class="reference external" href="https://github.com/tophat/syrupy">syrupy</a> to compare generated modelica models to saved “snapshots” of the models (saved as .ambr files).</p>
 <p>Snapshots should only be updated if we have changed how a model is generated, and we <em>know</em> the new version of the model is the correct version. To update all snapshots, you can run the following and commit the new snapshot files.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run pytest --snapshot-update
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--snapshot-update
 </pre></div>
 </div>
 </section>
@@ -92,14 +92,32 @@ For example, a coupling could define how the time series load actually connects 
 <section id="getting-started-as-a-developer">
 <h2>Getting Started as a Developer<a class="headerlink" href="#getting-started-as-a-developer" title="Permalink to this heading">¶</a></h2>
 <p>There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
-to follow the detailed instructions for setting up MBL and Docker in the <a class="reference external" href="getting_started">getting started</a> guide.</p>
+to follow the detailed instructions for <a class="reference internal" href="getting_started.html#docker-installation"><span class="std std-ref">Docker Installation</span></a> in the Getting Started guide.</p>
 <p>Follow the instructions below in order to configure your local environment:</p>
 <ul class="simple">
-<li><p>Clone this repo into a working directory</p></li>
+<li><dl class="simple">
+<dt>If you need a custom Modelica Buildings Library:</dt><dd><ul>
+<li><p>Clone the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings">MBL</a> into a working directory outside of the GMT directory</p></li>
+<li><p>Ensure your MODELICAPATH env var is set to the MBL you want to use! See the documentation at <a class="reference internal" href="getting_started.html#mbl-installation"><span class="std std-ref">MBL Installation</span></a></p></li>
+<li><p>Change to the directory inside the modelica-buildings repo you just checked out. (<code class="code docutils literal notranslate"><span class="pre">cd</span> <span class="pre">modelica-buildings</span></code>)</p></li>
+<li><dl class="simple">
+<dt>Install git-lfs</dt><dd><ul>
+<li><p>Mac: <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
+<li><p>Ubuntu: <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The current GMT code works with the <code class="code docutils literal notranslate"><span class="pre">maint_9.1.x</span></code> branch of the MBL. GMT version <code class="code docutils literal notranslate"><span class="pre">0.2.3</span></code>, which uses JModelica, requires the <code class="code docutils literal notranslate"><span class="pre">issue2204_gmt_mbl</span></code> branch of the MBL.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Clone <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator">the GMT repo</a> into a working directory</p></li>
 <li><p>(optional/as-needed) Add Python 3 to the environment variables</p></li>
 <li><p>For developers, dependency management is through <a class="reference external" href="https://python-poetry.org/docs/">Poetry</a>. Installation is accomplished by running <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>.</p></li>
 <li><p>Return to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
-<li><p>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span></code>. This will run all the unit and integration tests.</p></li>
+<li><p>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">compilation</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">simulation'</span></code>. This will run all the unit and integration tests.</p></li>
 <li><p>Follow the instructions below to install pre-commit.</p></li>
 <li><p>To test pre-commit and building the documentation, you can run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">tox</span></code></p></li>
 </ul>
@@ -111,11 +129,11 @@ of Modelica models that are created and persisted into the <code class="code doc
 <p>This project uses <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency.
 To enable pre-commit on every commit run the following from the command line from within the git checkout of the
 GMT:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit install
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>install
 </pre></div>
 </div>
 <p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit run --all-files
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
 </pre></div>
 </div>
 </section>
@@ -125,17 +143,10 @@ GMT:</p>
 <h4>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Permalink to this heading">¶</a></h4>
 <p>There is managed task to automatically pull updated GeoJSON schemas from the <code class="code docutils literal notranslate"><span class="pre">urbanopt-geojson-gem</span></code> GitHub
 project. A developer can run this command by calling</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_schemas
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>update_schemas
 </pre></div>
 </div>
 <p>The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.</p>
-</section>
-<section id="updating-licenses">
-<h4>Updating Licenses<a class="headerlink" href="#updating-licenses" title="Permalink to this heading">¶</a></h4>
-<p>To apply the copyright/license to all the files, run the following managed task</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry run update_licenses
-</pre></div>
-</div>
 </section>
 </section>
 </section>
@@ -235,7 +246,7 @@ desired, a user can run the simulations manually using JModelica (via Docker). F
 the runner to work locally.</p>
 <ul>
 <li><p>Make sure jm_ipython.sh is in your local path.</p></li>
-<li><p>After running the <code class="code docutils literal notranslate"><span class="pre">py.test</span></code>, go into the <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/modelica/lib/runner/</span></code> directory.</p></li>
+<li><p>After running the <code class="code docutils literal notranslate"><span class="pre">pytest</span></code>, go into the <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/modelica/lib/runner/</span></code> directory.</p></li>
 <li><p>Copy <code class="code docutils literal notranslate"><span class="pre">jmodelica.py</span></code> to the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory.</p></li>
 <li><dl class="simple">
 <dt>From the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory, run examples using either of the the following:</dt><dd><ul class="simple">
@@ -293,14 +304,14 @@ the runner to work locally.</p>
 <li><p>After main branch passes, merge and checkout the main branch. Build the distribution using the following code:</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove old dist packages</span>
-rm -rf dist/*
+rm<span class="w"> </span>-rf<span class="w"> </span>dist/*
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Run <code class="code docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">&lt;NEW_VERSION&gt;</span></code>.</p></li>
 <li><p>Run the following to release.</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry publish --build
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>publish<span class="w"> </span>--build
 </pre></div>
 </div>
 <ul class="simple">
@@ -309,9 +320,9 @@ rm -rf dist/*
 <li><p>Build and release the documentation.</p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and verify with the following</span>
-<span class="nb">cd</span> docs
-poetry run make html
-<span class="nb">cd</span> ..
+<span class="nb">cd</span><span class="w"> </span>docs
+poetry<span class="w"> </span>run<span class="w"> </span>make<span class="w"> </span>html
+<span class="nb">cd</span><span class="w"> </span>..
 
 <span class="c1"># release using</span>
 ./docs/publish_docs.sh
@@ -360,7 +371,6 @@ poetry run make html
 <li><a class="reference internal" href="#pre-commit">Pre-commit</a></li>
 <li><a class="reference internal" href="#managed-tasks">Managed Tasks</a><ul>
 <li><a class="reference internal" href="#updating-schemas">Updating Schemas</a></li>
-<li><a class="reference internal" href="#updating-licenses">Updating Licenses</a></li>
 </ul>
 </li>
 </ul>
@@ -433,13 +443,13 @@ poetry run make html
         <li class="right" >
           <a href="input_file_documentation.html" title="Input File Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.1.
+        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>

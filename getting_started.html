@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.4.0 documentation</title>
+    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.4.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="overview.html" title="Overview"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>  
@@ -68,16 +68,16 @@ GeoJSON and System Parameter file from results of an URBANopt SDK simulation res
 <section id="gmt-installation">
 <h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Permalink to this heading">¶</a></h2>
 <p>You must have PIP and Python 3.7 or later installed (run <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see what version you’re using). After installing Python and PIP run the following in a terminal (requires Python 3):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install geojson-modelica-translator
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>geojson-modelica-translator
 </pre></div>
 </div>
 <p>After installation of the GMT, a new command line interface (called the URBANopt District Energy Systems [UO DES] CLI) can be used to run various commands. Without needing to install the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">MBL</a> the user can use the CLI to build the system parameters file from the results of the URBANopt SDK. For more information run the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des -h
-uo_des build-system-param -h
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des<span class="w"> </span>-h
+uo_des<span class="w"> </span>build-system-param<span class="w"> </span>-h
 
 <span class="c1"># the command below is only an example; however, it will run if the repository</span>
 <span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
-uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
+uo_des<span class="w"> </span>build-sys-param<span class="w"> </span>sys_param.json<span class="w"> </span>baseline_scenario.csv<span class="w"> </span>example_project.json
 </pre></div>
 </div>
 </section>
@@ -85,25 +85,15 @@ uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 <h2>MBL Installation<a class="headerlink" href="#mbl-installation" title="Permalink to this heading">¶</a></h2>
 <p>The Modelica Buildings Library contains many models that are needed to assemble the district systems. Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:</p>
 <ul class="simple">
-<li><p>Clone the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">MBL</a> into a working directory outside of the GMT directory</p></li>
-<li><p>Change to the directory inside the modelica-buildings repo you just checked out. (<code class="code docutils literal notranslate"><span class="pre">cd</span> <span class="pre">modelica-buildings</span></code>)</p></li>
-<li><dl class="simple">
-<dt>Install git-lfs</dt><dd><ul>
-<li><p>Mac: <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
-<li><p>Ubuntu: <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>The GMT code works with the <code class="code docutils literal notranslate"><span class="pre">master</span></code> branch of the MBL, which is currently version 9.0.0. If the <code class="code docutils literal notranslate"><span class="pre">master</span></code> branch has been updated, then use the tag <code class="code docutils literal notranslate"><span class="pre">v9.0.0</span></code> to install the MBL.</p></li>
+<li><p>Download and extract the newest 9.1 version of the MBL from <a class="reference external" href="https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html">https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html</a></p></li>
 <li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings). Restart your terminal to ensure that the MBL library is exported correctly.</p></li>
 </ul>
 <p>Once the MBL is installed, then the CLI can be used to create the model with the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des create-model -h
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des<span class="w"> </span>create-model<span class="w"> </span>-h
 
 <span class="c1"># the command below is only an example; however, it will run if the repository</span>
 <span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
-uo_des create-model sys_param.json example_project.json model_from_sdk
+uo_des<span class="w"> </span>create-model<span class="w"> </span>sys_param.json<span class="w"> </span>example_project.json<span class="w"> </span>model_from_sdk
 </pre></div>
 </div>
 <p>The resulting Modelica package will be created and can be opened in a Modelica editor. Open the <code class="code docutils literal notranslate"><span class="pre">package.mo</span></code> file in the root directory of the generated package. You will also need to
@@ -114,7 +104,7 @@ load the MBL into your Modelica editor.</p>
 <section id="docker-installation">
 <h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Permalink to this heading">¶</a></h2>
 <p>The preferred method of running the simulations would be within Dymola; however, that is not a
-practical solution for many based on the license requirement. The GMT enables the running of the
+practical solution for many based on the license requirement. Version 0.2.3 of the GMT enables the running of the
 models using JModelica which requires the installation of <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a>. To configure Docker, do the
 following:</p>
 <ul class="simple">
@@ -124,11 +114,11 @@ following:</p>
 </ul>
 <p>After Docker is installed and configured, you can use the CLI to run the model using the following
 command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des run-model -h
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des<span class="w"> </span>run-model<span class="w"> </span>-h
 
 <span class="c1"># the command below is only an example; however, it will run if the repository</span>
 <span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
-uo_des run-model model_from_sdk
+uo_des<span class="w"> </span>run-model<span class="w"> </span>model_from_sdk
 </pre></div>
 </div>
 </section>
@@ -199,13 +189,13 @@ uo_des run-model model_from_sdk
         <li class="right" >
           <a href="overview.html" title="Overview"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019-2022, Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.1.
+        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     </div>
   </body>
 </html>
