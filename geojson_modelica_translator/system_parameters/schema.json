@@ -1272,7 +1272,8 @@
       "properties": {
         "conductivity": {
           "description": "The conductivity of the soil, in units of W/m-K.",
-          "type": "number"
+          "type": "number",
+          "default": 2.3
         },
         "rho_cp": {
           "description": "The volumetric heat capacity of the soil, in units of J/m^3-K",
@@ -1294,23 +1295,28 @@
         },
         "outer_radius": {
           "description": "The radius of the outer pipe surface, in meters.",
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "shank_spacing": {
           "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e. not referenced from each pipes respective centerline), in meters.",
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "roughness": {
           "description": "The surface roughness of the pipe, in meters.",
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "conductivity": {
           "description": "The conductivity of the pipe material, in W/m-K.",
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "rho_cp": {
           "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
-          "type": "number"
+          "type": "number",
+          "minimum": 0
         },
         "arrangement": {
           "description": "",
@@ -1324,7 +1330,7 @@
       }
     },
     "borehole_def": {
-      "description": "Borehole properties for Ground Heat Exchanger sizing",
+      "description": "Borehole properties for Ground Heat Exchanger sizing.",
       "type": "object",
       "properties": {
         "length": {
@@ -1336,8 +1342,9 @@
           "type": "number"
         },
         "radius": {
-          "description": "The radius of the borehole, in meters",
-          "type": "number"
+          "description": "The radius of the borehole, in meters.",
+          "type": "number",
+          "default": 0.095
         }
       }
     },
@@ -1346,103 +1353,118 @@
       "type": "object",
       "properties": {
         "fluid_name": {
-          "description": "",
+          "description": "Circulating fluid parameters for ground heat exchanger sizing.",
           "type": "string",
           "enum": [
-            "Water"
+            "Water",
+            "EthylAlcohol",
+            "EthyleneGlycol",
+            "MethylAlcohol",
+            "PropyleneGlycol"
           ]
         },
         "concentration_percent": {
-          "description": "",
-          "type": "number"
+          "description": "The concentration of circulation fluid in percent, from 0-60.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 60
         }
       }
     },
     "grout_def": {
-      "description": "",
+      "description": "Grout properties used for ground heat exchanger sizing.",
       "type": "object",
       "properties": {
         "conductivity": {
-          "description": "",
-          "type": "number"
+          "description": "Grout thermal conductivity, in W/m-K.",
+          "type": "number",
+          "minimum": 0,
+          "default": 2
         },
         "rho_cp": {
-          "description": "",
-          "type": "number"
+          "description": "Grout volumetric heat capacity, in J/m^3-K.",
+          "type": "number",
+          "minimum": 0
         }
       }
     },
     "simulation_def": {
-      "description": "",
+      "description": "Simulation parameters use for ground heat exchanger sizing.",
       "type": "object",
       "num_months": {
-        "description": "",
-        "type": "integer"
+        "description": "Length of ground heat exchanger sizing period, in months.",
+        "type": "integer",
+        "minimum": 0
       },
       "timestep": {
-        "description": "",
+        "description": "Timestep method used for ground heat exchanger sizing.",
         "type": "string",
-        "enum": [
-          "hybrid"
-        ]
+        "const": "hybrid"
       }
     },
     "geometric_constraints_def": {
+      "description": "Geometric constraints for GHE and boreholes.",
+      "type": "object",
       "length": {
-        "description": "",
+        "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
         "type": "number"
       },
       "width": {
-        "description": "",
+        "description": "Horizontal surface width allowed for the ground heat exchanger, in meters",
         "type": "number"
       },
       "b_min": {
-        "description": "",
+        "description": "Minimum borehole-to-borehole spacing, in meters.",
         "type": "number"
       },
       "b_max": {
-        "description": "",
+        "description": "Maximum borehole-to-borehole spacing, in meters.",
         "type": "number"
       },
       "max_height": {
-        "description": "",
+        "description": "Maximum height, or depth, of each borehole heat exchanger, in meters.",
         "type": "number"
       },
       "min_height": {
-        "description": "",
+        "description": "Minimum height, or depth, of each borehole heat exchanger, in meters.",
         "type": "number"
       },
       "method": {
-        "description": "",
+        "description": "GHE sizing method",
         "type": "string",
         "enum": [
-          "nearsquare"
+          "nearsquare",
+          "Rectangular"
         ]
       }
     },
     "design_def": {
+      "description": "Design parameters used for GHE sizing.",
+      "type": "object",
       "flow_rate": {
-        "description": "",
-        "type": "number"
+        "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
+        "type": "number",
+        "minimum": 0
       },
       "flow_type": {
-        "description": "",
+        "description": "Flow type for ground heat exchanger sizing, in l/s.",
         "type": "string",
         "enum": [
-          "borehole"
+          "borehole",
+          "system"
         ]
       },
       "max_eft": {
-        "description": "",
+        "description": "Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
         "type": "number"
       },
       "min_eft": {
-        "description": "",
+        "description": "Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
         "type": "number"
       }
     },
     "ground_loads_def": {
-      "description": "",
+      "description": "Heat rejection or extraction loads of the ground heat exchanger used for ground heat exchanger sizing, in Watts. Heat extraction loads are positive, and heat rejection loads are negative.",
       "type": "array",
       "items": {
         "type": "number"
