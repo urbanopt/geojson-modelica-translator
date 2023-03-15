@@ -128,18 +128,6 @@ model SingleGHE
     T=283.15,   
     nPorts=2) "Expansion vessel"
     annotation (Placement(transformation(extent={{140,-76},{120,-56}})));
-  Buildings.Fluid.Sensors.TemperatureTwoPort TUTubIn(
-    redeclare package Medium = Medium,
-    m_flow_nominal=borFieDat.conDat.mBorFie_flow_nominal,
-    tau=0)
-    "Inlet temperature of the borefield with UTube configuration"
-    annotation (Placement(transformation(extent={{-40,0},{-20,20}})));
-  Buildings.Fluid.Sensors.TemperatureTwoPort TUTubOut(
-    redeclare package Medium = Medium,
-    m_flow_nominal=borFieDat.conDat.mBorFie_flow_nominal,
-    tau=0)
-    "Inlet temperature of the borefield with UTube configuration"
-    annotation (Placement(transformation(extent={{40,0},{60,20}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMinSet[nBui](each k=
         28 + 273.15)
     "Heating water supply temperature set point - Minimum value"
@@ -168,16 +156,8 @@ equation
   //
 {% endfor %}
 
-  connect(TUTubIn.port_b,borFieUTub. port_a)
-    annotation (Line(points={{-20,10},{0,10}},     color={0,127,255}));
-  connect(borFieUTub.port_b,TUTubOut. port_a)
-    annotation (Line(points={{20,10},{40,10}},            color={0,127,255}));
-  connect(TUTubOut.port_b, dis.port_aDisSup) annotation (Line(points={{60,10},{70,
-          10}},                              color={0,127,255}));
   connect(masFloMaiPum.y,pumDis. m_flow_in) annotation (Line(points={{-21,-60},{
           -32,-60}},                 color={0,0,127}));
-  connect(pumDis.port_b, TUTubIn.port_a) annotation (Line(points={{-44,-50},{-44,
-          10},{-40,10}},          color={0,127,255}));
   connect(dis.ports_bCon, bui.port_aSerAmb) annotation (Line(points={{78,20},{78,
           38},{74,38},{74,50},{80,50}}, color={0,127,255}));
   connect(bui.port_bSerAmb, dis.ports_aCon) annotation (Line(points={{100,50},{106,
@@ -196,6 +176,10 @@ equation
           -80},{108,-80},{108,-64},{120,-64}}, color={0,127,255}));
   connect(expVes.ports[2], dis.port_bDisSup) annotation (Line(points={{120,-68},
           {108,-68},{108,-8},{122,-8},{122,10},{110,10}}, color={0,127,255}));
+  connect(pumDis.port_b, borFieUTub.port_a)
+    annotation (Line(points={{-44,-50},{-44,10},{0,10}}, color={0,127,255}));
+  connect(borFieUTub.port_b, dis.port_aDisSup)
+    annotation (Line(points={{20,10},{70,10}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
             {100,100}})),                                        Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-140,-100},{140,100}})),
