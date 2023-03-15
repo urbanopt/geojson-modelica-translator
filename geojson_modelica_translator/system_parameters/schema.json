@@ -746,6 +746,11 @@
           "type": "boolean",
           "default": false
         },
+        "max_electrical_load": {
+          "description": "Maximum electrical load from OpenStudio building simulation. (W)",
+          "type": "number",
+          "default": 0
+        },
         "filepath": {
           "type": "string"
         },

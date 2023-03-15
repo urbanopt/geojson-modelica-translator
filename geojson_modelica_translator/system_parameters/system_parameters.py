@@ -726,9 +726,10 @@ class SystemParameters(object):
                 for item in thing.iterdir():
                     if item.is_dir():
                         if str(item).endswith('_export_time_series_modelica'):
-                            measure_list.append(Path(item) / "building_loads.csv")
+                            measure_list.append(Path(item) / "building_loads.csv")  # used for mfrt
                         elif str(item).endswith('_export_modelica_loads'):
-                            measure_list.append(Path(item) / "modelica.mos")
+                            measure_list.append(Path(item) / "modelica.mos")  # space heating/cooling & water heating
+                            measure_list.append(Path(item) / "building_loads.csv")  # used for max electricity load
 
         # Get each feature id from the SDK FeatureFile
         building_ids = []
@@ -782,6 +783,13 @@ class SystemParameters(object):
                         logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
                         continue
                 district_nominal_mfrt += building_nominal_mfrt
+                if measure_file_path.suffix == '.csv' and measure_folder_name.endswith('_export_modelica_loads'):
+                    try:
+                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # usecols to make the df small
+                    except ValueError:  # hack to handle the case where there is no ElectricityFacility column in the csv
+                        continue
+                    max_electricity_load = int(building_loads['ElectricityFacility'].max())
+                    building['load_model_parameters']['time_series']['max_electrical_load'] = max_electricity_load
 
         # Remove template buildings that weren't used or don't have successful simulations with modelica outputs
         # TODO: Another place where we only support time series for now.

@@ -292,6 +292,10 @@ class SystemParametersTest(unittest.TestCase):
         # assert that a building has a 'photovoltaic_panels' section (exists and nonempty)
         self.assertTrue(sys_param_data['buildings'][0]['photovoltaic_panels'])
 
+        # assert that building_id 7 (number 1 in the list) has an electrical load
+        # Building 1 (number 0 in the list) does not have an electrical load as of 2023-03-07
+        assert sys_param_data['buildings'][1]['load_model_parameters']['time_series']['max_electrical_load'] > 0
+
     def test_validate_sys_param_template(self):
         output_sys_param_file = self.output_dir / 'bogus_sys_param.json'
         with self.assertRaises(Exception) as context:
