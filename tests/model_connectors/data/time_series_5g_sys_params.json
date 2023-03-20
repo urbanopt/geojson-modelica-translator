@@ -21,25 +21,9 @@
           "temp_setpoint_heating": 20
         }
       },
-      "ets_model": "Indirect Heating and Cooling",
-      "ets_indirect_parameters": {
-        "heat_flow_nominal": 8000,
-        "heat_exchanger_efficiency": 0.8,
-        "nominal_mass_flow_district": 0.5,
-        "nominal_mass_flow_building": 0.5,
-        "valve_pressure_drop": 6000,
-        "heat_exchanger_secondary_pressure_drop": 500,
-        "heat_exchanger_primary_pressure_drop": 500,
-        "cooling_supply_water_temperature_building": 7,
-        "heating_supply_water_temperature_building": 50,
-        "delta_temp_chw_building": 5,
-        "delta_temp_chw_district": 8,
-        "delta_temp_hw_building": 15,
-        "delta_temp_hw_district": 20,
-        "cooling_controller_y_max": 1,
-        "cooling_controller_y_min": 0,
-        "heating_controller_y_max": 1,
-        "heating_controller_y_min": 0
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15
       }
     },
     {
@@ -62,25 +46,9 @@
           "temp_setpoint_heating": 20
         }
       },
-      "ets_model": "Indirect Heating and Cooling",
-      "ets_indirect_parameters": {
-        "heat_flow_nominal": 8000,
-        "heat_exchanger_efficiency": 0.8,
-        "nominal_mass_flow_district": 0.5,
-        "nominal_mass_flow_building": 0.5,
-        "valve_pressure_drop": 6000,
-        "heat_exchanger_secondary_pressure_drop": 500,
-        "heat_exchanger_primary_pressure_drop": 500,
-        "cooling_supply_water_temperature_building": 7,
-        "heating_supply_water_temperature_building": 50,
-        "delta_temp_chw_building": 5,
-        "delta_temp_chw_district": 8,
-        "delta_temp_hw_building": 15,
-        "delta_temp_hw_district": 20,
-        "cooling_controller_y_max": 1,
-        "cooling_controller_y_min": 0,
-        "heating_controller_y_max": 1,
-        "heating_controller_y_min": 0
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15
       }
     }
   ],
