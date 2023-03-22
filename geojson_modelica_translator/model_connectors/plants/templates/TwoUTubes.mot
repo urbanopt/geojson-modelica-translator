@@ -1,7 +1,7 @@
-within {{ project_name }}.GeothermalHeatExchanger;
-model {{ model_filename }}
+within {{ project_name }}.Plants.{{ model_name }};
+model TwoUTubes
   {% raw %}"Borefield model containing double U-tube boreholes"
-  {% endraw %}extends {{ project_name }}.GeothermalHeatExchanger.PartialBorefield(
+  {% endraw %}extends {{ project_name }}.Plants.{{ model_name }}.PartialBorefield(
     {% raw %}redeclare Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube borHol);
   annotation (
   defaultComponentName="borFie",

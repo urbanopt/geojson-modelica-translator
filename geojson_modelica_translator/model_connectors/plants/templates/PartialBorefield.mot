@@ -1,4 +1,4 @@
-within {{ project_name }}.GeothermalHeatExchanger;
+within {{ project_name }}.Plants.{{ model_name }};
 {% raw %}partial model PartialBorefield
   "Borefield model using single U-tube borehole heat exchanger configuration.Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow"
 
@@ -107,7 +107,7 @@ within {{ project_name }}.GeothermalHeatExchanger;
     "Average borehole wall temperature in the borefield"
     annotation (Placement(transformation(extent={{100,34},{120,54}})));
 
-  Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.GroundTemperatureResponse groTemRes( // This needs to be overrided!!!
+  {{ project_name }}.Plants.GroundTemperatureResponse groTemRes( 
     final tLoaAgg=tLoaAgg,
     final nCel=nCel,
     final borFieDat=borFieDat,
