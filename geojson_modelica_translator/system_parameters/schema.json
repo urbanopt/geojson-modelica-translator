@@ -1294,12 +1294,12 @@
       "description": "Pipe properties for Ground Heat Exchanger sizing",
       "type": "object",
       "properties": {
-        "inner_radius": {
-          "description": "The radius of the inner pipe surface, in meters.",
+        "inner_diameter": {
+          "description": "The diameter of the inner pipe surface, in meters.",
           "type": "number"
         },
-        "outer_radius": {
-          "description": "The radius of the outer pipe surface, in meters.",
+        "outer_diameter": {
+          "description": "The diameter of the outer pipe surface, in meters.",
           "type": "number",
           "minimum": 0
         },
@@ -1346,10 +1346,10 @@
           "description": "The depth below the ground surface to the top of the borehole, in meters.",
           "type": "number"
         },
-        "radius": {
-          "description": "The radius of the borehole, in meters.",
+        "diameter": {
+          "description": "The diameter of the borehole, in meters.",
           "type": "number",
-          "default": 0.095
+          "default": 0.19
         }
       }
     },
@@ -1400,11 +1400,6 @@
         "description": "Length of ground heat exchanger sizing period, in months.",
         "type": "integer",
         "minimum": 0
-      },
-      "timestep": {
-        "description": "Timestep method used for ground heat exchanger sizing.",
-        "type": "string",
-        "const": "hybrid"
       }
     },
     "geometric_constraints_def": {

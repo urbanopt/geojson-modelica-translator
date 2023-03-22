@@ -223,8 +223,8 @@
       "undisturbed_temp": 18.3
     },
     "pipe": {
-      "inner_radius": 0.0108,
-      "outer_radius": 0.0133,
+      "inner_diameter": 0.0216,
+      "outer_diameter": 0.0266,
       "shank_spacing": 0.0323,
       "roughness": 1e-06,
       "conductivity": -1,
@@ -233,11 +233,10 @@
     },
     "borehole": {
       "buried_depth": 2.0,
-      "radius": 0.075
+      "diameter": 0.15
     },
     "simulation": {
-      "num_months": 240,
-      "timestep": "hybrid"
+      "num_months": 240
     },
     "geometric_constraints": {
       "length": 100,
