@@ -1349,7 +1349,7 @@
         "diameter": {
           "description": "The diameter of the borehole, in meters.",
           "type": "number",
-          "default": 0.19
+          "default": 0.15
         }
       }
     },
