@@ -102,6 +102,9 @@ class Borefield(PlantBase):
         # process tube thickness
         template_data["tube"]["thickness"] = template_data["tube"]["outer_radius"]-template_data["tube"]["inner_radius"]
 
+        # process shank spacing
+        template_data["tube"]["shank_spacing"] = template_data["tube"]["shank_spacing"]/2-template_data["tube"]["outer_radius"]
+
         # load templates
         partial_borefield_template = self.template_env.get_template("PartialBorefield.mot")
         oneutube_template = self.template_env.get_template("OneUTube.mot")
