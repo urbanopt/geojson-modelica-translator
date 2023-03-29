@@ -1,4 +1,4 @@
-within Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer;
+within geojson_modelica_translator.model_connectors.templates;
 model GroundTemperatureResponse "Model calculating discrete load aggregation"
   parameter Modelica.Units.SI.Time tLoaAgg(final min=Modelica.Constants.eps)=
     3600 "Time resolution of load aggregation";
