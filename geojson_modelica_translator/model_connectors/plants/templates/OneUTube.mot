@@ -1,6 +1,6 @@
 within {{ project_name }}.Plants.{{ model_name }};
-model OneUTube
-  {% raw %}"Borefield model containing single U-tube boreholes"
+{% raw %}model OneUTube
+  "Borefield model containing single U-tube boreholes"
   {% endraw %}extends {{ project_name }}.Plants.{{ model_name }}.PartialBorefield(
     {% raw %}redeclare Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube borHol);
 

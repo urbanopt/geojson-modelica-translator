@@ -17,7 +17,8 @@ class Borefield(PlantBase):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'Borefield_' + simple_uuid()
+        self.id = 'borFie_' + simple_uuid()
+        self.borefield_name = 'Borefield_' + simple_uuid()
 
         self.required_mo_files.append(os.path.join(self.template_dir, 'GroundTemperatureResponse.mo'))
 
@@ -114,7 +115,7 @@ class Borefield(PlantBase):
             partial_borefield_template,
             os.path.join(scaffold.plants_path.files_dir, "PartialBorefield.mo"),
             project_name=scaffold.project_name,
-            model_name=self.id,
+            model_name=self.borefield_name,
             ghe_data=template_data
         )
 
@@ -130,7 +131,7 @@ class Borefield(PlantBase):
             plant_template,
             os.path.join(scaffold.plants_path.files_dir, "Borefield.mo"),
             project_name=scaffold.project_name,
-            model_name=self.id,
+            model_name=self.borefield_name,
             ghe_data=template_data
         )
 
@@ -145,7 +146,7 @@ class Borefield(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        package_models = [self.id] + [Path(mo).stem for mo in self.required_mo_files]
+        package_models = [self.borefield_name] + [Path(mo).stem for mo in self.required_mo_files]
         plants_package = PackageParser(scaffold.plants_path.files_dir)
         if plants_package.order_data is None:
             plants_package = PackageParser.new_from_template(
@@ -159,15 +160,15 @@ class Borefield(PlantBase):
         plants_package.save()
 
         # Borefield_ package
-        b_modelica_path = os.path.join(scaffold.plants.files_dir, self.id)
+        b_modelica_path = os.path.join(scaffold.plants.files_dir, self.borefield_name)
         subpackage_models = ['Borefield'] + ['PartialBorefield']
         new_package = PackageParser.new_from_template(
             path=b_modelica_path, 
-            name=self.id, 
+            name=self.borefield_name, 
             order=subpackage_models,
             within=f"{scaffold.project_name}.Plants"
         )
         new_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.{self.id}.Borefield', f'{scaffold.project_name}.Plants.{self.id}.PartialBorefield'
+        return f'{scaffold.project_name}.Plants.{self.borefield_name}.Borefield', f'{scaffold.project_name}.Plants.{self.borefield_name}.PartialBorefield'
