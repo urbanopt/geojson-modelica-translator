@@ -1,0 +1,57 @@
+within {{ district_within_path }};
+model BorefieldSystem "Borefield model with one GHE component."
+  extends Modelica.Icons.Example;
+
+  replaceable package MediumW = Buildings.Media.Water constrainedby
+    Modelica.Media.Interfaces.PartialMedium
+    "Medium in the component"
+      annotation (choices(
+        choice(redeclare package Medium = Buildings.Media.Water "Water"),
+        choice(redeclare package Medium =
+            Buildings.Media.Antifreeze.PropyleneGlycolWater (
+              property_T=293.15,
+              X_a=0.40)
+              "Propylene glycol water, 40% mass fraction")));
+
+  // Models
+  {% for model in models %}
+  //
+  // Begin Model Instance for {{ model.id }}
+  // Source template: {{ model.instance_template_path }}
+  //
+  {{ model.instance }}
+  //
+  // End Model Instance for {{ model.id }}
+  //
+  {% endfor %} 
+  
+  // Model dependencies
+  {% for coupling in couplings %}
+  //
+  // Begin Component Definitions for {{ coupling.id }}
+  // Source template: {{ coupling.coupling_definitions_template_path }}
+  //
+  {{ coupling.component_definitions }}
+  //
+  // End Component Definitions for {{ coupling.id }}
+  //
+  {% endfor %} 
+
+equation
+  // Connections
+  {% for coupling in couplings %}
+  //
+  // Begin Connect Statements for {{ coupling.id }}
+  // Source template: {{ coupling.connect_statements_template_path }}
+  //
+  {{ coupling.connect_statements }}
+  //
+  // End Connect Statements for {{ coupling.id }}
+  //
+  {% endfor %} 
+
+
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+        coordinateSystem(preserveAspectRatio=false)),
+    experiment(StopTime=172800, __Dymola_Algorithm="Cvode"));
+end BorefieldSystem;
