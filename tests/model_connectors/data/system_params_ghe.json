@@ -77,7 +77,7 @@
     }
   ],
   "district_system": {
-    "fourth_generation": {
+    "fifth_generation": {
       "central_cooling_plant_parameters": {
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
