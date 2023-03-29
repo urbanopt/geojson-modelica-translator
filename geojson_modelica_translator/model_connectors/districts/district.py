@@ -132,7 +132,10 @@ class District:
 
         # render the full district file
         if 'fifth_generation' in common_template_params['sys_params']['district_system']:
-            final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
+            if common_template_params['sys_params']['ghe_parameters']:
+                final_result = render_template('BorefieldSystem.mot', district_template_params)
+            else:
+                final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
         else:
             final_result = render_template('DistrictEnergySystem.mot', district_template_params)
         with open(self.district_model_filepath, 'w') as f:
