@@ -9,7 +9,10 @@ from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import simple_uuid
+from geojson_modelica_translator.utils import (
+    ModelicaPath, 
+    simple_uuid
+)
 
 
 class Borefield(PlantBase):
@@ -31,9 +34,9 @@ class Borefield(PlantBase):
 
         template_data = {
             "gfunction": {
-                "gfunction_file_path": self.system_parameters.get_param(
+                "gfunction_file_path": str(self.system_parameters.get_param(
                     "$.ghe_parameters.placeholder.gfunction_file_path"  
-                ),
+                )),
                 "gfunction_file_rows": self.system_parameters.get_param(
                     "$.ghe_parameters.placeholder.gfunction_file_rows"
                 ),
@@ -70,22 +73,22 @@ class Borefield(PlantBase):
                 "borehole_height": self.system_parameters.get_param(
                     "$.ghe_parameters.borehole.length"
                 ),
-                "borehole_radius": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.radius"
+                "borehole_diameter": self.system_parameters.get_param(
+                    "$.ghe_parameters.borehole.diameter"
                 ),
                 "borehole_buried_depth": self.system_parameters.get_param(
                     "$.ghe_parameters.borehole.buried_depth"
                 ),
                 "number_of_boreholes": self.system_parameters.get_param(
-                    "$.ghe_parameters.placeholder.number_of_boreholes"
+                    "$.ghe_parameters.design.number_of_boreholes"
                 ),
             },
             "tube": {
-                "outer_radius": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.outer_radius"
+                "outer_diameter": self.system_parameters.get_param(
+                    "$.ghe_parameters.pipe.outer_diameter"
                 ),
-                "inner_radius": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.inner_radius"
+                "inner_diameter": self.system_parameters.get_param(
+                    "$.ghe_parameters.pipe.inner_diameter"
                 ),
                 "conductivity": self.system_parameters.get_param(
                     "$.ghe_parameters.pipe.conductivity"
@@ -101,19 +104,28 @@ class Borefield(PlantBase):
             template_data["configuration"]["nominal_mass_flow_per_borehole"] = template_data["configuration"]["nominal_mass_flow_per_borehole"]/template_data["configuration"]["number_of_boreholes"]
 
         # process tube thickness
-        template_data["tube"]["thickness"] = template_data["tube"]["outer_radius"]-template_data["tube"]["inner_radius"]
+        if template_data["tube"]["outer_diameter"] and template_data["tube"]["inner_diameter"]:
+            template_data["tube"]["thickness"] = (template_data["tube"]["outer_diameter"]-template_data["tube"]["inner_diameter"])/2
+        else:
+            template_data["tube"]["thickness"] = None
 
         # process shank spacing
-        template_data["tube"]["shank_spacing"] = template_data["tube"]["shank_spacing"]/2+template_data["tube"]["outer_radius"]
+        if template_data["tube"]["shank_spacing"] and template_data["tube"]["outer_diameter"]:
+            template_data["tube"]["shank_spacing"] = (template_data["tube"]["shank_spacing"]+template_data["tube"]["outer_diameter"])/2
+        else:
+            template_data["tube"]["shank_spacing"] = None
 
         # load templates
         partial_borefield_template = self.template_env.get_template("PartialBorefield.mot")
         oneutube_template = self.template_env.get_template("OneUTube.mot")
         twoutube_template = self.template_env.get_template("TwoUTubes.mot")
 
+        # create borefield package paths
+        b_modelica_path = ModelicaPath(self.borefield_name, scaffold.plants_path.files_dir, True)
+        
         self.run_template(
             partial_borefield_template,
-            os.path.join(scaffold.plants_path.files_dir, "PartialBorefield.mo"),
+            os.path.join(b_modelica_path.files_dir, "PartialBorefield.mo"),
             project_name=scaffold.project_name,
             model_name=self.borefield_name,
             ghe_data=template_data
@@ -129,7 +141,7 @@ class Borefield(PlantBase):
         
         self.run_template(
             plant_template,
-            os.path.join(scaffold.plants_path.files_dir, "Borefield.mo"),
+            os.path.join(b_modelica_path.files_dir, "Borefield.mo"),
             project_name=scaffold.project_name,
             model_name=self.borefield_name,
             ghe_data=template_data
@@ -139,6 +151,16 @@ class Borefield(PlantBase):
         self.copy_required_mo_files(
             dest_folder=scaffold.plants_path.files_dir,
             within=f'{scaffold.project_name}.Plants')
+        
+        # Borefield_ package
+        subpackage_models = ['Borefield'] + ['PartialBorefield']
+        borefield_package = PackageParser.new_from_template(
+            path=b_modelica_path.files_dir, 
+            name=self.borefield_name, 
+            order=subpackage_models,
+            within=f"{scaffold.project_name}.Plants"
+        )
+        borefield_package.save()
 
         # Plants package
         package = PackageParser(scaffold.project_path)
@@ -159,16 +181,6 @@ class Borefield(PlantBase):
                 plants_package.add_model(model_name)
         plants_package.save()
 
-        # Borefield_ package
-        b_modelica_path = os.path.join(scaffold.plants.files_dir, self.borefield_name)
-        subpackage_models = ['Borefield'] + ['PartialBorefield']
-        new_package = PackageParser.new_from_template(
-            path=b_modelica_path, 
-            name=self.borefield_name, 
-            order=subpackage_models,
-            within=f"{scaffold.project_name}.Plants"
-        )
-        new_package.save()
 
     def get_modelica_type(self, scaffold):
         return f'{scaffold.project_name}.Plants.{self.borefield_name}.Borefield', f'{scaffold.project_name}.Plants.{self.borefield_name}.PartialBorefield'
