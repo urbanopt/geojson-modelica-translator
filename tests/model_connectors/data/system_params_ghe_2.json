@@ -174,7 +174,7 @@
     "pipe_location": "Tunnel"
   },
   "district_system": {
-    "fourth_generation": {
+    "fifth_generation": {
       "central_cooling_plant_parameters": {
         "heat_flow_nominal": 7999,
         "cooling_tower_fan_power_nominal": 4999,
@@ -251,8 +251,13 @@
       "flow_rate": 0.2,
       "flow_type": "borehole",
       "max_eft": 35.0,
-      "min_eft": 5.0
+      "min_eft": 5.0,
+	    "number_of_boreholes": 4
     },
+	  "placeholder": {
+	    "gfunction_file_path": "modelica://GHP/Resources/Data/System/SampleGFunction.mat",
+	    "gfunction_file_rows": 76
+	  },
     "ground_loads": [
       0,
       0,
