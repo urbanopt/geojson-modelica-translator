@@ -49,10 +49,10 @@ within {{ project_name }}.Plants.{{ model_name }};
   // General parameters of borefield
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Template borFieDat = (
     final filDat=Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite(
-        {% endraw %}kFil={{ghe_data["grout"]["conductivity"]}},
-        cFil={{ghe_data["grout"]["volumetric_heat_capacity"]}}/dFil,
+        {% endraw %}kFil={{ghe_data["fill"]["conductivity"]}},
+        cFil={{ghe_data["fill"]["volumetric_heat_capacity"]}}/dFil,
         {% raw %}dFil=1450),
-    {% raw %}final soiDat=Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone(
+        final soiDat=Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone(
         {% endraw %}kSoi={{ghe_data["soil"]["conductivity"]}},
         cSoi={{ghe_data["soil"]["volumetric_heat_capacity"]}}/dSoi,
         {% raw %}dSoi=2600),
@@ -62,10 +62,10 @@ within {{ project_name }}.Plants.{{ model_name }};
         {% endraw %}borCon={{ghe_data["configuration"]["borehole_configuration"]}},
         mBor_flow_nominal={{ghe_data["configuration"]["nominal_mass_flow_per_borehole"]}},
         hBor={{ghe_data["configuration"]["borehole_height"]}},
-        rBor={{ghe_data["configuration"]["borehole_radius"]}},
+        rBor={{ghe_data["configuration"]["borehole_diameter"]}}/2,
         dBor={{ghe_data["configuration"]["borehole_buried_depth"]}},
         nBor={{ghe_data["configuration"]["number_of_boreholes"]}},
-        rTub={{ghe_data["tube"]["outer_radius"]}},
+        rTub={{ghe_data["tube"]["outer_diameter"]}}/2,
         kTub={{ghe_data["tube"]["conductivity"]}},
         eTub={{ghe_data["tube"]["thickness"]}},
         xC={{ghe_data["tube"]["shank_spacing"]}}))  
@@ -371,3 +371,4 @@ First implementation.
 </ul>
 </html>"));
 end PartialBorefield;
+{% endraw %}
