@@ -252,11 +252,11 @@
       "flow_type": "borehole",
       "max_eft": 35.0,
       "min_eft": 5.0,
-	    "number_of_boreholes": 4
+	  "number_of_boreholes": 4
     },
-	  "placeholder": {
-	    "gfunction_file_path": "modelica://GHP/Resources/Data/System/SampleGFunction.mat",
-	    "gfunction_file_rows": 76
+	 "placeholder": {
+	   "gfunction_file_path": "modelica://GHP/Resources/Data/System/SampleGFunction.mat",
+	   "gfunction_file_rows": 76
 	  },
     "ground_loads": [
       0,

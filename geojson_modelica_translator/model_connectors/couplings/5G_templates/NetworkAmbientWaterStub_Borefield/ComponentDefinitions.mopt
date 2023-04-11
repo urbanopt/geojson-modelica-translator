@@ -5,12 +5,13 @@
     m_flow={{ coupling.plant.id }}.borFieDat.conDat.mBorFie_flow_nominal,
     T=303.15,
     nPorts=1) "Source" 
-    annotation (Placement(transformation(extent={{-90,0},{-70,20}},rotation=0)));
-  Buildings.Fluid.Sources.Boundary_pT sin_{{ coupling.id }}(
+    {% raw %}annotation (Placement(transformation(extent={{-90,0},{-70,20}},rotation=0)));
+  {% endraw %}Buildings.Fluid.Sources.Boundary_pT sin_{{ coupling.id }}(
     redeclare package Medium = {{ globals.medium_w }},
     use_p_in=false,
     use_T_in=false,
     p=101330,
     T=283.15,
     nPorts=1) "Sink"
-    annotation (Placement(transformation(extent={{80,0},{60,20}}, rotation=0)));
+    {% raw %}annotation (Placement(transformation(extent={{80,0},{60,20}}, rotation=0)));
+  {% endraw %}
