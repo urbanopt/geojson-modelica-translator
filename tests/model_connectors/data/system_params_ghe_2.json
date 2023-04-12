@@ -256,7 +256,7 @@
 	  "number_of_boreholes": 4
     },
 	"placeholder": {
-	  "gfunction_file_path": "modelica://GHP/Resources/Data/System/SampleGFunction.mat",
+	  "gfunction_file_path": "D:/GitHub/geojson-modelica-translator/tests/model_connectors/data/SampleGFunction.mat",
 	  "gfunction_file_rows": 76
 	  },
     "ground_loads": [
