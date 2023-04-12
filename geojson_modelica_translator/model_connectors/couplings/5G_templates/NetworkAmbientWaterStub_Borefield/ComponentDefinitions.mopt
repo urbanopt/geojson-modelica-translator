@@ -1,17 +1,1 @@
-  // Borefield and Ambient Water Component Definitions
-  Buildings.Fluid.Sources.MassFlowSource_T sou_{{ coupling.id }}(
-    redeclare package Medium = {{ globals.medium_w }},
-    use_T_in=false,
-    m_flow={{ coupling.plant.id }}.borFieDat.conDat.mBorFie_flow_nominal,
-    T=303.15,
-    nPorts=1) "Source" 
-    {% raw %}annotation (Placement(transformation(extent={{-90,0},{-70,20}},rotation=0)));
-  {% endraw %}Buildings.Fluid.Sources.Boundary_pT sin_{{ coupling.id }}(
-    redeclare package Medium = {{ globals.medium_w }},
-    use_p_in=false,
-    use_T_in=false,
-    p=101330,
-    T=283.15,
-    nPorts=1) "Sink"
-    {% raw %}annotation (Placement(transformation(extent={{80,0},{60,20}}, rotation=0)));
-  {% endraw %}
+  // No components for borefield and ambient water stub coupling
