@@ -1,5 +1,5 @@
 within {{ district_within_path }};
-model BorefieldSystem "Borefield model with one GHE component."
+model DistrictEnergySystem "Borefield model with one GHE component."
   extends Modelica.Icons.Example;
 
   replaceable package MediumW = Buildings.Media.Water constrainedby
@@ -54,4 +54,4 @@ equation
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(StopTime=172800, __Dymola_Algorithm="Cvode"));
-end BorefieldSystem;
+end DistrictEnergySystem;

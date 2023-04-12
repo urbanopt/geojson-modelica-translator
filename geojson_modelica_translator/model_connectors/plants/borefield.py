@@ -34,9 +34,9 @@ class Borefield(PlantBase):
 
         template_data = {
             "gfunction": {
-                "gfunction_file_path": str(self.system_parameters.get_param(
+                "gfunction_file_path": self.system_parameters.get_param(
                     "$.ghe_parameters.placeholder.gfunction_file_path"  
-                )),
+                ),
                 "gfunction_file_rows": self.system_parameters.get_param(
                     "$.ghe_parameters.placeholder.gfunction_file_rows"
                 ),
@@ -98,7 +98,7 @@ class Borefield(PlantBase):
                 ),
             },
         }
-
+        
         # process nominal mass flow rate
         if template_data["configuration"]["flow_type"] == "system":
             template_data["configuration"]["nominal_mass_flow_per_borehole"] = template_data["configuration"]["nominal_mass_flow_per_borehole"]/template_data["configuration"]["number_of_boreholes"]
@@ -116,29 +116,24 @@ class Borefield(PlantBase):
             template_data["tube"]["shank_spacing"] = None
 
         # load templates
-        partial_borefield_template = self.template_env.get_template("PartialBorefield.mot")
-        oneutube_template = self.template_env.get_template("OneUTube.mot")
-        twoutube_template = self.template_env.get_template("TwoUTubes.mot")
+        oneutube_template = self.template_env.get_template("BorefieldOneUTube.mot")
+        twoutube_template = self.template_env.get_template("BorefieldTwoUTubes.mot")
 
         # create borefield package paths
         b_modelica_path = ModelicaPath(self.borefield_name, scaffold.plants_path.files_dir, True)
         
-        self.run_template(
-            partial_borefield_template,
-            os.path.join(b_modelica_path.files_dir, "PartialBorefield.mo"),
-            project_name=scaffold.project_name,
-            model_name=self.borefield_name,
-            ghe_data=template_data
-        )
-
         if template_data["configuration"]["borehole_configuration"] == "singleutube":
             plant_template = oneutube_template
+            template_data["configuration"]["borehole_configuration"] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.SingleUTube"
+            template_data["configuration"]["borehole_type"] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube"
         elif template_data["configuration"]["borehole_configuration"] == "doubleutube":
             plant_template = twoutube_template
+            template_data["configuration"]["borehole_configuration"] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeSeries"
+            template_data["configuration"]["borehole_type"] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube"
         else:
             raise ValueError(
                 f"The type of geothermal heat exchanger pipe arrangement is not supported.")
-        
+      
         self.run_template(
             plant_template,
             os.path.join(b_modelica_path.files_dir, "Borefield.mo"),
@@ -153,7 +148,7 @@ class Borefield(PlantBase):
             within=f'{scaffold.project_name}.Plants')
         
         # Borefield_ package
-        subpackage_models = ['Borefield'] + ['PartialBorefield']
+        subpackage_models = ['Borefield']
         borefield_package = PackageParser.new_from_template(
             path=b_modelica_path.files_dir, 
             name=self.borefield_name, 
@@ -183,4 +178,4 @@ class Borefield(PlantBase):
 
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.{self.borefield_name}.Borefield', f'{scaffold.project_name}.Plants.{self.borefield_name}.PartialBorefield'
+        return f'{scaffold.project_name}.Plants.{self.borefield_name}.Borefield'
