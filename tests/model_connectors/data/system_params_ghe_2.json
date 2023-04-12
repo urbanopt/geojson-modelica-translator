@@ -232,6 +232,7 @@
       "arrangement": "singleutube"
     },
     "borehole": {
+	  "length": 100,
       "buried_depth": 2.0,
       "diameter": 0.15
     },
@@ -254,9 +255,9 @@
       "min_eft": 5.0,
 	  "number_of_boreholes": 4
     },
-	 "placeholder": {
-	   "gfunction_file_path": "modelica://GHP/Resources/Data/System/SampleGFunction.mat",
-	   "gfunction_file_rows": 76
+	"placeholder": {
+	  "gfunction_file_path": "modelica://GHP/Resources/Data/System/SampleGFunction.mat",
+	  "gfunction_file_rows": 76
 	  },
     "ground_loads": [
       0,
