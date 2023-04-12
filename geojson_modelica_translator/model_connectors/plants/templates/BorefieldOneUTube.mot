@@ -1,5 +1,5 @@
 within {{ project_name }}.Plants.{{ model_name }};
-{% raw %}partial model PartialBorefield
+{% raw %}model Borefield
   "Borefield model using single U-tube borehole heat exchanger configuration.Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow"
 
   extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
@@ -116,7 +116,7 @@ within {{ project_name }}.Plants.{{ model_name }};
     "Ground temperature response"
     annotation (Placement(transformation(extent={{20,70},{40,90}})));
 
-  replaceable Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.BaseClasses.PartialBorehole borHol constrainedby
+  replaceable Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube borHol constrainedby
     Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.BaseClasses.PartialBorehole(
     redeclare final package Medium = Medium,
     final borFieDat=borFieDat,
@@ -369,5 +369,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end PartialBorefield;
+end Borefield;
 {% endraw %}
