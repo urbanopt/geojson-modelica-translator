@@ -76,6 +76,11 @@
       }
     }
   ],
+  "connectors": {
+    "pipe_diameter": 12,
+    "pipe_insulation_rvalue": 5,
+    "pipe_location": "Tunnel"
+  },
   "district_system": {
     "fourth_generation": {
       "central_cooling_plant_parameters": {
@@ -111,11 +116,6 @@
     }
   },
   "ghe_parameters": {
-    "connectors": {
-      "pipe_diameter": 12,
-      "pipe_insulation_rvalue": 5,
-      "pipe_location": "Tunnel"
-    },
     "soil": {
       "conductivity": 2.0,
       "rho_cp": 2343493,
