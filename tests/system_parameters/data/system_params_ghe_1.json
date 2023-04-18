@@ -227,7 +227,7 @@
       "outer_diameter": 0.0266,
       "shank_spacing": 0.0323,
       "roughness": 1e-06,
-      "conductivity": -1,
+      "conductivity": 0.4,
       "rho_cp": 1542000,
       "arrangement": "singleutube"
     },

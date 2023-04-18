@@ -60,20 +60,14 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
-    def test_validate_system_parameters_ghe(self):
-        filename = self.data_dir / 'system_params_ghe.json'
+    def test_validate_system_parameters_ghe_1(self):
+        filename = self.data_dir / 'system_params_ghe_1.json'
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
         self.assertEqual([], sdp.validate())
 
-    def test_validate_system_parameters_ghe_2(self):
+    def test_error_system_parameters_ghe_2(self):
         filename = self.data_dir / 'system_params_ghe_2.json'
-        sdp = SystemParameters(filename)
-        self.assertIsNotNone(sdp)
-        self.assertEqual([], sdp.validate())
-
-    def test_error_system_parameters_ghe_3(self):
-        filename = self.data_dir / 'system_params_ghe_3.json'
         with self.assertRaises(Exception) as exc:
             SystemParameters(filename)
         self.assertRegex(str(exc.exception), "Invalid system parameter file.*")
