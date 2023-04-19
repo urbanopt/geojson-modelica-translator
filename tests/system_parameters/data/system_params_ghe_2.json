@@ -232,7 +232,7 @@
       "arrangement": "singleutube"
     },
     "borehole": {
-	  "length": 100,
+      "length": 100,
       "buried_depth": 2.0,
       "diameter": 0.15
     },
@@ -253,12 +253,12 @@
       "flow_type": "borehole",
       "max_eft": 35.0,
       "min_eft": 5.0,
-	  "number_of_boreholes": 4
+      "number_of_boreholes": 4
     },
-	"placeholder": {
-	  "gfunction_file_path": "D:/GitHub/geojson-modelica-translator/tests/model_connectors/data/SampleGFunction.mat",
-	  "gfunction_file_rows": 76
-	  },
+    "placeholder": {
+      "gfunction_file_path": "D:/GitHub/geojson-modelica-translator/tests/model_connectors/data/SampleGFunction.mat",
+      "gfunction_file_rows": 76
+    },
     "ground_loads": [
       0,
       0,

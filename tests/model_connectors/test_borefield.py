@@ -15,11 +15,11 @@ from geojson_modelica_translator.model_connectors.couplings.graph import (
 from geojson_modelica_translator.model_connectors.districts.district import (
     District
 )
-from geojson_modelica_translator.model_connectors.plants.borefield import (
-    Borefield
-)
 from geojson_modelica_translator.model_connectors.networks.network_ambient_water_stub import (
     NetworkAmbientWaterStub
+)
+from geojson_modelica_translator.model_connectors.plants.borefield import (
+    Borefield
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters

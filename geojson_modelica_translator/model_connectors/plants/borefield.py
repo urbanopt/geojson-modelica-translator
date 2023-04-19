@@ -2,17 +2,13 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import os
-import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
 from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import (
-    ModelicaPath, 
-    simple_uuid
-)
+from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 
 class Borefield(PlantBase):
@@ -35,7 +31,7 @@ class Borefield(PlantBase):
         template_data = {
             "gfunction": {
                 "gfunction_file_path": self.system_parameters.get_param(
-                    "$.ghe_parameters.placeholder.gfunction_file_path"  
+                    "$.ghe_parameters.placeholder.gfunction_file_path"
                 ),
                 "gfunction_file_rows": self.system_parameters.get_param(
                     "$.ghe_parameters.placeholder.gfunction_file_rows"
@@ -98,20 +94,20 @@ class Borefield(PlantBase):
                 ),
             },
         }
-        
+
         # process nominal mass flow rate
         if template_data["configuration"]["flow_type"] == "system":
-            template_data["configuration"]["nominal_mass_flow_per_borehole"] = template_data["configuration"]["nominal_mass_flow_per_borehole"]/template_data["configuration"]["number_of_boreholes"]
+            template_data["configuration"]["nominal_mass_flow_per_borehole"] = template_data["configuration"]["nominal_mass_flow_per_borehole"] / template_data["configuration"]["number_of_boreholes"]
 
         # process tube thickness
         if template_data["tube"]["outer_diameter"] and template_data["tube"]["inner_diameter"]:
-            template_data["tube"]["thickness"] = (template_data["tube"]["outer_diameter"]-template_data["tube"]["inner_diameter"])/2
+            template_data["tube"]["thickness"] = (template_data["tube"]["outer_diameter"] - template_data["tube"]["inner_diameter"]) / 2
         else:
             template_data["tube"]["thickness"] = None
 
         # process shank spacing
         if template_data["tube"]["shank_spacing"] and template_data["tube"]["outer_diameter"]:
-            template_data["tube"]["shank_spacing"] = (template_data["tube"]["shank_spacing"]+template_data["tube"]["outer_diameter"])/2
+            template_data["tube"]["shank_spacing"] = (template_data["tube"]["shank_spacing"] + template_data["tube"]["outer_diameter"]) / 2
         else:
             template_data["tube"]["shank_spacing"] = None
 
@@ -121,7 +117,7 @@ class Borefield(PlantBase):
 
         # create borefield package paths
         b_modelica_path = ModelicaPath(self.borefield_name, scaffold.plants_path.files_dir, True)
-        
+
         if template_data["configuration"]["borehole_configuration"] == "singleutube":
             plant_template = oneutube_template
             template_data["configuration"]["borehole_configuration"] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.SingleUTube"
@@ -131,9 +127,8 @@ class Borefield(PlantBase):
             template_data["configuration"]["borehole_configuration"] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeSeries"
             template_data["configuration"]["borehole_type"] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube"
         else:
-            raise ValueError(
-                f"The type of geothermal heat exchanger pipe arrangement is not supported.")
-      
+            raise ValueError("The type of geothermal heat exchanger pipe arrangement is not supported.")
+
         self.run_template(
             plant_template,
             os.path.join(b_modelica_path.files_dir, "Borefield.mo"),
@@ -146,12 +141,12 @@ class Borefield(PlantBase):
         self.copy_required_mo_files(
             dest_folder=scaffold.plants_path.files_dir,
             within=f'{scaffold.project_name}.Plants')
-        
+
         # Borefield_ package
         subpackage_models = ['Borefield']
         borefield_package = PackageParser.new_from_template(
-            path=b_modelica_path.files_dir, 
-            name=self.borefield_name, 
+            path=b_modelica_path.files_dir,
+            name=self.borefield_name,
             order=subpackage_models,
             within=f"{scaffold.project_name}.Plants"
         )
@@ -175,7 +170,6 @@ class Borefield(PlantBase):
             for model_name in package_models:
                 plants_package.add_model(model_name)
         plants_package.save()
-
 
     def get_modelica_type(self, scaffold):
         return f'{scaffold.project_name}.Plants.{self.borefield_name}.Borefield'

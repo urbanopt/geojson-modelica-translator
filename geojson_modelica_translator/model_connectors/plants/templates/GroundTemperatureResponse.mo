@@ -1,40 +1,50 @@
 within geojson_modelica_translator.model_connectors.templates;
-model GroundTemperatureResponse "Model calculating discrete load aggregation"
-  parameter Modelica.Units.SI.Time tLoaAgg(final min=Modelica.Constants.eps)=
-    3600 "Time resolution of load aggregation";
-  parameter Integer nCel(min=1)=5 "Number of cells per aggregation level";
-  parameter Boolean forceGFunCalc = false
+model GroundTemperatureResponse
+  "Model calculating discrete load aggregation"
+  parameter Modelica.Units.SI.Time tLoaAgg(
+    final min=Modelica.Constants.eps)=3600
+    "Time resolution of load aggregation";
+  parameter Integer nCel(
+    min=1)=5
+    "Number of cells per aggregation level";
+  parameter Boolean forceGFunCalc=false
     "Set to true to force the thermal response to be calculated at the start instead of checking whether it has been pre-computed";
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Template borFieDat
-    "Record containing all the parameters of the borefield model" annotation (
-     choicesAllMatching=true, Placement(transformation(extent={{-80,-80},{-60,-60}})));
-
-  parameter String gFunFilNam = Modelica.Utilities.Files.loadResource("modelica://GHP/Resources/Data/System/SampleGFunction.mat")
+    "Record containing all the parameters of the borefield model"
+    annotation (choicesAllMatching=true,Placement(transformation(extent={{-80,-80},{-60,-60}})));
+  parameter String gFunFilNam=Modelica.Utilities.Files.loadResource(
+    "modelica://GHP/Resources/Data/System/SampleGFunction.mat")
     "File name of g-function data file in MAT format";
-  parameter Integer nTimTot = 76
+  parameter Integer nTimTot=76
     "Total length of g-function vector";
-
-  Modelica.Blocks.Interfaces.RealOutput delTBor(unit="K")
+  Modelica.Blocks.Interfaces.RealOutput delTBor(
+    unit="K")
     "Temperature difference current borehole wall temperature minus initial borehole wall temperature"
-    annotation (Placement(transformation(extent={{100,-14},{126,12}}),
-        iconTransformation(extent={{100,-10},{120,10}})));
-  Modelica.Blocks.Interfaces.RealInput QBor_flow(unit="W")
+    annotation (Placement(transformation(extent={{100,-14},{126,12}}),iconTransformation(extent={{100,-10},{120,10}})));
+  Modelica.Blocks.Interfaces.RealInput QBor_flow(
+    unit="W")
     "Heat flow from all boreholes combined (positive if heat from fluid into soil)"
-    annotation (Placement(transformation(extent={{-120,-10},{-100,10}}),
-        iconTransformation(extent={{-120,-10},{-100,10}})));
-
+    annotation (Placement(transformation(extent={{-120,-10},{-100,10}}),iconTransformation(extent={{-120,-10},{-100,10}})));
 protected
-  constant Integer nSegMax = 1500 "Max total number of segments in g-function calculation";
-  final parameter Integer nSeg = integer(if 12*borFieDat.conDat.nBor<nSegMax then 12 else floor(nSegMax/borFieDat.conDat.nBor))
+  constant Integer nSegMax=1500
+    "Max total number of segments in g-function calculation";
+  final parameter Integer nSeg=integer(
+    if 12*borFieDat.conDat.nBor < nSegMax then
+      12
+    else
+      floor(
+        nSegMax/borFieDat.conDat.nBor))
     "Number of segments per borehole for g-function calculation";
   //constant Integer nTimSho = 20 "Number of time steps in short time region";
   //constant Integer nTimLon = 56 "Number of time steps in long time region";
-  constant Real ttsMax = exp(5) "Maximum non-dimensional time for g-function calculation";
+  constant Real ttsMax=exp(
+    5)
+    "Maximum non-dimensional time for g-function calculation";
   //constant Integer nTimTot = nTimSho+nTimLon
   //  "Total length of g-function vector";
-  constant Real lvlBas = 2 "Base for exponential cell growth between levels";
-
-/*
+  constant Real lvlBas=2
+    "Base for exponential cell growth between levels";
+  /*
   parameter String SHAgfun=
     Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.ThermalResponseFactors.shaGFunction(
       nBor=borFieDat.conDat.nBor,
@@ -47,78 +57,76 @@ protected
       nTimSho=nTimSho,
       nTimLon=nTimLon,
       ttsMax=ttsMax) "String with encrypted g-function arguments";
-*/
-
-  parameter Modelica.Units.SI.Time timFin=(borFieDat.conDat.hBor^2/(9*borFieDat.soiDat.aSoi))
-      *ttsMax "Final time for g-function calculation";
-  parameter Integer i(min=1)=
-    Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.countAggregationCells(
-      lvlBas=lvlBas,
-      nCel=nCel,
-      timFin=timFin,
-      tLoaAgg=tLoaAgg)
-      "Number of aggregation cells";
-  final parameter Real[nTimTot,2] timSer(each fixed=false)
+*/parameter Modelica.Units.SI.Time timFin=(borFieDat.conDat.hBor^2/(9*borFieDat.soiDat.aSoi))*ttsMax
+    "Final time for g-function calculation";
+  parameter Integer i(
+    min=1)=Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.countAggregationCells(
+    lvlBas=lvlBas,
+    nCel=nCel,
+    timFin=timFin,
+    tLoaAgg=tLoaAgg)
+    "Number of aggregation cells";
+  final parameter Real[nTimTot,2] timSer(
+    each fixed=false)
     "g-function input from matrix, with the second column as temperature Tstep";
-  final parameter Modelica.Units.SI.Time t_start(fixed=false)
+  final parameter Modelica.Units.SI.Time t_start(
+    fixed=false)
     "Simulation start time";
-  final parameter Modelica.Units.SI.Time[i] nu(each fixed=false)
+  final parameter Modelica.Units.SI.Time[i] nu(
+    each fixed=false)
     "Time vector for load aggregation";
-  final parameter Real[i] kappa(each fixed=false)
+  final parameter Real[i] kappa(
+    each fixed=false)
     "Weight factor for each aggregation cell";
-  final parameter Real[i] rCel(each fixed=false) "Cell widths";
-
+  final parameter Real[i] rCel(
+    each fixed=false)
+    "Cell widths";
   discrete Modelica.Units.SI.HeatFlowRate[i] QAgg_flow
     "Vector of aggregated loads";
   discrete Modelica.Units.SI.HeatFlowRate[i] QAggShi_flow
     "Shifted vector of aggregated loads";
-  discrete Integer curCel "Current occupied cell";
-
+  discrete Integer curCel
+    "Current occupied cell";
   discrete Modelica.Units.SI.TemperatureDifference delTBor0
     "Previous time step's temperature difference current borehole wall temperature minus initial borehole temperature";
-  discrete Real derDelTBor0(unit="K/s")
+  discrete Real derDelTBor0(
+    unit="K/s")
     "Derivative of wall temperature change from previous time steps";
-  final parameter Real dTStepdt(fixed=false)
+  final parameter Real dTStepdt(
+    fixed=false)
     "Time derivative of g/(2*pi*H*Nb*ks) within most recent cell";
-
-  Modelica.Units.SI.Heat U "Accumulated heat flow from all boreholes";
+  Modelica.Units.SI.Heat U
+    "Accumulated heat flow from all boreholes";
   discrete Modelica.Units.SI.Heat U_old
     "Accumulated heat flow from all boreholes at last aggregation step";
-
 initial equation
-  QAgg_flow = zeros(i);
-  curCel = 1;
-  delTBor = 0;
-  QAggShi_flow = QAgg_flow;
-  delTBor0 = 0;
-  U = 0;
-  U_old = 0;
-  derDelTBor0 = 0;
-
-  (nu,rCel) = Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.aggregationCellTimes(
+  QAgg_flow=zeros(
+    i);
+  curCel=1;
+  delTBor=0;
+  QAggShi_flow=QAgg_flow;
+  delTBor0=0;
+  U=0;
+  U_old=0;
+  derDelTBor0=0;
+  (nu,rCel)=Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.aggregationCellTimes(
     i=i,
     lvlBas=lvlBas,
     nCel=nCel,
     tLoaAgg=tLoaAgg,
     timFin=timFin);
-
-  t_start = time;
-
-  kappa = Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.aggregationWeightingFactors(
+  t_start=time;
+  kappa=Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.aggregationWeightingFactors(
     i=i,
     nTimTot=nTimTot,
     TStep=timSer,
     nu=nu);
-
-  dTStepdt = kappa[1]/tLoaAgg;
-
-
-  timSer = Modelica.Utilities.Streams.readRealMatrix(
+  dTStepdt=kappa[1]/tLoaAgg;
+  timSer=Modelica.Utilities.Streams.readRealMatrix(
     fileName=gFunFilNam,
     matrixName="TStep",
     nrow=nTimTot,
     ncol=2);
-
 /*
   timSer =
     Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.temperatureResponseMatrix(
@@ -136,39 +144,44 @@ initial equation
       ttsMax=ttsMax,
       sha=SHAgfun,
       forceGFunCalc=forceGFunCalc);
-*/
-
-equation
-  der(delTBor) = dTStepdt*QBor_flow + derDelTBor0;
-  der(U) = QBor_flow;
-
-  when sample(t_start, tLoaAgg) then
+*/equation
+  der(
+    delTBor)=dTStepdt*QBor_flow+derDelTBor0;
+  der(
+    U)=QBor_flow;
+  when sample(
+    t_start,
+    tLoaAgg) then
     // Assign average load since last aggregation step to the first cell of the
     // aggregation vector
-    U_old = U;
-
+    U_old=U;
     // Store (U - pre(U_old))/tLoaAgg in QAgg_flow[1], and pre(QAggShi_flow) in the other elements
-    QAgg_flow = cat(1, {(U - pre(U_old))/tLoaAgg}, pre(QAggShi_flow[2:end]));
+    QAgg_flow=cat(
+      1,
+      {(U-pre(U_old))/tLoaAgg},
+      pre(
+        QAggShi_flow[2:end]));
     // Shift loads in aggregation cells
-    (curCel,QAggShi_flow) = Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.shiftAggregationCells(
+    (curCel,QAggShi_flow)=Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.shiftAggregationCells(
       i=i,
       QAgg_flow=QAgg_flow,
       rCel=rCel,
       nu=nu,
-      curTim=(time - t_start));
-
+      curTim=(time-t_start));
     // Determine the temperature change at the next aggregation step (assuming
     // no loads until then)
-    delTBor0 = Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.temporalSuperposition(
+    delTBor0=Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.temporalSuperposition(
       i=i,
       QAgg_flow=QAggShi_flow,
       kappa=kappa,
       curCel=curCel);
-
-    derDelTBor0 = (delTBor0-delTBor)/tLoaAgg;
+    derDelTBor0=(delTBor0-delTBor)/tLoaAgg;
   end when;
-
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+  annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false),
+      graphics={
         Rectangle(
           extent={{-100,100},{100,-100}},
           lineColor={0,0,0},
@@ -187,7 +200,9 @@ equation
         Line(
           points={{-66,-4},{72,-4}},
           color={255,0,0},
-          arrow={Arrow.None,Arrow.Filled}),
+          arrow={
+            Arrow.None,
+            Arrow.Filled}),
         Rectangle(
           extent={{-100,30},{-94,-100}},
           lineColor={0,0,0},
@@ -198,10 +213,12 @@ equation
           textColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={0,127,255},
-            textString="%name")}),
-  Diagram(
-        coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
+          textString="%name")}),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Documentation(
+      info="<html>
 <p>
 This model calculates the ground temperature response to obtain the temperature
 at the borehole wall in a geothermal system where heat is being injected into or
@@ -348,7 +365,8 @@ Ph.D. Thesis, &Eacute;cole Polytechnique de Montr&eacute;al.
 <p>
 Claesson, J. and Javed, S. 2012. <i>A load-aggregation method to calculate extraction temperatures of borehole heat exchangers</i>. ASHRAE Transactions 118(1): 530-539.
 </p>
-</html>", revisions="<html>
+</html>",
+      revisions="<html>
 <ul>
 <li>
 August 30, 2018, by Michael Wetter:<br/>
