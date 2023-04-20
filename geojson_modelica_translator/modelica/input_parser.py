@@ -36,15 +36,18 @@ class PackageParser(object):
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
     @classmethod
-    def new_from_template(cls, path, name, order, within=None):
-        """
-        Create new package data based on the package.mo template. If within is not specified, then it is
+    def new_from_template(cls, path: str, name: str, order: list[str], within: str = None):
+        """Create new package data based on the package.mo template. If within is not specified, then it is
         assumed that this is a top level package and will load from the package_base template.
 
-        :param path: string, the path where the resulting files will be saved to.
-        :param name: string, the name of the model
-        :param order: list, ordered list of which models will be loaded (saved to package.order)
-        :param within: string, (optional), name where this package is within.
+        Args:
+            path (str): the path where the resulting package file and order will be saved to.
+            name (str): the name of the model
+            order (list[str]): ordered list of which models will be loaded (saved to package.order)
+            within (str, optional): name where this package is within.. Defaults to None.
+
+        Returns:
+            PackageParser: object of the package parser
         """
         klass = PackageParser(path)
         if within:

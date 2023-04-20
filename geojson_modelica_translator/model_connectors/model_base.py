@@ -114,7 +114,9 @@ class ModelBase(object):
         """
         file_data = template.render(**kwargs)
 
-        Path(save_file_name).parent.mkdir(parents=True, exist_ok=True)
+        if not isinstance(save_file_name, Path):
+            save_file_name = Path(save_file_name)
+        save_file_name.parent.mkdir(parents=True, exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
 
