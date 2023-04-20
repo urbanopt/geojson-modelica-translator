@@ -73,7 +73,12 @@ Follow the instructions below in order to configure your local environment:
 * Return to the GMT root directory and run :code:`poetry install`
 * Test if everything is installed correctly by running :code:`poetry run pytest -m 'not compilation and not simulation'`. This will run all the unit and integration tests.
 * Follow the instructions below to install pre-commit.
-* To test pre-commit and building the documentation, you can run :code:`poetry run tox`
+* To test pre-commit and building the documentation, you can run
+
+.. code-block::
+
+    poetry install
+    poetry run pytest -m 'not compilation and not simulation' --doctest-modules -v --cov-report term-missing --cov .
 
 The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
 of Modelica models that are created and persisted into the :code:`tests/output` folder and the
