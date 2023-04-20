@@ -36,7 +36,7 @@ class PackageParser(object):
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
     @classmethod
-    def new_from_template(cls, path: str, name: str, order: list[str], within: str = None):
+    def new_from_template(cls, path, name: str, order: list[str], within: str = None):
         """Create new package data based on the package.mo template. If within is not specified, then it is
         assumed that this is a top level package and will load from the package_base template.
 
