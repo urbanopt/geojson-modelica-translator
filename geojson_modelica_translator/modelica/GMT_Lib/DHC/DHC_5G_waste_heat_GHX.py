@@ -43,7 +43,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             shutil.copy(building_load_file, scaffold.districts_path.resources_dir)
 
             # 2: add the path to the param data with Modelica friendly path names
-            template_data['building_load_files'].append(f"modelica://{project_name}/{scaffold.districts_path.resources_relative_dir}/{Path(building_load_file).name}")
+            template_data['building_load_files'].append(f"modelica://{project_name}/{scaffold.districts_path.resources_relative_dir}/{Path(building_load_file).name}")  # type: ignore
 
         # 3: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),

@@ -2,6 +2,8 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import os
+from pathlib import Path
+from typing import Union
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -36,7 +38,7 @@ class PackageParser(object):
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
     @classmethod
-    def new_from_template(cls, path, name: str, order: list[str], within: str = None):
+    def new_from_template(cls, path: Union[str, Path], name: str, order: list[str], within: str = None) -> "PackageParser":
         """Create new package data based on the package.mo template. If within is not specified, then it is
         assumed that this is a top level package and will load from the package_base template.
 
