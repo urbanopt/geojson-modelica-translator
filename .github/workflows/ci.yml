@@ -25,10 +25,13 @@ jobs:
         python-version: ["3.9", "3.11"]
         test_env: [python, docs, mypy]
         mbl_branch: [maint_9.1.x]
-        include:
-          - os: ubuntu-latest
-            test_env: python
-            mbl_branch: maint_9.1.x
+        exclude:
+          # only test mypy on linux for all versions of python
+          - os: windows-latest
+            test_env: mypy
+          # only test docs on linux for all versions of python
+          - os: windows-latest
+            test_env: docs
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
