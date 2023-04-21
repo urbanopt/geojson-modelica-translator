@@ -6,11 +6,12 @@ import logging
 import os
 from copy import deepcopy
 from pathlib import Path
+from typing import Union
 
 import pandas as pd
 import requests
 from jsonpath_ng.ext import parse
-from jsonschema.validators import _LATEST_VERSION as LatestValidator
+from jsonschema.validators import Draft202012Validator as LatestValidator
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -180,7 +181,7 @@ class SystemParameters(object):
 
         return results
 
-    def download_weatherfile(self, filename, save_directory: str) -> str:
+    def download_weatherfile(self, filename, save_directory: str) -> Union[str, Path]:
         """Download the MOS or EPW weather file from energyplus.net
 
         This routine downloads the weather file, either an MOS or EPW, which is selected based
