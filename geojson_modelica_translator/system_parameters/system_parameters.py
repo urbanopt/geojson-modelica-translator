@@ -46,13 +46,13 @@ class SystemParameters(object):
         # load the schema for validation
         schema = Path(__file__).parent / "schema.json"
         self.schema = json.loads(schema.read_text())
-        self.data = {}
+        self.param_template = {}
         self.filename = filename
 
         if self.filename:
             if Path(self.filename).is_file():
                 with open(self.filename, "r") as f:
-                    self.data = json.load(f)
+                    self.param_template = json.load(f)
             else:
                 raise Exception(f"System design parameters file does not exist: {self.filename}")
 
@@ -62,7 +62,6 @@ class SystemParameters(object):
 
             self.resolve_paths()
 
-        self.param_template = {}
         self.sys_param_filename = None
 
     @classmethod
@@ -74,7 +73,7 @@ class SystemParameters(object):
         :return: object, SystemParameters
         """
         sp = cls()
-        sp.data = d
+        sp.param_template = d
 
         if validate_on_load:
             errors = sp.validate()
@@ -85,16 +84,16 @@ class SystemParameters(object):
 
     def resolve_paths(self):
         """Resolve the paths in the file to be absolute if they were defined as relative. This method uses
-        the JSONPath (with ext) to find if the value exists in the self.data object. If so, it then uses
+        the JSONPath (with ext) to find if the value exists in the self.param_template object. If so, it then uses
         the set_param which navigates the JSON tree to set the value as needed."""
         filepath = Path(self.filename).parent.resolve()
 
         for pe in self.PATH_ELEMENTS:
-            matches = parse(pe["json_path"]).find(self.data)
+            matches = parse(pe["json_path"]).find(self.param_template)
             for index, match in enumerate(matches):
                 # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
                 new_path = Path(filepath) / match.value
-                parse(str(match.full_path)).update(self.data, new_path.as_posix())
+                parse(str(match.full_path)).update(self.param_template, new_path.as_posix())
 
     # def resolve_defaults(self):
     #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
@@ -126,7 +125,7 @@ class SystemParameters(object):
             return None
 
         # If this is the first entry into the method, then set the data to the
-        data = data or self.data
+        data = data or self.param_template
         matches = parse(jsonpath).find(data)
 
         default_value = default
@@ -161,7 +160,7 @@ class SystemParameters(object):
         :return: variant, the value from the data
         """
 
-        for b in self.data.get("buildings", []):
+        for b in self.param_template.get("buildings", []):
             if b.get("geojson_id", None) == building_id:
                 return self.get_param(jsonpath, data=b)
         else:
@@ -176,7 +175,7 @@ class SystemParameters(object):
         """
         results = []
         v = LatestValidator(self.schema)
-        for error in sorted(v.iter_errors(self.data), key=str):
+        for error in sorted(v.iter_errors(self.param_template), key=str):
             results.append(error.message)
 
         return results
@@ -826,7 +825,7 @@ class SystemParameters(object):
             raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
                              "Perhaps you haven't run REopt post-processing step in the UO sdk?")
 
-        # save
+        # save the file to disk
         self.save()
 
     def save(self):
