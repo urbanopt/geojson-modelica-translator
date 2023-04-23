@@ -37,15 +37,31 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         package.add_model('Districts')
 
         # create the district package with the template_data from above
+        files_to_copy = []
 
         # 1: grab all of the time series files and place them in the proper location
-        for building_load_file in self.system_parameters.get_param("$.buildings[?load_model=time_series].load_model_parameters.time_series.filepath"):
-            shutil.copy(building_load_file, scaffold.districts_path.resources_dir)
+        for building in self.system_parameters.get_param("$.buildings[?load_model=time_series]"):
+            building_load_file = Path(building['load_model_parameters']['time_series']['filepath'])
 
-            # 2: add the path to the param data with Modelica friendly path names
-            template_data['building_load_files'].append(f"modelica://{project_name}/{scaffold.districts_path.resources_relative_dir}/{Path(building_load_file).name}")  # type: ignore
+            files_to_copy.append({
+                "orig_file": building_load_file,
+                "geojson_id": building['geojson_id'],
+                "save_path": f"{scaffold.districts_path.resources_dir}/{building['geojson_id']}",
+                "save_filename": building_load_file.name
+            })
 
-        # 3: generate the modelica files from the template
+        # 2: Copy the files to the appropriate location and ensure uniqueness by putting into a unique directory
+        #    (since openstudio creates all files with modelica.mos)
+        for file_to_copy in files_to_copy:
+            # create the path if it doesn't exist
+            Path(file_to_copy['save_path']).mkdir(parents=True, exist_ok=True)
+            shutil.copy(file_to_copy['orig_file'], f"{file_to_copy['save_path']}/{file_to_copy['save_filename']}")
+
+            # 3: add the path to the param data with Modelica friendly path names
+            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"
+            template_data['building_load_files'].append(f"modelica://{rel_path_name}")  # type: ignore
+
+        # 4: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),
                          model_name='DHC_5G_waste_heat_GHX',
                          param_data=template_data,
