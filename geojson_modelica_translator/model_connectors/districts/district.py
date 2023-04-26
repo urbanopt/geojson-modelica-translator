@@ -85,10 +85,11 @@ class District:
             },
             'graph': self._coupling_graph,
             'sys_params': {
-                'district_system': self.system_parameters.get_param('$.district_system'),
-                'ghe_parameters': self.system_parameters.get_param('$.ghe_parameters')
+                'district_system': self.system_parameters.get_param('$.district_system')
             }
         }
+        if self.system_parameters.get_param('$.ghe_parameters'):
+            district_template_params['is_ghe_district'] = self.system_parameters.get_param('$.ghe_parameters')
 
         # render each coupling
         for coupling in self._coupling_graph.couplings:
@@ -133,10 +134,7 @@ class District:
 
         # render the full district file
         if 'fifth_generation' in common_template_params['sys_params']['district_system']:
-            if common_template_params['sys_params']['ghe_parameters']:
-                final_result = render_template('BorefieldSystem.mot', district_template_params)
-            else:
-                final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
+            final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
         else:
             final_result = render_template('DistrictEnergySystem.mot', district_template_params)
         with open(self.district_model_filepath, 'w') as f:
