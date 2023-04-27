@@ -80,7 +80,7 @@ class ModelicaRunner(object):
         new_run_path = Path(run_path)
 
         # Modelica can't handle spaces in project name or path
-        if (len(str(new_run_path).split()) > 1) or (len(str(new_run_path).split()) > 1):
+        if (len(str(new_run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
             raise SystemExit(
                 f"\nModelica does not support spaces in project names or paths. "
                 f"You used '{new_run_path}' for run path and {file_to_run} for model project name. "
@@ -94,14 +94,14 @@ class ModelicaRunner(object):
         shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
         os.chmod(new_spawn_docker, 0o775)
 
-    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str, Path], action: str, compiler: str = 'optimica') -> int:
+    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str, Path], action: str, compiler: str = 'openmodelica') -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
             run_path (Path): name of the file or directory to simulate
             file_to_run (str): location where the Modelica simulatio or compilation will start
             action (str):  action to run either compile_and_run, compile, or run
-            compiler (str, optional): compiler to use, choose from 'optimica' and 'openmodelica'. Defaults to 'optimica'.
+            compiler (str, optional): compiler to use, choose from 'optimica' and 'openmodelica'. Defaults to 'openmodelica'.
 
         Raises:
             SystemExit: Invalid action, should be of type compile_and_run, compile, or run
