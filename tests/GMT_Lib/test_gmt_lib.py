@@ -10,6 +10,9 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Lines.Lines import (
     DistributionLines
 )
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Loads.capacitor import (
+    Capacitor
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
     CommunityPV
 )
@@ -209,6 +212,20 @@ def test_simulate_distribution_lines():
     # Did the simulation run?
     assert success is True
 
+
+def test_build_capacitor():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Capacitor'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    cap = Capacitor(sys_params)
+    cap.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Capacitor0.mo') > 20
 
 # Keeping the code below because it may come back and this was a weird issue.
 # @pytest.mark.simulation
