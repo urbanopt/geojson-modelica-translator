@@ -108,12 +108,12 @@ class FmuRunner():
 
         return var_metadata
 
-    def _get_sim_options(self) -> List[dict]:
+    def _get_sim_options(self) -> tuple[dict, dict]:
         """render the sim options as needed for the .fmu.simulate command. This returns a list, the
         first element are the options to flatten/pass to the call, and the second are the sim options
 
         Returns:
-            List[dict, dict]: named_args, sim_options
+            tuple[dict, dict]: named_args, sim_options
         """
         # first determine the simulate methods' named options
         named_args = {}
@@ -128,13 +128,6 @@ class FmuRunner():
         sim_options['CVode_options']['rtol'] = 1e-6
         sim_options['initialize'] = True
         return named_args, sim_options
-
-    def advance(self) -> dict:
-        """Advances the test case model simulation forward one step.
-
-        Returns:
-            dict: Contains the measurement data at the end of the step.
-        """
 
     def run(self):
         """Run the FMU from start to stop with step interval"""

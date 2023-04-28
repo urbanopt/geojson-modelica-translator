@@ -5,7 +5,6 @@ import logging
 import os
 import shutil
 import subprocess
-from ast import Str
 from glob import glob
 from pathlib import Path
 from typing import Union
@@ -49,7 +48,7 @@ class ModelicaRunner(object):
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
-    def _verify_docker_run_capability(self, file_to_run):
+    def _verify_docker_run_capability(self, file_to_run: Union[str, Path]):
         if not self.docker_configured:
             raise SystemExit('Docker not configured on host computer, unable to run')
 
@@ -59,23 +58,34 @@ class ModelicaRunner(object):
         if not os.path.isfile(file_to_run):
             raise SystemExit(f'Expecting to run a file, not a folder in {file_to_run}')
 
-    def _verify_run_path_for_docker(self, run_path: Str, file_to_run: Str) -> Path:
-        """if there is no run_path, then run it in the same directory as the
+    def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path]) -> Path:
+        """If there is no run_path, then run it in the same directory as the
         file being run. This works fine for simple Modelica projects but typically
         the run_path needs to be a few levels higher in order to include other
         project dependencies (e.g., multiple mo files).
+
+        Args:
+            run_path (str): directory of where to run the simulation
+            file_to_run (str): the name of the file to run. This should be the fully
+                               qualified path to the file.
+
+        Raises:
+            SystemExit: Throw an exception if the run_path or file_to_run has spaces in it
+
+        Returns:
+            Path: Return the run_path as a Path object
         """
         if not run_path:
             run_path = os.path.dirname(file_to_run)
-        run_path = Path(run_path)
+        new_run_path = Path(run_path)
 
         # Modelica can't handle spaces in project name or path
-        if (len(str(run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
+        if (len(str(new_run_path).split()) > 1) or (len(str(file_to_run).split()) > 1):
             raise SystemExit(
                 f"\nModelica does not support spaces in project names or paths. "
-                f"You used '{run_path}' for run path and {file_to_run} for model project name. "
+                f"You used '{new_run_path}' for run path and {file_to_run} for model project name. "
                 "Please update your directory path or model name to not include spaces anywhere.")
-        return run_path
+        return new_run_path
 
     def _copy_over_docker_resources(self, run_path: Path) -> None:
         """Copy over ipython and jmodelica needed to run the simulation
@@ -84,14 +94,21 @@ class ModelicaRunner(object):
         shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
         os.chmod(new_spawn_docker, 0o775)
 
-    def _subprocess_call_to_docker(self, run_path: Path, file_to_run: Str, action: Str, compiler: Str = 'optimica') -> int:
+    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str, Path], action: str, compiler: str = 'openmodelica') -> int:
         """Call out to a subprocess to run the command in docker
 
-        :param file_to_run: string, name of the file or directory to simulate
-        :param run_path: string, location where the Modelica simulatio or compilation will start
-        :param action: string, action to run either compile_and_run, compile, or run
-        :param compiler: string, compiler to use
-        :returns: int, exit code of the subprocess
+        Args:
+            run_path (Path): name of the file or directory to simulate
+            file_to_run (str): location where the Modelica simulatio or compilation will start
+            action (str):  action to run either compile_and_run, compile, or run
+            compiler (str, optional): compiler to use, choose from 'optimica' and 'openmodelica'. Defaults to 'openmodelica'.
+
+        Raises:
+            SystemExit: Invalid action, should be of type compile_and_run, compile, or run
+            SystemExit: Invaild compiler, should be of type optimica or openmodelica
+
+        Returns:
+            int: exit code of the subprocess
         """
         action_log_map = {
             'compile_and_run': 'Compiling mo file and running FMU',
@@ -102,7 +119,7 @@ class ModelicaRunner(object):
         if action not in action_log_map:
             raise SystemExit(f'Invalid action {action}, must be one of {list(action_log_map.keys())}')
 
-        valid_compilers = ['optimica']  # , 'jmodelica', 'openmodelica'
+        valid_compilers = ['optimica', 'openmodelica']  # 'jmodelica',
         if compiler not in valid_compilers:
             raise SystemExit(
                 f'Invalid compiler {compiler} in _subprocess_call_to_docker, needs to be one of {valid_compilers}'
@@ -123,7 +140,7 @@ class ModelicaRunner(object):
             exec_call = ['./spawn_docker.sh', action, run_model, run_path, compiler]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
-                exec_call,
+                exec_call,  # type: ignore
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
                 cwd=run_path
@@ -137,93 +154,100 @@ class ModelicaRunner(object):
 
         return exitcode
 
-    def run_in_docker(self, file_to_run: Str, run_path: Str = None, project_name: Str = None) -> Union[bool, str]:
-        """
-        Run the Modelica project in a docker-based environment. Results are saved into the path of the
+    def run_in_docker(self, file_to_run: Union[str, Path], run_path: Union[str, Path, None] = None, project_name: Union[str, None] = None) -> tuple[bool, Union[str, Path]]:
+        """ Run the Modelica project in a docker-based environment. Results are saved into the path of the
         file that was selected to run.
 
         stdout.log will store both stdout and stderr of the simulations
 
-        :param file_to_run: string, name of the file (could be directory?) to simulate
-        :param run_path: string, location where the Modelica simulation will start
-        :param project_name: string, name of the project being simulated. Will be used to determine name of results directory
-        :returns: tuple(bool, str), success status and path to the results directory
+        Args:
+            file_to_run (str, Path): name of the file (could be directory?) to simulate
+            run_path (str, optional): location where the Modelica simulation will start. Defaults to None.
+            project_name (str, optional): name of the project being simulated. Will be used to determine name
+                                          of results directory. Defaults to None.
+
+        Returns:
+            tuple[bool, str]: success status and path to the results directory
         """
         self._verify_docker_run_capability(file_to_run)
-        run_path = self._verify_run_path_for_docker(run_path, file_to_run)
+        verified_run_path = self._verify_run_path_for_docker(run_path, file_to_run)
 
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        self._copy_over_docker_resources(run_path)
+        self._copy_over_docker_resources(verified_run_path)
 
-        exitcode = self._subprocess_call_to_docker(run_path, file_to_run, 'compile_and_run')
+        exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'compile_and_run')
 
         logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
-        self._cleanup_path(run_path)
+        self._cleanup_path(verified_run_path)
 
         logger.debug('moving results to results directory')
         # get the location of the results path
-        results_path = Path(run_path / f'{project_name}_results')
-        self.move_results(run_path, results_path, project_name)
+        results_path = Path(verified_run_path / f'{project_name}_results')
+        self.move_results(verified_run_path, results_path, project_name)
         return (exitcode == 0, results_path)
 
-    def compile_in_docker(self, file_to_run: Str, save_path: Str = None) -> bool:
+    def compile_in_docker(self, file_to_run: str, save_path: Union[str, Path, None] = None) -> bool:
         """Build/compile the Modelica project in a docker-based environment using JModelica. The resulting
         FMU is saved to the save_path.
 
         stdout.log will store both stdout and stderr of the simulations
 
-        :param file_to_run: string, name of the file (could be directory?) to simulate
-        :param run_psave_pathath: string, location where the Modelica FMU will be saved
-        :returns: bool, success status
+        Args:
+            file_to_run (str):  name of the file (could be directory?) to simulate
+            save_path (str, optional): location where the Modelica FMU will be saved. Defaults to None.
+
+        Returns:
+            bool: success status
         """
         self._verify_docker_run_capability(file_to_run)
-        save_path = self._verify_run_path_for_docker(save_path, file_to_run)
+        verified_save_path = self._verify_run_path_for_docker(save_path, file_to_run)
 
-        self._copy_over_docker_resources(save_path)
+        self._copy_over_docker_resources(verified_save_path)
 
-        exitcode = self._subprocess_call_to_docker(save_path, file_to_run, 'compile')
+        exitcode = self._subprocess_call_to_docker(verified_save_path, file_to_run, 'compile')
 
         # Cleanup all of the temporary files that get created
         logger.debug('removing temporary files')
-        self._cleanup_path(save_path)
+        self._cleanup_path(verified_save_path)
 
         logger.debug('moving results to results directory')
         return exitcode == 0
 
-    def run_fmu_in_docker(self, file_to_run: Str, run_path: Str = None):
+    def run_fmu_in_docker(self, file_to_run: str, run_path: Union[str, None] = None) -> tuple[bool, Union[str, Path]]:
         """Run the FMU in a docker-based environment. Results are saved into the path of the
         file that was selected to run.
 
         stdout.log will store both stdout and stderr of the simulations
 
-        :param file_to_run: string, name of the file (could be directory?) to simulate
-        :param run_path: string, location where the Modelica simulation will start
-        :param project_name: string, name of the project being simulated. Will be used to determine name of results
-                                     directory
-        :return: tuple(bool, str), success status and path to the results directory
+        Args:
+            file_to_run (str): name of the file (could be directory?) to simulate
+            run_path (str, optional): location where the Modelica simulation will start. Defaults to None.
+
+        Returns:
+            tuple[bool, str]: success status and path to the results directory
         """
         self._verify_docker_run_capability(file_to_run)
-        run_path = self._verify_run_path_for_docker(run_path, file_to_run)
+        verified_run_path = self._verify_run_path_for_docker(run_path, file_to_run)
         project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        self._copy_over_docker_resources(run_path)
+        self._copy_over_docker_resources(verified_run_path)
 
-        exitcode = self._subprocess_call_to_docker(run_path, file_to_run, 'run')
+        exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'run')
 
         logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
-        self._cleanup_path(run_path)
+        self._cleanup_path(verified_run_path)
 
         logger.debug('moving results to results directory')
         # get the location of the results path
-        results_path = Path(run_path / f'{project_name}_results')
-        self.move_results(run_path, results_path, project_name)
+        results_path = Path(verified_run_path / f'{project_name}_results')
+        self.move_results(verified_run_path, results_path, project_name)
         return (exitcode == 0, results_path)
 
-    def move_results(self, from_path: Path, to_path: Path, project_name: Str = None) -> None:
+    def move_results(self, from_path: Path, to_path: Path, project_name: str = None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.
