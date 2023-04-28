@@ -53,13 +53,13 @@ class TestCaseBase(GMTTestCase):
         """
         mr = ModelicaRunner()
         run_path = Path(project_path).parent.resolve()
-        success, results_path = mr.compile_in_docker(file_to_run, save_path=run_path)
+        success = mr.compile_in_docker(file_to_run, save_path=run_path)
         # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
         # Look at the stdout.log if this is non-zero.
         self.assertTrue(success)
 
         # make sure that the results log exist
-        self.assertTrue((Path(results_path) / 'stdout.log').exists())
+        self.assertTrue((Path(run_path) / 'stdout.log').exists())
 
     def run_and_assert_in_docker(self, file_to_run: str, project_path: Path, project_name: str):
         """Run the test in docker.
