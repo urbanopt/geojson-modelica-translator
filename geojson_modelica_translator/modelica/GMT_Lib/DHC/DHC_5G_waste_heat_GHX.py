@@ -63,7 +63,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             with open(save_filename, 'r') as file:
                 file_data = file.read()
 
-                # check if the peak cooling load is zero, otherwise just skip
+                # check if the peak water heating load is zero, otherwise just skip
                 if file_data.find('Peak water heating load = 0 Watts') == -1:
                     continue
 
