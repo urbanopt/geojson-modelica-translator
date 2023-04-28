@@ -73,7 +73,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 if match:
                     peak_swh = float(match.group(1)) / 10
                 # set min to 5000 regardless of what heating load is
-                peak_swh = min(peak_swh, 5000)
+                peak_swh = max(peak_swh, 5000)
 
                 # find the peak heating load
                 file_data.find('Peak Water Heating Load')
