@@ -1,0 +1,39 @@
+within{{project_name}}.ACDCConverter;
+model {{data['model_name']}}
+  "Isolated converter template model for GMT level 1 testing"
+  parameter Real conversionFactor(min = Modelica.Constants.eps) = {{data["Ratio of RMS voltage on low side/high side"]}}
+    "Ratio of DC voltage / AC RMS voltage";
+  parameter Real eta(min=0, max=1) ={{data["Converter efficiency"]}}
+    "Converter efficiency";
+extends Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACDCConverter(
+  conversion(
+  conversionFactor=conversionFactor,
+  eta=eta)
+  );
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the transformer template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACDCConverter.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACDCConverter.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+
+end {{data['model_name']}};
