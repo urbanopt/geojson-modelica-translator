@@ -69,9 +69,9 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
 
                 heat_peak_re = r'Peak space heating load = ([\d.-]+) Watts'
                 match = re.search(heat_peak_re, file_data)
-                peak_swh = 5000.0
+                peak_swh = 5000
                 if match:
-                    peak_swh = float(match.group(1)) / 10
+                    peak_swh = int(float(match.group(1)) / 10)
                 # set min to 5000 regardless of what heating load is
                 peak_swh = max(peak_swh, 5000)
 
@@ -79,7 +79,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 file_data.find('Peak Water Heating Load')
                 file_data = file_data.replace(
                     "#Peak water heating load = 0 Watts",
-                    f"#Peak water heating load = {peak_swh:.1f} Watts"
+                    f"#Peak water heating load = {peak_swh} Watts"
                 )
 
             # save the results back to the file
