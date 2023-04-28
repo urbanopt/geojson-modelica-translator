@@ -45,4 +45,4 @@ def test_5G_des_waste_heat_and_ghx():
     # Test to make sure that a zero SWH peak is set to a minimum value.
     # Otherwise, Modelica will error out.
     with open(package_output_dir / package_name / 'Resources' / 'Data' / 'Districts' / '8' / 'B11.mos', 'r') as f:
-        assert '#Peak water heating load = 7714.5 Watts' in f.read()
+        assert '#Peak water heating load = 7714 Watts' in f.read()
