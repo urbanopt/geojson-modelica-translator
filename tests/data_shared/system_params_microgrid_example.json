@@ -302,7 +302,14 @@
       "number_of_machines": 1
     }
   ],
-  "capacitor_banks": [],
+  "capacitor_banks": [
+    {
+      "nominal_capacity": 289
+    },
+    {
+      "nominal_capacity": 288
+    }
+  ],
   "substations": [
     {
       "RMS_voltage_low_side": 13200.0
