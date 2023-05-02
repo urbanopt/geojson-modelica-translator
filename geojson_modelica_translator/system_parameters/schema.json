@@ -102,6 +102,13 @@
             "$ref": "#/definitions/combined_heat_and_power_parameters"
           }
         },
+        "ghe_systems": {
+          "description": "Ground Heat Exchanger systems",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ghe_parameters"
+          }
+        },
         "capacitor_banks": {
           "description": "Capacitor banks associated with the district",
           "type": "array",
@@ -156,43 +163,6 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/battery_bank_parameters"
-          }
-        },
-        "ghe_parameters": {
-          "description": "Parameters associated with Ground Heat Exchangers.",
-          "type": "object",
-          "properties": {
-            "version": {
-              "description": "Version of GHE Designer",
-              "type": "string"
-            },
-            "soil": {
-              "$ref": "#/definitions/soil_def"
-            },
-            "pipe": {
-              "$ref": "#/definitions/pipe_def"
-            },
-            "borehole": {
-              "$ref": "#/definitions/borehole_def"
-            },
-            "fluid": {
-              "$ref": "#/definitions/fluid_def"
-            },
-            "grout": {
-              "$ref": "#/definitions/grout_def"
-            },
-            "simulation": {
-              "$ref": "#/definitions/simulation_def"
-            },
-            "geometric_constraints": {
-              "$ref": "#/definitions/geometric_constraints_def"
-            },
-            "design": {
-              "$ref": "#/definitions/design_def"
-            },
-            "ground_loads": {
-              "$ref": "#/definitions/ground_loads_def"
-            }
           }
         }
       },
@@ -969,6 +939,43 @@
         }
       }
     },
+    "ghe_parameters": {
+      "description": "Parameters associated with Ground Heat Exchangers.",
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "Version of GHE Designer",
+          "type": "string"
+        },
+        "soil": {
+          "$ref": "#/definitions/soil_def"
+        },
+        "pipe": {
+          "$ref": "#/definitions/pipe_def"
+        },
+        "borehole": {
+          "$ref": "#/definitions/borehole_def"
+        },
+        "fluid": {
+          "$ref": "#/definitions/fluid_def"
+        },
+        "grout": {
+          "$ref": "#/definitions/grout_def"
+        },
+        "simulation": {
+          "$ref": "#/definitions/simulation_def"
+        },
+        "geometric_constraints": {
+          "$ref": "#/definitions/geometric_constraints_def"
+        },
+        "design": {
+          "$ref": "#/definitions/design_def"
+        },
+        "ground_loads": {
+          "$ref": "#/definitions/ground_loads_def"
+        }
+      }
+    },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
       "type": "object",
@@ -1240,6 +1247,9 @@
             },
             "combined_heat_and_power_parameters": {
               "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "ghe_parameters": {
+              "$ref": "#/definitions/ghe_parameters"
             },
             "connected_buildings": {
               "items": [
