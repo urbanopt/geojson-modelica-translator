@@ -73,7 +73,8 @@ class District:
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
             "diagram": diagram,
             "couplings": [],
-            "models": []
+            "models": [],
+            "is_ghe_district": self.system_parameters.get_param('$.ghe_parameters')
         }
         common_template_params = {
             'globals': {

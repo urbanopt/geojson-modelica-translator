@@ -52,7 +52,7 @@ class SystemParametersTest(unittest.TestCase):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.assertEqual(
-            sdp.data["buildings"][1]["load_model_parameters"]["rc"]["order"], 2
+            sdp.param_template["buildings"][1]["load_model_parameters"]["rc"]["order"], 2
         )
 
     def test_load_system_parameters_2(self):
