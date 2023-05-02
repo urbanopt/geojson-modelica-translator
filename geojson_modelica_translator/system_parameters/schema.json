@@ -102,13 +102,6 @@
             "$ref": "#/definitions/combined_heat_and_power_parameters"
           }
         },
-        "ghe_systems": {
-          "description": "Ground Heat Exchanger systems",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ghe_parameters"
-          }
-        },
         "capacitor_banks": {
           "description": "Capacitor banks associated with the district",
           "type": "array",
