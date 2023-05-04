@@ -94,7 +94,8 @@ class ModelicaRunner(object):
         shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
         os.chmod(new_spawn_docker, 0o775)
 
-    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str, Path], action: str, compiler: str = 'openmodelica') -> int:
+    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str,
+                                   Path], action: str, compiler: str = 'openmodelica') -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
@@ -154,7 +155,8 @@ class ModelicaRunner(object):
 
         return exitcode
 
-    def run_in_docker(self, file_to_run: Union[str, Path], run_path: Union[str, Path, None] = None, project_name: Union[str, None] = None) -> tuple[bool, Union[str, Path]]:
+    def run_in_docker(self, file_to_run: Union[str, Path], run_path: Union[str, Path, None]
+                      = None, project_name: Union[str, None] = None) -> tuple[bool, Union[str, Path]]:
         """ Run the Modelica project in a docker-based environment. Results are saved into the path of the
         file that was selected to run.
 

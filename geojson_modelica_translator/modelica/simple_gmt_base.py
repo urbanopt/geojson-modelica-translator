@@ -55,5 +55,10 @@ class SimpleGMTBase(ModelBase):
         # include package.mo and package.order files if requested.
         # TODO: This will need to be updated to support multiple models in the "order".
         if generate_package:
-            package = PackageParser.new_from_template(str(output_dir), output_dir.stem, order=[save_file_name.stem], within=output_dir.parent.stem)
+            package = PackageParser.new_from_template(
+                str(output_dir),
+                output_dir.stem,
+                order=[save_file_name.stem],
+                within=output_dir.parent.stem
+            )
             package.save()
