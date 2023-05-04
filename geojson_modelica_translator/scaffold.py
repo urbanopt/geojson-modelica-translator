@@ -48,15 +48,34 @@ class Scaffold(object):
             else:
                 shutil.rmtree(self.project_path)
 
-    def create(self):
-        """run the scaffolding"""
+    def create(self, ignore_paths=[]):
+        """run the scaffolding to create the directory structure for DES systems
+
+        Args:
+            ignore_paths (list, optional): List of paths NOT to create. Choose from Loads, Substations, Plants, Districts, Networks. Defaults to [].
+        """
+        # initialize all of path objects
+        self.loads_path = None
+        self.substations_path = None
+        self.plants_path = None
+        self.districts_path = None
+        self.networks_path = None
 
         # leverage the ModelicaPath function
-        self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
-        self.substations_path = ModelicaPath("Substations", root_dir=self.project_path, overwrite=self.overwrite)
-        self.plants_path = ModelicaPath("Plants", root_dir=self.project_path, overwrite=self.overwrite)
-        self.districts_path = ModelicaPath("Districts", root_dir=self.project_path, overwrite=self.overwrite)
-        self.networks_path = ModelicaPath("Networks", root_dir=self.project_path, overwrite=self.overwrite)
+        if 'Loads' not in ignore_paths:
+            self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
+
+        if 'Substations' not in ignore_paths:
+            self.substations_path = ModelicaPath("Substations", root_dir=self.project_path, overwrite=self.overwrite)
+
+        if 'Plants' not in ignore_paths:
+            self.plants_path = ModelicaPath("Plants", root_dir=self.project_path, overwrite=self.overwrite)
+
+        if 'Districts' not in ignore_paths:
+            self.districts_path = ModelicaPath("Districts", root_dir=self.project_path, overwrite=self.overwrite)
+
+        if 'Networks' not in ignore_paths:
+            self.networks_path = ModelicaPath("Networks", root_dir=self.project_path, overwrite=self.overwrite)
 
     def clear_or_create_path(self, path, overwrite=False):
         if os.path.exists(path):

@@ -4,6 +4,7 @@
 import logging
 import shutil
 from pathlib import Path
+from typing import Union
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
@@ -24,7 +25,7 @@ class ModelBase(object):
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
     # model_name must be overridden in subclass
-    model_name = None
+    model_name: Union[str, None] = None
 
     def __init__(self, system_parameters, template_dir):
         """
@@ -114,7 +115,9 @@ class ModelBase(object):
         """
         file_data = template.render(**kwargs)
 
-        Path(save_file_name).parent.mkdir(parents=True, exist_ok=True)
+        if not isinstance(save_file_name, Path):
+            save_file_name = Path(save_file_name)
+        save_file_name.parent.mkdir(parents=True, exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
 

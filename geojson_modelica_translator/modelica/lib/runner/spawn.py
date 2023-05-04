@@ -79,7 +79,7 @@ if __name__ == "__main__":
     logger.info(f'args: {args}')
 
     if args.action == 'help':
-        print(parser.print_help())
+        print(parser.print_help())  # type: ignore
 
     fmu_name = None
     if args.action == 'compile' or args.action == 'compile_and_run':

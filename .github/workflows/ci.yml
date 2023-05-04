@@ -22,34 +22,33 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.11"]
-        test_env: [python, docs]
+        python-version: ["3.9", "3.11"]
+        test_env: [python, docs, mypy]
         mbl_branch: [maint_9.1.x]
-        include:
-          - os: ubuntu-latest
-            test_env: python
-            mbl_branch: maint_9.1.x
+        exclude:
+          # only test mypy on linux for all versions of python
+          - os: windows-latest
+            test_env: mypy
+          # only test docs on linux for all versions of python
+          - os: windows-latest
+            test_env: docs
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      -
-        name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      -
-        name: Display system info
+      - name: Display system info
         run: |
           python -c "import sys; print(sys.version)"
           docker --version
           docker-compose --version
-      -
-        name: Install and configure Poetry
+      - name: Install and configure Poetry
         uses: abatilo/actions-poetry@v2
         with:
-          poetry-version: 1.4.1
-      -
-        name: Install dependencies with Poetry
+          poetry-version: 1.4.2
+      - name: Install dependencies with Poetry
         run: |
           poetry --version
           poetry install
@@ -62,8 +61,7 @@ jobs:
       #     mkdir -p /home/runner/modelon
       #     echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
       #     echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
-      -
-        name: Install modelicafmt
+      - name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
           curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.2/modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz"
@@ -74,8 +72,7 @@ jobs:
           else
             mv modelicafmt '/c/Program Files/'
           fi
-      -
-        name: Install MBL
+      - name: Install MBL
         env:
           MATRIX_OS: ${{ matrix.os }}
           MBL_BRANCH: ${{ matrix.mbl_branch }}
@@ -99,8 +96,7 @@ jobs:
       #   run: |
       #     cd geojson_modelica_translator/modelica/lib/runner
       #     docker-compose build
-      -
-        name: Run PyTest
+      - name: Run pytest
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           # MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
@@ -113,22 +109,25 @@ jobs:
         uses: pre-commit/action@v3.0.0
         with:
           extra_args: --all-files
+      - name: Run mypy
+        run: |
+          if [ '${{ matrix.test_env }}' == 'mypy' ]; then
+            poetry run mypy --install-types --non-interactive --show-error-codes .
+          fi
       - name: Build docs
         run: |
           if [ '${{ matrix.test_env }}' == 'docs' ]; then
             cd docs
             poetry run make html
           fi
-      -
-        name: Coveralls
+      - name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'maint_9.1.x' }}
         run: |
           poetry run coveralls
-      -
-        name: Job Failed
+      - name: Job Failed
         if: ${{ failure() }}
         run: |
           echo "Maybe these logs will help?"

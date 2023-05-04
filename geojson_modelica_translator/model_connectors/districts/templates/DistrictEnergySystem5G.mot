@@ -4,6 +4,7 @@ model DistrictEnergySystem
   // District Parameters
   package MediumW=Buildings.Media.Water
     "Source side medium";
+  {% if not is_ghe_district %}
   package MediumA=Buildings.Media.Air
     "Load side medium";
   // TODO: dehardcode these
@@ -20,6 +21,7 @@ model DistrictEnergySystem
     epsPla=0.935,
     final mCon_flow_nominal={18})
     "Design data";
+  {% endif %}
   // Models
   {% for model in models %}
   //
