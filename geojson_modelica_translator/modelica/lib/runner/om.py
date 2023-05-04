@@ -67,7 +67,7 @@ if __name__ == "__main__":
     logger.info(f'args: {args}')
 
     if args.action == 'help':
-        print(parser.print_help())
+        print(parser.print_help())  # type: ignore
 
     fmu_name = None
     if args.action == 'compile' or args.action == 'compile_and_run':
@@ -78,7 +78,7 @@ if __name__ == "__main__":
             if Path(args.model).is_file():
                 model = args.model.replace(os.path.sep, '.')[:-3]
         logger.info(f'Compiling {model}')
-        fmu_name = compile_fmu(model, args.modelica_path)
+        fmu_name = compile_fmu(model)  # , args.modelica_path
 
     if args.action == 'run' or args.action == 'compile_and_run':
         # Run the FMU either that is passed in or from the previous step
