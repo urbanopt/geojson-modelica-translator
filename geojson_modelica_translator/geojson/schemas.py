@@ -4,7 +4,7 @@
 import json
 import os
 
-from jsonschema.validators import _LATEST_VERSION as LatestValidator
+from jsonschema.validators import Draft202012Validator as LatestValidator
 
 
 class Schemas(object):
