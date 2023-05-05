@@ -1,8 +1,8 @@
-import re
 import shutil
 from pathlib import Path
 
 from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.modelica.modelica_mos_file import ModelicaMOS
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
 
@@ -60,31 +60,14 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             shutil.copy(file_to_copy['orig_file'], save_filename)
 
             # 3: If the file is an MOS file, and it has the Peak water heating load set to zero, then set it to a minimum value
-            with open(save_filename, 'r') as file:
-                file_data = file.read()
+            mos_file = ModelicaMOS(save_filename)
+            peak_water = mos_file.retrieve_header_variable_value('Peak water heating load', cast_type=float)
+            if peak_water == 0:
+                peak_heat = mos_file.retrieve_header_variable_value('Peak space heating load', cast_type=float)
+                peak_swh = max(peak_heat / 10, 5000)
 
-                # check if the peak water heating load is zero, otherwise just skip
-                if file_data.find('Peak water heating load = 0 Watts') == -1:
-                    continue
-
-                heat_peak_re = r'Peak space heating load = ([\d.-]+) Watts'
-                match = re.search(heat_peak_re, file_data)
-                peak_swh = 5000
-                if match:
-                    peak_swh = int(float(match.group(1)) / 10)
-                # set min to 5000 regardless of what heating load is
-                peak_swh = max(peak_swh, 5000)
-
-                # find the peak heating load
-                file_data.find('Peak Water Heating Load')
-                file_data = file_data.replace(
-                    "#Peak water heating load = 0 Watts",
-                    f"#Peak water heating load = {peak_swh} Watts"
-                )
-
-            # save the results back to the file
-            with open(save_filename, 'w') as file:
-                file.write(file_data)
+                mos_file.replace_header_variable_value('Peak water heating load', peak_swh)
+                mos_file.save()
 
             # 4: add the path to the param data with Modelica friendly path names
             rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"
@@ -97,5 +80,5 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                          save_file_name='district.mo',
                          generate_package=True)
 
-        # 4. save the root package.mo
+        # 4: save the root package.mo
         package.save()
