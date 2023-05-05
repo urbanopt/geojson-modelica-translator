@@ -53,6 +53,9 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
 
         # 2: Copy the files to the appropriate location and ensure uniqueness by putting into a unique directory
         #    (since openstudio creates all files with modelica.mos)
+        total_heating_load = 0
+        total_cooling_load = 0
+        total_swh_load = 0
         for file_to_copy in files_to_copy:
             # create the path if it doesn't exist
             Path(file_to_copy['save_path']).mkdir(parents=True, exist_ok=True)
@@ -60,8 +63,12 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             shutil.copy(file_to_copy['orig_file'], save_filename)
 
             # 3: If the file is an MOS file, and it has the Peak water heating load set to zero, then set it to a minimum value
+            #    Also, store the total heating, cooling, and water loads which will be used for sizing.
             mos_file = ModelicaMOS(save_filename)
+            total_heating_load += mos_file.retrieve_header_variable_value('Peak space heating load', cast_type=float)
+            total_cooling_load += mos_file.retrieve_header_variable_value('Peak space cooling load', cast_type=float)
             peak_water = mos_file.retrieve_header_variable_value('Peak water heating load', cast_type=float)
+            total_swh_load += peak_water
             if peak_water == 0:
                 peak_heat = mos_file.retrieve_header_variable_value('Peak space heating load', cast_type=float)
                 peak_swh = max(peak_heat / 10, 5000)
@@ -73,7 +80,16 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"
             template_data['building_load_files'].append(f"modelica://{rel_path_name}")  # type: ignore
 
-        # 5: generate the modelica files from the template
+        # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks
+        #    (assuming 15C delta T and 4.18 Cp (kJ/kgK)). Add 1.5x the peak for oversizing
+        delta_t = 15
+        heating_flow_rate = 1.5 * total_heating_load / (1000 * delta_t * 4.18)
+        cooling_flow_rate = 1.5 * total_cooling_load / (1000 * delta_t * 4.18)
+        swh_flow_rate = 1.5 * total_swh_load / (1000 * delta_t * 4.18)
+
+        template_data['max_flow_rate'] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)
+
+        # 6: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),
                          model_name='DHC_5G_waste_heat_GHX',
                          param_data=template_data,

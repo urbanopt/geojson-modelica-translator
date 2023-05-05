@@ -65,6 +65,15 @@ class ModelicaMOS(object):
             return None
 
     def replace_header_variable_value(self, key: str, new_value: Any) -> bool:
+        """Replace the variable value in the header vars
+
+        Args:
+            key (str): Key of the variable value to replace
+            new_value (Any): new value
+
+        Returns:
+            bool: Always True (for now)
+        """
         key_re = rf'#(\s?{key}\s?)=\s?(-?\b\d[\d,.]*\b)(.*\s)'
 
         # verify that group3 exists, otherwise the key doesn't exist
