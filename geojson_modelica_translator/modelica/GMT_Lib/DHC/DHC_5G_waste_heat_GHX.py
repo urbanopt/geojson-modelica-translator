@@ -87,7 +87,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         cooling_flow_rate = 1.5 * total_cooling_load / (1000 * delta_t * 4.18)
         swh_flow_rate = 1.5 * total_swh_load / (1000 * delta_t * 4.18)
 
-        template_data['max_flow_rate'] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)
+        template_data['max_flow_rate'] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)  # type: ignore
 
         # 6: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),
