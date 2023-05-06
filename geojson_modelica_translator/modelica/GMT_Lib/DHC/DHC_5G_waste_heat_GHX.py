@@ -81,8 +81,8 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             template_data['building_load_files'].append(f"modelica://{rel_path_name}")  # type: ignore
 
         # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
-        #    (assuming 10C delta T and 4.18 Cp (kJ/kgK)). Add 1.5x the peak for oversizing
-        delta_t = 10
+        #    (assuming 5C delta T [since 5G] and 4.18 Cp (kJ/kgK)). Add 1.5x the peak for oversizing
+        delta_t = 5
         heating_flow_rate = 1.5 * total_heating_load / (1000 * delta_t * 4.18)
         cooling_flow_rate = 1.5 * total_cooling_load / (1000 * delta_t * 4.18)
         swh_flow_rate = 1.5 * total_swh_load / (1000 * delta_t * 4.18)
