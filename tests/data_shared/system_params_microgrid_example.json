@@ -252,6 +252,16 @@
     "source_rms_voltage": 480,
     "source_phase_shift": 0.0
   },
+  "ac_inductive_loads": [
+    {
+      "nominal_voltage": 480,
+      "nominal_power_consumption": "variable load"
+    },
+    {
+      "nominal_voltage": 480,
+      "nominal_power_consumption": "constant"
+    }
+  ],
   "photovoltaic_panels": [
     {
       "nominal_voltage": 480,
