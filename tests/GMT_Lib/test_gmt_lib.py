@@ -16,6 +16,9 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
     CommunityPV
 )
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.generators import (
+    Generator
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.wind_turbines import (
     WindTurbine
 )
@@ -244,6 +247,21 @@ def test_build_battery():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'AcBattery0.mo') > 20
+
+
+def test_build_generator():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Generator'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    gen = Generator(sys_params)
+    gen.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Generator0.mo') > 20
 
 # Keeping the code below because it may come back and this was a weird issue.
 # @pytest.mark.simulation
