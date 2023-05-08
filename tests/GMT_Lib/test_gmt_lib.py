@@ -19,6 +19,9 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.generators import (
     Generator
 )
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.grid import (
+    Grid
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.wind_turbines import (
     WindTurbine
 )
@@ -262,6 +265,21 @@ def test_build_generator():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'Generator0.mo') > 20
+
+
+def test_build_grid():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Grid'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    grid = Grid(sys_params)
+    grid.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Grid.mo') > 20
 
 # Keeping the code below because it may come back and this was a weird issue.
 # @pytest.mark.simulation
