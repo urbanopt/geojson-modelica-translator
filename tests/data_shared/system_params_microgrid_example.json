@@ -248,7 +248,9 @@
     }
   },
   "electrical_grid": {
-    "frequency": 60
+    "frequency": 60,
+    "source_rms_voltage": 480,
+    "source_phase_shift": 0.0
   },
   "photovoltaic_panels": [
     {
