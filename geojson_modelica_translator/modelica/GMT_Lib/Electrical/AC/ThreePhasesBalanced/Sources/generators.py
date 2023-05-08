@@ -16,7 +16,7 @@ class Generator(SimpleGMTBase):
             # FIXME: We don't currently support multiple generators per building
             # If multiple generators are attached to one building, only the last one will be used
             for generator_index, generator in enumerate(building_generator_params):
-                building_generator_params = {
+                generator_params = {
                     'source_phase_shift': generator["source_phase_shift"],
                     'nominal_power_generation': generator["nominal_power_generation"],
                     'model_name': f"Generator{building_index}",
@@ -25,6 +25,6 @@ class Generator(SimpleGMTBase):
             self.to_modelica(
                 output_dir=output_dir,
                 model_name='Generator',
-                param_data=building_generator_params,
+                param_data=generator_params,
                 iteration=building_index
             )
