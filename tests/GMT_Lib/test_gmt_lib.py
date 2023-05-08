@@ -13,6 +13,9 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Loads.capacitor import (
     Capacitor
 )
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Loads.inductive import (
+    Inductive_load
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Sources.community_pv import (
     CommunityPV
 )
@@ -280,6 +283,21 @@ def test_build_grid():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'Grid.mo') > 20
+
+
+def test_build_inductive_load():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Inductive'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    inductive = Inductive_load(sys_params)
+    inductive.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Inductive0.mo') > 20
 
 # Keeping the code below because it may come back and this was a weird issue.
 # @pytest.mark.simulation
