@@ -57,7 +57,12 @@
           "net_surface_area": 8.8241
         }
       ],
-      "diesel_generators": [],
+      "diesel_generators": [
+        {
+          "source_phase_shift": 0.0,
+          "nominal_power_generation": 1000.0
+        }
+      ],
       "battery_banks": [],
       "load": {
         "nominal_voltage": 207.84609690826525,
@@ -121,7 +126,16 @@
           "net_surface_area": 8.8241
         }
       ],
-      "diesel_generators": [],
+      "diesel_generators": [
+        {
+          "source_phase_shift": 90.0,
+          "nominal_power_generation": 10000.0
+        },
+        {
+          "source_phase_shift": 90.0,
+          "nominal_power_generation": 15000.0
+        }
+      ],
       "battery_banks": [],
       "load": {
         "nominal_voltage": 207.84609690826525,
@@ -185,7 +199,12 @@
           "net_surface_area": 8.8241
         }
       ],
-      "diesel_generators": [],
+      "diesel_generators": [
+        {
+          "source_phase_shift": 40.0,
+          "nominal_power_generation": 10000.0
+        }
+      ],
       "battery_banks": [],
       "load": {
         "nominal_voltage": 480.0,
