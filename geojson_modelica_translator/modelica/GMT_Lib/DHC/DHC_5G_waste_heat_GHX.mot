@@ -5,10 +5,11 @@ model district
     Buildings.Experimental.DHC.Examples.Combined.BaseClasses.PartialSeries(      redeclare
       Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS
       bui[nBui](final filNam=filNam), datDes(
-      {% endraw %}nBui={{ data['building_load_files'] | count }},{% raw %}
-      mPumDis_flow_nominal=95,
-      mPipDis_flow_nominal=95,
-      dp_length_nominal=250,
+      {% endraw %}nBui={{ data['building_load_files'] | count }},
+      mPumDis_flow_nominal={{ data['max_flow_rate']}},
+      mPipDis_flow_nominal={{ data['max_flow_rate']}},
+      mPla_flow_nominal={{ data['max_flow_rate']}},
+      dp_length_nominal=250,{% raw %}
       epsPla=0.935));
   parameter String filNam[nBui]={
     {% endraw %}{% for building in data['building_load_files'] %}
