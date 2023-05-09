@@ -84,7 +84,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
 
     @pytest.mark.compilation
     def test_compile_in_docker(self):
@@ -107,7 +107,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         # Write out the log to the logger for debugging
         with open(os.path.join(self.run_path, 'stdout.log')) as f:
             logger.info(f.read())
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
         self.assertTrue(os.path.exists(fmu_path))
 
     @pytest.mark.simulation
@@ -122,4 +122,4 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'spawn_docker.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))

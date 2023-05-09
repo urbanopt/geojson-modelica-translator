@@ -42,7 +42,7 @@ class ModelicaRunner(object):
         else:
             self.modelica_lib_path = modelica_lib_path
         local_path = os.path.dirname(os.path.abspath(__file__))
-        self.spawn_docker_path = os.path.join(local_path, 'lib', 'runner', 'spawn_docker.sh')
+        self.spawn_docker_path = os.path.join(local_path, 'lib', 'runner', 'om_docker.sh')
 
         # Verify that docker is up and running
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -138,7 +138,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
-            exec_call = ['./spawn_docker.sh', action, run_model, run_path, compiler]
+            exec_call = ['./om_docker.sh', action, run_model, run_path, compiler]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
@@ -276,7 +276,7 @@ class ModelicaRunner(object):
         """Clean up the files in the path that was presumably used to run the simulation
         """
         remove_files = [
-            'spawn_docker.sh',
+            'om_docker.sh',
         ]
 
         for f in remove_files:
