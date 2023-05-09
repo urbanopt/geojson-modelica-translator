@@ -41,8 +41,8 @@ class ModelicaRunner(object):
             logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
         else:
             self.modelica_lib_path = modelica_lib_path
-        local_path = os.path.dirname(os.path.abspath(__file__))
-        self.spawn_docker_path = os.path.join(local_path, 'lib', 'runner', 'om_docker.sh')
+        # local_path = os.path.dirname(os.path.abspath(__file__))
+        # self.om_docker_path = os.path.join(local_path, 'lib', 'runner', 'om_docker.sh')
 
         # Verify that docker is up and running
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -87,26 +87,23 @@ class ModelicaRunner(object):
                 "Please update your directory path or model name to not include spaces anywhere.")
         return new_run_path
 
-    def _copy_over_docker_resources(self, run_path: Path) -> None:
-        """Copy over ipython and jmodelica needed to run the simulation
-        """
-        new_spawn_docker = os.path.join(run_path, os.path.basename(self.spawn_docker_path))
-        shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
-        os.chmod(new_spawn_docker, 0o775)
+    # def _copy_over_docker_resources(self, run_path: Path) -> None:
+    #     """Copy over ipython and jmodelica needed to run the simulation
+    #     """
+    #     new_spawn_docker = os.path.join(run_path, os.path.basename(self.spawn_docker_path))
+    #     shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
+    #     os.chmod(new_spawn_docker, 0o775)
 
-    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str,
-                                   Path], action: str, compiler: str = 'openmodelica') -> int:
+    def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str, Path], action: str) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
             run_path (Path): name of the file or directory to simulate
             file_to_run (str): location where the Modelica simulatio or compilation will start
             action (str):  action to run either compile_and_run, compile, or run
-            compiler (str, optional): compiler to use, choose from 'optimica' and 'openmodelica'. Defaults to 'openmodelica'.
 
         Raises:
             SystemExit: Invalid action, should be of type compile_and_run, compile, or run
-            SystemExit: Invaild compiler, should be of type optimica or openmodelica
 
         Returns:
             int: exit code of the subprocess
@@ -120,12 +117,6 @@ class ModelicaRunner(object):
         if action not in action_log_map:
             raise SystemExit(f'Invalid action {action}, must be one of {list(action_log_map.keys())}')
 
-        valid_compilers = ['optimica', 'openmodelica']  # 'jmodelica',
-        if compiler not in valid_compilers:
-            raise SystemExit(
-                f'Invalid compiler {compiler} in _subprocess_call_to_docker, needs to be one of {valid_compilers}'
-            )
-
         # Set up the run content
         curdir = os.getcwd()
         os.chdir(run_path)
@@ -138,7 +129,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
-            exec_call = ['./om_docker.sh', action, run_model, run_path, compiler]
+            exec_call = ['./om_docker.sh', action, run_model, run_path]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
@@ -177,7 +168,7 @@ class ModelicaRunner(object):
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        self._copy_over_docker_resources(verified_run_path)
+        # self._copy_over_docker_resources(verified_run_path)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'compile_and_run')
 
@@ -207,7 +198,7 @@ class ModelicaRunner(object):
         self._verify_docker_run_capability(file_to_run)
         verified_save_path = self._verify_run_path_for_docker(save_path, file_to_run)
 
-        self._copy_over_docker_resources(verified_save_path)
+        # self._copy_over_docker_resources(verified_save_path)
 
         exitcode = self._subprocess_call_to_docker(verified_save_path, file_to_run, 'compile')
 
@@ -235,7 +226,7 @@ class ModelicaRunner(object):
         verified_run_path = self._verify_run_path_for_docker(run_path, file_to_run)
         project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        self._copy_over_docker_resources(verified_run_path)
+        # self._copy_over_docker_resources(verified_run_path)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'run')
 
