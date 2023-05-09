@@ -19,13 +19,7 @@ logging.basicConfig(
 
 class ModelicaRunner(object):
     """
-    Class to run Modelica models. This is a very simple implementation of what needs to be
-    a full CLI to run Modelica easily. At the moment, this probably only works on Linux/Mac
-    and perhaps in Windows with Docker.
-    For Ubuntu, here is the installation instruction: https://docs.docker.com/engine/install/ubuntu/
-
-    # TODO: test in windows
-    # Document how to install Docker
+    Class to run Modelica models.
     """
 
     def __init__(self, modelica_lib_path=None):
@@ -129,7 +123,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
-            exec_call = ['./om_docker.sh', action, run_model]
+            exec_call = [self.om_docker_path, action, run_model, run_path]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
