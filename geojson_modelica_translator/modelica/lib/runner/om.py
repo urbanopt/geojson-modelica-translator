@@ -56,6 +56,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('action', help='Action to perform on the model: compile, run, compile_and_run')
     parser.add_argument('model', help='Name(path) of the model to run, if debug, then will use test PID model. Can be an mo file or an FMU')  # noqa
+    parser.add_argument('run_path', help='Path to the model you want to run')
     parser.add_argument('start_time', help='Start time of the simulation.', nargs='?')
     parser.add_argument('end_time', help='End time of the simulation.', nargs='?')
     parser.add_argument('sim_step', help='Time step of the simulation.', nargs='?')
@@ -77,7 +78,7 @@ if __name__ == "__main__":
             model = "Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID"
         else:
             if Path(args.model).is_file():
-                model = args.model.replace(os.path.sep, '.')[:-3]
+                model = (args.run_path / args.model).replace(os.path.sep, '.')[:-3]
         logger.info(f'Compiling {model}')
         fmu_name = compile_fmu(model)
 
