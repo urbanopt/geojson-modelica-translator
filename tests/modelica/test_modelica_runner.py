@@ -50,7 +50,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         finally:
             if prev_mod_path:
                 os.environ['MODELICAPATH'] = prev_mod_path
-        self.assertTrue(os.path.exists(mr.spawn_docker_path))
+        self.assertTrue(os.path.exists(mr.om_docker_path))
 
     def test_docker_enabled(self):
         mr = ModelicaRunner()
