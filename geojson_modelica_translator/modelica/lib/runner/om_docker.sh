@@ -90,5 +90,5 @@ docker run \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
   "cd /mnt/shared/${bas_nam} && \
-  python /mnt/lib/om.py '$1' '$2'"
+  python /mnt/lib/om.py '$1' '$2' '$3'"
 exit $?
