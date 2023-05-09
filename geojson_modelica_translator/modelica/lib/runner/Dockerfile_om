@@ -1,7 +1,0 @@
-# This image is not yet available on Dockerhub
-FROM openmodelica/openmodelica:v1.21.0-minimal
-
-# According to https://github.com/OpenModelica/OpenModelica/discussions/10643#discussioncomment-5788432 minimal doesn't
-# include the simulator. Perhaps we could add it by using `sudo apt install --no-install-recommends omc`, as
-# described in https://openmodelica.org/download/download-linux/, or maybe we build our own image with that command so
-# we ensure we get v1.21
