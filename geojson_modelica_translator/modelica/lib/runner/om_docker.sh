@@ -4,7 +4,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 DOCKER_USERNAME=openmodelica/openmodelica
-IMG_NAME=v1.21.0-minimal
+IMG_NAME=v1.21.0-gui
 
 # Catch signals to kill the container if it is interrupted
 # https://www.shellscript.sh/trap.html

@@ -15,12 +15,12 @@ logging.basicConfig(
 
 
 # FIXME: what about model_path? See the confusion in spawn.py
-def compile_fmu(model_name):
+def compile_fmu(model_name) -> str:
     """Compile a modelica model with OpenModelica.
 
     (Do not rename this function to `compile` as it is reserved in Python.)
 
-    Usage: omc [Options] (Model.mo | Script.mos) [Libraries | .mo-files]
+    CLI Usage: omc [Options] (Model.mo | Script.mos) [Libraries | .mo-files]
              * Libraries: Fully qualified names of libraries to load before processing Model or Script.
              The libraries should be separated by spaces: Lib1 Lib2 ... LibN.
     """
@@ -29,7 +29,8 @@ def compile_fmu(model_name):
     # with a colon. Need to split this back out to space separated paths.
     mbl_path = ' '.join([p for p in f"{os.environ['MODELICAPATH']}/Buildings".split(':')])
     logger.info(f"MBL path is {mbl_path}")
-    cmd = f"omc {model_name} Modelica {mbl_path} "
+    # Call OMC to compile the model, using MSL & MBL libraries
+    cmd = f"omc {model_name} Modelica {mbl_path}"
     logger.info(f"Calling OpenModelica compile with '{cmd}'")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
@@ -39,9 +40,10 @@ def compile_fmu(model_name):
     return f"{model_name}.fmu"
 
 
-def run(fmu_name, start: Optional[int], stop: Optional[int], step: Optional[int]):
+def run(fmu_name, start: Optional[int], stop: Optional[int], step: Optional[int]) -> str:
+    # TODO: what if start, stop, or step is not specified?
     """Run a modelica model with OpenModelica.
-    Usage: OMSimulator [Options] [Lua script] [FMU] [SSP file]
+    CLI Usage: OMSimulator [Options] [Lua script] [FMU] [SSP file]
     """
 
     cmd = f"OMSimulator {start} {stop} {step} {fmu_name}"
@@ -53,8 +55,7 @@ def run(fmu_name, start: Optional[int], stop: Optional[int], step: Optional[int]
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('action', help='Action to perform on the model: compile, run, compile_and_run')
-    parser.add_argument('model', help='Name of the model to run, if debug, then will use test PID model. Can be an mo file or an FMU')  # noqa
-    parser.add_argument('modelica_path', help='Path to the project folder.')
+    parser.add_argument('model', help='Name(path) of the model to run, if debug, then will use test PID model. Can be an mo file or an FMU')  # noqa
     parser.add_argument('start_time', help='Start time of the simulation.', nargs='?')
     parser.add_argument('end_time', help='End time of the simulation.', nargs='?')
     parser.add_argument('sim_step', help='Time step of the simulation.', nargs='?')
@@ -78,7 +79,7 @@ if __name__ == "__main__":
             if Path(args.model).is_file():
                 model = args.model.replace(os.path.sep, '.')[:-3]
         logger.info(f'Compiling {model}')
-        fmu_name = compile_fmu(model)  # , args.modelica_path
+        fmu_name = compile_fmu(model)
 
     if args.action == 'run' or args.action == 'compile_and_run':
         # Run the FMU either that is passed in or from the previous step
