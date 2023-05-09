@@ -41,8 +41,8 @@ class ModelicaRunner(object):
             logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
         else:
             self.modelica_lib_path = modelica_lib_path
-        # local_path = os.path.dirname(os.path.abspath(__file__))
-        # self.om_docker_path = os.path.join(local_path, 'lib', 'runner', 'om_docker.sh')
+        local_path = Path(__file__).parent.resolve()
+        self.om_docker_path = local_path / 'lib' / 'runner' / 'om_docker.sh'
 
         # Verify that docker is up and running
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -87,12 +87,12 @@ class ModelicaRunner(object):
                 "Please update your directory path or model name to not include spaces anywhere.")
         return new_run_path
 
-    # def _copy_over_docker_resources(self, run_path: Path) -> None:
-    #     """Copy over ipython and jmodelica needed to run the simulation
-    #     """
-    #     new_spawn_docker = os.path.join(run_path, os.path.basename(self.spawn_docker_path))
-    #     shutil.copyfile(self.spawn_docker_path, new_spawn_docker)
-    #     os.chmod(new_spawn_docker, 0o775)
+    def _copy_over_docker_resources(self, run_path: Path) -> None:
+        """Copy over files needed to run the simulation
+        """
+        new_om_docker = os.path.join(run_path, os.path.basename(self.om_docker_path))
+        shutil.copyfile(self.om_docker_path, new_om_docker)
+        os.chmod(new_om_docker, 0o775)
 
     def _subprocess_call_to_docker(self, run_path: Union[str, Path], file_to_run: Union[str, Path], action: str) -> int:
         """Call out to a subprocess to run the command in docker
@@ -129,7 +129,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
-            exec_call = ['./om_docker.sh', action, run_model, run_path]
+            exec_call = ['./om_docker.sh', action, run_model]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
