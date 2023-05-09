@@ -1,7 +1,0 @@
-version: '3.9' # What docker-compose capabilities are supported
-services: #
-  docker-om: # name of this container
-    image: openmodelica/openmodelica:v1.21.0-gui # base image we're building from
-    build: . # This generates an image from the local Dockerfile, expanding from the base image
-    environment: #
-      - OM_DOCKER_IMAGE=openmodelica/openmodelica:v1.21.0-gui
