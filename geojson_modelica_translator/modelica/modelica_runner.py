@@ -123,7 +123,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
-            exec_call = [self.om_docker_path, action, run_model, run_path]
+            exec_call = ['./om_docker.sh', action, str(run_model), str(run_path)]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
@@ -131,6 +131,10 @@ class ModelicaRunner(object):
                 stderr=subprocess.STDOUT,
                 cwd=run_path
             )
+            # Uncomment this section and rebuild the container in order to pause the container
+            # to inpsect the container and test commands.
+            # import time
+            # time.sleep(10000)  # wait for the subprocess to start
             logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
             exitcode = p.wait()
         finally:
@@ -162,7 +166,7 @@ class ModelicaRunner(object):
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        # self._copy_over_docker_resources(verified_run_path)
+        self._copy_over_docker_resources(verified_run_path)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'compile_and_run')
 
@@ -192,7 +196,7 @@ class ModelicaRunner(object):
         self._verify_docker_run_capability(file_to_run)
         verified_save_path = self._verify_run_path_for_docker(save_path, file_to_run)
 
-        # self._copy_over_docker_resources(verified_save_path)
+        self._copy_over_docker_resources(verified_save_path)
 
         exitcode = self._subprocess_call_to_docker(verified_save_path, file_to_run, 'compile')
 
@@ -220,7 +224,7 @@ class ModelicaRunner(object):
         verified_run_path = self._verify_run_path_for_docker(run_path, file_to_run)
         project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        # self._copy_over_docker_resources(verified_run_path)
+        self._copy_over_docker_resources(verified_run_path)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'run')
 
