@@ -1,7 +1,7 @@
   // heating indirect instance
   {{ model.modelica_type }} {{ model.id }}(
-    allowFlowReversal1=false,
-    allowFlowReversal2=false,
+    allowFlowReversal1=true,
+    allowFlowReversal2=true,
     show_T=true,
     redeclare package Medium={{ globals.medium_w }},
     mDis_flow_nominal=mDis_flow_nominal_{{ couplings.load_couplings[0].id }},

@@ -21,7 +21,7 @@ class TimeSeriesMFT(LoadBase):
 
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
-        self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
+        # self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
 
     def to_modelica(self, scaffold):
         """
@@ -32,6 +32,8 @@ class TimeSeriesMFT(LoadBase):
 
         # MassFlowrate Temperature models
         time_series_mft_template = self.template_env.get_template("TimeSeriesMassFlowTemperatures.mot")
+        peak_mfr_template = self.template_env.get_template("getPeakMassFlowRate.mot")
+        templates = {"building.mo": time_series_mft_template, "getPeakMassFlowRate.mo": peak_mfr_template}
 
         b_modelica_path = ModelicaPath(
             self.building_name, scaffold.loads_path.files_dir, True
@@ -90,14 +92,16 @@ class TimeSeriesMFT(LoadBase):
         else:
             raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
-        self.run_template(
-            template=time_series_mft_template,
-            save_file_name=Path(b_modelica_path.files_dir) / "building.mo",
-            project_name=scaffold.project_name,
-            model_name=self.building_name,
-            data=template_data,
-            ets_data=ets_data,
-        )
+        # Run building templates to write actual Modelica models
+        for template_filename, template in templates.items():
+            self.run_template(
+                template=template,
+                save_file_name=Path(b_modelica_path.files_dir) / template_filename,
+                project_name=scaffold.project_name,
+                model_name=self.building_name,
+                data=template_data,
+                ets_data=ets_data,
+            )
 
         self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
 

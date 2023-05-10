@@ -114,6 +114,7 @@ model building
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
+    allowFlowReversal=true,
     m_flow_nominal=sum(
       terUni.mHeaWat_flow_nominal .* terUni.facMulZon),
     have_pum=have_pum,
@@ -124,6 +125,7 @@ model building
     annotation (Placement(transformation(extent={{-236,-188},{-216,-168}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
+    allowFlowReversal=true,
     m_flow_nominal=sum(
       terUni.mChiWat_flow_nominal .* terUni.facMulZon),
     typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,

@@ -47,9 +47,9 @@ model HeatingWaterPumpSpeed
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-120,-60},{-100,-40}}),iconTransformation(extent={{-120,-60},{-100,-40}})));
   Buildings.Controls.OBC.CDL.Interfaces.RealOutput y[numPum](
-    unit="1",
-    min=0,
-    max=1)
+    each unit="1",
+    each min=0,
+    each max=1)
     "Pump speed signal"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Modelica.Blocks.Math.Product pumSpe[numPum]
