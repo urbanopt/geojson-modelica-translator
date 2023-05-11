@@ -940,6 +940,10 @@
           "description": "Version of GHE Designer",
           "type": "string"
         },
+        "ghe_dir": {
+          "description": "Results directory for GHE Designer",
+          "type": "string"
+        },
         "soil": {
           "$ref": "#/definitions/soil_def"
         },
