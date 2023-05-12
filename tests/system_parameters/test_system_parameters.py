@@ -63,6 +63,7 @@ class SystemParametersTest(unittest.TestCase):
     def test_valid_system_parameters_ghe(self):
         filename = self.data_dir / 'system_params_ghe.json'
         sdp = SystemParameters(filename)
+        print(sdp.validate())
         self.assertIsNotNone(sdp)
         self.assertEqual([], sdp.validate())
 
@@ -70,7 +71,6 @@ class SystemParametersTest(unittest.TestCase):
         filename = self.data_dir / 'system_params_ghe_invalid.json'
         with self.assertRaises(Exception) as exc:
             SystemParameters(filename)
-        print(exc.exception)
         self.assertRegex(str(exc.exception), "Invalid*")
 
     def test_missing_file(self):
