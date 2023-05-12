@@ -1463,16 +1463,31 @@
         "minimum": 0
       }
     },
-    "geometric_constraints_def": {
-      "description": "Geometric constraints for GHE and boreholes.",
+    "ghe_geometric_params_def": {
+      "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
       "type": "object",
+      "ghe_id": {
+        "description": "Feature ID of GHE from GeoJSON Feature File.",
+        "type": "string"
+      },
       "length": {
         "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
         "type": "number"
       },
       "width": {
-        "description": "Horizontal surface width allowed for the ground heat exchanger, in meters",
+        "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
         "type": "number"
+      }
+    },
+    "geometric_constraints_def": {
+      "description": "Geometric constraints for GHE and boreholes.",
+      "type": "object",
+      "ghe_geometric_params": {
+        "type": "array",
+        "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
+        "items": {
+          "$ref": "#/definitions/ghe_geometric_params_def"
+        }
       },
       "b_min": {
         "description": "Minimum borehole-to-borehole spacing, in meters.",

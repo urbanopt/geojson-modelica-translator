@@ -74,8 +74,18 @@
           "num_months": 240
         },
         "geometric_constraints": {
-          "length": 100,
-          "width": 100,
+          "ghe_geometric_param": [
+            {
+              "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40033",
+              "length": 100,
+              "width": 100
+            },
+            {
+              "ghe_id": "93b98fa5-a83e-455f-8d95-05a6a81fed74",
+              "length": 100,
+              "width": 100
+            }
+          ],
           "b_min": 3.0,
           "b_max": 10.0,
           "max_height": 135.0,
