@@ -24,7 +24,17 @@
       },
       "ets_model": "Fifth Gen Heat Pump",
       "fifth_gen_ets_parameters": {
-        "supply_water_temperature_building": 15
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
       }
     }
   ],

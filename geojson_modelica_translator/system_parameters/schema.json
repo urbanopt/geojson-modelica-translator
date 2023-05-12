@@ -1272,6 +1272,56 @@
           "description": "Water supply temperature building side. (C)",
           "type": "number",
           "default": 15
+        },
+        "chilled_water_supply_temp": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 5
+        },
+        "hot_water_supply_temp": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 50
+        },
+        "cop_heat_pump_heating": {
+          "description": "COP of heat pump for heating water production.",
+          "type": "number",
+          "default": 2.5
+        },
+        "cop_heat_pump_cooling": {
+          "description": "COP of heat pump for cooling water production.",
+          "type": "number",
+          "default": 3.5
+        },
+        "pump_flow_rate": {
+          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+          "type": "number",
+          "default": 0.01
+        },
+        "pump_design_head": {
+          "description": "Design head pressure of the ambient loop pump. (Pa)",
+          "type": "number",
+          "default": 150000
+        },
+        "ets_pump_flow_rate": {
+          "description": "Design volume flow rate of the ETS pump. (m3/s)",
+          "type": "number",
+          "default": 0.0005
+        },
+        "ets_pump_head": {
+          "description": "Design head pressure of the ETS pump. (Pa)",
+          "type": "number",
+          "default": 10000
+        },
+        "fan_design_flow_rate": {
+          "description": "Design volume flow rate of the load-side fan. (m3/s)",
+          "type": "number",
+          "default": 0.25
+        },
+        "fan_design_head": {
+          "description": "Design head pressure of the load-side fan. (Pa)",
+          "type": "number",
+          "default": 150
         }
       },
       "required": [
@@ -1357,6 +1407,10 @@
           "description": "The diameter of the borehole, in meters.",
           "type": "number",
           "default": 0.15
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site.",
+          "type": "number"
         }
       }
     },
