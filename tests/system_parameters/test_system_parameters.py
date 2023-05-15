@@ -63,8 +63,8 @@ class SystemParametersTest(unittest.TestCase):
     def test_valid_system_parameters_ghe(self):
         filename = self.data_dir / 'system_params_ghe.json'
         sdp = SystemParameters(filename)
-        print(sdp.validate())
         self.assertIsNotNone(sdp)
+        self.assertEqual(len(sdp.validate()), 0)
         self.assertEqual([], sdp.validate())
 
     def test_error_system_parameters_ghe(self):
