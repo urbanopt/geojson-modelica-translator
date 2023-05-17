@@ -86,7 +86,7 @@ if __name__ == "__main__":
         # Run the FMU either that is passed in or from the previous step
         if not fmu_name:
             fmu_name = args.model
-        if Path(fmu_name).exists():
+        if Path(fmu_name).exists():  # type: ignore
             run(fmu_name, args.start_time, args.end_time, args.sim_step)
         else:
             print(f"FMU model does not exist: {fmu_name}")
