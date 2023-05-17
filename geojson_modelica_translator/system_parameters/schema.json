@@ -982,8 +982,7 @@
         "grout",
         "simulation",
         "geometric_constraints",
-        "design",
-        "loads"
+        "design"
       ]
     },
     "diesel_generator_parameters": {
