@@ -3,6 +3,7 @@
   {{ model.modelica_type }} {{ model.id }}(
     mLoaCoo_flow_nominal=mLoaCoo_flow_nominal_{{ model.id }},
     mLoaHea_flow_nominal=mLoaHea_flow_nominal_{{ model.id }},
+    allowFlowReversal = true,
     nPorts_aHeaWat=1,
     nPorts_bHeaWat=1,
     nPorts_aChiWat=1,

@@ -119,52 +119,52 @@ model {{ model_filename }}
     "Set to true for throttling the water flow rate through a cooling coil controller"
     annotation (Dialog(tab="Controller"));
   Modelica.Blocks.Interfaces.RealInput TSetBuiSup(
-    final quantity="ThermodynamicTemperature",
-    final unit="K")
+    each final quantity="ThermodynamicTemperature",
+    each final unit="K")
     "Setpoint temperature for building supply"
     annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
   Modelica.Blocks.Interfaces.RealOutput Q_flow(
-    final quantity="Power",
-    final unit="W",
-    final displayUnit="kW")
+    each final quantity="Power",
+    each final unit="W",
+    each final displayUnit="kW")
     "Measured power demand at the ETS"
     annotation (Placement(transformation(extent={{100,140},{120,160}})));
   Modelica.Blocks.Interfaces.RealOutput Q(
-    final quantity="Energy",
-    final unit="J",
-    final displayUnit="kWh")
+    each final quantity="Energy",
+    each final unit="J",
+    each final displayUnit="kWh")
     "Measured energy consumption at the ETS"
     annotation (Placement(transformation(extent={{100,100},{120,120}})));
   Buildings.Fluid.HeatExchangers.PlateHeatExchangerEffectivenessNTU hex(
     redeclare final package Medium1=Medium,
     redeclare final package Medium2=Medium,
-    final m1_flow_nominal=mDis_flow_nominal,
-    final m2_flow_nominal=mBui_flow_nominal,
-    final dp1_nominal=dp1_nominal,
-    final dp2_nominal=dp2_nominal,
-    final configuration=Buildings.Fluid.Types.HeatExchangerConfiguration.CounterFlow,
-    final use_Q_flow_nominal=true,
-    final Q_flow_nominal=Q_flow_nominal,
-    final T_a1_nominal=T_a1_nominal,
-    final T_a2_nominal=T_a2_nominal)
+    each final m1_flow_nominal=mDis_flow_nominal,
+    each final m2_flow_nominal=mBui_flow_nominal,
+    each final dp1_nominal=dp1_nominal,
+    each final dp2_nominal=dp2_nominal,
+    each final configuration=Buildings.Fluid.Types.HeatExchangerConfiguration.CounterFlow,
+    each final use_Q_flow_nominal=true,
+    each final Q_flow_nominal=Q_flow_nominal,
+    each final T_a1_nominal=T_a1_nominal,
+    each final T_a2_nominal=T_a2_nominal)
     "Indirect cooling heat exchanger"
     annotation (Placement(transformation(extent={{20,-10},{40,10}})));
   Buildings.Controls.Continuous.LimPID con(
-    final controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    final k=k,
-    final Td=Td,
-    final yMax=yMax,
-    final yMin=yMin,
-    final Ti=Ti,
-    final wp=wp,
-    final wd=wd,
-    final Ni=Ni,
-    final Nd=Nd,
-    final initType=Modelica.Blocks.Types.Init.InitialOutput,
-    final xi_start=xi_start,
-    final xd_start=xd_start,
-    final y_start=yCon_start,
-    final reverseActing=reverseActing)
+    each final controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    each final k=k,
+    each final Td=Td,
+    each final yMax=yMax,
+    each final yMin=yMin,
+    each final Ti=Ti,
+    each final wp=wp,
+    each final wd=wd,
+    each final Ni=Ni,
+    each final Nd=Nd,
+    each final initType=Modelica.Blocks.Types.Init.InitialOutput,
+    each final xi_start=xi_start,
+    each final xd_start=xd_start,
+    each final y_start=yCon_start,
+    each final reverseActing=reverseActing)
     "Controller"
     annotation (Placement(transformation(extent={{-90,-10},{-70,10}})));
   Buildings.Fluid.Sensors.TemperatureTwoPort senTDisSup(
@@ -192,8 +192,8 @@ model {{ model_filename }}
     annotation (Placement(transformation(extent={{-70,-70},{-90,-50}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage val(
     redeclare final package Medium=Medium,
-    final m_flow_nominal=mDis_flow_nominal,
-    final dpValve_nominal=dpValve_nominal,
+    each final m_flow_nominal=mDis_flow_nominal,
+    each final dpValve_nominal=dpValve_nominal,
     riseTime(
       displayUnit="s")=60,
     y_start=0,
@@ -208,8 +208,8 @@ model {{ model_filename }}
     "Product"
     annotation (Placement(transformation(extent={{-20,100},{0,120}})));
   Modelica.Blocks.Math.Add dTDis(
-    k1=-1,
-    k2=+1)
+    each k1=-1,
+    each k2=+1)
     "Temperatur difference on the district side"
     annotation (Placement(transformation(extent={{-60,106},{-40,126}})));
 protected

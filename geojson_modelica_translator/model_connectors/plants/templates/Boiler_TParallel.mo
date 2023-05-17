@@ -15,8 +15,8 @@ model Boiler_TParallel
   parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal;
   parameter Integer numBoi;
   Modelica.Blocks.Interfaces.RealOutput TBoiLvg[num](
-    unit="K",
-    displayUnit="degC")
+    each unit="K",
+    each displayUnit="degC")
     "Boiler leaving water temperature."
     annotation (Placement(transformation(extent={{100,30},{120,50}}),iconTransformation(extent={{100,30},{120,50}})));
   Modelica.Blocks.Math.BooleanToReal booToRea[num](
