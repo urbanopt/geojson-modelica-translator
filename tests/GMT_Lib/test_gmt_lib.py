@@ -91,7 +91,7 @@ def test_simulate_community_pv():
     cpv.build_from_template(package_output_dir)
 
     runner = ModelicaRunner()
-    success, _ = runner.run_in_docker(package_output_dir / 'PVPanels0.mo')
+    success, _ = runner.run_in_docker(package_output_dir / 'PVPanels1.mo')
 
     # -- Assert
     # Did the mofile get created?
