@@ -12,6 +12,7 @@ model DistrictEnergySystem
   parameter Modelica.Units.SI.TemperatureDifference delChiWatTemBui(displayUnit="degC")=5;
   parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemDis(displayUnit="degC")=12;
   parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemBui(displayUnit="degC")=5;
+  parameter Integer numberofchillers = 2;
 
   // Models
 {% for model in models %}

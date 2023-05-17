@@ -125,7 +125,7 @@ within {{ project_name }}.Plants;
     annotation (Placement(transformation(extent={{0,40},{-20,60}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(
     redeclare package Medium=Medium,
-    allowFlowReversal=false,
+    allowFlowReversal=true,
     m_flow_nominal=mHW_flow_nominal*0.05,
     {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     l=0.001)
@@ -153,8 +153,8 @@ within {{ project_name }}.Plants;
     "Heating water expansion tank"
     annotation (Placement(transformation(extent={{-8,6},{12,26}})));
   Modelica.Blocks.Interfaces.RealInput THeaSet(
-    final unit="K",
-    displayUnit="degC")
+    each final unit="K",
+    each displayUnit="degC")
     "Heating water setpoint."
     annotation (Placement(transformation(extent={{-160,-60},{-140,-40}}),iconTransformation(extent={{-140,-104},{-100,-64}})));
   Modelica.Blocks.Math.Product pumOn[numBoi]

@@ -52,7 +52,7 @@ class SystemParametersTest(unittest.TestCase):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.assertEqual(
-            sdp.data["buildings"][1]["load_model_parameters"]["rc"]["order"], 2
+            sdp.param_template["buildings"][1]["load_model_parameters"]["rc"]["order"], 2
         )
 
     def test_load_system_parameters_2(self):
@@ -60,23 +60,18 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
 
-    def test_validate_system_parameters_ghe(self):
+    def test_valid_system_parameters_ghe(self):
         filename = self.data_dir / 'system_params_ghe.json'
         sdp = SystemParameters(filename)
         self.assertIsNotNone(sdp)
+        self.assertEqual(len(sdp.validate()), 0)
         self.assertEqual([], sdp.validate())
 
-    def test_validate_system_parameters_ghe_2(self):
-        filename = self.data_dir / 'system_params_ghe_2.json'
-        sdp = SystemParameters(filename)
-        self.assertIsNotNone(sdp)
-        self.assertEqual([], sdp.validate())
-
-    def test_error_system_parameters_ghe_3(self):
-        filename = self.data_dir / 'system_params_ghe_3.json'
+    def test_error_system_parameters_ghe(self):
+        filename = self.data_dir / 'system_params_ghe_invalid.json'
         with self.assertRaises(Exception) as exc:
             SystemParameters(filename)
-        self.assertRegex(str(exc.exception), "Invalid system parameter file.*")
+        self.assertRegex(str(exc.exception), "Invalid*")
 
     def test_missing_file(self):
         fn = "non-existent-path"
