@@ -1,4 +1,4 @@
-within {{ project_name }}.ParallelLoads;
+within;
 model {{ data["model_name"] }}
   "Isolated capacitor template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Power P_nominal = {{ data["nominal_capacity"] }};

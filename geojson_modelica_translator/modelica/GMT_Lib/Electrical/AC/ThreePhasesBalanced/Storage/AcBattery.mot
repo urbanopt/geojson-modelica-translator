@@ -1,4 +1,4 @@
-within {{ project_name }}.AcBattery;
+within;
 model {{ data['model_name'] }}
   "Isolated battery template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Energy  EMax = {{ data["nominal_capacity"] }};

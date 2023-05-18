@@ -1,4 +1,4 @@
-within{{project_name}}.VariablePowerSource;
+within;
 model Grid
   "Isolated grid template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Frequency f = {{data["frequency"]}};
