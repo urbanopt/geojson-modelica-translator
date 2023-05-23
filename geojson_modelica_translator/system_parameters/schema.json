@@ -944,6 +944,9 @@
           "description": "Results directory for GHE Designer",
           "type": "string"
         },
+        "ghe_specific_params": {
+          "$ref": "#/definitions/ghe_specific_params_def"
+        },
         "soil": {
           "$ref": "#/definitions/soil_def"
         },
@@ -1375,6 +1378,52 @@
         "undisturbed_temp"
       ]
     },
+    "ghe_specific_params_def": {
+      "description": "The properties associated with each Ground Heat Exchanger instance",
+      "type": "object",
+      "properties": {
+        "ghe_id": {
+          "description": "Feature ID of GHE from GeoJSON Feature File.",
+          "type": "string"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site.",
+          "type": "number"
+        },
+        "length_of_boreholes": {
+          "description": "The length of the borehole, in meters.",
+          "type": "number"
+        },
+        "ground_loads": {
+          "description": "Heat rejection or extraction loads of the ground heat exchanger used for ground heat exchanger sizing, in Watts. Heat extraction loads are positive, and heat rejection loads are negative.",
+          "items": {
+            "type": "number"
+          }
+        },
+        "ghe_geometric_params": {
+          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
+          "type": "object",
+          "properties": {
+            "length_of_ghe": {
+              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            },
+            "width_of_ghe": {
+              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "length_of_ghe",
+            "width_of_ghe"
+          ]
+        }
+      },
+      "required": [
+        "ghe_id",
+        "ghe_geometric_params"
+      ]
+    },
     "pipe_def": {
       "description": "Pipe properties for Ground Heat Exchanger sizing",
       "type": "object",
@@ -1439,11 +1488,6 @@
       "description": "Borehole properties for Ground Heat Exchanger sizing.",
       "type": "object",
       "properties": {
-        "length": {
-          "description": "The length of the borehole, in meters.",
-          "type": "number",
-          "default": 150
-        },
         "buried_depth": {
           "description": "The depth below the ground surface to the top of the borehole, in meters.",
           "type": "number",
@@ -1453,11 +1497,6 @@
           "description": "The diameter of the borehole, in meters.",
           "type": "number",
           "default": 0.15
-        },
-        "number_of_boreholes": {
-          "description": "Number of boreholes on the site.",
-          "type": "number",
-          "default": 4
         }
       },
       "required": [
@@ -1538,40 +1577,10 @@
         "num_months"
       ]
     },
-    "ghe_geometric_params_def": {
-      "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
-      "type": "object",
-      "properties": {
-        "ghe_id": {
-          "description": "Feature ID of GHE from GeoJSON Feature File.",
-          "type": "string"
-        },
-        "length": {
-          "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
-          "type": "number"
-        },
-        "width": {
-          "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "ghe_id",
-        "length",
-        "width"
-      ]
-    },
     "geometric_constraints_def": {
       "description": "Geometric constraints for GHE and boreholes.",
       "type": "object",
       "properties": {
-        "ghe_geometric_params": {
-          "type": "array",
-          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
-          "items": {
-            "$ref": "#/definitions/ghe_geometric_params_def"
-          }
-        },
         "b_min": {
           "description": "Minimum borehole-to-borehole spacing, in meters.",
           "type": "number",
@@ -1603,7 +1612,6 @@
         }
       },
       "required": [
-        "ghe_geometric_params",
         "b_min",
         "b_max",
         "max_height",
@@ -1646,22 +1654,6 @@
         "flow_type",
         "max_eft",
         "min_eft"
-      ]
-    },
-    "loads_def": {
-      "description": "Heat rejection or extraction loads of the ground heat exchanger used for ground heat exchanger sizing, in Watts. Heat extraction loads are positive, and heat rejection loads are negative.",
-      "type": "object",
-      "properties": {
-        "ground_loads": {
-          "description": "Array of loads.",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      },
-      "required": [
-        "ground_loads"
       ]
     }
   }
