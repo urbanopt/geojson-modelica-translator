@@ -945,7 +945,11 @@
           "type": "string"
         },
         "ghe_specific_params": {
-          "$ref": "#/definitions/ghe_specific_params_def"
+          "description": "Specific properties for each Ground Heat Exchanger",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ghe_specific_params_def"
+          }
         },
         "soil": {
           "$ref": "#/definitions/soil_def"
@@ -970,14 +974,12 @@
         },
         "design": {
           "$ref": "#/definitions/design_def"
-        },
-        "loads": {
-          "$ref": "#/definitions/loads_def"
         }
       },
       "required": [
         "version",
         "ghe_dir",
+        "ghe_specific_params",
         "soil",
         "pipe",
         "borehole",
@@ -1387,15 +1389,15 @@
           "type": "string"
         },
         "number_of_boreholes": {
-          "description": "Number of boreholes on the site.",
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
           "type": "number"
         },
         "length_of_boreholes": {
-          "description": "The length of the borehole, in meters.",
+          "description": "The length of the borehole (in meters), determined from Thermal Network sizing.",
           "type": "number"
         },
         "ground_loads": {
-          "description": "Heat rejection or extraction loads of the ground heat exchanger used for ground heat exchanger sizing, in Watts. Heat extraction loads are positive, and heat rejection loads are negative.",
+          "description": "Heat rejection or extraction loads (in Watts) of the ground heat exchanger, determined from the Thermal Network sizing, and used for ground heat exchanger sizing. Heat extraction loads are positive, and heat rejection loads are negative.",
           "items": {
             "type": "number"
           }
