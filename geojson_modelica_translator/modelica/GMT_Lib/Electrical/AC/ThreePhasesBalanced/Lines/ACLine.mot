@@ -4,43 +4,43 @@ model AC{{ data["model_name"] }}
   parameter Modelica.Units.SI.Length l={{ data["length"] }};
   parameter Modelica.Units.SI.Power P_nominal={{ data["ampacity"] }};
   parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};
-  redeclare {{ data["commercial_line_type"] }} commercialCable;{% raw %}
+  parameter {{ data["commercial_line_type"] }} cable;{% raw %}
   extends
     Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
   line_1(
       mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  commercialCable=commercialCable,
+  commercialCable=cable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_2a(
       mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  commercialCable=commercialCable,
+  commercialCable=cable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_2b(
       mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  commercialCable=commercialCable,
+  commercialCable=cable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_3a(
       mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  commercialCable=commercialCable,
+  commercialCable=cable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_3b(
       mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  commercialCable=commercialCable,
+  commercialCable=cable,
   P_nominal=P_nominal,
   V_nominal=V_nominal),
   line_sc(
       mode=Buildings.Electrical.Types.CableMode.commercial,
   l=l,
-  commercialCable=commercialCable,
+  commercialCable=cable,
   P_nominal=P_nominal,
   V_nominal=V_nominal)
   );
