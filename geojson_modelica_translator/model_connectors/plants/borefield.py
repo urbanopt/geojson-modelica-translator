@@ -112,7 +112,7 @@ class Borefield(PlantBase):
         data_dict = {'TStep': gfunction.values}
         gfunction_path = os.path.join(scaffold.plants_path.resources_dir,'Gfunction.mat')
         sio.savemat(gfunction_path, data_dict)
-        template_data["gfunction"]["gfunction_file_path"] = gfunction_path
+        template_data["gfunction"]["gfunction_file_path"] = gfunction_path.replace('\\', '/')
 
         # process nominal mass flow rate
         if template_data["configuration"]["flow_type"] == "system":
