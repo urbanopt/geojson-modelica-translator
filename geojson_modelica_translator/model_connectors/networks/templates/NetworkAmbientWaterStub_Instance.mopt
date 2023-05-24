@@ -5,7 +5,7 @@
     redeclare package Medium={{ globals.medium_w }},
     use_m_flow_in=true,
     use_T_in=false,
-    T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
+    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp}}+273.15,
     nPorts=1)
     "Heating water supply temperature (district side)."
     annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
