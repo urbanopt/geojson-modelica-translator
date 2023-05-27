@@ -977,8 +977,6 @@
         }
       },
       "required": [
-        "version",
-        "ghe_dir",
         "ghe_specific_params",
         "soil",
         "pipe",
@@ -1507,27 +1505,6 @@
         "rho_cp",
         "arrangement"
       ]
-    },
-    "borehole_def": {
-      "description": "Borehole properties for Ground Heat Exchanger sizing.",
-      "type": "object",
-      "properties": {
-        "buried_depth": {
-          "description": "The depth below the ground surface to the top of the borehole, in meters.",
-          "type": "number",
-          "default": 1.2
-        },
-        "diameter": {
-          "description": "The diameter of the borehole, in meters.",
-          "type": "number",
-          "default": 0.15
-        }
-      },
-      "required": [
-        "buried_depth",
-        "diameter"
-      ],
-      "additionalProperties": true
     },
     "fluid_def": {
       "description": "Fluid properties for Ground Heat Exchanger sizing",

@@ -42,7 +42,7 @@
     "fifth_generation": {
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "C:/urbanopt-ghe/baseline_scenario/ghe",
+        "ghe_dir": "/ghe",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
