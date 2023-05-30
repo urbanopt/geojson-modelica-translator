@@ -42,7 +42,7 @@
     "fifth_generation": {
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "/ghe",
+        "ghe_dir": "tests/system_parameters/data",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
@@ -82,12 +82,12 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "ghe_specific_params_def": [
+        "ghe_specific_params": [
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40033",
             "ghe_geometric_params": {
-              "length_of_ghe": "100",
-              "width_of_ghe": "100"
+              "length_of_ghe": 100,
+              "width_of_ghe": 100
             },
             "borehole": {
               "buried_depth": 2.0,
@@ -8859,8 +8859,8 @@
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40033",
             "ghe_geometric_params": {
-              "length_of_ghe": "100",
-              "width_of_ghe": "100"
+              "length_of_ghe": 100,
+              "width_of_ghe": 100
             },
             "borehole": {
               "buried_depth": 2.0,
