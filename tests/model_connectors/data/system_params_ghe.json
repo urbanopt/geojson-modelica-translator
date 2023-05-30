@@ -42,7 +42,7 @@
     "fifth_generation": {
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "D:/GitHub/geojson-modelica-translator/tests/model_connectors/data",
+        "ghe_dir": "tests/model_connectors/data",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
