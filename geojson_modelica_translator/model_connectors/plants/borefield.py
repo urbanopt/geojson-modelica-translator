@@ -1,11 +1,12 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import math
 import os
 from pathlib import Path
+
 import pandas as pd
 import scipy.io as sio
-import math
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
@@ -97,20 +98,20 @@ class Borefield(PlantBase):
 
         # process g-function file
         gfunction = pd.read_csv((Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv").resolve(), header=0)
-        template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0]+1
-        
+        template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
+
         # convert the values to match Modelica gfunctions
         for i in range(len(gfunction)):
-            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i])*template_data["configuration"]["borehole_height"]**2/(9*template_data["soil"]["conductivity"]/template_data["soil"]["volumetric_heat_capacity"])
-            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i]/(template_data["configuration"]["number_of_boreholes"]*2*math.pi*template_data["configuration"]["borehole_height"]*template_data["soil"]["conductivity"])
-        
+            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * template_data["configuration"]["borehole_height"]**2 / (9 * template_data["soil"]["conductivity"] / template_data["soil"]["volumetric_heat_capacity"])
+            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / (template_data["configuration"]["number_of_boreholes"] * 2 * math.pi * template_data["configuration"]["borehole_height"] * template_data["soil"]["conductivity"])
+
         # add zeros to the first row
         new_row = pd.Series({gfunction.columns[0]: 0, gfunction.columns[1]: 0})
         gfunction = pd.concat([gfunction.iloc[:0], pd.DataFrame([new_row]), gfunction.iloc[0:]]).reset_index(drop=True)
 
         # add to dict and save MAT file to the borefield's resources folder
         data_dict = {'TStep': gfunction.values}
-        gfunction_path = os.path.join(scaffold.plants_path.resources_dir,'Gfunction.mat')
+        gfunction_path = os.path.join(scaffold.plants_path.resources_dir, 'Gfunction.mat')
         sio.savemat(gfunction_path, data_dict)
         template_data["gfunction"]["gfunction_file_path"] = gfunction_path.replace('\\', '/')
 
