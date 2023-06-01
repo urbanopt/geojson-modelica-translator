@@ -24,12 +24,16 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.data_dir = os.path.join(os.path.dirname(__file__), 'data')
         self.run_path = os.path.join(os.path.dirname(__file__), 'output', 'simdir')
         self.fmu_run_path = os.path.join(os.path.dirname(__file__), 'output', 'fmudir')
+        self.mbl_run_path = os.path.join(os.path.dirname(__file__), 'output', 'mbldir')
         if os.path.exists(self.run_path):
             shutil.rmtree(self.run_path)
         if os.path.exists(self.fmu_run_path):
             shutil.rmtree(self.fmu_run_path)
+        if os.path.exists(self.mbl_run_path):
+            shutil.rmtree(self.mbl_run_path)
         os.makedirs(self.run_path)
         os.makedirs(self.fmu_run_path)
+        os.makedirs(self.mbl_run_path)
 
         # copy in the test modelica file
         shutil.copyfile(
@@ -83,7 +87,7 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
-        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_res.mat')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
 
     @pytest.mark.compilation
@@ -108,10 +112,13 @@ class ModelicaRunnerTest(unittest.TestCase):
         with open(os.path.join(self.run_path, 'stdout.log')) as f:
             logger.info(f.read())
         self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'compile_fmu.mos')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'simulate.mos')))
         self.assertTrue(os.path.exists(fmu_path))
 
     @pytest.mark.simulation
-    def test_run_only_in_docker(self):
+    def test_run_fmu_in_docker(self):
+        # TODO: this breaks at the moment due to the libfortran.so.4 error.
         # cleanup output path
         results_path = os.path.join(self.fmu_run_path, 'BouncingBall_results')
         shutil.rmtree(results_path, ignore_errors=True)
@@ -123,3 +130,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
+
+    @pytest.mark.simulation
+    def test_run_mbl_in_docker(self):
+        mr = ModelicaRunner()
+        mr.run_in_docker(self.mbl_run_path, 'Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID')
+        self.mbl_run_path

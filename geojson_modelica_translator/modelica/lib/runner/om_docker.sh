@@ -3,8 +3,8 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-DOCKER_USERNAME=openmodelica/openmodelica
-IMG_NAME=v1.21.0-gui
+DOCKER_USERNAME=nrel
+IMG_NAME=gmt-om-runner
 
 # Catch signals to kill the container if it is interrupted
 # https://www.shellscript.sh/trap.html
@@ -19,7 +19,6 @@ cleanup()
   exit 1
 }
 
-# Function declarations
 function create_mount_command()
 # Split path somehow. Replace double-slashes with single-slashes, to ensure compatibility with
 # Windows paths.
@@ -85,10 +84,10 @@ docker run \
   -e DISPLAY=${DISPLAY} \
   -e MODELICAPATH=${DOCKER_MODELICAPATH} \
   -e PYTHONPATH=${DOCKER_PYTHONPATH} \
-  -v ${sha_dir}:/mnt/shared \
+  -v ${sha_dir}:/mnt/shared:rw \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
   "cd /mnt/shared/${bas_nam} && \
-  python /mnt/lib/om.py '$1' '$2' '$3'"
+  python3 /mnt/lib/om.py '$1' '$2' '$3'"
 exit $?

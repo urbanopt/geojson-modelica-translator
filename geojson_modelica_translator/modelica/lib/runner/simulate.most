@@ -1,0 +1,12 @@
+loadModel(Modelica, {"4.0.0"});
+//loadModel(Buildings);
+//simulate(Modelica.Blocks.Examples.PID_Controller);
+loadFile("{{ file_to_load }}");getErrorString();
+simulate({{ model_name }});getErrorString();
+
+
+//loadModel(Modelica, {"4.0.0"});
+//loadModel(Buildings);
+//simulate(Modelica.Blocks.Examples.PID_Controller);
+//simulate(Buildings.Controls.Continuous.Examples.LimPID);
+//getErrorString();

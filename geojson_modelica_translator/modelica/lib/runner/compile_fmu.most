@@ -1,0 +1,2 @@
+loadFile("{{ file_to_load }}");getErrorString();
+translateModelFMU({{ model_name }});getErrorString();

@@ -9,6 +9,10 @@ from glob import glob
 from pathlib import Path
 from typing import Union
 
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
+
+from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
@@ -81,10 +85,35 @@ class ModelicaRunner(object):
                 "Please update your directory path or model name to not include spaces anywhere.")
         return new_run_path
 
-    def _copy_over_docker_resources(self, run_path: Path) -> None:
-        """Copy over files needed to run the simulation
+    def _copy_over_docker_resources(self, run_path: Path, filename: str, model_name: str) -> None:
+        """Copy over files needed to run the simulation, this includes
+        the generation of the OpenModelica scripts to load and compile/run
+        the simulation.
+
+        Args:
+            run_path (Path): Path where the model will be run, this is where the files will be copied.
+            filename (str): name of the file that will be loaded (e.g., BouncingBall.mo, package.mo)
+            model_name (str): name of the model to run (e.g., BouncingBall, Districts.DistrictModel)
         """
-        new_om_docker = os.path.join(run_path, os.path.basename(self.om_docker_path))
+        # initialize the templating framework (Jinja2)
+        template_env = Environment(
+            loader=FileSystemLoader(searchpath=Path(__file__).parent.resolve() / 'lib' / 'runner'),
+            undefined=StrictUndefined
+        )
+        template_env.filters.update(ALL_CUSTOM_FILTERS)
+        template = template_env.get_template('simulate.most')
+        model_data = {
+            "file_to_load": filename,
+            "model_name": model_name,
+        }
+        with open(run_path / 'simulate.mos', 'w') as f:
+            f.write(template.render(**model_data))
+        template = template_env.get_template('compile_fmu.most')
+        with open(run_path / 'compile_fmu.mos', 'w') as f:
+            f.write(template.render(**model_data))
+
+        # new om_docker.sh file name
+        new_om_docker = run_path / self.om_docker_path.name
         shutil.copyfile(self.om_docker_path, new_om_docker)
         os.chmod(new_om_docker, 0o775)
 
@@ -103,8 +132,8 @@ class ModelicaRunner(object):
             int: exit code of the subprocess
         """
         action_log_map = {
-            'compile_and_run': 'Compiling mo file and running FMU',
-            'compile': 'Compiling mo file',
+            'compile': 'Compiling mo file',  # creates an FMU
+            'compile_and_run': 'Compile and run the mo file',
             'run': 'Running FMU',
         }
         # Verify that the action is in the list of valid actions
@@ -123,7 +152,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             run_model = Path(file_to_run).relative_to(run_path)
             logger.info(f"{action_log_map[action]}: {run_model} in {run_path}")
-            exec_call = ['./om_docker.sh', action, str(run_model), str(run_path)]
+            exec_call = ['./om_docker.sh', action, str(run_model), '.']
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
@@ -166,13 +195,15 @@ class ModelicaRunner(object):
         if not project_name:
             project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        self._copy_over_docker_resources(verified_run_path)
+        # TODO: this is just for the bouncing ball or single MO files for now
+        filename = Path(file_to_run)
+        self._copy_over_docker_resources(verified_run_path, filename.name, filename.stem)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'compile_and_run')
 
         logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
-        self._cleanup_path(verified_run_path)
+        self._cleanup_path(verified_run_path, filename.stem)
 
         logger.debug('moving results to results directory')
         # get the location of the results path
@@ -196,13 +227,15 @@ class ModelicaRunner(object):
         self._verify_docker_run_capability(file_to_run)
         verified_save_path = self._verify_run_path_for_docker(save_path, file_to_run)
 
-        self._copy_over_docker_resources(verified_save_path)
+        # TODO: this is just for the bouncing ball or single MO files for now
+        filename = Path(file_to_run)
+        self._copy_over_docker_resources(verified_save_path, filename.name, filename.stem)
 
         exitcode = self._subprocess_call_to_docker(verified_save_path, file_to_run, 'compile')
 
         # Cleanup all of the temporary files that get created
         logger.debug('removing temporary files')
-        self._cleanup_path(verified_save_path)
+        self._cleanup_path(verified_save_path, filename.stem)
 
         logger.debug('moving results to results directory')
         return exitcode == 0
@@ -224,13 +257,14 @@ class ModelicaRunner(object):
         verified_run_path = self._verify_run_path_for_docker(run_path, file_to_run)
         project_name = os.path.splitext(os.path.basename(file_to_run))[0]
 
-        self._copy_over_docker_resources(verified_run_path)
+        filename = Path(file_to_run)
+        self._copy_over_docker_resources(verified_run_path, filename.name, filename.stem)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, file_to_run, 'run')
 
         logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
-        self._cleanup_path(verified_run_path)
+        self._cleanup_path(verified_run_path, filename.stem)
 
         logger.debug('moving results to results directory')
         # get the location of the results path
@@ -261,11 +295,18 @@ class ModelicaRunner(object):
                     # typecast back to strings for the shutil method.
                     shutil.move(str(to_move), str(to_path / to_move.name))
 
-    def _cleanup_path(self, path: Path) -> None:
+    def _cleanup_path(self, path: Path, model_name: str) -> None:
         """Clean up the files in the path that was presumably used to run the simulation
         """
         remove_files = [
             'om_docker.sh',
+            'compile_fmu.mos',
+            'simulate.mos',
+            f'{model_name}',
+            f'{model_name}.libs',
+            f'{model_name}.makefile',
+            f'{model_name}.c',
+            f'{model_name}.o',
         ]
 
         for f in remove_files:
