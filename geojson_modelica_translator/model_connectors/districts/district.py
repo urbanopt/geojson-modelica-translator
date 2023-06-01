@@ -74,7 +74,7 @@ class District:
             "diagram": diagram,
             "couplings": [],
             "models": [],
-            "is_ghe_district": self.system_parameters.get_param('$.ghe_parameters')
+            "is_ghe_district": self.system_parameters.get_param('$.district_system.fifth_generation.ghe_parameters')
         }
         common_template_params = {
             'globals': {

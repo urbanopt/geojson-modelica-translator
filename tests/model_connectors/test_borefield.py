@@ -36,7 +36,7 @@ class DistrictSystemTest(TestCaseBase):
         self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "system_params_ghe_2.json")
+        filename = os.path.join(self.data_dir, "system_params_ghe.json")
         sys_params = SystemParameters(filename)
 
         # Create the time series load, ets and their coupling
