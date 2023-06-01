@@ -1,8 +1,12 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import math
 import os
 from pathlib import Path
+
+import pandas as pd
+import scipy.io as sio
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
@@ -30,70 +34,86 @@ class Borefield(PlantBase):
 
         template_data = {
             "gfunction": {
-                "gfunction_file_path": self.system_parameters.get_param(
-                    "$.ghe_parameters.placeholder.gfunction_file_path"
-                ),
-                "gfunction_file_rows": self.system_parameters.get_param(
-                    "$.ghe_parameters.placeholder.gfunction_file_rows"
-                ),
+                "input_path": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.ghe_dir"
+                )
             },
             "soil": {
                 "initial_ground_temperature": self.system_parameters.get_param(
-                    "$.ghe_parameters.soil.undisturbed_temp"
+                    "$.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp"
                 ),
                 "conductivity": self.system_parameters.get_param(
-                    "$.ghe_parameters.soil.conductivity"
+                    "$.district_system.fifth_generation.ghe_parameters.soil.conductivity"
                 ),
                 "volumetric_heat_capacity": self.system_parameters.get_param(
-                    "$.ghe_parameters.soil.rho_cp"
+                    "$.district_system.fifth_generation.ghe_parameters.soil.rho_cp"
                 ),
             },
             "fill": {
                 "conductivity": self.system_parameters.get_param(
-                    "$.ghe_parameters.grout.conductivity"
+                    "$.district_system.fifth_generation.ghe_parameters.grout.conductivity"
                 ),
                 "volumetric_heat_capacity": self.system_parameters.get_param(
-                    "$.ghe_parameters.grout.rho_cp"
+                    "$.district_system.fifth_generation.ghe_parameters.grout.rho_cp"
                 ),
             },
             "configuration": {
                 "borehole_configuration": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.arrangement"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.arrangement"
                 ),
                 "nominal_mass_flow_per_borehole": self.system_parameters.get_param(
-                    "$.ghe_parameters.design.flow_rate"
+                    "$.district_system.fifth_generation.ghe_parameters.design.flow_rate"
                 ),
                 "flow_type": self.system_parameters.get_param(
-                    "$.ghe_parameters.design.flow_type"
+                    "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
                 "borehole_height": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.length"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.length"
                 ),
                 "borehole_diameter": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.diameter"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.diameter"
                 ),
                 "borehole_buried_depth": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.buried_depth"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.buried_depth"
                 ),
                 "number_of_boreholes": self.system_parameters.get_param(
-                    "$.ghe_parameters.design.number_of_boreholes"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.number_of_boreholes"
                 ),
             },
             "tube": {
                 "outer_diameter": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.outer_diameter"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.outer_diameter"
                 ),
                 "inner_diameter": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.inner_diameter"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.inner_diameter"
                 ),
                 "conductivity": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.conductivity"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.conductivity"
                 ),
                 "shank_spacing": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.shank_spacing"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.shank_spacing"
                 ),
             },
         }
+
+        # process g-function file
+        gfunction = pd.read_csv((Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv").resolve(), header=0)
+        template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
+
+        # convert the values to match Modelica gfunctions
+        for i in range(len(gfunction)):
+            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * template_data["configuration"]["borehole_height"]**2 / (9 * template_data["soil"]["conductivity"] / template_data["soil"]["volumetric_heat_capacity"])
+            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / (template_data["configuration"]["number_of_boreholes"] * 2 * math.pi * template_data["configuration"]["borehole_height"] * template_data["soil"]["conductivity"])
+
+        # add zeros to the first row
+        new_row = pd.Series({gfunction.columns[0]: 0, gfunction.columns[1]: 0})
+        gfunction = pd.concat([gfunction.iloc[:0], pd.DataFrame([new_row]), gfunction.iloc[0:]]).reset_index(drop=True)
+
+        # add to dict and save MAT file to the borefield's resources folder
+        data_dict = {'TStep': gfunction.values}
+        gfunction_path = os.path.join(scaffold.plants_path.resources_dir, 'Gfunction.mat')
+        sio.savemat(gfunction_path, data_dict)
+        template_data["gfunction"]["gfunction_file_path"] = gfunction_path.replace('\\', '/')
 
         # process nominal mass flow rate
         if template_data["configuration"]["flow_type"] == "system":
