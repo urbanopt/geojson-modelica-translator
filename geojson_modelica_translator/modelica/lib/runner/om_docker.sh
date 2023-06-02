@@ -38,6 +38,27 @@ function create_mount_command()
    echo "${mnt_cmd}"
 }
 
+function create_mbl_mount()
+# Only grab the modelica-buildings path of the MODELICAPATH env var.
+{
+   local pat="$1"
+   # Each entry in pat will be a mounted read-only volume
+   local mnt_cmd=""
+   for ele in ${pat//:/ }; do
+      if [[ $ele == *"modelica-buildings"* ]]; then
+        mnt_cmd="${mnt_cmd} -v ${ele}:/mnt/lib/mbl:ro"
+      fi
+   done
+
+   # On Darwin, the exported temporary folder needs to be /private/var/folders, not /var/folders
+   # see https://askubuntu.com/questions/600018/how-to-display-the-paths-in-path-separately
+   if [ `uname` == "Darwin" ]; then
+       mnt_cmd=`echo ${mnt_cmd} | sed -e 's| /var/folders/| /private/var/folders/|g'`
+   fi
+   echo "${mnt_cmd}"
+}
+
+
 function update_path_variable()
 {
   # Prepend /mnt/ in front of each entry of a PATH variable in which the arguments are
@@ -62,7 +83,7 @@ fi
 
 # Create the command to mount all directories in read-only mode
 # a) for MODELICAPATH
-MOD_MOUNT=`create_mount_command ${MODELICAPATH}`
+MOD_MOUNT=`create_mbl_mount ${MODELICAPATH}`
 # b) for PYTHONPATH
 PYT_MOUNT=`create_mount_command ${PYTHONPATH}`
 
@@ -77,16 +98,18 @@ bas_nam=`basename ${cur_dir}`
 
 # Set variable for shared directory
 sha_dir=`dirname ${cur_dir}`
+mbl_dir=`dirname ${MODELICAPATH}`
 
 docker run \
+  ${MOD_MOUNT} \
   ${PYT_MOUNT} \
   -e DISPLAY=${DISPLAY} \
   -e PYTHONPATH=${DOCKER_PYTHONPATH} \
-  -v ${MODELICAPATH}:/mnt/lib/mbl \
   -v ${sha_dir}:/mnt/shared \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \
   "cd /mnt/shared/${bas_nam} && \
   python3 /mnt/lib/om.py '$1' '$2' '$3'"
+
 exit $?

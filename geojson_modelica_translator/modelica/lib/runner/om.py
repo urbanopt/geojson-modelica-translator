@@ -1,5 +1,9 @@
 # This file is used as a Python-based CLI into OpenModelica.
 
+# OpenModelica doesn't support the MODELICAPATH env var, so the modelica
+# building library must be symlinked into the .openmodelica folder.
+# https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/faq.html
+
 import argparse
 import logging
 import os
@@ -14,6 +18,22 @@ logging.basicConfig(
 )
 
 
+def configure_mbl_path() -> None:
+    """Configure the Modelica Building Library path"""
+    # The mbl is always mounted into the same folder within the Docker container
+
+    # Read the version of the MBL which will be needed for OpenModelica to be
+    # configured correctly
+    mbl_package_file = '/mnt/lib/mbl/Buildings/package.mo'
+    mbl_version = Path(mbl_package_file).read_text().split('version="')[1].split('"')[0]
+
+    # create the symlink to the MBL
+    mbl_path = '/mnt/lib/mbl/Buildings'
+    mbl_link = f'/root/.openmodelica/libraries/Buildings {mbl_version}'
+    if not os.path.exists(mbl_link):
+        os.symlink(mbl_path, mbl_link)
+
+
 def compile_fmu(model_name) -> str:
     """Compile a modelica model with OpenModelica.
 
@@ -23,10 +43,6 @@ def compile_fmu(model_name) -> str:
              * Libraries: Fully qualified names of libraries to load before processing Model or Script.
              The libraries should be separated by spaces: Lib1 Lib2 ... LibN.
     """
-    # The MBL path can be passed in from docker (om_docker.sh) which joins paths
-    # with a colon. Need to split this back out to space separated paths.
-    mbl_path = ' '.join([p for p in f"{os.environ['MODELICAPATH']}/Buildings".split(':')])
-    logger.info(f"MBL path is {mbl_path}")
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc compile_fmu.mos"
     logger.info(f"Calling OpenModelica compile with '{cmd}'")
@@ -61,17 +77,13 @@ def run_with_omc() -> bool:
     Returns:
         bool: Always true for now
     """
-    # The MBL path can be passed in from docker (om_docker.sh) which joins paths
-    # with a colon. Need to split this back out to space separated paths.
-    mbl_path = ' '.join([p for p in f"{os.environ['MODELICAPATH']}/Buildings".split(':')])
-    logger.info(f"MBL path is {mbl_path}")
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc simulate.mos"
     logger.info(f"Calling OpenModelica simulate with '{cmd}'")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
-    import time
-    time.sleep(10000)
+    # import time
+    # time.sleep(10000)
     os.system(cmd)
     return True
 
@@ -95,6 +107,9 @@ if __name__ == "__main__":
 
     if args.action == 'help':
         print(parser.print_help())  # type: ignore
+
+    logger.info('Configuring MBL path')
+    configure_mbl_path()
 
     fmu_name = None
     if args.action == 'compile':
