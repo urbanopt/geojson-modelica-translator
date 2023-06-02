@@ -16,9 +16,8 @@ RUN echo \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# For now copy over the simulate and to_fmu files for testing
-# COPY ./simulate.mos /mnt/lib/simulate.mos
-# COPY ./to_fmu.mos /mnt/lib/to_fmu.mos
-
 # Put the om.py CLI into the container
 COPY ./om.py /mnt/lib/om.py
+
+
+# ln -s /mnt/Users/nlong/working/urban-analysis/modelica-buildings/Buildings ~/.openmodelica/libraries/Buildings\ 9.1.0

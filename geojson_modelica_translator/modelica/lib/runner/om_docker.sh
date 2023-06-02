@@ -79,12 +79,11 @@ bas_nam=`basename ${cur_dir}`
 sha_dir=`dirname ${cur_dir}`
 
 docker run \
-  ${MOD_MOUNT} \
   ${PYT_MOUNT} \
   -e DISPLAY=${DISPLAY} \
-  -e MODELICAPATH=${DOCKER_MODELICAPATH} \
   -e PYTHONPATH=${DOCKER_PYTHONPATH} \
-  -v ${sha_dir}:/mnt/shared:rw \
+  -v ${MODELICAPATH}:/mnt/lib/mbl \
+  -v ${sha_dir}:/mnt/shared \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --rm \
   ${DOCKER_USERNAME}/${IMG_NAME} /bin/bash -c \

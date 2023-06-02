@@ -70,8 +70,8 @@ def run_with_omc() -> bool:
     logger.info(f"Calling OpenModelica simulate with '{cmd}'")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
-    # import time
-    # time.sleep(10000)
+    import time
+    time.sleep(10000)
     os.system(cmd)
     return True
 

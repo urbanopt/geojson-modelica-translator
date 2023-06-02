@@ -10,7 +10,9 @@ To build the docker container locally and push, the instructions are as follows:
 
 ```bash
 cd geojson_modelica_translator/modelica/lib/runner
-docker build -t nrel/gmt-om-runner .
+
+# have you computer setup for linux/amd64 and linux/arm64
+docker build -t nrel/gmt-om-runner:latest .
 ```
 
 The default tag will be `nrel/gmt-om-runner:latest`, which is the default version used in the om_docker.sh file.
@@ -21,10 +23,6 @@ Build the container as described in the above section, then tag and push to the 
 only is available to individuals with write access to the NREL org.
 
 ```bash
-# use the default tag above to push to latest. If needed you can tag
-# differently for versioning
-docker tag nrel/gmt-om-runner:latest nrel/gmt-om-runner:v0.1
-
-docker login
-docker push nrel/gmt-om-runner:latest
+# Build for more platforms on release.
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nrel/gmt-om-runner:latest --push .
 ```
