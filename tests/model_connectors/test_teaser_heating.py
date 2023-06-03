@@ -89,7 +89,8 @@ class TestTeaserHeating(TestCaseBase):
 
     @pytest.mark.simulation
     def test_simulate_teaser_heating(self):
-        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
-                                      project_path=self.district._scaffold.project_path,
-                                      project_name=self.district._scaffold.project_name)
+        self.run_and_assert_in_docker(
+            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            file_to_load=self.district._scaffold.package_path,
+            run_path=self.district._scaffold.project_path
+        )

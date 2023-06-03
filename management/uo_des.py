@@ -176,7 +176,7 @@ def run_model(modelica_project: Path):
     """
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
-    file_to_run = run_path / 'Districts' / 'DistrictEnergySystem.mo'
+    run_path / 'Districts' / 'DistrictEnergySystem.mo'
 
     if len(str(run_path).split()) > 1:  # Modelica can't handle spaces in project name or path
         raise SystemExit(
@@ -185,9 +185,13 @@ def run_model(modelica_project: Path):
 
     # setup modelica runner
     mr = ModelicaRunner()
-    mr.run_in_docker(file_to_run, run_path=run_path.parent, project_name=project_name)
+    mr.run_in_docker('compile_and_run',
+                     f'{project_name}.Districts.DistrictEnergySystem',
+                     file_to_load=run_path / 'package.mo',
+                     run_path=run_path
+                     )
 
-    if (run_path.parent / f'{project_name}_results' / f'{project_name}_Districts_DistrictEnergySystem_result.mat').exists():
+    if (run_path.parent / f'{project_name}/{project_name}.Districts.DistrictEnergySystem_results' / f'{project_name}_Districts_DistrictEnergySystem_res.mat').exists():
         print(f"\nModelica model {project_name} ran successfully")
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {project_name}_results/stdout.log for more info.")

@@ -76,9 +76,11 @@ class ModelicaRunnerTest(unittest.TestCase):
     @pytest.mark.simulation
     def test_simulate_in_docker(self):
         mr = ModelicaRunner()
-        mr.run_in_docker('compile_and_run', 'BouncingBall', 
+        success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall', 
                          file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'), 
                          run_path=self.run_path)
+
+        self.assertTrue(success)
 
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
@@ -93,10 +95,11 @@ class ModelicaRunnerTest(unittest.TestCase):
         
         # compile the project
         mr = ModelicaRunner()
-        mr.run_in_docker('compile', 'BouncingBall', 
+        success, _ = mr.run_in_docker('compile', 'BouncingBall', 
                          file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'),
                          run_path=self.run_path)
-
+        
+        self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall.fmu')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         # Write out the log to the logger for debugging
@@ -106,29 +109,33 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(results_path, 'compile_fmu.mos')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'simulate.mos')))
 
-    # @pytest.mark.simulation
-    # def test_simulate_fmu_in_docker(self):
-    #     # TODO: this breaks at the moment due to the libfortran.so.4 error.
-    #     # cleanup output path
-    #     results_path = os.path.join(self.fmu_run_path, 'BouncingBall_results')
-    #     shutil.rmtree(results_path, ignore_errors=True)
+    @pytest.mark.simulation
+    @pytest.mark.skip(reason='Need to install libfortran.so.4 in docker image')
+    def test_simulate_fmu_in_docker(self):
+        # TODO: this breaks at the moment due to the libfortran.so.4 error.
+        # cleanup output path
+        results_path = os.path.join(self.fmu_run_path, 'BouncingBall_results')
+        shutil.rmtree(results_path, ignore_errors=True)
 
-    #     # run the project
-    #     mr = ModelicaRunner()
-    #     mr.run_in_docker('run', 'BouncingBall', 
-    #                      file_to_load = os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
-    #                      run_path = self.fmu_run_path)
+        # run the project
+        mr = ModelicaRunner()
+        mr.run_in_docker('run', 'BouncingBall', 
+                         file_to_load = os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
+                         run_path = self.fmu_run_path)
 
-    #     self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
-    #     self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
-    #     self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
 
     @pytest.mark.simulation
     def test_simulate_mbl_in_docker(self):
         model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
         
         mr = ModelicaRunner()
-        mr.run_in_docker('compile_and_run', model_name, run_path=self.mbl_run_path, project_in_library=True)
+        success, _ = mr.run_in_docker(
+            'compile_and_run', model_name, run_path=self.mbl_run_path, project_in_library=True
+        )
+        self.assertTrue(success)
 
 
     @pytest.mark.compilation
@@ -138,8 +145,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         shutil.rmtree(results_path, ignore_errors=True)
 
         mr = ModelicaRunner()
-        mr.run_in_docker('compile', model_name, run_path=self.msl_run_path, project_in_library=True)
+        success, _ = mr.run_in_docker('compile', model_name, run_path=self.msl_run_path, project_in_library=True)
 
+        self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}.fmu')))
 
@@ -150,8 +158,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         shutil.rmtree(results_path, ignore_errors=True)
 
         mr = ModelicaRunner()
-        mr.run_in_docker('compile_and_run', model_name, run_path=self.msl_run_path, project_in_library=True)
+        success, _ = mr.run_in_docker('compile_and_run', model_name, run_path=self.msl_run_path, project_in_library=True)
 
+        self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}_res.mat')))
 
@@ -162,10 +171,11 @@ class ModelicaRunnerTest(unittest.TestCase):
         shutil.rmtree(results_path, ignore_errors=True)
 
         mr = ModelicaRunner()
-        mr.run_in_docker('compile_and_run', model_name, 
+        success, _ = mr.run_in_docker('compile_and_run', model_name, 
                          run_path=self.msl_run_path, project_in_library=True,
                          start_time=0, stop_time=60, step_size=0.1)
 
+        self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}_res.mat')))
 

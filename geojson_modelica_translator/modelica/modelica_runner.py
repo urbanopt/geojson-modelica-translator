@@ -220,6 +220,23 @@ class ModelicaRunner(object):
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, action)
 
+        logger.debug('checking stdout.log for errors')
+        # Check the stdout.log file for errors
+        with open(verified_run_path / 'stdout.log', 'r') as f:
+            stdout_log = f.read()
+            if 'Failed to build model' in stdout_log:
+                logger.error('Model failed to build')
+                exitcode = 1
+            elif 'The simulation finished successfully' in stdout_log:
+                logger.info('Model ran successfully')
+                exitcode = 0
+            elif action == 'compile':
+                logger.info('Model compiled successfully -- no errors')
+                exitcode = 0
+            else:
+                logger.error('Model failed to run -- unknown error')
+                exitcode = 1
+
         logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
         self._cleanup_path(verified_run_path, model_name)

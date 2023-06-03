@@ -108,16 +108,17 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
 
     @pytest.mark.simulation
     def test_simulate_district_heating_and_cooling_systems(self):
-        root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        self.run_and_assert_in_docker(Path(root_path) / 'DistrictEnergySystem.mo',
-                                      project_path=self.district._scaffold.project_path,
-                                      project_name=self.district._scaffold.project_name)
+        self.run_and_assert_in_docker(
+            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            file_to_load=self.district._scaffold.package_path,
+            run_path=self.district._scaffold.project_path
+        )
 
         #
         # Validate model outputs
         #
-        results_dir = f'{self.district._scaffold.project_path}_results'
-        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_result.mat'
+        results_dir = f'{self.district._scaffold.project_path}/{self.project_name}.Districts.DistrictEnergySystem_results'
+        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_res.mat'
         mat_results = Reader(mat_file, 'dymola')
 
         # check the mass flow rates of the first load are in the expected range

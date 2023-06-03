@@ -153,4 +153,4 @@ class CLIIntegrationTest(TestCase):
         )
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / 'modelica_project_results' / 'modelica_project_Districts_DistrictEnergySystem_result.mat').exists()
+        assert (self.output_dir / 'modelica_project_results' / 'modelica_project_Districts_DistrictEnergySystem_res.mat').exists()
