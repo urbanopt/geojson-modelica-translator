@@ -31,66 +31,66 @@ class Borefield(PlantBase):
         template_data = {
             "gfunction": {
                 "gfunction_file_path": self.system_parameters.get_param(
-                    "$.ghe_parameters.placeholder.gfunction_file_path"
+                    "$.district_system.fifth_generation.ghe_parameters.placeholder.gfunction_file_path"
                 ),
                 "gfunction_file_rows": self.system_parameters.get_param(
-                    "$.ghe_parameters.placeholder.gfunction_file_rows"
+                    "$.district_system.fifth_generation.ghe_parameters.placeholder.gfunction_file_rows"
                 ),
             },
             "soil": {
                 "initial_ground_temperature": self.system_parameters.get_param(
-                    "$.ghe_parameters.soil.undisturbed_temp"
+                    "$.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp"
                 ),
                 "conductivity": self.system_parameters.get_param(
-                    "$.ghe_parameters.soil.conductivity"
+                    "$.district_system.fifth_generation.ghe_parameters.soil.conductivity"
                 ),
                 "volumetric_heat_capacity": self.system_parameters.get_param(
-                    "$.ghe_parameters.soil.rho_cp"
+                    "$.district_system.fifth_generation.ghe_parameters.soil.rho_cp"
                 ),
             },
             "fill": {
                 "conductivity": self.system_parameters.get_param(
-                    "$.ghe_parameters.grout.conductivity"
+                    "$.district_system.fifth_generation.ghe_parameters.grout.conductivity"
                 ),
                 "volumetric_heat_capacity": self.system_parameters.get_param(
-                    "$.ghe_parameters.grout.rho_cp"
+                    "$.district_system.fifth_generation.ghe_parameters.grout.rho_cp"
                 ),
             },
             "configuration": {
                 "borehole_configuration": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.arrangement"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.arrangement"
                 ),
                 "nominal_mass_flow_per_borehole": self.system_parameters.get_param(
-                    "$.ghe_parameters.design.flow_rate"
+                    "$.district_system.fifth_generation.ghe_parameters.design.flow_rate"
                 ),
                 "flow_type": self.system_parameters.get_param(
-                    "$.ghe_parameters.design.flow_type"
+                    "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
                 "borehole_height": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.length"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.length"
                 ),
                 "borehole_diameter": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.diameter"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.diameter"
                 ),
                 "borehole_buried_depth": self.system_parameters.get_param(
-                    "$.ghe_parameters.borehole.buried_depth"
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.buried_depth"
                 ),
                 "number_of_boreholes": self.system_parameters.get_param(
-                    "$.ghe_parameters.design.number_of_boreholes"
+                    "$.district_system.fifth_generation.ghe_parameters.design.number_of_boreholes"
                 ),
             },
             "tube": {
                 "outer_diameter": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.outer_diameter"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.outer_diameter"
                 ),
                 "inner_diameter": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.inner_diameter"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.inner_diameter"
                 ),
                 "conductivity": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.conductivity"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.conductivity"
                 ),
                 "shank_spacing": self.system_parameters.get_param(
-                    "$.ghe_parameters.pipe.shank_spacing"
+                    "$.district_system.fifth_generation.ghe_parameters.pipe.shank_spacing"
                 ),
             },
         }

@@ -86,7 +86,7 @@ jobs:
       #   run: |
       #     cd geojson_modelica_translator/modelica/lib/runner
       #     docker build -t nrel/gmt-om-runner:latest .
-      - name: Run pytest (linux only))
+      - name: Run pytest (simulation only on linux)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: |

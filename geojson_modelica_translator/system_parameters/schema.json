@@ -834,23 +834,7 @@
         }
       },
       "required": [
-        "heat_flow_nominal",
-        "mass_chw_flow_nominal",
-        "chiller_water_flow_minimum",
-        "mass_cw_flow_nominal",
-        "chw_pump_head",
-        "cw_pump_head",
-        "pressure_drop_chw_nominal",
-        "pressure_drop_cw_nominal",
-        "pressure_drop_setpoint",
-        "temp_setpoint_chw",
-        "pressure_drop_chw_valve_nominal",
-        "pressure_drop_cw_pum_nominal",
-        "temp_air_wb_nominal",
-        "temp_cw_in_nominal",
-        "cooling_tower_water_temperature_difference_nominal",
-        "delta_temp_approach",
-        "ratio_water_air_nominal"
+        "temp_setpoint_chw"
       ]
     },
     "central_heating_plant_parameters": {
@@ -897,13 +881,7 @@
         }
       },
       "required": [
-        "heat_flow_nominal",
-        "mass_hhw_flow_nominal",
-        "boiler_water_flow_minimum",
-        "pressure_drop_hhw_nominal",
-        "temp_setpoint_hhw",
-        "pressure_drop_hhw_valve_nominal",
-        "pressure_drop_setpoint"
+        "temp_setpoint_hhw"
       ]
     },
     "combined_heat_and_power_parameters": {

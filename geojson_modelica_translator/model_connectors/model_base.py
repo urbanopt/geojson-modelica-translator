@@ -20,8 +20,7 @@ logging.basicConfig(
 
 
 class ModelBase(object):
-    """
-    Base class of the model connectors. The connectors can utilize various methods to create a building (or other
+    """Base class of the model connectors. The connectors can utilize various methods to create a building (or other
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
     # model_name must be overridden in subclass

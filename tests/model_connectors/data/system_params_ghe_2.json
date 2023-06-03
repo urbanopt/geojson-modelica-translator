@@ -40,6 +40,12 @@
   ],
   "district_system": {
     "fifth_generation": {
+      "central_cooling_plant_parameters": {
+        "temp_setpoint_chw": 10
+      },
+      "central_heating_plant_parameters": {
+        "temp_setpoint_hhw": 25
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "C:/urbanopt-ghe/baseline_scenario/ghe",
