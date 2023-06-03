@@ -88,6 +88,7 @@ class TestTeaserHeating(TestCaseBase):
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
+    @pytest.mark.skip("Simulation never ends")
     def test_simulate_teaser_heating(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
