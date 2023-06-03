@@ -51,7 +51,7 @@ class ModelicaRunner(object):
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
-    def _verify_docker_run_capability(self, file_to_load: Union[str, Path]):
+    def _verify_docker_run_capability(self, file_to_load: Union[str, Path, None]):
         """Verify that docker is configured on the host computer correctly before running
 
         Args:
@@ -69,7 +69,7 @@ class ModelicaRunner(object):
         if file_to_load and not os.path.exists(file_to_load):
             raise SystemExit(f'File not found to run {file_to_load}')
 
-    def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path]) -> Path:
+    def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]) -> Path:
         """If there is no run_path, then run it in the same directory as the
         file being run. This works fine for simple Modelica projects but typically
         the run_path needs to be a few levels higher in order to include other
@@ -87,7 +87,7 @@ class ModelicaRunner(object):
             Path: Return the run_path as a Path object
         """
         if not run_path:
-            run_path = os.path.dirname(file_to_run)
+            run_path = os.path.dirname(file_to_run)  # type: ignore
         new_run_path = Path(run_path)
 
         # Modelica can't handle spaces in project name or path
@@ -98,7 +98,7 @@ class ModelicaRunner(object):
                 "Please update your directory path or model name to not include spaces anywhere.")
         return new_run_path
 
-    def _copy_over_docker_resources(self, run_path: Path, filename: str, model_name: str, **kwargs) -> None:
+    def _copy_over_docker_resources(self, run_path: Path, filename: Union[str, Path, None], model_name: str, **kwargs) -> None:
         """Copy over files needed to run the simulation, this includes
         the generation of the OpenModelica scripts to load and compile/run
         the simulation.
@@ -247,7 +247,7 @@ class ModelicaRunner(object):
         self.move_results(verified_run_path, results_path, model_name)
         return (exitcode == 0, results_path)
 
-    def move_results(self, from_path: Path, to_path: Path, model_name: str = None) -> None:
+    def move_results(self, from_path: Path, to_path: Path, model_name: Union[str, None] = None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.
@@ -262,11 +262,12 @@ class ModelicaRunner(object):
 
         files_to_move = [
             'stdout.log',
-            f'{model_name}.log',
-            f'{model_name}.fmu',
-            f"{model_name.replace('.', '_')}.log",
-            f"{model_name.replace('.', '_')}_FMU.log",
         ]
+        if model_name is not None:
+            files_to_move.append(f'{model_name}.log',)
+            files_to_move.append(f'{model_name}.fmu',)
+            files_to_move.append(f"{model_name.replace('.', '_')}.log",)
+            files_to_move.append(f"{model_name.replace('.', '_')}_FMU.log",)
 
         for to_move in from_path.iterdir():
             if not to_move == to_path:

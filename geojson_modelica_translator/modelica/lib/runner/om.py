@@ -54,7 +54,7 @@ def compile_fmu(model_name) -> str:
     return f"{model_name}.fmu"
 
 
-def run_as_fmu(fmu_name, start: Optional[int], stop: Optional[int], step: Optional[int]) -> str:
+def run_as_fmu(fmu_name, start: Optional[float], stop: Optional[float], step: Optional[float]) -> str:
     # TODO: what if start, stop, or step is not specified?
     """Run a modelica model with OpenModelica.
     CLI Usage: OMSimulator [Options] [Lua script] [FMU] [SSP file]
