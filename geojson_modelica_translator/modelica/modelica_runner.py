@@ -283,10 +283,7 @@ class ModelicaRunner(object):
             'compile_fmu.mos',
             'simulate.mos',
             f'{model_name}',
-            f'{model_name}.libs',
             f'{model_name}.makefile',
-            f'{model_name}.c',
-            f'{model_name}.o',
             f"{model_name.replace('.', '_')}_info.json",
             f"{model_name.replace('.', '_')}_FMU.makefile",
             f"{model_name.replace('.', '_')}_FMU.libs",
@@ -296,6 +293,18 @@ class ModelicaRunner(object):
             if os.path.exists(os.path.join(path, f)):
                 os.remove(os.path.join(path, f))
 
+        # glob for the .c, .h, .o, .bin files to remove
+        remove_files_glob = [
+            f'{model_name}*.c',
+            f'{model_name}*.h',
+            f'{model_name}*.o',
+            f'{model_name}*.bin',
+        ]
+        for pattern in remove_files_glob:
+            for f in glob(os.path.join(path, pattern)):
+                os.remove(f)
+
+        # The below was a result from jmodelica and can *most likely* be removed
         for g in glob(os.path.join(path, 'tmp-simulation-*')):
             logger.debug(f"Removing tmp-simulation files {g}")
             # This is a complete hack but the name of the other folder that gets created is the
