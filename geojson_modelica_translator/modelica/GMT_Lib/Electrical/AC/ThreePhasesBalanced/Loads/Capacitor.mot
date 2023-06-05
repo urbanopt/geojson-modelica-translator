@@ -2,9 +2,17 @@ within;
 model {{ data["model_name"] }}
   "Isolated capacitor template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Power P_nominal = {{ data["nominal_capacity"] }};
-  extends   Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads(
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads(
   varRC_y(
-  P_nominal = P_nominal));
+  P_nominal = P_nominal),
+  load.height = 0,
+  load.duration = 10,
+  pow.height = 0,
+  pow.duration = 10,
+  pow.offset = 100,
+  pf.height = 0,
+  pf.duration = 10
+  );
 annotation (
     Icon(
       coordinateSystem(
