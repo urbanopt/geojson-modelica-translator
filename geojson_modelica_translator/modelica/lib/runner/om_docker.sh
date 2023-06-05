@@ -41,21 +41,42 @@ function create_mount_command()
 function create_mbl_mount()
 # Only grab the modelica-buildings path of the MODELICAPATH env var.
 {
-   local pat="$1"
-   # Each entry in pat will be a mounted read-only volume
-   local mnt_cmd=""
-   for ele in ${pat//:/ }; do
-      if [[ $ele == *"modelica-buildings"* ]]; then
-        mnt_cmd="${mnt_cmd} -v ${ele}:/mnt/lib/mbl:ro"
-      fi
-   done
+  #  local pat="$1"
+  #  # Each entry in pat will be a mounted read-only volume
+  #  local mnt_cmd=""
+  #  for ele in ${pat//:/ }; do
+  #     if [[ $ele == *"modelica-buildings"* ]]; then
+  #       mnt_cmd="${mnt_cmd} -v ${ele}:/mnt/lib/mbl:ro"
+  #     fi
+  #  done
 
-   # On Darwin, the exported temporary folder needs to be /private/var/folders, not /var/folders
-   # see https://askubuntu.com/questions/600018/how-to-display-the-paths-in-path-separately
-   if [ `uname` == "Darwin" ]; then
+  # Path variable
+  local pat="$1"
+  local mnt_cmd=""
+
+  # ModelicaPath will be a mounted read-only volume
+
+  # Check if the path variable has only one element
+  if [[ $(tr ':' '\n' <<< "${pat}" | wc -l) -eq 1 ]]; then
+    mnt_cmd="${mnt_cmd} -v ${pat}:/mnt/lib/mbl:ro"
+  else
+    # Iterate over the elements of the path variable
+    read -ra path_elements <<< "${pat}"
+    for ele in "${path_elements[@]}"; do
+      # Check if the element matches the specific string
+      if [[ $ele == *"modelica-buildings"* || $ele == *"Buildings"* ]]; then
+        mnt_cmd="${mnt_cmd} -v ${ele}:/mnt/lib/mbl:ro"
+        break
+      fi
+    done
+  fi
+
+    # On Darwin, the exported temporary folder needs to be /private/var/folders, not /var/folders
+    # see https://askubuntu.com/questions/600018/how-to-display-the-paths-in-path-separately
+    if [ `uname` == "Darwin" ]; then
        mnt_cmd=`echo ${mnt_cmd} | sed -e 's| /var/folders/| /private/var/folders/|g'`
-   fi
-   echo "${mnt_cmd}"
+    fi
+  echo "${mnt_cmd}"
 }
 
 
@@ -71,15 +92,15 @@ function update_path_variable()
   echo "${new_pat}"
 }
 
-# Export the MODELICAPATH
-if [ -z ${MODELICAPATH+x} ]; then
-    MODELICAPATH=`pwd`
-else
-    # Add the current directory to the front of the Modelica path.
-    # This will export the directory to the docker, and also set
-    # it in the MODELICAPATH so that JModelica finds it.
-    MODELICAPATH=`pwd`:${MODELICAPATH}
-fi
+# # Export the MODELICAPATH
+# if [ -z ${MODELICAPATH+x} ]; then
+#     MODELICAPATH=`pwd`
+# else
+#     # Add the current directory to the front of the Modelica path.
+#     # This will export the directory to the docker, and also set
+#     # it in the MODELICAPATH so that JModelica finds it.
+#     MODELICAPATH=`pwd`:${MODELICAPATH}
+# fi
 
 # Create the command to mount all directories in read-only mode
 # a) for MODELICAPATH
