@@ -176,7 +176,6 @@ def run_model(modelica_project: Path):
     """
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
-    run_path / 'Districts' / 'DistrictEnergySystem.mo'
 
     if len(str(run_path).split()) > 1:  # Modelica can't handle spaces in project name or path
         raise SystemExit(
