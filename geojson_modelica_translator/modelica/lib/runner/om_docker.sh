@@ -95,8 +95,8 @@ if [[ -z ${MODELICAPATH+x} ]]; then
   exit 1
 fi
 if [[ ${MODELICAPATH} == *" "* ]]; then
-    echo "MODELICAPATH contains a space, which are not allowed. Please remove and try again."
-    exit 1
+  echo "MODELICAPATH contains a space, which are not allowed. Please remove and try again."
+  exit 1
 fi
 MOD_MOUNT=`create_mbl_mount ${MODELICAPATH}`
 echo "Mounting MBL in read-only mode: ${MOD_MOUNT}"
