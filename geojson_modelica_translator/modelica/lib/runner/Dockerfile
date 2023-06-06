@@ -12,7 +12,7 @@ RUN apt update && apt --no-install-recommends install -y \
 
 # Install MSL 4.0.0
 RUN echo \
-  "updatePackageIndex(); getErrorString();\ninstallPackage(Modelica, \"4.0.0\"); getErrorString();" >> /tmp/installMSL.mos && \
+  "updatePackageIndex(); getErrorString(); installPackage(Modelica, \"4.0.0\", exactMatch=false); getErrorString();" >> /tmp/installMSL.mos && \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
