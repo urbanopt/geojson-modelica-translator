@@ -41,23 +41,20 @@ function create_mount_command()
 function create_mbl_mount()
 # Only grab the modelica-buildings path of the MODELICAPATH env var.
 {
-  #  local pat="$1"
-  #  # Each entry in pat will be a mounted read-only volume
-  #  local mnt_cmd=""
-  #  for ele in ${pat//:/ }; do
-  #     if [[ $ele == *"modelica-buildings"* ]]; then
-  #       mnt_cmd="${mnt_cmd} -v ${ele}:/mnt/lib/mbl:ro"
-  #     fi
-  #  done
-
   # Path variable
   local pat="$1"
   local mnt_cmd=""
 
-  # ModelicaPath will be a mounted read-only volume
+  # Remove the first character of the pat variable if it is a colon
+  if [[ ${pat:0:1} == ":" ]]; then
+      pat="${pat:1}"
+  else
+      pat="$pat"
+  fi
 
-  # Check if the path variable has only one element
+  # ModelicaPath will be a mounted read-only volume
   if [[ $(tr ':' '\n' <<< "${pat}" | wc -l) -eq 1 ]]; then
+    # Check if the path variable has only one element
     mnt_cmd="${mnt_cmd} -v ${pat}:/mnt/lib/mbl:ro"
   else
     # Iterate over the elements of the path variable
@@ -71,14 +68,13 @@ function create_mbl_mount()
     done
   fi
 
-    # On Darwin, the exported temporary folder needs to be /private/var/folders, not /var/folders
-    # see https://askubuntu.com/questions/600018/how-to-display-the-paths-in-path-separately
-    if [ `uname` == "Darwin" ]; then
-       mnt_cmd=`echo ${mnt_cmd} | sed -e 's| /var/folders/| /private/var/folders/|g'`
-    fi
+  # On Darwin, the exported temporary folder needs to be /private/var/folders, not /var/folders
+  # see https://askubuntu.com/questions/600018/how-to-display-the-paths-in-path-separately
+  if [ `uname` == "Darwin" ]; then
+      mnt_cmd=`echo ${mnt_cmd} | sed -e 's| /var/folders/| /private/var/folders/|g'`
+  fi
   echo "${mnt_cmd}"
 }
-
 
 function update_path_variable()
 {
@@ -92,19 +88,19 @@ function update_path_variable()
   echo "${new_pat}"
 }
 
-# # Export the MODELICAPATH
-# if [ -z ${MODELICAPATH+x} ]; then
-#     MODELICAPATH=`pwd`
-# else
-#     # Add the current directory to the front of the Modelica path.
-#     # This will export the directory to the docker, and also set
-#     # it in the MODELICAPATH so that JModelica finds it.
-#     MODELICAPATH=`pwd`:${MODELICAPATH}
-# fi
-
 # Create the command to mount all directories in read-only mode
-# a) for MODELICAPATH
+# a) Check for MODELICAPATH and then create the mount command
+if [[ -z ${MODELICAPATH+x} ]]; then
+  echo "MODELICAPATH is required to include the MBL and the envvar is not set"
+  exit 1
+fi
+if [[ ${MODELICAPATH} == *" "* ]]; then
+    echo "MODELICAPATH contains a space, which are not allowed. Please remove and try again."
+    exit 1
+fi
 MOD_MOUNT=`create_mbl_mount ${MODELICAPATH}`
+echo "Mounting MBL in read-only mode: ${MOD_MOUNT}"
+
 # b) for PYTHONPATH
 PYT_MOUNT=`create_mount_command ${PYTHONPATH}`
 

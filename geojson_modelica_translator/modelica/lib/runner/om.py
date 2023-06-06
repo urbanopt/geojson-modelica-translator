@@ -21,14 +21,25 @@ logging.basicConfig(
 def configure_mbl_path() -> None:
     """Configure the Modelica Building Library path"""
     # The mbl is always mounted into the same folder within the Docker container
+    # If the user has checked out MBL, then the folder will already be at the
+    # level of Buildings folder, otherwise, the user most likely is developing
+    # from a git checkout and we need to go down one level to get to the Buildings.
+
+    if Path('/mnt/lib/mbl/package.mo').exists():
+        mbl_path = Path('/mnt/lib/mbl')
+        mbl_package_file = mbl_path / 'package.mo'
+    elif Path('/mnt/lib/mbl/Buildings/package.mo').exists():
+        mbl_path = Path('/mnt/lib/mbl/Buildings')
+        mbl_package_file = mbl_path / 'package.mo'
+    else:
+        error_str = 'Could not find Modelica Buildings Library in /mnt/lib/mbl or /mnt/lib/mbl/Buildings.'
+        raise Exception(error_str)
 
     # Read the version of the MBL which will be needed for OpenModelica to be
     # configured correctly
-    mbl_package_file = '/mnt/lib/mbl/Buildings/package.mo'
     mbl_version = Path(mbl_package_file).read_text().split('version="')[1].split('"')[0]
 
     # create the symlink to the MBL
-    mbl_path = '/mnt/lib/mbl/Buildings'
     mbl_link = f'/root/.openmodelica/libraries/Buildings {mbl_version}'
     if not os.path.exists(mbl_link):
         os.symlink(mbl_path, mbl_link)
