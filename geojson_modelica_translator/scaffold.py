@@ -42,6 +42,7 @@ class Scaffold(object):
 
         # clear out the project path
         self.project_path = os.path.join(self.root_dir, self.project_name)
+        self.package_path = os.path.join(self.project_path, "package.mo")
         if os.path.exists(self.project_path):
             if not self.overwrite:
                 raise Exception("Directory already exists and overwrite is false for %s" % self.project_path)

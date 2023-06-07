@@ -97,13 +97,19 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
         mofile = Model(mo_file_name)
         mofile.update_model_annotation({"experiment": {"StopTime": 31536000}})
         mofile.save()
-        self.run_and_assert_in_docker(mo_file_name,
-                                      project_path=self.district._scaffold.project_path,
-                                      project_name=self.district._scaffold.project_name)
+
+        self.run_and_assert_in_docker(
+            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            file_to_load=self.district._scaffold.package_path,
+            run_path=self.district._scaffold.project_path,
+            start_time=0,
+            stop_time=31536000,
+        )
 
         # Check the results
-        results_dir = f'{self.district._scaffold.project_path}_results'
-        mat_file = f'{results_dir}/time_series_massflow_Districts_DistrictEnergySystem_result.mat'
+        results_dir = f'{self.district._scaffold.project_path}/time_series_massflow.Districts.DistrictEnergySystem_results'
+
+        mat_file = f'{results_dir}/time_series_massflow.Districts.DistrictEnergySystem_res.mat'
         mat_results = Reader(mat_file, 'dymola')
 
         # hack to get the name of the loads (rather the 8 character connector shas)
@@ -137,17 +143,17 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
         # if any of these assertions fail, then it is likely that the change in the timeseries massflow model
         # has been updated and we need to revalidate the models.
         self.assertEqual(ts_hea_load.min(), 0)
-        self.assertAlmostEqual(ts_hea_load.max(), 51, delta=1)
+        self.assertAlmostEqual(ts_hea_load.max(), 52, delta=1)
         self.assertAlmostEqual(ts_hea_load.mean(), 4, delta=1)
 
         self.assertEqual(ts_chi_load.min(), 0)
-        self.assertAlmostEqual(ts_chi_load.max(), 61, delta=1)
+        self.assertAlmostEqual(ts_chi_load.max(), 67, delta=1)
         self.assertAlmostEqual(ts_chi_load.mean(), 4, delta=1)
 
-        self.assertAlmostEqual(cool_q_flow.min(), -51750, delta=10)
-        self.assertAlmostEqual(cool_q_flow.max(), 354100, delta=10)
-        self.assertAlmostEqual(cool_q_flow.mean(), 3160, delta=10)
+        self.assertAlmostEqual(cool_q_flow.min(), -131.9, delta=10)
+        self.assertAlmostEqual(cool_q_flow.max(), 512936, delta=10)
+        self.assertAlmostEqual(cool_q_flow.mean(), 30210, delta=10)
 
-        self.assertAlmostEqual(heat_q_flow.min(), -343210, delta=10)
-        self.assertAlmostEqual(heat_q_flow.max(), 39475, delta=10)
-        self.assertAlmostEqual(heat_q_flow.mean(), -23270, delta=10)
+        self.assertAlmostEqual(heat_q_flow.min(), -342201, delta=10)
+        self.assertAlmostEqual(heat_q_flow.max(), 62995, delta=10)
+        self.assertAlmostEqual(heat_q_flow.mean(), -13905, delta=10)

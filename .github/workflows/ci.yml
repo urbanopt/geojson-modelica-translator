@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.9", "3.11"]
+        python-version: ["3.10", "3.11"]
         test_env: [python, docs, mypy]
         mbl_branch: [maint_9.1.x]
         exclude:
@@ -53,14 +53,6 @@ jobs:
           poetry --version
           poetry install
           poetry update
-      # -
-      #   name: Save Optimica license to file
-      #   if: matrix.os == 'ubuntu-latest'
-      #   shell: bash
-      #   run: |
-      #     mkdir -p /home/runner/modelon
-      #     echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
-      #     echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
       - name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
@@ -88,22 +80,22 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      # #Don't build the container anymore, just have it pull from docker hub.
+      # Perhaps we want to eneable this again to build the gmt running container?
       # -
       #   name: Build Spawn Modelica Docker Container
-      #   env:
-      #     MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
       #   run: |
       #     cd geojson_modelica_translator/modelica/lib/runner
-      #     docker-compose build
-      - name: Run pytest
+      #     docker build -t nrel/gmt-om-runner:latest .
+      - name: Run pytest (simulation only on linux)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          # MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
-          # MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
-            poetry run pytest --doctest-modules -v --cov-report term-missing --cov . -m 'not simulation and not compilation' ./tests
+            if [ '${{ matrix.os }}' == 'windows-latest' ]; then
+              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation' ./tests
+            else
+              poetry run pytest --doctest-modules -v --cov-report term-missing --cov . ./tests
+            fi
           fi
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0

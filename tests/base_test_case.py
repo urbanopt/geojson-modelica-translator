@@ -53,7 +53,7 @@ class TestCaseBase(GMTTestCase):
         """
         mr = ModelicaRunner()
         run_path = Path(project_path).parent.resolve()
-        success = mr.compile_in_docker(file_to_run, save_path=run_path)
+        success = mr.run_in_docker('compile', file_to_run, save_path=run_path)
         # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
         # Look at the stdout.log if this is non-zero.
         self.assertTrue(success)
@@ -61,19 +61,18 @@ class TestCaseBase(GMTTestCase):
         # make sure that the results log exist
         self.assertTrue((Path(run_path) / 'stdout.log').exists())
 
-    def run_and_assert_in_docker(self, file_to_run: str, project_path: Path, project_name: str):
-        """Run the test in docker.
+    def run_and_assert_in_docker(self, model_name: str, file_to_load: str, run_path: Path, **kwargs):
+        """Wrapper for running and asserting that the simulation completed successfully
 
-        :param file_to_run: Full path to the file to run. Typically this is the .mo file of interest (e.g., coupling.mo)
-        :param project_path: Full path to the location of the project to run. This is typically the the full path to
-        where the directory named with the `project_name` comes come from.
-        :param project_name: The name of the project that is running. This is the directory where the root package.mo
-        lives.
-        :return: None
+        Args:
+            model_name (str): Name of the model to run, this is the name in the Modelica file
+            file_to_load (str): Name of the file to load, which may or may not contain the model_name
+            run_path (Path): Path to the simulation directory where all the files will be copied
         """
         mr = ModelicaRunner()
-        run_path = Path(project_path).parent.resolve()
-        success, results_path = mr.run_in_docker(file_to_run, run_path=run_path, project_name=project_name)
+        success, results_path = mr.run_in_docker(
+            'compile_and_run', model_name, file_to_load=file_to_load, run_path=run_path, **kwargs
+        )
         # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
         # Look at the stdout.log if this is non-zero.
         self.assertTrue(success)
