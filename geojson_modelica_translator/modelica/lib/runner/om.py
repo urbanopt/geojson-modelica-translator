@@ -1,5 +1,9 @@
 # This file is used as a Python-based CLI into OpenModelica.
 
+# OpenModelica doesn't support the MODELICAPATH env var, so the modelica
+# building library must be symlinked into the .openmodelica folder.
+# https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/faq.html
+
 import argparse
 import logging
 import os
@@ -14,7 +18,33 @@ logging.basicConfig(
 )
 
 
-# FIXME: what about model_path? See the confusion in spawn.py
+def configure_mbl_path() -> None:
+    """Configure the Modelica Building Library path"""
+    # The mbl is always mounted into the same folder within the Docker container
+    # If the user has checked out MBL, then the folder will already be at the
+    # level of Buildings folder, otherwise, the user most likely is developing
+    # from a git checkout and we need to go down one level to get to the Buildings.
+
+    if Path('/mnt/lib/mbl/package.mo').exists():
+        mbl_path = Path('/mnt/lib/mbl')
+        mbl_package_file = mbl_path / 'package.mo'
+    elif Path('/mnt/lib/mbl/Buildings/package.mo').exists():
+        mbl_path = Path('/mnt/lib/mbl/Buildings')
+        mbl_package_file = mbl_path / 'package.mo'
+    else:
+        error_str = 'Could not find Modelica Buildings Library in /mnt/lib/mbl or /mnt/lib/mbl/Buildings.'
+        raise Exception(error_str)
+
+    # Read the version of the MBL which will be needed for OpenModelica to be
+    # configured correctly
+    mbl_version = Path(mbl_package_file).read_text().split('version="')[1].split('"')[0]
+
+    # create the symlink to the MBL
+    mbl_link = f'/root/.openmodelica/libraries/Buildings {mbl_version}'
+    if not os.path.exists(mbl_link):
+        os.symlink(mbl_path, mbl_link)
+
+
 def compile_fmu(model_name) -> str:
     """Compile a modelica model with OpenModelica.
 
@@ -24,13 +54,8 @@ def compile_fmu(model_name) -> str:
              * Libraries: Fully qualified names of libraries to load before processing Model or Script.
              The libraries should be separated by spaces: Lib1 Lib2 ... LibN.
     """
-
-    # The MBL path can be passed in from docker (om_docker.sh) which joins paths
-    # with a colon. Need to split this back out to space separated paths.
-    mbl_path = ' '.join([p for p in f"{os.environ['MODELICAPATH']}/Buildings".split(':')])
-    logger.info(f"MBL path is {mbl_path}")
     # Call OMC to compile the model, using MSL & MBL libraries
-    cmd = f"omc {model_name} Modelica {mbl_path}"
+    cmd = "omc compile_fmu.mos"
     logger.info(f"Calling OpenModelica compile with '{cmd}'")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
@@ -40,16 +65,38 @@ def compile_fmu(model_name) -> str:
     return f"{model_name}.fmu"
 
 
-def run(fmu_name, start: Optional[int], stop: Optional[int], step: Optional[int]) -> str:
+def run_as_fmu(fmu_name, start: Optional[float], stop: Optional[float], step: Optional[float]) -> str:
     # TODO: what if start, stop, or step is not specified?
     """Run a modelica model with OpenModelica.
     CLI Usage: OMSimulator [Options] [Lua script] [FMU] [SSP file]
     """
-
-    cmd = f"OMSimulator {start} {stop} {step} {fmu_name}"
+    # Uncomment this section and rebuild the container in order to pause the container
+    # to inpsect the container and test commands.
+    # import time
+    # time.sleep(10000)
+    cmd = f"OMSimulator --startTime={start} --stopTime={stop} --stepSize={step} {fmu_name}"
     logger.info(f"Calling OpenModelica simulator with '{cmd}'")
     os.system(cmd)
     return f'{fmu_name} has been simulated'
+
+
+def run_with_omc() -> bool:
+    """Compile and run the model with OpenModelica. This method does not generate the FMU.
+    A model_name is not passed since the simulate.mos script was generated during the
+    setup.
+
+    Returns:
+        bool: Always true for now
+    """
+    # Call OMC to compile the model, using MSL & MBL libraries
+    cmd = "omc simulate.mos"
+    logger.info(f"Calling OpenModelica simulate with '{cmd}'")
+    # Uncomment this section and rebuild the container in order to pause the container
+    # to inpsect the container and test commands.
+    # import time
+    # time.sleep(10000)
+    os.system(cmd)
+    return True
 
 
 if __name__ == "__main__":
@@ -65,28 +112,44 @@ if __name__ == "__main__":
     # So we are just passing in the action and then the model to act on.
     # The actions can be (e.g., complile, run, compile_and_run)
     args = parser.parse_args()
+    args.run_path = Path(args.run_path)
 
     logger.info(f'args: {args}')
 
     if args.action == 'help':
         print(parser.print_help())  # type: ignore
 
-    fmu_name = None
-    if args.action == 'compile' or args.action == 'compile_and_run':
-        model = args.model
-        if args.model == 'debug':
-            model = "Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID"
-        else:
-            if Path(args.model).is_file():
-                model = (args.run_path / args.model).replace(os.path.sep, '.')[:-3]
-        logger.info(f'Compiling {model}')
-        fmu_name = compile_fmu(model)
+    logger.info('Configuring MBL path')
+    configure_mbl_path()
 
-    if args.action == 'run' or args.action == 'compile_and_run':
-        # Run the FMU either that is passed in or from the previous step
-        if not fmu_name:
-            fmu_name = args.model
-        if Path(fmu_name).exists():  # type: ignore
-            run(fmu_name, args.start_time, args.end_time, args.sim_step)
+    fmu_name = None
+    if args.action == 'compile':
+        model = args.model
+
+        if Path(model).is_file():
+            model = str((args.run_path / model)).replace(os.path.sep, '.')[:-3]
+            if model[0] == '.':
+                model = model[1:]
+
+        logger.info(f'Compiling {model}')
+        compile_fmu(model)
+
+    if args.action == 'compile_and_run':
+        model = args.model
+
+        if Path(model).is_file():
+            model = str((args.run_path / model)).replace(os.path.sep, '.')[:-3]
+            if model[0] == '.':
+                model = model[1:]
+
+        logger.info(f'Running model {model} with OMC')
+        fmu_name = run_with_omc()
+
+    if args.action == 'run':
+        model = args.model
+
+        if Path(model).exists():  # type: ignore
+            # run_as_fmu(fmu_name, args.start_time, args.end_time, args.sim_step)
+            run_as_fmu(model, 0, 1, 0.05)
         else:
-            print(f"FMU model does not exist: {fmu_name}")
+            print(f"FMU model does not exist: {model}")

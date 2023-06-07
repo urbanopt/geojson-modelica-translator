@@ -63,6 +63,8 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
     @pytest.mark.simulation
+    @pytest.mark.skip(reason="OMC Failure")
+    # [/var/lib/jenkins2/ws/LINUX_BUILDS/tmp.build/openmodelica-1.21.0/OMCompiler/Compiler/NFFrontEnd/NFConnectEquations.mo:1038:5-1039:59:writable] Error: Internal error NFConnectEquations.lookupVarAttr could not find the variable ports_aHeaWat[1].m_flow
     def test_build_and_simulate_no_ets(self):
         # load system parameter data
         filename = os.path.join(self.data_dir, "time_series_system_params_no_ets.json")
@@ -91,6 +93,8 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         for file in files:
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
-        self.run_and_assert_in_docker(os.path.join(self.root_path, 'TimeSeriesBuilding.mo'),
-                                      project_path=self.scaffold.project_path,
-                                      project_name=self.scaffold.project_name)
+        self.run_and_assert_in_docker(
+            f'{self.scaffold.project_name}.Loads.B5a6b99ec37f4de7f94020090.TimeSeriesBuilding',
+            file_to_load=self.scaffold.package_path,
+            run_path=self.scaffold.project_path
+        )

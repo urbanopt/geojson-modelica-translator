@@ -140,8 +140,10 @@ class CLIIntegrationTest(TestCase):
 
     @pytest.mark.simulation
     def test_cli_runs_model(self):
-        if (self.output_dir / 'modelica_project_results').exists():
-            rmtree(self.output_dir / 'modelica_project_results')
+        project_name = 'modelica_project'
+        results_dir = f'{project_name}.Districts.DistrictEnergySystem_results'
+        if (self.output_dir / project_name / results_dir).exists():
+            rmtree(self.output_dir / project_name / results_dir)
 
         # run subprocess as if we're an end-user
         self.runner.invoke(
@@ -153,4 +155,4 @@ class CLIIntegrationTest(TestCase):
         )
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / 'modelica_project_results' / 'modelica_project_Districts_DistrictEnergySystem_result.mat').exists()
+        assert (self.output_dir / project_name / results_dir / 'modelica_project.Districts.DistrictEnergySystem_res.mat').exists()

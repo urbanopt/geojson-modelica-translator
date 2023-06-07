@@ -157,43 +157,6 @@
           "items": {
             "$ref": "#/definitions/battery_bank_parameters"
           }
-        },
-        "ghe_parameters": {
-          "description": "Parameters associated with Ground Heat Exchangers.",
-          "type": "object",
-          "properties": {
-            "version": {
-              "description": "Version of GHE Designer",
-              "type": "string"
-            },
-            "soil": {
-              "$ref": "#/definitions/soil_def"
-            },
-            "pipe": {
-              "$ref": "#/definitions/pipe_def"
-            },
-            "borehole": {
-              "$ref": "#/definitions/borehole_def"
-            },
-            "fluid": {
-              "$ref": "#/definitions/fluid_def"
-            },
-            "grout": {
-              "$ref": "#/definitions/grout_def"
-            },
-            "simulation": {
-              "$ref": "#/definitions/simulation_def"
-            },
-            "geometric_constraints": {
-              "$ref": "#/definitions/geometric_constraints_def"
-            },
-            "design": {
-              "$ref": "#/definitions/design_def"
-            },
-            "ground_loads": {
-              "$ref": "#/definitions/ground_loads_def"
-            }
-          }
         }
       },
       "required": [
@@ -871,23 +834,7 @@
         }
       },
       "required": [
-        "heat_flow_nominal",
-        "mass_chw_flow_nominal",
-        "chiller_water_flow_minimum",
-        "mass_cw_flow_nominal",
-        "chw_pump_head",
-        "cw_pump_head",
-        "pressure_drop_chw_nominal",
-        "pressure_drop_cw_nominal",
-        "pressure_drop_setpoint",
-        "temp_setpoint_chw",
-        "pressure_drop_chw_valve_nominal",
-        "pressure_drop_cw_pum_nominal",
-        "temp_air_wb_nominal",
-        "temp_cw_in_nominal",
-        "cooling_tower_water_temperature_difference_nominal",
-        "delta_temp_approach",
-        "ratio_water_air_nominal"
+        "temp_setpoint_chw"
       ]
     },
     "central_heating_plant_parameters": {
@@ -934,13 +881,7 @@
         }
       },
       "required": [
-        "heat_flow_nominal",
-        "mass_hhw_flow_nominal",
-        "boiler_water_flow_minimum",
-        "pressure_drop_hhw_nominal",
-        "temp_setpoint_hhw",
-        "pressure_drop_hhw_valve_nominal",
-        "pressure_drop_setpoint"
+        "temp_setpoint_hhw"
       ]
     },
     "combined_heat_and_power_parameters": {
@@ -968,6 +909,60 @@
           "type": "string"
         }
       }
+    },
+    "ghe_parameters": {
+      "description": "Parameters associated with Ground Heat Exchangers.",
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "Version of GHE Designer",
+          "type": "string"
+        },
+        "ghe_dir": {
+          "description": "Results directory for GHE Designer",
+          "type": "string"
+        },
+        "soil": {
+          "$ref": "#/definitions/soil_def"
+        },
+        "pipe": {
+          "$ref": "#/definitions/pipe_def"
+        },
+        "borehole": {
+          "$ref": "#/definitions/borehole_def"
+        },
+        "fluid": {
+          "$ref": "#/definitions/fluid_def"
+        },
+        "grout": {
+          "$ref": "#/definitions/grout_def"
+        },
+        "simulation": {
+          "$ref": "#/definitions/simulation_def"
+        },
+        "geometric_constraints": {
+          "$ref": "#/definitions/geometric_constraints_def"
+        },
+        "design": {
+          "$ref": "#/definitions/design_def"
+        },
+        "loads": {
+          "$ref": "#/definitions/loads_def"
+        }
+      },
+      "required": [
+        "version",
+        "ghe_dir",
+        "soil",
+        "pipe",
+        "borehole",
+        "fluid",
+        "grout",
+        "simulation",
+        "geometric_constraints",
+        "design",
+        "loads"
+      ]
     },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
@@ -1241,6 +1236,9 @@
             "combined_heat_and_power_parameters": {
               "$ref": "#/definitions/combined_heat_and_power_parameters"
             },
+            "ghe_parameters": {
+              "$ref": "#/definitions/ghe_parameters"
+            },
             "connected_buildings": {
               "items": [
                 {
@@ -1265,10 +1263,69 @@
           "description": "Water supply temperature building side. (C)",
           "type": "number",
           "default": 15
+        },
+        "chilled_water_supply_temp": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 5
+        },
+        "hot_water_supply_temp": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 50
+        },
+        "cop_heat_pump_heating": {
+          "description": "COP of heat pump for heating water production.",
+          "type": "number",
+          "default": 2.5
+        },
+        "cop_heat_pump_cooling": {
+          "description": "COP of heat pump for cooling water production.",
+          "type": "number",
+          "default": 3.5
+        },
+        "pump_flow_rate": {
+          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+          "type": "number",
+          "default": 0.01
+        },
+        "pump_design_head": {
+          "description": "Design head pressure of the ambient loop pump. (Pa)",
+          "type": "number",
+          "default": 150000
+        },
+        "ets_pump_flow_rate": {
+          "description": "Design volume flow rate of the ETS pump. (m3/s)",
+          "type": "number",
+          "default": 0.0005
+        },
+        "ets_pump_head": {
+          "description": "Design head pressure of the ETS pump. (Pa)",
+          "type": "number",
+          "default": 10000
+        },
+        "fan_design_flow_rate": {
+          "description": "Design volume flow rate of the load-side fan. (m3/s)",
+          "type": "number",
+          "default": 0.25
+        },
+        "fan_design_head": {
+          "description": "Design head pressure of the load-side fan. (Pa)",
+          "type": "number",
+          "default": 150
         }
       },
       "required": [
-        "supply_water_temperature_building"
+        "supply_water_temperature_building",
+        "chilled_water_supply_temp",
+        "hot_water_supply_temp",
+        "cop_heat_pump_heating",
+        "pump_flow_rate",
+        "pump_design_head",
+        "ets_pump_flow_rate",
+        "ets_pump_head",
+        "fan_design_flow_rate",
+        "fan_design_head"
       ]
     },
     "soil_def": {
@@ -1278,17 +1335,24 @@
         "conductivity": {
           "description": "The conductivity of the soil, in units of W/m-K.",
           "type": "number",
-          "default": 2.3
+          "default": 2
         },
         "rho_cp": {
           "description": "The volumetric heat capacity of the soil, in units of J/m^3-K",
-          "type": "number"
+          "type": "number",
+          "default": 2600000
         },
         "undisturbed_temp": {
           "description": "The undisturbed average soil temperature, in units of degrees Celsius.",
-          "type": "number"
+          "type": "number",
+          "default": 15
         }
-      }
+      },
+      "required": [
+        "conductivity",
+        "rho_cp",
+        "undisturbed_temp"
+      ]
     },
     "pipe_def": {
       "description": "Pipe properties for Ground Heat Exchanger sizing",
@@ -1296,43 +1360,59 @@
       "properties": {
         "inner_diameter": {
           "description": "The diameter of the inner pipe surface, in meters.",
-          "type": "number"
+          "type": "number",
+          "default": 0.0269
         },
         "outer_diameter": {
           "description": "The diameter of the outer pipe surface, in meters.",
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "default": 0.0334
         },
         "shank_spacing": {
           "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e. not referenced from each pipes respective centerline), in meters.",
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "default": 0.0277
         },
         "roughness": {
           "description": "The surface roughness of the pipe, in meters.",
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "default": 1e-06
         },
         "conductivity": {
           "description": "The conductivity of the pipe material, in W/m-K.",
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "default": 0.4
         },
         "rho_cp": {
           "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "default": 1542000
         },
         "arrangement": {
-          "description": "",
+          "description": "Arrangement of the pipes.",
           "type": "string",
           "enum": [
             "singleutube",
             "coaxial",
             "doubleutube"
-          ]
+          ],
+          "default": "singleutube"
         }
-      }
+      },
+      "required": [
+        "inner_diameter",
+        "outer_diameter",
+        "shank_spacing",
+        "roughness",
+        "conductivity",
+        "rho_cp",
+        "arrangement"
+      ]
     },
     "borehole_def": {
       "description": "Borehole properties for Ground Heat Exchanger sizing.",
@@ -1340,21 +1420,33 @@
       "properties": {
         "length": {
           "description": "The length of the borehole, in meters.",
-          "type": "number"
+          "type": "number",
+          "default": 150
         },
         "buried_depth": {
           "description": "The depth below the ground surface to the top of the borehole, in meters.",
-          "type": "number"
+          "type": "number",
+          "default": 1.2
         },
         "diameter": {
           "description": "The diameter of the borehole, in meters.",
           "type": "number",
           "default": 0.15
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site.",
+          "type": "number",
+          "default": 4
         }
-      }
+      },
+      "required": [
+        "buried_depth",
+        "diameter"
+      ],
+      "additionalProperties": true
     },
     "fluid_def": {
-      "description": "",
+      "description": "Fluid properties for Ground Heat Exchanger sizing",
       "type": "object",
       "properties": {
         "fluid_name": {
@@ -1366,15 +1458,27 @@
             "EthyleneGlycol",
             "MethylAlcohol",
             "PropyleneGlycol"
-          ]
+          ],
+          "default": "Water"
         },
         "concentration_percent": {
           "description": "The concentration of circulation fluid in percent, from 0-60.",
           "type": "number",
           "minimum": 0,
-          "maximum": 60
+          "maximum": 60,
+          "default": 0
+        },
+        "temperature": {
+          "description": "Average design fluid temperature at peak conditions, in C.",
+          "type": "number",
+          "default": 20
         }
-      }
+      },
+      "required": [
+        "fluid_name",
+        "concentration_percent",
+        "temperature"
+      ]
     },
     "grout_def": {
       "description": "Grout properties used for ground heat exchanger sizing.",
@@ -1389,86 +1493,155 @@
         "rho_cp": {
           "description": "Grout volumetric heat capacity, in J/m^3-K.",
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "default": 4408000
         }
-      }
+      },
+      "required": [
+        "conductivity",
+        "rho_cp"
+      ]
     },
     "simulation_def": {
       "description": "Simulation parameters use for ground heat exchanger sizing.",
       "type": "object",
-      "num_months": {
-        "description": "Length of ground heat exchanger sizing period, in months.",
-        "type": "integer",
-        "minimum": 0
-      }
+      "properties": {
+        "num_months": {
+          "description": "Length of ground heat exchanger sizing period, in months.",
+          "type": "integer",
+          "minimum": 0,
+          "default": 240
+        }
+      },
+      "required": [
+        "num_months"
+      ]
+    },
+    "ghe_geometric_params_def": {
+      "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
+      "type": "object",
+      "properties": {
+        "ghe_id": {
+          "description": "Feature ID of GHE from GeoJSON Feature File.",
+          "type": "string"
+        },
+        "length": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
+          "type": "number"
+        },
+        "width": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "ghe_id",
+        "length",
+        "width"
+      ]
     },
     "geometric_constraints_def": {
       "description": "Geometric constraints for GHE and boreholes.",
       "type": "object",
-      "length": {
-        "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
-        "type": "number"
+      "properties": {
+        "ghe_geometric_params": {
+          "type": "array",
+          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
+          "items": {
+            "$ref": "#/definitions/ghe_geometric_params_def"
+          }
+        },
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing, in meters.",
+          "type": "number",
+          "default": 3
+        },
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing, in meters.",
+          "type": "number",
+          "default": 10
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger, in meters.",
+          "type": "number",
+          "default": 200
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger, in meters.",
+          "type": "number",
+          "default": 100
+        },
+        "method": {
+          "description": "GHE sizing method",
+          "type": "string",
+          "enum": [
+            "nearsquare",
+            "rectangle"
+          ],
+          "default": "rectangle"
+        }
       },
-      "width": {
-        "description": "Horizontal surface width allowed for the ground heat exchanger, in meters",
-        "type": "number"
-      },
-      "b_min": {
-        "description": "Minimum borehole-to-borehole spacing, in meters.",
-        "type": "number"
-      },
-      "b_max": {
-        "description": "Maximum borehole-to-borehole spacing, in meters.",
-        "type": "number"
-      },
-      "max_height": {
-        "description": "Maximum height, or depth, of each borehole heat exchanger, in meters.",
-        "type": "number"
-      },
-      "min_height": {
-        "description": "Minimum height, or depth, of each borehole heat exchanger, in meters.",
-        "type": "number"
-      },
-      "method": {
-        "description": "GHE sizing method",
-        "type": "string",
-        "enum": [
-          "nearsquare",
-          "Rectangular"
-        ]
-      }
+      "required": [
+        "ghe_geometric_params",
+        "b_min",
+        "b_max",
+        "max_height",
+        "min_height",
+        "method"
+      ]
     },
     "design_def": {
       "description": "Design parameters used for GHE sizing.",
       "type": "object",
-      "flow_rate": {
-        "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
-        "type": "number",
-        "minimum": 0
+      "properties": {
+        "flow_rate": {
+          "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 0.3
+        },
+        "flow_type": {
+          "description": "Flow type for ground heat exchanger sizing, in l/s.",
+          "type": "string",
+          "enum": [
+            "borehole",
+            "system"
+          ],
+          "default": "borehole"
+        },
+        "max_eft": {
+          "description": "Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
+          "type": "number",
+          "default": 35
+        },
+        "min_eft": {
+          "description": "Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
+          "type": "number",
+          "default": 5
+        }
       },
-      "flow_type": {
-        "description": "Flow type for ground heat exchanger sizing, in l/s.",
-        "type": "string",
-        "enum": [
-          "borehole",
-          "system"
-        ]
-      },
-      "max_eft": {
-        "description": "Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
-        "type": "number"
-      },
-      "min_eft": {
-        "description": "Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
-        "type": "number"
-      }
+      "required": [
+        "flow_rate",
+        "flow_type",
+        "max_eft",
+        "min_eft"
+      ]
     },
-    "ground_loads_def": {
+    "loads_def": {
       "description": "Heat rejection or extraction loads of the ground heat exchanger used for ground heat exchanger sizing, in Watts. Heat extraction loads are positive, and heat rejection loads are negative.",
-      "type": "array",
-      "items": {
-        "type": "number"
-      }
+      "type": "object",
+      "properties": {
+        "ground_loads": {
+          "description": "Array of loads.",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "ground_loads"
+      ]
     }
   }
 }

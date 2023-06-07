@@ -1,4 +1,3 @@
-within GMT_Lib.DHC.Components.Plants.Cooling.CoolingPlant;
 model CoolingPlant
   "Isolated central cooling plant template model."
   extends Buildings.Experimental.DHC.Plants.Cooling.Examples.ElectricChillerParallel(
