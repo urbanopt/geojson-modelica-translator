@@ -57,7 +57,12 @@
           "net_surface_area": 8.8241
         }
       ],
-      "diesel_generators": [],
+      "diesel_generators": [
+        {
+          "source_phase_shift": 0.0,
+          "nominal_power_generation": 1000.0
+        }
+      ],
       "battery_banks": [],
       "load": {
         "nominal_voltage": 207.84609690826525,
@@ -121,7 +126,16 @@
           "net_surface_area": 8.8241
         }
       ],
-      "diesel_generators": [],
+      "diesel_generators": [
+        {
+          "source_phase_shift": 90.0,
+          "nominal_power_generation": 10000.0
+        },
+        {
+          "source_phase_shift": 90.0,
+          "nominal_power_generation": 15000.0
+        }
+      ],
       "battery_banks": [],
       "load": {
         "nominal_voltage": 207.84609690826525,
@@ -185,7 +199,12 @@
           "net_surface_area": 8.8241
         }
       ],
-      "diesel_generators": [],
+      "diesel_generators": [
+        {
+          "source_phase_shift": 40.0,
+          "nominal_power_generation": 10000.0
+        }
+      ],
       "battery_banks": [],
       "load": {
         "nominal_voltage": 480.0,
@@ -229,8 +248,20 @@
     }
   },
   "electrical_grid": {
-    "frequency": 60
+    "frequency": 60,
+    "source_rms_voltage": 480,
+    "source_phase_shift": 0.0
   },
+  "ac_inductive_loads": [
+    {
+      "nominal_voltage": 480,
+      "nominal_power_consumption": "variable load"
+    },
+    {
+      "nominal_voltage": 480,
+      "nominal_power_consumption": "constant"
+    }
+  ],
   "photovoltaic_panels": [
     {
       "nominal_voltage": 480,
@@ -302,7 +333,14 @@
       "number_of_machines": 1
     }
   ],
-  "capacitor_banks": [],
+  "capacitor_banks": [
+    {
+      "nominal_capacity": 289
+    },
+    {
+      "nominal_capacity": 288
+    }
+  ],
   "substations": [
     {
       "RMS_voltage_low_side": 13200.0

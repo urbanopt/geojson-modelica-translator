@@ -1,0 +1,40 @@
+within;
+model Grid
+  "Isolated grid template model for GMT level 1 testing"
+  parameter Modelica.Units.SI.Frequency f = {{data["frequency"]}};
+  parameter Modelica.Units.SI.Voltage  V = {{data["source_rms_voltage"]}};
+  parameter Modelica.Units.SI.Angle  phiSou = {{data["source_phase_shift"]}};
+
+extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource(
+  grid(
+  f=f,
+  V=V,
+  phiSou = phiSou)
+  );
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the grid template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+
+end Grid;
