@@ -1,4 +1,3 @@
-within;
 model AC{{ data["model_name"] }}
   "Isolated AC distribution line template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Length l={{ data["length"] }};

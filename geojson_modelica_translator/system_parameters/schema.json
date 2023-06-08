@@ -834,23 +834,7 @@
         }
       },
       "required": [
-        "heat_flow_nominal",
-        "mass_chw_flow_nominal",
-        "chiller_water_flow_minimum",
-        "mass_cw_flow_nominal",
-        "chw_pump_head",
-        "cw_pump_head",
-        "pressure_drop_chw_nominal",
-        "pressure_drop_cw_nominal",
-        "pressure_drop_setpoint",
-        "temp_setpoint_chw",
-        "pressure_drop_chw_valve_nominal",
-        "pressure_drop_cw_pum_nominal",
-        "temp_air_wb_nominal",
-        "temp_cw_in_nominal",
-        "cooling_tower_water_temperature_difference_nominal",
-        "delta_temp_approach",
-        "ratio_water_air_nominal"
+        "temp_setpoint_chw"
       ]
     },
     "central_heating_plant_parameters": {
@@ -897,13 +881,7 @@
         }
       },
       "required": [
-        "heat_flow_nominal",
-        "mass_hhw_flow_nominal",
-        "boiler_water_flow_minimum",
-        "pressure_drop_hhw_nominal",
-        "temp_setpoint_hhw",
-        "pressure_drop_hhw_valve_nominal",
-        "pressure_drop_setpoint"
+        "temp_setpoint_hhw"
       ]
     },
     "combined_heat_and_power_parameters": {
@@ -944,14 +922,18 @@
           "description": "Results directory for GHE Designer",
           "type": "string"
         },
+        "ghe_specific_params": {
+          "description": "Specific properties for each Ground Heat Exchanger",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ghe_specific_params_def"
+          }
+        },
         "soil": {
           "$ref": "#/definitions/soil_def"
         },
         "pipe": {
           "$ref": "#/definitions/pipe_def"
-        },
-        "borehole": {
-          "$ref": "#/definitions/borehole_def"
         },
         "fluid": {
           "$ref": "#/definitions/fluid_def"
@@ -967,23 +949,17 @@
         },
         "design": {
           "$ref": "#/definitions/design_def"
-        },
-        "loads": {
-          "$ref": "#/definitions/loads_def"
         }
       },
       "required": [
-        "version",
-        "ghe_dir",
+        "ghe_specific_params",
         "soil",
         "pipe",
-        "borehole",
         "fluid",
         "grout",
         "simulation",
         "geometric_constraints",
-        "design",
-        "loads"
+        "design"
       ]
     },
     "diesel_generator_parameters": {
@@ -1376,6 +1352,75 @@
         "undisturbed_temp"
       ]
     },
+    "ghe_specific_params_def": {
+      "description": "The properties associated with each Ground Heat Exchanger instance",
+      "type": "object",
+      "properties": {
+        "ghe_id": {
+          "description": "Feature ID of GHE from GeoJSON Feature File.",
+          "type": "string"
+        },
+        "borehole": {
+          "description": "Borehole properties for Ground Heat Exchanger sizing.",
+          "type": "object",
+          "properties": {
+            "buried_depth": {
+              "description": "The depth below the ground surface to the top of the borehole, in meters.",
+              "type": "number",
+              "default": 1.2
+            },
+            "diameter": {
+              "description": "The diameter of the borehole, in meters.",
+              "type": "number",
+              "default": 0.15
+            },
+            "number_of_boreholes": {
+              "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+              "type": "number"
+            },
+            "length_of_boreholes": {
+              "description": "The length of the borehole (in meters), determined from Thermal Network sizing.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "buried_depth",
+            "diameter"
+          ],
+          "additionalProperties": true
+        },
+        "ground_loads": {
+          "description": "Heat rejection or extraction loads (in Watts) of the ground heat exchanger. \n\n Determined from the Thermal Network sizing, and used for ground heat exchanger sizing.\n\n Heat extraction loads are positive, and heat rejection loads are negative.",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "ghe_geometric_params": {
+          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
+          "type": "object",
+          "properties": {
+            "length_of_ghe": {
+              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            },
+            "width_of_ghe": {
+              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "length_of_ghe",
+            "width_of_ghe"
+          ]
+        }
+      },
+      "required": [
+        "ghe_id",
+        "ghe_geometric_params",
+        "borehole"
+      ]
+    },
     "pipe_def": {
       "description": "Pipe properties for Ground Heat Exchanger sizing",
       "type": "object",
@@ -1435,37 +1480,6 @@
         "rho_cp",
         "arrangement"
       ]
-    },
-    "borehole_def": {
-      "description": "Borehole properties for Ground Heat Exchanger sizing.",
-      "type": "object",
-      "properties": {
-        "length": {
-          "description": "The length of the borehole, in meters.",
-          "type": "number",
-          "default": 150
-        },
-        "buried_depth": {
-          "description": "The depth below the ground surface to the top of the borehole, in meters.",
-          "type": "number",
-          "default": 1.2
-        },
-        "diameter": {
-          "description": "The diameter of the borehole, in meters.",
-          "type": "number",
-          "default": 0.15
-        },
-        "number_of_boreholes": {
-          "description": "Number of boreholes on the site.",
-          "type": "number",
-          "default": 4
-        }
-      },
-      "required": [
-        "buried_depth",
-        "diameter"
-      ],
-      "additionalProperties": true
     },
     "fluid_def": {
       "description": "Fluid properties for Ground Heat Exchanger sizing",
@@ -1539,40 +1553,10 @@
         "num_months"
       ]
     },
-    "ghe_geometric_params_def": {
-      "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
-      "type": "object",
-      "properties": {
-        "ghe_id": {
-          "description": "Feature ID of GHE from GeoJSON Feature File.",
-          "type": "string"
-        },
-        "length": {
-          "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
-          "type": "number"
-        },
-        "width": {
-          "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "ghe_id",
-        "length",
-        "width"
-      ]
-    },
     "geometric_constraints_def": {
       "description": "Geometric constraints for GHE and boreholes.",
       "type": "object",
       "properties": {
-        "ghe_geometric_params": {
-          "type": "array",
-          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
-          "items": {
-            "$ref": "#/definitions/ghe_geometric_params_def"
-          }
-        },
         "b_min": {
           "description": "Minimum borehole-to-borehole spacing, in meters.",
           "type": "number",
@@ -1604,7 +1588,6 @@
         }
       },
       "required": [
-        "ghe_geometric_params",
         "b_min",
         "b_max",
         "max_height",
@@ -1647,22 +1630,6 @@
         "flow_type",
         "max_eft",
         "min_eft"
-      ]
-    },
-    "loads_def": {
-      "description": "Heat rejection or extraction loads of the ground heat exchanger used for ground heat exchanger sizing, in Watts. Heat extraction loads are positive, and heat rejection loads are negative.",
-      "type": "object",
-      "properties": {
-        "ground_loads": {
-          "description": "Array of loads.",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      },
-      "required": [
-        "ground_loads"
       ]
     }
   }

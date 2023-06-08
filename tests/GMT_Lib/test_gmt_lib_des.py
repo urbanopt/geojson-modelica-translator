@@ -4,11 +4,13 @@
 from pathlib import Path
 from shutil import rmtree
 
+import pytest
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.modelica.GMT_Lib.DHC.DHC_5G_waste_heat_GHX import (
     DHC5GWasteHeatAndGHX
 )
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
 )
@@ -26,6 +28,7 @@ env = Environment(
 )
 
 
+@pytest.mark.simulation
 def test_5G_des_waste_heat_and_ghx():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output'
@@ -46,3 +49,13 @@ def test_5G_des_waste_heat_and_ghx():
     # Otherwise, Modelica will error out.
     with open(package_output_dir / package_name / 'Resources' / 'Data' / 'Districts' / '8' / 'B11.mos', 'r') as f:
         assert '#Peak water heating load = 7714.5 Watts' in f.read()
+
+    # -- Act - with simulation
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'DES_5G.Districts.district',
+        file_to_load=package_output_dir / 'DES_5G' / 'package.mo',
+        run_path=package_output_dir / 'DES_5G',
+        start_time=0, stop_time=86400)
+
+    assert success is True
