@@ -268,8 +268,12 @@ the runner to work locally.
 Release Instructions
 --------------------
 
-* Bump version to <NEW_VERSION> in setup.py (use semantic versioning).
+* Bump version to <NEW_VERSION> in pyproject.toml (use semantic versioning).
+* Run :code:`poetry update` to ensure the lock file is up to date with the latest "pinned" dependencies.
 * Run :code:`pre-commit run --all-files` to ensure code is formatted properly.
+* Create a PR into develop with the updated version.
+* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and create a temp release tag to generate the CHANGELOG.
+* Copy in the CHANGELOG entries that are relevant to the new version, commit, push, and merge after CI passes.
 * Create a PR against develop into main.
 * After main branch passes, merge and checkout the main branch. Build the distribution using the following code:
 
@@ -301,8 +305,6 @@ Release Instructions
     ./docs/publish_docs.sh
 
 * Run :code:`git push origin <new_tag_version>`
-* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and convert the tag to a release.
-* Copy in the CHANGELOG entries that are relevant to the new version.
 * Verify new documentation on the `docs website <https://docs.urbanopt.net/geojson-modelica-translator/>`_.
 
 Code Documentation
