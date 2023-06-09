@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ModelicaMOS &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="modelica_runner" href="geojson_modelica_translator.modelica.modelica_runner.html" />
+    <link rel="prev" title="modelica_mos_file" href="geojson_modelica_translator.modelica.modelica_mos_file.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.modelica.modelica_mos_file.html" title="modelica_mos_file"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="geojson_modelica_translator.modelica.modelica_mos_file.html" accesskey="U">modelica_mos_file</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ModelicaMOS</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="modelicamos">
+<h1>ModelicaMOS<a class="headerlink" href="#modelicamos" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.modelica_mos_file.</span></span><span class="sig-name descname"><span class="pre">ModelicaMOS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in a .mos file if it exists into a data object
+The format is CSV with additional header info, so for
+now read the data as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Name of the file to import, typically a full path</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – File does not exist</p></li>
+<li><p><strong>Exception</strong> – The file extension needs to be MOS</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.__init__" title="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(filename[, data])</p></td>
+<td><p>Read in a .mos file if it exists into a data object The format is CSV with additional header info, so for now read the data as a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.replace_header_variable_value" title="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.replace_header_variable_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_header_variable_value</span></code></a>(key, new_value)</p></td>
+<td><p>Replace the variable value in the header vars</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.retrieve_header_variable_value" title="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.retrieve_header_variable_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieve_header_variable_value</span></code></a>(key[, cast_type])</p></td>
+<td><p>Retrieve a value from a variable in the header</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save" title="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>()</p></td>
+<td><p>Save the file back to disk</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save_as" title="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_as</span></code></a>(filename)</p></td>
+<td><p>Save the file to a new filename</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.replace_header_variable_value">
+<span class="sig-name descname"><span class="pre">replace_header_variable_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.replace_header_variable_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the variable value in the header vars</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Key of the variable value to replace</p></li>
+<li><p><strong>new_value</strong> (<em>Any</em>) – new value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Always True (for now)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.retrieve_header_variable_value">
+<span class="sig-name descname"><span class="pre">retrieve_header_variable_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_type:</span> <span class="pre">type</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.retrieve_header_variable_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a value from a variable in the header</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Key to retrieve</p></li>
+<li><p><strong>cast_type</strong> (<em>type</em><em>, </em><em>optional</em>) – Type to cast the value to. Defaults to str.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the key</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the file back to disk</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save_as">
+<span class="sig-name descname"><span class="pre">save_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.save_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the file to a new filename</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.modelica_mos_file.html"
+                          title="previous chapter">modelica_mos_file</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.modelica_runner.html"
+                          title="next chapter">modelica_runner</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_autosummary/geojson_modelica_translator.modelica.modelica_mos_file.ModelicaMOS.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="geojson_modelica_translator.modelica.modelica_mos_file.html" title="modelica_mos_file"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="geojson_modelica_translator.modelica.modelica_mos_file.html" >modelica_mos_file</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ModelicaMOS</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+Borefield
+=========
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.plants.borefield
+
+.. autoclass:: Borefield
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Borefield.__init__
+      ~Borefield.copy_required_mo_files
+      ~Borefield.ft2_to_m2
+      ~Borefield.get_modelica_type
+      ~Borefield.render_instance
+      ~Borefield.run_template
+      ~Borefield.to_dict
+      ~Borefield.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Borefield.instance_template_path
+      ~Borefield.model_name
+      ~Borefield.simple_gmt_type
+   
+   

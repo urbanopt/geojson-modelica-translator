@@ -19,13 +19,17 @@ ModelicaRunner
    .. autosummary::
    
       ~ModelicaRunner.__init__
-      ~ModelicaRunner.compile_in_docker
       ~ModelicaRunner.move_results
-      ~ModelicaRunner.run_fmu_in_docker
       ~ModelicaRunner.run_in_docker
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ModelicaRunner.ACTION_LOG_MAP
    
    

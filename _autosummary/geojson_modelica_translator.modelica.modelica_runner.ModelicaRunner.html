@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>ModelicaRunner &#8212; GeoJSON Modelica Translator v0.4.1 documentation</title>
+    <title>ModelicaRunner &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -57,12 +57,7 @@
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.modelica_runner.</span></span><span class="sig-name descname"><span class="pre">ModelicaRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelica_lib_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to run Modelica models. This is a very simple implementation of what needs to be
-a full CLI to run Modelica easily. At the moment, this probably only works on Linux/Mac
-and perhaps in Windows with Docker.
-For Ubuntu, here is the installation instruction: <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a></p>
-<p># TODO: test in windows
-# Document how to install Docker</p>
+<p>Class to run Modelica models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelica_lib_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="Permalink to this definition">¶</a></dt>
@@ -84,42 +79,29 @@ For Ubuntu, here is the installation instruction: <a class="reference external" 
 <tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([modelica_lib_path])</p></td>
 <td><p>Initialize the runner with data needed for simulation</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.compile_in_docker" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.compile_in_docker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile_in_docker</span></code></a>(file_to_run[, save_path])</p></td>
-<td><p>Build/compile the Modelica project in a docker-based environment using JModelica.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_results</span></code></a>(from_path, to_path[, project_name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_results</span></code></a>(from_path, to_path[, model_name])</p></td>
 <td><p>This method moves the results of the simulation that are known for now.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_fmu_in_docker" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_fmu_in_docker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_fmu_in_docker</span></code></a>(file_to_run[, run_path])</p></td>
-<td><p>Run the FMU in a docker-based environment.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_docker</span></code></a>(file_to_run[, run_path, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_docker</span></code></a>(action, model_name[, ...])</p></td>
 <td><p>Run the Modelica project in a docker-based environment.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.compile_in_docker">
-<span class="sig-name descname"><span class="pre">compile_in_docker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_to_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.compile_in_docker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build/compile the Modelica project in a docker-based environment using JModelica. The resulting
-FMU is saved to the save_path.</p>
-<p>stdout.log will store both stdout and stderr of the simulations</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_to_run</strong> – string, name of the file (could be directory?) to simulate</p></li>
-<li><p><strong>run_psave_pathath</strong> – string, location where the Modelica FMU will be saved</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>bool, success status</p>
-</dd>
-</dl>
-</dd></dl>
-
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ACTION_LOG_MAP</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results">
-<span class="sig-name descname"><span class="pre">move_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">move_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.move_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method moves the results of the simulation that are known for now.
 This method moves only specific files (stdout.log for now), plus all files and folders beginning
 with the “{project_name}_” name.</p>
@@ -128,7 +110,7 @@ with the “{project_name}_” name.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>from_path</strong> – pathlib.Path, where the files will move from</p></li>
 <li><p><strong>to_path</strong> – pathlib.Path, where the files will be saved. Will be created if does not exist.</p></li>
-<li><p><strong>project_name</strong> – string, name of the project ran in run_in_docker method</p></li>
+<li><p><strong>model_name</strong> – string, name of the project ran in run_in_docker method</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -138,42 +120,30 @@ with the “{project_name}_” name.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_fmu_in_docker">
-<span class="sig-name descname"><span class="pre">run_fmu_in_docker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_to_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_fmu_in_docker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run the FMU in a docker-based environment. Results are saved into the path of the
-file that was selected to run.</p>
-<p>stdout.log will store both stdout and stderr of the simulations</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_to_run</strong> – string, name of the file (could be directory?) to simulate</p></li>
-<li><p><strong>run_path</strong> – string, location where the Modelica simulation will start</p></li>
-<li><p><strong>project_name</strong> – string, name of the project being simulated. Will be used to determine name of results
-directory</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>tuple(bool, str), success status and path to the results directory</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker">
-<span class="sig-name descname"><span class="pre">run_in_docker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_to_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run the Modelica project in a docker-based environment. Results are saved into the path of the
-file that was selected to run.</p>
+<span class="sig-name descname"><span class="pre">run_in_docker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_to_load</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.run_in_docker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the Modelica project in a docker-based environment. The action will determine
+what type of run will be conducted. This method supports either a file path pointing to the package to load, or a modelica path which is a period separated path. Results are saved into run_path.</p>
 <p>stdout.log will store both stdout and stderr of the simulations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file_to_run</strong> – string, name of the file (could be directory?) to simulate</p></li>
-<li><p><strong>run_path</strong> – string, location where the Modelica simulation will start</p></li>
-<li><p><strong>project_name</strong> – string, name of the project being simulated. Will be used to determine name of results directory</p></li>
+<li><p><strong>action</strong> (<em>str</em>) – The action to run, must be one of compile_and_run, compile, or run</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the model to be simulated (this is the name within Modelica)</p></li>
+<li><p><strong>file_to_load</strong> (<em>str</em><em>, </em><em>Path</em>) – The file path or a modelica path to be simulated</p></li>
+<li><p><strong>run_path</strong> (<em>str</em><em>, </em><em>optional</em>) – location where the Modelica simulation will start. Defaults to None.</p></li>
+<li><p><strong>kwargs</strong> – additional arugments to pass to the runner which can include
+project_in_library (bool): whether the project is in a library or not
+start_time (float): start time of the simulation
+stop_time (float): stop time of the simulation
+step_size (float): step size of the simulation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>tuple(bool, str), success status and path to the results directory</p>
+<dd class="field-even"><p>success status and path to the results directory</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple[bool, str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -235,7 +205,7 @@ file that was selected to run.</p>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>

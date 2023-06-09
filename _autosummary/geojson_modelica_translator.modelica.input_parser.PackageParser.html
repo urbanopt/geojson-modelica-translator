@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>PackageParser &#8212; GeoJSON Modelica Translator v0.4.1 documentation</title>
+    <title>PackageParser &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.input_parser.InputParser.html" title="InputParser"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -133,17 +133,23 @@ so there is a bit of a hack to get this to work correctly.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.input_parser.PackageParser.new_from_template">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_from_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">within</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.input_parser.PackageParser.new_from_template" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_from_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">within</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#geojson_modelica_translator.modelica.input_parser.PackageParser" title="geojson_modelica_translator.modelica.input_parser.PackageParser"><span class="pre">PackageParser</span></a></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.input_parser.PackageParser.new_from_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create new package data based on the package.mo template. If within is not specified, then it is
 assumed that this is a top level package and will load from the package_base template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> – string, the path where the resulting files will be saved to.</p></li>
-<li><p><strong>name</strong> – string, the name of the model</p></li>
-<li><p><strong>order</strong> – list, ordered list of which models will be loaded (saved to package.order)</p></li>
-<li><p><strong>within</strong> – string, (optional), name where this package is within.</p></li>
+<li><p><strong>path</strong> (<em>str</em>) – the path where the resulting package file and order will be saved to.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – the name of the model</p></li>
+<li><p><strong>order</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – ordered list of which models will be loaded (saved to package.order)</p></li>
+<li><p><strong>within</strong> (<em>str</em><em>, </em><em>optional</em>) – name where this package is within.. Defaults to None.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>object of the package parser</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#geojson_modelica_translator.modelica.input_parser.PackageParser" title="geojson_modelica_translator.modelica.input_parser.PackageParser">PackageParser</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -236,7 +242,7 @@ assumed that this is a top level package and will load from the package_base tem
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.input_parser.InputParser.html" title="InputParser"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>

@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.modelica.lib.runner.om.compile\_fmu
+=================================================================
+
+.. currentmodule:: geojson_modelica_translator.modelica.lib.runner.om
+
+.. autofunction:: compile_fmu

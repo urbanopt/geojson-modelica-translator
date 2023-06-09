@@ -33,6 +33,7 @@ modelica
    geojson_modelica_translator.modelica.csv_modelica
    geojson_modelica_translator.modelica.input_parser
    geojson_modelica_translator.modelica.lib
+   geojson_modelica_translator.modelica.modelica_mos_file
    geojson_modelica_translator.modelica.modelica_runner
    geojson_modelica_translator.modelica.simple_gmt_base
 

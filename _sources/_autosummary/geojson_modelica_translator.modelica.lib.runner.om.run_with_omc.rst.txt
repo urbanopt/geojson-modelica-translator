@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.modelica.lib.runner.om.run\_with\_omc
+===================================================================
+
+.. currentmodule:: geojson_modelica_translator.modelica.lib.runner.om
+
+.. autofunction:: run_with_omc

@@ -1,0 +1,31 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+ModelicaMOS
+===========
+
+.. currentmodule:: geojson_modelica_translator.modelica.modelica_mos_file
+
+.. autoclass:: ModelicaMOS
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ModelicaMOS.__init__
+      ~ModelicaMOS.replace_header_variable_value
+      ~ModelicaMOS.retrieve_header_variable_value
+      ~ModelicaMOS.save
+      ~ModelicaMOS.save_as
+   
+   
+
+   
+   
+   

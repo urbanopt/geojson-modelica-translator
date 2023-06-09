@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>SimpleGMTBase &#8212; GeoJSON Modelica Translator v0.4.1 documentation</title>
+    <title>SimpleGMTBase &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.simple_gmt_base.html" title="simple_gmt_base"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -174,8 +174,24 @@ instantiate/define the model instance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.simple_gmt_base.SimpleGMTBase.to_modelica">
-<span class="sig-name descname"><span class="pre">to_modelica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.simple_gmt_base.SimpleGMTBase.to_modelica" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">to_modelica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generate_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.simple_gmt_base.SimpleGMTBase.to_modelica" title="Permalink to this definition">¶</a></dt>
 <dd><p>Render the template to a Modelica file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> (<em>Path</em>) – Directory to save the resulting template (modelica file) to.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – Model to render and also the name of the saved file (if save_file_name is None).</p></li>
+<li><p><strong>param_data</strong> (<em>dict</em>) – Data to pass to the rendering template.</p></li>
+<li><p><strong>iteration</strong> (<em>Int</em><em>, </em><em>optional</em>) – If dynamically creating filenames, then this is the iteration to
+be appended to the filename. Defaults to None.</p></li>
+<li><p><strong>save_file_name</strong> (<em>Str</em><em>, </em><em>optional</em>) – Name that the file will be saved as, if None, then will default.
+Do not include the directory, only the filename (with extension).
+Defaults to None.</p></li>
+<li><p><strong>generate_package</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, then a package.mo and package.order file will be created
+alongside the rendered template (Modelica) file. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -235,7 +251,7 @@ instantiate/define the model instance.</p>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.simple_gmt_base.html" title="simple_gmt_base"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>

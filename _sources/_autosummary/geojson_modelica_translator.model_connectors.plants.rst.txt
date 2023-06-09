@@ -30,6 +30,7 @@ plants
    :toctree:
    :recursive:
 
+   geojson_modelica_translator.model_connectors.plants.borefield
    geojson_modelica_translator.model_connectors.plants.chp
    geojson_modelica_translator.model_connectors.plants.cooling_plant
    geojson_modelica_translator.model_connectors.plants.plant_base

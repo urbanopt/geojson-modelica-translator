@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.modelica.lib.runner.om.configure\_mbl\_path
+=========================================================================
+
+.. currentmodule:: geojson_modelica_translator.modelica.lib.runner.om
+
+.. autofunction:: configure_mbl_path

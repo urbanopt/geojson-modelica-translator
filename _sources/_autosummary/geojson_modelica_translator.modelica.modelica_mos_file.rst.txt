@@ -1,0 +1,33 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+modelica\_mos\_file
+===================
+
+.. automodule:: geojson_modelica_translator.modelica.modelica_mos_file
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      ModelicaMOS
+   
+   
+
+   
+   
+   
+
+
+

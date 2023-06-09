@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.4.1 documentation</title>
+    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
@@ -37,7 +37,7 @@
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>  
@@ -1927,7 +1927,7 @@ a System Parameters file.</p>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="41"><ul class="simple">
+<tr class="row-even"><td rowspan="44"><ul class="simple">
 <li><p>time_series_model_parameters</p></li>
 </ul>
 </td>
@@ -2058,275 +2058,57 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>max_electrical_load</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Maximum electrical load from OpenStudio building simulation. (W)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
 <li><p><strong>filepath</strong></p></li>
 </ul>
 </td>
 <td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>delta_temp_air_cooling</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>10</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>delta_temp_air_heating</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>18</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="57"><ul class="simple">
+<tr class="row-even"><td rowspan="57"><ul class="simple">
 <li><p>central_cooling_plant_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Central cooling plant with maximum number of two chillers. Parameters associated with the model</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>object</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p>cooling_tower_fan_power_nominal</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Cooling tower fan power (W)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>5000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>heat_flow_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal district cooling load. (W)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>8000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>mass_chw_flow_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal chilled water mass flow rate. (kg/s)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>chiller_water_flow_minimum</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><blockquote>
-<div><p>Chiller minimum  water mass flow rate. (kg/s)</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>mass_cw_flow_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal condenser water mass flow rate. (kg/s)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>chw_pump_head</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chilled water pump head (Pa)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>300000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>cw_pump_head</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Cooling water pump head (Pa)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>200000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_chw_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal chilled water (evaporator) side pressure drop. (Pa)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>55000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_cw_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal cooling water (condenser) side pressure drop. (Pa)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>80000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_setpoint</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>The chilled water circuit pressure drop setpoint. (Pa)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>50000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_chw</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>District circuit chilled water temperature setpoint. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>5</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_chw_valve_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Chiller isolation valve pressure drop. (Pa)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>6000</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_cw_pum_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Cooling tower isolation valve pressure drop. (Pa)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>6000</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_air_wb_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Design air wet-bulb temperature. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>25</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_cw_in_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal cooling water inlet temperature. (C)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>35</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>cooling_tower_water_temperature_difference_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Nominal water temperature difference of the tower. (C)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>7</p></td>
-</tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>delta_temp_approach</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>Approach temperature difference. (deltaC)</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>3</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>ratio_water_air_nominal</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p>To be defined</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>number</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>0.625</p></td>
-</tr>
-<tr class="row-even"><td rowspan="25"><ul class="simple">
-<li><p>central_heating_plant_parameters</p></li>
-</ul>
-</td>
-<td colspan="4"><p>Central heating plant with maximum number of two boilers. Parameters associated with the model.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -2334,22 +2116,49 @@ a System Parameters file.</p>
 <tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>heat_flow_nominal</strong></p></li>
+<li><p>cooling_tower_fan_power_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal district heating load. (W)</p></td>
+<td colspan="3"><p>Cooling tower fan power (W)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>8000</p></td>
+<td colspan="2"><p>5000</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>mass_hhw_flow_nominal</strong></p></li>
+<li><p>heat_flow_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal heating water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>Nominal district cooling load. (W)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>8000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>mass_chw_flow_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal chilled water mass flow rate. (kg/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>chiller_water_flow_minimum</p></li>
+</ul>
+</td>
+<td colspan="3"><blockquote>
+<div><p>Chiller minimum  water mass flow rate. (kg/s)</p>
+</div></blockquote>
+</td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2358,10 +2167,10 @@ a System Parameters file.</p>
 <td colspan="2"><p>10</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>boiler_water_flow_minimum</strong></p></li>
+<li><p>mass_cw_flow_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Boiler minimum  water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>Nominal condenser water mass flow rate. (kg/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2370,10 +2179,34 @@ a System Parameters file.</p>
 <td colspan="2"><p>10</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_hhw_nominal</strong></p></li>
+<li><p>chw_pump_head</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal heating water (boiler side) pressure drop. (Pa)</p></td>
+<td colspan="3"><p>Chilled water pump head (Pa)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>300000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>cw_pump_head</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Cooling water pump head (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>200000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>pressure_drop_chw_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal chilled water (evaporator) side pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2382,22 +2215,46 @@ a System Parameters file.</p>
 <td colspan="2"><p>55000</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>temp_setpoint_hhw</strong></p></li>
+<li><p>pressure_drop_cw_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>District circuit heating water temperature setpoint. (C)</p></td>
+<td colspan="3"><p>Nominal cooling water (condenser) side pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>55</p></td>
+<td colspan="2"><p>80000</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>pressure_drop_hhw_valve_nominal</strong></p></li>
+<li><p>pressure_drop_setpoint</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Boiler isolation valve pressure drop. (Pa)</p></td>
+<td colspan="3"><p>The chilled water circuit pressure drop setpoint. (Pa)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>50000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_setpoint_chw</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>District circuit chilled water temperature setpoint. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>pressure_drop_chw_valve_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chiller isolation valve pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2405,29 +2262,83 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>6000</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>chp_installed</p></li>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>pressure_drop_cw_pum_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>True if heating plant is a Combined Heat and Power plant</p></td>
+<td colspan="3"><p>Cooling tower isolation valve pressure drop. (Pa)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>boolean</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
-<li><p>chp_thermal_following</p></li>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>6000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>temp_air_wb_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>True if CHP is thermal_following (prioritized thermal heat over electricity)</p></td>
+<td colspan="3"><p>Design air wet-bulb temperature. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>25</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>temp_cw_in_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal cooling water inlet temperature. (C)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>boolean</em></p></td>
+<td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="12"><ul class="simple">
-<li><p>combined_heat_and_power_parameters</p></li>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>35</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>cooling_tower_water_temperature_difference_nominal</p></li>
 </ul>
 </td>
-<td colspan="4"><p>Combined heat and power (CHP) parameters used by the microgrid model.</p></td>
+<td colspan="3"><p>Nominal water temperature difference of the tower. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>7</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>delta_temp_approach</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Approach temperature difference. (deltaC)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>3</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>ratio_water_air_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>To be defined</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.625</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="25"><ul class="simple">
+<li><p>central_heating_plant_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Central heating plant with maximum number of two boilers. Parameters associated with the model.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
@@ -2435,43 +2346,227 @@ a System Parameters file.</p>
 <tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>heat_flow_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Nominal district heating load. (W)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>8000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>mass_hhw_flow_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Nominal heating water mass flow rate. (kg/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>boiler_water_flow_minimum</p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Boiler minimum  water mass flow rate. (kg/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>pressure_drop_hhw_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>[unused] Nominal heating water (boiler side) pressure drop. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>55000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>temp_setpoint_hhw</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>District circuit heating water temperature setpoint. (C)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>55</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>pressure_drop_hhw_valve_nominal</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Boiler isolation valve pressure drop. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>6000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>chp_installed</p></li>
+</ul>
+</td>
+<td colspan="3"><p>True if heating plant is a Combined Heat and Power plant</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>chp_thermal_following</p></li>
+</ul>
+</td>
+<td colspan="3"><p>True if CHP is thermal_following (prioritized thermal heat over electricity)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="12"><ul class="simple">
+<li><p>combined_heat_and_power_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Combined heat and power (CHP) parameters used by the microgrid model.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>fuel_type</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Type of fuel used</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>enum</p></td>
+<tr class="row-odd"><td><p>enum</p></td>
 <td colspan="2"><p>Gas, Oil</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>number_of_machines</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Number of machines</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>single_electricity_generation_capacity</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Single machine electricity generation capacity (kW)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>performance_data_path</p></li>
 </ul>
 </td>
 <td colspan="3"><p>Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP</p></td>
 </tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="17"><ul class="simple">
+<li><p>ghe_parameters</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Parameters associated with Ground Heat Exchangers.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>version</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Version of GHE Designer</p></td>
+</tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>ghe_dir</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Results directory for GHE Designer</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>ghe_specific_params</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Specific properties for each Ground Heat Exchanger</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/ghe_specific_params_def</span></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>soil</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/soil_def</span></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>pipe</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/pipe_def</span></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>fluid</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/fluid_def</span></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>grout</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/grout_def</span></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>simulation</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/simulation_def</span></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p><strong>geometric_constraints</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/geometric_constraints_def</span></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p><strong>design</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><span class="xref std std-ref">#/definitions/design_def</span></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>diesel_generator_parameters</p></li>
@@ -2982,13 +3077,13 @@ a System Parameters file.</p>
 </ul>
 </td>
 </tr>
-<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>fifth_generation_def</p></li>
 </ul>
 </td>
 <td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="6"><ul class="simple">
 <li><p><strong>fifth_generation</strong></p></li>
 </ul>
 </td>
@@ -3012,28 +3107,699 @@ a System Parameters file.</p>
 </td>
 <td colspan="2"><p><span class="xref std std-ref">#/definitions/combined_heat_and_power_parameters</span></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
+<li><p>ghe_parameters</p></li>
+</ul>
+</td>
+<td colspan="2"><p><span class="xref std std-ref">#/definitions/ghe_parameters</span></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><ul class="simple">
 <li><p>connected_buildings</p></li>
 </ul>
 </td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="34"><ul class="simple">
 <li><p>fifth_gen_ets_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>supply_water_temperature_building</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Water supply temperature building side. (C)</p></td>
 </tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>15</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>chilled_water_supply_temp</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
+</tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>5</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>hot_water_supply_temp</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Heating water supply temperature. (C)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>50</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>cop_heat_pump_heating</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>COP of heat pump for heating water production.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>2.5</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>cop_heat_pump_cooling</p></li>
+</ul>
+</td>
+<td colspan="3"><p>COP of heat pump for cooling water production.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>3.5</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>pump_flow_rate</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design volume flow rate of the ambient loop pump. (m3/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>pump_design_head</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design head pressure of the ambient loop pump. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>150000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>ets_pump_flow_rate</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design volume flow rate of the ETS pump. (m3/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.0005</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>ets_pump_head</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design head pressure of the ETS pump. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>10000</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>fan_design_flow_rate</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design volume flow rate of the load-side fan. (m3/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.25</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>fan_design_head</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Design head pressure of the load-side fan. (Pa)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>150</p></td>
+</tr>
+<tr class="row-even"><td rowspan="12"><ul class="simple">
+<li><p>soil_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Soil properties for Ground Heat Exchanger sizing</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>conductivity</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The conductivity of the soil, in units of W/m-K.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>2</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>rho_cp</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The volumetric heat capacity of the soil, in units of J/m^3-K</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>2600000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>undisturbed_temp</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The undisturbed average soil temperature, in units of degrees Celsius.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>15</p></td>
+</tr>
+<tr class="row-even"><td rowspan="29"><ul class="simple">
+<li><p>ghe_specific_params_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>The properties associated with each Ground Heat Exchanger instance</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>ghe_id</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Feature ID of GHE from GeoJSON Feature File.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="14"><ul class="simple">
+<li><p><strong>borehole</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Borehole properties for Ground Heat Exchanger sizing.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>buried_depth</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>The depth below the ground surface to the top of the borehole, in meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>1.2</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>diameter</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>The diameter of the borehole, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>0.15</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>number_of_boreholes</p></li>
+</ul>
+</td>
+<td colspan="2"><p>Number of boreholes on the site, determined from Thermal Network sizing</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>length_of_boreholes</p></li>
+</ul>
+</td>
+<td colspan="2"><p>The length of the borehole (in meters), determined from Thermal Network sizing.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>True</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>ground_loads</p></li>
+</ul>
+</td>
+<td colspan="3"><p>Heat rejection or extraction loads (in Watts) of the ground heat exchanger.</p>
+<blockquote>
+<div><p>Determined from the Thermal Network sizing, and used for ground heat exchanger sizing.</p>
+<p>Heat extraction loads are positive, and heat rejection loads are negative.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="7"><ul class="simple">
+<li><p><strong>ghe_geometric_params</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>length_of_ghe</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>Horizontal surface length allowed for the ground heat exchanger, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p><strong>width_of_ghe</strong></p></li>
+</ul>
+</td>
+<td colspan="2"><p>Horizontal surface width allowed for the ground heat exchanger, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="30"><ul class="simple">
+<li><p>pipe_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Pipe properties for Ground Heat Exchanger sizing</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>inner_diameter</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The diameter of the inner pipe surface, in meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.0269</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>outer_diameter</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The diameter of the outer pipe surface, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.0334</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>shank_spacing</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e. not referenced from each pipes respective centerline), in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.0277</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>roughness</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The surface roughness of the pipe, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>1e-06</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>conductivity</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The conductivity of the pipe material, in W/m-K.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0.4</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>rho_cp</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The volumetric heat capacity of the pipe material, in J/m^3-K</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>1542000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>arrangement</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Arrangement of the pipes.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>singleutube, coaxial, doubleutube</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>singleutube</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="15"><ul class="simple">
+<li><p>fluid_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Fluid properties for Ground Heat Exchanger sizing</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>fluid_name</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Circulating fluid parameters for ground heat exchanger sizing.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>Water, EthylAlcohol, EthyleneGlycol, MethylAlcohol, PropyleneGlycol</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>Water</p></td>
+</tr>
+<tr class="row-even"><td rowspan="5"><ul class="simple">
+<li><p><strong>concentration_percent</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>The concentration of circulation fluid in percent, from 0-60.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>maximum</p></td>
+<td colspan="2"><p>60</p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>temperature</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Average design fluid temperature at peak conditions, in C.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>20</p></td>
+</tr>
+<tr class="row-even"><td rowspan="11"><ul class="simple">
+<li><p>grout_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Grout properties used for ground heat exchanger sizing.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>conductivity</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Grout thermal conductivity, in W/m-K.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>rho_cp</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Grout volumetric heat capacity, in J/m^3-K.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>4408000</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<li><p>simulation_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Simulation parameters use for ground heat exchanger sizing.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>num_months</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Length of ground heat exchanger sizing period, in months.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>240</p></td>
+</tr>
+<tr class="row-even"><td rowspan="19"><ul class="simple">
+<li><p>geometric_constraints_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Geometric constraints for GHE and boreholes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>b_min</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Minimum borehole-to-borehole spacing, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>3</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>b_max</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Maximum borehole-to-borehole spacing, in meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>max_height</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Maximum height, or depth, of each borehole heat exchanger, in meters.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>200</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>min_height</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Minimum height, or depth, of each borehole heat exchanger, in meters.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>100</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>method</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>GHE sizing method</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>nearsquare, rectangle</p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>rectangle</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="17"><ul class="simple">
+<li><p>design_def</p></li>
+</ul>
+</td>
+<td colspan="4"><p>Design parameters used for GHE sizing.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>flow_rate</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Nominal design mass flow rate. Depending on whether the flow_type attribute is set to ‘borehole’ or ‘system’, this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>minimum</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>0.3</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>flow_type</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Flow type for ground heat exchanger sizing, in l/s.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>borehole, system</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>borehole</p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>max_eft</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>35</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>min_eft</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>5</p></td>
 </tr>
 </tbody>
 </table>
@@ -3110,7 +3876,7 @@ a System Parameters file.</p>
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.4.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>

@@ -1,0 +1,36 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
+
+om
+==
+
+.. automodule:: geojson_modelica_translator.modelica.lib.runner.om
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      compile_fmu
+      configure_mbl_path
+      run_as_fmu
+      run_with_omc
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
