@@ -1,6 +1,33 @@
 Change Log
 ==========
 
+Version 0.5.0
+-------------
+
+## What's Changed
+### Exciting New Features 🎉
+* Python 3.11 support by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/518
+* Add max_electrical_load to building sys-param data by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/530
+* Modifications for GHE by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/526
+* Add Level 1 - 5G DES system by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/539
+* Set SWH peak to 1/10th of space heating or min 5000W by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/542
+* Added GHE templates by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/533
+* Add OpenModelica compatibility by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/516
+* Modify GHE params by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/537
+* Enable compile & simulate with OpenModelica in Docker by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/545
+### Other Changes
+* Specify ports for each time series building in instance template by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/525
+* Update license language by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/529
+* Add MOS file wrapper and size the 5G mass flow rate by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/548
+* Fixing borefield test breaks due to schema changes by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/550
+* Updating GHE Parameters: Modifying GHE Parameters schema and example files by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/551
+* Enhance and expand microgrid templates and code by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/549
+
+## New Contributors
+* @tanushree04 made their first contribution in https://github.com/urbanopt/geojson-modelica-translator/pull/526
+
+**Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1...v0.5.0
+
 Version 0.4.1
 -------------
 ## What's Changed
