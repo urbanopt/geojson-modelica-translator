@@ -4,6 +4,7 @@
 import logging
 import shutil
 from pathlib import Path
+from typing import Union
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
@@ -19,12 +20,11 @@ logging.basicConfig(
 
 
 class ModelBase(object):
-    """
-    Base class of the model connectors. The connectors can utilize various methods to create a building (or other
+    """Base class of the model connectors. The connectors can utilize various methods to create a building (or other
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
     # model_name must be overridden in subclass
-    model_name = None
+    model_name: Union[str, None] = None
 
     def __init__(self, system_parameters, template_dir):
         """
@@ -58,8 +58,8 @@ class ModelBase(object):
             district_params = self.system_parameters.get_param("district_system")
             if 'fifth_generation' in district_params:
                 self.district_template_data = {
-                    "temp_setpoint_hhw": district_params['fifth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
-                    "temp_setpoint_chw": district_params['fifth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
+                    # "temp_setpoint_hhw": district_params['fifth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
+                    # "temp_setpoint_chw": district_params['fifth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
                 }
             elif 'fourth_generation' in district_params:
                 self.district_template_data = {
@@ -114,7 +114,9 @@ class ModelBase(object):
         """
         file_data = template.render(**kwargs)
 
-        Path(save_file_name).parent.mkdir(parents=True, exist_ok=True)
+        if not isinstance(save_file_name, Path):
+            save_file_name = Path(save_file_name)
+        save_file_name.parent.mkdir(parents=True, exist_ok=True)
         with open(save_file_name, "w") as f:
             f.write(file_data)
 

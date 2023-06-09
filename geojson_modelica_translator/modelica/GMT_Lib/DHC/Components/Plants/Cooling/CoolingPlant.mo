@@ -1,4 +1,3 @@
-within GMT_Lib.DHC.Components.CentralPlant.Cooling;
 model CoolingPlant
   "This example is to validate template Central Cooling Plant component model."
     extends Buildings.Experimental.DHC.CentralPlants.Cooling.Examples.Plant(

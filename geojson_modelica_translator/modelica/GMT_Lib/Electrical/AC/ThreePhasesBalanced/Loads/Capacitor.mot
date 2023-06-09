@@ -1,0 +1,41 @@
+within;
+model {{ data["model_name"] }}
+  "Isolated capacitor template model for GMT level 1 testing"
+  parameter Modelica.Units.SI.Power P_nominal = {{ data["nominal_capacity"] }};
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads(
+  varRC_y(
+  P_nominal = P_nominal),
+  load.height = 0,
+  load.duration = 10,
+  pow.height = 0,
+  pow.duration = 10,
+  pow.offset = 100,
+  pf.height = 0,
+  pf.duration = 10
+  );
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the capacitor template model implemented in
+<a href=\"  Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end {{ data["model_name"]}};

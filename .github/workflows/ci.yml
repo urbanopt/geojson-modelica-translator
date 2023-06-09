@@ -21,49 +21,39 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, windows-latest]
-        python-version: ["3.8", "3.10"]
-        test_env: [python, precommit, docs]
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.10", "3.11"]
+        test_env: [python, docs, mypy]
         mbl_branch: [maint_9.1.x]
-        include:
-          - os: ubuntu-20.04
-            test_env: python
-            mbl_branch: maint_9.1.x
+        exclude:
+          # only test mypy on linux for all versions of python
+          - os: windows-latest
+            test_env: mypy
+          # only test docs on linux for all versions of python
+          - os: windows-latest
+            test_env: docs
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      -
-        name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      -
-        name: Display system info
+      - name: Display system info
         run: |
           python -c "import sys; print(sys.version)"
           docker --version
           docker-compose --version
-      -
-        name: Install and configure Poetry
+      - name: Install and configure Poetry
         uses: abatilo/actions-poetry@v2
         with:
-          poetry-version: 1.2.2
-      -
-        name: Install dependencies with Poetry
+          poetry-version: 1.4.2
+      - name: Install dependencies with Poetry
         run: |
           poetry --version
           poetry install
           poetry update
-      # -
-      #   name: Save Optimica license to file
-      #   if: matrix.os == 'ubuntu-20.04'
-      #   shell: bash
-      #   run: |
-      #     mkdir -p /home/runner/modelon
-      #     echo "#Please do not delete this comment line." > /home/runner/modelon/license.lic
-      #     echo "${{ secrets.MODELON_LICENSE_FILE }}" >> /home/runner/modelon/license.lic
-      -
-        name: Install modelicafmt
+      - name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
           curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.2/modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz"
@@ -74,13 +64,12 @@ jobs:
           else
             mv modelicafmt '/c/Program Files/'
           fi
-      -
-        name: Install MBL
+      - name: Install MBL
         env:
           MATRIX_OS: ${{ matrix.os }}
           MBL_BRANCH: ${{ matrix.mbl_branch }}
         run: |
-          if [[ "${MATRIX_OS}" == 'ubuntu-20.04' ]]; then
+          if [[ "${MATRIX_OS}" == 'ubuntu-latest' ]]; then
             MODELICAPATH='/home/runner/work/modelica-buildings'
           else
             echo $GITHUB_WORKSPACE
@@ -91,44 +80,46 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      # #Don't build the container anymore, just have it pull from docker hub.
+      # Perhaps we want to eneable this again to build the gmt running container?
       # -
       #   name: Build Spawn Modelica Docker Container
-      #   env:
-      #     MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
       #   run: |
       #     cd geojson_modelica_translator/modelica/lib/runner
-      #     docker-compose build
-      -
-        name: Run PyTest
+      #     docker build -t nrel/gmt-om-runner:latest .
+      - name: Run pytest (simulation only on linux)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          # MODELON_MAC_ADDRESS: ${{ secrets.MODELON_MAC_ADDRESS }}
-          # MODELON_LICENSE_PATH: /home/runner/modelon
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
-            poetry run pytest --doctest-modules -v --cov-report term-missing --cov . -m 'not simulation and not compilation' ./tests
+            if [ '${{ matrix.os }}' == 'windows-latest' ]; then
+              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation' ./tests
+            else
+              poetry run pytest --doctest-modules -v --cov-report term-missing --cov . ./tests
+            fi
           fi
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
         with:
           extra_args: --all-files
+      - name: Run mypy
+        run: |
+          if [ '${{ matrix.test_env }}' == 'mypy' ]; then
+            poetry run mypy --install-types --non-interactive --show-error-codes .
+          fi
       - name: Build docs
         run: |
           if [ '${{ matrix.test_env }}' == 'docs' ]; then
             cd docs
             poetry run make html
           fi
-      -
-        name: Coveralls
+      - name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-20.04' && matrix.test_env == 'python' && matrix.mbl_branch == 'maint_9.1.x' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'maint_9.1.x' }}
         run: |
           poetry run coveralls
-      -
-        name: Job Failed
+      - name: Job Failed
         if: ${{ failure() }}
         run: |
           echo "Maybe these logs will help?"

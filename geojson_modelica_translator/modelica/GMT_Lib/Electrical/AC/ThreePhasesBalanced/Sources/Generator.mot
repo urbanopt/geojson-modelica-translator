@@ -1,0 +1,38 @@
+within;
+model {{data['model_name']}}
+  "Isolated generator template model for GMT level 1 testing"
+  parameter Modelica.Units.SI.Angle  phiGen = {{data["source_phase_shift"]}};
+  parameter Modelica.Units.SI.Power  offset = {{data["nominal_power_generation"]}} "Generator nominal power generation";
+extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource(
+  generator(
+  phiGen=phiGen"AC generator model"),
+  generation(
+  offset= offset"Nominal power generation in source input block")
+  );
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the generator template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+
+end {{data['model_name']}};

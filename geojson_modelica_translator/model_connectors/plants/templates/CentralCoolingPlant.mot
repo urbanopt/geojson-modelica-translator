@@ -109,8 +109,8 @@ within {{ project_name }}.Plants;
     "On signal of the plant"
     annotation (Placement(transformation(extent={{-180,40},{-140,80}}),iconTransformation(extent={{-140,60},{-100,100}})));
   Modelica.Blocks.Interfaces.RealInput TCHWSupSet(
-    final unit="K",
-    displayUnit="degC")
+    each final unit="K",
+    each displayUnit="degC")
     "Set point for chilled water supply temperature"
     annotation (Placement(transformation(extent={{-180,0},{-140,40}}),iconTransformation(extent={{-140,10},{-100,50}})));
   Modelica.Blocks.Interfaces.RealInput dpMea(
@@ -164,7 +164,7 @@ within {{ project_name }}.Plants;
     annotation (Placement(transformation(extent={{-10,-60},{10,-40}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(
     redeclare package Medium=Medium,
-    allowFlowReversal=false,
+    allowFlowReversal=true,
     m_flow_nominal=mCHW_flow_nominal*0.05,
     dpValve_nominal=dpCHW_nominal)
     "Chilled water bypass valve"

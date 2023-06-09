@@ -1,4 +1,3 @@
-within {{ project_name }}.PVPanels;
 model {{ data['model_name'] }}
   "Isolated PV panels template model for GMT level 1 testing"
   parameter Modelica.Units.SI.Area A = {{ data["net_surface_area_m2"] }};

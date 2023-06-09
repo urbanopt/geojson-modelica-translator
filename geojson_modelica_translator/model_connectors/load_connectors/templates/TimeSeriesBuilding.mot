@@ -179,13 +179,13 @@ model TimeSeriesBuilding
     "SHW load"
     annotation (Placement(transformation(extent={{300,-140},{340,-100}}),iconTransformation(extent={{-40,-40},{40,40}},rotation=-90,origin={280,-340})));
   Modelica.Blocks.Interfaces.RealOutput QReqHea_flow(
-    quantity="HeatFlowRate",
-    unit="W") if have_heaLoa
+    each quantity="HeatFlowRate",
+    each unit="W") if have_heaLoa
     "Heating load"
     annotation (Placement(transformation(extent={{300,20},{340,60}}),iconTransformation(extent={{-20,-20},{20,20}},rotation=-90,origin={200,-320})));
   Modelica.Blocks.Interfaces.RealOutput QReqCoo_flow(
-    quantity="HeatFlowRate",
-    unit="W") if have_cooLoa
+    each quantity="HeatFlowRate",
+    each unit="W") if have_cooLoa
     "Cooling load"
     annotation (Placement(transformation(extent={{300,-20},{340,20}}),iconTransformation(extent={{-20,-20},{20,20}},rotation=-90,origin={260,-320})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant noHea(

@@ -73,7 +73,8 @@ class District:
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
             "diagram": diagram,
             "couplings": [],
-            "models": []
+            "models": [],
+            "is_ghe_district": self.system_parameters.get_param('$.district_system.fifth_generation.ghe_parameters')
         }
         common_template_params = {
             'globals': {
@@ -85,11 +86,14 @@ class District:
             },
             'graph': self._coupling_graph,
             'sys_params': {
-                'district_system': self.system_parameters.get_param('$.district_system')
+                'district_system': self.system_parameters.get_param('$.district_system'),
+                # num_buildings counts the ports required for 5G systems
+                "num_buildings": len(self.system_parameters.get_param('$.buildings')),
             }
         }
 
         # render each coupling
+        load_num = 1
         for coupling in self._coupling_graph.couplings:
             template_context = {
                 'diagram': diagram.to_dict(coupling.id, is_coupling=True),
@@ -98,8 +102,12 @@ class District:
 
             coupling_load = coupling.get_load()
             if coupling_load is not None:
+                # read sys params file for the load
                 building_sys_params = self.system_parameters.get_param_by_building_id(coupling_load.building_id, '$')
                 template_context['sys_params']['building'] = building_sys_params
+                # Note which load is being used, so ports connect properly in couplings/5G_templates/ConnectStatements
+                template_context['sys_params']['load_num'] = load_num
+                load_num += 1
 
             templated_result = coupling.render_templates(template_context)
             district_template_params['couplings'].append({

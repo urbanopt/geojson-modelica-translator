@@ -1,0 +1,8 @@
+loadModel(Modelica, {"4.0.0"});
+loadModel(Buildings);
+
+{% if not project_in_library %}
+loadFile("{{ file_to_load }}");getErrorString();
+{% endif %}
+
+translateModelFMU({{ model_name }});getErrorString();

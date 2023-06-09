@@ -1,4 +1,3 @@
-within {{ project_name }}.WindTurbine;
 model {{ data["model_name"] }}
   "Isolated wind turbine template model for GMT level 1 testing"
   parameter Real scale={{ data["scaling_factor"] }} "Scale factor";

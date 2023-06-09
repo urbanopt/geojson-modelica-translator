@@ -1,6 +1,8 @@
   // time series load
   {{ model.modelica_type }} {{ model.id }}(
     {% if model.is_5g_district == 'bui' %}
+    allowFlowReversalBui = true,
+    allowFlowReversalSer = true,
     {{ model.is_5g_district }}(T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=291.15,
     delTAirCoo(displayUnit="degC")=10,
@@ -9,12 +11,17 @@
     Ti=120
     ), ets(have_hotWat = false)
     {% else %}
+    allowFlowReversal = true,
     T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=280.15,
     delTAirCoo(displayUnit="degC")=10,
     delTAirHea(displayUnit="degC")=20,
     k=0.1,
-    Ti=120
+    Ti=120,
+    nPorts_aHeaWat=1,
+    nPorts_bHeaWat=1,
+    nPorts_aChiWat=1,
+    nPorts_bChiWat=1
     {% endif %}
     )
     "Building model integrating multiple time series thermal zones."

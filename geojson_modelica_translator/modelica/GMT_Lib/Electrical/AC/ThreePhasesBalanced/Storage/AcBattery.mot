@@ -1,0 +1,35 @@
+within;
+model {{ data['model_name'] }}
+  "Isolated battery template model for GMT level 1 testing"
+  parameter Modelica.Units.SI.Energy  EMax = {{ data["nominal_capacity"] }};
+  parameter Modelica.Units.SI.Voltage V_nominal = {{ data["nominal_voltage"] }};
+  extends Buildings.Electrical.AC.ThreePhasesBalanced.Storage.Examples.AcBattery(
+  bat(
+  EMax=EMax,
+  V_nominal=V_nominal));
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the battery template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Storage.Examples.AcBattery.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Storage.Examples.AcBattery.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end {{ data['model_name']}};

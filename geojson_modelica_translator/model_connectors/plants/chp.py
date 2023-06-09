@@ -19,7 +19,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         self.chp_installed = self.system_parameters.get_param(
             "$.district_system.fourth_generation.central_heating_plant_parameters.chp_installed"
         )
-        if not self.chp_installed:
+        if self.chp_installed is not True:
             self.required_mo_files.append(Path(self.template_dir) / 'CentralHeatingPlant.mo')
             self.id = 'heaPla' + simple_uuid()
 
@@ -84,7 +84,10 @@ class HeatingPlantWithOptionalCHP(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        package_models = ['CentralHeatingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
+        if self.chp_installed:
+            package_models = ['CentralHeatingPlant'] + [Path(mo).stem for mo in self.required_mo_files]
+        else:
+            package_models = [Path(mo).stem for mo in self.required_mo_files]
         plants_package = PackageParser(scaffold.plants_path.files_dir)
         if plants_package.order_data is None:
             plants_package = PackageParser.new_from_template(
