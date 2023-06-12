@@ -19,12 +19,11 @@ logging.basicConfig(
 
 
 def configure_mbl_path() -> None:
-    """Configure the Modelica Building Library path"""
-    # The mbl is always mounted into the same folder within the Docker container
-    # If the user has checked out MBL, then the folder will already be at the
-    # level of Buildings folder, otherwise, the user most likely is developing
-    # from a git checkout and we need to go down one level to get to the Buildings.
-
+    """Configure the Modelica Building Library (MBL) path.  The mbl is always mounted into the
+    same folder within the Docker container. If the user has checked out MBL, then the folder
+    will already be at the level of Buildings folder, otherwise, the user most likely is
+    developing from a git checkout and we need to go down one level to get to the Buildings.
+    """
     if Path('/mnt/lib/mbl/package.mo').exists():
         mbl_path = Path('/mnt/lib/mbl')
         mbl_package_file = mbl_path / 'package.mo'
