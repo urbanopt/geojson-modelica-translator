@@ -323,8 +323,8 @@ class ModelicaRunner(object):
                 Path(f).unlink(missing_ok=True)
 
         # remove the 'tmp/temperatureResponseMatrix/*' folder if it exists
-        if (path / 'tmp/temperatureResponseMatrix').exists():
-            shutil.rmtree(path / 'tmp/temperatureResponseMatrix')
+        if (path / 'tmp' / 'temperatureResponseMatrix').exists():
+            shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
             # check if the tmp folder is empty now, and if so remove
             if not any((path / 'tmp').iterdir()):
                 (path / 'tmp').rmdir()
