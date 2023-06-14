@@ -288,7 +288,7 @@ class ModelicaRunner(object):
                 debug (bool): whether to remove all files or not
         """
         # list of files to always remove
-        always_remove_files = [
+        files_to_remove = [
             f'{model_name}',
             f'{model_name}.makefile',
             f'{model_name}.libs',
@@ -304,9 +304,9 @@ class ModelicaRunner(object):
         ]
 
         if not kwargs.get('debug', False):
-            always_remove_files.extend(conditional_remove_files)
+            files_to_remove.extend(conditional_remove_files)
 
-        for f in always_remove_files:
+        for f in files_to_remove:
             (path / f).unlink(missing_ok=True)
 
         # The other files below will always be removed, debug or not
