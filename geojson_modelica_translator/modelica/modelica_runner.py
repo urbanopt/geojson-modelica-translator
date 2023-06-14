@@ -320,7 +320,7 @@ class ModelicaRunner(object):
         ]
         for pattern in remove_files_glob:
             for f in path.glob(pattern):
-                f.unlink(missing_ok=True)
+                Path(f).unlink(missing_ok=True)
 
         # remove the 'tmp/temperatureResponseMatrix/*' folder if it exists
         if (path / 'tmp/temperatureResponseMatrix').exists():
