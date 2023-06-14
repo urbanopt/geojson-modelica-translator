@@ -5,7 +5,6 @@ import logging
 import os
 import shutil
 import subprocess
-from glob import glob
 from pathlib import Path
 from typing import Union
 
@@ -66,7 +65,7 @@ class ModelicaRunner(object):
 
         # If there is a file to load (meaning that we aren't loading from the library),
         # then check that it exists
-        if file_to_load and not os.path.exists(file_to_load):
+        if file_to_load and not Path(file_to_load).exists():
             raise SystemExit(f'File not found to run {file_to_load}')
 
     def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]) -> Path:
@@ -87,7 +86,7 @@ class ModelicaRunner(object):
             Path: Return the run_path as a Path object
         """
         if not run_path:
-            run_path = os.path.dirname(file_to_run)  # type: ignore
+            run_path = Path(file_to_run).parent  # type: ignore
         new_run_path = Path(run_path)
 
         # Modelica can't handle spaces in project name or path
@@ -142,7 +141,7 @@ class ModelicaRunner(object):
         # new om_docker.sh file name
         new_om_docker = run_path / self.om_docker_path.name
         shutil.copyfile(self.om_docker_path, new_om_docker)
-        os.chmod(new_om_docker, 0o775)
+        Path.chmod(new_om_docker, 0o775)
 
     def _subprocess_call_to_docker(self, run_path: Union[str, Path], action: str) -> int:
         """Call out to a subprocess to run the command in docker
@@ -155,7 +154,7 @@ class ModelicaRunner(object):
             int: exit code of the subprocess
         """
         # Set up the run content
-        curdir = os.getcwd()
+        curdir = Path.cwd()
         os.chdir(run_path)
         stdout_log = open('stdout.log', 'w')
         try:
@@ -304,14 +303,11 @@ class ModelicaRunner(object):
             'simulate.mos',
         ]
 
-        for f in always_remove_files:
-            if os.path.exists(os.path.join(path, f)):
-                os.remove(os.path.join(path, f))
-
         if not kwargs.get('debug', False):
-            for f in conditional_remove_files:
-                if os.path.exists(os.path.join(path, f)):
-                    os.remove(os.path.join(path, f))
+            always_remove_files.extend(conditional_remove_files)
+
+        for f in always_remove_files:
+            (path / f).unlink(missing_ok=True)
 
         # The other files below will always be removed, debug or not
 
@@ -323,12 +319,12 @@ class ModelicaRunner(object):
             f'{model_name}*.bin',
         ]
         for pattern in remove_files_glob:
-            for f in glob(os.path.join(path, pattern)):
-                os.remove(f)
+            for f in path.glob(pattern):
+                f.unlink(missing_ok=True)
 
         # remove the 'tmp/temperatureResponseMatrix/*' folder if it exists
-        if os.path.exists(os.path.join(path, 'tmp/temperatureResponseMatrix')):
-            shutil.rmtree(os.path.join(path, 'tmp/temperatureResponseMatrix'))
+        if (path / 'tmp/temperatureResponseMatrix').exists():
+            shutil.rmtree(path / 'tmp/temperatureResponseMatrix')
             # check if the tmp folder is empty now, and if so remove
-            if not os.listdir(os.path.join(path, 'tmp')):
-                shutil.rmtree(os.path.join(path, 'tmp'))
+            if not any((path / 'tmp').iterdir()):
+                (path / 'tmp').rmdir()
