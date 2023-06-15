@@ -5,7 +5,6 @@ import logging
 import os
 import shutil
 import subprocess
-from glob import glob
 from pathlib import Path
 from typing import Union
 
@@ -66,7 +65,7 @@ class ModelicaRunner(object):
 
         # If there is a file to load (meaning that we aren't loading from the library),
         # then check that it exists
-        if file_to_load and not os.path.exists(file_to_load):
+        if file_to_load and not Path(file_to_load).exists():
             raise SystemExit(f'File not found to run {file_to_load}')
 
     def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]) -> Path:
@@ -87,7 +86,7 @@ class ModelicaRunner(object):
             Path: Return the run_path as a Path object
         """
         if not run_path:
-            run_path = os.path.dirname(file_to_run)  # type: ignore
+            run_path = Path(file_to_run).parent  # type: ignore
         new_run_path = Path(run_path)
 
         # Modelica can't handle spaces in project name or path
@@ -142,7 +141,7 @@ class ModelicaRunner(object):
         # new om_docker.sh file name
         new_om_docker = run_path / self.om_docker_path.name
         shutil.copyfile(self.om_docker_path, new_om_docker)
-        os.chmod(new_om_docker, 0o775)
+        Path.chmod(new_om_docker, 0o775)
 
     def _subprocess_call_to_docker(self, run_path: Union[str, Path], action: str) -> int:
         """Call out to a subprocess to run the command in docker
@@ -155,7 +154,7 @@ class ModelicaRunner(object):
             int: exit code of the subprocess
         """
         # Set up the run content
-        curdir = os.getcwd()
+        curdir = Path.cwd()
         os.chdir(run_path)
         stdout_log = open('stdout.log', 'w')
         try:
@@ -203,6 +202,7 @@ class ModelicaRunner(object):
                 start_time (float): start time of the simulation
                 stop_time (float): stop time of the simulation
                 step_size (float): step size of the simulation
+                debug (bool): whether to run in debug mode or not, prevents files from being deleted.
 
         Returns:
             tuple[bool, str]: success status and path to the results directory
@@ -239,7 +239,7 @@ class ModelicaRunner(object):
 
         logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
-        self._cleanup_path(verified_run_path, model_name)
+        self.cleanup_path(verified_run_path, model_name, debug=kwargs.get('debug', False))
 
         logger.debug('moving results to results directory')
         # get the location of the results path
@@ -252,12 +252,13 @@ class ModelicaRunner(object):
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.
 
-        :param from_path: pathlib.Path, where the files will move from
-        :param to_path: pathlib.Path, where the files will be saved. Will be created if does not exist.
-        :param model_name: string, name of the project ran in run_in_docker method
-        :return: None
+        If there are results, they will simply be overwritten (for now).
+
+        Args:
+            from_path (Path): where the files will move from
+            to_path (Path): where the files will be saved. Will be created if does not exist.
+            model_name (Union[str, None], optional): name of the project ran in run_in_docker method. Defaults to None.
         """
-        # if there are results, they will simply be overwritten (for now).
         to_path.mkdir(parents=True, exist_ok=True)
 
         files_to_move = [
@@ -275,23 +276,40 @@ class ModelicaRunner(object):
                     # typecast back to strings for the shutil method.
                     shutil.move(str(to_move), str(to_path / to_move.name))
 
-    def _cleanup_path(self, path: Path, model_name: str) -> None:
-        """Clean up the files in the path that was presumably used to run the simulation
+    def cleanup_path(self, path: Path, model_name: str, **kwargs: dict) -> None:
+        """Clean up the files in the path that was presumably used to run the simulation.
+        If debug is passed, then simulation running files will not be removed, but the
+        intermediate simulation files will be removed (e.g., .c, .h, .o, .bin)
+
+        Args:
+            path (Path): Path of the folder to clean
+            model_name (str): Name of the model, used to remove model-specific intermediate files
+            kwargs: additional arguments to pass to the runner which can include
+                debug (bool): whether to remove all files or not
         """
-        remove_files = [
-            'om_docker.sh',
-            'compile_fmu.mos',
-            'simulate.mos',
+        # list of files to always remove
+        files_to_remove = [
             f'{model_name}',
             f'{model_name}.makefile',
+            f'{model_name}.libs',
             f"{model_name.replace('.', '_')}_info.json",
             f"{model_name.replace('.', '_')}_FMU.makefile",
             f"{model_name.replace('.', '_')}_FMU.libs",
         ]
 
-        for f in remove_files:
-            if os.path.exists(os.path.join(path, f)):
-                os.remove(os.path.join(path, f))
+        conditional_remove_files = [
+            'om_docker.sh',
+            'compile_fmu.mos',
+            'simulate.mos',
+        ]
+
+        if not kwargs.get('debug', False):
+            files_to_remove.extend(conditional_remove_files)
+
+        for f in files_to_remove:
+            (path / f).unlink(missing_ok=True)
+
+        # The other files below will always be removed, debug or not
 
         # glob for the .c, .h, .o, .bin files to remove
         remove_files_glob = [
@@ -301,15 +319,8 @@ class ModelicaRunner(object):
             f'{model_name}*.bin',
         ]
         for pattern in remove_files_glob:
-            for f in glob(os.path.join(path, pattern)):
-                os.remove(f)
+            for f in path.glob(pattern):  # type: ignore
+                Path(f).unlink(missing_ok=True)
 
-        # The below was a result from jmodelica and can *most likely* be removed
-        for g in glob(os.path.join(path, 'tmp-simulation-*')):
-            logger.debug(f"Removing tmp-simulation files {g}")
-            # This is a complete hack but the name of the other folder that gets created is the
-            # globbed directory without the tmp-simulation
-            eplus_path = os.path.join(path, os.path.basename(g).replace('tmp-simulation-', ''))
-            if os.path.exists(eplus_path):
-                shutil.rmtree(eplus_path)
-            shutil.rmtree(g)
+        # Note that the om.py script that runs within the container does cleanup
+        # the 'tmp' folder including the 'tmp/temperatureResponseMatrix' folder
