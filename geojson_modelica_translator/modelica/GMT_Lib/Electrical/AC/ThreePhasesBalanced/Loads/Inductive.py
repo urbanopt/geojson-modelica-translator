@@ -18,18 +18,18 @@ class Inductive_load(SimpleGMTBase):
         super().__init__(self.system_parameters, self.template_dir)
 
     def build_from_template(self, output_dir: Path):
-        inductive_load_params = self.system_parameters.get_param("$.ac_inductive_loads")
-        for index, load in enumerate(inductive_load_params):
+        for building_index, building in enumerate(self.system_parameters.get_param("$.buildings")):
+            # building_load_params = building["load"] # We only have electric loads, no distinction between types.
             inductive_params = {
-                'nominal_power_consumption': load["nominal_power_consumption"],
-                'nominal_voltage': load["nominal_voltage"],
-                'model_name': f"InductiveLoad{index}",
+                'nominal_power_consumption': building["load"]["max_reactive_power_kvar"],
+                'nominal_voltage': building["load"]["nominal_voltage"],
+                'model_name': f"Inductive{building_index}",
             }
             # render template to final modelica file
             self.to_modelica(
                 output_dir=output_dir,
                 model_name='Inductive',
                 param_data=inductive_params,
-                iteration=index
+                iteration=building_index
             )
             # If the sys-param file is missing an entry, it will show up as a jinja2.exceptions.UndefinedError
