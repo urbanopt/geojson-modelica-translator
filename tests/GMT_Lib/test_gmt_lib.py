@@ -313,6 +313,30 @@ def test_build_inductive_load():
     # Did the mofile get created?
     assert linecount(package_output_dir / 'Inductive0.mo') > 20
 
+
+@pytest.mark.simulation
+def test_simulate_inductive_load():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Inductive'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    inductive = Inductive_load(sys_params)
+    inductive.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'Inductive0',
+        file_to_load=package_output_dir / 'Inductive0.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Inductive0.mo') > 20
+    # Did the simulation run?
+    assert success is True
+
 # Keeping the code below because it may come back and this was a weird issue.
 # @pytest.mark.simulation
 # def test_stub_mbl_v9_with_not_msl_v4():
