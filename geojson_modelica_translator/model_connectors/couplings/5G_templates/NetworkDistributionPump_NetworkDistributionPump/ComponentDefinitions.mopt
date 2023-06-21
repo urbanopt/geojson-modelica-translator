@@ -1,4 +1,3 @@
-  // No components for borefield and ambient water stub coupling
   inner parameter 
     Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(
@@ -11,13 +10,11 @@
     {% endif %}
     mPipDis_flow_nominal=datDes.mPumDis_flow_nominal,
     dp_length_nominal=250,
-    final mCon_flow_nominal={bui_1.ets.mSerWat_flow_nominal,bui_2.ets.mSerWat_flow_nominal,
-        bui_3.ets.mSerWat_flow_nominal})    // How do I refer to the building instance names?                
+    final mCon_flow_nominal={{{ graph.couplings_by_type(coupling.network.id).load_couplings[0].load.id }}.ets.mSerWat_flow_nominal,
+    {{ graph.couplings_by_type(coupling.network.id).load_couplings[1].load.id }}.ets.mSerWat_flow_nominal,
+    {{ graph.couplings_by_type(coupling.network.id).load_couplings[2].load.id }}.ets.mSerWat_flow_nominal})                    
     "Design data"
     annotation (Placement(transformation(extent={{-140,100},{-120,120}})));
   parameter Boolean allowFlowReversalSer = true
     "Set to true to allow flow reversal in the service lines"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
-  parameter Boolean allowFlowReversalBui = false
-    "Set to true to allow flow reversal for in-building systems"
     annotation(Dialog(tab="Assumptions"), Evaluate=true);
