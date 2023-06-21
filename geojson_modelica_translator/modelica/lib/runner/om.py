@@ -7,6 +7,7 @@
 import argparse
 import logging
 import os
+import shutil
 from pathlib import Path
 from typing import Optional
 
@@ -19,12 +20,11 @@ logging.basicConfig(
 
 
 def configure_mbl_path() -> None:
-    """Configure the Modelica Building Library path"""
-    # The mbl is always mounted into the same folder within the Docker container
-    # If the user has checked out MBL, then the folder will already be at the
-    # level of Buildings folder, otherwise, the user most likely is developing
-    # from a git checkout and we need to go down one level to get to the Buildings.
-
+    """Configure the Modelica Building Library (MBL) path.  The mbl is always mounted into the
+    same folder within the Docker container. If the user has checked out MBL, then the folder
+    will already be at the level of Buildings folder, otherwise, the user most likely is
+    developing from a git checkout and we need to go down one level to get to the Buildings.
+    """
     if Path('/mnt/lib/mbl/package.mo').exists():
         mbl_path = Path('/mnt/lib/mbl')
         mbl_package_file = mbl_path / 'package.mo'
@@ -96,6 +96,16 @@ def run_with_omc() -> bool:
     # import time
     # time.sleep(10000)
     os.system(cmd)
+
+    # remove the 'tmp' folder that was created, because it will
+    # have different permissions than the user running the container
+    path = Path(__file__).parent.absolute()
+    if (path / 'tmp' / 'temperatureResponseMatrix').exists():
+        shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
+        # check if the tmp folder is empty now, and if so remove
+        if not any((path / 'tmp').iterdir()):
+            (path / 'tmp').rmdir()
+
     return True
 
 
