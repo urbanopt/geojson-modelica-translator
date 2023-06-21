@@ -1,5 +1,5 @@
 // Borefield ambient coupling connections
-  connect(supHeaWat_{{ sys_params.num_buildings }}.ports[1], {{ coupling.plant.id }}.port_a)
+  connect(supHeaWat_{{ sys_params.load_num }}.ports[1], {{ coupling.plant.id }}.port_a)
   {% raw %}annotation (Line(points={{-70,10},{-10,10}}, color={0,127,255}));
   {% endraw %}connect({{ coupling.plant.id }}.port_b, sinHeaWat.ports[1])
   {% raw %}annotation (Line(points={{10,10},{60,10}}, color={0,127,255}));
