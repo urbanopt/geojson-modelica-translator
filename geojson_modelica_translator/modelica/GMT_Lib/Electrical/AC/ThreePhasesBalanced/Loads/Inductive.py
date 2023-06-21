@@ -21,7 +21,7 @@ class Inductive_load(SimpleGMTBase):
         for building_index, building in enumerate(self.system_parameters.get_param("$.buildings")):
             # building_load_params = building["load"] # We only have electric loads, no distinction between types.
             inductive_params = {
-                'nominal_power_consumption': building["load"]["max_reactive_power_kvar"],
+                'nominal_power_consumption': building["load"]["max_power_kw"],
                 'nominal_voltage': building["load"]["nominal_voltage"],
                 'model_name': f"Inductive{building_index}",
             }
