@@ -1,0 +1,15 @@
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMaxSet(k=38 +
+        273.15) "Heating water supply temperature set point - Maximum value"
+    annotation (Placement(transformation(extent={{-120,40},{-100,60}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TChiWatSupSet(k=18 + 273.15)
+    "Chilled water supply temperature set point"
+    annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMinSet(k=28
+         + 273.15) "Heating water supply temperature set point - Minimum value"
+    annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THotWatSupSet(k=63 + 273.15)
+    "Hot water supply temperature set point"
+    annotation (Placement(transformation(extent={{-120,-20},{-100,0}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TColWat(k=15 + 273.15)
+    "Cold water temperature"
+    annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
