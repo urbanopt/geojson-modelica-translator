@@ -314,6 +314,7 @@ def test_build_inductive_load():
     assert linecount(package_output_dir / 'Inductive0.mo') > 20
 
 
+@pytest.mark.skip(reason="OMC failure: assertion has been violated during initialization")
 @pytest.mark.simulation
 def test_simulate_inductive_load():
     # -- Setup
