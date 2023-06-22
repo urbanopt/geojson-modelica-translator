@@ -218,7 +218,14 @@ class ModelicaRunner(object):
             verified_run_path, file_to_load, model_name, **kwargs
         )
 
-        exitcode = self._subprocess_call_to_docker(verified_run_path, action)
+        # If user ctrl-c's during a simulation, kill the container
+        try:
+            exitcode = self._subprocess_call_to_docker(verified_run_path, action)
+        except KeyboardInterrupt:
+            # Kill any containers from the nrel/gmt-om-runner image
+            docker_kill_command = 'docker rm $(docker stop $(docker ps -a -q --filter ancestor=nrel/gmt-om-runner --format="{{.ID}}"))'
+            subprocess.run(docker_kill_command.split(), check=True, text=True)
+            raise SystemExit("Quit by KeyboardInterrupt")
 
         logger.debug('checking stdout.log for errors')
         # Check the stdout.log file for errors
