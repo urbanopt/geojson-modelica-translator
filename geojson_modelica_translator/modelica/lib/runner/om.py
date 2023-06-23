@@ -159,6 +159,8 @@ if __name__ == "__main__":
         model = args.model
 
         if Path(model).exists():  # type: ignore
+            # TODO: This still needs to be implemented since the FMU runner isn't
+            # loading correctly.
             # run_as_fmu(fmu_name, args.start_time, args.end_time, args.sim_step)
             run_as_fmu(model, 0, 1, 0.05)
         else:
