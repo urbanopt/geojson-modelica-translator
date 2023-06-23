@@ -178,6 +178,22 @@ class ModelicaRunner(object):
             # time.sleep(10000)  # wait for the subprocess to start
             logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
             exitcode = p.wait()
+        except KeyboardInterrupt:
+            # List all containers and their images
+            docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
+            containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split('\n')
+
+            # Find containers from our image
+            image_name = 'nrel/gmt-om-runner'
+            for container_line in containers_list:
+                container_id, container_image = container_line.split()
+                if container_image == image_name:
+                    logger.debug(f"Killing container: {container_id} (Image: {container_image})")
+                    # Kill the container
+                    kill_command = f"docker kill {container_id}"
+                    subprocess.run(kill_command.split(), check=True, text=True)
+            # Remind user why the simulation didn't complete
+            raise SystemExit("Simulation stopped by user KeyboardInterrupt")
         finally:
             os.chdir(curdir)
             stdout_log.close()
@@ -218,14 +234,7 @@ class ModelicaRunner(object):
             verified_run_path, file_to_load, model_name, **kwargs
         )
 
-        # If user ctrl-c's during a simulation, kill the container
-        try:
-            exitcode = self._subprocess_call_to_docker(verified_run_path, action)
-        except KeyboardInterrupt:
-            # Kill any containers from the nrel/gmt-om-runner image
-            docker_kill_command = 'docker rm $(docker stop $(docker ps -a -q --filter ancestor=nrel/gmt-om-runner --format="{{.ID}}"))'
-            subprocess.run(docker_kill_command.split(), check=True, text=True)
-            raise SystemExit("Quit by KeyboardInterrupt")
+        exitcode = self._subprocess_call_to_docker(verified_run_path, action)
 
         logger.debug('checking stdout.log for errors')
         # Check the stdout.log file for errors
