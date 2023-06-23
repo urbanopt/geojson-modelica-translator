@@ -2,15 +2,19 @@ loadModel(Modelica, {"4.0.0"});
 loadModel(Buildings);
 
 {% if not project_in_library %}
-loadFile("{{ file_to_load }}");getErrorString();
+loadFile("{{ file_to_load }}");
+getErrorString();
 {% endif %}
 
 {% if use_default_time_params %}
-simulate({{ model_name }});getErrorString();
+simulate({{ model_name }});
 {% else %}
-    {% if not step_size %}
-simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}});getErrorString();
+    {% if step_size %}
+simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}}, stepSize={{step_size}});
+    {% elif number_of_intervals %}
+simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}}, numberOfIntervals={{number_of_intervals}});
     {% else %}
-simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}}, stepSize={{step_size}});getErrorString();
+simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}});
     {% endif %}
 {% endif %}
+getErrorString();
