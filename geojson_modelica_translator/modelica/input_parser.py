@@ -3,134 +3,27 @@
 
 import os
 from pathlib import Path
-from typing import Union
-
-from jinja2 import Environment, FileSystemLoader
-
-from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
-
-
-class PackageParser(object):
-    """
-    Class to read and modify the package.mo and the package.order file
-    """
-
-    def __init__(self, path=None):
-        """
-        Create an instance to manage the package.mo/order file. If no path is provided then the user
-        must add in their own package and order data. Or the user can load from the new_from_template
-        class method.
-
-        :param path: string, path to where the package.mo and package.order reside.
-        """
-        self.path = path
-        self.order_data = None  # This is stored as a string for now.
-        self.package_data = None
-        self.load()
-
-        self.template_env = Environment(
-            loader=FileSystemLoader(
-                searchpath=os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), "templates"
-                )
-            )
-        )
-        self.template_env.filters.update(ALL_CUSTOM_FILTERS)
-
-    @classmethod
-    def new_from_template(cls, path: Union[str, Path], name: str, order: list[str], within: str = None) -> "PackageParser":
-        """Create new package data based on the package.mo template. If within is not specified, then it is
-        assumed that this is a top level package and will load from the package_base template.
-
-        Args:
-            path (str): the path where the resulting package file and order will be saved to.
-            name (str): the name of the model
-            order (list[str]): ordered list of which models will be loaded (saved to package.order)
-            within (str, optional): name where this package is within.. Defaults to None.
-
-        Returns:
-            PackageParser: object of the package parser
-        """
-        klass = PackageParser(path)
-        if within:
-            template = klass.template_env.get_template("package.mot")
-        else:
-            template = klass.template_env.get_template("package_base.mot")
-
-        klass.package_data = template.render(within=within, name=name, order=order)
-        klass.order_data = "\n".join(order)
-        return klass
-
-    def load(self):
-        """
-        Load the package.mo and package.mo data from the member variable path
-        """
-        filename = os.path.join(self.path, "package.mo")
-        if os.path.exists(filename):
-            with open(filename, "r") as f:
-                self.package_data = f.read()
-
-        filename = os.path.join(self.path, "package.order")
-        if os.path.exists(filename):
-            with open(filename, "r") as f:
-                self.order_data = f.read()
-
-    def save(self):
-        """
-        Save the updated files to the same location
-        """
-        with open(os.path.join(os.path.join(self.path, "package.mo")), "w") as f:
-            f.write(self.package_data)
-
-        with open(os.path.join(os.path.join(self.path, "package.order")), "w") as f:
-            f.write(self.order_data)
-            f.write("\n")
-
-    @property
-    def order(self):
-        """
-        Return the order of the packages from the package.order file
-
-        :return: list, list of the loaded models in the package.order file
-        """
-        data = self.order_data.split("\n")
-        if "" in data:
-            data.remove("")
-        return data
-
-    def rename_model(self, old_model, new_model):
-        """
-        Rename the model name in the package.order file
-
-        :param old_model: string, existing name
-        :param new_model: string, new name
-        """
-        self.order_data = self.order_data.replace(old_model, new_model)
-
-    def add_model(self, new_model_name, insert_at=-1):
-        """Insert a new model into the package> Note that the order_data is stored as a string right now,
-        so there is a bit of a hack to get this to work correctly.
-
-        :param new_model_name: string, name of the new model to add to the package order.
-        :param insert_at: int, location to insert package, if 0 at beginning, -1 at end
-        """
-        data = self.order_data.split("\n")
-        if insert_at == -1:
-            data.append(new_model_name)
-        else:
-            data.insert(insert_at, new_model_name)
-        self.order_data = "\n".join(data)
-
-        # remove any empty lines
-        self.order_data = self.order_data.replace('\n\n', '\n')
+from typing import List, Tuple, Union
 
 
 class InputParser(object):
-    """
-    Class to read in Modelica files (.mo) and provide basic operations.
+    """Class to read in Modelica files (.mo) and provide basic operations.
+
+    This class is not recommended to be used and ModelicaBuilder should be used
+    instead which is syntax-aware of the Modelica language.
     """
 
-    def __init__(self, modelica_filename):
+    def __init__(self, modelica_filename: Union[str, Path]) -> None:
+        """Initialize the class with the modelica file to parse
+
+        Args:
+            modelica_filename (Union[str, Path]): Path to the modelica file (.mo) to parse
+
+        Raises:
+            Exception: SyntaxError, more than one within
+            Exception: SyntaxError, unknown token
+
+        """
         if not os.path.exists(modelica_filename):
             raise Exception(f"Modelica file does not exist: {modelica_filename}")
 
@@ -145,8 +38,16 @@ class InputParser(object):
         self.equations = []
 
     def parse_mo(self):
-        # eventually move this over to use token-based assessment of the files. Here is a list of some of the tokens
+        """Parse the input if it is a .mo file. This will populate the within, model, connections, and equations
+        along with various other tokens. This is a very basic parser and will not work for all cases.
+
+        # TODO: move over to token-based parsing and assessment of the files.
         # TODO: strip all spacing and reconstruct on export
+
+        Raises:
+            Exception: General exception Exception("More than one 'within' lines found")
+            Exception: _description_
+        """
         tokens = [
             "within",
             "block",
@@ -163,7 +64,7 @@ class InputParser(object):
         obj_data = ""
         connect_data = ""
         with open(self.modelica_filename, "r") as f:
-            for index, line in enumerate(f.readlines()):
+            for _, line in enumerate(f.readlines()):
                 if line == "\n":
                     # Skip blank lines (for now?
                     continue
@@ -173,7 +74,7 @@ class InputParser(object):
                         # remove the line feed and the trailing semicolon
                         self.within = line.split(" ")[1].rstrip().replace(";", "")
                     else:
-                        raise Exception("More than one 'within' lines found")
+                        raise SyntaxError("More than one 'within' lines found")
                     continue
                 elif line.startswith("model"):
                     # get the model name and save
@@ -189,7 +90,7 @@ class InputParser(object):
                     # check if any other tokens are triggered and throw a 'not-supported' message
                     for t in tokens:
                         if line.startswith(t):
-                            raise Exception(
+                            raise SyntaxError(
                                 f"Found other token '{t}' in '{self.modelica_filename}' that is not supported... \
                                 cannot continue"
                             )
@@ -227,48 +128,46 @@ class InputParser(object):
                     # there is nothing to do here
                     pass
 
-    def save(self):
+    def save(self) -> None:
+        """Save the resulting file to the same file from which it was initialized
         """
-        Save the resulting file to the same file from which it was initialized
+        return self.save_as(self.modelica_filename)
 
-        :return:
-        """
-        self.save_as(self.modelica_filename)
+    def save_as(self, new_filename: Union[str, Path]) -> None:
+        """Save the resulting file with a new filename
 
-    def save_as(self, new_filename):
-        """
-        Save the resulting file with a new filename
-
-        :param new_filename:
-        :return:
+        Args:
+            new_filename (Union[str, Path]): name of the new file to save as
         """
         with open(new_filename, "w") as f:
             f.write(self.serialize())
 
-    def remove_object(self, obj_name):
-        """
-        Remove an object by a name. Can be any part of the object name.
+    def remove_object(self, obj_name: str) -> None:
+        """Remove an object by a name. Can be any part of the object name.
 
-        :param obj_name: string, object name to match
-        :return:
+        Args:
+            obj_name (str): object name to match
         """
-        index, obj = self.find_model_object(obj_name)
+        index, _ = self.find_model_object(obj_name)
         if index is not None:
             del self.model["objects"][index]
 
-    def replace_within_string(self, new_string):
-        """
-        Replacement of the path portion of the within string
+    def replace_within_string(self, new_string: str) -> None:
+        """Replacement of the path portion of the within string
 
-        :param new_string: string, what to replace the existing within string with.
+        Args:
+            new_string (str): what to replace the existing within string with.
         """
         self.within = new_string
 
-    def find_model_object(self, obj_name):
-        """
-        Find a model object in the list of parsed objects
-        :param obj_name: string, name (including the instance)
-        :return: list, index and string of object
+    def find_model_object(self, obj_name: str) -> Tuple[Union[int, None], Union[str, None]]:
+        """Find a model object in the list of parsed objects
+
+        Args:
+            obj_name (str): name (including the instance)
+
+        Returns:
+            Tuple[Union[int, None], Union[str, None]]: index and string of object
         """
         for index, o in enumerate(self.model["objects"]):
             if obj_name in o:
@@ -277,50 +176,50 @@ class InputParser(object):
         return None, None
 
     def reload(self):
-        """
-        Reparse the data. This will remove any unsaved changes.
+        """Reparse the data. This will remove any unsaved changes.
         """
         self.init_vars()
         self.parse_mo()
 
-    def replace_model_string(self, model_name, model_instance, old_string, new_string):
-        """
-        Go through the models and find the model_name with a model_instance and change the value in the field to
+    def replace_model_string(self, model_name: str, model_instance: str, old_string: str, new_string: str):
+        """Go through the models and find the model_name with a model_instance and change the value in the field to
         the new_value. This will replace the entire value of the model field.
 
         This will not work with arrays or lists (e.g., {...}, [...])
 
-        :param model_name: string, name of the model
-        :param model_instance: string, instance of the model
-        :param old_string: string, name of the old string to replace
-        :param new_string: string, the new string
+        Args:
+            model_name (str): name of the model
+            model_instance (str): instance of the model
+            old_string (str): name of the old string to replace
+            new_string (str): new string
         """
-        index, _model = self.find_model_object(f"{model_name} {model_instance}")
+        index, _ = self.find_model_object(f"{model_name} {model_instance}")
         if index is not None:
             self.model["objects"][index] = self.model["objects"][index].replace(
                 old_string, new_string
             )
 
-    def add_model_object(self, model_name, model_instance, data):
-        """
-        Add a new model object to the model
+    def add_model_object(self, model_name: str, model_instance: str, data: List[str]) -> None:
+        """Add a new model object to the model
 
-        :param model_name: string
-        :param model_instance: string
-        :param data: list of strings
+        Args:
+            model_name (str): name of the model
+            model_instance (str): model instance name
+            data (List[str]): list of data to add
         """
         str = f"  {model_name} {model_instance}\n"
         for d in data:
             str += f"    {d}\n"
         self.model["objects"].append(str)
 
-    def add_parameter(self, var_type, var_name, value, description):
+    def add_parameter(self, var_type: str, var_name: str, value: any, description: str) -> None:
         """Add a new parameter. Will be prepended to the top of the models list
 
-        :param var_type: string, type of Modelica variable, Real, Integer, String, Modelica.Units.SI.Area, etc.
-        :param var_name: string, name of the variable. Note that this does not check for conflicts.
-        :param value: variant, value to set the variable name to.
-        :param description: string, description of the parameter
+        Args:
+            var_type (str): type of Modelica variable, Real, Integer, String, Modelica.Units.SI.Area, etc.
+            var_name (str): name of the variable. Note that this does not check for conflicts.
+            value (any): value to set the variable name to.
+            description (str): description of the parameter
         """
         # is the value is a string, then wrap in quotes
         if isinstance(value, str):
@@ -330,24 +229,29 @@ class InputParser(object):
         new_str = f"  parameter {var_type} {var_name}={value} \"{description}\";\n"
         self.model["objects"].insert(0, new_str)
 
-    def add_connect(self, a, b, annotation):
-        """
-        Add a new connection of port a to port b. The annotation will be appended on a new line.
+    def add_connect(self, a: str, b: str, annotation: str) -> None:
+        """Add a new connection of port a to port b. The annotation will be appended on a new line.
 
-        :param a: string, port a
-        :param b: string, port b
-        :param annotation: string, description
+        Args:
+            a (str): port a
+            b (str): port b
+            annotation (str): description
         """
         self.connections.append(f"  connect({a}, {b})\n    {annotation};\n")
 
-    def find_connect(self, port_a, port_b):
-        """
-        Find an existing connection that has port_a and/or port_b. If there are more than one, then it will only
+    def find_connect(self, port_a: str, port_b: str) -> Tuple[Union[int, None], Union[str, None]]:
+        """Find an existing connection that has port_a and/or port_b. If there are more than one, then it will only
         return the first.
 
-        :param port_a:
-        :param port_b:
-        :return:
+        Args:
+            port_a (str): port a
+            port_b (str): port b
+
+        Raises:
+            Exception: could not find the connection
+
+        Returns:
+            Tuple[Union[int, None], Union[str, None]]: index and connection tuple
         """
         for index, c in enumerate(self.connections):
             if not port_a:
@@ -361,15 +265,15 @@ class InputParser(object):
 
         return None, None
 
-    def replace_connect_string(self, a, b, new_a, new_b, replace_all=False):
-        """
-        Replace content of the connect string with new_a and/or new_b
+    def replace_connect_string(self, a: str, b: str, new_a: Union[str, None], new_b: Union[str, None], replace_all: bool = False) -> None:
+        """Replace content of the connect string with new_a and/or new_b
 
-        :param a: string, existing port a
-        :param b: string, existing port b
-        :param new_a: string, new port (or none)
-        :param new_b: string, new port b (or none
-        :param replace_all: boolean, allow replacemnt of all strings
+        Args:
+            a (str): existing port a
+            b (str): existing port b
+            new_a (str): new port (or none)
+            new_b (str): new port b (or none)
+            replace_all (bool, optional):  allow replacement of all strings. Defaults to False.
         """
         # find the connection that matches a, b
         index, c = self.find_connect(a, b)
@@ -385,23 +289,24 @@ class InputParser(object):
             else:
                 index, c = self.find_connect(a, b)
 
-    def remove_connect_string(self, a, b):
-        """
-        Remove a connection string that matches the a, b.
+    def remove_connect_string(self, a: str, b: str) -> None:
+        """Remove a connection string that matches the a, b.
 
-        :param a: string, existing port a
-        :param b: string, existing port b
+        Args:
+            a (str): existing port a
+            b (str): existing port b
         """
+
         # find the connection that matches a, b
-        index, c = self.find_connect(a, b)
+        index, _ = self.find_connect(a, b)
         if index:
             del self.connections[index]
 
-    def serialize(self):
-        """
-        Serialize the modelica object to a string with line feeds
+    def serialize(self) -> str:
+        """Serialize the modelica object to a string with line feeds
 
-        :return: string
+        Returns:
+            str: string representation of the data
         """
         str = f"within {self.within};\n"
         str += f"model {self.model['name']}\n"
