@@ -3,7 +3,7 @@
 
 import os
 from pathlib import Path
-from typing import Union
+from typing import Any, Union
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -23,9 +23,9 @@ class PackageParser(object):
             path (Union[str, Path], optional): path to where the package.mo and package.order reside.
                                                Defaults to None.
         """
-        self.path = path
-        self.order_data = None  # This is stored as a string for now.
-        self.package_data = None
+        self.path: Union[str, Path, None] = path
+        self.order_data: Any = None
+        self.package_data: Any = None
         self.load()
 
         self.template_env = Environment(
@@ -38,7 +38,7 @@ class PackageParser(object):
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
     @classmethod
-    def new_from_template(cls, path: Union[str, Path], name: str, order: list[str], within: str = None) -> "PackageParser":
+    def new_from_template(cls, path: Union[str, Path], name: str, order: list[str], within: Union[str, None] = None) -> "PackageParser":
         """Create new package data based on the package.mo template. If within is not specified, then it is
         assumed that this is a top level package and will load from the package_base template.
 
@@ -64,12 +64,12 @@ class PackageParser(object):
     def load(self) -> None:
         """Load the package.mo and package.mo data from the member variable path
         """
-        filename = os.path.join(self.path, "package.mo")
+        filename = os.path.join(str(self.path), "package.mo")
         if os.path.exists(filename):
             with open(filename, "r") as f:
                 self.package_data = f.read()
 
-        filename = os.path.join(self.path, "package.order")
+        filename = os.path.join(str(self.path), "package.order")
         if os.path.exists(filename):
             with open(filename, "r") as f:
                 self.order_data = f.read()
@@ -77,10 +77,10 @@ class PackageParser(object):
     def save(self) -> None:
         """Save the updated files to the same location
         """
-        with open(os.path.join(os.path.join(self.path, "package.mo")), "w") as f:
+        with open(os.path.join(os.path.join(str(self.path), "package.mo")), "w") as f:
             f.write(self.package_data)
 
-        with open(os.path.join(os.path.join(self.path, "package.order")), "w") as f:
+        with open(os.path.join(os.path.join(str(self.path), "package.order")), "w") as f:
             f.write(self.order_data)
             f.write("\n")
 

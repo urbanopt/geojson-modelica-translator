@@ -3,7 +3,7 @@
 
 import os
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import Any, List, Tuple, Union
 
 
 class InputParser(object):
@@ -212,7 +212,7 @@ class InputParser(object):
             str += f"    {d}\n"
         self.model["objects"].append(str)
 
-    def add_parameter(self, var_type: str, var_name: str, value: any, description: str) -> None:
+    def add_parameter(self, var_type: str, var_name: str, value: Any, description: str) -> None:
         """Add a new parameter. Will be prepended to the top of the models list
 
         Args:
