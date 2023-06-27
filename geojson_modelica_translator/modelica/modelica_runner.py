@@ -102,19 +102,26 @@ class ModelicaRunner(object):
         the generation of the OpenModelica scripts to load and compile/run
         the simulation.
 
-        If passing the start, stop, and step times, then at least start and stop must be supplied to
-        update the simuation to use these values instead of the defaults.
+        Must pass start_time, stop_time, and either step_size or number_of_intervals.
 
         Args:
             run_path (Path): Path where the model will be run, this is where the files will be copied.
             filename (str): name of the file that will be loaded (e.g., BouncingBall.mo, package.mo)
             model_name (str): name of the model to run (e.g., BouncingBall, Districts.DistrictModel)
+            **kwargs: Arbitrary keyword arguments.
+                project_in_library (bool): If True, then the file_to_load is in the library, otherwise it is a file
+                                             on the local file system.
+                start_time (int): start time of the simulation, in seconds
+                stop_time (int): stop time of the simulation, in seconds
+                step_size (int): step size of the simulation, in seconds
+                number_of_intervals (int): number of intervals to run the simulation
         """
         # read in the start, stop, and step times
         project_in_library = kwargs.get('project_in_library', False)
         start_time = kwargs.get('start_time', None)
         stop_time = kwargs.get('stop_time', None)
         step_size = kwargs.get('step_size', None)
+        number_of_intervals = kwargs.get('number_of_intervals', None)
 
         # initialize the templating framework (Jinja2)
         template_env = Environment(
@@ -131,6 +138,7 @@ class ModelicaRunner(object):
             "start_time": start_time,
             "stop_time": stop_time,
             "step_size": step_size,
+            "number_of_intervals": number_of_intervals,
         }
         with open(run_path / 'simulate.mos', 'w') as f:
             f.write(template.render(**model_data))
@@ -178,6 +186,22 @@ class ModelicaRunner(object):
             # time.sleep(10000)  # wait for the subprocess to start
             logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
             exitcode = p.wait()
+        except KeyboardInterrupt:
+            # List all containers and their images
+            docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
+            containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split('\n')
+
+            # Find containers from our image
+            image_name = 'nrel/gmt-om-runner'
+            for container_line in containers_list:
+                container_id, container_image = container_line.split()
+                if container_image == image_name:
+                    logger.debug(f"Killing container: {container_id} (Image: {container_image})")
+                    # Kill the container
+                    kill_command = f"docker kill {container_id}"
+                    subprocess.run(kill_command.split(), check=True, text=True)
+            # Remind user why the simulation didn't complete
+            raise SystemExit("Simulation stopped by user KeyboardInterrupt")
         finally:
             os.chdir(curdir)
             stdout_log.close()
