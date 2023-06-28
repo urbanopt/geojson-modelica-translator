@@ -97,7 +97,11 @@ class Borefield(PlantBase):
         }
 
         # process g-function file
-        gfunction = pd.read_csv((Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv").resolve(), header=0)
+        if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
+            gfunction = pd.read_csv(Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv", header=0)
+        else:
+            sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
+            gfunction = pd.read_csv(sys_param_dir / template_data["gfunction"]["input_path"] / "Gfunction.csv", header=0)
         template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
 
         # convert the values to match Modelica gfunctions
