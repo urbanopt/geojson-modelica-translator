@@ -64,7 +64,7 @@ class InputParser(object):
         obj_data = ""
         connect_data = ""
         with open(self.modelica_filename, "r") as f:
-            for _, line in enumerate(f.readlines()):
+            for line in f.readlines():
                 if line == "\n":
                     # Skip blank lines (for now?
                     continue
