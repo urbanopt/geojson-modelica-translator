@@ -22,7 +22,7 @@ class PackageParser(object):
             path (Union[str, Path], optional): path to where the package.mo and package.order reside.
                                                Defaults to None.
         """
-        self.path: Path = Path(path)
+        self.path: Union[str, Path, None] = path
         self.order_data: Any = None
         self.package_data: Any = None
         self.load()
@@ -61,12 +61,12 @@ class PackageParser(object):
     def load(self) -> None:
         """Load the package.mo and package.mo data from the member variable path
         """
-        filename = self.path / "package.mo"
+        filename = Path(self.path) / "package.mo"
         if filename.exists():
             with open(filename, "r") as f:
                 self.package_data = f.read()
 
-        filename = self.path / "package.order"
+        filename = Path(self.path) / "package.order"
         if filename.exists():
             with open(filename, "r") as f:
                 self.order_data = f.read()
@@ -74,10 +74,10 @@ class PackageParser(object):
     def save(self) -> None:
         """Save the updated files to the same location
         """
-        with open(self.path / "package.mo", "w") as f:
+        with open(Path(self.path) / "package.mo", "w") as f:
             f.write(self.package_data)
 
-        with open(self.path / "package.order", "w") as f:
+        with open(Path(self.path) / "package.order", "w") as f:
             f.write(self.order_data)
             f.write("\n")
 
