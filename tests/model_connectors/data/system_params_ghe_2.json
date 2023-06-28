@@ -2,11 +2,47 @@
   "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
   "buildings": [
     {
-      "geojson_id": "0",
+      "geojson_id": "5a6b99ec37f4de7f94020090",
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "To be populated",
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+	{
+      "geojson_id": "abcdefghijklmnopqrstuvwx",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -48,7 +84,7 @@
       },
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "C:/urbanopt-ghe/baseline_scenario/ghe",
+        "ghe_dir": "tests/model_connectors/data",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
@@ -71,10 +107,6 @@
           "conductivity": 0.4,
           "rho_cp": 1542000,
           "arrangement": "singleutube"
-        },
-        "borehole": {
-          "buried_depth": 2.0,
-          "diameter": 0.15
         },
         "simulation": {
           "num_months": 240
@@ -104,9 +136,21 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "loads": {
-          "ground_loads": [
-            0,
+		"ghe_specific_params": [
+          {
+            "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40033",
+            "ghe_geometric_params": {
+              "length_of_ghe": 100,
+              "width_of_ghe": 100
+            },
+            "borehole": {
+              "buried_depth": 2.0,
+              "diameter": 0.15,
+              "length": 150,
+              "number_of_boreholes": 4
+            },
+            "ground_loads": [
+			  0,
             0,
             0,
             0,
@@ -8867,7 +8911,8 @@
             0,
             0
           ]
-        }
+		  }
+	    ]	
       }
     }
   }

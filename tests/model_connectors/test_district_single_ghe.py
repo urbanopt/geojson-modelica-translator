@@ -46,7 +46,7 @@ class DistrictSystemTest(TestCaseBase):
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "system_params_ghe.json")
+        filename = os.path.join(self.data_dir, "system_params_ghe_2.json")
         sys_params = SystemParameters(filename)
 
         # create borefield
