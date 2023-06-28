@@ -134,6 +134,7 @@ def test_build_cooling_plant():
     assert linecount(package_output_dir / 'CoolingPlant.mo') > 20
 
 
+@pytest.mark.skip("OMC failure")
 @pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
