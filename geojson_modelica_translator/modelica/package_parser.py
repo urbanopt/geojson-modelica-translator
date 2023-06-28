@@ -1,7 +1,6 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import os
 from pathlib import Path
 from typing import Any, Union
 
@@ -30,9 +29,7 @@ class PackageParser(object):
 
         self.template_env = Environment(
             loader=FileSystemLoader(
-                searchpath=os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)), "templates"
-                )
+                searchpath=Path(__file__).parent.resolve() / "templates"
             )
         )
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
@@ -64,23 +61,23 @@ class PackageParser(object):
     def load(self) -> None:
         """Load the package.mo and package.mo data from the member variable path
         """
-        filename = os.path.join(str(self.path), "package.mo")
-        if os.path.exists(filename):
+        filename = Path(self.path) / "package.mo"
+        if filename.exists():
             with open(filename, "r") as f:
                 self.package_data = f.read()
 
-        filename = os.path.join(str(self.path), "package.order")
-        if os.path.exists(filename):
+        filename = Path(self.path) / "package.order"
+        if filename.exists():
             with open(filename, "r") as f:
                 self.order_data = f.read()
 
     def save(self) -> None:
         """Save the updated files to the same location
         """
-        with open(os.path.join(os.path.join(str(self.path), "package.mo")), "w") as f:
+        with open(Path(self.path) / "package.mo", "w") as f:
             f.write(self.package_data)
 
-        with open(os.path.join(os.path.join(str(self.path), "package.order")), "w") as f:
+        with open(Path(self.path) / "package.order", "w") as f:
             f.write(self.order_data)
             f.write("\n")
 
