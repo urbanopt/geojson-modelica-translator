@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import logging
 import math
 import os
 from pathlib import Path
@@ -13,6 +14,13 @@ from geojson_modelica_translator.model_connectors.plants.plant_base import (
 )
 from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s: %(message)s',
+    datefmt='%d-%b-%y %H:%M:%S',
+)
 
 
 class Borefield(PlantBase):
@@ -97,7 +105,14 @@ class Borefield(PlantBase):
         }
 
         # process g-function file
-        gfunction = pd.read_csv((Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv").resolve(), header=0)
+        if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
+            gfunction = pd.read_csv(Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv", header=0)
+        else:
+            sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
+            try:
+                gfunction = pd.read_csv(sys_param_dir / template_data["gfunction"]["input_path"] / "Gfunction.csv", header=0)
+            except FileNotFoundError:
+                raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your sys-param file is in.')
         template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
 
         # convert the values to match Modelica gfunctions
