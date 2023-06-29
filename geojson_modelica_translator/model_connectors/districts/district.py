@@ -12,7 +12,7 @@ from geojson_modelica_translator.model_connectors.couplings.diagram import (
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 
 

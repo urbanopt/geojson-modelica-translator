@@ -9,7 +9,7 @@ from geojson_modelica_translator.geojson.urbanopt_geojson import (
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
     HeatingIndirect
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters

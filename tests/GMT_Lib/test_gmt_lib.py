@@ -77,6 +77,48 @@ def test_generate_cooling_plant(snapshot):
     assert actual == snapshot
 
 
+def test_build_cooling_plant():
+    # -- Setup
+    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
+
+    # -- Act
+    output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
+    package_output_dir = PARENT_DIR / 'output' / 'Cooling'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
+        f.write(output)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'CoolingPlant.mo') > 20
+
+
+@pytest.mark.skip(reason="Fails with OM 1.20. Succeeds with OM 1.21")
+@pytest.mark.simulation
+def test_simulate_cooling_plant():
+    # -- Setup
+    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
+    output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
+    package_output_dir = PARENT_DIR / 'output' / 'Cooling'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
+        f.write(output)
+
+    # copy over the script
+    copyfile(COOLING_PLANT_PATH / 'CoolingPlant.mos', package_output_dir / 'CoolingPlant.mos')
+
+    # -- Act
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'CoolingPlant',
+        file_to_load=package_output_dir / 'CoolingPlant.mo',
+        file_to_run='CoolingPlant.mo',
+        start_time=0, stop_time=86400)
+
+    # -- Assert
+    assert success is True
+
+
 def test_build_community_pv():
     # -- Setup
 
@@ -115,47 +157,6 @@ def test_simulate_community_pv():
     # Did the mofile get created?
     assert linecount(package_output_dir / 'PVPanels1.mo') > 20
     # Did the simulation run?
-    assert success is True
-
-
-def test_build_cooling_plant():
-    # -- Setup
-    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
-
-    # -- Act
-    output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
-    package_output_dir = PARENT_DIR / 'output' / 'Cooling'
-    package_output_dir.mkdir(parents=True, exist_ok=True)
-    with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
-        f.write(output)
-
-    # -- Assert
-    # Did the mofile get created?
-    assert linecount(package_output_dir / 'CoolingPlant.mo') > 20
-
-
-@pytest.mark.simulation
-def test_simulate_cooling_plant():
-    # -- Setup
-    template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
-    output = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
-    package_output_dir = PARENT_DIR / 'output' / 'Cooling'
-    package_output_dir.mkdir(parents=True, exist_ok=True)
-    with open(package_output_dir / 'CoolingPlant.mo', 'w') as f:
-        f.write(output)
-
-    # copy over the script
-    copyfile(COOLING_PLANT_PATH / 'CoolingPlant.mos', package_output_dir / 'CoolingPlant.mos')
-
-    # -- Act
-    runner = ModelicaRunner()
-    success, _ = runner.run_in_docker(
-        'compile_and_run', 'CoolingPlant',
-        file_to_load=package_output_dir / 'CoolingPlant.mo',
-        file_to_run='CoolingPlant.mo',
-        start_time=0, stop_time=86400)
-
-    # -- Assert
     assert success is True
 
 
