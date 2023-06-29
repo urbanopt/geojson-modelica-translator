@@ -31,6 +31,9 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Storage.Battery import (
     Battery
 )
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.Examples.pv_subsystem import (
+    PVSubsystem
+)
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -338,6 +341,22 @@ def test_simulate_inductive_load():
     assert linecount(package_output_dir / 'Inductive0.mo') > 20
     # Did the simulation run?
     assert success is True
+
+
+def test_build_pv_subsystem():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'PVSubsystem'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    pv_subsystem = PVSubsystem(sys_params)
+    pv_subsystem.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'PVsubsystem.mo') > 20
+
 
 # Keeping the code below because it may come back and this was a weird issue.
 # @pytest.mark.simulation
