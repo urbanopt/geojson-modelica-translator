@@ -72,6 +72,7 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
+    @pytest.mark.skip(reason="Fails with OM 1.20. Succeeds with OM 1.21")
     @pytest.mark.simulation
     def test_simulate_teaser_single(self):
         self.run_and_assert_in_docker(

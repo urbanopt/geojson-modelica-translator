@@ -6,7 +6,7 @@ from pathlib import Path
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.utils import convert_c_to_k, simple_uuid
 
 

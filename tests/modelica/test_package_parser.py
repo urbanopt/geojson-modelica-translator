@@ -4,7 +4,7 @@
 import os
 import unittest
 
-from geojson_modelica_translator.modelica.input_parser import PackageParser
+from geojson_modelica_translator.modelica.package_parser import PackageParser
 
 
 class PackageParserTest(unittest.TestCase):
