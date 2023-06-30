@@ -7,6 +7,9 @@ from shutil import copyfile
 import pytest
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Conversion.ACACTransformer import (
+    ACACTransformer
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Lines.Lines import (
     DistributionLines
 )
@@ -122,6 +125,7 @@ def test_simulate_cooling_plant():
     assert success is True
 
 
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_community_pv")
 def test_build_community_pv():
     # -- Setup
 
@@ -163,6 +167,7 @@ def test_simulate_community_pv():
     assert success is True
 
 
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_wind_turbine")
 def test_build_wind_turbine():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'WindTurbine'
@@ -243,6 +248,7 @@ def test_simulate_distribution_lines():
     assert success is True
 
 
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_capacitor")
 def test_build_capacitor():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'Capacitor'
@@ -258,6 +264,31 @@ def test_build_capacitor():
     assert linecount(package_output_dir / 'Capacitor0.mo') > 20
 
 
+@pytest.mark.simulation
+def test_simulate_capacitor():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Capacitor'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    capacitor = Capacitor(sys_params)
+    capacitor.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'Capacitor0',
+        file_to_load=package_output_dir / 'Capacitor0.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Capacitor0.mo') > 20
+    # Did the simulation run?
+    assert success is True
+
+
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_battery")
 def test_build_battery():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'Battery'
@@ -273,6 +304,31 @@ def test_build_battery():
     assert linecount(package_output_dir / 'AcBattery0.mo') > 20
 
 
+@pytest.mark.simulation
+def test_simulate_battery():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Battery'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    battery = Battery(sys_params)
+    battery.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'AcBattery0',
+        file_to_load=package_output_dir / 'AcBattery0.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'AcBattery0.mo') > 20
+    # Did the simulation run?
+    assert success is True
+
+
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_generator")
 def test_build_generator():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'Generator'
@@ -288,6 +344,31 @@ def test_build_generator():
     assert linecount(package_output_dir / 'Generator0.mo') > 20
 
 
+@pytest.mark.simulation
+def test_simulate_generator():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Generator'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    generator = Generator(sys_params)
+    generator.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'Generator0',
+        file_to_load=package_output_dir / 'Generator0.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Generator0.mo') > 20
+    # Did the simulation run?
+    assert success is True
+
+
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_grid")
 def test_build_grid():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'Grid'
@@ -301,6 +382,30 @@ def test_build_grid():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'Grid.mo') > 20
+
+
+@pytest.mark.simulation
+def test_simulate_grid():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Grid'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    grid = Grid(sys_params)
+    grid.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'Grid',
+        file_to_load=package_output_dir / 'Grid.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Grid.mo') > 20
+    # Did the simulation run?
+    assert success is True
 
 
 def test_build_inductive_load():
@@ -343,6 +448,7 @@ def test_simulate_inductive_load():
     assert success is True
 
 
+# @pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_pv_subsystem")
 def test_build_pv_subsystem():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'PVSubsystem'
@@ -356,6 +462,72 @@ def test_build_pv_subsystem():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'PVsubsystem.mo') > 20
+
+
+@pytest.mark.simulation
+def test_simulate_pv_subsystem():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'PVsubsystem'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    # Build the model
+    pv_subsystem = PVSubsystem(sys_params)
+    pv_subsystem.build_from_template(package_output_dir)
+
+    # Run the simulation
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'PVsubsystem',
+        file_to_load=package_output_dir / 'PVsubsystem.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'PVsubsystem.mo') > 20
+    # Did the simulation run?
+    assert success is True
+
+
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_transformer")
+def test_build_transformer():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'ACACTransformer'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    transformer = ACACTransformer(sys_params)
+    transformer.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'ACACTransformer0.mo') > 20
+
+
+@pytest.mark.simulation
+def test_simulate_transformer():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'ACACTransformer'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    transformer = ACACTransformer(sys_params)
+    transformer.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'ACACTransformer',
+        file_to_load=package_output_dir / 'ACACTransformer0.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'ACACTransformer0.mo') > 20
+    # Did the simulation run?
+    assert success is True
 
 
 # Keeping the code below because it may come back and this was a weird issue.
