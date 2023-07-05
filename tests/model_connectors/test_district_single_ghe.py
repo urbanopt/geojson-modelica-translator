@@ -21,11 +21,11 @@ from geojson_modelica_translator.model_connectors.districts.district import (
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
     TimeSeries
 )
-from geojson_modelica_translator.model_connectors.plants.borefield import (
-    Borefield
-)
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import (
     NetworkDistributionPump
+)
+from geojson_modelica_translator.model_connectors.plants.borefield import (
+    Borefield
 )
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -51,7 +51,7 @@ class DistrictSystemTest(TestCaseBase):
 
         # create borefield
         borefield = Borefield(sys_params)
-        
+
         # create ambient water stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
 

@@ -1,4 +1,4 @@
-  inner parameter 
+  inner parameter
     Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(
     nBui={{ sys_params.num_buildings }},
@@ -14,7 +14,7 @@
     {% for building in range( sys_params.num_buildings-1 ) %}
     {{ graph.couplings_by_type(coupling.network.id).load_couplings[building].load.id }}.ets.mSerWat_flow_nominal,
     {% endfor %}
-    {{ graph.couplings_by_type(coupling.network.id).load_couplings[sys_params.num_buildings-1].load.id }}.ets.mSerWat_flow_nominal})                    
+    {{ graph.couplings_by_type(coupling.network.id).load_couplings[sys_params.num_buildings-1].load.id }}.ets.mSerWat_flow_nominal})
     "Design data"
     {% raw %}annotation (Placement(transformation(extent={{-140,100},{-120,120}})));
   {% endraw %}parameter Boolean allowFlowReversalSer = true

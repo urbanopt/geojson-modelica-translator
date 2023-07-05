@@ -106,11 +106,11 @@ class Borefield(PlantBase):
 
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
-            gfunction = pd.read_csv(Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv", header=0, usecols=[0,2])
+            gfunction = pd.read_csv(Path(template_data["gfunction"]["input_path"]) / "Gfunction.csv", header=0, usecols=[0, 2])
         else:
             sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
             try:
-                gfunction = pd.read_csv(sys_param_dir / template_data["gfunction"]["input_path"] / "Gfunction.csv", header=0, usecols=[0,2])
+                gfunction = pd.read_csv(sys_param_dir / template_data["gfunction"]["input_path"] / "Gfunction.csv", header=0, usecols=[0, 2])
             except FileNotFoundError:
                 raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your sys-param file is in.')
         template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
