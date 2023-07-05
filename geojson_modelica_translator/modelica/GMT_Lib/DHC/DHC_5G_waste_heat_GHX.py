@@ -1,8 +1,8 @@
 import shutil
 from pathlib import Path
 
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.modelica.modelica_mos_file import ModelicaMOS
+from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
 
