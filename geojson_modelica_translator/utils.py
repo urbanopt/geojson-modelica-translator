@@ -93,7 +93,7 @@ class ModelicaPath(object):
 
         :return: string, relative resource's data path
         """
-        return f"Resources/Data/{self.name}"
+        return os.path.join("Resources", "Data", self.name)
 
     @property
     def scripts_relative_dir(self, platform='Dymola'):
