@@ -747,7 +747,6 @@ class SystemParameters(object):
 
         # Get each building feature id from the SDK FeatureFile
         building_ids = []
-#        ghe_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
             weather_filename = sdk_input['project']['weather_filename']
