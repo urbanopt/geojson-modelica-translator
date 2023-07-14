@@ -24,18 +24,18 @@ class CLIIntegrationTest(TestCase):
         self.output_dir.mkdir(exist_ok=True)
         self.scenario_file_path = self.data_dir / 'sdk_project_scraps' / 'baseline_scenario.csv'
         self.feature_file_path = self.data_dir / 'sdk_project_scraps' / 'example_project.json'
+        self.sys_param_path = self.data_dir / 'sdk_project_scraps' / 'run' / 'baseline_scenario' / 'system_parameter.json'
 
     def test_cli_builds_sys_params(self):
         # In python 3.8 we can drop the if statement and simplify this to "my_file.unlink(missing_ok=True)"
-        if (self.output_dir / 'test_sys_param.json').exists():
-            (self.output_dir / 'test_sys_param.json').unlink()
+        if (self.sys_param_path).exists():
+            (self.sys_param_path).unlink()
 
         # run subprocess as if we're an end-user
         res = self.runner.invoke(
             cli,
             [
                 'build-sys-param',
-                str((self.output_dir / 'test_sys_param.json').resolve()),
                 str(self.scenario_file_path.resolve()),
                 str(self.feature_file_path.resolve())
             ]
@@ -44,7 +44,27 @@ class CLIIntegrationTest(TestCase):
         assert res.exit_code == 0
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / 'test_sys_param.json').exists()
+        assert (self.sys_param_path).exists()
+
+    def test_cli_builds_sys_params_with_ghe(self):
+
+        if (self.sys_param_path).exists():
+            (self.sys_param_path).unlink()
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(cli,
+                                 [
+                                     'build-sys-param',
+                                     str(self.scenario_file_path.resolve()),
+                                     str(self.feature_file_path.resolve()),
+                                     '--ghe'
+                                 ]
+                                 )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert (self.sys_param_path).exists()
 
     def test_cli_makes_model(self):
         # WARNING: This test assumes test_cli_builds_sys_params has already run
@@ -57,7 +77,7 @@ class CLIIntegrationTest(TestCase):
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
 
-        sys_params_filepath = self.output_dir / 'test_sys_param.json'
+        sys_params_filepath = self.sys_param_path
         geojson_filepath = self.feature_file_path
 
         gmt = GeoJsonModelicaTranslator(
@@ -97,7 +117,7 @@ class CLIIntegrationTest(TestCase):
             cli,
             [
                 'create-model',
-                str(self.output_dir / 'test_sys_param.json'),
+                str(self.sys_param_path),
                 str(self.feature_file_path),
                 str(self.output_dir / project_name)
             ]
@@ -111,7 +131,7 @@ class CLIIntegrationTest(TestCase):
             cli,
             [
                 'create-model',
-                str(self.output_dir / 'test_sys_param.json'),
+                str(self.sys_param_path),
                 str(self.feature_file_path),
                 str(self.output_dir / project_name),
                 '--overwrite'
@@ -129,7 +149,7 @@ class CLIIntegrationTest(TestCase):
             cli,
             [
                 'create-model',
-                str(self.output_dir / 'test_sys_param.json'),
+                str(self.sys_param_path),
                 str(self.feature_file_path),
                 str(self.output_dir / bad_project_name)
             ]

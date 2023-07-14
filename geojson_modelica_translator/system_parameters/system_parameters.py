@@ -703,6 +703,7 @@ class SystemParameters(object):
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
         :param overwrite: Boolean, whether to overwrite existing sys-param file
+        :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
@@ -862,7 +863,6 @@ class SystemParameters(object):
             # Make sys_param template entries for GHE specific properties
             ghe_list = []
             for ghe in ghe_ids:
-                # update using Schema Default
                 # update GHE specific properties
                 ghe_info = deepcopy(ghe_sys_param['ghe_specific_params'][0])
                 # Update GHE ID
