@@ -448,7 +448,7 @@ def test_simulate_inductive_load():
     assert success is True
 
 
-# @pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_pv_subsystem")
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_pv_subsystem")
 def test_build_pv_subsystem():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'PVSubsystem'
