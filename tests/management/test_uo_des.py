@@ -77,9 +77,29 @@ class CLIIntegrationTest(TestCase):
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
 
+        if (self.sys_param_path).exists():
+            (self.sys_param_path).unlink()
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(
+            cli,
+            [
+                'build-sys-param',
+                str(self.scenario_file_path.resolve()),
+                str(self.feature_file_path.resolve())
+            ]
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert (self.sys_param_path).exists()
+
         sys_params_filepath = self.sys_param_path
         geojson_filepath = self.feature_file_path
 
+        # TO DO : we need error handling when system parameter is created for fifth gen GHE system.
+        #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
             geojson_filepath,
             sys_params_filepath,
