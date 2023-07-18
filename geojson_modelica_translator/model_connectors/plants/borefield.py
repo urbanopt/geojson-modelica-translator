@@ -124,11 +124,14 @@ class Borefield(PlantBase):
         new_row = pd.Series({gfunction.columns[0]: 0, gfunction.columns[1]: 0})
         gfunction = pd.concat([gfunction.iloc[:0], pd.DataFrame([new_row]), gfunction.iloc[0:]]).reset_index(drop=True)
 
+        # create borefield package paths
+        b_modelica_path = ModelicaPath(self.borefield_name, scaffold.plants_path.files_dir, True)
+        
         # add to dict and save MAT file to the borefield's resources folder
         data_dict = {'TStep': gfunction.values}
-        gfunction_path = os.path.join(scaffold.plants_path.resources_dir, 'Gfunction.mat')
+        gfunction_path = os.path.join(b_modelica_path.resources_dir, 'Gfunction.mat')
         sio.savemat(gfunction_path, data_dict)
-        template_data["gfunction"]["gfunction_file_path"] = gfunction_path.replace('\\', '/')
+        template_data["gfunction"]["gfunction_file_path"] = b_modelica_path.resources_relative_dir+"/Gfunction.mat"
 
         # process nominal mass flow rate
         if template_data["configuration"]["flow_type"] == "system":
@@ -149,9 +152,6 @@ class Borefield(PlantBase):
         # load templates
         oneutube_template = self.template_env.get_template("BorefieldOneUTube.mot")
         twoutube_template = self.template_env.get_template("BorefieldTwoUTubes.mot")
-
-        # create borefield package paths
-        b_modelica_path = ModelicaPath(self.borefield_name, scaffold.plants_path.files_dir, True)
 
         if template_data["configuration"]["borehole_configuration"] == "singleutube":
             plant_template = oneutube_template
