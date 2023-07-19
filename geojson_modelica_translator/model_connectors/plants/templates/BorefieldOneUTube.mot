@@ -35,7 +35,7 @@ within {{ project_name }}.Plants.{{ model_name }};
     "Set to true to force the thermal response to be calculated at the start instead of checking whether this has been pre-computed"
     annotation (Dialog(tab="Advanced"));
   {% endraw %}parameter String gFunFilNam=Modelica.Utilities.Files.loadResource(
-    "{{ghe_data["gfunction"]["gfunction_file_path"]}}")
+    "modelica://{{project_name}}/Plants/{{ghe_data["gfunction"]["gfunction_file_path"]}}")
     {% raw %} "File name of g-function data file in MAT format";
   {% endraw %}parameter Integer nTimTot={{ghe_data["gfunction"]["gfunction_file_rows"]}}
     {% raw %} "Total length of g-function vector";

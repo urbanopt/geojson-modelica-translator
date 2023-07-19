@@ -1,0 +1,31 @@
+  // district distribution pipiline
+  Buildings.Experimental.DHC.Networks.Combined.UnidirectionalSeries dis(
+    redeclare final package Medium = {{ globals.medium_w }},
+    final nCon= datDes.nBui,
+    show_TOut=true,
+    final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
+    final mCon_flow_nominal=datDes.mCon_flow_nominal,
+    final dp_length_nominal=datDes.dp_length_nominal,
+    final lDis=datDes.lDis,
+    final lCon=datDes.lCon,
+    final lEnd=datDes.lEnd,
+    final allowFlowReversal=allowFlowReversalSer)
+    "Distribution network"
+    {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
+  {% endraw %}// ambient loop pump
+  Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumDis(
+    redeclare final package Medium = {{ globals.medium_w }},
+    m_flow_nominal=datDes.mPumDis_flow_nominal)
+    "Distribution pump"
+    {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
+  {% endraw %}Modelica.Blocks.Sources.Constant masFloMaiPum(k=datDes.mPumDis_flow_nominal)
+    "Distribution pump mass flow rate"
+    {% raw %}annotation (Placement(transformation(extent={{0,-70},{-20,-50}})));
+  {% endraw %}// expansion vessel
+  Buildings.Fluid.Sources.Boundary_pT expVes(
+    redeclare final package Medium = {{ globals.medium_w }},
+    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp}}+273.15,
+    nPorts=2)
+    "Expansion vessel"
+    {% raw %}annotation (Placement(transformation(extent={{140,-76},{120,-56}})));
+  {% endraw %}

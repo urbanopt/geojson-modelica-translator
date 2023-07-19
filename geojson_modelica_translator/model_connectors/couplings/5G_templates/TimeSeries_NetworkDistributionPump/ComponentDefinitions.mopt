@@ -1,0 +1,16 @@
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMaxSet_{{ coupling.id }}(k=38 +
+        273.15) "Heating water supply temperature set point - Maximum value"
+    {% raw %}annotation (Placement(transformation(extent={{-120,40},{-100,60}})));
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TChiWatSupSet_{{ coupling.id }}(k=18 + 273.15)
+    "Chilled water supply temperature set point"
+    {% raw %}annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMinSet_{{ coupling.id }}(k=28
+         + 273.15) "Heating water supply temperature set point - Minimum value"
+    {% raw %}annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THotWatSupSet_{{ coupling.id }}(k=63 + 273.15)
+    "Hot water supply temperature set point"
+    {% raw %}annotation (Placement(transformation(extent={{-120,-20},{-100,0}})));
+  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TColWat_{{ coupling.id }}(k=15 + 273.15)
+    "Cold water temperature"
+    {% raw %}annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
+  {% endraw %}

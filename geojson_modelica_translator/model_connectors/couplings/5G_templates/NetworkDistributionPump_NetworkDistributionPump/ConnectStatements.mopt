@@ -1,0 +1,8 @@
+// Connections for sub-components
+  {% raw %}connect(masFloMaiPum.y,pumDis.m_flow_in)
+  annotation (Line(points={{-21,-60},{-32,-60}}, color={0,0,127}));
+  connect(pumDis.port_a, expVes.ports[1])
+  annotation (Line(points={{-44,-70},{-44,-80},{100,-80},{100,-64},{120,-64}}, color={0,127,255}));
+  connect(expVes.ports[2], dis.port_bDisSup)
+  annotation (Line(points={{120,-68},{100,-68},{100,-10},{90,-10}}, color={0,127,255}));
+  {% endraw %}
