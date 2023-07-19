@@ -850,7 +850,7 @@ class SystemParameters(object):
                 for feature in sdk_input['features']:
                     if feature['properties']['type'] == 'District System':
                         try:
-                            district_system_type = feature['properties']['districtSystemType']
+                            district_system_type = feature['properties']['district_system_type']
                         except KeyError:
                             pass
                         if district_system_type == 'Ground Heat Exchanger':
