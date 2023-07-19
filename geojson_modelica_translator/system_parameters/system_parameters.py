@@ -750,12 +750,11 @@ class SystemParameters(object):
         building_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
-            weather_filename = sdk_input['project']['weather_filename']
-            weather_path = self.sys_param_filename.parent / weather_filename
-            for feature in sdk_input['features']:
-                # KAF change: this should only gather features of type 'Building'
-                if feature['properties']['type'] == 'Building':
-                    building_ids.append(feature['properties']['id'])
+        weather_filename = sdk_input['project']['weather_filename']
+        weather_path = self.sys_param_filename.parent / weather_filename
+        for feature in sdk_input['features']:
+            if feature['properties']['type'] == 'Building':
+                building_ids.append(feature['properties']['id'])
 
         # Check if the EPW weatherfile exists, if not, try to download
         if not weather_path.exists():
@@ -847,17 +846,17 @@ class SystemParameters(object):
             # add properties from the feature file
             with open(feature_file) as json_file:
                 sdk_input = json.load(json_file)
-                for feature in sdk_input['features']:
-                    if feature['properties']['type'] == 'District System':
-                        try:
-                            district_system_type = feature['properties']['districtSystemType']
-                        except KeyError:
-                            pass
-                        if district_system_type == 'Ground Heat Exchanger':
-                            length, width = self.calculate_dimensions(feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
-                            ghe_ids.append({'ghe_id': feature['properties']['id'],
-                                            'length_of_ghe': length,
-                                            'width_of_ghe': width})
+            for feature in sdk_input['features']:
+                if feature['properties']['type'] == 'District System':
+                    try:
+                        district_system_type = feature['properties']['districtSystemType']
+                    except KeyError:
+                        pass
+                    if district_system_type == 'Ground Heat Exchanger':
+                        length, width = self.calculate_dimensions(feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
+                        ghe_ids.append({'ghe_id': feature['properties']['id'],
+                                        'length_of_ghe': length,
+                                        'width_of_ghe': width})
 
             ghe_sys_param = self.param_template['district_system']['fifth_generation']['ghe_parameters']
             # Make sys_param template entries for GHE specific properties
