@@ -27,9 +27,7 @@ class CLIIntegrationTest(TestCase):
         self.sys_param_path = self.data_dir / 'sdk_project_scraps' / 'run' / 'baseline_scenario' / 'system_parameter.json'
 
     def test_cli_builds_sys_params(self):
-        # In python 3.8 we can drop the if statement and simplify this to "my_file.unlink(missing_ok=True)"
-        if (self.sys_param_path).exists():
-            (self.sys_param_path).unlink()
+        self.sys_param_path.unlink(missing_ok=True)
 
         # run subprocess as if we're an end-user
         res = self.runner.invoke(
@@ -47,9 +45,7 @@ class CLIIntegrationTest(TestCase):
         assert (self.sys_param_path).exists()
 
     def test_cli_builds_sys_params_with_ghe(self):
-
-        if (self.sys_param_path).exists():
-            (self.sys_param_path).unlink()
+        self.sys_param_path.unlink(missing_ok=True)
 
         # run subprocess as if we're an end-user
         res = self.runner.invoke(cli,
@@ -77,8 +73,7 @@ class CLIIntegrationTest(TestCase):
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
 
-        if (self.sys_param_path).exists():
-            (self.sys_param_path).unlink()
+        self.sys_param_path.unlink(missing_ok=True)
 
         # run subprocess as if we're an end-user
         res = self.runner.invoke(
