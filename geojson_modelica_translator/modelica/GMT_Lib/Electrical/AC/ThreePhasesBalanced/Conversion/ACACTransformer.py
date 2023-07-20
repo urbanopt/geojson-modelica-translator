@@ -16,6 +16,7 @@ class ACACTransformer(SimpleGMTBase):
             cap_params = {
                 'nominal_capacity': transformer["nominal_capacity"],
                 "reactance_resistance_ratio": transformer["reactance_resistance_ratio"],
+                # TODO: update csv_to_sys_param to populate with these data
                 "rms_voltage_high": transformer["rms_voltage_high"],
                 "rms_voltage_low": transformer["rms_voltage_low"],
                 'model_name': f"Transformer{index}",
