@@ -1,0 +1,6 @@
+// Borefield ambient coupling connections
+  connect(pumDis.port_b, {{ coupling.plant.id }}.port_a)
+  {% raw %}annotation (Line(points={{-44,-50},{-44,-10},{-20,-10}},color={0,127,255}));
+  {% endraw %}connect({{ coupling.plant.id }}.port_b, dis.port_aDisSup)
+  {% raw %}annotation (Line(points={{0,-10},{50,-10}},color={0,127,255}));
+  {% endraw %}

@@ -1,0 +1,23 @@
+  inner parameter
+    Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
+    datDes(
+    nBui={{ sys_params.num_buildings }},
+    {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}
+    mPumDis_flow_nominal={{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate*
+    sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.number_of_boreholes }},
+    {% else %}
+    mPumDis_flow_nominal={{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate }},
+    {% endif %}
+    mPipDis_flow_nominal=datDes.mPumDis_flow_nominal,
+    dp_length_nominal=250,
+    final mCon_flow_nominal={
+    {% for building in range( sys_params.num_buildings-1 ) %}
+    {{ graph.couplings_by_type(coupling.network.id).load_couplings[building].load.id }}.ets.mSerWat_flow_nominal,
+    {% endfor %}
+    {{ graph.couplings_by_type(coupling.network.id).load_couplings[sys_params.num_buildings-1].load.id }}.ets.mSerWat_flow_nominal})
+    "Design data"
+    {% raw %}annotation (Placement(transformation(extent={{-140,100},{-120,120}})));
+  {% endraw %}parameter Boolean allowFlowReversalSer = true
+    "Set to true to allow flow reversal in the service lines"
+    {% raw %}annotation(Dialog(tab="Assumptions"), Evaluate=true);
+  {% endraw %}
