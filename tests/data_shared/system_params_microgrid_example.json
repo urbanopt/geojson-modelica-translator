@@ -341,36 +341,36 @@
       "id": "Transformer.897530f5-a6d6-446f-94fd-4087196fceaf",
       "nominal_capacity": 75.0,
       "reactance_resistance_ratio": 1.0,
-      "rms_voltage_high": 12470,
-      "rms_voltage_low": 480
+      "tx_incoming_voltage": 13200,
+      "tx_outgoing_voltage": 480
     },
     {
       "id": "Transformer.1b4b5dcf-8d18-4954-b655-a93634542733",
       "nominal_capacity": 50.0,
       "reactance_resistance_ratio": 1.0,
-      "rms_voltage_high": 12471,
-      "rms_voltage_low": 480
+      "tx_incoming_voltage": 13200,
+      "tx_outgoing_voltage": 480
     },
     {
       "id": "Transformer.502e96e3-853a-4b3d-b88d-fe59af4d7b65",
       "nominal_capacity": 50.0,
       "reactance_resistance_ratio": 1.0,
-      "rms_voltage_high": 12472,
-      "rms_voltage_low": 480
+      "tx_incoming_voltage": 13200,
+      "tx_outgoing_voltage": 480
     },
     {
       "id": "Transformer.b02e3fe9-77d0-47f9-86cb-e4db960afd62",
       "nominal_capacity": 75.0,
       "reactance_resistance_ratio": 1.0,
-      "rms_voltage_high": 12473,
-      "rms_voltage_low": 480
+      "tx_incoming_voltage": 13200,
+      "tx_outgoing_voltage": 480
     },
     {
       "id": "Transformer.54cd0a5a-2ebe-4b39-936a-f238b503c221",
       "nominal_capacity": 100.0,
       "reactance_resistance_ratio": 1.0,
-      "rms_voltage_high": 12474,
-      "rms_voltage_low": 480
+      "tx_incoming_voltage": 13200,
+      "tx_outgoing_voltage": 480
     }
   ],
   "power_converters": [],
