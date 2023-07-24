@@ -562,18 +562,13 @@ class SystemParameters(object):
                 if item['power_distribution']['reactance_resistance_ratio']:
                     t['reactance_resistance_ratio'] = item['power_distribution']['reactance_resistance_ratio']
 
-                t['tx_incoming_voltage'] = None
-                if item['power_distribution']['tx_incoming_voltage']:
-                    t['tx_incoming_voltage'] = item.get('power_distribution'['tx_incoming_voltage'])
+                t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
+                t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
 
                 # Validate transformer input voltage is same as substation output voltage
-                if item['power_distribution']['tx_incoming_voltage'] != self.param_template['substations']['RMS_voltage_low_side']:
-                    raise ValueError(f"Transformer input voltage {item['power_distribution']['tx_incoming_voltage']} does not "
+                if t['tx_incoming_voltage'] is not None and t['tx_incoming_voltage'] != self.param_template['substations']['RMS_voltage_low_side']:
+                    raise ValueError(f"Transformer input voltage {t['tx_incoming_voltage']} does not "
                                      f"match substation output voltage {self.param_template['substations']['RMS_voltage_low_side']}")
-
-                t['tx_outgoing_voltage'] = None
-                if item['power_distribution']['tx_outgoing_voltage']:
-                    t['tx_outgoing_voltage'] = item['power_distribution']['tx_outgoing_voltage']
 
                 transformers.append(t)
 
