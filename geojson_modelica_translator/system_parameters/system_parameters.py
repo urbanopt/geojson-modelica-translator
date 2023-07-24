@@ -554,14 +554,8 @@ class SystemParameters(object):
             for item in data:
                 t = {}
                 t['id'] = item['id']
-                t['nominal_capacity'] = None
-                if item['power_distribution']['nominal_capacity']:
-                    t['nominal_capacity'] = item['power_distribution']['nominal_capacity']
-
-                t['reactance_resistance_ratio'] = None
-                if item['power_distribution']['reactance_resistance_ratio']:
-                    t['reactance_resistance_ratio'] = item['power_distribution']['reactance_resistance_ratio']
-
+                t['nominal_capacity'] = item['power_distribution'].get('nominal_capacity', None)
+                t['reactance_resistance_ratio'] = item['power_distribution'].get('reactance_resistance_ratio', None)
                 t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
                 t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
 
