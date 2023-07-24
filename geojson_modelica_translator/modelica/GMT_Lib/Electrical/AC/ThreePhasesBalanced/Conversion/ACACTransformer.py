@@ -16,9 +16,8 @@ class ACACTransformer(SimpleGMTBase):
             cap_params = {
                 'nominal_capacity': transformer["nominal_capacity"],
                 "reactance_resistance_ratio": transformer["reactance_resistance_ratio"],
-                # TODO: update csv_to_sys_param to populate with these data
-                "rms_voltage_high": transformer["rms_voltage_high"],
-                "rms_voltage_low": transformer["rms_voltage_low"],
+                "tx_incoming_voltage": transformer["tx_incoming_voltage"],
+                "tx_outgoing_voltage": transformer["tx_outgoing_voltage"],
                 'model_name': f"Transformer{index}",
             }
             # render template to final modelica file

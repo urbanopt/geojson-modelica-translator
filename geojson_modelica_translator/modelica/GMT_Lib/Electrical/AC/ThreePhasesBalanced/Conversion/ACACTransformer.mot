@@ -1,8 +1,8 @@
 within;
 model ACACTransformer
   "Isolated transformer template model for GMT level 1 testing"
-  parameter Modelica.Units.SI.Voltage VHigh = {{data["rms_voltage_high"]}} "Rms voltage on side 1 of the transformer (primary side)";
-  parameter Modelica.Units.SI.Voltage VLow = {{data["rms_voltage_low"]}} "Rms voltage on side 2 of the transformer (secondary side)";
+  parameter Modelica.Units.SI.Voltage VHigh = {{data["tx_incoming_voltage"]}} "Rms voltage on side 1 of the transformer (primary side)";
+  parameter Modelica.Units.SI.Voltage VLow = {{data["tx_outgoing_voltage"]}} "Rms voltage on side 2 of the transformer (secondary side)";
   parameter Modelica.Units.SI.ApparentPower VABase = {{data["nominal_capacity"]}} "Nominal power of the transformer";
   parameter Real XoverR = {{data["reactance_resistance_ratio"]}} "Ratio between the complex and real components of the impedance (XL/R)";
 extends Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACACTransformer(
