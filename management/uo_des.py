@@ -25,7 +25,7 @@ def cli():
 @cli.command(short_help="Create sys-param file")
 @click.argument(
     "sys_param_filename",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+    type=click.Path(file_okay=True, dir_okay=False),
 )
 @click.argument(
     "scenario_file",
