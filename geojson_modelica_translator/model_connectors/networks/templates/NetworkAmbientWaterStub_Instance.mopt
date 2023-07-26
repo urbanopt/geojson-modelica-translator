@@ -6,7 +6,7 @@
     use_m_flow_in=true,
     use_T_in=false,
     {% if 'ghe_parameters' in sys_params.district_system['fifth_generation'] %}
-    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp}}+273.15,
+    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }}+273.15,
     {% else %}
     T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
     {% endif %}
