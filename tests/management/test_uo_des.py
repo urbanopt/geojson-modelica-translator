@@ -24,6 +24,7 @@ class CLIIntegrationTest(TestCase):
         self.output_dir.mkdir(exist_ok=True)
         self.scenario_file_path = self.data_dir / 'sdk_project_scraps' / 'baseline_scenario.csv'
         self.feature_file_path = self.data_dir / 'sdk_project_scraps' / 'example_project.json'
+        self.feature_file_path_ghe = self.data_dir / 'sdk_project_scraps' / 'example_project_combine_GHE_2.json'
         self.sys_param_path = self.data_dir / 'sdk_project_scraps' / 'run' / 'baseline_scenario' / 'system_parameter.json'
 
     def test_cli_builds_sys_params(self):
@@ -34,6 +35,7 @@ class CLIIntegrationTest(TestCase):
             cli,
             [
                 'build-sys-param',
+                str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
                 str(self.feature_file_path.resolve())
             ]
@@ -51,8 +53,9 @@ class CLIIntegrationTest(TestCase):
         res = self.runner.invoke(cli,
                                  [
                                      'build-sys-param',
+                                     str(self.sys_param_path),
                                      str(self.scenario_file_path.resolve()),
-                                     str(self.feature_file_path.resolve()),
+                                     str(self.feature_file_path_ghe.resolve()),
                                      '--ghe'
                                  ]
                                  )
@@ -63,8 +66,6 @@ class CLIIntegrationTest(TestCase):
         assert (self.sys_param_path).exists()
 
     def test_cli_makes_model(self):
-        # WARNING: This test assumes test_cli_builds_sys_params has already run
-        # successfully! This test should be refactored to avoid this.
 
         # -- Setup
         # first verify the package can be generated without the CLI (ie verify our
@@ -80,8 +81,70 @@ class CLIIntegrationTest(TestCase):
             cli,
             [
                 'build-sys-param',
+                str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
                 str(self.feature_file_path.resolve())
+            ]
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert (self.sys_param_path).exists()
+
+        sys_params_filepath = self.sys_param_path
+        geojson_filepath = self.feature_file_path
+
+        # TO DO : we need error handling when system parameter is created for fifth gen GHE system.
+        #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
+        gmt = GeoJsonModelicaTranslator(
+            geojson_filepath,
+            sys_params_filepath,
+            self.output_dir,
+            project_name,
+        )
+
+        gmt.to_modelica()
+
+        # great! we know our files are good, let's cleanup and test the CLI
+        rmtree(self.output_dir / project_name)
+
+        # -- Act
+        res = self.runner.invoke(
+            cli,
+            [
+                'create-model',
+                str(sys_params_filepath),
+                str(geojson_filepath),
+                str(self.output_dir / project_name)
+            ]
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
+
+    def test_cli_makes_model_with_ghe(self):
+
+        # -- Setup
+        # first verify the package can be generated without the CLI (ie verify our
+        # files are valid)
+        project_name = 'modelica_project'
+        if (self.output_dir / project_name).exists():
+            rmtree(self.output_dir / project_name)
+
+        self.sys_param_path.unlink(missing_ok=True)
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(
+            cli,
+            [
+                'build-sys-param',
+                str(self.sys_param_path),
+                str(self.scenario_file_path.resolve()),
+                str(self.feature_file_path_ghe.resolve()),
+                '--ghe'
             ]
         )
 

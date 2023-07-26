@@ -24,6 +24,10 @@ def cli():
 
 @cli.command(short_help="Create sys-param file")
 @click.argument(
+    "sys_param_filename",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+)
+@click.argument(
     "scenario_file",
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
@@ -56,9 +60,11 @@ def cli():
     help="If specified, Ground Heat Exchanger properties will be added to System Parameters File. HELLO",
     default=False
 )
-def build_sys_param(model_type: str, scenario_file: Path, feature_file: Path, ghe: bool, overwrite: bool, microgrid: bool):
+def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, ghe: bool, overwrite: bool, microgrid: bool):
     """
     Create system parameters file using uo_sdk output
+
+    SYS_PARAM_FILENAME: Path/name to sys-param file be created. Be sure to include the ".json" suffix.
 
     SCENARIO_FILE: Path to sdk scenario file.
 
@@ -70,6 +76,7 @@ def build_sys_param(model_type: str, scenario_file: Path, feature_file: Path, gh
 
     \f
     :param model_type: string, selection of which model type to use in the GMT
+    :param sys_param_filename: Path, location & name of json output file to save
     :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
     :param scenario_file: Path, location of SDK scenario_file
     :param feature_file: Path, location of SDK feature_file
@@ -79,12 +86,10 @@ def build_sys_param(model_type: str, scenario_file: Path, feature_file: Path, gh
     # Use scenario_file to be consistent with sdk
     scenario_name = Path(scenario_file).stem
     scenario_dir = Path(scenario_file).parent / 'run' / scenario_name
-    sys_param_filepath = Path(scenario_dir / 'system_parameter.json')
-
     sp = SystemParameters()
     sp.csv_to_sys_param(
         model_type=model_type,
-        sys_param_filename=Path(sys_param_filepath),
+        sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
         feature_file=Path(feature_file),
         ghe=ghe,
@@ -92,10 +97,10 @@ def build_sys_param(model_type: str, scenario_file: Path, feature_file: Path, gh
         microgrid=microgrid
     )
 
-    if Path(sys_param_filepath).exists():
-        print(f"\nSystem parameters file {sys_param_filepath} successfully created.")
+    if Path(sys_param_filename).exists():
+        print(f"\nSystem parameters file {sys_param_filename} successfully created.")
     else:
-        raise SystemExit(f"{sys_param_filepath} failed. Please check your inputs and try again.")
+        raise SystemExit(f"{sys_param_filename} failed. Please check your inputs and try again.")
 
 
 @cli.command(short_help="Create Modelica model")
