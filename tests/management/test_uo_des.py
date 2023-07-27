@@ -68,8 +68,7 @@ class CLIIntegrationTest(TestCase):
     def test_cli_makes_model(self):
 
         # -- Setup
-        # first verify the package can be generated without the CLI (ie verify our
-        # files are valid)
+        # Gnerate a sys-params file using the CLI
         project_name = 'modelica_project'
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
@@ -89,14 +88,14 @@ class CLIIntegrationTest(TestCase):
 
         assert res.exit_code == 0
 
-        # If this file exists, the cli command ran successfully
+        # If this file exists, the cli successfully built the system parameter file
         assert (self.sys_param_path).exists()
+
+        # Next, verify the package can be generated without the CLI (verify our files are valid)
 
         sys_params_filepath = self.sys_param_path
         geojson_filepath = self.feature_file_path
 
-        # TO DO : we need error handling when system parameter is created for fifth gen GHE system.
-        #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
             geojson_filepath,
             sys_params_filepath,
@@ -106,7 +105,9 @@ class CLIIntegrationTest(TestCase):
 
         gmt.to_modelica()
 
-        # great! we know our files are good, let's cleanup and test the CLI
+        # If this file exists, the cli successfully built the model
+        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        # Great! We know our files are good, let's cleanup and test the CLI
         rmtree(self.output_dir / project_name)
 
         # -- Act
@@ -120,10 +121,10 @@ class CLIIntegrationTest(TestCase):
             ]
         )
 
+        # -- Assert
         assert res.exit_code == 0
-
-        # If this file exists, the cli command ran successfully
-        assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        # If this file exists, the cli successfully built the model
+        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
 
     def test_cli_makes_model_with_ghe(self):
 
@@ -156,7 +157,7 @@ class CLIIntegrationTest(TestCase):
         sys_params_filepath = self.sys_param_path
         geojson_filepath = self.feature_file_path
 
-        # TO DO : we need error handling when system parameter is created for fifth gen GHE system.
+        # FIXME : we need error handling when system parameter is created for fifth gen GHE system.
         #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
             geojson_filepath,
@@ -167,7 +168,9 @@ class CLIIntegrationTest(TestCase):
 
         gmt.to_modelica()
 
-        # great! we know our files are good, let's cleanup and test the CLI
+        # If this file exists, the cli successfully built the model
+        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        # Great! We know our files are good, let's cleanup and test the CLI
         rmtree(self.output_dir / project_name)
 
         # -- Act
@@ -181,10 +184,11 @@ class CLIIntegrationTest(TestCase):
             ]
         )
 
+        # -- Assert
         assert res.exit_code == 0
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
 
     def test_cli_overwrites_properly(self):
         # run subprocess as if we're an end-user, expecting to hit error message
@@ -217,7 +221,7 @@ class CLIIntegrationTest(TestCase):
         )
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / 'modelica_project' / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
 
     def test_cli_returns_graceful_error_on_space(self):
         bad_project_name = 'modelica project'
