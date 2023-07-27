@@ -216,7 +216,6 @@ def test_build_distribution_lines():
 
 
 @pytest.mark.simulation
-@pytest.mark.skip(reason="OMC failure: load error with MBL maybe")
 def test_simulate_distribution_lines():
     # -- Setup
     package_output_dir = PARENT_DIR / 'output' / 'DistributionLines'
@@ -315,7 +314,7 @@ def test_build_inductive_load():
     assert linecount(package_output_dir / 'Inductive0.mo') > 20
 
 
-@pytest.mark.skip(reason="OMC failure: assertion has been violated during initialization")
+@pytest.mark.skip(reason="OMC failure: assertion has been violated during early in simulation")
 @pytest.mark.simulation
 def test_simulate_inductive_load():
     # -- Setup
