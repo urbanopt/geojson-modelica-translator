@@ -57,10 +57,17 @@ def cli():
     '-g',
     '--ghe',
     is_flag=True,
-    help="If specified, Ground Heat Exchanger properties will be added to System Parameters File. HELLO",
+    help="If specified, Ground Heat Exchanger properties will be added to System Parameters File",
     default=False
 )
-def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, ghe: bool, overwrite: bool, microgrid: bool):
+def build_sys_param(model_type: str,
+                    sys_param_filename: Path,
+                    scenario_file: Path,
+                    feature_file: Path,
+                    ghe: bool,
+                    overwrite: bool,
+                    microgrid: bool
+                    ):
     """
     Create system parameters file using uo_sdk output
 
@@ -77,10 +84,11 @@ def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Pa
     \f
     :param model_type: string, selection of which model type to use in the GMT
     :param sys_param_filename: Path, location & name of json output file to save
-    :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
     :param scenario_file: Path, location of SDK scenario_file
     :param feature_file: Path, location of SDK feature_file
+    :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
     :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
+    :param microgrid: Boolean, flag to add Microgrid properties to System Parameter File
     """
 
     # Use scenario_file to be consistent with sdk
@@ -168,7 +176,25 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     required=True,
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-def run_model(modelica_project: Path):
+@click.argument(
+    "start_time",
+    default=17280000,
+    type=int,
+    required=False,
+)
+@click.argument(
+    "stop_time",
+    default=17366400,
+    type=int,
+    required=False,
+)
+@click.argument(
+    "step_size",
+    default=90,
+    type=int,
+    required=False,
+)
+def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int):
     """
     \b
     Run the Modelica project in a docker-based environment.
@@ -195,7 +221,10 @@ def run_model(modelica_project: Path):
     mr.run_in_docker('compile_and_run',
                      f'{project_name}.Districts.DistrictEnergySystem',
                      file_to_load=run_path / 'package.mo',
-                     run_path=run_path
+                     run_path=run_path,
+                     start_time=start_time,
+                     stop_time=stop_time,
+                     step_size=step_size
                      )
 
     if (run_path.parent / f'{project_name}/{project_name}.Districts.DistrictEnergySystem_results' / f'{project_name}_Districts_DistrictEnergySystem_res.mat').exists():
