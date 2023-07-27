@@ -93,7 +93,7 @@
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length": 150,
+              "length_of_boreholes": 150,
               "number_of_boreholes": 4
             },
             "ground_loads": [
