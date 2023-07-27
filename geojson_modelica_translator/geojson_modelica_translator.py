@@ -22,7 +22,10 @@ from geojson_modelica_translator.model_connectors.load_connectors import (
     TimeSeries,
     TimeSeriesMFT
 )
-from geojson_modelica_translator.model_connectors.networks import Network2Pipe
+from geojson_modelica_translator.model_connectors.networks import (
+    Network2Pipe,
+    NetworkAmbientWaterStub
+)
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
 from geojson_modelica_translator.model_connectors.plants.chp import (
     HeatingPlantWithOptionalCHP
@@ -44,15 +47,16 @@ LOAD_MODEL_TO_CLASS = {
 }
 
 
-def _parse_couplings(geojson, sys_params):
+def _parse_couplings(geojson, sys_params, district_type=None):
     """Given config files, construct the necessary models and their couplings which
     can then be passed to CouplingGraph.
 
     :param geojson: UrbanOptGeoJson
     :param sys_params: SystemParameters
+    :param district_type: str - type of district [None, "4G", "5G"]
     :return: list[Coupling], list of couplings to be passed to CouplingGraph
     """
-    # Current implementation assumes that all generated district energy system models will have:
+    # 4G implementation assumes that all generated district energy system models will have:
     #   - one heating plant
     #   - one cooling plant
     #   - one heating distribution network
@@ -61,15 +65,19 @@ def _parse_couplings(geojson, sys_params):
     # NOTE: loads can be of any type/combination
     all_couplings = []
 
-    # create the plants and networks
-    cooling_network = Network2Pipe(sys_params)
-    cooling_plant = CoolingPlant(sys_params)
-    heating_network = Network2Pipe(sys_params)
-    heating_plant = HeatingPlantWithOptionalCHP(sys_params)
-    all_couplings += [
-        Coupling(cooling_plant, cooling_network),
-        Coupling(heating_plant, heating_network),
-    ]
+    if district_type is None or district_type == "4G":
+        # create the plants and networks
+        cooling_network = Network2Pipe(sys_params)
+        cooling_plant = CoolingPlant(sys_params)
+        heating_network = Network2Pipe(sys_params)
+        heating_plant = HeatingPlantWithOptionalCHP(sys_params)
+        all_couplings += [
+            Coupling(cooling_plant, cooling_network),
+            Coupling(heating_plant, heating_network),
+        ]
+    elif district_type == "5G":
+        # create ambient water stub
+        ambient_water_stub = NetworkAmbientWaterStub(sys_params)
 
     # create the loads and their ETSes
     for building in geojson.buildings:
@@ -77,13 +85,16 @@ def _parse_couplings(geojson, sys_params):
         load_class = LOAD_MODEL_TO_CLASS[load_model_type]
         load = load_class(sys_params, building)
 
-        cooling_indirect = CoolingIndirect(sys_params, building.id)
-        all_couplings.append(Coupling(load, cooling_indirect))
-        all_couplings.append(Coupling(cooling_indirect, cooling_network))
+        if district_type is None or district_type == "4G":
+            cooling_indirect = CoolingIndirect(sys_params, building.id)
+            all_couplings.append(Coupling(load, cooling_indirect))
+            all_couplings.append(Coupling(cooling_indirect, cooling_network))
 
-        heating_indirect = HeatingIndirect(sys_params, building.id)
-        all_couplings.append(Coupling(load, heating_indirect))
-        all_couplings.append(Coupling(heating_indirect, heating_network))
+            heating_indirect = HeatingIndirect(sys_params, building.id)
+            all_couplings.append(Coupling(load, heating_indirect))
+            all_couplings.append(Coupling(heating_indirect, heating_network))
+        elif district_type == "5G":
+            all_couplings.append(Coupling(load, ambient_water_stub, district_type=district_type))
 
     return all_couplings
 
@@ -142,9 +153,15 @@ class GeoJsonModelicaTranslator(object):
         )
         self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)
 
+        # Use different couplings for each district system type
+        district_type = self.system_parameters.get_param("district_system")
+        if district_type == "fifth_generation":
+            self._couplings = _parse_couplings(self._geojson, self._system_parameters, district_type='5G')
+        elif district_type == "fourth_generation":
+            self._couplings = _parse_couplings(self._geojson, self._system_parameters)
+
         self._root_dir = root_dir
         self._project_name = project_name
-        self._couplings = _parse_couplings(self._geojson, self._system_parameters)
         self._coupling_graph = CouplingGraph(self._couplings)
         self._district = District(
             self._root_dir,
