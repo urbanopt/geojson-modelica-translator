@@ -41,7 +41,7 @@ model {{ model_filename }}
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal(
     final min=0,
-    {% endraw %}start={{ ets_data["heat_flow_nominal"]  }})
+    {% endraw %}start=-{{ ets_data["heat_flow_nominal"]  }})
     {% raw %} "Nominal heat transfer"
     annotation (Dialog(group="Heat exchanger"));
   parameter Modelica.Units.SI.Temperature T_a1_nominal(

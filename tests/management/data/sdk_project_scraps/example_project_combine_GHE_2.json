@@ -1,27 +1,19 @@
 {
   "type": "FeatureCollection",
-  "mappers": [],
   "project": {
     "id": "7c33a001-bccb-413e-ac87-67558b5d4b07",
     "name": "New Project",
+    "surface_elevation": null,
+    "import_surrounding_buildings_as_shading": null,
+    "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
+    "tariff_filename": null,
+    "climate_zone": "6A",
+    "cec_climate_zone": null,
     "begin_date": "2017-01-01T07:00:00.000Z",
     "end_date": "2017-12-31T07:00:00.000Z",
-    "cec_climate_zone": null,
-    "climate_zone": "6A",
-    "default_template": "90.1-2013",
-    "import_surrounding_buildings_as_shading": null,
-    "surface_elevation": null,
-    "tariff_filename": null,
-    "timesteps_per_hour": 4,
-    "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+    "timesteps_per_hour": 1,
+    "default_template": "90.1-2013"
   },
-  "scenarios": [
-    {
-      "feature_mappings": [],
-      "id": "72301739-c6c3-4dd7-bf1a-f37c8eff40db",
-      "name": "New Scenario"
-    }
-  ],
   "features": [
     {
       "type": "Feature",
@@ -38,7 +30,10 @@
         "surface_elevation": null,
         "tariff_filename": null,
         "timesteps_per_hour": 1,
-        "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
+        "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
+        "only_lv_customers": null,
+        "underground_cables_ratio": null,
+        "max_number_of_lv_nodes_per_building": null
       },
       "geometry": {
         "type": "Point",
@@ -309,7 +304,6 @@
         "name": "Office 1",
         "type": "Building",
         "building_type": "Office",
-        "system_type": "VAV district chilled water with district hot water reheat",
         "number_of_stories": 6,
         "detailed_model_filename": "7.osm"
       },
@@ -348,7 +342,6 @@
         "name": "Hospital 1",
         "type": "Building",
         "building_type": "Outpatient health care",
-        "system_type": "VAV district chilled water with district hot water reheat",
         "number_of_stories": 10,
         "detailed_model_filename": "8.osm"
       },
@@ -617,6 +610,152 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "14",
+        "name": "Residential 1",
+        "type": "Building",
+        "building_type": "Single-Family Detached",
+        "floor_area": 3055,
+        "footprint_area": 3055,
+        "number_of_stories_above_ground": 1,
+        "number_of_stories": 1,
+        "number_of_bedrooms": 3,
+        "foundation_type": "crawlspace - unvented",
+        "attic_type": "attic - vented",
+        "system_type": "Residential - furnace and central air conditioner",
+        "heating_system_fuel_type": "natural gas",
+        "template": "Residential IECC 2015 - Customizable Template Sep 2020"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -78.84782863379475,
+              42.81308406513335
+            ],
+            [
+              -78.84789445741784,
+              42.813211653666144
+            ],
+            [
+              -78.8481085224459,
+              42.81315222398479
+            ],
+            [
+              -78.84804269882281,
+              42.813024635329356
+            ],
+            [
+              -78.84782863379475,
+              42.81308406513335
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "15",
+        "name": "Residential 2",
+        "type": "Building",
+        "building_type": "Single-Family Detached",
+        "floor_area": 4260,
+        "footprint_area": 2130,
+        "number_of_stories_above_ground": 2,
+        "number_of_stories": 3,
+        "number_of_bedrooms": 4,
+        "foundation_type": "basement - unconditioned",
+        "attic_type": "attic - unvented",
+        "system_type": "Residential - boiler and room air conditioner",
+        "heating_system_fuel_type": "propane",
+        "template": "Residential IECC 2015 - Customizable Template Sep 2020"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -78.84841249573596,
+              42.81294385519362
+            ],
+            [
+              -78.8484849661432,
+              42.81308642712324
+            ],
+            [
+              -78.84861900200103,
+              42.81304976336804
+            ],
+            [
+              -78.84854653159381,
+              42.8129071913539
+            ],
+            [
+              -78.84841249573596,
+              42.81294385519362
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "16",
+        "name": "Residenital 3",
+        "type": "Building",
+        "building_type": "Single-Family Detached",
+        "floor_area": 5500,
+        "footprint_area": 4655,
+        "number_of_stories_above_ground": 1,
+        "number_of_stories": 2,
+        "number_of_bedrooms": 5,
+        "foundation_type": "basement - conditioned",
+        "attic_type": "attic - conditioned",
+        "system_type": "Residential - electric resistance and no cooling",
+        "heating_system_fuel_type": "electricity",
+        "template": "Residential IECC 2015 - Customizable Template Sep 2020"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -78.84901642777548,
+              42.81281054264619
+            ],
+            [
+              -78.8492166996002,
+              42.81276856688589
+            ],
+            [
+              -78.8492882250648,
+              42.81294171638328
+            ],
+            [
+              -78.84919524192809,
+              42.812957457222666
+            ],
+            [
+              -78.84925246216879,
+              42.81307288984212
+            ],
+            [
+              -78.84915232658385,
+              42.8130833837933
+            ],
+            [
+              -78.84901642777548,
+              42.81281054264619
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
         "geometryType": "Rectangle",
         "name": "New District System_1",
@@ -693,6 +832,290 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "54972e87-4681-4050-a534-c6c6fa9dc197",
+        "type": "ThermalJunction",
+        "DSId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
+        "is_ghe_start_loop": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85210623275802,
+          42.81552804715616
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "b38eeb88-9fb8-415f-9551-6f3da6a082ed",
+        "type": "ThermalJunction",
+        "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85315065120615,
+          42.81768122277698
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "ThermalConnector",
+        "id": "a251809f-00a2-4982-8dc3-96d34fcb5727",
+        "startJunctionId": "54972e87-4681-4050-a534-c6c6fa9dc197",
+        "endJunctionId": "b38eeb88-9fb8-415f-9551-6f3da6a082ed",
+        "startFeatureId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
+        "endFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+        "total_length": 834
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -78.85210623275802,
+            42.81552804715616
+          ],
+          [
+            -78.85315065120615,
+            42.81768122277698
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "0142e75a-2a98-4b2d-9016-b6636922a8c3",
+        "type": "ThermalJunction",
+        "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85296702354428,
+          42.81815059389858
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "2bb7fb78-dfe0-4ffe-9aa2-98766c500ab3",
+        "type": "ThermalJunction",
+        "buildingId": "10"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85193472950549,
+          42.81840808235308
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "ThermalConnector",
+        "id": "09340c8f-5e8d-443b-96e4-8b49f174a9a7",
+        "startJunctionId": "0142e75a-2a98-4b2d-9016-b6636922a8c3",
+        "endJunctionId": "2bb7fb78-dfe0-4ffe-9aa2-98766c500ab3",
+        "startFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+        "endFeatureId": "10",
+        "total_length": 292
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -78.85296702354428,
+            42.81815059389858
+          ],
+          [
+            -78.85193472950549,
+            42.81840808235308
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "8c6064ee-f9b7-440b-95cd-e2a163fd39a5",
+        "type": "ThermalJunction",
+        "buildingId": "10"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85142736592312,
+          42.817794693633836
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "f621584e-4a8b-413d-b405-eb44ff16a927",
+        "type": "ThermalJunction",
+        "buildingId": "9"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85109324705694,
+          42.81713860125753
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "ThermalConnector",
+        "id": "1cadebde-30a0-4f6d-aee0-0d544a586de3",
+        "startJunctionId": "8c6064ee-f9b7-440b-95cd-e2a163fd39a5",
+        "endJunctionId": "f621584e-4a8b-413d-b405-eb44ff16a927",
+        "startFeatureId": "10",
+        "endFeatureId": "9",
+        "total_length": 256
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -78.85142736592312,
+            42.817794693633836
+          ],
+          [
+            -78.85109324705694,
+            42.81713860125753
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "d038f83c-0232-4058-9116-fed1520085f7",
+        "type": "ThermalJunction",
+        "buildingId": "9"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85083627755733,
+          42.81600678613278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "92603808-dd2e-48d8-93b6-55afd352ac9d",
+        "type": "ThermalJunction",
+        "buildingId": "8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85078257620687,
+          42.81588131780642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "ThermalConnector",
+        "id": "9b07a783-e0d9-4ab6-a820-148c61014cb5",
+        "startJunctionId": "d038f83c-0232-4058-9116-fed1520085f7",
+        "endJunctionId": "92603808-dd2e-48d8-93b6-55afd352ac9d",
+        "startFeatureId": "9",
+        "endFeatureId": "8",
+        "total_length": 48
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -78.85083627755733,
+            42.81600678613278
+          ],
+          [
+            -78.85078257620687,
+            42.81588131780642
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "7803cfb8-3e1e-497e-b8e5-628dbd9cc6ba",
+        "type": "ThermalJunction",
+        "buildingId": "8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85061207392705,
+          42.81551017482588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "43f1cb29-0b84-47ec-afff-4f982dc794ab",
+        "type": "ThermalJunction",
+        "DSId": "15a25e2f-c425-46e9-8036-b1d0d09127e2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.85165903746848,
+          42.815270238833634
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "ThermalConnector",
+        "id": "cef57522-03e4-44ae-816e-ac54a554fd07",
+        "startJunctionId": "7803cfb8-3e1e-497e-b8e5-628dbd9cc6ba",
+        "endJunctionId": "43f1cb29-0b84-47ec-afff-4f982dc794ab",
+        "startFeatureId": "8",
+        "endFeatureId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
+        "total_length": 294
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -78.85061207392705,
+            42.81551017482588
+          ],
+          [
+            -78.85165903746848,
+            42.815270238833634
+          ]
+        ]
+      }
+    }
+  ],
+  "mappers": [],
+  "scenarios": [
+    {
+      "feature_mappings": [],
+      "id": "72301739-c6c3-4dd7-bf1a-f37c8eff40db",
+      "name": "New Scenario"
     }
   ]
 }

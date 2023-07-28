@@ -263,6 +263,23 @@ class SystemParametersTest(unittest.TestCase):
 
         self.assertTrue(output_sys_param_file.is_file())
 
+    def test_csv_to_sys_param_ghe(self):
+        output_sys_param_file = self.output_dir / 'test_sys_param.json'
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
+            model_type='time_series',
+            scenario_dir=self.scenario_dir,
+            feature_file=self.feature_file,
+            ghe=True,
+            sys_param_filename=output_sys_param_file)
+
+        self.assertTrue(output_sys_param_file.is_file())
+        with open(output_sys_param_file, "r") as f:
+            sys_param_data = json.load(f)
+
+        # ghe
+        self.assertTrue(sys_param_data['district_system']['fifth_generation']['ghe_parameters'])
+
     def test_csv_to_sys_param_microgrid(self):
         output_sys_param_file = self.microgrid_output_dir / 'test_sys_param_microgrid.json'
         sp = SystemParameters()
