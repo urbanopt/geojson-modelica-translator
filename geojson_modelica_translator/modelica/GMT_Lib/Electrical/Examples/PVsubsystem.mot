@@ -54,14 +54,22 @@ model PVsubsystem
   Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Line line_PV(
     l=l_LPV,
     P_nominal=P_nominal_LPV,
-    V_nominal=V_nominal_LPV) annotation (Placement(transformation(
+    redeclare Buildings.Electrical.Transmission.MediumVoltageCables.Generic
+    // TODO: commercialCable should be templatized using the same selection from Lines.py
+          commercialCable = Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000(),
+    V_nominal=V_nominal_LPV) "line model uses the medium voltage option"
+    annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-80,20})));
   Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Line line_ind(
     l=l_Lind,
     P_nominal=P_nominal_Lind,
-    V_nominal=V_nominal_Lind) annotation (Placement(transformation(
+    redeclare Buildings.Electrical.Transmission.MediumVoltageCables.Generic
+    // TODO: commercialCable should be templatized using the same selection from Lines.py
+          commercialCable = Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000(),
+    V_nominal=V_nominal_Lind) "line model uses the medium voltage option"
+    annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={10,-40})));
