@@ -42,10 +42,6 @@ jobs:
       - uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version
         # with:
         #   poetry-version: "1.5.1"
-      - uses: actions/cache@v2 # cache dependencies to reduce workflow installation time
-        with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies with Poetry
         run: |
           poetry --version
