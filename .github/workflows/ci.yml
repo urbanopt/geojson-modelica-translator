@@ -44,10 +44,7 @@ jobs:
           python -c "import sys; print(sys.version)"
           docker --version
           docker-compose --version
-      - name: Install and configure Poetry
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: 1.5.1
+      - uses: Gr1N/setup-poetry@v8
       - name: Install dependencies with Poetry
         run: |
           poetry --version
