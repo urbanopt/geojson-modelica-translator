@@ -1,5 +1,11 @@
 # Custom Dictionary Words
+autoload
+Combi
+linecount
 mfrt
+mofile
 Reparse
+setpoint
 timeseries
 timestep
+urbanopt

@@ -165,8 +165,8 @@ class ModelBase(object):
             output_dict['is_5g_district'] = ''
         return output_dict
 
-    # TODO: this should be implemented here, not in individual classes
+    # This method needs to be defined in each of the derived model connectors
     # def get_modelica_type(self, scaffold)
 
-    # These methods need to be defined in each of the derived model connectors
+    # This method needs to be defined in each of the derived model connectors
     # def to_modelica(self):
