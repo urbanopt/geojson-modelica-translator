@@ -5,7 +5,7 @@ import copy
 import os
 import re
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Union, Optional, List
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -48,7 +48,7 @@ class PackageParser(object):
         )
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
-    def parse_within_statement(self) -> str:
+    def parse_within_statement(self) -> Optional[List[str]]:
         """Read in the package_data and parse out the within statement. The result will
         be returns, but will also set the within attribute.
         """
@@ -171,7 +171,7 @@ class PackageParser(object):
         """
         self.order_data = self.order_data.replace(previous_model, new_model)
 
-    def update_within_statement(self, new_within: str, element_index: [int, None] = None):
+    def update_within_statement(self, new_within: str, element_index: Union[int, None] = None):
         """Update the within statement in the package.mo file
 
         Args:
@@ -181,11 +181,11 @@ class PackageParser(object):
         # new within
         new_within_list = copy.deepcopy(self.within)
         if element_index is not None:
-            new_within_list[element_index] = new_within
+            new_within_list[element_index] = new_within  # type: ignore
         else:
             new_within_list = new_within.split(".")
 
-        self.package_data = self.package_data.replace(f"within {'.'.join(self.within)};", f"within {'.'.join(new_within_list)};")
+        self.package_data = self.package_data.replace(f"within {'.'.join(self.within)};", f"within {'.'.join(new_within_list)};")  # type: ignore
         self.within = new_within_list
 
     def add_model(self, new_model_name: str, insert_at: int = -1) -> None:
