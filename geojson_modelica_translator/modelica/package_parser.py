@@ -5,7 +5,7 @@ import copy
 import os
 import re
 from pathlib import Path
-from typing import Any, Union, Optional, List
+from typing import Any, List, Optional, Union
 
 from jinja2 import Environment, FileSystemLoader
 
