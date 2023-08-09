@@ -92,7 +92,7 @@ jobs:
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
-              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation' ./tests
+              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
             else
               poetry run pytest --doctest-modules -v --cov-report term-missing --cov . ./tests
             fi

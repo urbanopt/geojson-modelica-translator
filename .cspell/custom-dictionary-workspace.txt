@@ -1,9 +1,19 @@
 # Custom Dictionary Words
 autoload
+buildingspy
 Combi
+cvrmsd
+dassl
+dymola
+levelname
+libfortran
 linecount
 mfrt
+MODELICAPATH
 mofile
+openstudio
+oversizing
+redeclarations
 Reparse
 setpoint
 timeseries

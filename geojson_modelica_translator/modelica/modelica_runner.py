@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 from typing import Union
 
+from buildingspy.simulate.Dymola import Simulator
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
@@ -46,7 +47,7 @@ class ModelicaRunner(object):
         local_path = Path(__file__).parent.resolve()
         self.om_docker_path = local_path / 'lib' / 'runner' / 'om_docker.sh'
 
-        # Verify that docker is up and running
+        # Verify that docker is up and running, if needed.
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
@@ -181,7 +182,7 @@ class ModelicaRunner(object):
                 cwd=run_path
             )
             # Uncomment this section and rebuild the container in order to pause the container
-            # to inpsect the container and test commands.
+            # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
             logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
@@ -221,11 +222,12 @@ class ModelicaRunner(object):
             model_name (str): The name of the model to be simulated (this is the name within Modelica)
             file_to_load (str, Path): The file path or a modelica path to be simulated
             run_path (str, optional): location where the Modelica simulation will start. Defaults to None.
-            kwargs: additional arugments to pass to the runner which can include
+            kwargs: additional arguments to pass to the runner which can include
                 project_in_library (bool): whether the project is in a library or not
                 start_time (float): start time of the simulation
                 stop_time (float): stop time of the simulation
                 step_size (float): step size of the simulation
+                number_of_intervals (int): number of intervals to run the simulation
                 debug (bool): whether to run in debug mode or not, prevents files from being deleted.
 
         Returns:
@@ -271,6 +273,88 @@ class ModelicaRunner(object):
         self.move_results(verified_run_path, results_path, model_name)
         return (exitcode == 0, results_path)
 
+    def run_in_dymola(self, action: str, model_name: str, file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs) -> tuple[bool, Union[str, Path]]:
+        """If running on Windows or Linux, you can run Dymola (assuming you have a license),
+        using the BuildingsPy library. This is not supported on Mac.
+
+        For using Dymola with the GMT, you need to ensure that MSL v4.0 are loaded correctly and that the
+        Buildings library is in the MODELICAPATH. I added the MSL openModel via appending it to the Dymola's
+        /opt/<install>/install/dymola.mos file on Linux.
+
+        Args:
+            action (str): compile (translate) or simulate
+            model_name (str): Name of the model to translate or simulate
+            package_path (Union[str, Path]): Name of the package to also load
+            kwargs: additional arguments to pass to the runner which can include
+                start_time (float): start time of the simulation
+                stop_time (float): stop time of the simulation, in seconds
+                step_size (float): step size of the simulation, in seconds
+                debug (bool): whether to run in debug mode or not, prevents files from being deleted.
+
+        Returns:
+            tuple[bool, Union[str, Path]]:  success status and path to the results directory
+        """
+        run_path = str(run_path)
+        current_dir = Path.cwd()
+        try:
+            os.chdir(run_path)
+            print(run_path)
+            if file_to_load is None:
+                # This occurs when the model is already in a library that is loaded (e.g., MSL, Buildings)
+                # Dymola does check the MODELICAPATH for any libraries that need to be loaded automatically.
+                dymola_simulator = Simulator(
+                    modelName=model_name,
+                    outputDirectory=run_path,
+                )
+            else:
+                file_to_load = str(file_to_load)
+                dymola_simulator = Simulator(
+                    modelName=model_name,
+                    outputDirectory=run_path,
+                    packagePath=file_to_load,
+                )
+
+            # TODO: add in passing of parameters
+            # dymola_simulator.addParameters({'PI.k': 10.0, 'PI.Ti': 0.1})
+            dymola_simulator.setSolver("dassl")
+
+            start_time = kwargs.get('start_time', 0)
+            stop_time = kwargs.get('stop_time', 300)
+            step_size = kwargs.get('step_size', 5)
+
+            # calculate the number of intervals based on the step size
+            number_of_intervals = int((stop_time - start_time) / step_size)
+
+            dymola_simulator.setStartTime(start_time)
+            dymola_simulator.setStopTime(stop_time)
+            dymola_simulator.setNumberOfIntervals(number_of_intervals)
+
+            # Do not show progressbar! -- It will cause an "elapsed time used before assigned" error.
+            # dymola_simulator.showProgressBar(show=True)
+
+            if kwargs.get('debug', False):
+                dymola_simulator.showGUI(show=True)
+                dymola_simulator.exitSimulator(False)
+
+            # BuildingPy throws an exception if the model errs
+            try:
+                if action == 'compile':
+                    dymola_simulator.translate()
+                    # the results of this does not create an FMU, just
+                    # the status of the translation/compilation.
+                elif action == 'simulate':
+                    dymola_simulator.simulate()
+            except Exception as e:
+                logger.error(f"Exception running Dymola: {e}")
+                return False, run_path
+
+            # remove some of the unneeded results
+            self.cleanup_path(Path(run_path), model_name, debug=kwargs.get('debug', False))
+        finally:
+            os.chdir(current_dir)
+
+        return True, run_path
+
     def move_results(self, from_path: Path, to_path: Path, model_name: Union[str, None] = None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
@@ -313,6 +397,10 @@ class ModelicaRunner(object):
         """
         # list of files to always remove
         files_to_remove = [
+            'dsin.txt',
+            'dsmodel.c',
+            'dymosim',
+            'request.',
             f'{model_name}',
             f'{model_name}.makefile',
             f'{model_name}.libs',
@@ -325,6 +413,8 @@ class ModelicaRunner(object):
             'om_docker.sh',
             'compile_fmu.mos',
             'simulate.mos',
+            'run.mos',
+            'run_translate.mos',
         ]
 
         if not kwargs.get('debug', False):
