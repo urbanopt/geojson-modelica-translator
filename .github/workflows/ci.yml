@@ -39,9 +39,10 @@ jobs:
           python -c "import sys; print(sys.version)"
           docker --version
           docker-compose --version
-      - uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version
-        # with:
-        #   poetry-version: "1.5.1"
+      - name: Install and configure Poetry
+        uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version. Defaults to latest
+          # with:
+          #   poetry-version: "1.5.1"
       - name: Install dependencies with Poetry
         run: |
           poetry --version
