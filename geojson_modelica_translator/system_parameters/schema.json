@@ -1225,15 +1225,6 @@
       "properties": {
         "fifth_generation": {
           "properties": {
-            "central_cooling_plant_parameters": {
-              "$ref": "#/definitions/central_cooling_plant_parameters"
-            },
-            "central_heating_plant_parameters": {
-              "$ref": "#/definitions/central_heating_plant_parameters"
-            },
-            "combined_heat_and_power_parameters": {
-              "$ref": "#/definitions/combined_heat_and_power_parameters"
-            },
             "ghe_parameters": {
               "$ref": "#/definitions/ghe_parameters"
             },
@@ -1599,6 +1590,15 @@
       "description": "Design parameters used for GHE sizing.",
       "type": "object",
       "properties": {
+        "method": {
+          "description": "Building load distribution method for Ground Heat Exchanger sizing",
+          "type": "string",
+          "enum": [
+            "AREAPROPORTIONAL",
+            "UPSTREAM"
+          ],
+          "default": "AREAPROPORTIONAL"
+        },
         "flow_rate": {
           "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
           "type": "number",
@@ -1626,6 +1626,7 @@
         }
       },
       "required": [
+        "method",
         "flow_rate",
         "flow_type",
         "max_eft",

@@ -76,7 +76,7 @@ class Borefield(PlantBase):
                     "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
                 "borehole_height": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.length"
+                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.length_of_boreholes"
                 ),
                 "borehole_diameter": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.diameter"

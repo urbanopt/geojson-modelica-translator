@@ -3,6 +3,7 @@
 
 import json
 import logging
+import math
 import os
 from copy import deepcopy
 from pathlib import Path
@@ -677,11 +678,24 @@ class SystemParameters(object):
         # Power Converters
         # TODO: not handled in UO / OpenDSS
 
+    def calculate_dimensions(self, area, perimeter):
+
+        discriminant = perimeter ** 2 - 16 * area
+
+        if discriminant < 0:
+            raise ValueError("No valid rectangle dimensions exist for the given area and perimeter.")
+
+        length = (perimeter + math.sqrt(discriminant)) / 4
+        width = (perimeter - 2 * length) / 2
+
+        return length, width
+
     def csv_to_sys_param(self,
                          model_type: str,
                          scenario_dir: Path,
                          feature_file: Path,
                          sys_param_filename: Path,
+                         ghe=False,
                          overwrite=True,
                          microgrid=False) -> None:
         """
@@ -692,6 +706,7 @@ class SystemParameters(object):
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
         :param overwrite: Boolean, whether to overwrite existing sys-param file
+        :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
         :return None, file created and saved to user-specified location
         """
@@ -734,16 +749,15 @@ class SystemParameters(object):
                             measure_list.append(Path(item) / "modelica.mos")  # space heating/cooling & water heating
                             measure_list.append(Path(item) / "building_loads.csv")  # used for max electricity load
 
-        # Get each feature id from the SDK FeatureFile
+        # Get each building feature id from the SDK FeatureFile
         building_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
-            weather_filename = sdk_input['project']['weather_filename']
-            weather_path = self.sys_param_filename.parent / weather_filename
-            for feature in sdk_input['features']:
-                # KAF change: this should only gather features of type 'Building'
-                if feature['properties']['type'] == 'Building':
-                    building_ids.append(feature['properties']['id'])
+        weather_filename = sdk_input['project']['weather_filename']
+        weather_path = self.sys_param_filename.parent / weather_filename
+        for feature in sdk_input['features']:
+            if feature['properties']['type'] == 'Building':
+                building_ids.append(feature['properties']['id'])
 
         # Check if the EPW weatherfile exists, if not, try to download
         if not weather_path.exists():
@@ -827,6 +841,55 @@ class SystemParameters(object):
         except UnboundLocalError:
             raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
                              "Perhaps you haven't run REopt post-processing step in the UO sdk?")
+
+        # Update ground heat exchanger properties if true
+        if ghe:
+
+            ghe_ids = []
+            # add properties from the feature file
+            with open(feature_file) as json_file:
+                sdk_input = json.load(json_file)
+            for feature in sdk_input['features']:
+                if feature['properties']['type'] == 'District System':
+                    try:
+                        district_system_type = feature['properties']['district_system_type']
+                    except KeyError:
+                        pass
+                    if district_system_type == 'Ground Heat Exchanger':
+                        length, width = self.calculate_dimensions(feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
+                        ghe_ids.append({'ghe_id': feature['properties']['id'],
+                                        'length_of_ghe': length,
+                                        'width_of_ghe': width})
+
+            ghe_sys_param = self.param_template['district_system']['fifth_generation']['ghe_parameters']
+            # Make sys_param template entries for GHE specific properties
+            ghe_list = []
+            for ghe in ghe_ids:
+                # update GHE specific properties
+                ghe_info = deepcopy(ghe_sys_param['ghe_specific_params'][0])
+                # Update GHE ID
+                ghe_info['ghe_id'] = str(ghe['ghe_id'])
+                # Add ghe geometric properties
+                ghe_info['ghe_geometric_params']['length_of_ghe'] = ghe['length_of_ghe']
+                ghe_info['ghe_geometric_params']['width_of_ghe'] = ghe['width_of_ghe']
+                ghe_list.append(ghe_info)
+
+            # Add all GHE specific properties to sys-param file
+            ghe_sys_param['ghe_specific_params'] = ghe_list
+
+            # Update ghe_dir
+            ghe_dir = scenario_dir / 'ghe_dir'
+            ghe_sys_param['ghe_dir'] = str(ghe_dir)
+
+            # remove fourth generation district system type
+            del self.param_template['district_system']['fourth_generation']
+
+        else:
+            # remove fifth generation district system type if it exists in template and ghe is not true
+            try:
+                del self.param_template['district_system']['fifth_generation']
+            except KeyError:
+                pass
 
         # save the file to disk
         self.save()
