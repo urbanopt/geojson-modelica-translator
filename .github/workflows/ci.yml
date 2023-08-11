@@ -47,7 +47,6 @@ jobs:
         run: |
           poetry --version
           poetry install
-          poetry update
       - name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
