@@ -43,7 +43,18 @@ class PackageParserTest(unittest.TestCase):
         package = PackageParser(self.output_dir)
         self.assertListEqual(package.order, ["model_x", "model_y"])
 
-    def test_rename_model(self):
+    def test_rename_package_model(self):
+        package = PackageParser.new_from_template(
+            self.output_dir, 'rename_model', ["model_1", "model_2"], within="RenameWithin"
+        )
+        package.save()
+
+        package.rename_package('my_super_new_model')
+        self.assertEqual(len(package.order), 2)
+        self.assertIn('my_super_new_model', package.package_data)
+        self.assertEqual(package.package_name, 'my_super_new_model')
+
+    def test_rename_model_in_order(self):
         package = PackageParser.new_from_template(
             self.output_dir, 'rename_model', ["model_1", "model_2"], within="RenameWithin"
         )
@@ -63,3 +74,16 @@ class PackageParserTest(unittest.TestCase):
         package.add_model('model_alpha', 0)
         self.assertEqual(len(package.order), 4)
         self.assertListEqual(['model_alpha', 'model_beta', 'model_gamma', 'model_delta'], package.order)
+
+    def test_within_clause(self):
+        package = PackageParser.new_from_template(
+            self.output_dir, 'within_clause', ["model_a", "model_b"], within="SomeWithin"
+        )
+        package.save()
+
+        self.assertEqual(package.within, ['SomeWithin'])
+
+        package.update_within_statement('NewWithin')
+        self.assertEqual(package.within, ['NewWithin'])
+
+        

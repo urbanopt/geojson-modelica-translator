@@ -148,4 +148,4 @@ class TimeSeriesMFT(LoadBase):
         pp.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+        return f'Loads.{self.building_name}.building'
