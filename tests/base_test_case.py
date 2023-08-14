@@ -80,6 +80,7 @@ class TestCaseBase(GMTTestCase):
         # make sure that the results log exist
         self.assertTrue((Path(results_path) / 'stdout.log').exists())
 
+    @pytest.mark.dymola
     def run_and_assert_in_dymola(self, model_name: str, file_to_load: str, run_path: Path, **kwargs):
         """Wrapper for running and asserting that the simulation completed successfully in dymola
 
