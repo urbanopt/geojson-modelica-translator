@@ -11,11 +11,6 @@ defaults:
   run:
     shell: bash
 
-# Cancel existing run if a new one is started
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   test:
     strategy:
@@ -45,14 +40,13 @@ jobs:
           docker --version
           docker-compose --version
       - name: Install and configure Poetry
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: 1.5.1
+        uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version. Defaults to latest
+          # with:
+          #   poetry-version: "1.5.1"
       - name: Install dependencies with Poetry
         run: |
           poetry --version
           poetry install
-          poetry update
       - name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
