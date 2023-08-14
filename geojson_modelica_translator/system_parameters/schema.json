@@ -1380,13 +1380,6 @@
           ],
           "additionalProperties": true
         },
-        "ground_loads": {
-          "description": "Heat rejection or extraction loads (in Watts) of the ground heat exchanger. \n\n Determined from the Thermal Network sizing, and used for ground heat exchanger sizing.\n\n Heat extraction loads are positive, and heat rejection loads are negative.",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        },
         "ghe_geometric_params": {
           "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
           "type": "object",
