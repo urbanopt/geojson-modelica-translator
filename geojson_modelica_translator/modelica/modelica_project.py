@@ -130,6 +130,40 @@ class ModelicaProject:
             indent = key.count(os.path.sep)
             print(" " * indent + f"{os.path.sep} {key.replace(os.path.sep, f' {os.path.sep} ')}")
 
+    def get_model(self, model_name: str) -> Model:
+        """Return the model object based on the based string name. The model
+        name should be in the format that Modelica prefers which is period(.)
+        delimited.
+
+        Args:
+            model_name (str): _description_
+
+        Raises:
+            Exception: _description_
+
+        Returns:
+            Model: _description_
+        """
+        # check if the last 3 characters are .mo
+        if model_name[-3:] == '.mo':
+            raise Exception(f"Model name should not have the .mo extension: {model_name} ")
+
+        # convert the model_name to the path format
+        model_name = Path(model_name.replace('.', os.path.sep))
+
+        # now add on the extension
+        model_name = model_name.with_suffix('.mo')
+
+        if self.file_data.get(str(model_name)) is None:
+            raise Exception(f"ModelicaPackage does not contain a {model_name} model")
+        else:
+            # verify that the type of file is model
+            model = self.file_data[str(model_name)]
+            if model.file_type != ModelicaFileObject.FILE_TYPE_MODEL:
+                raise Exception(f"Model is a package file, not a model: {model_name}")
+
+            return self.file_data[str(model_name)].object
+
     def save_as(self, new_package_name: str, output_dir: Path = None) -> None:
         """method to save the ModelicaProject to a new location which
         requires a new path name and updating all of the within statement
