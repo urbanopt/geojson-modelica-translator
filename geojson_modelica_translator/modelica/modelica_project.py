@@ -81,6 +81,7 @@ class ModelicaProject:
     def __init__(self, package_file):
         self.root_directory = Path(package_file).parent
         self.file_types = ['.mo', '.txt', '.mos', '.order']
+        self.file_types_to_skip = ['.log', '.mat']
         self.file_data = {}
 
         self._load_data()
@@ -89,13 +90,24 @@ class ModelicaProject:
         """method to load all of the files into a data structure for processing"""
         # walk the tree and add in all the files
         for file_path in self.root_directory.rglob('*'):
+            if file_path.suffix in self.file_types_to_skip and file_path.is_file():
+                # skip files that have the file_types_to_skip suffix
+                continue
+
             if file_path.suffix in self.file_types and file_path.is_file():
                 # only store the relative path that is in the package
                 rel_path = file_path.relative_to(self.root_directory)
                 self.file_data[str(rel_path)] = ModelicaFileObject(file_path)
             elif file_path.is_dir():
-                # this is a directory, just add in
-                # a temp object for now to keep the path known
+                # this is a directory, add in an empty ModelicaFileObject
+                # to keep track of the directory.
+                #
+                # however, we ignore if there is a tmp directory or the parent dir is
+                # tmp. Maybe we need to support more than 2 levels here.
+                if file_path.name == 'tmp' or file_path.parent.name == 'tmp':
+                    _log.warning(f"Found a tmp directory, skipping {file_path}")
+                    continue
+
                 rel_path = file_path.relative_to(self.root_directory)
                 self.file_data[str(rel_path)] = ModelicaFileObject(file_path)
             else:
@@ -107,8 +119,6 @@ class ModelicaProject:
         # validate the data, extend as needed.
         if self.file_data.get('package.mo', None) is None:
             raise Exception('ModelicaPackage does not contain a /package.mo file')
-
-        self.pretty_print_tree()
 
     def pretty_print_tree(self) -> None:
         """Pretty print all the items in the directory structure
@@ -198,5 +208,8 @@ class ModelicaProject:
             elif file.file_type == ModelicaFileObject.FILE_TYPE_TEXT:
                 # just save the file as it is text (all other files)
                 open(new_path, 'w').write(file.file_contents)
+            elif file.file_path.name == 'package.order':
+                # this is included in the FILE_TYPE_PACKAGE, so just skip
+                continue
             else:
-                _log.warn("Unknown file type, not saving")
+                _log.warn(f"Unknown file type, not including in .save_as, {file.file_path}")

@@ -2,10 +2,10 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import unittest
-import pytest
 from pathlib import Path
 from shutil import rmtree
 
+import pytest
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.modelica.GMT_Lib.DHC.DHC_5G_waste_heat_GHX import (
@@ -27,6 +27,7 @@ env = Environment(
     variable_start_string='{$',
     variable_end_string='$}'
 )
+
 
 class GmtLibDesTest(unittest.TestCase):
 

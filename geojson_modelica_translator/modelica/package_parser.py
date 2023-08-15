@@ -139,6 +139,9 @@ class PackageParser(object):
             f.write(self.order_data)
             f.write("\n")
 
+        # update link to saved path
+        self.path = new_path
+
     @property
     def order(self) -> list[str]:
         """Return the order of the packages from the package.order file
