@@ -122,7 +122,7 @@ class Teaser(LoadBase):
     def fix_gains_file(self, f):
         """Temporary hack to fix the gains files in TEASER. This method does the following:
             * makes the dimension of the matrix to 8761,4
-            * addes in a timestep for t=0
+            * adds in a timestep for t=0
 
         :param f: string, fully qualified path to file
         :return: None
@@ -171,7 +171,6 @@ class Teaser(LoadBase):
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
         # create a list of strings that we need to replace in all the file as we go along
-        string_replace_list = []
         mos_weather_filename = self.system_parameters.get_param("$.weather")
         # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
         b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
@@ -196,13 +195,7 @@ class Teaser(LoadBase):
             # internal gain files. The next method can be removed once the TEASER development branch is
             # merged into master/main and released.
             self.fix_gains_file(f"{b_modelica_path.resources_dir}/{new_file_name}")
-
-            string_replace_list.append(
-                (
-                    f"Project/{self.building_name}/{self.building_name}_Models/{os.path.basename(f)}",
-                    f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}",
-                )
-            )
+            self.internal_gains_file = f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}"
 
         # process each of the thermal zones
         thermal_zone_files = []
@@ -228,19 +221,13 @@ class Teaser(LoadBase):
             mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTilRoof", "lat")
 
             # updating path to internal loads
-            for s in string_replace_list:
-                new_file_path = s[1]
-                new_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{new_file_path}")'''
-                old_file_path = s[0]
-                old_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{old_file_path}")'''
 
-                mofile.update_component_modification(
-                    "Modelica.Blocks.Sources.CombiTimeTable",
-                    "internalGains",
-                    "fileName",
-                    new_resource_arg,
-                    if_value=old_resource_arg
-                )
+            mofile.update_component_modification(
+                "Modelica.Blocks.Sources.CombiTimeTable",
+                "internalGains",
+                "fileName",
+                "Modelica.Utilities.Files.loadResource(filNam)"
+            )
 
             # add heat port convective heat flow.
             mofile.insert_component(
@@ -306,6 +293,13 @@ class Teaser(LoadBase):
                 string_comment='Number of fluid ports.',
                 annotations=['connectorSizing=true']
             )
+            # Add a parameter to put the load filename at the top of the model
+            mofile.add_parameter(
+                'String', 'filNam',
+                assigned_value=f'"modelica://{self.internal_gains_file}"',
+                string_comment='modelica path to the internal gains file used in the model CombiTimeTable'
+            )
+
             # Set the fraction latent person in the template by simply replacing the value
             mofile.insert_component(
                 'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
@@ -634,4 +628,4 @@ class Teaser(LoadBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+        return f'Loads.{self.building_name}.building'

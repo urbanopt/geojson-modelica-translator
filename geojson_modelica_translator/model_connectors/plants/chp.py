@@ -101,4 +101,4 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.CentralHeatingPlant'
+        return 'Plants.CentralHeatingPlant'
