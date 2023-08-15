@@ -136,13 +136,13 @@ class ModelicaProject:
         delimited.
 
         Args:
-            model_name (str): _description_
+            model_name (str): Name of the model to return, in the form of . delimited
 
         Raises:
-            Exception: _description_
+            Exception: Various exceptions if the model is not found or the file type is incorrect
 
         Returns:
-            Model: _description_
+            Model: The Modelica Builder model object
         """
         # check if the last 3 characters are .mo
         if model_name[-3:] == '.mo':
