@@ -68,9 +68,6 @@ class PackageParser(object):
 
         return self.within
 
-    def exists(self):
-        return self.path.exists()
-
     @classmethod
     def new_from_template(cls, path: Union[str, Path], name: str, order: list[str], within: Union[str, None] = None) -> "PackageParser":
         """Create new package data based on the package.mo template. If within is not specified, then it is

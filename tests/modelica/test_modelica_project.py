@@ -22,13 +22,14 @@ class ModelicaProjectTest(unittest.TestCase):
         project = ModelicaProject(package_file)
 
         self.assertTrue(project.file_data['package.mo'].file_path.exists())
-        self.assertTrue(project.file_data['Districts/DistrictEnergySystem.mo'].file_path.exists())
+        district_mo_file = 'Districts' + os.path.sep + 'DistrictEnergySystem.mo'
+        self.assertTrue(project.file_data[district_mo_file].file_path.exists())
 
         # assert the file type of the DistrictEnergySystem.mo file
-        self.assertEqual(project.file_data['Districts/DistrictEnergySystem.mo'].file_type, ModelicaFileObject.FILE_TYPE_MODEL)
+        self.assertEqual(project.file_data[district_mo_file].file_type, ModelicaFileObject.FILE_TYPE_MODEL)
         
         # check the data in the DistrictEnergySystem.mo file
-        mofile = project.file_data['Districts/DistrictEnergySystem.mo'].object
+        mofile = project.file_data[district_mo_file].object
         self.assertIsInstance(mofile, Model)
         
     def test_project_save_as(self):
