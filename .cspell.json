@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "version": "0.2",
   "language": "en",
   "words": [
@@ -27,4 +28,42 @@
   "flagWords": [
     "hte"
   ]
+=======
+    // Version of the setting file.  Always 0.2
+    "version": "0.2",
+    // language - current active spelling language
+    "language": "en",
+    // words - list of words to be always considered correct
+    "words": [
+        "autoload",
+        "buildingspy",
+        "Combi",
+        "cvrmsd",
+        "dassl",
+        "dymola",
+        "GDHC",
+        "levelname",
+        "libfortran",
+        "linecount",
+        "massflow",
+        "mfrt",
+        "modelica",
+        "MODELICAPATH",
+        "mofile",
+        "openstudio",
+        "oversizing",
+        "redeclarations",
+        "Reparse",
+        "setpoint",
+        "timeseries",
+        "timestep",
+        "urbanopt"
+    ],
+    // flagWords - list of words to be always considered incorrect
+    // This is useful for offensive words and common spelling errors.
+    // For example "hte" should be "the"
+    "flagWords": [
+        "hte"
+    ]
+>>>>>>> Stashed changes
 }

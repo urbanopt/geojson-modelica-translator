@@ -694,7 +694,8 @@ class SystemParameters(object):
                          sys_param_filename: Path,
                          ghe=False,
                          overwrite=True,
-                         microgrid=False) -> None:
+                         microgrid=False,
+                         **kwargs) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -705,9 +706,15 @@ class SystemParameters(object):
         :param overwrite: Boolean, whether to overwrite existing sys-param file
         :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
+        
+        :kwargs (optional): 
+            - relative_path: Path, set the paths (time series files, weather file, etc) relate to `relative_path`
         :return None, file created and saved to user-specified location
+
+        
         """
         self.sys_param_filename = sys_param_filename
+        self.rel_path = kwargs.get('relative_path', None)
 
         if model_type == 'time_series':
             # TODO: delineate between time_series and time_series_mft
@@ -783,7 +790,12 @@ class SystemParameters(object):
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
-                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
+                    # if there is a relative path, then set the path relative
+                    to_file_path = measure_file_path.resolve()
+                    if self.rel_path:
+                        to_file_path = to_file_path.relative_to(self.rel_path)
+                    
+                    building['load_model_parameters']['time_series']['filepath'] = str(to_file_path)
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     mfrt_df = pd.read_csv(measure_file_path)
                     try:
