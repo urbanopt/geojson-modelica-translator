@@ -4,6 +4,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from typing import Union
 
 from modelica_builder.model import Model
 
@@ -130,7 +131,7 @@ class ModelicaProject:
             indent = key.count(os.path.sep)
             print(" " * indent + f"{os.path.sep} {key.replace(os.path.sep, f' {os.path.sep} ')}")
 
-    def get_model(self, model_name: str) -> Model:
+    def get_model(self, model_name: Union[Path, str]) -> Model:
         """Return the model object based on the based string name. The model
         name should be in the format that Modelica prefers which is period(.)
         delimited.
@@ -144,7 +145,9 @@ class ModelicaProject:
         Returns:
             Model: The Modelica Builder model object
         """
-        # check if the last 3 characters are .mo
+        # check if the last 3 characters are .mo. The path should originally be
+        # a period delimited path.
+        model_name = str(model_name)
         if model_name[-3:] == '.mo':
             raise Exception(f"Model name should not have the .mo extension: {model_name} ")
 
