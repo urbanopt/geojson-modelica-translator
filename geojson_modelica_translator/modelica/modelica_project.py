@@ -105,7 +105,7 @@ class ModelicaProject:
                 #
                 # however, we ignore if there is a tmp directory or the parent dir is
                 # tmp. Maybe we need to support more than 2 levels here.
-                if file_path.name == 'tmp' or file_path.parent.name == 'tmp':
+                if 'tmp' in file_path.parts:
                     _log.warning(f"Found a tmp directory, skipping {file_path}")
                     continue
 
