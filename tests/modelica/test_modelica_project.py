@@ -52,7 +52,7 @@ class ModelicaProjectTest(unittest.TestCase):
         with self.assertRaises(Exception) as ctx:
             model = project.get_model('package')
         self.assertIn("Model is a package file, not a model", str(ctx.exception))
-        
+
     def test_project_save_as(self):
         """Saving a package will require renaming the within statements in all the files"""
         package_file = self.data_dir / 'teaser_single' / 'package.mo'
@@ -62,6 +62,4 @@ class ModelicaProjectTest(unittest.TestCase):
 
         # verify that the package.mo file was saved
         self.assertTrue((self.output_dir / 'test_package_1' / 'package.mo').exists())
-
-        # TODO: how to test the files are correct, really it is just running in Dymola
 
