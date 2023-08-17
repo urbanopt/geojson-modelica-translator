@@ -148,7 +148,7 @@ class ModelicaProject:
         # check if the last 3 characters are .mo. The path should originally be
         # a period delimited path.
         model_name = str(model_name)
-        if model_name.endswith( '.mo'):
+        if model_name.endswith('.mo'):
             raise Exception(f"Model name should not have the .mo extension: {model_name} ")
 
         # convert the model_name to the path format
