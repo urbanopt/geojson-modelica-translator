@@ -122,7 +122,7 @@ class ModelicaProject:
 
     def save_as(self, new_package_name: str, output_dir: Path = None) -> None:
         """method to save the ModelicaProject to a new location which
-        requires a new path name and updating all of the within statement
+        requires a new path name and updating all of the "within" statements
 
         Args:
             new_package_name (str): Name of the new package, which will also be the directory name
