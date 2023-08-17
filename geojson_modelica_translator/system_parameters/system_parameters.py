@@ -811,7 +811,7 @@ class SystemParameters(object):
                 district_nominal_massflow_rate += building_nominal_massflow_rate
                 if measure_file_path.suffix == '.csv' and measure_folder_name.endswith('_export_modelica_loads'):
                     try:
-                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # use cols to make the df small
+                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # only use the one column to make the df small
                     except ValueError:  # hack to handle the case where there is no ElectricityFacility column in the csv
                         continue
                     max_electricity_load = int(building_loads['ElectricityFacility'].max())
