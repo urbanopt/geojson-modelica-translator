@@ -108,7 +108,7 @@ class ModelicaProject:
                 if file_path.name == 'tmp' or file_path.parent.name == 'tmp':
                     _log.warning(f"Found a tmp directory, skipping {file_path}")
                     continue
-              
+
                 rel_path = file_path.relative_to(self.root_directory)
                 self.file_data[str(rel_path)] = ModelicaFileObject(file_path)
             else:
