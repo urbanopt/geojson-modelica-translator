@@ -59,7 +59,7 @@ class CsvModelicaTest(unittest.TestCase):
             self.assertTrue('111600,57.2,82.2,5.784,16.2,6.7,3.062' in data)
             self.assertFalse('9900,40.1,82.2,0.879,14.9,6.7,1.512' in data)
 
-    def test_csv_modelica_at_60_min_timestep_with_Eplus_file(self):
+    def test_csv_modelica_at_60_min_timestep_with_energyplus_file(self):
         input_file = Path(self.data_dir) / 'mfrt.csv'
         output_modelica_file_name = Path(self.output_dir) / 'mfrt_output.csv'
 

@@ -80,3 +80,14 @@ class DistrictSystemTest(TestCaseBase):
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path
         )
+
+    @pytest.mark.dymola
+    @pytest.mark.skip(reason="Structurally singular error in Dymola.")
+    def test_simulate_district_system_in_dymola(self):
+        # need to just pass the dir, dymola runner looks for package.mo
+        self.run_and_assert_in_dymola(
+            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            file_to_load=self.district._scaffold.project_path,
+            run_path=self.district._scaffold.project_path,
+            # debug=True
+        )

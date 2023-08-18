@@ -4,6 +4,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from typing import Union
 
 from modelica_builder.model import Model
 
@@ -81,6 +82,7 @@ class ModelicaProject:
     def __init__(self, package_file):
         self.root_directory = Path(package_file).parent
         self.file_types = ['.mo', '.txt', '.mos', '.order']
+        self.file_types_to_skip = ['.log', '.mat']
         self.file_data = {}
 
         self._load_data()
@@ -89,13 +91,24 @@ class ModelicaProject:
         """method to load all of the files into a data structure for processing"""
         # walk the tree and add in all the files
         for file_path in self.root_directory.rglob('*'):
+            if file_path.suffix in self.file_types_to_skip and file_path.is_file():
+                # skip files that have the file_types_to_skip suffix
+                continue
+
             if file_path.suffix in self.file_types and file_path.is_file():
                 # only store the relative path that is in the package
                 rel_path = file_path.relative_to(self.root_directory)
                 self.file_data[str(rel_path)] = ModelicaFileObject(file_path)
             elif file_path.is_dir():
-                # this is a directory, just add in
-                # a temp object for now to keep the path known
+                # this is a directory, add in an empty ModelicaFileObject
+                # to keep track of the directory.
+                #
+                # however, we ignore if there is a tmp directory or the parent dir is
+                # tmp. Maybe we need to support more than 2 levels here.
+                if 'tmp' in file_path.parts:
+                    _log.warning(f"Found a tmp directory, skipping {file_path}")
+                    continue
+
                 rel_path = file_path.relative_to(self.root_directory)
                 self.file_data[str(rel_path)] = ModelicaFileObject(file_path)
             else:
@@ -108,8 +121,6 @@ class ModelicaProject:
         if self.file_data.get('package.mo', None) is None:
             raise Exception('ModelicaPackage does not contain a /package.mo file')
 
-        self.pretty_print_tree()
-
     def pretty_print_tree(self) -> None:
         """Pretty print all the items in the directory structure
         """
@@ -119,6 +130,42 @@ class ModelicaProject:
             # find how many indents we need based on the number of path separators
             indent = key.count(os.path.sep)
             print(" " * indent + f"{os.path.sep} {key.replace(os.path.sep, f' {os.path.sep} ')}")
+
+    def get_model(self, model_name: Union[Path, str]) -> Model:
+        """Return the model object based on the based string name. The model
+        name should be in the format that Modelica prefers which is period(.)
+        delimited.
+
+        Args:
+            model_name (str): Name of the model to return, in the form of . delimited
+
+        Raises:
+            Exception: Various exceptions if the model is not found or the file type is incorrect
+
+        Returns:
+            Model: The Modelica Builder model object
+        """
+        # check if the last 3 characters are .mo. The path should originally be
+        # a period delimited path.
+        model_name = str(model_name)
+        if model_name.endswith('.mo'):
+            raise Exception(f"Model name should not have the .mo extension: {model_name} ")
+
+        # convert the model_name to the path format
+        model_name = Path(model_name.replace('.', os.path.sep))
+
+        # now add on the extension
+        model_name = model_name.with_suffix('.mo')
+
+        if self.file_data.get(str(model_name)) is None:
+            raise Exception(f"ModelicaPackage does not contain a {model_name} model")
+        else:
+            # verify that the type of file is model
+            model = self.file_data[str(model_name)]
+            if model.file_type != ModelicaFileObject.FILE_TYPE_MODEL:
+                raise Exception(f"Model is a package file, not a model: {model_name}")
+
+            return self.file_data[str(model_name)].object
 
     def save_as(self, new_package_name: str, output_dir: Path = None) -> None:
         """method to save the ModelicaProject to a new location which
@@ -198,5 +245,8 @@ class ModelicaProject:
             elif file.file_type == ModelicaFileObject.FILE_TYPE_TEXT:
                 # just save the file as it is text (all other files)
                 open(new_path, 'w').write(file.file_contents)
+            elif file.file_path.name == 'package.order':
+                # this is included in the FILE_TYPE_PACKAGE, so just skip
+                continue
             else:
-                _log.warn("Unknown file type, not saving")
+                _log.warn(f"Unknown file type, not including in .save_as, {file.file_path}")

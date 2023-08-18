@@ -22,7 +22,7 @@ The project is motivated by the need to easily evaluate district energy systems.
 Getting Started
 ---------------
 
-It is possible to test the GeoJSON to Modelica Translator (GMT) by simpling installing the Python package and running the
+It is possible to test the GeoJSON to Modelica Translator (GMT) by simply installing the Python package and running the
 command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the
 functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings
 library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available
@@ -55,7 +55,7 @@ More example projects are available in an accompanying
 Architecture Overview
 ---------------------
 
-The GMT is designed to enable "easy" swapping of building loads, district systems, and newtork topologies. Some
+The GMT is designed to enable "easy" swapping of building loads, district systems, and network topologies. Some
 of these functionalities are more developed than others, for instance swapping building loads between Spawn and
 RC models (using TEASER) is fleshed out; however, swapping between a first and fifth generation heating system has
 yet to be fully implemented.
