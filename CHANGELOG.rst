@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.6.0 RC1
+-----------------
+
+## To be updated
+
+
 Version 0.5.0
 -------------
 
