@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest import TestCase
 
 import numpy as np
+import pytest
 
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 
@@ -72,6 +73,26 @@ class TestCaseBase(GMTTestCase):
         mr = ModelicaRunner()
         success, results_path = mr.run_in_docker(
             'compile_and_run', model_name, file_to_load=file_to_load, run_path=run_path, **kwargs
+        )
+        # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
+        # Look at the stdout.log if this is non-zero.
+        self.assertTrue(success)
+
+        # make sure that the results log exist
+        self.assertTrue((Path(results_path) / 'stdout.log').exists())
+
+    @pytest.mark.dymola
+    def run_and_assert_in_dymola(self, model_name: str, file_to_load: str, run_path: Path, **kwargs):
+        """Wrapper for running and asserting that the simulation completed successfully in dymola
+
+        Args:
+            model_name (str): Name of the model to run, this is the name in the Modelica file
+            file_to_load (str): Name of the file to load, which may or may not contain the model_name
+            run_path (Path): Path to the simulation directory where all the files will be copied
+        """
+        mr = ModelicaRunner()
+        success, results_path = mr.run_in_dymola(
+            'simulate', model_name, file_to_load=file_to_load, run_path=run_path, **kwargs
         )
         # on the exit of the docker command it should return a zero exit code, otherwise there was an issue.
         # Look at the stdout.log if this is non-zero.

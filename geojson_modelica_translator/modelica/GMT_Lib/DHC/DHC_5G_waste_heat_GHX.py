@@ -43,7 +43,6 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         # 1: grab all of the time series files and place them in the proper location
         for building in self.system_parameters.get_param("$.buildings[?load_model=time_series]"):
             building_load_file = Path(building['load_model_parameters']['time_series']['filepath'])
-
             files_to_copy.append({
                 "orig_file": building_load_file,
                 "geojson_id": building['geojson_id'],
@@ -52,7 +51,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             })
 
         # 2: Copy the files to the appropriate location and ensure uniqueness by putting into a unique directory
-        #    (since openstudio creates all files with modelica.mos)
+        #    (since OpenStudio creates all files with modelica.mos)
         total_heating_load = 0
         total_cooling_load = 0
         total_swh_load = 0
