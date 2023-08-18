@@ -9,20 +9,27 @@
     "dassl",
     "dymola",
     "GDHC",
+    "Jing",
     "levelname",
     "libfortran",
     "linecount",
     "mfrt",
+    "microgrid",
+    "Modelica",
     "MODELICAPATH",
     "mofile",
+    "nllong",
     "openstudio",
+    "Optimica",
     "oversizing",
     "redeclarations",
     "Reparse",
     "setpoint",
+    "tanushree",
     "timeseries",
     "timestep",
-    "urbanopt"
+    "urbanopt",
+    "vtnate"
   ],
   "flagWords": [
     "hte"
