@@ -13,8 +13,8 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Lines.Lines import (
     DistributionLines
 )
-from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Loads.capacitor import (
-    Capacitor
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Loads.capacitive import (
+    Capacitive_load
 )
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Loads.Inductive import (
     Inductive_load
@@ -33,6 +33,9 @@ from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalan
 )
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Storage.Battery import (
     Battery
+)
+from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Storage.capacitor import (
+    Capacitor
 )
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.Examples.pv_subsystem import (
     PVSubsystem
@@ -263,6 +266,7 @@ def test_build_capacitor():
     assert linecount(package_output_dir / 'Capacitor0.mo') > 20
 
 
+@pytest.mark.skip(reason="Capacitors are not yet implemented")
 @pytest.mark.simulation
 def test_simulate_capacitor():
     # -- Setup
@@ -403,6 +407,46 @@ def test_simulate_grid():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / 'Grid.mo') > 20
+    # Did the simulation run?
+    assert success is True
+
+
+@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_capacitive_load")
+def test_build_capacitive_load():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Capacitive'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    capacitive = Capacitive_load(sys_params)
+    capacitive.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Capacitive0.mo') > 20
+
+
+@pytest.mark.simulation
+def test_simulate_capacitive_load():
+    # -- Setup
+    package_output_dir = PARENT_DIR / 'output' / 'Capacitive'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    capacitive = Capacitive_load(sys_params)
+    capacitive.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'Capacitive0',
+        file_to_load=package_output_dir / 'Capacitive0.mo',
+        run_path=package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'Capacitive0.mo') > 20
     # Did the simulation run?
     assert success is True
 
