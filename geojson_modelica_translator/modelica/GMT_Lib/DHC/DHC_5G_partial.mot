@@ -106,14 +106,14 @@ partial model PartialSeries "Partial model for series network"
     final lEnd=datDes.lEnd,
     final allowFlowReversal=allowFlowReversalSer) "Distribution network"
     annotation (Placement(transformation(extent={{-20,130},{20,150}})));
-  Modelica.Fluid.Sensors.TemperatureTwoPort TDisWatSup(
+  Buildings.Fluid.Sensors.TemperatureTwoPort TDisWatSup(
     redeclare final package Medium = Medium,
     final m_flow_nominal=datDes.mPumDis_flow_nominal)
     "District water supply temperature"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-80,20})));
-  Modelica.Fluid.Sensors.TemperatureTwoPort TDisWatRet(
+  Buildings.Fluid.Sensors.TemperatureTwoPort TDisWatRet(
     redeclare final package Medium = Medium,
     final m_flow_nominal=datDes.mPumDis_flow_nominal)
     "District water return temperature"
@@ -121,7 +121,7 @@ partial model PartialSeries "Partial model for series network"
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={80,0})));
-  Modelica.Fluid.Sensors.TemperatureTwoPort TDisWatBorLvg(
+  Buildings.Fluid.Sensors.TemperatureTwoPort TDisWatBorLvg(
     redeclare final package Medium = Medium,
     final m_flow_nominal=datDes.mPumDis_flow_nominal)
     "District water borefield leaving temperature"
