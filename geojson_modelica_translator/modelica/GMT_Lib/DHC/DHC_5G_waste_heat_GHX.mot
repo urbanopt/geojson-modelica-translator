@@ -2,7 +2,7 @@ within {{ data['project_name'] }}.Districts;{% raw %}
 model district
   "Series connection with constant district water mass flow rate"
   extends
-    Buildings.Experimental.DHC.Examples.Combined.BaseClasses.PartialSeries(      redeclare
+    PartialSeries(redeclare
       Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS
       bui[nBui](final filNam=filNam), datDes(
       {% endraw %}nBui={{ data['building_load_files'] | count }},
