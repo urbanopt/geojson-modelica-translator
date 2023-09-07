@@ -34,7 +34,7 @@ After installation of the GMT, a new command line interface (called the URBANopt
 .. code-block:: bash
 
     uo_des -h
-    uo_des build-system-param -h
+    uo_des build-sys-param -h
 
     # the command below is only an example; however, it will run if the repository
     # is checked out and run in the following path: ./tests/management/data/sdk_project_scraps
