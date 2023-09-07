@@ -55,6 +55,7 @@ class UrbanOptGeoJson(object):
 
         self.schemas = Schemas()
 
+        errors = ""
         building_errors = {}
         self.buildings = []
         for feature in self.data.features:
