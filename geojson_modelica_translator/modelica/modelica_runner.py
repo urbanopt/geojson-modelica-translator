@@ -173,6 +173,7 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             # run_model = Path(file_to_run).relative_to(run_path)
             exec_call = ['./om_docker.sh', action]
+            logger.info("Executing subprocess to simulate with Modelica in Docker")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
                 stdout=stdout_log,
