@@ -39,7 +39,6 @@ class ModelicaRunner(object):
         """
         # check if the user has defined a MODELICAPATH, is so, then use that.
         if os.environ.get('MODELICAPATH', None):
-            print('Using predefined MODELICAPATH')
             self.modelica_lib_path = os.environ['MODELICAPATH']
             logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
         else:
@@ -174,7 +173,6 @@ class ModelicaRunner(object):
             # but must strip off the .mo extension on the model to run
             # run_model = Path(file_to_run).relative_to(run_path)
             exec_call = ['./om_docker.sh', action]
-            logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
                 stdout=stdout_log,
@@ -185,9 +183,9 @@ class ModelicaRunner(object):
             # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
-            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
+            logger.debug(f"Subprocess command executed, waiting for completion... \n    Args used: {p.args}")
             exitcode = p.wait()
-        except KeyboardInterrupt:
+        except KeyboardInterrupt:  # Kill containers if the user presses Ctrl+C
             # List all containers and their images
             docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
             containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split('\n')
@@ -246,12 +244,15 @@ class ModelicaRunner(object):
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, action)
 
-        logger.debug('checking stdout.log for errors')
-        # Check the stdout.log file for errors
+        logger.debug('Checking stdout.log for errors')
         with open(verified_run_path / 'stdout.log', 'r') as f:
             stdout_log = f.read()
             if 'Failed to build model' in stdout_log:
                 logger.error('Model failed to build')
+                exitcode = 1
+            elif 'Killed' in stdout_log:
+                logger.error('Model is too large for the Docker resources available.'
+                             ' Increase Docker resources, decrease number of buildings simulated, or both')
                 exitcode = 1
             elif 'The simulation finished successfully' in stdout_log:
                 logger.info('Model ran successfully')
@@ -263,11 +264,10 @@ class ModelicaRunner(object):
                 logger.error('Model failed to run -- unknown error')
                 exitcode = 1
 
-        logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
         self.cleanup_path(verified_run_path, model_name, debug=kwargs.get('debug', False))
 
-        logger.debug('moving results to results directory')
+        logger.debug('Moving results to results directory')
         # get the location of the results path
         results_path = Path(verified_run_path / f'{model_name}_results')
         self.move_results(verified_run_path, results_path, model_name)
@@ -417,7 +417,10 @@ class ModelicaRunner(object):
             'run_translate.mos',
         ]
 
+        logger.debug('Removing temporary files')
+
         if not kwargs.get('debug', False):
+            logger.debug('...and removing intermediate files')
             files_to_remove.extend(conditional_remove_files)
 
         for f in files_to_remove:
