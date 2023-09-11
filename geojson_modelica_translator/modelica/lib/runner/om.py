@@ -38,6 +38,7 @@ def configure_mbl_path() -> None:
     # Read the version of the MBL which will be needed for OpenModelica to be
     # configured correctly
     mbl_version = Path(mbl_package_file).read_text().split('version="')[1].split('"')[0]
+    logger.debug(f'Using MBLv{mbl_version}')
 
     # create the symlink to the MBL
     mbl_link = f'/root/.openmodelica/libraries/Buildings {mbl_version}'
@@ -119,12 +120,10 @@ if __name__ == "__main__":
     parser.add_argument('sim_step', help='Time step of the simulation.', nargs='?')
 
     # Since this command is passed with om.py, you can't use the -- args (e.g., --compile).
-    # So we are just passing in the action and then the model to act on.
-    # The actions can be (e.g., complile, run, compile_and_run)
+    # So we are just passing in the action and the model to act on.
+    # The actions can be (e.g., compile, run, compile_and_run)
     args = parser.parse_args()
     args.run_path = Path(args.run_path)
-
-    logger.info(f'args: {args}')
 
     if args.action == 'help':
         print(parser.print_help())  # type: ignore
@@ -145,14 +144,10 @@ if __name__ == "__main__":
         compile_fmu(model)
 
     if args.action == 'compile_and_run':
-        model = args.model
+        # model isn't used in this command any more.
+        # It is now used in simulate.most to generate an OM script which is called in the run_with_omc function
 
-        if Path(model).is_file():
-            model = str((args.run_path / model)).replace(os.path.sep, '.')[:-3]
-            if model[0] == '.':
-                model = model[1:]
-
-        logger.info(f'Running model {model} with OMC')
+        logger.info('Running model with OMC')
         fmu_name = run_with_omc()
 
     if args.action == 'run':
