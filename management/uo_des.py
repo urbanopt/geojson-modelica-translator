@@ -227,7 +227,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
                      step_size=step_size,
                      )
 
-    if (run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results' / f'{project_name}_Districts_DistrictEnergySystem_res.mat').exists():
-        print(f"\nModelica model {project_name} ran successfully")
+    if (run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results' / f'{project_name}.Districts.DistrictEnergySystem_res.mat').exists():
+        print(f"\nModelica model {project_name} ran successfully and can be found at {run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results'}")
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {project_name}.Districts.DistrictEnergySystem_results/stdout.log for more info.")
