@@ -107,7 +107,6 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     #                                       project_name=self.district._scaffold.project_name)
 
     @pytest.mark.simulation
-    @pytest.mark.skip("Succeeds when run manually")
     def test_simulate_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
@@ -122,7 +121,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         # Validate model outputs
         #
         results_dir = f'{self.district._scaffold.project_path}/{self.project_name}.Districts.DistrictEnergySystem_results'
-        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_res.mat'
+        mat_file = f'{results_dir}/{self.project_name}.Districts.DistrictEnergySystem_res.mat'
         mat_results = Reader(mat_file, 'dymola')
 
         # check the mass flow rates of the first load are in the expected range
