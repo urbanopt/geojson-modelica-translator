@@ -82,7 +82,7 @@ class ModelicaProject:
     def __init__(self, package_file):
         self.root_directory = Path(package_file).parent
         self.file_types = ['.mo', '.txt', '.mos', '.order']
-        self.file_types_to_skip = ['.log', '.mat']
+        self.file_types_to_skip = ['.log', '.mat', '.DS_Store', ]
         self.file_data = {}
 
         self._load_data()
