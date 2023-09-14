@@ -557,7 +557,7 @@ class SystemParameters(object):
                 t['nominal_capacity'] = item['power_distribution'].get('nominal_capacity', None)
                 t['reactance_resistance_ratio'] = item['power_distribution'].get('reactance_resistance_ratio', None)
                 t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
-                t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
+                t['tx_outgoing_voltage'] = item['power_distribution'].get('tx_outgoing_voltage', None)
 
                 # Validate transformer input voltage is same as substation output voltage
                 if t['tx_incoming_voltage'] is not None and t['tx_incoming_voltage'] != self.param_template['substations']['RMS_voltage_low_side']:
