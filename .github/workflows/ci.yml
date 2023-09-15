@@ -44,7 +44,9 @@ jobs:
           # with:
           #   poetry-version: "1.5.1"
       - name: Install dependencies with Poetry
+        # poetry install workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
         run: |
+          poetry self add setuptools
           poetry --version
           poetry install
       - name: Install modelicafmt
