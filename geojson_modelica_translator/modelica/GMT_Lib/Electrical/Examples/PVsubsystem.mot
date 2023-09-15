@@ -1,0 +1,99 @@
+within ;
+model PVsubsystem
+  "microgrid template model for GMT level 1 testing"
+//grid parameters
+  parameter Modelica.Units.SI.Frequency f_gri= {{data["electrical_grid"]["frequency"]}};
+  parameter Modelica.Units.SI.Voltage  V_gri = {{data["electrical_grid"]["source_rms_voltage"]}};
+  parameter Modelica.Units.SI.Angle  phiSou_gri = {{data["electrical_grid"]["source_phase_shift"]}};
+//PVPanels parameters
+  parameter Modelica.Units.SI.Area A_PV = {{ data["photovoltaic_panels"][0]["net_surface_area"] }};
+  parameter Modelica.Units.SI.Voltage V_nominalPV = {{ data["photovoltaic_panels"][0]["nominal_voltage"] }};
+  parameter Modelica.Units.SI.Angle til_PV = {{ data["photovoltaic_panels"][0]["surface_tilt"] }};
+  parameter Modelica.Units.SI.Angle azi_PV = {{ data["photovoltaic_panels"][0]["surface_azimuth"] }};
+//inductive load parameters
+  parameter Modelica.Units.SI.Power P_nominalInd=-{{ data["buildings"][0]["load"]["max_power_kw"] }}   "The negative sign means this the load consumption";
+
+  parameter Real line_safety_factor = 1.2;
+
+//PV line parameters
+// FIXME: We should use more than a single entry in the sys-param file. pv_subsystem.py should be more sophisticated
+  parameter Modelica.Units.SI.Length l_LPV={{ data["distribution_lines"][0]["length"] }};
+  parameter Modelica.Units.SI.Voltage V_nominal_LPV={{ data["distribution_lines"][0]["nominal_voltage"] }};
+  // P_nominal is a required parameter of the line. I think the MBL model should use ampacity instead, but se la vie.
+  parameter Modelica.Units.SI.Voltage P_nominal_LPV={{ data["distribution_lines"][0]["nominal_voltage"] }}*{{ data["distribution_lines"][0]["ampacity"] }}*line_safety_factor;
+//inductive load line parameters
+  parameter Modelica.Units.SI.Length l_Lind={{ data["distribution_lines"][1]["length"] }};
+  parameter Modelica.Units.SI.Voltage V_nominal_Lind={{ data["distribution_lines"][1]["nominal_voltage"]}};
+  // P_nominal is a required parameter of the line. I think the MBL model should use ampacity instead, but se la vie.
+  parameter Modelica.Units.SI.Voltage P_nominal_Lind={{ data["distribution_lines"][1]["nominal_voltage"] }}*{{ data["distribution_lines"][1]["ampacity"] }}*line_safety_factor;
+
+
+ Modelica.Blocks.Sources.Constant  load(k=1)   "Load consumption"
+    {% raw %}annotation (Placement(transformation(extent={{124,-34},{100,-10}})));
+  Buildings.BoundaryConditions.WeatherData.ReaderTMY3
+                                            weaDat(computeWetBulbTemperature=false, filNam=
+        ModelicaServices.ExternalReferences.loadResource(
+        "modelica://Buildings/Resources/weatherdata/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.mos"))
+    annotation (Placement(transformation(extent={{-16,108},{-40,132}})));
+  Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Inductive InductiveLoad(
+    mode=Buildings.Electrical.Types.Load.VariableZ_y_input,
+    P_nominal=P_nominalInd)
+    annotation (Placement(transformation(extent={{40,-56},{76,-24}})));
+  Buildings.Electrical.AC.ThreePhasesBalanced.Sources.PVSimpleOriented PV(
+    A=A_PV,
+    V_nominal=V_nominalPV,
+    til=til_PV,
+    azi=azi_PV) "PV array oriented"
+    annotation (Placement(transformation(extent={{-78,42},{-40,78}})));
+  Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Grid grid(
+    f=f_gri,
+    V=V_gri,
+    phiSou=phiSou_gri)
+                      "Electrical grid model"
+    annotation (Placement(transformation(extent={{-132,2},{-106,26}})));
+  Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Line line_PV(
+    l=l_LPV,
+    P_nominal=P_nominal_LPV,
+    redeclare Buildings.Electrical.Transmission.MediumVoltageCables.Generic
+    // TODO: commercialCable should be templatized using the same selection from Lines.py
+          commercialCable = Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000(),
+    V_nominal=V_nominal_LPV) "line model uses the medium voltage option"
+    annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={-80,20})));
+  Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Line line_ind(
+    l=l_Lind,
+    P_nominal=P_nominal_Lind,
+    redeclare Buildings.Electrical.Transmission.MediumVoltageCables.Generic
+    // TODO: commercialCable should be templatized using the same selection from Lines.py
+          commercialCable = Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000(),
+    V_nominal=V_nominal_Lind) "line model uses the medium voltage option"
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={10,-40})));
+equation
+  connect(weaDat.weaBus, PV.weaBus) annotation (Line(
+      points={{-40,120},{-59,120},{-59,76.2}},
+      color={255,204,51},
+      thickness=0.5));
+  connect(load.y, InductiveLoad.y) annotation (Line(points={{98.8,-22},{90,-22},
+          {90,-40},{76,-40}}, color={0,0,127}));
+  connect(PV.terminal, line_PV.terminal_n)
+    annotation (Line(points={{-78,60},{-80,60},{-80,30}}, color={0,120,120}));
+  connect(line_PV.terminal_p, line_ind.terminal_n) annotation (Line(points={{
+          -80,10},{-80,-40},{-8.88178e-16,-40}}, color={0,120,120}));
+  connect(line_ind.terminal_p, InductiveLoad.terminal)
+    annotation (Line(points={{20,-40},{40,-40}}, color={0,120,120}));
+  connect(grid.terminal, line_ind.terminal_n) annotation (Line(points={{-119,2},
+          {-119,-40},{-8.88178e-16,-40}}, color={0,120,120}));
+  annotation (
+    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-80},{140,
+            140}})),
+    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,-80},{140,
+            140}})),
+    uses(                            Modelica(version="4.0.0"),
+      ModelicaServices(version="4.0.0"),
+      Buildings(version="9.1.0")));
+{% endraw %}end PVsubsystem;
