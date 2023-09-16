@@ -39,15 +39,13 @@ jobs:
           python -c "import sys; print(sys.version)"
           docker --version
           docker-compose --version
-      - name: Install and configure Poetry
+      - name: Install Poetry
         uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version. Defaults to latest
-          # with:
-          #   poetry-version: "1.5.1"
       - name: Install dependencies with Poetry
-        # poetry install workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
+        # poetry setuptools workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
         run: |
-          poetry self add setuptools
           poetry --version
+          poetry self add setuptools
           poetry install
       - name: Install modelicafmt
         run: |
@@ -76,13 +74,7 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      # Perhaps we want to eneable this again to build the gmt running container?
-      # -
-      #   name: Build Spawn Modelica Docker Container
-      #   run: |
-      #     cd geojson_modelica_translator/modelica/lib/runner
-      #     docker build -t nrel/gmt-om-runner:latest .
-      - name: Run pytest (simulation only on linux)
+      - name: Run pytest (simulation on linux only)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: |
