@@ -91,7 +91,7 @@ def run_with_omc() -> bool:
     """
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc simulate.mos"
-    # logger.info(f"Calling OpenModelica simulate with '{cmd}'")
+    logger.info(f"Calling OpenModelica simulate with '{cmd}'")
     if platform.system() == "Linux":
         logger.info(f"This container has Linux {platform.freedesktop_os_release()['PRETTY_NAME']} on {platform.machine()} architecture")
     else:
@@ -157,7 +157,6 @@ if __name__ == "__main__":
         #     if model[0] == '.':
         #         model = model[1:]
 
-        logger.info('Running model with OMC')
         fmu_name = run_with_omc()
 
     if args.action == 'run':
