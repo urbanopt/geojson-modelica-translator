@@ -7,6 +7,7 @@
 import argparse
 import logging
 import os
+import platform
 import shutil
 from pathlib import Path
 from typing import Optional
@@ -90,7 +91,11 @@ def run_with_omc() -> bool:
     """
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc simulate.mos"
-    logger.info(f"Calling OpenModelica simulate with '{cmd}'")
+    # logger.info(f"Calling OpenModelica simulate with '{cmd}'")
+    if platform.system() == "Linux":
+        logger.info(f"This container has Linux {platform.freedesktop_os_release()['PRETTY_NAME']} on {platform.machine()} architecture")
+    else:
+        logger.info(f"This container is running: {platform.system()} on {platform.machine()} architecture")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
     # import time
@@ -129,7 +134,7 @@ if __name__ == "__main__":
     if args.action == 'help':
         print(parser.print_help())  # type: ignore
 
-    logger.info('Configuring MBL path')
+    logger.info('Configuring MBL path for use inside the container')
     configure_mbl_path()
 
     fmu_name = None
@@ -145,14 +150,14 @@ if __name__ == "__main__":
         compile_fmu(model)
 
     if args.action == 'compile_and_run':
-        model = args.model
+        # model = args.model
 
-        if Path(model).is_file():
-            model = str((args.run_path / model)).replace(os.path.sep, '.')[:-3]
-            if model[0] == '.':
-                model = model[1:]
+        # if Path(model).is_file():
+        #     model = str((args.run_path / model)).replace(os.path.sep, '.')[:-3]
+        #     if model[0] == '.':
+        #         model = model[1:]
 
-        logger.info(f'Running model {model} with OMC')
+        logger.info('Running model with OMC')
         fmu_name = run_with_omc()
 
     if args.action == 'run':
