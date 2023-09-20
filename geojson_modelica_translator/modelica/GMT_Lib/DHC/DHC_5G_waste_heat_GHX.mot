@@ -2,13 +2,13 @@ within {{ data['project_name'] }}.Districts;{% raw %}
 model district
   "Series connection with constant district water mass flow rate"
   extends
-    Buildings.Experimental.DHC.Examples.Combined.BaseClasses.PartialSeries(      redeclare
+    PartialSeries(redeclare
       Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS
       bui[nBui](final filNam=filNam), datDes(
       {% endraw %}nBui={{ data['building_load_files'] | count }},
-      mPumDis_flow_nominal={{ data['max_flow_rate']}},
-      mPipDis_flow_nominal={{ data['max_flow_rate']}},
-      mPla_flow_nominal={{ data['max_flow_rate']}},
+      mPumDis_flow_nominal={{ data['max_flow_rate'] }},
+      mPla_flow_nominal={{ data['max_flow_rate'] }},
+      mSto_flow_nominal={{ data['max_flow_rate'] / 10 }},
       dp_length_nominal=250,{% raw %}
       epsPla=0.935));
   parameter String filNam[nBui]={
@@ -19,11 +19,15 @@ model district
   Modelica.Blocks.Sources.Constant masFloMaiPum(
     k=datDes.mPumDis_flow_nominal)
     "Distribution pump mass flow rate"
-    annotation (Placement(transformation(extent={{-280,-70},{-260,-50}})));
+    annotation (Placement(transformation(extent={{-300,-70},{-280,-50}})));
   Modelica.Blocks.Sources.Constant masFloDisPla(
     k=datDes.mPla_flow_nominal)
     "District water flow rate to plant"
-    annotation (Placement(transformation(extent={{-250,10},{-230,30}})));
+    annotation (Placement(transformation(extent={{-300,-6},{-280,14}})));
+  Modelica.Blocks.Sources.Constant masFloStoPum(
+    k=datDes.mSto_flow_nominal)
+    "Storage/GHX pump mass flow rate"
+    annotation (Placement(transformation(extent={{-300,-108},{-280,-88}})));
   Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THotWatSupSet[nBui](
     k=fill(63 + 273.15, nBui))
     "Hot water supply temperature set point"
@@ -33,13 +37,12 @@ model district
     "Cold water temperature"
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
 equation
-  connect(masFloMaiPum.y, pumDis.m_flow_in) annotation (Line(points={{-259,-60},
-          {60,-60},{60,-60},{68,-60}}, color={0,0,127}));
-  connect(pumSto.m_flow_in, masFloMaiPum.y) annotation (Line(points={{-180,-68},
-          {-180,-60},{-259,-60}}, color={0,0,127}));
-  connect(masFloDisPla.y, pla.mPum_flow) annotation (Line(points={{-229,20},{
-          -184,20},{-184,4.66667},{-161.333,4.66667}},
-                                  color={0,0,127}));
+  connect(masFloMaiPum.y, pumDis.m_flow_in) annotation (Line(points={{-279,-60},
+          {-106,-60},{68,-60}}, color={0,0,127}));
+  connect(masFloStoPum.y, pumSto.m_flow_in) annotation (Line(points={{-279,-98},
+          {-238,-98},{-238,-66},{-180,-66}},  color={0,0,127}));
+  connect(masFloDisPla.y, pla.mPum_flow) annotation (Line(points={{-279,4},{
+          -161.333,4},{-161.333,4.66667}}, color={0,0,127}));
   connect(THotWatSupSet.y, bui.THotWatSupSet) annotation (Line(points={{-168,
           180},{-24,180},{-24,183},{-12,183}}, color={0,0,127}));
   connect(TColWat.y, bui.TColWat) annotation (Line(points={{-138,160},{-40,160},
@@ -47,9 +50,6 @@ equation
   annotation (
   Diagram(
   coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
-    __Dymola_Commands(
-  file="modelica://Buildings/Resources/Scripts/Dymola/Experimental/DHC/Examples/Combined/SeriesConstantFlow.mos"
-  "Simulate and plot"),
   experiment(
       StopTime=31536000,
       Interval=300,
@@ -79,7 +79,10 @@ Energy, Volume 199, 15 May 2020, 117418.
 <ul>
 <li>
 April 12, 2023, by Nicholas Long:<br/>
-Templatized for direct use in GMT with n-building connectors.
+Templatized for direct use in GMT with n-building connectors.<br/>
+Changes include: removing dymola run command tied to MBL path, adding
+a constant for borehole field mass flow rate (no longer tied to main
+distribution loop).
 <li>
 February 23, 2021, by Antoine Gautier:<br/>
 Refactored with base classes from the <code>DHC</code> package.<br/>

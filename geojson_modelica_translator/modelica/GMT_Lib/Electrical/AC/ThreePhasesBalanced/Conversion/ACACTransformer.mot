@@ -1,0 +1,41 @@
+within;
+model ACACTransformer
+  "Isolated transformer template model for GMT level 1 testing"
+  parameter Modelica.Units.SI.Voltage VHigh = {{data["tx_incoming_voltage"]}} "Rms voltage on side 1 of the transformer (primary side)";
+  parameter Modelica.Units.SI.Voltage VLow = {{data["tx_outgoing_voltage"]}} "Rms voltage on side 2 of the transformer (secondary side)";
+  parameter Modelica.Units.SI.ApparentPower VABase = {{data["nominal_capacity"]}} "Nominal power of the transformer";
+  parameter Real XoverR = {{data["reactance_resistance_ratio"]}} "Ratio between the complex and real components of the impedance (XL/R)";
+extends Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACACTransformer(
+  tra_load(
+  VHigh=VHigh,
+  VLow=VLow,
+  VABase=VABase,
+  XoverR=XoverR)
+  );
+annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the transformer template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACACTransformer.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Conversion.Examples.ACACTransformer.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+
+end ACACTransformer;

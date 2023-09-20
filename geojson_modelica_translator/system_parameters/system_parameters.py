@@ -4,7 +4,6 @@
 import json
 import logging
 import math
-import os
 from copy import deepcopy
 from pathlib import Path
 from typing import Union
@@ -480,8 +479,8 @@ class SystemParameters(object):
             capacitor banks (todo)
         """
         dss_data = {}
-        opendss_json_file = os.path.join(scenario_dir, 'scenario_report_opendss.json')
-        if (os.path.exists(opendss_json_file)):
+        opendss_json_file = Path(scenario_dir) / 'scenario_report_opendss.json'
+        if opendss_json_file.exists():
             with open(opendss_json_file, "r") as f:
                 dss_data = json.load(f)
 
@@ -555,13 +554,16 @@ class SystemParameters(object):
             for item in data:
                 t = {}
                 t['id'] = item['id']
-                t['nominal_capacity'] = None
-                if item['power_distribution']['nominal_capacity']:
-                    t['nominal_capacity'] = item['power_distribution']['nominal_capacity']
+                t['nominal_capacity'] = item['power_distribution'].get('nominal_capacity', None)
+                t['reactance_resistance_ratio'] = item['power_distribution'].get('reactance_resistance_ratio', None)
+                t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
+                t['tx_outgoing_voltage'] = item['power_distribution'].get('tx_outgoing_voltage', None)
 
-                t['reactance_resistance_ratio'] = None
-                if item['power_distribution']['reactance_resistance_ratio']:
-                    t['reactance_resistance_ratio'] = item['power_distribution']['reactance_resistance_ratio']
+                # Validate transformer input voltage is same as substation output voltage
+                if t['tx_incoming_voltage'] is not None and t['tx_incoming_voltage'] != self.param_template['substations']['RMS_voltage_low_side']:
+                    raise ValueError(f"Transformer input voltage {t['tx_incoming_voltage']} does not "
+                                     f"match substation output voltage {self.param_template['substations']['RMS_voltage_low_side']}")
+
                 transformers.append(t)
 
             self.param_template['transformers'] = transformers
@@ -577,7 +579,7 @@ class SystemParameters(object):
                 if match:
                     # add data
                     bldg['load'] = {}
-                    # print("Found match for {}: {}".format(bldg['geojson_id'], match[0]['id']))
+                    # print(f"Found match for {bldg['geojson_id']}: {match[0]['id']}")
                     bldg['load']['nominal_voltage'] = match[0]['power_distribution']['nominal_voltage']
                     bldg['load']['max_power_kw'] = match[0]['power_distribution']['max_power_kw']
                     bldg['load']['max_reactive_power_kvar'] = match[0]['power_distribution']['max_reactive_power_kvar']
@@ -589,9 +591,9 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :return building, updated building list object
         """
-        feature_opt_file = os.path.join(
-            scenario_dir, building['geojson_id'], 'feature_reports', 'feature_optimization.json')
-        if (os.path.exists(feature_opt_file)):
+        feature_opt_file = Path(
+            scenario_dir) / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
+        if feature_opt_file.exists():
             with open(feature_opt_file, "r") as f:
                 reopt_data = json.load(f)
 
@@ -618,13 +620,13 @@ class SystemParameters(object):
         reopt_data = {}
         raw_data = {}
         # look for REopt scenario_optimization.json file in scenario dir (uo report)
-        scenario_opt_file = os.path.join(scenario_dir, 'scenario_optimization.json')
-        if (os.path.exists(scenario_opt_file)):
+        scenario_opt_file = Path(scenario_dir) / 'scenario_optimization.json'
+        if scenario_opt_file.exists():
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
         # also look for raw REopt report with inputs and xzx for non-uo results
-        raw_scenario_file = os.path.join(scenario_dir, 'reopt', f'scenario_report_{scenario_dir.name}_reopt_run.json')
-        if (os.path.exists(raw_scenario_file)):
+        raw_scenario_file = Path(scenario_dir) / 'reopt' / f'scenario_report_{scenario_dir.name}_reopt_run.json'
+        if raw_scenario_file.exists():
             with open(raw_scenario_file, "r") as f:
                 raw_data = json.load(f)
 

@@ -64,7 +64,7 @@ class ModelicaFileObject:
         self.object = Model(self.file_path)
         end = time.time()
 
-        print(f"Took {end - start} seconds to load {self.file_path.name}")
+        _log.debug(f"Took {end - start} seconds to load {self.file_path.name}")
 
     @property
     def name(self):
@@ -81,8 +81,11 @@ class ModelicaProject:
 
     def __init__(self, package_file):
         self.root_directory = Path(package_file).parent
-        self.file_types = ['.mo', '.txt', '.mos', '.order']
-        self.file_types_to_skip = ['.log', '.mat']
+        self.file_types = ['.mo', '.txt', '.mos', '.order', ]
+        self.file_types_to_skip = ['.log', '.mat', ]
+        # skip some specific files that software may create that are not needed to be
+        # sent around with the modelica project.
+        self.file_names_to_skip = ['analysis_variables.csv', 'analysis_name.txt', '.DS_Store', ]
         self.file_data = {}
 
         self._load_data()
@@ -93,6 +96,10 @@ class ModelicaProject:
         for file_path in self.root_directory.rglob('*'):
             if file_path.suffix in self.file_types_to_skip and file_path.is_file():
                 # skip files that have the file_types_to_skip suffix
+                continue
+
+            if file_path.name in self.file_names_to_skip and file_path.is_file():
+                # skip files that have the file_names_to_skip name
                 continue
 
             if file_path.suffix in self.file_types and file_path.is_file():
