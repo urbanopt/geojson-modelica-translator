@@ -95,12 +95,14 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip("OMC Failure The following assertion has been violated at time 3600.0000")
     def test_teaser_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
             file_to_load=self.district._scaffold.package_path,
-            run_path=self.district._scaffold.project_path
+            run_path=self.district._scaffold.project_path,
+            start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
+            stop_time=17366400,  # For 1 day duration (in seconds)
+            step_size=3600  # At 1 hour intervals (in seconds)
         )
 
         #
@@ -108,7 +110,7 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         #
         results_dir = f'{self.district._scaffold.project_path}/{self.project_name}.Districts.DistrictEnergySystem_results'
 
-        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_res.mat'
+        mat_file = f'{results_dir}/{self.project_name}.Districts.DistrictEnergySystem_res.mat'
         mat_results = Reader(mat_file, 'dymola')
 
         # check the mass flow rates of the first load are in the expected range
