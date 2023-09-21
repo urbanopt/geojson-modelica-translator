@@ -95,5 +95,5 @@ class TestTeaserHeating(TestCaseBase):
             run_path=self.district._scaffold.project_path,
             start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
             stop_time=17366400,  # For 1 day duration (in seconds)
-            step_size=90  # (in seconds)
+            step_size=3600  # (in seconds)
         )
