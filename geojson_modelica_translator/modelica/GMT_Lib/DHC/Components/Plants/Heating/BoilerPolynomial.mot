@@ -31,12 +31,16 @@ Buildings.Fluid.Boilers.Examples.BoilerPolynomial.mot</a>.
         revisions="<html>
 <ul>
 <li>
-September 10, 2023 by Saranya Anbarasu:<br/>
-First implementation.
+September 25, 2023 by Nathan Moore:<br/>
+Templated for the GMT
 </li>
 <li>
-September 22, 2023 by Zhanwei He
+September 22, 2023 by Zhanwei He:<br/>
 Parameters name revision
+</li>
+<li>
+September 10, 2023 by Saranya Anbarasu:<br/>
+First implementation.
 </li>
 </ul>
 </html>"));
