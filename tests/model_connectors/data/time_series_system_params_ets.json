@@ -108,8 +108,8 @@
       },
       "central_heating_plant_parameters": {
         "heat_flow_nominal": 8001,
-        "mass_hhw_flow_nominal": 11,
-        "boiler_water_flow_minimum": 11,
+        "mass_hhw_flow_nominal": 1,
+        "boiler_water_flow_minimum": 0.1,
         "pressure_drop_hhw_nominal": 55001,
         "pressure_drop_setpoint": 50000,
         "temp_setpoint_hhw": 68,
