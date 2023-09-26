@@ -7,6 +7,9 @@ from shutil import copyfile
 import pytest
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
+from geojson_modelica_translator.modelica.GMT_Lib.DHC.Components.Plants.Heating.boiler_polynomial import (
+    Polynomial_Boiler
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Conversion.ACACTransformer import (
     ACACTransformer
 )
@@ -125,6 +128,34 @@ def test_simulate_cooling_plant():
         start_time=0, stop_time=86400)
 
     # -- Assert
+    assert success is True
+
+
+@pytest.mark.simulation
+def test_simulate_polynomial_boiler():
+    # -- Setup
+
+    package_output_dir = PARENT_DIR / 'output' / 'Polynomial_Boiler'
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(MICROGRID_PARAMS)
+
+    # -- Act
+    boiler = Polynomial_Boiler(sys_params)
+    boiler.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        'compile_and_run', 'BoilerPolynomial',
+        file_to_load=package_output_dir / 'BoilerPolynomial.mo',
+        run_path=package_output_dir,
+        start_time=0,
+        stop_time=86400
+    )
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / 'BoilerPolynomial.mo') > 20
+    # Did the simulation run?
     assert success is True
 
 
