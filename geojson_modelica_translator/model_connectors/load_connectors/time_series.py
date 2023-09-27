@@ -181,6 +181,6 @@ class TimeSeries(LoadBase):
     def get_modelica_type(self, scaffold):
         district_params = self.system_parameters.get_param("district_system")
         if 'fifth_generation' not in district_params:
-            return f'{scaffold.project_name}.Loads.{self.building_name}.TimeSeriesBuilding'
+            return f'Loads.{self.building_name}.TimeSeriesBuilding'
         else:
-            return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+            return f'Loads.{self.building_name}.building'

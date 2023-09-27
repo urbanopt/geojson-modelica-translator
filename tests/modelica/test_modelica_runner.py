@@ -5,10 +5,11 @@ import os
 import shutil
 import unittest
 import logging
-
+import inspect
 import pytest
 
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -73,22 +74,8 @@ class ModelicaRunnerTest(unittest.TestCase):
             mr.run_in_docker('compile', 'no_file', file_to_load=file_to_run)
         self.assertEqual(f'File not found to run {file_to_run}', str(exc.exception))
 
-    @pytest.mark.simulation
-    def test_simulate_in_docker(self):
-        mr = ModelicaRunner()
-        success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall', 
-                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'), 
-                         run_path=self.run_path)
-
-        self.assertTrue(success)
-
-        results_path = os.path.join(self.run_path, 'BouncingBall_results')
-        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
-        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_res.mat')))
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
-
     @pytest.mark.compilation
-    def test_compile_in_docker(self):
+    def test_compile_bouncing_ball_in_docker(self):
         # cleanup output path
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
         shutil.rmtree(results_path, ignore_errors=True)
@@ -110,6 +97,20 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(results_path, 'simulate.mos')))
 
     @pytest.mark.simulation
+    def test_simulate_bouncing_ball_in_docker(self):
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall', 
+                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'), 
+                         run_path=self.run_path)
+
+        self.assertTrue(success)
+
+        results_path = os.path.join(self.run_path, 'BouncingBall_results')
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
+        self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_res.mat')))
+        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
+
+    @pytest.mark.simulation
     @pytest.mark.skip(reason='Need to install libfortran.so.4 in docker image')
     def test_simulate_fmu_in_docker(self):
         # TODO: this breaks at the moment due to the libfortran.so.4 error.
@@ -126,17 +127,6 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
-
-    @pytest.mark.simulation
-    def test_simulate_mbl_in_docker(self):
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
-        
-        mr = ModelicaRunner()
-        success, _ = mr.run_in_docker(
-            'compile_and_run', model_name, run_path=self.mbl_run_path, project_in_library=True
-        )
-        self.assertTrue(success)
-
 
     @pytest.mark.compilation
     def test_compile_msl_in_docker(self):
@@ -165,7 +155,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}_res.mat')))
 
     @pytest.mark.simulation
-    def test_simulate_msl_with_starttimes_in_docker(self):
+    def test_simulate_msl_with_start_times_in_docker(self):
         model_name = 'Modelica.Blocks.Examples.PID_Controller'
         results_path = os.path.join(self.msl_run_path, f"{model_name}_results")
         shutil.rmtree(results_path, ignore_errors=True)
@@ -179,4 +169,61 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}_res.mat')))
 
+    @pytest.mark.simulation
+    def test_simulate_mbl_pid_in_docker(self):
+        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
         
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_docker(
+            'compile_and_run', model_name, run_path=self.mbl_run_path, project_in_library=True
+        )
+        self.assertTrue(success)
+
+    @pytest.mark.dymola
+    def test_simulate_msl_in_dymola(self):
+        model_name = 'Modelica.Blocks.Examples.PID_Controller'
+        results_path = Path(self.msl_run_path) / f"{inspect.currentframe().f_code.co_name}_results"
+        if results_path.exists():
+            shutil.rmtree(results_path, ignore_errors=True)
+        results_path.mkdir(parents=True)
+                
+        # shutil.rmtree(results_path, ignore_errors=True)
+
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_dymola(
+            'simulate', model_name, run_path=results_path, file_to_load=None
+        )
+
+        self.assertTrue(success)
+        # self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
+        # self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}.fmu')))
+
+    @pytest.mark.dymola
+    def test_simulate_mbl_pid_in_dymola(self):
+        results_path = Path(self.mbl_run_path) / f"{inspect.currentframe().f_code.co_name}_results"
+        if results_path.exists():
+            shutil.rmtree(results_path, ignore_errors=True)
+        results_path.mkdir(parents=True)
+
+        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_dymola(
+            'simulate', model_name, run_path=results_path, file_to_load=None  #, debug=True
+        )
+        self.assertTrue(success)
+
+    @pytest.mark.dymola
+    def test_compile_mbl_pid_in_dymola(self):
+        results_path = Path(self.mbl_run_path) / f"{inspect.currentframe().f_code.co_name}_results"
+        if results_path.exists():
+            shutil.rmtree(results_path, ignore_errors=True)
+        results_path.mkdir(parents=True)
+
+        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_dymola(
+            'compile', model_name, run_path=results_path, file_to_load=None, debug=True
+        )
+        self.assertTrue(success)

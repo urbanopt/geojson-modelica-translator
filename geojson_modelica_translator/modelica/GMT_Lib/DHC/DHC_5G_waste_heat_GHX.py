@@ -43,7 +43,6 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         # 1: grab all of the time series files and place them in the proper location
         for building in self.system_parameters.get_param("$.buildings[?load_model=time_series]"):
             building_load_file = Path(building['load_model_parameters']['time_series']['filepath'])
-
             files_to_copy.append({
                 "orig_file": building_load_file,
                 "geojson_id": building['geojson_id'],
@@ -52,7 +51,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             })
 
         # 2: Copy the files to the appropriate location and ensure uniqueness by putting into a unique directory
-        #    (since openstudio creates all files with modelica.mos)
+        #    (since OpenStudio creates all files with modelica.mos)
         total_heating_load = 0
         total_cooling_load = 0
         total_swh_load = 0
@@ -76,7 +75,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 mos_file.replace_header_variable_value('Peak water heating load', peak_swh)
                 mos_file.save()
 
-            # 4: add the path to the param data with Modelica friendly path names
+            # 4: Add the path to the param data with Modelica friendly path names
             rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"
             template_data['building_load_files'].append(f"modelica://{rel_path_name}")  # type: ignore
 
@@ -94,7 +93,8 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                          model_name='DHC_5G_waste_heat_GHX',
                          param_data=template_data,
                          save_file_name='district.mo',
-                         generate_package=True)
+                         generate_package=True,
+                         partial_files={'DHC_5G_partial': 'PartialSeries'})
 
         # 7: save the root package.mo
         package.save()

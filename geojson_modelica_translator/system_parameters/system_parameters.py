@@ -4,7 +4,6 @@
 import json
 import logging
 import math
-import os
 from copy import deepcopy
 from pathlib import Path
 from typing import Union
@@ -480,8 +479,8 @@ class SystemParameters(object):
             capacitor banks (todo)
         """
         dss_data = {}
-        opendss_json_file = os.path.join(scenario_dir, 'scenario_report_opendss.json')
-        if (os.path.exists(opendss_json_file)):
+        opendss_json_file = Path(scenario_dir) / 'scenario_report_opendss.json'
+        if opendss_json_file.exists():
             with open(opendss_json_file, "r") as f:
                 dss_data = json.load(f)
 
@@ -555,13 +554,16 @@ class SystemParameters(object):
             for item in data:
                 t = {}
                 t['id'] = item['id']
-                t['nominal_capacity'] = None
-                if item['power_distribution']['nominal_capacity']:
-                    t['nominal_capacity'] = item['power_distribution']['nominal_capacity']
+                t['nominal_capacity'] = item['power_distribution'].get('nominal_capacity', None)
+                t['reactance_resistance_ratio'] = item['power_distribution'].get('reactance_resistance_ratio', None)
+                t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
+                t['tx_outgoing_voltage'] = item['power_distribution'].get('tx_outgoing_voltage', None)
 
-                t['reactance_resistance_ratio'] = None
-                if item['power_distribution']['reactance_resistance_ratio']:
-                    t['reactance_resistance_ratio'] = item['power_distribution']['reactance_resistance_ratio']
+                # Validate transformer input voltage is same as substation output voltage
+                if t['tx_incoming_voltage'] is not None and t['tx_incoming_voltage'] != self.param_template['substations']['RMS_voltage_low_side']:
+                    raise ValueError(f"Transformer input voltage {t['tx_incoming_voltage']} does not "
+                                     f"match substation output voltage {self.param_template['substations']['RMS_voltage_low_side']}")
+
                 transformers.append(t)
 
             self.param_template['transformers'] = transformers
@@ -577,7 +579,7 @@ class SystemParameters(object):
                 if match:
                     # add data
                     bldg['load'] = {}
-                    # print("Found match for {}: {}".format(bldg['geojson_id'], match[0]['id']))
+                    # print(f"Found match for {bldg['geojson_id']}: {match[0]['id']}")
                     bldg['load']['nominal_voltage'] = match[0]['power_distribution']['nominal_voltage']
                     bldg['load']['max_power_kw'] = match[0]['power_distribution']['max_power_kw']
                     bldg['load']['max_reactive_power_kvar'] = match[0]['power_distribution']['max_reactive_power_kvar']
@@ -589,9 +591,9 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :return building, updated building list object
         """
-        feature_opt_file = os.path.join(
-            scenario_dir, building['geojson_id'], 'feature_reports', 'feature_optimization.json')
-        if (os.path.exists(feature_opt_file)):
+        feature_opt_file = Path(
+            scenario_dir) / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
+        if feature_opt_file.exists():
             with open(feature_opt_file, "r") as f:
                 reopt_data = json.load(f)
 
@@ -618,13 +620,13 @@ class SystemParameters(object):
         reopt_data = {}
         raw_data = {}
         # look for REopt scenario_optimization.json file in scenario dir (uo report)
-        scenario_opt_file = os.path.join(scenario_dir, 'scenario_optimization.json')
-        if (os.path.exists(scenario_opt_file)):
+        scenario_opt_file = Path(scenario_dir) / 'scenario_optimization.json'
+        if scenario_opt_file.exists():
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
         # also look for raw REopt report with inputs and xzx for non-uo results
-        raw_scenario_file = os.path.join(scenario_dir, 'reopt', f'scenario_report_{scenario_dir.name}_reopt_run.json')
-        if (os.path.exists(raw_scenario_file)):
+        raw_scenario_file = Path(scenario_dir) / 'reopt' / f'scenario_report_{scenario_dir.name}_reopt_run.json'
+        if raw_scenario_file.exists():
             with open(raw_scenario_file, "r") as f:
                 raw_data = json.load(f)
 
@@ -694,7 +696,8 @@ class SystemParameters(object):
                          sys_param_filename: Path,
                          ghe=False,
                          overwrite=True,
-                         microgrid=False) -> None:
+                         microgrid=False,
+                         **kwargs) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -705,12 +708,18 @@ class SystemParameters(object):
         :param overwrite: Boolean, whether to overwrite existing sys-param file
         :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
+
+        :kwargs (optional):
+            - relative_path: Path, set the paths (time series files, weather file, etc) relate to `relative_path`
         :return None, file created and saved to user-specified location
+
+
         """
         self.sys_param_filename = sys_param_filename
+        self.rel_path = kwargs.get('relative_path', None)
 
         if model_type == 'time_series':
-            # TODO: delineate between time_series and time_series_mft
+            # TODO: delineate between time_series and time_series_massflow_rate
             if microgrid:
                 param_template_path = Path(__file__).parent / 'time_series_microgrid_template.json'
             else:
@@ -773,9 +782,9 @@ class SystemParameters(object):
             building_list.append(feature_info)
 
         # Grab the modelica file for the each Feature, and add it to the appropriate building dict
-        district_nominal_mfrt = 0
+        district_nominal_massflow_rate = 0
         for building in building_list:
-            building_nominal_mfrt = 0
+            building_nominal_massflow_rate = 0
             for measure_file_path in measure_list:
                 # Grab the relevant 2 components of the path: feature name and measure folder name, items -3 & -2 respectively
                 feature_name = Path(measure_file_path).parts[-3]
@@ -783,23 +792,28 @@ class SystemParameters(object):
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
-                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
+                    # if there is a relative path, then set the path relative
+                    to_file_path = measure_file_path.resolve()
+                    if self.rel_path:
+                        to_file_path = to_file_path.relative_to(self.rel_path)
+
+                    building['load_model_parameters']['time_series']['filepath'] = str(to_file_path)
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
-                    mfrt_df = pd.read_csv(measure_file_path)
+                    massflow_rate_df = pd.read_csv(measure_file_path)
                     try:
-                        building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
-                        # Force casting to float even if building_nominal_mfrt == 0
+                        building_nominal_massflow_rate = round(massflow_rate_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
+                        # Force casting to float even if building_nominal_massflow_rate == 0
                         # FIXME: This might be related to building_type == `lodging` for non-zero building percentages
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_massflow_rate)
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
                         # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
                         logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
                         continue
-                district_nominal_mfrt += building_nominal_mfrt
+                district_nominal_massflow_rate += building_nominal_massflow_rate
                 if measure_file_path.suffix == '.csv' and measure_folder_name.endswith('_export_modelica_loads'):
                     try:
-                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # usecols to make the df small
+                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # only use the one column to make the df small
                     except ValueError:  # hack to handle the case where there is no ElectricityFacility column in the csv
                         continue
                     max_electricity_load = int(building_loads['ElectricityFacility'].max())
@@ -817,7 +831,7 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_massflow_rate
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
@@ -829,7 +843,10 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        self.param_template['weather'] = str(mos_weather_path)
+        to_file_path = mos_weather_path
+        if self.rel_path:
+            to_file_path = to_file_path.relative_to(self.rel_path)
+        self.param_template['weather'] = str(to_file_path)
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
@@ -841,7 +858,10 @@ class SystemParameters(object):
 
         # Update ground heat exchanger properties if true
         if ghe:
+<<<<<<< HEAD
 
+=======
+>>>>>>> ac5a9be598214e680ba2f74bf317b62f01d0b6ee
             ghe_ids = []
             # add properties from the feature file
             with open(feature_file) as json_file:

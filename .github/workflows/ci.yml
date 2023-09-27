@@ -11,11 +11,6 @@ defaults:
   run:
     shell: bash
 
-# Cancel existing run if a new one is started
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   test:
     strategy:
@@ -44,15 +39,14 @@ jobs:
           python -c "import sys; print(sys.version)"
           docker --version
           docker-compose --version
-      - name: Install and configure Poetry
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: 1.5.1
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version. Defaults to latest
       - name: Install dependencies with Poetry
+        # poetry setuptools workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
         run: |
           poetry --version
+          poetry self add setuptools
           poetry install
-          poetry update
       - name: Install modelicafmt
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
@@ -80,21 +74,15 @@ jobs:
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      # Perhaps we want to eneable this again to build the gmt running container?
-      # -
-      #   name: Build Spawn Modelica Docker Container
-      #   run: |
-      #     cd geojson_modelica_translator/modelica/lib/runner
-      #     docker build -t nrel/gmt-om-runner:latest .
-      - name: Run pytest (simulation only on linux)
+      - name: Run pytest (simulation on linux only)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: |
           if [ '${{ matrix.test_env }}' == 'python' ]; then
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
-              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation' ./tests
+              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
             else
-              poetry run pytest --doctest-modules -v --cov-report term-missing --cov . ./tests
+              poetry run pytest --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
             fi
           fi
       - name: Run pre-commit

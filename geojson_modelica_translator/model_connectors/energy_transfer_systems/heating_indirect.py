@@ -67,4 +67,4 @@ class HeatingIndirect(EnergyTransferBase):
         ets_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Substations.{self._model_filename}'
+        return f'Substations.{self._model_filename}'

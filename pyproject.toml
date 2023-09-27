@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.5.0"
+version = "0.6.0-rc1"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -35,7 +35,8 @@ geojson = "^3.0.0"
 jinja2 = "3.1.2"
 jsonpath-ng = "1.5.3"
 jsonschema = "~4.17"
-modelica-builder = "^0.2.3"
+modelica-builder = "^0.3.0"
+# modelica-builder = { path = "../modelica-builder", develop = true }
 pandas = "2.0.2"
 requests = "^2.28"
 teaser = "0.7.5"
@@ -78,5 +79,6 @@ log_cli = true
 log_cli_level = "DEBUG"
 markers = [
     "simulation: marks tests that run a simulation with docker/optimica (deselect with '-m \"not simulation\"'). All simulations now require MSL v4.",
-    "compilation: marks tests that are for compiling a simulation with docker/optimica (deselect with '-m \"not compilation\"'). All simulations now require MSL v4."
+    "compilation: marks tests that are for compiling a simulation with docker/optimica (deselect with '-m \"not compilation\"'). All simulations now require MSL v4.",
+    "dymola: mark tests that are for running only in Dymola, which requires a local install and license (deselect with '-m \"not dymola\"').",
 ]

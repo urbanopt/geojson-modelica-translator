@@ -1,0 +1,47 @@
+within;
+model BoilerPolynomial
+"Hot water boiler template model with both steady and dynamic state implementation for GMT level 1 testing"
+extends Modelica.Icons.Example;
+
+parameter Modelica.Units.SI.Power Q_flow_nominal_GMT = {{ data["heat_flow_nominal"] }} "Nominal power";
+parameter Modelica.Units.SI.MassFlowRate m_flow_nominal_GMT = {{ data["mass_hhw_flow_nominal"] }} "Nominal mass flow rate,
+(Note: can be calculated as Q_flow_nominal/dT_nominal/4200 or
+identify the relationship of m and Q from GMT top level user inputs)";
+
+extends Buildings.Fluid.Boilers.Examples.BoilerPolynomial(
+  boi1(
+    Q_flow_nominal=Q_flow_nominal_GMT,
+    m_flow_nominal=m_flow_nominal_GMT),
+  boi2(
+    Q_flow_nominal=Q_flow_nominal_GMT,
+    m_flow_nominal=m_flow_nominal_GMT));
+
+
+annotation (
+  uses(Buildings(version="9.1.0")),
+  Icon(coordinateSystem(preserveAspectRatio=false)),
+  Diagram(coordinateSystem(preserveAspectRatio=false)),
+  experiment(Tolerance=1e-6, StopTime=3600),
+  Documentation(info="<html>
+    <p>This model validates the hot water boiler template model implemented in
+<a href=\"Buildings.Fluid.Boilers.Examples.BoilerPolynomial\">
+Buildings.Fluid.Boilers.Examples.BoilerPolynomial.mot</a>.
+</p>
+</html>",
+        revisions="<html>
+<ul>
+<li>
+September 25, 2023 by Nathan Moore:<br/>
+Templated for the GMT
+</li>
+<li>
+September 22, 2023 by Zhanwei He:<br/>
+Parameters name revision
+</li>
+<li>
+September 10, 2023 by Saranya Anbarasu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end BoilerPolynomial;

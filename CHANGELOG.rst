@@ -1,9 +1,27 @@
 Change Log
 ==========
 
+Version 0.6.0 RC1
+-----------------
+## What's Changed
+### Exciting New Features 🎉
+* Enable numberOfIntervals run option by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/562
+* Breakout package parser class by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/566
+* Add a new GHE district test with new network template models by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/561
+* Add GHE Properties to System Parameter File by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/570
+* Use `filNam` parameter for TEASER loads and add within parsing to PackageParser by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/574
+* Add new `ModelicaProject` class by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/575
+* Add Dymola runner by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/577
+
+### Other Changes
+* Read correct data from sys-param for microgrid electrical load by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/560
+* remove ground loads from system parameter by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/576
+
+**Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/0.5.0...v0.6.0-rc1
+
+
 Version 0.5.0
 -------------
-
 ## What's Changed
 ### Exciting New Features 🎉
 * Python 3.11 support by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/518
@@ -45,9 +63,9 @@ Exciting New Features 🎉
 * Redeclare the teaser model to use buildings.media.air medium
 * Fmu runner
 * Spawn docker named args
-* Compile & run with spawn & optimica
+* Compile & run with Spawn & Optima
 * Microgrid lines
-* Add 5g to sysparams
+* Add 5G to System Parameters file
 * Weather file at top level
 * Test with 3.10
 * 4G or 5G timeseries in Dymola
@@ -55,10 +73,10 @@ Other Changes
 * Breakout run in docker command
 * Better error message if modelica timeseries files from sdk are not found
 * Break out build and simulate tests
-* Use mblv9
+* Use Modelica Buildings Library (MBL) v9.0.0
 * Point tests to latest mbl release
 * Cli less brittle
-* Run compilation tasks on CI using spawn Modelica and optimica
+* Run compilation tasks on CI using spawn Modelica and Optimica
 * Update schema.json
 
 Version 0.3.0
@@ -98,7 +116,7 @@ Version 0.2.0
 -------------
 * Add ETS data for indirect cooling to system parameters schema
 * Add district system example
-* Add time series model using massflow rates and temperatures
+* Add time series model using mass flow rates and temperatures
 * Add district heating (1GDH and 4GDH) and heating indirect ETS
 * Add district cooling (4GDC) and cooling indirect ETS
 * Add distribution network

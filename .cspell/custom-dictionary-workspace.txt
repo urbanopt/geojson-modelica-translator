@@ -1,5 +1,0 @@
-# Custom Dictionary Words
-mfrt
-Reparse
-timeseries
-timestep
