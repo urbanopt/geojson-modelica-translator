@@ -858,10 +858,6 @@ class SystemParameters(object):
 
         # Update ground heat exchanger properties if true
         if ghe:
-<<<<<<< HEAD
-
-=======
->>>>>>> ac5a9be598214e680ba2f74bf317b62f01d0b6ee
             ghe_ids = []
             # add properties from the feature file
             with open(feature_file) as json_file:
