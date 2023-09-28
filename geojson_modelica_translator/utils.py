@@ -83,7 +83,7 @@ class ModelicaPath(object):
         if self.root_dir is None:
             return self.files_relative_dir
         else:
-            return os.path.join(self.root_dir, self.name)
+            return f"{self.root_dir}/{self.name}"
 
     @property
     def resources_relative_dir(self):
@@ -102,7 +102,7 @@ class ModelicaPath(object):
 
         :return: string, relative scripts path
         """
-        return os.path.join("Resources", "Scripts", self.name, platform)
+        return f"Resources/Scripts/{self.name}/{platform}"
 
     @property
     def files_relative_dir(self):
@@ -120,7 +120,7 @@ class ModelicaPath(object):
         if self.root_dir is None:
             return self.resources_relative_dir
         else:
-            return os.path.join(self.root_dir, self.resources_relative_dir)
+            return f"{self.root_dir}/{self.resources_relative_dir}"
 
     @property
     def scripts_dir(self):
@@ -133,7 +133,7 @@ class ModelicaPath(object):
         if self.root_dir is None:
             return self.scripts_relative_dir
         else:
-            return os.path.join(self.root_dir, self.scripts_relative_dir)
+            return f"{self.root_dir}/{self.scripts_relative_dir}"
 
 
 # This is used for some test cases where we need deterministic IDs to be generated
