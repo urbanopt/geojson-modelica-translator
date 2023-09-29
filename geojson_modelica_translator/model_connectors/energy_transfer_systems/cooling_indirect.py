@@ -3,10 +3,11 @@
 
 import os
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import (
     EnergyTransferBase
 )
-from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.utils import simple_uuid
 
 
