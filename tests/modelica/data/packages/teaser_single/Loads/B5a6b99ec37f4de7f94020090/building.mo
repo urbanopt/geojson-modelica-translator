@@ -26,7 +26,7 @@ model building
     computeWetBulbTemperature=true)
     "Weather data reader"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant minTSet[nZon](
     k=fill(
       293.15,
       nZon),
@@ -35,7 +35,7 @@ model building
       each displayUnit="degC"))
     "Minimum temperature set point"
      annotation (Placement(transformation(extent={{-290,230},{-270,250}})));
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant maxTSet[nZon](
     k=fill(
       297.15,
       nZon),
@@ -56,7 +56,7 @@ model building
     annotation (Placement(transformation(extent={{0,-20},{20,0}})));
   ICT ict
     annotation (Placement(transformation(extent={{40,-20},{60,0}})));
-  Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
+  Buildings.Controls.OBC.CDL.Reals.MultiSum mulSum(
     nin=2) if have_pum
      annotation (Placement(transformation(extent={{260,70},{280,90}})));
   Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](
