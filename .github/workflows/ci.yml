@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.11"]
         test_env: [python, docs, mypy]
-        mbl_branch: [maint_9.1.x]
+        mbl_branch: [maint_10.0.x]
         exclude:
           # only test mypy on linux for all versions of python
           - os: windows-latest
