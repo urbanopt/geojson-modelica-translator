@@ -4,10 +4,11 @@
 import os
 import shutil
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.utils import (
     ModelicaPath,
     convert_c_to_k,
