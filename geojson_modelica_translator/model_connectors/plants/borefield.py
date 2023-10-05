@@ -8,11 +8,11 @@ from pathlib import Path
 
 import pandas as pd
 import scipy.io as sio
+from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
-from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 logger = logging.getLogger(__name__)

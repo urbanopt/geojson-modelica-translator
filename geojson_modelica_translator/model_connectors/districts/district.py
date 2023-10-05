@@ -4,6 +4,7 @@
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
+from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import (
@@ -12,7 +13,6 @@ from geojson_modelica_translator.model_connectors.couplings.diagram import (
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 
 
