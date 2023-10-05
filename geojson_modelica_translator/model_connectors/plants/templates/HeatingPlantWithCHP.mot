@@ -173,7 +173,7 @@ within {{ project_name }}.Plants;
   Modelica.Blocks.Sources.Constant TWatOutSet(
     k=273.15+60)
     annotation (Placement(transformation(extent={{-120,52},{-100,72}})));
-  Buildings.Fluid.Movers.FlowControlled_m_flow fan(
+  Buildings.Fluid.Movers.Preconfigured.FlowControlled_m_flow fan(
     redeclare package Medium=Medium,
     m_flow_nominal=0.4,
     nominalValuesDefineDefaultPressureCurve=true)
