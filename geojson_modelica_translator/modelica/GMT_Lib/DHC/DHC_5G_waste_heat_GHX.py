@@ -6,6 +6,7 @@ from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.utils import mbl_version
 
 
 class DHC5GWasteHeatAndGHX(SimpleGMTBase):
@@ -35,7 +36,12 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         scaffold.create(ignore_paths=['Loads', 'Networks', 'Plants', 'Substations'])
 
         # create the root package
-        package = PackageParser.new_from_template(scaffold.project_path, project_name, order=[])
+        package = PackageParser.new_from_template(
+            scaffold.project_path,
+            project_name,
+            order=[],
+            mbl_version=mbl_version(),
+        )
         package.add_model('Districts')
 
         # create the district package with the template_data from above
