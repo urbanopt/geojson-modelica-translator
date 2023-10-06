@@ -158,8 +158,7 @@ model TimeSeriesBuilding
     T_aLoaHea_nominal=T_aLoaHea_nominal,
     k=k,
     Ti=Ti,
-    TRooHea_nominal=T_aLoaHea_nominal,
-    QRooHea_flow_nominal=QHea_flow_nominal/facMulCoo) if have_chiWat
+    QEnv_flow_nominal=QHea_flow_nominal/facMulCoo) if have_chiWat
     constrainedby Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,
