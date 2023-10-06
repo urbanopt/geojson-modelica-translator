@@ -1017,7 +1017,7 @@ jinja2 = "3.1.2"
 type = "git"
 url = "https://github.com/urbanopt/modelica-builder.git"
 reference = "mblv10"
-resolved_reference = "9dc6ad1f1f0a2446a7e76acfb2c06980f5defa98"
+resolved_reference = "cb34283f604f9ec9f65cfc872f9ef486f2b5df4e"
 
 [[package]]
 name = "mypy"
