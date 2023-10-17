@@ -8,8 +8,6 @@ partial model PartialPlantParallel
       101325,
       273.15+4,
       Medium.X_default));
-  extends Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
-    final numFil=num);
   constant Boolean homotopyInitialization=true
     "= true, use homotopy method"
     annotation (HideResult=true);
