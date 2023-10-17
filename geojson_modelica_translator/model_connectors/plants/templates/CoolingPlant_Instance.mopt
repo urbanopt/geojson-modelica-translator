@@ -1,4 +1,4 @@
-  parameter Modelica.Units.SI.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ model.id }}.numChi*({{ model.id }}.perChi.mEva_flow_nominal)
+  parameter Modelica.Units.SI.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ model.id }}.numChi*3
     "Nominal chilled water mass flow rate";
   parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
     "Nominal condenser water mass flow rate";
