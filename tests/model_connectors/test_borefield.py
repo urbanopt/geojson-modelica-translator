@@ -1,7 +1,6 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import os
 from pathlib import Path
 
 import pytest
@@ -33,10 +32,10 @@ class DistrictSystemTest(TestCaseBase):
         super().setUp()
 
         project_name = "borefield_stub"
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
+        self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load system parameter data
-        filename = os.path.join(self.data_dir, "system_params_ghe.json")
+        filename = Path(self.data_dir) / "system_params_ghe.json"
         sys_params = SystemParameters(filename)
 
         # Create the time series load, ets and their coupling
