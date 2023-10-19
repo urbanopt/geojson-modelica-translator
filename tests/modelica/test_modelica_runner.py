@@ -55,10 +55,12 @@ class ModelicaRunnerTest(unittest.TestCase):
                 os.environ['MODELICAPATH'] = prev_mod_path
         self.assertTrue(os.path.exists(mr.om_docker_path))
 
+    @pytest.mark.docker
     def test_docker_enabled(self):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
 
+    @pytest.mark.docker
     def test_invalid_action(self):
         mr = ModelicaRunner()
         with self.assertRaises(SystemExit) as excinfo:
