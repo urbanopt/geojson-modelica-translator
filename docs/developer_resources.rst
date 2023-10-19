@@ -62,10 +62,10 @@ Follow the instructions below in order to configure your local environment:
 
 * Clone `the GMT repo <https://github.com/urbanopt/geojson-modelica-translator>`_ into a working directory
     * (optional/as-needed) Add Python 3 to the environment variables
-    * As general guidance, we recommend using a virtual environment to avoid dependencies colliding between projects. Some popular options are:
-        * `pyenv <https://github.com/pyenv/pyenv>`_
+    * As general guidance, we recommend using virtual environments to avoid dependencies colliding between your Python projects. `venv <https://docs.python.org/3/library/venv.html>`_ is the Python native solution that will work everywhere, though other options may be more user-friendly.
+    * Some popular alternatives are:
+        * `pyenv <https://github.com/pyenv/pyenv>`_ and `the virtualenv plugin <https://github.com/pyenv/pyenv-virtualenv>`_ work together nicely for Linux/Mac machines
         * `virtualenv <https://virtualenv.pypa.io/en/latest/>`_
-        * `venv <https://docs.python.org/3/library/venv.html>`_
         * `miniconda <https://docs.conda.io/projects/miniconda/en/latest/>`_
 * For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
     * If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.
@@ -79,7 +79,7 @@ Follow the instructions below in order to configure your local environment:
     poetry install
     poetry run pytest -m 'not compilation and not simulation and not dymola' --doctest-modules -v --cov-report term-missing --cov .
 
-The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
+The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
 of Modelica models that are created and persisted into the :code:`tests/GMT_Lib/output` folder and the
 :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
 
@@ -218,7 +218,7 @@ Running Simulations
 
 The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. The test suite uses this to run most of our models with OpenModelica, except for developers using Windows.
 
-The GMT does not include automated Modelica simulations for Windows users as of Oct 1, 2023. Windows users should `install OpenModelica <https://openmodelica.org/>`_ themselves. After running the tests (see :ref:`Getting Started as a Developer`) any model may be opened by hand in OpenModelica and simulated.
+The GMT does not include automated Modelica simulations for Windows users as of Oct 1, 2023. Windows users should `install OpenModelica <https://openmodelica.org/>`_ themselves. After running the tests (not compilation or simulation, see :ref:`Getting Started as a Developer`) any model may be opened by hand in OpenModelica and simulated.
 
 Release Instructions
 --------------------

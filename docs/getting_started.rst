@@ -12,7 +12,8 @@ There are three major steps to running the GeoJSON to Modelica Translator (GMT):
 Depending on the use case, the need to run all the steps above may not be needed. For example:
 it may be desirable to only generate the Modelica package and then open and run the model
 in a Modelica user interface such as Dymola. Or, there may be a case to simply generate the
-GeoJSON and System Parameter file from results of an URBANopt SDK simulation result set.
+System Parameter file from results of an URBANopt SDK simulation. These files can then be
+customized by hand to build a district system to meet your needs.
 
 Therefore, this Getting Started guide is broken up into three major setup steps. Each one requires all previous steps to be completed first.
 
@@ -63,7 +64,7 @@ Once the MBL is installed, then the CLI can be used to create the model with the
 The resulting Modelica package will be created and can be opened in a Modelica editor. Open the :code:`package.mo` file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.
 
-Most models can be simulated for free using OpenModelica, which is provided for Linux/Mac users. Windows users need to `install OpenModelica <https://openmodelica.org/>`_ and simulate the models themselves.
+Most models can be simulated for free using OpenModelica, which is included in the GMT for Linux/Mac users. Windows users need to `install OpenModelica <https://openmodelica.org/>`_ and simulate the models themselves.
 
 Dymola is a more full-featured alternative to OpenModelica and is not free.
 
