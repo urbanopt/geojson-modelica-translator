@@ -253,6 +253,9 @@ class ModelicaRunner(object):
             if 'Failed to build model' in stdout_log:
                 logger.error('Model failed to build')
                 exitcode = 1
+            elif 'division by zero at time' and 'Simulation execution failed for model:' in stdout_log:
+                logger.error('Model failed to run due to division by zero')
+                exitcode = 1
             elif 'The simulation finished successfully' in stdout_log:
                 logger.info('Model ran successfully')
                 exitcode = 0
