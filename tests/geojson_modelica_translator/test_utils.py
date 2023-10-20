@@ -14,7 +14,7 @@ class ModelicaPathTest(unittest.TestCase):
     def test_properties(self):
         mp = ModelicaPath("Loads", root_dir=None)
         self.assertEqual(mp.files_dir, "Loads")
-        self.assertEqual(mp.resources_dir, os.path.join("Resources", "Data", "Loads"))
+        self.assertEqual(mp.resources_dir, "Resources/Data/Loads")
 
     def test_single_sub_resource(self):
         root_dir = os.path.join(self.output_dir, "modelica_path_01")
