@@ -54,7 +54,7 @@ pytest-cov = "~4.0"
 sphinx = "~5.0"
 sphinx_rtd_theme = "~1.0.0"
 sphinx-jsonschema = "~1.19"
-syrupy = "~4.0"
+syrupy = "~4"
 toml = "~0.10"
 
 [build-system]
