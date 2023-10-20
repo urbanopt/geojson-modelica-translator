@@ -124,7 +124,10 @@ def test_simulate_cooling_plant():
         'compile_and_run', 'CoolingPlant',
         file_to_load=package_output_dir / 'CoolingPlant.mo',
         file_to_run='CoolingPlant.mo',
-        start_time=0, stop_time=86400)
+        start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
+        stop_time=17366400,  # For 1 day duration (in seconds)
+        step_size=90  # (in seconds)
+    )
 
     # -- Assert
     assert success is True
