@@ -44,6 +44,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             os.path.join(self.fmu_run_path, 'BouncingBall.fmu')
         )
 
+    @pytest.mark.docker
     def test_run_setup(self):
         prev_mod_path = os.environ.get('MODELICAPATH', None)
         try:
