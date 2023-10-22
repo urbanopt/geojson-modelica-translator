@@ -19,8 +19,10 @@ ModelicaRunner
    .. autosummary::
    
       ~ModelicaRunner.__init__
+      ~ModelicaRunner.cleanup_path
       ~ModelicaRunner.move_results
       ~ModelicaRunner.run_in_docker
+      ~ModelicaRunner.run_in_dymola
    
    
 

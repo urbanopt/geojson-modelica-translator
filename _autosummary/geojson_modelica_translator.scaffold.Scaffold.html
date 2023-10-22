@@ -1,21 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Scaffold &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
+    <title>Scaffold &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=4cc3df7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <script src="../_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +34,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.scaffold.html" title="scaffold"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.scaffold.html" accesskey="U">scaffold</a> &#187;</li>
@@ -51,10 +48,10 @@
           <div class="body" role="main">
             
   <section id="scaffold">
-<h1>Scaffold<a class="headerlink" href="#scaffold" title="Permalink to this heading">¶</a></h1>
+<h1>Scaffold<a class="headerlink" href="#scaffold" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="geojson_modelica_translator.scaffold.Scaffold">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.scaffold.</span></span><span class="sig-name descname"><span class="pre">Scaffold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.scaffold.Scaffold" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.scaffold.</span></span><span class="sig-name descname"><span class="pre">Scaffold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.scaffold.Scaffold" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Scaffold to hold the entire directory structure for the project. The purpose of this class is to
 allow a developer/user to easily access the various paths of the project without having to
@@ -65,11 +62,11 @@ defined structure and includes multiple levels of nested directories, data files
 create a list of all of the submodels (yet).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.scaffold.Scaffold.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.scaffold.Scaffold.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.scaffold.Scaffold.__init__" title="Link to this definition">¶</a></dt>
 <dd><p>Initialize the scaffold. This will clear out the directory if it already exists, so use this
 with caution.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>root_dir</strong> – Directory where to create the scaffold</p></li>
 <li><p><strong>project_name</strong> – Name of the project to create (should contain no spaces)</p></li>
@@ -81,10 +78,6 @@ with caution.</p>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.scaffold.Scaffold.__init__" title="geojson_modelica_translator.scaffold.Scaffold.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(root_dir, project_name[, overwrite])</p></td>
 <td><p>Initialize the scaffold.</p></td>
@@ -99,10 +92,10 @@ with caution.</p>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.scaffold.Scaffold.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.scaffold.Scaffold.create" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ignore_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.scaffold.Scaffold.create" title="Link to this definition">¶</a></dt>
 <dd><p>run the scaffolding to create the directory structure for DES systems</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ignore_paths</strong> (<em>list</em><em>, </em><em>optional</em>) – List of paths NOT to create. Choose from Loads, Substations, Plants, Districts, Networks. Defaults to [].</p>
 </dd>
 </dl>
@@ -119,6 +112,20 @@ with caution.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Scaffold</a><ul>
+<li><a class="reference internal" href="#geojson_modelica_translator.scaffold.Scaffold"><code class="docutils literal notranslate"><span class="pre">Scaffold</span></code></a><ul>
+<li><a class="reference internal" href="#geojson_modelica_translator.scaffold.Scaffold.__init__"><code class="docutils literal notranslate"><span class="pre">Scaffold.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#geojson_modelica_translator.scaffold.Scaffold.create"><code class="docutils literal notranslate"><span class="pre">Scaffold.create()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="geojson_modelica_translator.scaffold.html"
@@ -165,7 +172,7 @@ with caution.</p>
         <li class="right" >
           <a href="geojson_modelica_translator.scaffold.html" title="scaffold"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.scaffold.html" >scaffold</a> &#187;</li>
@@ -173,8 +180,8 @@ with caution.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

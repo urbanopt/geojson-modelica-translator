@@ -1,21 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
+    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=4cc3df7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +34,7 @@
         <li class="right" >
           <a href="input_file_documentation.html" title="Input File Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>  
@@ -48,10 +45,6 @@
           <div class="body" role="main">
             
   <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/geojson_modelica_translator.html#module-geojson_modelica_translator" title="geojson_modelica_translator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geojson_modelica_translator</span></code></a></p></td>
 <td><p></p></td>
@@ -59,15 +52,15 @@
 </tbody>
 </table>
 <section id="id1">
-<h1>Developer Resources<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<h1>Developer Resources<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <section id="tests">
-<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">¶</a></h2>
+<h2>Tests<a class="headerlink" href="#tests" title="Link to this heading">¶</a></h2>
 <p>Tests are run with pytest, e.g.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest
 </pre></div>
 </div>
 <section id="snapshot-testing">
-<h3>Snapshot Testing<a class="headerlink" href="#snapshot-testing" title="Permalink to this heading">¶</a></h3>
+<h3>Snapshot Testing<a class="headerlink" href="#snapshot-testing" title="Link to this heading">¶</a></h3>
 <p>Some tests use <a class="reference external" href="https://github.com/tophat/syrupy">syrupy</a> to compare generated modelica models to saved “snapshots” of the models (saved as .ambr files).</p>
 <p>Snapshots should only be updated if we have changed how a model is generated, and we <em>know</em> the new version of the model is the correct version. To update all snapshots, you can run the following and commit the new snapshot files.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--snapshot-update
@@ -76,7 +69,7 @@
 </section>
 </section>
 <section id="design-overview">
-<h2>Design Overview<a class="headerlink" href="#design-overview" title="Permalink to this heading">¶</a></h2>
+<h2>Design Overview<a class="headerlink" href="#design-overview" title="Link to this heading">¶</a></h2>
 <p>The GMT is designed to create an arbitrary number of user-configured models connected to other user-configured models to represent a district energy system.
 GMT has “building blocks” that it uses to define and connect models, which currently include: Energy Transfer Stations (ETSs), Loads, Networks, and Plants.</p>
 <img alt="_images/models-overview.png" src="_images/models-overview.png" />
@@ -90,7 +83,7 @@ For example, a coupling could define how the time series load actually connects 
 </div></blockquote>
 </section>
 <section id="getting-started-as-a-developer">
-<h2>Getting Started as a Developer<a class="headerlink" href="#getting-started-as-a-developer" title="Permalink to this heading">¶</a></h2>
+<h2>Getting Started as a Developer<a class="headerlink" href="#getting-started-as-a-developer" title="Link to this heading">¶</a></h2>
 <p>There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
 to follow the detailed instructions for <a class="reference internal" href="getting_started.html#docker-installation"><span class="std std-ref">Docker Installation</span></a> in the Getting Started guide.</p>
 <p>Follow the instructions below in order to configure your local environment:</p>
@@ -129,7 +122,7 @@ to follow the detailed instructions for <a class="reference internal" href="gett
 of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the
 <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder. These files can be inspected in your favorite Modelica editor.</p>
 <section id="pre-commit">
-<h3>Pre-commit<a class="headerlink" href="#pre-commit" title="Permalink to this heading">¶</a></h3>
+<h3>Pre-commit<a class="headerlink" href="#pre-commit" title="Link to this heading">¶</a></h3>
 <p>This project uses <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency.
 To enable pre-commit on every commit run the following from the command line from within the git checkout of the
 GMT:</p>
@@ -142,9 +135,9 @@ GMT:</p>
 </div>
 </section>
 <section id="managed-tasks">
-<h3>Managed Tasks<a class="headerlink" href="#managed-tasks" title="Permalink to this heading">¶</a></h3>
+<h3>Managed Tasks<a class="headerlink" href="#managed-tasks" title="Link to this heading">¶</a></h3>
 <section id="updating-schemas">
-<h4>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Permalink to this heading">¶</a></h4>
+<h4>Updating Schemas<a class="headerlink" href="#updating-schemas" title="Link to this heading">¶</a></h4>
 <p>There is managed task to automatically pull updated GeoJSON schemas from the <code class="code docutils literal notranslate"><span class="pre">urbanopt-geojson-gem</span></code> GitHub
 project. A developer can run this command by calling</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>poetry<span class="w"> </span>run<span class="w"> </span>update_schemas
@@ -155,7 +148,7 @@ project. A developer can run this command by calling</p>
 </section>
 </section>
 <section id="adding-new-models">
-<h2>Adding New Models<a class="headerlink" href="#adding-new-models" title="Permalink to this heading">¶</a></h2>
+<h2>Adding New Models<a class="headerlink" href="#adding-new-models" title="Link to this heading">¶</a></h2>
 <p>To add a new model you have to do the following:</p>
 <ol class="arabic simple">
 <li><p>Define the model’s python class: First, create a new python file and class under its respective directory in model_connectors. Follow the patterns of existing classes.</p></li>
@@ -164,7 +157,7 @@ project. A developer can run this command by calling</p>
 </ol>
 <p>See the notes below for more information.</p>
 <section id="couplings">
-<h3>Couplings<a class="headerlink" href="#couplings" title="Permalink to this heading">¶</a></h3>
+<h3>Couplings<a class="headerlink" href="#couplings" title="Link to this heading">¶</a></h3>
 <p>A coupling defines the Modelica code necessary for interfacing two specific models, e.g. a time series load and heating indirect ETS.
 Each coupling is unique in its requirements:</p>
 <ul class="simple">
@@ -175,11 +168,11 @@ Each coupling is unique in its requirements:</p>
 In general, the order of the names should follow the order of system types if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant)</p>
 </section>
 <section id="district-system">
-<h3>District system<a class="headerlink" href="#district-system" title="Permalink to this heading">¶</a></h3>
+<h3>District system<a class="headerlink" href="#district-system" title="Link to this heading">¶</a></h3>
 <p>A district system is the model which incorporates all of the models and their couplings.</p>
 </section>
 <section id="templating-flow">
-<h3>Templating Flow<a class="headerlink" href="#templating-flow" title="Permalink to this heading">¶</a></h3>
+<h3>Templating Flow<a class="headerlink" href="#templating-flow" title="Link to this heading">¶</a></h3>
 <p>When rendering the district system model file, it must:</p>
 <ol class="arabic simple">
 <li><p>call to_modelica() for each model to generate its Modelica code</p></li>
@@ -191,13 +184,13 @@ In general, the order of the names should follow the order of system types if yo
 <p>Each templating step has access to a particular set of variables, which is defined below.</p>
 </section>
 <section id="summary-of-templating-contexts">
-<h3>Summary of Templating Contexts<a class="headerlink" href="#summary-of-templating-contexts" title="Permalink to this heading">¶</a></h3>
+<h3>Summary of Templating Contexts<a class="headerlink" href="#summary-of-templating-contexts" title="Link to this heading">¶</a></h3>
 <section id="model-definition">
-<h4>Model Definition<a class="headerlink" href="#model-definition" title="Permalink to this heading">¶</a></h4>
+<h4>Model Definition<a class="headerlink" href="#model-definition" title="Link to this heading">¶</a></h4>
 <p>Each model generates one or more Modelica files to define its model. The templating context is implementation dependent, so refer to its <code class="code docutils literal notranslate"><span class="pre">to_modelica()</span></code> method.</p>
 </section>
 <section id="coupling-component-definitions">
-<h4>Coupling Component Definitions<a class="headerlink" href="#coupling-component-definitions" title="Permalink to this heading">¶</a></h4>
+<h4>Coupling Component Definitions<a class="headerlink" href="#coupling-component-definitions" title="Link to this heading">¶</a></h4>
 <p>This is the template which defines new components/variables necessary for a coupling. More specifically, these are the partial template files at model_connectors/couplings/templates/&lt;coupling name&gt;/ComponentDefinitions.mopt. These templates have access to:</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">globals</span></code>: global variables (those defined in the district.py, such as medium_w = MediumW)</p></li>
@@ -209,7 +202,7 @@ In general, the order of the names should follow the order of system types if yo
 </ul>
 </section>
 <section id="coupling-connect-statements">
-<h4>Coupling Connect Statements<a class="headerlink" href="#coupling-connect-statements" title="Permalink to this heading">¶</a></h4>
+<h4>Coupling Connect Statements<a class="headerlink" href="#coupling-connect-statements" title="Link to this heading">¶</a></h4>
 <p>This is the template which defines connect statements to be inserted into the equation section. More specifically, these are the partial template files at model_connectors/couplings/templates/&lt;coupling name&gt;/ConnectStatements.mopt. These templates have access to:</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">globals</span></code>: same as Coupling Component Definitions context</p></li>
@@ -219,7 +212,7 @@ In general, the order of the names should follow the order of system types if yo
 </ul>
 </section>
 <section id="model-instance">
-<h4>Model Instance<a class="headerlink" href="#model-instance" title="Permalink to this heading">¶</a></h4>
+<h4>Model Instance<a class="headerlink" href="#model-instance" title="Link to this heading">¶</a></h4>
 <p>This template is used to declare a model instance.</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">globals</span></code></p></li>
@@ -231,7 +224,7 @@ In general, the order of the names should follow the order of system types if yo
 </section>
 </section>
 <section id="simulation-mapper-class-translator">
-<h3>Simulation Mapper Class / Translator<a class="headerlink" href="#simulation-mapper-class-translator" title="Permalink to this heading">¶</a></h3>
+<h3>Simulation Mapper Class / Translator<a class="headerlink" href="#simulation-mapper-class-translator" title="Link to this heading">¶</a></h3>
 <p>The Simulation Mapper Class can operate at multiple levels:</p>
 <ol class="arabic simple">
 <li><p>The GeoJSON level – input: geojson, output: geojson+</p></li>
@@ -243,7 +236,7 @@ simulation mapper class from existing at that level.</p>
 </section>
 </section>
 <section id="running-simulations">
-<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Permalink to this heading">¶</a></h2>
+<h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Link to this heading">¶</a></h2>
 <p>The GeoJSON to Modelica Translator contains a <code class="code docutils literal notranslate"><span class="pre">ModelicaRunner.run_in_docker(...)</span></code> method. It is recommended
 to use this method in a python script as it will copy the required files into the correct location. If
 desired, a user can run the simulations manually using JModelica (via Docker). Follow the steps below to configure
@@ -300,7 +293,7 @@ the runner to work locally.</p>
 </ul>
 </section>
 <section id="release-instructions">
-<h2>Release Instructions<a class="headerlink" href="#release-instructions" title="Permalink to this heading">¶</a></h2>
+<h2>Release Instructions<a class="headerlink" href="#release-instructions" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Bump version to &lt;NEW_VERSION&gt; in pyproject.toml (use semantic versioning).</p></li>
 <li><p>Run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">update</span></code> to ensure the lock file is up to date with the latest “pinned” dependencies.</p></li>
@@ -342,12 +335,8 @@ poetry<span class="w"> </span>run<span class="w"> </span>make<span class="w"> </
 </ul>
 </section>
 <section id="code-documentation">
-<h2>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this heading">¶</a></h2>
+<h2>Code Documentation<a class="headerlink" href="#code-documentation" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/geojson_modelica_translator.html#module-geojson_modelica_translator" title="geojson_modelica_translator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geojson_modelica_translator</span></code></a></p></td>
 <td><p></p></td>
@@ -449,13 +438,13 @@ poetry<span class="w"> </span>run<span class="w"> </span>make<span class="w"> </
         <li class="right" >
           <a href="input_file_documentation.html" title="Input File Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

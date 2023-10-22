@@ -1,0 +1,42 @@
+..
+    This file was copied from sphinx/ext/autosummary/templates/autosummary/class.rst
+
+NetworkDistributionPump
+=======================
+
+.. currentmodule:: geojson_modelica_translator.model_connectors.networks.network_distribution_pump
+
+.. autoclass:: NetworkDistributionPump
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NetworkDistributionPump.__init__
+      ~NetworkDistributionPump.copy_required_mo_files
+      ~NetworkDistributionPump.ft2_to_m2
+      ~NetworkDistributionPump.get_modelica_type
+      ~NetworkDistributionPump.render_instance
+      ~NetworkDistributionPump.run_template
+      ~NetworkDistributionPump.to_dict
+      ~NetworkDistributionPump.to_modelica
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NetworkDistributionPump.instance_template_path
+      ~NetworkDistributionPump.model_name
+      ~NetworkDistributionPump.simple_gmt_type
+   
+   

@@ -1,10 +1,10 @@
 ..
     This file was copied from sphinx/ext/autosummary/templates/autosummary/module.rst
 
-input\_parser
-=============
+network\_distribution\_pump
+===========================
 
-.. automodule:: geojson_modelica_translator.modelica.input_parser
+.. automodule:: geojson_modelica_translator.model_connectors.networks.network_distribution_pump
 
    
    
@@ -21,7 +21,7 @@ input\_parser
    .. autosummary::
       :toctree:
    
-      InputParser
+      NetworkDistributionPump
    
    
 

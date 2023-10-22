@@ -1,25 +1,22 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>geojson_modelica_translator.modelica.lib.runner.om.run_with_omc &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
+    <title>geojson_modelica_translator.modelica.lib.runner.om.run_with_omc &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=4cc3df7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <script src="../_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="modelica_mos_file" href="geojson_modelica_translator.modelica.modelica_mos_file.html" />
+    <link rel="next" title="modelica_runner" href="geojson_modelica_translator.modelica.modelica_runner.html" />
     <link rel="prev" title="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu" href="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,12 +29,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="geojson_modelica_translator.modelica.modelica_mos_file.html" title="modelica_mos_file"
+          <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu.html" title="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -54,18 +51,18 @@
           <div class="body" role="main">
             
   <section id="geojson-modelica-translator-modelica-lib-runner-om-run-with-omc">
-<h1>geojson_modelica_translator.modelica.lib.runner.om.run_with_omc<a class="headerlink" href="#geojson-modelica-translator-modelica-lib-runner-om-run-with-omc" title="Permalink to this heading">¶</a></h1>
+<h1>geojson_modelica_translator.modelica.lib.runner.om.run_with_omc<a class="headerlink" href="#geojson-modelica-translator-modelica-lib-runner-om-run-with-omc" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.lib.runner.om.run_with_omc">
-<span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.lib.runner.om.</span></span><span class="sig-name descname"><span class="pre">run_with_omc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.lib.runner.om.run_with_omc" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.lib.runner.om.</span></span><span class="sig-name descname"><span class="pre">run_with_omc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.lib.runner.om.run_with_omc" title="Link to this definition">¶</a></dt>
 <dd><p>Compile and run the model with OpenModelica. This method does not generate the FMU.
 A model_name is not passed since the simulate.mos script was generated during the
 setup.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Always true for now</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
 </dd>
 </dl>
@@ -81,14 +78,24 @@ setup.</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">geojson_modelica_translator.modelica.lib.runner.om.run_with_omc</a><ul>
+<li><a class="reference internal" href="#geojson_modelica_translator.modelica.lib.runner.om.run_with_omc"><code class="docutils literal notranslate"><span class="pre">run_with_omc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu.html"
                           title="previous chapter">geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="geojson_modelica_translator.modelica.modelica_mos_file.html"
-                          title="next chapter">modelica_mos_file</a></p>
+    <p class="topless"><a href="geojson_modelica_translator.modelica.modelica_runner.html"
+                          title="next chapter">modelica_runner</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -121,12 +128,12 @@ setup.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="geojson_modelica_translator.modelica.modelica_mos_file.html" title="modelica_mos_file"
+          <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              >next</a> |</li>
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu.html" title="geojson_modelica_translator.modelica.lib.runner.om.run_as_fmu"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -137,8 +144,8 @@ setup.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

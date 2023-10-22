@@ -1,21 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css" />
+    <title>Input File Documentation &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=4cc3df7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +34,7 @@
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>  
@@ -48,24 +45,18 @@
           <div class="body" role="main">
             
   <section id="input-file-documentation">
-<span id="documentation"></span><h1>Input File Documentation<a class="headerlink" href="#input-file-documentation" title="Permalink to this heading">¶</a></h1>
+<span id="documentation"></span><h1>Input File Documentation<a class="headerlink" href="#input-file-documentation" title="Link to this heading">¶</a></h1>
 <p>There are two input files that need to be defined to use the GeoJSON to Modelica Translator: a GeoJSON file and
 a System Parameters file.</p>
 <section id="geojson-documentation">
-<h2>GeoJSON Documentation<a class="headerlink" href="#geojson-documentation" title="Permalink to this heading">¶</a></h2>
+<h2>GeoJSON Documentation<a class="headerlink" href="#geojson-documentation" title="Link to this heading">¶</a></h2>
 <p>Presently only the building_properties.json of URBANopt’s GeoJSON schemas is leveraged in the GMT.</p>
 <section id="building-properties">
-<h3>Building Properties<a class="headerlink" href="#building-properties" title="Permalink to this heading">¶</a></h3>
+<h3>Building Properties<a class="headerlink" href="#building-properties" title="Link to this heading">¶</a></h3>
 <p>Bolded elements are required fields.</p>
 <section id="urbanopt-building">
-<h4>URBANopt Building<a class="headerlink" href="#urbanopt-building" title="Permalink to this heading">¶</a></h4>
+<h4>URBANopt Building<a class="headerlink" href="#urbanopt-building" title="Link to this heading">¶</a></h4>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td colspan="4"><p><a class="reference external" href="http://json-schema.org/openstudio-urban-modeling/building_properties">http://json-schema.org/openstudio-urban-modeling/building_properties</a>.json#</p></td>
 </tr>
@@ -727,16 +718,9 @@ a System Parameters file.</p>
 </section>
 </section>
 <section id="system-parameters-schema">
-<h2>System Parameters Schema<a class="headerlink" href="#system-parameters-schema" title="Permalink to this heading">¶</a></h2>
+<h2>System Parameters Schema<a class="headerlink" href="#system-parameters-schema" title="Link to this heading">¶</a></h2>
 <p>Bolded elements are required fields.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td colspan="5"><p><span class="xref std std-ref">#/definitions/system_design_parameter_def</span></p></td>
 </tr>
@@ -2349,7 +2333,7 @@ a System Parameters file.</p>
 <li><p>heat_flow_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal district heating load. (W)</p></td>
+<td colspan="3"><p>Nominal district heating load. (W)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
@@ -2361,13 +2345,13 @@ a System Parameters file.</p>
 <li><p>mass_hhw_flow_nominal</p></li>
 </ul>
 </td>
-<td colspan="3"><p>[unused] Nominal heating water mass flow rate. (kg/s)</p></td>
+<td colspan="3"><p>Nominal heating water mass flow rate. (kg/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
+<td colspan="2"><p>1</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>boiler_water_flow_minimum</p></li>
@@ -2379,7 +2363,7 @@ a System Parameters file.</p>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>10</p></td>
+<td colspan="2"><p>0.1</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>pressure_drop_hhw_nominal</p></li>
@@ -2509,7 +2493,7 @@ a System Parameters file.</p>
 <li><p>ghe_dir</p></li>
 </ul>
 </td>
-<td colspan="3"><p>Results directory for GHE Designer</p></td>
+<td colspan="3"><p>Results directory for GHE Designer. Absolute path, or relative to the sys-param file.</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -3077,325 +3061,289 @@ a System Parameters file.</p>
 </ul>
 </td>
 </tr>
-<tr class="row-odd"><td rowspan="7"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>fifth_generation_def</p></li>
 </ul>
 </td>
 <td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="6"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>fifth_generation</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>properties</p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
-<li><p>central_cooling_plant_parameters</p></li>
-</ul>
-</td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/central_cooling_plant_parameters</span></p></td>
-</tr>
-<tr class="row-even"><td><ul class="simple">
-<li><p>central_heating_plant_parameters</p></li>
-</ul>
-</td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/central_heating_plant_parameters</span></p></td>
-</tr>
-<tr class="row-odd"><td><ul class="simple">
-<li><p>combined_heat_and_power_parameters</p></li>
-</ul>
-</td>
-<td colspan="2"><p><span class="xref std std-ref">#/definitions/combined_heat_and_power_parameters</span></p></td>
-</tr>
-<tr class="row-even"><td><ul class="simple">
 <li><p>ghe_parameters</p></li>
 </ul>
 </td>
 <td colspan="2"><p><span class="xref std std-ref">#/definitions/ghe_parameters</span></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><ul class="simple">
+<tr class="row-even"><td colspan="3"><ul class="simple">
 <li><p>connected_buildings</p></li>
 </ul>
 </td>
 </tr>
-<tr class="row-even"><td rowspan="34"><ul class="simple">
+<tr class="row-odd"><td rowspan="34"><ul class="simple">
 <li><p>fifth_gen_ets_parameters</p></li>
 </ul>
 </td>
 <td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>supply_water_temperature_building</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Water supply temperature building side. (C)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>15</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>chilled_water_supply_temp</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Chilled water supply temperature. (C)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>5</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>hot_water_supply_temp</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Heating water supply temperature. (C)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>50</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>cop_heat_pump_heating</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>COP of heat pump for heating water production.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>2.5</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>cop_heat_pump_cooling</p></li>
 </ul>
 </td>
 <td colspan="3"><p>COP of heat pump for cooling water production.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>3.5</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>pump_flow_rate</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design volume flow rate of the ambient loop pump. (m3/s)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>0.01</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>pump_design_head</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design head pressure of the ambient loop pump. (Pa)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>150000</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>ets_pump_flow_rate</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design volume flow rate of the ETS pump. (m3/s)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>0.0005</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>ets_pump_head</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design head pressure of the ETS pump. (Pa)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>10000</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>fan_design_flow_rate</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design volume flow rate of the load-side fan. (m3/s)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>0.25</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>fan_design_head</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Design head pressure of the load-side fan. (Pa)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>150</p></td>
 </tr>
-<tr class="row-even"><td rowspan="12"><ul class="simple">
+<tr class="row-odd"><td rowspan="12"><ul class="simple">
 <li><p>soil_def</p></li>
 </ul>
 </td>
 <td colspan="4"><p>Soil properties for Ground Heat Exchanger sizing</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>properties</p></td>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>conductivity</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>The conductivity of the soil, in units of W/m-K.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>2</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>rho_cp</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>The volumetric heat capacity of the soil, in units of J/m^3-K</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>2600000</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>undisturbed_temp</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>The undisturbed average soil temperature, in units of degrees Celsius.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>15</p></td>
 </tr>
-<tr class="row-even"><td rowspan="29"><ul class="simple">
+<tr class="row-odd"><td rowspan="26"><ul class="simple">
 <li><p>ghe_specific_params_def</p></li>
 </ul>
 </td>
 <td colspan="4"><p>The properties associated with each Ground Heat Exchanger instance</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>properties</p></td>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p><strong>ghe_id</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Feature ID of GHE from GeoJSON Feature File.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="14"><ul class="simple">
+<tr class="row-even"><td rowspan="14"><ul class="simple">
 <li><p><strong>borehole</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p>Borehole properties for Ground Heat Exchanger sizing.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>buried_depth</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p>The depth below the ground surface to the top of the borehole, in meters.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td><p>1.2</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>diameter</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p>The diameter of the borehole, in meters.</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td><p>0.15</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>number_of_boreholes</p></li>
 </ul>
 </td>
 <td colspan="2"><p>Number of boreholes on the site, determined from Thermal Network sizing</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><ul class="simple">
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>length_of_boreholes</p></li>
 </ul>
 </td>
 <td colspan="2"><p>The length of the borehole (in meters), determined from Thermal Network sizing.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>number</em></p></td>
-</tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>True</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p>ground_loads</p></li>
-</ul>
-</td>
-<td colspan="3"><p>Heat rejection or extraction loads (in Watts) of the ground heat exchanger.</p>
-<blockquote>
-<div><p>Determined from the Thermal Network sizing, and used for ground heat exchanger sizing.</p>
-<p>Heat extraction loads are positive, and heat rejection loads are negative.</p>
-</div></blockquote>
-</td>
-</tr>
 <tr class="row-even"><td><p>type</p></td>
-<td colspan="2"><p><em>array</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>items</p></td>
-<td><p>type</p></td>
 <td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>True</p></td>
 </tr>
 <tr class="row-even"><td rowspan="7"><ul class="simple">
 <li><p><strong>ghe_geometric_params</strong></p></li>
@@ -3736,7 +3684,7 @@ a System Parameters file.</p>
 <tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>rectangle</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="17"><ul class="simple">
+<tr class="row-odd"><td rowspan="21"><ul class="simple">
 <li><p>design_def</p></li>
 </ul>
 </td>
@@ -3746,6 +3694,21 @@ a System Parameters file.</p>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
 <tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>method</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p>Building load distribution method for Ground Heat Exchanger sizing</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="2"><p>AREAPROPORTIONAL, UPSTREAM</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"><p>AREAPROPORTIONAL</p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p><strong>flow_rate</strong></p></li>
@@ -3876,13 +3839,13 @@ a System Parameters file.</p>
         <li class="right" >
           <a href="getting_started.html" title="Getting Started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Input File Documentation</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>

@@ -34,5 +34,6 @@ networks
    geojson_modelica_translator.model_connectors.networks.network_ambient_water_stub
    geojson_modelica_translator.model_connectors.networks.network_base
    geojson_modelica_translator.model_connectors.networks.network_chilled_water_stub
+   geojson_modelica_translator.model_connectors.networks.network_distribution_pump
    geojson_modelica_translator.model_connectors.networks.network_heated_water_stub
 

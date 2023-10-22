@@ -1,21 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs &#8212; GeoJSON Modelica Translator v0.5.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css" />
+    <title>geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=4cc3df7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <script src="../_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +34,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.model_connectors.couplings.utils.html" title="utils"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.model_connectors.html" >model_connectors</a> &#187;</li>
@@ -53,14 +50,14 @@
           <div class="body" role="main">
             
   <section id="geojson-modelica-translator-model-connectors-couplings-utils-find-path-bfs">
-<h1>geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs<a class="headerlink" href="#geojson-modelica-translator-model-connectors-couplings-utils-find-path-bfs" title="Permalink to this heading">¶</a></h1>
+<h1>geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs<a class="headerlink" href="#geojson-modelica-translator-model-connectors-couplings-utils-find-path-bfs" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs">
-<span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.model_connectors.couplings.utils.</span></span><span class="sig-name descname"><span class="pre">find_path_bfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_col</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.model_connectors.couplings.utils.</span></span><span class="sig-name descname"><span class="pre">find_path_bfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_col</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs" title="Link to this definition">¶</a></dt>
 <dd><p>Find path from start to end in the matrix. Matrix items that are None are
 considered “empty” and traversable. Raises an exception if no path is found.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>matrix</strong> – list[list[]]</p></li>
 <li><p><strong>start_row</strong> – int</p></li>
@@ -69,7 +66,7 @@ considered “empty” and traversable. Raises an exception if no path is found.
 <li><p><strong>end_col</strong> – int</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list, list of (row, col) tuples</p>
 </dd>
 </dl>
@@ -84,6 +81,16 @@ considered “empty” and traversable. Raises an exception if no path is found.
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs</a><ul>
+<li><a class="reference internal" href="#geojson_modelica_translator.model_connectors.couplings.utils.find_path_bfs"><code class="docutils literal notranslate"><span class="pre">find_path_bfs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="geojson_modelica_translator.model_connectors.couplings.utils.html"
@@ -130,7 +137,7 @@ considered “empty” and traversable. Raises an exception if no path is found.
         <li class="right" >
           <a href="geojson_modelica_translator.model_connectors.couplings.utils.html" title="utils"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.5.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.model_connectors.html" >model_connectors</a> &#187;</li>
@@ -140,8 +147,8 @@ considered “empty” and traversable. Raises an exception if no path is found.
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    &#169; Copyright 2019,2023 - Alliance for Sustainable Energy, LLC.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>
