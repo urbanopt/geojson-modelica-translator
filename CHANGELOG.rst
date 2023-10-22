@@ -1,6 +1,24 @@
 Change Log
 ==========
 
+Version 0.6.0 RC2
+-----------------
+
+## What's Changed
+### Exciting New Features 🎉
+* Template initial microgrid subsystem example by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/569
+* Microgrid heating by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/586
+* Change how ModelicaPaths are built so they also work on Windows computers by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/590
+### Other Changes
+* initialize empty variable before potential use by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/579
+* Include 5G partial model in generation by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/580
+* Allow skipping of specific files when cloning a modelica project by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/584
+* Add a quick fix for reading gfunction.csv from ghe_id subfolder by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/589
+* Move modelica methods from GMT to modelica-builder by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/591
+
+**Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0-rc1...v0.6.0-rc2
+
+
 Version 0.6.0 RC1
 -----------------
 ## What's Changed
