@@ -166,7 +166,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile_and_run', model_name,
                          run_path=self.msl_run_path, project_in_library=True,
-                         start_time=0, stop_time=60, step_size=0.1)
+                         start_time=0, stop_time=60, step_size=1)
 
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
