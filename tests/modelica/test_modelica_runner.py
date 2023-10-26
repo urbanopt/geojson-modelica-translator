@@ -173,6 +173,21 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}_res.mat')))
 
     @pytest.mark.simulation
+    def test_simulate_msl_with_intervals_in_docker(self):
+        model_name = 'Modelica.Blocks.Examples.PID_Controller'
+        results_path = Path(self.msl_run_path) / f"{model_name}_results"
+        shutil.rmtree(results_path, ignore_errors=True)
+
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_docker('compile_and_run', model_name,
+                         run_path=self.msl_run_path, project_in_library=True,
+                         start_time=0, stop_time=60, number_of_intervals=30)
+
+        self.assertTrue(success)
+        self.assertTrue((results_path / 'stdout.log').exists())
+        self.assertTrue((results_path / f'{model_name}_res.mat').exists())
+
+    @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):
         model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
 
