@@ -79,19 +79,19 @@ class ModelicaRunnerTest(unittest.TestCase):
         # cleanup output path
         results_path = os.path.join(self.run_path, 'BouncingBall_results')
         shutil.rmtree(results_path, ignore_errors=True)
-        
+
         # compile the project
         mr = ModelicaRunner()
-        success, _ = mr.run_in_docker('compile', 'BouncingBall', 
-                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'),
-                         run_path=self.run_path)
-        
+        success, _ = mr.run_in_docker('compile', 'BouncingBall',
+                                      file_to_load=os.path.join(self.run_path, 'BouncingBall.mo'),
+                                      run_path=self.run_path)
+
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall.fmu')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         # Write out the log to the logger for debugging
         # with open(os.path.join(self.run_path, 'stdout.log')) as f:
-            # logger.info(f.read())
+        # logger.info(f.read())
         self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'compile_fmu.mos')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'simulate.mos')))
@@ -99,9 +99,9 @@ class ModelicaRunnerTest(unittest.TestCase):
     @pytest.mark.simulation
     def test_simulate_bouncing_ball_in_docker(self):
         mr = ModelicaRunner()
-        success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall', 
-                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'), 
-                         run_path=self.run_path)
+        success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall',
+                                      file_to_load=os.path.join(self.run_path, 'BouncingBall.mo'),
+                                      run_path=self.run_path)
 
         self.assertTrue(success)
 
@@ -120,9 +120,9 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         # run the project
         mr = ModelicaRunner()
-        mr.run_in_docker('run', 'BouncingBall', 
-                         file_to_load = os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
-                         run_path = self.fmu_run_path)
+        mr.run_in_docker('run', 'BouncingBall',
+                         file_to_load=os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
+                         run_path=self.fmu_run_path)
 
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
@@ -161,9 +161,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         shutil.rmtree(results_path, ignore_errors=True)
 
         mr = ModelicaRunner()
-        success, _ = mr.run_in_docker('compile_and_run', model_name, 
-                         run_path=self.msl_run_path, project_in_library=True,
-                         start_time=0, stop_time=60, step_size=0.1)
+        success, _ = mr.run_in_docker('compile_and_run', model_name,
+                                      run_path=self.msl_run_path, project_in_library=True,
+                                      start_time=0, stop_time=60, step_size=0.1)
 
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
@@ -172,7 +172,7 @@ class ModelicaRunnerTest(unittest.TestCase):
     @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):
         model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
-        
+
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker(
             'compile_and_run', model_name, run_path=self.mbl_run_path, project_in_library=True
@@ -186,7 +186,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         if results_path.exists():
             shutil.rmtree(results_path, ignore_errors=True)
         results_path.mkdir(parents=True)
-                
+
         # shutil.rmtree(results_path, ignore_errors=True)
 
         mr = ModelicaRunner()
@@ -206,10 +206,10 @@ class ModelicaRunnerTest(unittest.TestCase):
         results_path.mkdir(parents=True)
 
         model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
-        
+
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(
-            'simulate', model_name, run_path=results_path, file_to_load=None  #, debug=True
+            'simulate', model_name, run_path=results_path, file_to_load=None  # , debug=True
         )
         self.assertTrue(success)
 
@@ -221,7 +221,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         results_path.mkdir(parents=True)
 
         model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
-        
+
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(
             'compile', model_name, run_path=results_path, file_to_load=None, debug=True

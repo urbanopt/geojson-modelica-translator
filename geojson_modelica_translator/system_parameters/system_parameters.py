@@ -801,7 +801,9 @@ class SystemParameters(object):
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
                     massflow_rate_df = pd.read_csv(measure_file_path)
                     try:
-                        building_nominal_massflow_rate = round(massflow_rate_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
+                        building_nominal_massflow_rate = round(
+                            massflow_rate_df['massFlowRateHeating'].max(),
+                            3)  # round max to 3 decimal places
                         # Force casting to float even if building_nominal_massflow_rate == 0
                         # FIXME: This might be related to building_type == `lodging` for non-zero building percentages
                         building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_massflow_rate)
@@ -813,7 +815,8 @@ class SystemParameters(object):
                 district_nominal_massflow_rate += building_nominal_massflow_rate
                 if measure_file_path.suffix == '.csv' and measure_folder_name.endswith('_export_modelica_loads'):
                     try:
-                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # only use the one column to make the df small
+                        # only use the one column to make the df small
+                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])
                     except ValueError:  # hack to handle the case where there is no ElectricityFacility column in the csv
                         continue
                     max_electricity_load = int(building_loads['ElectricityFacility'].max())
@@ -869,7 +872,8 @@ class SystemParameters(object):
                     except KeyError:
                         pass
                     if district_system_type == 'Ground Heat Exchanger':
-                        length, width = self.calculate_dimensions(feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
+                        length, width = self.calculate_dimensions(
+                            feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
                         ghe_ids.append({'ghe_id': feature['properties']['id'],
                                         'length_of_ghe': length,
                                         'width_of_ghe': width})

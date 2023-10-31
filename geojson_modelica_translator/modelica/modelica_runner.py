@@ -273,7 +273,8 @@ class ModelicaRunner(object):
         self.move_results(verified_run_path, results_path, model_name)
         return (exitcode == 0, results_path)
 
-    def run_in_dymola(self, action: str, model_name: str, file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs) -> tuple[bool, Union[str, Path]]:
+    def run_in_dymola(self, action: str, model_name: str,
+                      file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs) -> tuple[bool, Union[str, Path]]:
         """If running on Windows or Linux, you can run Dymola (assuming you have a license),
         using the BuildingsPy library. This is not supported on Mac.
 
