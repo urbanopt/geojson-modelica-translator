@@ -75,7 +75,7 @@ Sommer T., Sulzer M., Wetter M., Sotnikov A., Mennel S., Stettler C.
 and cooling.</i>
 Energy, Volume 199, 15 May 2020, 117418.
 </p>
-</html>",   revisions="<html>
+</html>", revisions="<html>
 <ul>
 <li>
 April 12, 2023, by Nicholas Long:<br/>
@@ -83,6 +83,7 @@ Templatized for direct use in GMT with n-building connectors.<br/>
 Changes include: removing dymola run command tied to MBL path, adding
 a constant for borehole field mass flow rate (no longer tied to main
 distribution loop).
+</li>
 <li>
 February 23, 2021, by Antoine Gautier:<br/>
 Refactored with base classes from the <code>DHC</code> package.<br/>
