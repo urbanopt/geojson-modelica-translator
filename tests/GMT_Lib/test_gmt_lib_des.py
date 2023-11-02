@@ -64,8 +64,7 @@ class GmtLibDesTest(unittest.TestCase):
             run_path=package_output_dir / package_name,
             start_time=0, stop_time=86400)
 
-        # For now, we are not checking the result of the simulation within OMC
-        # assert success is True
+        assert success is True
 
     @pytest.mark.dymola
     def test_5G_des_waste_heat_and_ghx_dymola(self):
@@ -131,8 +130,7 @@ class GmtLibDesTest(unittest.TestCase):
             run_path=package_output_dir / package_name,
             start_time=0, stop_time=86400)
 
-        # For now, we are not checking the result of the simulation within OMC
-        # assert success is True
+        assert success is True
 
     @pytest.mark.dymola
     def test_5G_des_waste_heat_and_ghx_variable_dymola(self):
