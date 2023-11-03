@@ -8,8 +8,8 @@ from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
 
 
-class DHC5GWasteHeatAndGHX(SimpleGMTBase):
-    """Generates a full Modelica package with the DHC 5G waste heat and GHX model."""
+class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
+    """Generates a full Modelica package with the DHC 5G waste heat and GHX model with a controlled variable speed distribution pump."""
 
     def __init__(self, system_parameters):
         self.system_parameters = system_parameters
@@ -91,7 +91,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
 
         # 6: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),
-                         model_name='DHC_5G_waste_heat_GHX',
+                         model_name='DHC_5G_waste_heat_GHX_variable',
                          param_data=template_data,
                          save_file_name='district.mo',
                          generate_package=True,

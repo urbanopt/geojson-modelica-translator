@@ -711,12 +711,14 @@ class SystemParameters(object):
 
         :kwargs (optional):
             - relative_path: Path, set the paths (time series files, weather file, etc) relate to `relative_path`
+            - skip_weather_download: Boolean, set to True to not download the weather file, defaults to False
         :return None, file created and saved to user-specified location
 
 
         """
         self.sys_param_filename = sys_param_filename
         self.rel_path = kwargs.get('relative_path', None)
+        skip_weather_download = kwargs.get('skip_weather_download', False)
 
         if model_type == 'time_series':
             # TODO: delineate between time_series and time_series_massflow_rate
@@ -766,13 +768,15 @@ class SystemParameters(object):
                 building_ids.append(feature['properties']['id'])
 
         # Check if the EPW weatherfile exists, if not, try to download
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
+        if not skip_weather_download:
+            if not weather_path.exists():
+                self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # also download the MOS weatherfile -- this is the file that will be set in the sys param file
         mos_weather_path = weather_path.with_suffix('.mos')
-        if not mos_weather_path.exists():
-            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
+        if not skip_weather_download:
+            if not mos_weather_path.exists():
+                self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []

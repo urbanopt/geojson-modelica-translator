@@ -3,8 +3,9 @@
 
 from pathlib import Path
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
-from geojson_modelica_translator.modelica.package_parser import PackageParser
 
 
 class SimpleGMTBase(ModelBase):
