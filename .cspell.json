@@ -8,6 +8,8 @@
     "cvrmsd",
     "dassl",
     "dymola",
+    "endfor",
+    "endraw",
     "energyplus",
     "GDHC",
     "HVAC",
