@@ -4,6 +4,7 @@
 import os
 
 import pytest
+from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
@@ -11,7 +12,6 @@ from geojson_modelica_translator.geojson.urbanopt_geojson import (
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
     TimeSeries
 )
-from geojson_modelica_translator.modelica.package_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters

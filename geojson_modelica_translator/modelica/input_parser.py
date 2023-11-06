@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, List, Tuple, Union
 
 
+# TODO: This needs to be removed. It is not used anywhere in the codebase.
 class InputParser(object):
     """Class to read in Modelica files (.mo) and provide basic operations.
 
