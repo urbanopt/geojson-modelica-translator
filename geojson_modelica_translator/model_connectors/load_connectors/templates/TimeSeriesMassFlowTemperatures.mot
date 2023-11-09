@@ -3,9 +3,9 @@ model building
   "Time series water mass flow rates and temperatures for a building thermal
   loads generated from Energy PLus."
   extends Modelica.Icons.Example;
-  {% raw %}package MediumW=Buildings.Media.Water;
-  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}";
-  {% raw %}parameter Modelica.Units.SI.MassFlowRate mChW_flow_nominal=getPeakMassFlowRate(
+  package MediumW=Buildings.Media.Water;
+  parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}";
+  parameter Modelica.Units.SI.MassFlowRate mChW_flow_nominal=getPeakMassFlowRate(
     string="#Nominal chilled water mass flow rate",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Nominal cooling water flow rate"
@@ -23,7 +23,7 @@ model building
     extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
     columns=2:7,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
-    annotation (Placement(transformation(extent={{120,-20},{100,0}})));
+    {% raw %} annotation (Placement(transformation(extent={{120,-20},{100,0}})));
   Buildings.Fluid.Sources.MassFlowSource_T supChiWat(
     redeclare package Medium=MediumW,
     use_m_flow_in=true,
@@ -213,5 +213,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end building;
-{% endraw %}
+{% endraw %}end building;

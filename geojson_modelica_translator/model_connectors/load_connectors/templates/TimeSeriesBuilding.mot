@@ -10,11 +10,11 @@ model TimeSeriesBuilding
     have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
     have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
     have_weaBus=false);
-  {% raw %}replaceable package Medium2=Buildings.Media.Air
+  replaceable package Medium2=Buildings.Media.Air
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "Load side medium";
-  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
-    {% raw %} "Library path of the file with loads as time series";
+  parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+    "Library path of the file with loads as time series";
   parameter Boolean have_hotWat=false
     "Set to true if SHW load is included in the time series"
     annotation (Evaluate=true,Dialog(group="Configuration"));
@@ -24,27 +24,27 @@ model TimeSeriesBuilding
   parameter Real facMulCoo=1
     "Cooling terminal unit scaling factor"
     annotation (Dialog(enable=have_chiWat,group="Scaling"));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
-    {% raw %} "Heating water inlet temperature at nominal conditions"
+  parameter Modelica.Units.SI.Temperature T_aHeaWat_nominal={{ data['nominal_values']['hhw_supply_temp'] }}
+    "Heating water inlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition",enable=have_heaWat));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal(
+  parameter Modelica.Units.SI.Temperature T_bHeaWat_nominal(
     min=273.15,
     displayUnit="degC")=T_aHeaWat_nominal-5
-    {% raw %} "Heating water outlet temperature at nominal conditions"
+    "Heating water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition",enable=have_heaWat));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
-    {% raw %} "Chilled water inlet temperature at nominal conditions "
+  parameter Modelica.Units.SI.Temperature T_aChiWat_nominal={{ data['nominal_values']['chw_supply_temp'] }}
+    "Chilled water inlet temperature at nominal conditions "
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_bChiWat_nominal(
+  parameter Modelica.Units.SI.Temperature T_bChiWat_nominal(
     min=273.15,
     displayUnit="degC")={{ data['nominal_values']['chw_return_temp'] }}
-    {% raw %} "Chilled water outlet temperature at nominal conditions"
+    "Chilled water outlet temperature at nominal conditions"
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
-    {% raw %} "Load side inlet temperature at nominal conditions in heating mode"
+  parameter Modelica.Units.SI.Temperature T_aLoaHea_nominal={{ data['nominal_values']['temp_setpoint_heating']  }}
+    "Load side inlet temperature at nominal conditions in heating mode"
     annotation (Dialog(group="Nominal condition",enable=have_heaWat));
-  {% endraw %}parameter Modelica.Units.SI.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
-    {% raw %} "Load side inlet temperature at nominal conditions in cooling mode"
+  parameter Modelica.Units.SI.Temperature T_aLoaCoo_nominal={{ data['nominal_values']['temp_setpoint_cooling']  }}
+    "Load side inlet temperature at nominal conditions in cooling mode"
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   parameter Modelica.Units.SI.MassFraction w_aLoaCoo_nominal=0.0095
     "Load side inlet humidity ratio at nominal conditions in cooling mode"
@@ -99,21 +99,21 @@ model TimeSeriesBuilding
     columns={2,3,4},
     smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1)
     "Reader for thermal loads (y[1] is cooling load, y[2] is heating load)"
-    annotation (Placement(transformation(extent={{-280,-10},{-260,10}})));
+    {% raw %} annotation (Placement(transformation(extent={{-280,-10},{-260,10}})));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
     k={{ data['nominal_values']['temp_setpoint_heating']  }},
-    {% raw %}y(
+    y(
       unit="K",
       displayUnit="degC"))
     "Minimum temperature set point"
-    annotation (Placement(transformation(extent={{-280,170},{-260,190}})));
+    {% raw %} annotation (Placement(transformation(extent={{-280,170},{-260,190}})));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
     k={{ data['nominal_values']['temp_setpoint_cooling']  }},
-    {% raw %}y(
+    y(
       unit="K",
       displayUnit="degC"))
     "Maximum temperature set point"
-    annotation (Placement(transformation(extent={{-280,210},{-260,230}})));
+    {% raw %} annotation (Placement(transformation(extent={{-280,210},{-260,230}})));
   replaceable Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
     k=k,
     Ti=Ti) if have_heaWat

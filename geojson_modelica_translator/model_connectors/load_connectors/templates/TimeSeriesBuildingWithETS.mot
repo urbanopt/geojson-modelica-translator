@@ -1,11 +1,11 @@
 within {{ project_name }}.Loads.{{ model_name }};
-{% raw %}model building
+model building
   "Model of a building with an internal ETS. Building loads provided as time series"
   extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
     // redeclare Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.BuildingTimeSeries bui(
-    {% endraw %}redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
-      {% raw %}have_hotWat=false,
+    redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
+      have_hotWat=false,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
       T_aChiWat_nominal=ets.TChiWatSup_nominal,
@@ -17,8 +17,8 @@ within {{ project_name }}.Loads.{{ model_name }};
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
       QHotWat_flow_nominal=QHot_flow_nominal));
-  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
-    {% raw %} "Library path of the file with loads as time series";
+  parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+    "Library path of the file with loads as time series";
   final parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=bui.facMul*bui.QCoo_flow_nominal
     "Space cooling design load (<=0)"
@@ -37,7 +37,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     final unit="K",
     displayUnit="degC")
     "Service hot water supply temperature set point"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-320,40}),iconTransformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,30})));
+    {% raw %} annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-320,40}),iconTransformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,30})));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput TColWat(
     final unit="K",
     displayUnit="degC")
