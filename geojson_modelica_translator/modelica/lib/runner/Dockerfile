@@ -16,5 +16,8 @@ RUN echo \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# Put the om.py CLI into the container
-COPY ./om.py /mnt/lib/om.py
+# https://docs.docker.com/engine/reference/builder/#add
+# https://docs.docker.com/develop/develop-images/instructions/#add-or-copy
+ADD https://github.com/lbl-srg/modelica-buildings/releases/download/v9.1.0/Buildings-v9.1.0.zip ./Buildings-v9.1.0.tar.gz
+RUN unzip ./Buildings-v9.1.0
+ENV MODELICAPATH=./Buildings-v9.1.0
