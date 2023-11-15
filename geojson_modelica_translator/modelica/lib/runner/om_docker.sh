@@ -4,7 +4,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 DOCKER_USERNAME=nrel
-IMG_NAME=gmt-om-runner
+IMG_NAME=gmt-om-runner:22
 
 function create_mount_command()
 # Split path somehow. Replace double-slashes with single-slashes, to ensure compatibility with
