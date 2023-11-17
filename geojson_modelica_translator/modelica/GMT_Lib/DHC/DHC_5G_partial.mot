@@ -2,7 +2,7 @@ within {{ data['project_name'] }}.Districts;{% raw %}
 partial model PartialSeries "Partial model for series network"
   extends Modelica.Icons.Example;
   package Medium = Buildings.Media.Water "Medium model";
-  constant Real facMul = 10
+  constant Real facMul = 1
     "Building loads multiplier factor";
   parameter Real dpDis_length_nominal(final unit="Pa/m") = 250
     "Pressure drop per pipe length at nominal flow rate - Distribution line";
