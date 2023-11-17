@@ -35,9 +35,12 @@ model district
     TMax=290.15,
     use_temperatureShift=false) "Main pump controller"
     annotation (Placement(transformation(extent={{-280,-70},{-260,-50}})));
-  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
-    "Scale with nominal mass flow rate"
+  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gaiPumDis(k=datDes.mPumDis_flow_nominal)
+    "Scale with nominal mass flow rate for distribution pump"
     annotation (Placement(transformation(extent={{-240,-70},{-220,-50}})));
+Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gaiPumSto(k=datDes.mSto_flow_nominal)
+    "Scale with nominal mass flow rate for storage GHX pump"
+    annotation (Placement(transformation(extent={{-240,-112},{-220,-92}})));
 equation
   connect(masFloDisPla.y, pla.mPum_flow) annotation (Line(points={{-229,20},{
           -184,20},{-184,4.66667},{-161.333,4.66667}},
@@ -47,12 +50,10 @@ equation
   connect(TColWat.y, bui.TColWat) annotation (Line(points={{-138,160},{-40,160},
           {-40,164},{-8,164},{-8,168}},
                                 color={0,0,127}));
-  connect(pumDis.m_flow_in, gai.y)
-    annotation (Line(points={{68,-60},{-218,-60}},
-                                                 color={0,0,127}));
-  connect(conPum.y, gai.u)
-    annotation (Line(points={{-258,-60},{-242,-60}},
-                                                 color={0,0,127}));
+  connect(pumDis.m_flow_in, gaiPumDis.y)
+    annotation (Line(points={{68,-60},{-218,-60}}, color={0,0,127}));
+  connect(conPum.y, gaiPumDis.u)
+    annotation (Line(points={{-258,-60},{-242,-60}}, color={0,0,127}));
   connect(dis.TOut, conPum.TMix) annotation (Line(points={{22,134},{30,134},{30,
           120},{-300,120},{-300,-54},{-282,-54}},
                                          color={0,0,127}));
@@ -67,8 +68,10 @@ equation
   connect(TDisWatSup.T, conPum.TSouOut[2]) annotation (Line(points={{-91,20},{-100,
           20},{-100,60},{-296,60},{-296,-65},{-282,-65}},
                                                    color={0,0,127}));
-  connect(gai.y, pumSto.m_flow_in) annotation (Line(points={{-218,-60},{-180,-60},
-          {-180,-68}}, color={0,0,127}));
+  connect(gaiPumSto.u, gaiPumDis.u) annotation (Line(points={{-242,-102},{-248,
+          -102},{-248,-60},{-242,-60}}, color={0,0,127}));
+  connect(gaiPumSto.y, pumSto.m_flow_in) annotation (Line(points={{-218,-102},{
+          -210,-102},{-210,-62},{-180,-62},{-180,-68}}, color={0,0,127}));
   annotation (
   Diagram(
   coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
@@ -90,6 +93,10 @@ allowed loop temperature, then the mass flow rate is reduced to save pump energy
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+November 17, 2023, by Nicholas Long:<br/>
+Break out the mass flow rate gain multiplier for the GHX/Storage.
+</li>
 <li>
 November 1, 2023, by Nicholas Long:<br/>
 Templatized for direct use in GMT with n-building connectors.<br/>
