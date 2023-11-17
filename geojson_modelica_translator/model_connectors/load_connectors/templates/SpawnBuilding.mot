@@ -46,8 +46,8 @@ model building
     "Name of the epw weather file";
   // TODO: Minimum and Maximum TSet: make a function of the outdoor air temperature, type of building,occupancy schedule or woking/idle days?
   // Set these based on cooling and heating setpoints for now based on current parameters in schema.
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
-    k=fill(
+  {% raw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
+    {% endraw %}k=fill(
       {{ data["nominal_values"]["temp_setpoint_heating"] }},
       nZon))
     {% raw %} "Minimum temperature setpoint"
@@ -135,8 +135,8 @@ model building
     nPorts_b1=nZon)
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{-160,-230},{-140,-210}})));
-equation
-  connect(qRadGai_flow.y,multiplex3_1.u1[1])
+{% endraw %}equation
+  {% raw %} connect(qRadGai_flow.y,multiplex3_1.u1[1])
     annotation (Line(points={{-45,178},{-26,178},{-26,145},{-22,145}},color={0,0,127},smooth=Smooth.None));
   connect(qConGai_flow.y,multiplex3_1.u2[1])
     annotation (Line(points={{-45,138},{-22,138}},smooth=Smooth.None));
@@ -164,36 +164,36 @@ equation
     annotation (Line(points={{-215,-184},{-2,-184},{-2,-182},{212,-182},{212,280},{320,280}},color={0,0,127}));
   connect(disFloCoo.QActTot_flow,QCoo_flow)
     annotation (Line(points={{-139,-226},{28,-226},{28,-224},{216,-224},{216,240},{320,240}},color={0,0,127}));
-  for i in 1:nZon loop
+  {% endraw %}for i in 1:nZon loop
     connect(terUni[i].PFan,mulSum.u[i])
-      annotation (Line(points={{-119.167,9},{-100,9},{-100,220},{220,220},{220,118.333},{258,118.333}},color={0,0,127}));
+      {% raw %} annotation (Line(points={{-119.167,9},{-100,9},{-100,220},{220,220},{220,118.333},{258,118.333}},{% endraw %}color={0,0,127}));
     connect(disFloCoo.ports_a1[i],terUni[i].port_bChiWat)
-      annotation (Line(points={{-140,-214},{-38,-214},{-38,1.66667},{-120,1.66667}},color={0,127,255}));
+      {% raw %} annotation (Line(points={{-140,-214},{-38,-214},{-38,1.66667},{-120,1.66667}},{% endraw %}color={0,127,255}));
     connect(disFloCoo.ports_b1[i],terUni[i].port_aChiWat)
-      annotation (Line(points={{-160,-214},{-260,-214},{-260,1.66667},{-140,1.66667}},color={0,127,255}));
+      {% raw %} annotation (Line(points={{-160,-214},{-260,-214},{-260,1.66667},{-140,1.66667}},{% endraw %}color={0,127,255}));
     connect(disFloHea.ports_a1[i],terUni[i].port_bHeaWat)
-      annotation (Line(points={{-220,-164},{-40,-164},{-40,-0.166667},{-120,-0.166667}},color={0,127,255}));
+      {% raw %} annotation (Line(points={{-220,-164},{-40,-164},{-40,-0.166667},{-120,-0.166667}},{% endraw %}color={0,127,255}));
     connect(disFloHea.ports_b1[i],terUni[i].port_aHeaWat)
-      annotation (Line(points={{-240,-164},{-260,-164},{-260,-0.166667},{-140,-0.166667}},color={0,127,255}));
+      {% raw %} annotation (Line(points={{-240,-164},{-260,-164},{-260,-0.166667},{-140,-0.166667}},{% endraw %}color={0,127,255}));
     connect(terUni[i].mReqChiWat_flow,disFloCoo.mReq_flow[i])
-      annotation (Line(points={{-119.167,3.5},{-104,3.5},{-104,-80},{-180,-80},{-180,-224},{-161,-224}},color={0,0,127}));
+      {% raw %} annotation (Line(points={{-119.167,3.5},{-104,3.5},{-104,-80},{-180,-80},{-180,-224},{-161,-224}},{% endraw %}color={0,0,127}));
     connect(terUni[i].mReqHeaWat_flow,disFloHea.mReq_flow[i])
-      annotation (Line(points={{-119.167,5.33333},{-100,5.33333},{-100,-90.5},{-241,-90.5},{-241,-174}},color={0,0,127}));
+      {% raw %} annotation (Line(points={{-119.167,5.33333},{-100,5.33333},{-100,-90.5},{-241,-90.5},{-241,-174}},{% endraw %}color={0,0,127}));
     connect(terUni[i].TSetHea,minTSet[i].y)
-      annotation (Line(points={{-140.833,14.5},{-160,14.5},{-160,70},{-198,70}},color={0,0,127}));
+      {% raw %} annotation (Line(points={{-140.833,14.5},{-160,14.5},{-160,70},{-198,70}},{% endraw %}color={0,0,127}));
     connect(terUni[i].TSetCoo,maxTSet[i].y)
-      annotation (Line(points={{-140.833,12.6667},{-164,12.6667},{-164,30},{-198,30}},color={0,0,127}));
+      {% raw %} annotation (Line(points={{-140.833,12.6667},{-164,12.6667},{-164,30},{-198,30}},{% endraw %}color={0,0,127}));
   end for;
   //----------------Depending on number of thermal zones-----------------
-  {% endraw %}{% for zone in data['thermal_zones'] %}connect(multiplex3_1.y,{{zone['modelica_object_name']}}.qGai_flow)
-    {% raw %} annotation (Line(points={{1,138},{20,138},{20,30},{22,30}},color={0,0,127}));
-  {% endraw %}connect({{zone['modelica_object_name']}}.ports[1],terUni[{{loop.index}}].port_aLoa)
-    {% raw %} annotation (Line(points={{42,-119.2},{-8,-119.2},{-8,18.1667},{-120,18.1667}},color={0,127,255}));
-  {% endraw %}connect({{zone['modelica_object_name']}}.ports[2],terUni[{{loop.index}}].port_bLoa)
-    {% raw %} annotation (Line(points={{-140,18.1667},{-20,18.1667},{-20,-119.2},{46,-119.2}},color={0,127,255}));
-  {% endraw %}connect({{zone['modelica_object_name']}}.TAir,terUni[{{loop.index}}].TSen)
-    {% raw %} annotation (Line(points={{81,13.8},{80,13.8},{80,160},{-152,160},{-152,10.8333},{-140.833,10.8333}},color={0,0,127}));
-  {% endraw %}{% endfor %}{% raw %}annotation (
+  {% for zone in data['thermal_zones'] %}connect(multiplex3_1.y,{{zone['modelica_object_name']}}.qGai_flow)
+    {% raw %} annotation (Line(points={{1,138},{20,138},{20,30},{22,30}},{% endraw %}color={0,0,127}));
+  connect({{zone['modelica_object_name']}}.ports[1],terUni[{{loop.index}}].port_aLoa)
+    {% raw %} annotation (Line(points={{42,-119.2},{-8,-119.2},{-8,18.1667},{-120,18.1667}},{% endraw %}color={0,127,255}));
+  connect({{zone['modelica_object_name']}}.ports[2],terUni[{{loop.index}}].port_bLoa)
+    {% raw %} annotation (Line(points={{-140,18.1667},{-20,18.1667},{-20,-119.2},{46,-119.2}},{% endraw %}color={0,127,255}));
+  connect({{zone['modelica_object_name']}}.TAir,terUni[{{loop.index}}].TSen)
+    {% raw %} annotation (Line(points={{81,13.8},{80,13.8},{80,160},{-152,160},{-152,10.8333},{-140.833,10.8333}},{% endraw %}color={0,0,127}));
+  {% endfor %}{% raw %}annotation (
     Diagram(
       coordinateSystem(
         extent={{-300,-300},{300,300}})),

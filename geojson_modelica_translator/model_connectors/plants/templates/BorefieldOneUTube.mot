@@ -1,5 +1,5 @@
 within {{ project_name }}.Plants.{{ model_name }};
-model Borefield
+{% raw %}model Borefield
   "Borefield model using single U-tube borehole heat exchanger configuration.Calculates the average fluid temperature T_fts of the borefield for a given (time dependent) load Q_flow"
   extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
     redeclare package Medium=Medium,
@@ -34,24 +34,24 @@ model Borefield
   parameter Boolean forceGFunCalc=false
     "Set to true to force the thermal response to be calculated at the start instead of checking whether this has been pre-computed"
     annotation (Dialog(tab="Advanced"));
-  parameter String gFunFilNam=Modelica.Utilities.Files.loadResource(
+  {% endraw %}parameter String gFunFilNam=Modelica.Utilities.Files.loadResource(
     "modelica://{{project_name}}/Plants/{{ghe_data["gfunction"]["gfunction_file_path"]}}")
-    "File name of g-function data file in MAT format";
-  parameter Integer nTimTot={{ghe_data["gfunction"]["gfunction_file_rows"]}}
-    "Total length of g-function vector";
+    {% raw %} "File name of g-function data file in MAT format";
+  {% endraw %}parameter Integer nTimTot={{ghe_data["gfunction"]["gfunction_file_rows"]}}
+    {% raw %} "Total length of g-function vector";
   // General parameters of borefield
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Template borFieDat(
     final filDat=Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite(
-      kFil={{ghe_data["fill"]["conductivity"]}},
-      cFil={{ghe_data["fill"]["volumetric_heat_capacity"]}}/1450,
+      {% endraw %}kFil={{ghe_data["fill"]["conductivity"]}},
+      cFil={{ghe_data["fill"]["volumetric_heat_capacity"]}}/1450 {% raw %},
       dFil=1450),
     final soiDat=Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone(
-      kSoi={{ghe_data["soil"]["conductivity"]}},
-      cSoi={{ghe_data["soil"]["volumetric_heat_capacity"]}}/2600,
+      {% endraw %}kSoi={{ghe_data["soil"]["conductivity"]}},
+      cSoi={{ghe_data["soil"]["volumetric_heat_capacity"]}}/2600 {% raw %},
       dSoi=2600),
     final conDat=Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Example(
       dp_nominal=35000,
-      borCon={{ghe_data["configuration"]["borehole_configuration"]}},
+      {% endraw %}borCon={{ghe_data["configuration"]["borehole_configuration"]}},
       mBor_flow_nominal={{ghe_data["configuration"]["nominal_mass_flow_per_borehole"]}},
       hBor={{ghe_data["configuration"]["borehole_height"]}},
       rBor={{ghe_data["configuration"]["borehole_diameter"]}}/2,
@@ -60,12 +60,12 @@ model Borefield
       rTub={{ghe_data["tube"]["outer_diameter"]}}/2,
       kTub={{ghe_data["tube"]["conductivity"]}},
       eTub={{ghe_data["tube"]["thickness"]}},
-      xC={{ghe_data["tube"]["shank_spacing"]}}))
+      xC={{ghe_data["tube"]["shank_spacing"]}} {% raw %}))
     "Borefield data"
-    {% raw %} annotation (choicesAllMatching=true,Placement(transformation(extent={{-80,-80},{-60,-60}})));
+    annotation (choicesAllMatching=true,Placement(transformation(extent={{-80,-80},{-60,-60}})));
   // Temperature gradient in undisturbed soil
   {% endraw %}parameter Modelica.Units.SI.Temperature TExt0_start={{ghe_data["soil"]["initial_ground_temperature"]}}+273.15
-    "Initial far field temperature"
+    {% raw %} "Initial far field temperature"
     annotation (Dialog(tab="Initialization",group="Soil"));
   parameter Modelica.Units.SI.Temperature TExt_start[nSeg]={
     if z[i] >= z0 then
@@ -97,16 +97,16 @@ model Borefield
     displayUnit="degC",
     start=TExt0_start)
     "Average borehole wall temperature in the borefield"
-    {% raw %} annotation (Placement(transformation(extent={{100,34},{120,54}})));
+    annotation (Placement(transformation(extent={{100,34},{120,54}})));
   {% endraw %}{{ project_name }}.Plants.GroundTemperatureResponse groTemRes(
-    final tLoaAgg=tLoaAgg,
+    {% raw %}final tLoaAgg=tLoaAgg,
     final nCel=nCel,
     final borFieDat=borFieDat,
     final forceGFunCalc=forceGFunCalc,
     final gFunFilNam=gFunFilNam,
     final nTimTot=nTimTot)
     "Ground temperature response"
-    {% raw %} annotation (Placement(transformation(extent={{20,70},{40,90}})));
+    annotation (Placement(transformation(extent={{20,70},{40,90}})));
   replaceable Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube borHol
     constrainedby Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.BaseClasses.PartialBorehole(
       redeclare final package Medium=Medium,
@@ -357,4 +357,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-{% endraw %}end Borefield;
+end Borefield;
+{% endraw %}

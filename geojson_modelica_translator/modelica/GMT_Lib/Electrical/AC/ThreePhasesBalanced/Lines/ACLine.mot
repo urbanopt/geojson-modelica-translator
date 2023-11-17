@@ -4,7 +4,7 @@ model AC{{ data["model_name"] }}
   parameter Modelica.Units.SI.Length l={{ data["length"] }};
   parameter Modelica.Units.SI.Power P_nominal={{ data["ampacity"] }}*{{ data["nominal_voltage"] }}*safety_factor;
   parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};
-  parameter {{ data["commercial_line_type"] }} cable;
+  parameter {{ data["commercial_line_type"] }} cable;{% raw %}
   extends
     Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
   line_1(
@@ -69,4 +69,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end AC{{ data['model_name'] }};
+{% endraw %}end AC{{ data['model_name'] }};

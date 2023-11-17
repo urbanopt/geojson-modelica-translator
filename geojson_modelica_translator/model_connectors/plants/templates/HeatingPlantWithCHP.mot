@@ -118,19 +118,19 @@ within {{ project_name }}.Plants;
       numBoi),
     redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
-    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }},
+    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     num=numBoi,
     l=0.001)
     "Parallel heating water pumps."
-    {% raw %} annotation (Placement(transformation(extent={{0,40},{-20,60}})));
+    annotation (Placement(transformation(extent={{0,40},{-20,60}})));
   Buildings.Fluid.Actuators.Valves.TwoWayEqualPercentage valByp(
     redeclare package Medium=Medium,
     allowFlowReversal=true,
     m_flow_nominal=mHW_flow_nominal*0.05,
-    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }},
+    {% endraw %}dpValve_nominal={{ data["nominal_values"]["pressure_drop_hhw_valve_nominal"] }} {% raw %},
     l=0.001)
     "Heating water bypass valve"
-    {% raw %} annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=90,origin={54,0})));
+    annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=90,origin={54,0})));
   Buildings.Fluid.Sensors.MassFlowRate senMasFlo(
     redeclare package Medium=Medium)
     "Heating water return mass flow"
@@ -185,8 +185,8 @@ within {{ project_name }}.Plants;
 protected
   {% endraw %} Modelica.Blocks.Sources.BooleanExpression theFolSig(
     final y={{ data["signals"]["thermal_following"] }})
-    "Signal for thermal following, set to false if electrical following"
-    {% raw %} annotation (Placement(transformation(extent={{-160,50},{-140,66}})));
+    {% raw %} "Signal for thermal following, set to false if electrical following"
+    annotation (Placement(transformation(extent={{-160,50},{-140,66}})));
 equation
   connect(theFolSig.y,eleFol.theFol)
     annotation (Line(points={{-139,58},{-136,58},{-136,45},{-82,45}},color={255,0,255}));
@@ -354,4 +354,5 @@ equation
    </li>
    </ul>
    </html>"));
-{% endraw %}end CentralHeatingPlant;
+end CentralHeatingPlant;
+{% endraw %}

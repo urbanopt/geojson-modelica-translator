@@ -9,14 +9,14 @@ model building
     have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
     have_heaWat={{ data['nominal_values']['has_liquid_heating'] }},
     have_chiWat={{ data['nominal_values']['has_liquid_cooling'] }});
-  package MediumW=Buildings.Media.Water
+  {% raw %}package MediumW=Buildings.Media.Water
     "Source side medium";
   package MediumA=Buildings.Media.Air
     "Load side medium";
-  parameter Integer nZon={{data['thermal_zones'] | count}}
-    "Number of thermal zones";
-  parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
-    "Path of the weather file";
+  {% endraw %}parameter Integer nZon={{data['thermal_zones'] | count}}
+    {% raw %} "Number of thermal zones";
+  {% endraw %}parameter String weaName="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['mos_weather']['filename']}}"
+    {% raw %} "Path of the weather file";
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
     calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
     pAtm(
@@ -25,7 +25,7 @@ model building
       weaName),
     computeWetBulbTemperature=true)
     "Weather data reader"
-    {% raw %} annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));
   {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
     k=fill(
       {{ data['nominal_values']['temp_setpoint_heating']  }},
@@ -65,7 +65,7 @@ model building
     each mLoaCoo_flow_nominal=5)
     "Terminal unit"
     {% raw %} annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
       terUni.mHeaWat_flow_nominal .* terUni.facMul),
@@ -75,8 +75,8 @@ model building
     nPorts_a1=nZon,
     nPorts_b1=nZon)
     "Heating water distribution system"
-    annotation (Placement(transformation(extent={{-140,-100},{-120,-80}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
+    {% raw %} annotation (Placement(transformation(extent={{-140,-100},{-120,-80}})));
+  {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     m_flow_nominal=sum(
       terUni.mChiWat_flow_nominal .* terUni.facMul),
@@ -87,9 +87,9 @@ model building
     nPorts_a1=nZon,
     nPorts_b1=nZon)
     "Chilled water distribution system"
-    annotation (Placement(transformation(extent={{-140,-160},{-120,-140}})));
-equation
-  connect(disFloHea.port_b,ports_bHeaWat[1])
+    {% raw %} annotation (Placement(transformation(extent={{-140,-160},{-120,-140}})));
+{% endraw %}equation
+  {% raw %} connect(disFloHea.port_b,ports_bHeaWat[1])
     annotation (Line(points={{-120,-90},{248,-90},{248,-60},{300,-60}},color={0,127,255}));
   connect(disFloHea.port_a,ports_aHeaWat[1])
     annotation (Line(points={{-140,-90},{-280,-90},{-280,-60},{-300,-60}},color={0,127,255}));
@@ -106,7 +106,7 @@ equation
   connect(disFloCoo.ports_b1,terUni.port_aChiWat)
     annotation (Line(points={{-140,-144},{-226,-144},{-226,-56.6667},{-200,-56.6667}},color={0,127,255}));
   {% endraw %}{% for zone in data['thermal_zones'] %}connect(weaDat.weaBus,{{zone['instance_name']}}.weaBus)
-    {% raw %} annotation (Line(points={{1,300},{0,300},{0,20},{-66,20},{-66,-10.2},{-96,-10.2}},color={255,204,51},thickness=0.5),Text(string="%first",index=-1,extent={{6,3},{6,3}},horizontalAlignment=TextAlignment.Left));
+    annotation ({% raw %}Line(points={{1,300},{0,300},{0,20},{-66,20},{-66,-10.2},{-96,-10.2}},color={255,204,51},thickness=0.5),Text(string="%first",index=-1,extent={{6,3},{6,3}},horizontalAlignment=TextAlignment.Left));
   {% endraw %}connect(terUni[{{zone['index']}}+1].heaPorCon,{{zone['instance_name']}}.port_a)
     {% raw %} annotation (Line(points={{-193.333,-50},{-192,-50},{-192,0},{-90,0}},color={191,0,0}));
   {% endraw %}connect(terUni[{{zone['index']}}+1].heaPorRad,{{zone['instance_name']}}.port_a)
@@ -155,4 +155,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-{% endraw %}end building;
+end building;
+{% endraw %}

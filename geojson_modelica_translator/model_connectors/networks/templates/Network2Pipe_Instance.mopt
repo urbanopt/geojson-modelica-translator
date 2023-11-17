@@ -1,11 +1,11 @@
   {%- set all_ets_flow_nominal = couplings.ets_couplings|map(attribute="ets")|map(attribute="id")|map("strcat", ".mDis_flow_nominal")|list -%}
 
   parameter Integer nBui_{{ model.id }}={{ all_ets_flow_nominal|length }};
-  parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({
-    {{ all_ets_flow_nominal|join(",\n  ") }} })
+  parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ model.id }}=sum({% raw %}{{% endraw %}
+    {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %})
     "Nominal mass flow rate of the distribution pump";
-  parameter Modelica.Units.SI.MassFlowRate mCon_flow_nominal_{{ model.id }}[nBui_{{ model.id }}]={
-    {{ all_ets_flow_nominal|join(",\n  ") }} }
+  parameter Modelica.Units.SI.MassFlowRate mCon_flow_nominal_{{ model.id }}[nBui_{{ model.id }}]={% raw %}{{% endraw %}
+    {{ all_ets_flow_nominal|join(",\n  ") }}{% raw %}}{% endraw %}
     "Nominal mass flow rate in each connection line";
   parameter Modelica.Units.SI.PressureDifference dpDis_nominal_{{ model.id }}[nBui_{{ model.id }}](
     each min=0,

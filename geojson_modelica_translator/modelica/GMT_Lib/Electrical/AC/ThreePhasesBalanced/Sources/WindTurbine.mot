@@ -4,6 +4,7 @@ model {{ data["model_name"] }}
   parameter Modelica.Units.SI.Length h={{ data["height_over_ground"] }} "Height over ground";
   parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }} "Nominal voltage";
   parameter Real table[:,2]={{ data["power_curve"] }} "Table of generated power (first column is wind speed, second column is power)";
+  {% raw %}
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine(
   tur(
   scale=scale,
@@ -35,4 +36,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end {{ data['model_name'] }};
+{% endraw %}end {{ data['model_name'] }};

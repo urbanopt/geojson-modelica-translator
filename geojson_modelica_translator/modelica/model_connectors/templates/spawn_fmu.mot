@@ -18,8 +18,8 @@ model building
   Modelica.Blocks.Routing.Multiplex3 multiplex3_1
     annotation (Placement(transformation(extent={{-28,-10},{-8,10}})));
   Modelica.Blocks.Sources.Constant qLatGai_flow(k=0) "Latent heat gain"
-    annotation (Placement(transformation(extent={{-74,-50},{-54,-30}})));
-  {% endraw %}{% for zone in data['thermal_zones'] %}
+    annotation (Placement(transformation(extent={{-74,-50},{-54,-30}})));{% endraw %}
+  {% for zone in data['thermal_zones'] %}
   Buildings.Experimental.EnergyPlus_9_6_0.ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium = Medium,
     idfName=idfName,
@@ -27,8 +27,8 @@ model building
     usePrecompiledFMU=false,
     fmuName = Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/EnergyPlus/FMUs/Zones1.fmu"),
     zoneName="{{zone['spawn_object_name']}}") "Thermal zone"
-    {% raw %} annotation (Placement(transformation(extent={{20,40},{60,80}})));
-  {% endraw %}{% endfor %}
+    {% raw %} annotation (Placement(transformation(extent={{20,40},{60,80}}))); {% endraw %}
+  {% endfor %}
 {% raw %}
 equation
   connect(qRadGai_flow.y,multiplex3_1. u1[1])  annotation (Line(
@@ -40,11 +40,11 @@ equation
       color={0,0,127},
       smooth=Smooth.None));
   connect(multiplex3_1.u3[1],qLatGai_flow. y)
-    annotation (Line(points={{-30,-7},{-40,-7},{-40,-40},{-53,-40}},color={0,0,127}));
-  {% endraw %}{% for zone in data['thermal_zones'] %}
+    annotation (Line(points={{-30,-7},{-40,-7},{-40,-40},{-53,-40}},color={0,0,127}));{% endraw %}
+  {% for zone in data['thermal_zones'] %}
   connect(multiplex3_1.y, {{zone['modelica_object_name']}}.qGai_flow)
-    {% raw %}  annotation (Line(points={{-7,0},{20,0},{20,12},{38,12}}, color={0,0,127}));
-  {% endraw %}{% endfor %}
+    {% raw %}  annotation (Line(points={{-7,0},{20,0},{20,12},{38,12}}, color={0,0,127}));{% endraw %}
+  {% endfor %}
   // TODO: determine how to handle the "lines"
 {% raw %}
   annotation (Documentation(info="<html>
@@ -64,5 +64,5 @@ experiment(
       StopTime=604800,
       Tolerance=1e-06),
     Diagram(coordinateSystem(extent={{-100,-160},{160,120}})),
-    Icon(coordinateSystem(extent={{-100,-100},{100,100}})));
-{% endraw %}end building;
+    Icon(coordinateSystem(extent={{-100,-100},{100,100}})));{% endraw %}
+end building;

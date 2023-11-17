@@ -17,7 +17,7 @@
     {{ graph.couplings_by_type(coupling.network.id).load_couplings[sys_params.num_buildings-1].load.id }}.ets.mSerWat_flow_nominal})
     "Design data"
     {% raw %}annotation (Placement(transformation(extent={{-140,100},{-120,120}})));
-  parameter Boolean allowFlowReversalSer = true
+  {% endraw %}parameter Boolean allowFlowReversalSer = true
     "Set to true to allow flow reversal in the service lines"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
+    {% raw %}annotation(Dialog(tab="Assumptions"), Evaluate=true);
   {% endraw %}
