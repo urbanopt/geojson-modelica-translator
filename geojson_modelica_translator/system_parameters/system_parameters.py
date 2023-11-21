@@ -712,6 +712,7 @@ class SystemParameters(object):
         :kwargs (optional):
             - relative_path: Path, set the paths (time series files, weather file, etc) relate to `relative_path`
             - skip_weather_download: Boolean, set to True to not download the weather file, defaults to False
+            - modelica_load_filename: str, name (only) of the file to load as the modelica load file, defaults to "modelica.mos"
         :return None, file created and saved to user-specified location
 
 
@@ -719,6 +720,7 @@ class SystemParameters(object):
         self.sys_param_filename = sys_param_filename
         self.rel_path = kwargs.get('relative_path', None)
         skip_weather_download = kwargs.get('skip_weather_download', False)
+        modelica_load_filename = kwargs.get('modelica_load_filename', 'modelica.mos')
 
         if model_type == 'time_series':
             # TODO: delineate between time_series and time_series_massflow_rate
@@ -754,7 +756,7 @@ class SystemParameters(object):
                         if str(item).endswith('_export_time_series_modelica'):
                             measure_list.append(Path(item) / "building_loads.csv")  # used for mfrt
                         elif str(item).endswith('_export_modelica_loads'):
-                            measure_list.append(Path(item) / "modelica.mos")  # space heating/cooling & water heating
+                            measure_list.append(Path(item) / modelica_load_filename)  # space heating/cooling & water heating
                             measure_list.append(Path(item) / "building_loads.csv")  # used for max electricity load
 
         # Get each building feature id from the SDK FeatureFile
