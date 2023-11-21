@@ -42,7 +42,7 @@ class TimeSeriesMFT(LoadBase):
 
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier and respect the defaults
-        time_series_filename = self.system_parameters.get_param_by_building_id(
+        time_series_filename = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.time_series.filepath"
         )
 
@@ -54,21 +54,21 @@ class TimeSeriesMFT(LoadBase):
                 "path": os.path.dirname(time_series_filename),
             },
             "nominal_values": {
-                "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                "delTDisCoo": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delTDisCoo"
                 ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_liquid_heating",
                 ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_liquid_cooling",
                 ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_electric_heating",
                 ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_electric_cooling",
                 ) else "false",
             }
@@ -82,11 +82,11 @@ class TimeSeriesMFT(LoadBase):
             raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
         # Run templates to write actual Modelica models
-        ets_model_type = self.system_parameters.get_param_by_building_id(self.building_id, "ets_model")
+        ets_model_type = self.system_parameters.get_param_by_id(self.building_id, "ets_model")
 
         ets_data = None
         if ets_model_type == "Indirect Heating and Cooling":
-            ets_data = self.system_parameters.get_param_by_building_id(
+            ets_data = self.system_parameters.get_param_by_id(
                 self.building_id,
                 "ets_indirect_parameters"
             )
