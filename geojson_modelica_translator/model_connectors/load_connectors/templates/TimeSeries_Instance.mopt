@@ -8,7 +8,7 @@
     delTAirHea(displayUnit="degC")=20,
     k=0.1,
     Ti=120
-    ), ets(have_hotWat = false)
+    ), ets(have_hotWat = true)
     {% else %}
     allowFlowReversal = true,
     T_aHeaWat_nominal(displayUnit="K")=318.15,
