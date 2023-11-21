@@ -149,22 +149,24 @@ class SystemParameters(object):
         # otherwise return the list of values
         return results
 
-    def get_param_by_building_id(self, building_id, jsonpath):
+    def get_param_by_id(self, id, jsonpath):
         """
-        return a parameter for a specific building_id. This is similar to get_param but allows the user
-        to constrain the data based on the building id.
+        return a parameter for a specific id. This is similar to get_param but allows the user
+        to constrain the data based on the id.
 
-        :param building_id: string, id of the building to look up in the custom section of the system parameters
+        :param id: string, id of the object to look up in the system parameters file
         :param jsonpath: string, jsonpath formatted string to return
-        :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
 
         for b in self.param_template.get("buildings", []):
-            if b.get("geojson_id", None) == building_id:
+            if b.get("geojson_id", None) == id:
                 return self.get_param(jsonpath, data=b)
+        for ghe in self.param_template.get("district_system")["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
+            if ghe.get("ghe_id", None) == id:
+                return self.get_param(jsonpath, data=ghe)
         else:
-            raise SystemExit("No building_id submitted. Please retry and include the feature_id")
+            raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
     def validate(self):
         """
