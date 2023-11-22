@@ -160,11 +160,10 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("not.a.real.path")
         self.assertIsNone(value)
 
-    def test_get_param_with_building_id_defaults(self):
+    def test_get_param_with_building_id(self):
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
-        # ensure the defaults are respected. abcd1234 has NO metamodel defined
         value = sdp.get_param_by_id("abcd1234", "ets_model")
         self.assertEqual("None", value)
 
@@ -192,18 +191,34 @@ class SystemParametersTest(unittest.TestCase):
             "heating_controller_y_min": 0
         }, value)
 
-        # respect the passed default value
-        # value = sdp.get_param_by_id("defgh2345", "ets_model_parameters.NominalFlow_Building", 24815)
-        # self.assertEqual(24815, value)
-        # FYI! Default sys-param values (in the sys-param file) are being eliminated in this PR
+    def test_get_param_with_ghe_id(self):
+        # Setup
+        filename = self.data_dir / 'system_params_ghe.json'
+        sdp = SystemParameters(filename)
+        self.maxDiff = None
+        # Act
+        value = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40033", "borehole")
+        # Assert
+        self.assertEqual({
+            "buried_depth": 2.0,
+            "diameter": 0.15
+        }, value)
+
+        # Act
+        second_ghe_borehole = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40034", "borehole")
+        # Assert
+        assert second_ghe_borehole['buried_depth'] == 10.0
 
     def test_get_param_with_none_building_id(self):
+        # Setup
         filename = self.data_dir / 'system_params_1.json'
         sdp = SystemParameters(filename)
         self.maxDiff = None
+        # Act
         with self.assertRaises(SystemExit) as context:
             sdp.get_param_by_id(None, "ets_model")
-        self.assertIn("No building_id submitted. Please retry and include the feature_id", str(context.exception))
+        # Assert
+        self.assertIn("No id submitted. Please retry and include the appropriate id", str(context.exception))
 
     def test_missing_files(self):
         with self.assertRaises(SystemExit) as context:
