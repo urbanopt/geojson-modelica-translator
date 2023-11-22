@@ -42,7 +42,7 @@
     "fifth_generation": {
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "tests\\management\\data\\sdk_project_scraps\\run\\baseline_scenario\\ghe_dir",
+        "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
