@@ -101,6 +101,7 @@ def run_with_omc() -> bool:
     # import time
     # time.sleep(10000)
     os.system(cmd)
+    logger.debug("Finished simulating (timestamp to tell how long simulation took).")
 
     # remove the 'tmp' folder that was created, because it will
     # have different permissions than the user running the container

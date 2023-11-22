@@ -1,4 +1,4 @@
-FROM openmodelica/openmodelica:v1.21.0-gui
+FROM openmodelica/openmodelica:v1.22.0-gui
 
 # libgfortran4 is needed to load FMU for FMUZoneAdapterZones1.mo
 RUN apt update && apt --no-install-recommends install -y \
