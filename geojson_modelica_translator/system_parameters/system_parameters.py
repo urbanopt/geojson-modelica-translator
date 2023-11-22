@@ -159,13 +159,20 @@ class SystemParameters(object):
         :return: variant, the value from the data
         """
 
+        # TODO: check that ids are unique in the system parameters file, i.e. a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
-            if b.get("geojson_id", None) == id:
+            if b.get("geojson_id") == id:
                 return self.get_param(jsonpath, data=b)
-        for ghe in self.param_template.get("district_system")["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
-            if ghe.get("ghe_id", None) == id:
-                return self.get_param(jsonpath, data=ghe)
-        else:
+        try:
+            district = self.param_template.get("district_system")
+            for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
+                if ghe.get("ghe_id") == id:
+                    return self.get_param(jsonpath, data=ghe)
+        except KeyError:
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # Don't crash or quit, just keep a stiff upper lip and carry on.
+            pass
+        if id is None:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
     def validate(self):
