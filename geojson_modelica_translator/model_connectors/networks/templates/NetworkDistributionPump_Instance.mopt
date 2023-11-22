@@ -9,9 +9,9 @@
     final lDis=datDes.lDis,
     final lCon=datDes.lCon,
     final lEnd=datDes.lEnd,
-    final allowFlowReversal=allowFlowReversalSer)
+    {% raw %}final allowFlowReversal=allowFlowReversalSer, dhDis = {0.5, 0.5}, dhCon = {0.6, 0.6})
     "Distribution network"
-    {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
+    annotation (Placement(transformation(extent={{50,-20},{90,0}})));
   {% endraw %}// ambient loop pump
   Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumDis(
     redeclare final package Medium = {{ globals.medium_w }},
