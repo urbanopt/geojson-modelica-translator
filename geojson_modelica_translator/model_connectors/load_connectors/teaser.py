@@ -104,7 +104,7 @@ class Teaser(LoadBase):
             )
 
             prj.used_library_calc = "IBPSA"
-            prj.number_of_elements_calc = self.system_parameters.get_param_by_building_id(
+            prj.number_of_elements_calc = self.system_parameters.get_param_by_id(
                 self.building_id, "load_model_parameters.rc.order"
             )
             prj.merge_windows_calc = False
@@ -330,7 +330,7 @@ class Teaser(LoadBase):
             mofile.remove_connect('weaDat.weaBus', 'weaBus')
 
             # add new port connections
-            rc_order = self.system_parameters.get_param_by_building_id(
+            rc_order = self.system_parameters.get_param_by_id(
                 self.building_id, "load_model_parameters.rc.order"
             )
             thermal_zone_name = None
@@ -509,36 +509,36 @@ class Teaser(LoadBase):
                 "path": os.path.dirname(mos_weather_filename),
             },
             "nominal_values": {
-                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_supply"
                 )),
-                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_return"
                 )),
-                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_supply"
                 )),
-                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_return"
                 )),
-                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
                 )),
-                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
                 )),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_liquid_heating",
                 ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_liquid_cooling",
                 ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_electric_heating",
                 ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_electric_cooling",
                 ) else "false",
             }

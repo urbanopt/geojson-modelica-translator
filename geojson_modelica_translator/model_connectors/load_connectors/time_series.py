@@ -44,7 +44,7 @@ class TimeSeries(LoadBase):
 
         # Note that the system_parameters object when accessing filepaths will fully resolve the
         # location of the file.
-        time_series_filename = self.system_parameters.get_param_by_building_id(
+        time_series_filename = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.time_series.filepath"
         )
 
@@ -66,42 +66,42 @@ class TimeSeries(LoadBase):
                 "district_system"
             ),
             "nominal_values": {
-                "delta_temp_air_cooling": self.system_parameters.get_param_by_building_id(
+                "delta_temp_air_cooling": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
                 ),
-                "delta_temp_air_heating": self.system_parameters.get_param_by_building_id(
+                "delta_temp_air_heating": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_heating"
                 ),
-                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
                 )),
-                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.temp_setpoint_cooling"
                 )),
-                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.temp_chw_supply"
                 )),
-                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.temp_chw_return"
                 )),
-                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.temp_hw_supply"
                 )),
-                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.temp_hw_return"
                 )),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_liquid_heating",
                 ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_liquid_cooling",
                 ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_electric_heating",
                 ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_electric_cooling",
                 ) else "false",
             }
