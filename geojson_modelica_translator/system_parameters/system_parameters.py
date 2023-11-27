@@ -149,22 +149,31 @@ class SystemParameters(object):
         # otherwise return the list of values
         return results
 
-    def get_param_by_building_id(self, building_id, jsonpath):
+    def get_param_by_id(self, id, jsonpath):
         """
-        return a parameter for a specific building_id. This is similar to get_param but allows the user
-        to constrain the data based on the building id.
+        return a parameter for a specific id. This is similar to get_param but allows the user
+        to constrain the data based on the id.
 
-        :param building_id: string, id of the building to look up in the custom section of the system parameters
+        :param id: string, id of the object to look up in the system parameters file
         :param jsonpath: string, jsonpath formatted string to return
-        :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
 
+        # TODO: check that ids are unique in the system parameters file, i.e. a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
-            if b.get("geojson_id", None) == building_id:
+            if b.get("geojson_id") == id:
                 return self.get_param(jsonpath, data=b)
-        else:
-            raise SystemExit("No building_id submitted. Please retry and include the feature_id")
+        try:
+            district = self.param_template.get("district_system")
+            for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
+                if ghe.get("ghe_id") == id:
+                    return self.get_param(jsonpath, data=ghe)
+        except KeyError:
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # Don't crash or quit, just keep a stiff upper lip and carry on.
+            pass
+        if id is None:
+            raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
     def validate(self):
         """
@@ -712,6 +721,7 @@ class SystemParameters(object):
         :kwargs (optional):
             - relative_path: Path, set the paths (time series files, weather file, etc) relate to `relative_path`
             - skip_weather_download: Boolean, set to True to not download the weather file, defaults to False
+            - modelica_load_filename: str, name (only) of the file to load as the modelica load file, defaults to "modelica.mos"
         :return None, file created and saved to user-specified location
 
 
@@ -719,6 +729,7 @@ class SystemParameters(object):
         self.sys_param_filename = sys_param_filename
         self.rel_path = kwargs.get('relative_path', None)
         skip_weather_download = kwargs.get('skip_weather_download', False)
+        modelica_load_filename = kwargs.get('modelica_load_filename', 'modelica.mos')
 
         if model_type == 'time_series':
             # TODO: delineate between time_series and time_series_massflow_rate
@@ -754,7 +765,7 @@ class SystemParameters(object):
                         if str(item).endswith('_export_time_series_modelica'):
                             measure_list.append(Path(item) / "building_loads.csv")  # used for mfrt
                         elif str(item).endswith('_export_modelica_loads'):
-                            measure_list.append(Path(item) / "modelica.mos")  # space heating/cooling & water heating
+                            measure_list.append(Path(item) / modelica_load_filename)  # space heating/cooling & water heating
                             measure_list.append(Path(item) / "building_loads.csv")  # used for max electricity load
 
         # Get each building feature id from the SDK FeatureFile

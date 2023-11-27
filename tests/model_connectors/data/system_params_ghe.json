@@ -87,27 +87,27 @@
           {
             "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
             "ghe_geometric_params": {
-              "length_of_ghe": 100,
-              "width_of_ghe": 100
+              "length_of_ghe": 427.09084385292005,
+              "width_of_ghe": 300.40915614707995
             },
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length_of_boreholes": 150,
-              "number_of_boreholes": 4
+              "length_of_boreholes": 1.0,
+              "number_of_boreholes": 5
             }
           },
           {
-            "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+            "ghe_id": "47fd01d3-3d72-46c0-85f2-a12854783764",
             "ghe_geometric_params": {
-              "length_of_ghe": 100,
-              "width_of_ghe": 100
+              "length_of_ghe": 411.7146746166177,
+              "width_of_ghe": 254.28532538338231
             },
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length": 150,
-              "number_of_boreholes": 4
+              "length_of_boreholes": 1.0,
+              "number_of_boreholes": 5
             }
           }
         ]
