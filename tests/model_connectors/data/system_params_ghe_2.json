@@ -132,7 +132,7 @@
         },
         "design": {
           "method": "AREAPROPORTIONAL",
-          "flow_rate": 0.2,
+          "flow_rate": 40,
           "flow_type": "borehole",
           "max_eft": 35.0,
           "min_eft": 5.0
@@ -148,7 +148,7 @@
               "buried_depth": 2.0,
               "diameter": 0.15,
               "length_of_boreholes": 150,
-              "number_of_boreholes": 4
+              "number_of_boreholes": 20
             }
           }
         ]
