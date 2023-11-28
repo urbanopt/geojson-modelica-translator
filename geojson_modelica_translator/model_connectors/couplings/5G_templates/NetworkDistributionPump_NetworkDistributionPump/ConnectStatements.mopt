@@ -1,9 +1,9 @@
 // Connections for sub-components
   {% raw %}connect(dis.port_bDisSup, TIn.port_a)
     annotation (Line(points={{90,10},{110,10},{110,-20}}, color={0,127,255}));
-  connect(TIn.port_b, pumDis.port_a) 
+  connect(TIn.port_b, pumDis.port_a)
     annotation (Line(points={{110,-40},{110,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
-  connect(expVes.ports[1], pumDis.port_a) 
+  connect(expVes.ports[1], pumDis.port_a)
     annotation (Line(points={{-20,-100},{-20,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
   connect(conPum.y, gai.u)
     annotation (Line(points={{-98,-90},{-82,-90}}, color={0,0,127}));
@@ -16,5 +16,5 @@
   connect(TOut.port_b, dis.port_aDisSup)
     annotation (Line(points={{26,10},{50,10}}, color={0,127,255}));
   connect(TOut.T, conPum.TSouOut[1])
-    annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));       
+    annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
   {% endraw %}

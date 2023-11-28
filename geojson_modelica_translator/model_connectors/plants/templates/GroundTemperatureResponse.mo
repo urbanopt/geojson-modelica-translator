@@ -146,7 +146,7 @@ initial equation
       sha=SHAgfun,
       forceGFunCalc=forceGFunCalc);
 */
-algorithm 
+algorithm
   Modelica.Utilities.Files.createDirectory("tmp");
   Modelica.Utilities.Files.createDirectory("tmp/temperatureResponseMatrix");
   writegFun :=  Modelica.Utilities.Streams.writeRealMatrix(
