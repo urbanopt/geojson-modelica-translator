@@ -98,10 +98,10 @@ within {{ project_name }}.Plants.{{ model_name }};
     start=TExt0_start)
     "Average borehole wall temperature in the borefield"
     annotation (Placement(transformation(extent={{100,34},{120,54}})));
-  Buildings.Controls.OBC.CDL.Interfaces.RealOutput Q_flow(final unit="W")
+  Buildings.Controls.OBC.CDL.Interfaces.RealOutput Q_flow(
+    final unit="W")
     "Rate at which heat is extracted from soil"
-    annotation (Placement(transformation(extent={{100,-50},{120,-30}}),
-      iconTransformation(extent={{100,-64},{140,-24}})));
+    annotation (Placement(transformation(extent={{100,-50},{120,-30}}),iconTransformation(extent={{100,-64},{140,-24}})));
   {% endraw %}{{ project_name }}.Plants.GroundTemperatureResponse groTemRes(
     {% raw %}final tLoaAgg=tLoaAgg,
     final nCel=nCel,
@@ -215,8 +215,8 @@ equation
     annotation (Line(points={{31,30},{36,30},{36,44},{48,44}},color={0,0,127}));
   connect(AveTBor.y,TBorAve)
     annotation (Line(points={{71,44},{110,44}},color={0,0,127}));
-  connect(gaiQ_flow.y, Q_flow)
-    annotation (Line(points={{1,80},{12,80},{12,60},{94,60},{94,-40},{110,-40}}, color={0,0,127}));
+  connect(gaiQ_flow.y,Q_flow)
+    annotation (Line(points={{1,80},{12,80},{12,60},{94,60},{94,-40},{110,-40}},color={0,0,127}));
   annotation (
     Icon(
       coordinateSystem(
