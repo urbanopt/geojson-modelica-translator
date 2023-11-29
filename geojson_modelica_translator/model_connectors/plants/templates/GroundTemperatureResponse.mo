@@ -17,6 +17,8 @@ model GroundTemperatureResponse
     "File name of g-function data file in MAT format";
   parameter Integer nTimTot=76
     "Total length of g-function vector";
+  Boolean writegFun
+    "True if g-function was succesfully written to file";
   Modelica.Blocks.Interfaces.RealOutput delTBor(
     unit="K")
     "Temperature difference current borehole wall temperature minus initial borehole wall temperature"
@@ -144,7 +146,17 @@ initial equation
       ttsMax=ttsMax,
       sha=SHAgfun,
       forceGFunCalc=forceGFunCalc);
-*/equation
+*/algorithm
+  Modelica.Utilities.Files.createDirectory(
+    "tmp");
+  Modelica.Utilities.Files.createDirectory(
+    "tmp/temperatureResponseMatrix");
+  writegFun := Modelica.Utilities.Streams.writeRealMatrix(
+    fileName="tmp/temperatureResponseMatrix/TStep.mat",
+    matrixName="TStep",
+    matrix=timSer,
+    append=false);
+equation
   der(
     delTBor)=dTStepdt*QBor_flow+derDelTBor0;
   der(
