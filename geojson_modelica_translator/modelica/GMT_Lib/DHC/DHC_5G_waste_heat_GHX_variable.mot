@@ -10,7 +10,7 @@ model district
       mPla_flow_nominal={{ data['max_flow_rate'] }},
       mSto_flow_nominal={{ data['max_flow_rate'] / 10 }},
       dp_length_nominal=10,{% raw %}
-      epsPla=0.935));
+      epsPla=0.935), dis(dhDis = {0.5, 0.5, 0.5}, dhCon = {0.6, 0.6, 0.6}));
   parameter String filNam[nBui]={
     {% endraw %}{% for building in data['building_load_files'] %}
     "{{ building }}"{% if not loop.last %},{% endif %}
