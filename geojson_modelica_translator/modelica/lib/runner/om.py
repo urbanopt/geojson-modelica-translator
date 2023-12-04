@@ -92,6 +92,8 @@ def run_with_omc() -> bool:
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc simulate.mos"
     logger.info(f"Calling OpenModelica simulate with '{cmd}'")
+    # Log the OM version. Wish I could get it into a log statement, but at least this prints to stdout.log.
+    os.system('omc --version')
     if platform.system() == "Linux":
         logger.info(f"This container has Linux {platform.freedesktop_os_release()['PRETTY_NAME']} on {platform.machine()} architecture")
     else:
