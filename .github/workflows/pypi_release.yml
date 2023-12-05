@@ -40,7 +40,7 @@ jobs:
     - build
     runs-on: ubuntu-latest
     environment:
-      name: release
+      name: pypi_release
       url: https://pypi.org/p/geojson-modelica-translator
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
