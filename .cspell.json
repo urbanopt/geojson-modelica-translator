@@ -4,6 +4,7 @@
   "words": [
     "autoload",
     "buildingspy",
+    "buildx",
     "Combi",
     "cvrmsd",
     "dassl",
@@ -25,6 +26,7 @@
     "MODELICAPATH",
     "mofile",
     "nllong",
+    "nrel",
     "openstudio",
     "Optimica",
     "oversizing",
