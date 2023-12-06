@@ -58,6 +58,7 @@ def compile_fmu(model_name) -> str:
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc compile_fmu.mos"
     logger.info(f"Calling OpenModelica compile with '{cmd}'")
+    os.system('omc --version')
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
     # import time
@@ -77,6 +78,7 @@ def run_as_fmu(fmu_name, start: Optional[float], stop: Optional[float], step: Op
     # time.sleep(10000)
     cmd = f"OMSimulator --startTime={start} --stopTime={stop} --stepSize={step} {fmu_name}"
     logger.info(f"Calling OpenModelica simulator with '{cmd}'")
+    os.system('omc --version')
     os.system(cmd)
     return f'{fmu_name} has been simulated'
 
