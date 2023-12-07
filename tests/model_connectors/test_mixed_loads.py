@@ -73,7 +73,7 @@ class MixedLoadsTest(TestCaseBase):
             "time_series": TimeSeries
         }
         for geojson_load in self.gj.buildings:
-            load_model_name = self.sys_params.get_param_by_building_id(geojson_load.id, "load_model")
+            load_model_name = self.sys_params.get_param_by_id(geojson_load.id, "load_model")
             load_model = load_model_map[load_model_name]
             load = load_model(self.sys_params, geojson_load)
             loads.append(load)
