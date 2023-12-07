@@ -6,6 +6,7 @@ RUN apt update && apt --no-install-recommends install -y \
     gfortran \
     libpython3-dev \
     curl \
+    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 # Install MSL 4.0.0
