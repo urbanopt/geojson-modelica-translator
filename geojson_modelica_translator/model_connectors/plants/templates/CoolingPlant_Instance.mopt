@@ -18,14 +18,22 @@
     "Waiting time";
   // pumps
   parameter Buildings.Fluid.Movers.Data.Generic perCHWPum_{{ model.id }}(
-    pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=((mCHW_flow_nominal_{{ model.id }}/numberofchillers)/1000)*{0.1,1,1.2},
-      dp=pumDP_{{ model.id }}*{1.2,1,0.1}))
+    final powerOrEfficiencyIsHydraulic=false,
+    etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Power_VolumeFlowRate,
+    pressure(
+      V_flow=360/numberofchillers/1000*{0.1, 1,1.2},
+      dp=1000*{1.2,1,0.1}
+    )
+  )
     "Performance data for chilled water pumps";
   parameter Buildings.Fluid.Movers.Data.Generic perCWPum_{{ model.id }}(
+    final powerOrEfficiencyIsHydraulic=false,
+    etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Power_VolumeFlowRate,
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=mCW_flow_nominal_{{ model.id }}/1000*{0.2,0.6,1.0,1.2},
-      dp=(dpCW_nominal_{{ model.id }}+60000+6000)*{1.2,1.1,1.0,0.6}))
+      V_flow=250/1000*{0.2,0.6,1.0,1.2},
+      dp=(1000+60000+6000)*{1.2,1.1,1.0,0.6}
+    )
+  )
     "Performance data for condenser water pumps";
 
 
