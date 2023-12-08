@@ -73,7 +73,7 @@ model CentralHeatingPlant
     final unit="Pa")
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-160,-40},{-140,-20}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
-  Boiler_TParallel boiHotWat(
+  Boiler_TParallel_new boiHotWat(
     redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
     Q_flow_nominal=QBoi_flow_nominal,

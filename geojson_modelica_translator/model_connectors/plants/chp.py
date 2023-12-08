@@ -25,9 +25,11 @@ class HeatingPlantWithOptionalCHP(PlantBase):
             self.id = 'heaPla' + simple_uuid()
 
         self.required_mo_files.append(Path(self.template_dir) / 'Boiler_TParallel.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'Boiler_TParallel_new.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'BoilerStage.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'HeatingWaterPumpSpeed.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'PartialPlantParallel.mo')
+        self.required_mo_files.append(Path(self.template_dir) / 'PartialPlantParallel_v1new.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'PartialPlantParallelInterface.mo')
         self.required_mo_files.append(Path(self.template_dir) / 'ValveParameters.mo')
 
