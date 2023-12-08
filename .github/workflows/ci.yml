@@ -20,6 +20,8 @@ jobs:
         python-version: ["3.10", "3.11"]
         test_env: [python, docs, mypy]
         mbl_branch: [maint_9.1.x]
+        # sim_category is divided by folders in the tests folder
+        sim_category: [geojson, geojson_modelica_translator, GMT_Lib, management, model_connectors, modelica, system_parameters]
         exclude:
           # only test mypy on linux for all versions of python
           - os: windows-latest
@@ -82,7 +84,7 @@ jobs:
             if [ '${{ matrix.os }}' == 'windows-latest' ]; then
               poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
             else
-              poetry run pytest --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
+              poetry run pytest tests/${{ matrix.sim_category }} --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
             fi
           fi
       - name: Run pre-commit
