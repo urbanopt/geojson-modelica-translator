@@ -40,58 +40,58 @@ class LoadBase(ModelBase):
         # TODO: Decide if we're requiring sys-param file, and if all loads have an ets.
         # test_base.py and test_time_series.py test these cases
         if system_parameters is not None:
-            if self.system_parameters.get_param_by_building_id(
+            if self.system_parameters.get_param_by_id(
                     self.building_id, "ets_indirect_parameters") is not None:
                 self.ets_template_data = {
-                    "heat_flow_nominal": self.system_parameters.get_param_by_building_id(
+                    "heat_flow_nominal": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heat_flow_nominal"
                     ),
-                    "heat_exchanger_efficiency": self.system_parameters.get_param_by_building_id(
+                    "heat_exchanger_efficiency": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heat_exchanger_efficiency"
                     ),
-                    "nominal_mass_flow_district": self.system_parameters.get_param_by_building_id(
+                    "nominal_mass_flow_district": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.nominal_mass_flow_district"
                     ),
-                    "nominal_mass_flow_building": self.system_parameters.get_param_by_building_id(
+                    "nominal_mass_flow_building": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.nominal_mass_flow_building"
                     ),
-                    "valve_pressure_drop": self.system_parameters.get_param_by_building_id(
+                    "valve_pressure_drop": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.valve_pressure_drop"
                     ),
-                    "heat_exchanger_secondary_pressure_drop": self.system_parameters.get_param_by_building_id(
+                    "heat_exchanger_secondary_pressure_drop": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heat_exchanger_secondary_pressure_drop"
                     ),
-                    "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_building_id(
+                    "heat_exchanger_primary_pressure_drop": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heat_exchanger_primary_pressure_drop"
                     ),
-                    "cooling_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                    "cooling_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.cooling_supply_water_temperature_building"
                     )),
-                    "heating_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                    "heating_supply_water_temperature_building": convert_c_to_k(self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heating_supply_water_temperature_building"
                     )),
-                    "delta_temp_chw_building": self.system_parameters.get_param_by_building_id(
+                    "delta_temp_chw_building": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.delta_temp_chw_building"
                     ),
-                    "delta_temp_chw_district": self.system_parameters.get_param_by_building_id(
+                    "delta_temp_chw_district": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.delta_temp_chw_district"
                     ),
-                    "delta_temp_hw_building": self.system_parameters.get_param_by_building_id(
+                    "delta_temp_hw_building": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.delta_temp_hw_building"
                     ),
-                    "delta_temp_hw_district": self.system_parameters.get_param_by_building_id(
+                    "delta_temp_hw_district": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.delta_temp_hw_district"
                     ),
-                    "cooling_controller_y_max": self.system_parameters.get_param_by_building_id(
+                    "cooling_controller_y_max": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.cooling_controller_y_max"
                     ),
-                    "cooling_controller_y_min": self.system_parameters.get_param_by_building_id(
+                    "cooling_controller_y_min": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.cooling_controller_y_min"
                     ),
-                    "heating_controller_y_max": self.system_parameters.get_param_by_building_id(
+                    "heating_controller_y_max": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heating_controller_y_max"
                     ),
-                    "heating_controller_y_min": self.system_parameters.get_param_by_building_id(
+                    "heating_controller_y_min": self.system_parameters.get_param_by_id(
                         self.building_id, "ets_indirect_parameters.heating_controller_y_min"
                     )
                 }

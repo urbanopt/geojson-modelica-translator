@@ -229,7 +229,7 @@ class District:
             coupling_load = coupling.get_load()
             if coupling_load is not None:
                 # read sys params file for the load
-                building_sys_params = self.system_parameters.get_param_by_building_id(coupling_load.building_id, '$')
+                building_sys_params = self.system_parameters.get_param_by_id(coupling_load.building_id, '$')
                 template_context['sys_params']['building'] = building_sys_params
                 # Note which load is being used, so ports connect properly in couplings/5G_templates/ConnectStatements
                 template_context['sys_params']['load_num'] = load_num
@@ -254,7 +254,7 @@ class District:
             template_params.update(**common_template_params)
 
             if issubclass(type(model), LoadBase):
-                building_sys_params = self.system_parameters.get_param_by_building_id(model.building_id, '$')
+                building_sys_params = self.system_parameters.get_param_by_id(model.building_id, '$')
                 template_params['sys_params']['building'] = building_sys_params
 
             templated_instance, instance_template_path = model.render_instance(template_params)

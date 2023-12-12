@@ -31,7 +31,7 @@ class HeatingIndirect(EnergyTransferBase):
         """
         heating_indirect_template = self.template_env.get_template("HeatingIndirect.mot")
 
-        ets_data = self.system_parameters.get_param_by_building_id(
+        ets_data = self.system_parameters.get_param_by_id(
             self._geojson_load_id,
             "ets_indirect_parameters"
         )
