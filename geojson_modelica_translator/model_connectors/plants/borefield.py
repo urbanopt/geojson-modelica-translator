@@ -13,7 +13,7 @@ from modelica_builder.package_parser import PackageParser
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
-from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
+from geojson_modelica_translator.utils import ModelicaPath
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -28,8 +28,39 @@ class Borefield(PlantBase):
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'borFie_' + simple_uuid()
-        self.borefield_name = 'Borefield_' + simple_uuid()
+
+        # load templates
+        oneutube_template = self.template_env.get_template("BorefieldOneUTube.mot")
+        twoutube_template = self.template_env.get_template("BorefieldTwoUTubes.mot")
+
+        # Load configuration (borfield and borehole) from system parameter data
+        pipe_arrangement = self.system_parameters.get_param(
+            "$.district_system.fifth_generation.ghe_parameters.pipe.arrangement"
+        )
+        doubleutube_configuration = self.system_parameters.get_param(
+            "$.district_system.fifth_generation.ghe_parameters.pipe.doubleutube_configuration"
+        )
+
+        if pipe_arrangement == "singleutube":
+            self.id = "borFieUTub"
+            self.borefield_name = 'OneUTube'
+            self.plant_template = oneutube_template
+            self.borehole_configuration_type = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.SingleUTube"
+            self.pipe_arrangement = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube"
+        elif pipe_arrangement == "doubleutube":
+            self.borefield_name = 'TwoUTubes'
+            self.plant_template = twoutube_template
+            self.pipe_arrangement = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube"
+            if doubleutube_configuration == "parallel":
+                self.id = "borFie2UTubPar"
+                self.borehole_configuration_type = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeParallel"
+            elif doubleutube_configuration == "series":
+                self.id = "borFie2UTubSer"
+                self.borehole_configuration_type = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeSeries"
+            else:
+                raise ValueError("The type of geothermal heat exchanger pipe arrangement is not supported.")
+        else:
+            raise ValueError("The type of geothermal heat exchanger pipe arrangement is not supported.")
 
         self.required_mo_files.append(os.path.join(self.template_dir, 'GroundTemperatureResponse.mo'))
 
@@ -69,9 +100,7 @@ class Borefield(PlantBase):
                 ),
             },
             "configuration": {
-                "borehole_configuration": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.pipe.arrangement"
-                ),
+                "borehole_configuration_type": self.borehole_configuration_type,
                 "nominal_mass_flow_per_borehole": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.ghe_parameters.design.flow_rate"
                 ),
@@ -152,23 +181,8 @@ class Borefield(PlantBase):
         else:
             template_data["tube"]["shank_spacing"] = None
 
-        # load templates
-        oneutube_template = self.template_env.get_template("BorefieldOneUTube.mot")
-        twoutube_template = self.template_env.get_template("BorefieldTwoUTubes.mot")
-
-        if template_data["configuration"]["borehole_configuration"] == "singleutube":
-            plant_template = oneutube_template
-            template_data["configuration"]["borehole_configuration"] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.SingleUTube"
-            template_data["configuration"]["borehole_type"] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube"
-        elif template_data["configuration"]["borehole_configuration"] == "doubleutube":
-            plant_template = twoutube_template
-            template_data["configuration"]["borehole_configuration"] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeSeries"
-            template_data["configuration"]["borehole_type"] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube"
-        else:
-            raise ValueError("The type of geothermal heat exchanger pipe arrangement is not supported.")
-
         self.run_template(
-            plant_template,
+            self.plant_template,
             os.path.join(b_modelica_path.files_dir, "Borefield.mo"),
             project_name=scaffold.project_name,
             model_name=self.borefield_name,

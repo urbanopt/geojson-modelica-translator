@@ -51,7 +51,7 @@ within {{ project_name }}.Plants.{{ model_name }};
       dSoi=2600),
     final conDat=Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Example(
       dp_nominal=35000,
-      {% endraw %}borCon={{ghe_data["configuration"]["borehole_configuration"]}},
+      {% endraw %}borCon={{ghe_data["configuration"]["borehole_configuration_type"]}},
       mBor_flow_nominal={{ghe_data["configuration"]["nominal_mass_flow_per_borehole"]}},
       hBor={{ghe_data["configuration"]["borehole_height"]}},
       rBor={{ghe_data["configuration"]["borehole_diameter"]}}/2,

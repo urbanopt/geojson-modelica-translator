@@ -1,6 +1,16 @@
 // Borefield ambient coupling connections
-  connect(supHeaWat_1.ports[1], {{ coupling.plant.id }}.port_a)
-  {% raw %}annotation (Line(points={{-70,10},{-10,10}}, color={0,127,255}));
-  {% endraw %}connect({{ coupling.plant.id }}.port_b, sinHeaWat.ports[1])
-  {% raw %}annotation (Line(points={{10,10},{60,10}}, color={0,127,255}));
-  {% endraw %}
+  {% for borefield in range( sys_params["number_of_borefields"] ) %}
+
+  connect(supHeaWat_1[{{borefield+1}}].ports[1], T{{ coupling.plant.id[6:] }}In[{{borefield+1}}].port_a)
+    {% raw %}annotation (Line(points={{-72,-60},{-60,-60}}, color={0,127,255}));
+    {% endraw %}
+  connect(T{{ coupling.plant.id[6:] }}In[{{borefield+1}}].port_b, {{ coupling.plant.id }}[{{borefield+1}}].port_a)
+    {% raw %}annotation (Line(points={{-40,-60},{-10,-60}}, color={0,127,255}));
+    {% endraw %}
+  connect({{ coupling.plant.id }}[{{borefield+1}}].port_b, T{{ coupling.plant.id[6:] }}Out[{{borefield+1}}].port_a)
+    {% raw %}annotation (Line(points={{10,-60},{40,-60}},          color={0,127,255}));
+    {% endraw %}
+  connect(T{{ coupling.plant.id[6:] }}Out[{{borefield+1}}].port_b, sinHeaWat[{{borefield+1}}].ports[1])
+    {% raw %}annotation (Line(points={{60,-60},{70,-60}},          color={0,127,255}));
+    {% endraw %}
+  {% endfor %}

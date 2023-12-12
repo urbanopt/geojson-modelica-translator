@@ -64,7 +64,8 @@
           "roughness": 1e-06,
           "conductivity": 0.4,
           "rho_cp": 1542000,
-          "arrangement": "singleutube"
+          "arrangement": "singleutube",
+          "doubleutube_configuration": "series"
         },
         "simulation": {
           "num_months": 240
@@ -98,7 +99,7 @@
             }
           },
           {
-            "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+            "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2_02",
             "ghe_geometric_params": {
               "length_of_ghe": 100,
               "width_of_ghe": 100
@@ -106,7 +107,7 @@
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length": 150,
+              "length_of_boreholes": 300,
               "number_of_boreholes": 4
             }
           }

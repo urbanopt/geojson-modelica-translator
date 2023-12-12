@@ -1453,6 +1453,15 @@
             "doubleutube"
           ],
           "default": "singleutube"
+        },
+        "doubleutube_configuration": {
+          "description": "Borehole configuration when the borefield is doubleutube.",
+          "type": "string",
+          "enum": [
+            "parallel",
+            "series"
+          ],
+          "default": "series"
         }
       },
       "required": [
@@ -1462,7 +1471,8 @@
         "roughness",
         "conductivity",
         "rho_cp",
-        "arrangement"
+        "arrangement",
+        "doubleutube_configuration"
       ]
     },
     "fluid_def": {

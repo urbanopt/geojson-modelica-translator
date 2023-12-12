@@ -1,3 +1,110 @@
-  {{ model.modelica_type }} {{ model.id }}
-  {% raw %}annotation (Placement(transformation(extent={{-10,0},{10,20}})));
-{% endraw %}
+parameter Modelica.Units.SI.Time tLoaAgg=300
+    "Time resolution of load aggregation";
+
+  parameter Integer nCel(min=1)=5
+    "Number of cells per aggregation level";
+
+  parameter Boolean forceGFunCalc=false
+    "Set to true to force the thermal response to be calculated at the start instead of checking whether this has been pre-computed"
+    annotation (Dialog(tab="Advanced"));
+
+  parameter Integer nTimTot [nBorFie]=vector({{sys_params["ghe_dir_gfunction_file_rows"]}})
+     "Total length of g-function vector";
+
+  parameter Integer nBorFie={{sys_params["number_of_borefields"]}}
+    "Number of borefields"
+    annotation(Evaluate=true);
+
+  //////////////////////
+  // This is a temporary solution to get the model to work
+  // The problem is the nBorHol needs to be an array with a different number of boreholes for different borefields.
+  // However, if number of boreholes are different in the borefields, the dimensions of the cooBor array will be different
+  // for each borefield and can not be combined into a cooBor array that is an input to conDat. Thus, the temporary solution
+  // is to pass nBorHol of the first borefield.
+  // !!!!important!!!! nBorHol must be a square number.
+  // Original code
+  // parameter Integer nBorHol [nBorFie]=vector({{sys_params["flipped_sys_params"]["borehole"]["number_of_boreholes"]}})
+  // Replaced with (if all borefield have the same number of boreholes this code would be correct)
+  parameter Integer nBorHol={{sys_params["flipped_sys_params"]["borehole"]["number_of_boreholes"][0]}}
+    "Number of boreholes (must be a square number)";
+  //////////////////////
+  parameter Modelica.Units.SI.Distance dxy=6
+    "Distance in x-axis (and y-axis) between borehole axes";
+  parameter Modelica.Units.SI.Distance cooBor[nBorHol,2]=
+    Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.computeCoordinates(nBorHol, dxy)
+    "Coordinates of boreholes for one borefield";
+
+  // This would work if the quotation marks were "" instead of ''
+  parameter String gFunFilNam [nBorFie]=Modelica.Utilities.Files.loadResource(vector([
+    {% for gfunction_file_path in sys_params["list_of_gfunction_file_paths"] %}{% if loop.index != sys_params["list_of_gfunction_file_paths"]|length %}"{{gfunction_file_path}}",
+    {% else %}"{{gfunction_file_path}}"])){% endif %}{% endfor %}
+    "File name of g-function data file in MAT format";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite filDat [nBorFie](
+    kFil=fill({{sys_params["ghe_parameters"]["grout"]["conductivity"]}},nBorFie),
+    cFil=fill({{sys_params["ghe_parameters"]["grout"]["rho_cp"]}}/1450,nBorFie),
+    dFil=fill(1450,nBorFie)
+    )
+    "Filling data";
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone soiDat [nBorFie](
+    kSoi=fill({{sys_params["ghe_parameters"]["soil"]["conductivity"]}},nBorFie),
+    cSoi=fill({{sys_params["ghe_parameters"]["soil"]["rho_cp"]}}/1450,nBorFie),
+    dSoi=fill(2600,nBorFie)
+    )
+    "Soil data";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Template conDat [nBorFie](
+    borCon=fill({{sys_params["borefield_borehole_configuration_type"]}},nBorFie),
+    mBor_flow_nominal=vector({{sys_params["design_flow_rate"]}}),
+    hBor=vector({{sys_params["flipped_sys_params"]["borehole"]["length_of_boreholes"]}}),
+    dBor=vector({{sys_params["flipped_sys_params"]["borehole"]["buried_depth"]}}),
+    rBor=vector({{sys_params["flipped_sys_params"]["borehole"]["diameter"]}})/2,
+    rTub=fill({{sys_params["ghe_parameters"]["pipe"]["outer_diameter"]}},nBorFie)/2,
+    kTub=fill({{sys_params["ghe_parameters"]["pipe"]["conductivity"]}},nBorFie),
+    eTub=fill({{sys_params["pipe_thickness"]}},nBorFie),
+    xC=fill({{sys_params["pipe_shank_spacing"]}},nBorFie),
+    dp_nominal=fill(35000,nBorFie),
+    cooBor = fill(cooBor,nBorFie))
+    "Borefield configuration";
+
+  parameter Modelica.Units.SI.Temperature TGro={{sys_params["ghe_parameters"]["soil"]["undisturbed_temp"]}}+273.15 "Ground temperature";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Example {{ model.id }}Dat [nBorFie](
+      filDat = filDat,
+      soiDat = soiDat,
+      conDat = conDat)
+      {% raw %}annotation (Placement(transformation(extent={{70,-100},{90,-80}})));
+      {% endraw %}
+
+  Buildings.Fluid.Geothermal.Borefields.{{sys_params["borefield_name"]}} {{ model.id }} [nBorFie](
+    redeclare package Medium = MediumW,
+    borFieDat={{ model.id }}Dat,
+    tLoaAgg=tLoaAgg,
+    dynFil=false,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    TExt0_start=TGro,
+    nCel=nCel,
+    forceGFunCalc=forceGFunCalc,
+    redeclare borefield_stub.Plants.GroundTemperatureResponse groTemRes(
+      final gFunFilNam=gFunFilNam,
+      final nTimTot=nTimTot
+      )
+    )
+    "Borefield with a U-tube borehole configuration"
+    {% raw %}annotation (Placement(transformation(extent={{-10,-70},{10,-50}})));
+  {% endraw %}
+
+  Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}In [nBorFie](
+    redeclare package Medium = MediumW,
+    m_flow_nominal={{ model.id }}Dat.conDat.mBorFie_flow_nominal,
+    tau=0)
+    "Inlet temperature of the borefield with UTube configuration"
+    {% raw %}annotation (Placement(transformation(extent={{-60,-70},{-40,-50}})));
+    {% endraw %}
+  Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}Out [nBorFie](
+    redeclare package Medium = MediumW,
+    m_flow_nominal={{ model.id }}Dat.conDat.mBorFie_flow_nominal,
+    tau=0)
+    "Inlet temperature of the borefield with UTube configuration"
+    {% raw %}annotation (Placement(transformation(extent={{40,-70},{60,-50}})));
+    {% endraw %}

@@ -1,8 +1,12 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import math
+import os
 from pathlib import Path
 
+import pandas as pd
+import scipy.io as sio
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from modelica_builder.package_parser import PackageParser
 
@@ -14,6 +18,7 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.utils import ModelicaPath
 
 
 def render_template(template_name, template_params):
@@ -31,13 +36,68 @@ def render_template(template_name, template_params):
     template = template_env.get_template(template_name)
     return template.render(template_params)
 
+def flip_matrix(list_of_dictionaries):
+    # only applies to dictionaries with two nested levels
+    flipped_dictionary = dict()
+    for i_dict, dictionary in enumerate(list_of_dictionaries):
+        for key_lvl0, value_lvl0 in dictionary.items():
+
+            # applies to keys with a value that is not a dictionary
+            # creates flipped matrix
+            if not isinstance(value_lvl0,dict):
+                if i_dict == 0:
+                    flipped_dictionary[key_lvl0] = [value_lvl0]
+                    continue
+                else:
+                    flipped_dictionary[key_lvl0].append(value_lvl0)
+                    continue
+
+            # applies to keys with a value that is a dictionary
+            # creates empty dictionaries
+            if not flipped_dictionary.get(key_lvl0, None):
+                flipped_dictionary[key_lvl0] = dict()
+
+            # applies to keys with a value that is a dictionary
+            # creates flipped matrix
+            for key_lvl1, value_lvl1 in value_lvl0.items():
+                if i_dict == 0:
+                    flipped_dictionary[key_lvl0][key_lvl1] = [value_lvl1]
+                else:
+                    flipped_dictionary[key_lvl0][key_lvl1].append(value_lvl1)
+
+    # returns dictionary with same key structure with a list of flipped values
+    return(flipped_dictionary)
+
+def process_gfunction(list_of_gfunctions, flipped_sys_params, sys_params_ghe_parameters, b_modelica_path, project_name):
+    list_of_gfunction_file_paths = []
+    for i_gfun, gfunction in enumerate(list_of_gfunctions):
+        # convert the values to match Modelica gfunctions
+        for i in range(len(gfunction)):
+            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * flipped_sys_params["borehole"]["length_of_boreholes"][i_gfun]**2 / (9 * sys_params_ghe_parameters["soil"]["conductivity"] / sys_params_ghe_parameters["soil"]["rho_cp"])
+            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / (flipped_sys_params["borehole"]["number_of_boreholes"][i_gfun] * 2 * math.pi * flipped_sys_params["borehole"]["length_of_boreholes"][i_gfun] * sys_params_ghe_parameters["soil"]["conductivity"])
+
+        # add zeros to the first row
+        new_row = pd.Series({gfunction.columns[0]: 0, gfunction.columns[1]: 0})
+        gfunction = pd.concat([gfunction.iloc[:0], pd.DataFrame([new_row]), gfunction.iloc[0:]]).reset_index(drop=True)
+
+        # add to dict and save MAT file to the borefield's resources folder
+        data_dict = {'TStep': gfunction.values}
+        gfunction_path = os.path.join(b_modelica_path.resources_dir, "Gfunction_"+str(i_gfun)+".mat")
+        sio.savemat(gfunction_path, data_dict)
+        gfunction_file_path = b_modelica_path.resources_relative_dir + "/Gfunction_"+str(i_gfun)+".mat"
+
+        gfunction_file_path = "modelica://" + project_name+"/Plants/" + gfunction_file_path
+
+        list_of_gfunction_file_paths.append(gfunction_file_path)
+
+    return(list_of_gfunction_file_paths)
 
 class District:
     """
     Class for modeling entire district energy systems
     """
 
-    def __init__(self, root_dir, project_name, system_parameters, coupling_graph):
+    def __init__(self, root_dir, project_name, system_parameters, coupling_graph, **kwargs):
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
         self._coupling_graph = coupling_graph
@@ -48,6 +108,10 @@ class District:
                 f"\nModelica does not support spaces in project names or paths. "
                 f"You used '{root_dir}' for run path and {project_name} for model project name. "
                 "Please update your directory path or model name to not include spaces anywhere.")
+        # reads borehole_pipe_arrangement from borefield.py
+        self.borehole_pipe_arrangement = kwargs.get('borehole_pipe_arrangement')
+        self.borefield_borehole_configuration_type = kwargs.get('borefield_borehole_configuration_type')
+        self.borefield_id = kwargs.get('borefield_id')
 
     def to_modelica(self):
         """Generate modelica files for the models as well as the modelica file for
@@ -69,6 +133,55 @@ class District:
         # construct graph of visual components
         diagram = Diagram(self._coupling_graph)
 
+        # Load system parameters
+        sys_params_buildings = self.system_parameters.get_param('$.buildings')
+        sys_params_district_system = self.system_parameters.get_param('$.district_system')
+        sys_params_ghe_parameters = self.system_parameters.get_param('$.district_system.fifth_generation.ghe_parameters')
+        sys_params_ghe_specific_params = self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params")
+        sys_params_pipe = self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters.pipe")
+
+        # Flip matrix of sys_params_ghe_specific_params to create a list for each parameter that collects parameter values for all borefields
+        flipped_sys_params = flip_matrix(sys_params_ghe_specific_params)
+
+        # number of unique borefields in system_params_ghe.json
+        number_of_borefields = len(sys_params_ghe_specific_params)
+
+        # process nominal mass flow rate
+        if sys_params_ghe_parameters["design"]["flow_type"] == "system":
+            design_flow_rate = [sys_params_ghe_parameters["design"]["flow_rate"] / x for x in flipped_sys_params["borehole"]["number_of_boreholes"]]
+        else:
+            design_flow_rate = [sys_params_ghe_parameters["design"]["flow_rate"]] * number_of_borefields
+
+        # process tube thickness
+        if sys_params_pipe["outer_diameter"] and sys_params_pipe["inner_diameter"]:
+            pipe_thickness = (sys_params_pipe["outer_diameter"] - sys_params_pipe["inner_diameter"]) / 2
+        else:
+            pipe_thickness = None
+
+        # process shank spacing
+        if sys_params_pipe["shank_spacing"] and sys_params_pipe["outer_diameter"]:
+            pipe_shank_spacing = (sys_params_pipe["shank_spacing"] + sys_params_pipe["outer_diameter"]) / 2
+        else:
+            pipe_shank_spacing = None
+
+        # process g-function file
+        list_of_gfunctions=[]
+        for ghe_id_instance in flipped_sys_params["ghe_id"]:
+            if Path(sys_params_ghe_parameters["ghe_dir"]).expanduser().is_absolute():
+                list_of_gfunctions.append(pd.read_csv(Path(sys_params_ghe_parameters["ghe_dir"]) / ghe_id_instance / "Gfunction.csv", header=0, usecols=[0, 2]))
+            else:
+                sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
+                try:
+                    list_of_gfunctions.append(pd.read_csv(sys_param_dir / sys_params_ghe_parameters["ghe_dir"] / ghe_id_instance / "Gfunction.csv", header=0, usecols=[0, 2]))
+                except FileNotFoundError:
+                    raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{sys_params_ghe_parameters["ghe_dir"]}\' must be relative to the dir your sys-param file is in.')
+        ghe_dir_gfunction_file_rows = [gfunction.shape[0] + 1 for gfunction in list_of_gfunctions]
+
+        # create borefield package paths
+        b_modelica_path = ModelicaPath(model.borefield_name, self._scaffold.plants_path.files_dir, True)
+
+        list_of_gfunction_file_paths = process_gfunction(list_of_gfunctions, flipped_sys_params, sys_params_ghe_parameters, b_modelica_path, self._scaffold.project_name)
+
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
             "diagram": diagram,
@@ -86,9 +199,22 @@ class District:
             },
             'graph': self._coupling_graph,
             'sys_params': {
-                'district_system': self.system_parameters.get_param('$.district_system'),
+                'district_system': sys_params_district_system,
+                'ghe_parameters': sys_params_ghe_parameters,
                 # num_buildings counts the ports required for 5G systems
-                "num_buildings": len(self.system_parameters.get_param('$.buildings')),
+                "num_buildings": len(sys_params_buildings),
+                "number_of_borefields": number_of_borefields,
+                "borehole_pipe_arrangement":self.borehole_pipe_arrangement,
+                "borefield_borehole_configuration_type":self.borefield_borehole_configuration_type,
+                'flipped_sys_params': flipped_sys_params,
+                "design_flow_rate": design_flow_rate,
+                "pipe_thickness": pipe_thickness,
+                "pipe_shank_spacing": pipe_shank_spacing,
+                "ghe_dir_gfunction_file_rows": ghe_dir_gfunction_file_rows,
+                "project_name": self._scaffold.project_name,
+                "list_of_gfunction_file_paths": list_of_gfunction_file_paths,
+                "borefield_name": model.borefield_name,
+                "borefield_id": self.borefield_id
             }
         }
 
