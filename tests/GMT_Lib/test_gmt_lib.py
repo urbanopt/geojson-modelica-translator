@@ -105,7 +105,6 @@ def test_build_cooling_plant():
     assert linecount(package_output_dir / 'CoolingPlant.mo') > 20
 
 
-@pytest.mark.skip(reason="Fails with OM 1.20. Succeeds with OM 1.21")
 @pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
@@ -125,7 +124,10 @@ def test_simulate_cooling_plant():
         'compile_and_run', 'CoolingPlant',
         file_to_load=package_output_dir / 'CoolingPlant.mo',
         file_to_run='CoolingPlant.mo',
-        start_time=0, stop_time=86400)
+        start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
+        stop_time=17366400,  # For 1 day duration (in seconds)
+        step_size=90  # (in seconds)
+    )
 
     # -- Assert
     assert success is True
@@ -497,7 +499,6 @@ def test_build_inductive_load():
     assert linecount(package_output_dir / 'Inductive0.mo') > 20
 
 
-@pytest.mark.skip(reason="OMC failure: assertion has been violated during early in simulation")
 @pytest.mark.simulation
 def test_simulate_inductive_load():
     # -- Setup
@@ -513,7 +514,11 @@ def test_simulate_inductive_load():
     success, _ = runner.run_in_docker(
         'compile_and_run', 'Inductive0',
         file_to_load=package_output_dir / 'Inductive0.mo',
-        run_path=package_output_dir)
+        run_path=package_output_dir,
+        start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
+        stop_time=17366400,  # For 1 day duration (in seconds)
+        step_size=90  # (in seconds)
+    )
 
     # -- Assert
     # Did the mofile get created?
