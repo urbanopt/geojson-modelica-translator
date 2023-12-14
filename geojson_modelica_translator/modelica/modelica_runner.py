@@ -149,7 +149,7 @@ class ModelicaRunner(object):
         # new om_docker.sh file name
         new_om_docker = run_path / self.om_docker_path.name
         shutil.copyfile(self.om_docker_path, new_om_docker)
-        Path.chmod(new_om_docker, 0o775)
+        new_om_docker.chmod(0o775)
 
     def _subprocess_call_to_docker(self, run_path: Union[str, Path], action: str) -> int:
         """Call out to a subprocess to run the command in docker
@@ -254,6 +254,8 @@ class ModelicaRunner(object):
             elif 'Killed' in stdout_log:
                 logger.error('Model is too large for the Docker resources available.'
                              ' Increase Docker resources, decrease number of buildings simulated, or both')
+            elif 'division by zero at time' and 'Simulation execution failed for model:' in stdout_log:
+                logger.error('Model failed to run due to division by zero')
                 exitcode = 1
             elif 'The simulation finished successfully' in stdout_log:
                 logger.info('Model ran successfully')

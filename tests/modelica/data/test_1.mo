@@ -268,8 +268,7 @@ equation
     0,127}));
   annotation (experiment(
   StopTime=31536000,
-  Interval=3600,
-  __Dymola_Algorithm="Cvode"),
+  Interval=3600),
   __Dymola_experimentSetupOutput(equidistant=true,
   events=false));
 end B5a6b99ec37f4de7f94020090_Floor;

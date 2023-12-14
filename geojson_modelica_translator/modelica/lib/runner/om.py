@@ -7,6 +7,7 @@
 import argparse
 import logging
 import os
+import platform
 import shutil
 from pathlib import Path
 from typing import Optional
@@ -58,6 +59,7 @@ def compile_fmu(model_name) -> str:
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc compile_fmu.mos"
     logger.info(f"Calling OpenModelica compile with '{cmd}'")
+    os.system('omc --version')
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
     # import time
@@ -77,6 +79,7 @@ def run_as_fmu(fmu_name, start: Optional[float], stop: Optional[float], step: Op
     # time.sleep(10000)
     cmd = f"OMSimulator --startTime={start} --stopTime={stop} --stepSize={step} {fmu_name}"
     logger.info(f"Calling OpenModelica simulator with '{cmd}'")
+    os.system('omc --version')
     os.system(cmd)
     return f'{fmu_name} has been simulated'
 
@@ -92,11 +95,18 @@ def run_with_omc() -> bool:
     # Call OMC to compile the model, using MSL & MBL libraries
     cmd = "omc simulate.mos"
     logger.info(f"Calling OpenModelica simulate with '{cmd}'")
+    # Log the OM version. Wish I could get it into a log statement, but at least this prints to stdout.log.
+    os.system('omc --version')
+    if platform.system() == "Linux":
+        logger.info(f"This container has Linux {platform.freedesktop_os_release()['PRETTY_NAME']} on {platform.machine()} architecture")
+    else:
+        logger.info(f"This container is running: {platform.system()} on {platform.machine()} architecture")
     # Uncomment this section and rebuild the container in order to pause the container
     # to inpsect the container and test commands.
     # import time
     # time.sleep(10000)
     os.system(cmd)
+    logger.debug("Finished simulating (timestamp to tell how long simulation took).")
 
     # remove the 'tmp' folder that was created, because it will
     # have different permissions than the user running the container
@@ -128,7 +138,7 @@ if __name__ == "__main__":
     if args.action == 'help':
         print(parser.print_help())  # type: ignore
 
-    logger.info('Configuring MBL path')
+    logger.info('Configuring MBL path for use inside the container')
     configure_mbl_path()
 
     fmu_name = None
@@ -144,10 +154,13 @@ if __name__ == "__main__":
         compile_fmu(model)
 
     if args.action == 'compile_and_run':
-        # model isn't used in this command any more.
-        # It is now used in simulate.most to generate an OM script which is called in the run_with_omc function
+        # model = args.model
 
-        logger.info('Running model with OMC')
+        # if Path(model).is_file():
+        #     model = str((args.run_path / model)).replace(os.path.sep, '.')[:-3]
+        #     if model[0] == '.':
+        #         model = model[1:]
+
         fmu_name = run_with_omc()
 
     if args.action == 'run':
