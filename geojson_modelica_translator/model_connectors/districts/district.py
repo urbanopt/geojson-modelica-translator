@@ -299,6 +299,8 @@ class District:
         # render the full district file
         if 'fifth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
+            if "ghe_parameters" in common_template_params['sys_params']['district_system']['fifth_generation']:
+                final_result = render_template('DistrictEnergySystem_ghe_partial.mot', district_template_params)
         elif 'fourth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem.mot', district_template_params)
         with open(self.district_model_filepath, 'w') as f:
