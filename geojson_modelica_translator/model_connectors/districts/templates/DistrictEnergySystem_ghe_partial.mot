@@ -1,4 +1,4 @@
-within {{ data['project_name'] }}.Districts;
+within {{ district_within_path }};
 {% raw %}partial model PartialSeries
   "Partial model for series network"
   extends Modelica.Icons.Example;
