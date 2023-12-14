@@ -73,7 +73,8 @@ class DistrictSystemTest(TestCaseBase):
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="OMC Failure: Trying to override final element allowFlowReversalSer with modifier '= true'")
+    # test_district_5g.py is this same test but with both buildings, and it works.
+    @pytest.mark.skip(reason="https://github.com/urbanopt/geojson-modelica-translator/issues/572")
     def test_simulate_district_system(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',

@@ -1,7 +1,6 @@
 // Simulate
 simulateModel("GMT_Lib.DHC.Components.Plants.Cooling.CoolingPlant",
     stopTime=86400,
-    method="cvode",
     tolerance=1e-06,
     resultFile="CoolingPlant");
 // Plot commands

@@ -88,7 +88,7 @@ def _parse_couplings(geojson, sys_params, district_type=None):
 
     # create the loads and their ETSes
     for building in geojson.buildings:
-        load_model_type = sys_params.get_param_by_building_id(building.id, "load_model")
+        load_model_type = sys_params.get_param_by_id(building.id, "load_model")
         load_class = LOAD_MODEL_TO_CLASS[load_model_type]
         load = load_class(sys_params, building)
 

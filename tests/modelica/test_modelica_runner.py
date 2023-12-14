@@ -44,6 +44,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             os.path.join(self.fmu_run_path, 'BouncingBall.fmu')
         )
 
+    @pytest.mark.docker
     def test_run_setup(self):
         prev_mod_path = os.environ.get('MODELICAPATH', None)
         try:
@@ -55,10 +56,12 @@ class ModelicaRunnerTest(unittest.TestCase):
                 os.environ['MODELICAPATH'] = prev_mod_path
         self.assertTrue(os.path.exists(mr.om_docker_path))
 
+    @pytest.mark.docker
     def test_docker_enabled(self):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
 
+    @pytest.mark.docker
     def test_invalid_action(self):
         mr = ModelicaRunner()
         with self.assertRaises(SystemExit) as excinfo:
@@ -83,8 +86,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         # compile the project
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile', 'BouncingBall',
-                                      file_to_load=os.path.join(self.run_path, 'BouncingBall.mo'),
-                                      run_path=self.run_path)
+                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'),
+                         run_path=self.run_path)
 
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall.fmu')))
@@ -100,8 +103,8 @@ class ModelicaRunnerTest(unittest.TestCase):
     def test_simulate_bouncing_ball_in_docker(self):
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall',
-                                      file_to_load=os.path.join(self.run_path, 'BouncingBall.mo'),
-                                      run_path=self.run_path)
+                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'),
+                         run_path=self.run_path)
 
         self.assertTrue(success)
 
@@ -121,8 +124,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         # run the project
         mr = ModelicaRunner()
         mr.run_in_docker('run', 'BouncingBall',
-                         file_to_load=os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
-                         run_path=self.fmu_run_path)
+                         file_to_load = os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
+                         run_path = self.fmu_run_path)
 
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
@@ -162,12 +165,27 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile_and_run', model_name,
-                                      run_path=self.msl_run_path, project_in_library=True,
-                                      start_time=0, stop_time=60, step_size=0.1)
+                         run_path=self.msl_run_path, project_in_library=True,
+                         start_time=0, stop_time=60, step_size=0.1)
 
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}_res.mat')))
+
+    @pytest.mark.simulation
+    def test_simulate_msl_with_intervals_in_docker(self):
+        model_name = 'Modelica.Blocks.Examples.PID_Controller'
+        results_path = Path(self.msl_run_path) / f"{model_name}_results"
+        shutil.rmtree(results_path, ignore_errors=True)
+
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_docker('compile_and_run', model_name,
+                         run_path=self.msl_run_path, project_in_library=True,
+                         start_time=0, stop_time=60, number_of_intervals=6)
+
+        self.assertTrue(success)
+        self.assertTrue((results_path / 'stdout.log').exists())
+        self.assertTrue((results_path / f'{model_name}_res.mat').exists())
 
     @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):
