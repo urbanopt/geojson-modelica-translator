@@ -36,6 +36,7 @@ def render_template(template_name, template_params):
     template = template_env.get_template(template_name)
     return template.render(template_params)
 
+
 def flip_matrix(list_of_dictionaries):
     # only applies to dictionaries with two nested levels
     flipped_dictionary = dict()
@@ -44,7 +45,7 @@ def flip_matrix(list_of_dictionaries):
 
             # applies to keys with a value that is not a dictionary
             # creates flipped matrix
-            if not isinstance(value_lvl0,dict):
+            if not isinstance(value_lvl0, dict):
                 if i_dict == 0:
                     flipped_dictionary[key_lvl0] = [value_lvl0]
                     continue
@@ -66,15 +67,18 @@ def flip_matrix(list_of_dictionaries):
                     flipped_dictionary[key_lvl0][key_lvl1].append(value_lvl1)
 
     # returns dictionary with same key structure with a list of flipped values
-    return(flipped_dictionary)
+    return (flipped_dictionary)
+
 
 def process_gfunction(list_of_gfunctions, flipped_sys_params, sys_params_ghe_parameters, b_modelica_path, project_name):
     list_of_gfunction_file_paths = []
     for i_gfun, gfunction in enumerate(list_of_gfunctions):
         # convert the values to match Modelica gfunctions
         for i in range(len(gfunction)):
-            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * flipped_sys_params["borehole"]["length_of_boreholes"][i_gfun]**2 / (9 * sys_params_ghe_parameters["soil"]["conductivity"] / sys_params_ghe_parameters["soil"]["rho_cp"])
-            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / (flipped_sys_params["borehole"]["number_of_boreholes"][i_gfun] * 2 * math.pi * flipped_sys_params["borehole"]["length_of_boreholes"][i_gfun] * sys_params_ghe_parameters["soil"]["conductivity"])
+            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * flipped_sys_params["borehole"]["length_of_boreholes"][i_gfun]**2 / (
+                9 * sys_params_ghe_parameters["soil"]["conductivity"] / sys_params_ghe_parameters["soil"]["rho_cp"])
+            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / \
+                (flipped_sys_params["borehole"]["number_of_boreholes"][i_gfun] * 2 * math.pi * flipped_sys_params["borehole"]["length_of_boreholes"][i_gfun] * sys_params_ghe_parameters["soil"]["conductivity"])
 
         # add zeros to the first row
         new_row = pd.Series({gfunction.columns[0]: 0, gfunction.columns[1]: 0})
@@ -82,15 +86,16 @@ def process_gfunction(list_of_gfunctions, flipped_sys_params, sys_params_ghe_par
 
         # add to dict and save MAT file to the borefield's resources folder
         data_dict = {'TStep': gfunction.values}
-        gfunction_path = os.path.join(b_modelica_path.resources_dir, "Gfunction_"+str(i_gfun)+".mat")
+        gfunction_path = os.path.join(b_modelica_path.resources_dir, "Gfunction_" + str(i_gfun) + ".mat")
         sio.savemat(gfunction_path, data_dict)
-        gfunction_file_path = b_modelica_path.resources_relative_dir + "/Gfunction_"+str(i_gfun)+".mat"
+        gfunction_file_path = b_modelica_path.resources_relative_dir + "/Gfunction_" + str(i_gfun) + ".mat"
 
-        gfunction_file_path = "modelica://" + project_name+"/Plants/" + gfunction_file_path
+        gfunction_file_path = "modelica://" + project_name + "/Plants/" + gfunction_file_path
 
         list_of_gfunction_file_paths.append(gfunction_file_path)
 
-    return(list_of_gfunction_file_paths)
+    return (list_of_gfunction_file_paths)
+
 
 class District:
     """
@@ -137,10 +142,12 @@ class District:
         sys_params_buildings = self.system_parameters.get_param('$.buildings')
         sys_params_district_system = self.system_parameters.get_param('$.district_system')
         sys_params_ghe_parameters = self.system_parameters.get_param('$.district_system.fifth_generation.ghe_parameters')
-        sys_params_ghe_specific_params = self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params")
+        sys_params_ghe_specific_params = self.system_parameters.get_param(
+            "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params")
         sys_params_pipe = self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters.pipe")
 
-        # Flip matrix of sys_params_ghe_specific_params to create a list for each parameter that collects parameter values for all borefields
+        # Flip matrix of sys_params_ghe_specific_params to create a list for each
+        # parameter that collects parameter values for all borefields
         flipped_sys_params = flip_matrix(sys_params_ghe_specific_params)
 
         # number of unique borefields in system_params_ghe.json
@@ -148,7 +155,8 @@ class District:
 
         # process nominal mass flow rate
         if sys_params_ghe_parameters["design"]["flow_type"] == "system":
-            design_flow_rate = [sys_params_ghe_parameters["design"]["flow_rate"] / x for x in flipped_sys_params["borehole"]["number_of_boreholes"]]
+            design_flow_rate = [sys_params_ghe_parameters["design"]["flow_rate"]
+                                / x for x in flipped_sys_params["borehole"]["number_of_boreholes"]]
         else:
             design_flow_rate = [sys_params_ghe_parameters["design"]["flow_rate"]] * number_of_borefields
 
@@ -165,22 +173,46 @@ class District:
             pipe_shank_spacing = None
 
         # process g-function file
-        list_of_gfunctions=[]
+        list_of_gfunctions = []
         for ghe_id_instance in flipped_sys_params["ghe_id"]:
             if Path(sys_params_ghe_parameters["ghe_dir"]).expanduser().is_absolute():
-                list_of_gfunctions.append(pd.read_csv(Path(sys_params_ghe_parameters["ghe_dir"]) / ghe_id_instance / "Gfunction.csv", header=0, usecols=[0, 2]))
+                list_of_gfunctions.append(
+                    pd.read_csv(
+                        Path(
+                            sys_params_ghe_parameters["ghe_dir"])
+                        / ghe_id_instance
+                        / "Gfunction.csv",
+                        header=0,
+                        usecols=[
+                            0,
+                            2]))
             else:
                 sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
                 try:
-                    list_of_gfunctions.append(pd.read_csv(sys_param_dir / sys_params_ghe_parameters["ghe_dir"] / ghe_id_instance / "Gfunction.csv", header=0, usecols=[0, 2]))
+                    list_of_gfunctions.append(
+                        pd.read_csv(
+                            sys_param_dir
+                            / sys_params_ghe_parameters["ghe_dir"]
+                            / ghe_id_instance
+                            / "Gfunction.csv",
+                            header=0,
+                            usecols=[
+                                0,
+                                2]))
                 except FileNotFoundError:
-                    raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{sys_params_ghe_parameters["ghe_dir"]}\' must be relative to the dir your sys-param file is in.')
+                    raise SystemExit(
+                        f'When using a relative path to your ghe_dir, your path \'{sys_params_ghe_parameters["ghe_dir"]}\' must be relative to the dir your sys-param file is in.')
         ghe_dir_gfunction_file_rows = [gfunction.shape[0] + 1 for gfunction in list_of_gfunctions]
 
         # create borefield package paths
         b_modelica_path = ModelicaPath(model.borefield_name, self._scaffold.plants_path.files_dir, True)
 
-        list_of_gfunction_file_paths = process_gfunction(list_of_gfunctions, flipped_sys_params, sys_params_ghe_parameters, b_modelica_path, self._scaffold.project_name)
+        list_of_gfunction_file_paths = process_gfunction(
+            list_of_gfunctions,
+            flipped_sys_params,
+            sys_params_ghe_parameters,
+            b_modelica_path,
+            self._scaffold.project_name)
 
         district_template_params = {
             "district_within_path": '.'.join([self._scaffold.project_name, 'Districts']),
@@ -204,8 +236,8 @@ class District:
                 # num_buildings counts the ports required for 5G systems
                 "num_buildings": len(sys_params_buildings),
                 "number_of_borefields": number_of_borefields,
-                "borehole_pipe_arrangement":self.borehole_pipe_arrangement,
-                "borefield_borehole_configuration_type":self.borefield_borehole_configuration_type,
+                "borehole_pipe_arrangement": self.borehole_pipe_arrangement,
+                "borefield_borehole_configuration_type": self.borefield_borehole_configuration_type,
                 'flipped_sys_params': flipped_sys_params,
                 "design_flow_rate": design_flow_rate,
                 "pipe_thickness": pipe_thickness,
