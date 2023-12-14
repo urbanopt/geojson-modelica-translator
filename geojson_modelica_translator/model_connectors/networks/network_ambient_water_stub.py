@@ -17,8 +17,11 @@ class NetworkAmbientWaterStub(NetworkBase):
         """
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-        # this stub has no model to generate, its fully implemented in the coupling currently
+        # this stub has no model to generate, it's fully implemented in the coupling
 
     def get_modelica_type(self, scaffold):
+        """
+        :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
+        """
         # this stub has no model, so there's no type
         return 'UNIMPLEMENTED'
