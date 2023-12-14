@@ -1471,8 +1471,7 @@
         "roughness",
         "conductivity",
         "rho_cp",
-        "arrangement",
-        "doubleutube_configuration"
+        "arrangement"
       ]
     },
     "fluid_def": {
