@@ -106,7 +106,7 @@ class District:
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
         self._coupling_graph = coupling_graph
-        self.district_model_filepath = None
+        self.district_model_dirpath = None
         # Modelica can't handle spaces in project name or path
         if (len(str(root_dir).split()) > 1) or (len(str(project_name).split()) > 1):
             raise SystemExit(
@@ -124,7 +124,7 @@ class District:
         """
         # scaffold the project
         self._scaffold.create()
-        self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / 'DistrictEnergySystem.mo'
+        self.district_model_dirpath = Path(self._scaffold.districts_path.files_dir)
 
         # create the root package
         root_package = PackageParser.new_from_template(
@@ -299,9 +299,16 @@ class District:
         # render the full district file
         if 'fifth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
+            # write an additional mofile for ghe systems
+            if "ghe_parameters" in common_template_params['sys_params']['district_system']['fifth_generation']:
+                partial_district_template = 'DistrictEnergySystem_ghe_partial.mot'
+                mofile_name = partial_district_template.rstrip('t')
+                district_mofile = render_template(partial_district_template, district_template_params)
+                with open(f'{self.district_model_dirpath}/{mofile_name}', 'w') as f:
+                    f.write(district_mofile)
         elif 'fourth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem.mot', district_template_params)
-        with open(self.district_model_filepath, 'w') as f:
+        with open(f'{self.district_model_dirpath}/DistrictEnergySystem.mo', 'w') as f:
             f.write(final_result)
 
         districts_package = PackageParser.new_from_template(self._scaffold.districts_path.files_dir, "Districts", [
