@@ -71,6 +71,22 @@ format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
 update_schemas = 'management.update_schemas:update_schemas'
 check_sys_params = 'management.check_sys_params:check_sys_params'
 
+
+# https://docs.astral.sh/ruff/linter/
+[tool.ruff]
+fix = true # automatically fix problems if possible
+select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
+"Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
+ignore = ["PLR0913", "PLR2004", "PLR0402", "COM812", "COM819", "SIM108", "ARG002", "ISC001"] # except for these specific errors
+line-length = 120
+
+# https://docs.astral.sh/ruff/settings/#format
+[tool.ruff.format]
+# quote-style = "double"
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["S101", "S607", "S603"] # assert statements are allowed in tests, and paths are safe
+
 [tool.pytest.ini_options]
 # There is a bug/issue with pytest and click where the test tries to write to the
 # log after the log file has been closed. This causes the test to fail. The --capture=no

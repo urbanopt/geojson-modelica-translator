@@ -8,13 +8,22 @@ exclude: |
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
-      - id: trailing-whitespace
+      - id: check-ast
       - id: check-added-large-files
         args: ['--maxkb=2000']
-      - id: check-ast
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-toml
+      - id: check-yaml
       - id: check-json
+      - id: name-tests-test
+        args: ["--pytest-test-first"]
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
       - id: check-merge-conflict
       - id: check-xml
       - id: check-yaml
@@ -23,41 +32,21 @@ repos:
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix', '--no-sort-keys']
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.2
+  # Run the Ruff linter
+  # https://docs.astral.sh/ruff/integrations/#pre-commit
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.8
     hooks:
-      - id: autopep8
-        args:
-          [
-            "--in-place",
-            "--aggressive",
-            "--aggressive",
-            "--recursive",
-            "--max-line-length=100",
-            "--ignore=E501,E402,W503,W504,E731"
-          ]
-  - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.0
-    hooks:
-      - id: autoflake
-        args:
-          [
-            "--in-place",
-            "--recursive",
-            "--remove-all-unused-imports",
-            "--remove-unused-variable",
-            "--ignore-init-module-imports"
-          ]
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        args: ["--ignore=E501,E402,W503,W504,E731,F401"]
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.10.1
-    hooks:
-      - id: isort
-        args: ["-m=VERTICAL_HANGING_INDENT"] # vertical hanging
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        types_or: [python, pyi, jupyter]
+      - id: ruff-format
+  # Run the Ruff formatter
+  # https://docs.astral.sh/ruff/integrations/#pre-commit
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.1.8
+  #   hooks:
+  #     - id: ruff-format
   - repo: local
     hooks:
       - id: modelica-fmt
