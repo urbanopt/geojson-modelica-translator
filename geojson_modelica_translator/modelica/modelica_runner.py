@@ -147,11 +147,6 @@ class ModelicaRunner(object):
         with open(run_path / 'compile_fmu.mos', 'w') as f:
             f.write(template.render(**model_data))
 
-        # new om_docker.sh file name
-        new_om_docker = run_path / self.om_docker_path.name
-        shutil.copyfile(self.om_docker_path, new_om_docker)
-        new_om_docker.chmod(0o775)
-
     def _subprocess_call_to_docker(self, run_path: Union[str, Path], action: str) -> int:
         """Call out to a subprocess to run the command in docker
 
@@ -166,14 +161,18 @@ class ModelicaRunner(object):
         curdir = Path.cwd()
         os.chdir(run_path)
         stdout_log = open('stdout.log', 'w')
+        model_name = os.path.split(str(run_path))[-1]
+        image_name = 'nrel/gmt-om-runner'
+        mo_script = 'compile_fmu' if action == 'compile' else 'simulate'
         try:
-            # get the relative difference between the file to run and the path which everything is running in.
+            # create the command to call the open modelica compiler inside the docker image
+            exec_call = 'docker run -v {run_path}:/mnt/shared/{model_name} {image_name} ' \
+                '/bin/bash -c "cd mnt/shared/{model_name} && omc {mo_script}.mos"'.format(
+                    run_path=run_path, model_name=model_name,
+                    image_name=image_name, mo_script=mo_script
+                )
+            # execute the command that calls docker
             # make sure to simulate at a directory above the project directory!
-
-            # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
-            # but must strip off the .mo extension on the model to run
-            # run_model = Path(file_to_run).relative_to(run_path)
-            exec_call = ['./om_docker.sh', action]
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
