@@ -6,7 +6,6 @@ RUN apt update && apt --no-install-recommends install -y \
     gfortran \
     libpython3-dev \
     curl \
-    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 # Install MSL 4.0.0
@@ -15,5 +14,8 @@ RUN echo \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# Put the om.py CLI into the container
-COPY ./om.py /mnt/lib/om.py
+# Install MBL 9.1.0
+RUN echo \
+  "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"9.1.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
+  omc /tmp/installMBL.mos && \
+  rm /tmp/installMBL.mos
