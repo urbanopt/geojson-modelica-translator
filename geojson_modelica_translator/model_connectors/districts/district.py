@@ -296,12 +296,16 @@ class District:
                 'instance': templated_instance
             })
 
+        district_package_order = ['DistrictEnergySystem']
+
         # render the full district file
         if 'fifth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
             # write an additional mofile for ghe systems
             if "ghe_parameters" in common_template_params['sys_params']['district_system']['fifth_generation']:
                 partial_district_template = 'DistrictEnergySystem_ghe_partial.mot'
+                # PartialSeries is the Modelica name of the partial model template
+                district_package_order.append('PartialSeries')
                 mofile_name = partial_district_template.rstrip('t')
                 district_mofile = render_template(partial_district_template, district_template_params)
                 with open(f'{self.district_model_dirpath}/{mofile_name}', 'w') as f:
@@ -311,8 +315,13 @@ class District:
         with open(f'{self.district_model_dirpath}/DistrictEnergySystem.mo', 'w') as f:
             f.write(final_result)
 
-        districts_package = PackageParser.new_from_template(self._scaffold.districts_path.files_dir, "Districts", [
-            'DistrictEnergySystem'], within=f"{self._scaffold.project_name}")
+        # PartialSeries is the Modelica name of the partial model
+        districts_package = PackageParser.new_from_template(
+            self._scaffold.districts_path.files_dir,
+            "Districts",
+            district_package_order,
+            within=f"{self._scaffold.project_name}"
+        )
         districts_package.save()
 
         root_package = PackageParser(self._scaffold.project_path)
