@@ -16,6 +16,7 @@ RUN echo \
   rm /tmp/installMSL.mos
 
 # Install MBL 9.1.0
+# WARNING: Update the version in modelica-builder when updating the version here
 RUN echo \
   "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"9.1.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
   omc /tmp/installMBL.mos && \
