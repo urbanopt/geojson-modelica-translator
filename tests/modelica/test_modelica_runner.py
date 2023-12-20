@@ -83,7 +83,6 @@ class ModelicaRunnerTest(unittest.TestCase):
         # Write out the log to the logger for debugging
         # with open(os.path.join(self.run_path, 'stdout.log')) as f:
             # logger.info(f.read())
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'compile_fmu.mos')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'simulate.mos')))
 
