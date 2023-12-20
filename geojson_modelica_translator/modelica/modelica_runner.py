@@ -166,10 +166,9 @@ class ModelicaRunner(object):
         mo_script = 'compile_fmu' if action == 'compile' else 'simulate'
         try:
             # create the command to call the open modelica compiler inside the docker image
-            exec_call = (f'docker run -v {run_path}:/mnt/shared/{model_name} {image_name} /bin/bash -c '
-                         f'"cd mnt/shared/{model_name} && omc {mo_script}.mos"')
+            exec_call = ['docker', 'run', '-v', f'{run_path}:/mnt/shared/{model_name}', f'{image_name}',
+                         '/bin/bash', '-c', f"cd mnt/shared/{model_name} && omc {mo_script}.mos"]
             # execute the command that calls docker
-            # make sure to simulate at a directory above the project directory!
             logger.debug(f"Calling {exec_call}")
             p = subprocess.Popen(
                 exec_call,  # type: ignore
