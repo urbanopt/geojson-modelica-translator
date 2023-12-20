@@ -31,21 +31,10 @@ class ModelicaRunner(object):
         'run': 'Running FMU',
     }
 
-    def __init__(self, modelica_lib_path=None):
+    def __init__(self):
         """
         Initialize the runner with data needed for simulation
-
-        :param modelica_lib_path: string, Path to the MBL to run against
         """
-        # check if the user has defined a MODELICAPATH, is so, then use that.
-        if os.environ.get('MODELICAPATH', None):
-            print('Using predefined MODELICAPATH')
-            self.modelica_lib_path = os.environ['MODELICAPATH']
-            logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
-        else:
-            self.modelica_lib_path = modelica_lib_path
-        local_path = Path(__file__).parent.resolve()
-        self.om_docker_path = local_path / 'lib' / 'runner' / 'om_docker.sh'
 
         # Verify that docker is up and running, if needed.
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
