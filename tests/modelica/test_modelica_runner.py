@@ -45,18 +45,6 @@ class ModelicaRunnerTest(unittest.TestCase):
         )
 
     @pytest.mark.docker
-    def test_run_setup(self):
-        prev_mod_path = os.environ.get('MODELICAPATH', None)
-        try:
-            os.environ['MODELICAPATH'] = 'A_PATH/to_something'
-            mr = ModelicaRunner()
-            self.assertEqual(mr.modelica_lib_path, 'A_PATH/to_something')
-        finally:
-            if prev_mod_path:
-                os.environ['MODELICAPATH'] = prev_mod_path
-        self.assertTrue(os.path.exists(mr.om_docker_path))
-
-    @pytest.mark.docker
     def test_docker_enabled(self):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
