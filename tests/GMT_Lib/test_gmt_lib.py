@@ -82,6 +82,8 @@ def test_generate_cooling_plant(snapshot):
     # -- Setup
     template_path = (COOLING_PLANT_PATH / 'CoolingPlant.mot').relative_to(GMT_LIB_PATH)
 
+    assert False is True
+
     # -- Act
     actual = env.get_template(template_path.as_posix()).render(**COOLING_PLANT_PARAMS)
 
