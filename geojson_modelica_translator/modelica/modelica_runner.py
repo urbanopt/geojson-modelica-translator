@@ -425,6 +425,7 @@ class ModelicaRunner(object):
         # remove the 'tmp' folder that was created, because it will
         # have different permissions than the user running the container
         if (path / 'tmp' / 'temperatureResponseMatrix').exists():
+            (path / 'tmp').chmod(0o666)
             shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
             # check if the tmp folder is empty now, and if so remove
             if not any((path / 'tmp').iterdir()):
