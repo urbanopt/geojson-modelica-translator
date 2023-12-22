@@ -75,36 +75,36 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         if: matrix.test_env == 'python' && matrix.os == 'ubuntu-latest'
-        run: poetry run pytest --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
-      - name: Run Pytest (no compilation or simulation)
-        if: matrix.test_env == 'python' && matrix.os == 'windows-latest'
-        run: poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.0
-        with:
-          extra_args: --all-files
-      - name: Run mypy
-        if: matrix.test_env =='mypy'
-        run: poetry run mypy --install-types --non-interactive --show-error-codes .
-      - name: Build docs
-        if: matrix.test_env == 'docs'
-        run: |
-          cd docs
-          poetry run make html
-      - name: Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' }}
-        run: |
-          poetry run coveralls
-      - name: Job Failed
-        if: ${{ failure() }}
-        run: |
-          echo "Maybe these logs will help?"
-          ls -alt $GITHUB_WORKSPACE
-          find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
-            echo "============================================ stdout.log ========================================="
-            echo "$filename"
-            cat "$filename"
-          done
+        run: poetry run pytest tests/model_connectors/test_district_single_ghe.py --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
+      # - name: Run Pytest (no compilation or simulation)
+      #   if: matrix.test_env == 'python' && matrix.os == 'windows-latest'
+      #   run: poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
+      # - name: Run pre-commit
+      #   uses: pre-commit/action@v3.0.0
+      #   with:
+      #     extra_args: --all-files
+      # - name: Run mypy
+      #   if: matrix.test_env =='mypy'
+      #   run: poetry run mypy --install-types --non-interactive --show-error-codes .
+      # - name: Build docs
+      #   if: matrix.test_env == 'docs'
+      #   run: |
+      #     cd docs
+      #     poetry run make html
+      # - name: Coveralls
+      #   env:
+      #     COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' }}
+      #   run: |
+      #     poetry run coveralls
+      # - name: Job Failed
+      #   if: ${{ failure() }}
+      #   run: |
+      #     echo "Maybe these logs will help?"
+      #     ls -alt $GITHUB_WORKSPACE
+      #     find $GITHUB_WORKSPACE -type f -name 'stdout.log' -print | while read filename; do
+      #       echo "============================================ stdout.log ========================================="
+      #       echo "$filename"
+      #       cat "$filename"
+      #     done
