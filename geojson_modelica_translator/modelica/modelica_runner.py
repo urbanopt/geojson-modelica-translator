@@ -136,7 +136,7 @@ class ModelicaRunner(object):
         with open(run_path / 'compile_fmu.mos', 'w') as f:
             f.write(template.render(**model_data))
 
-    def _subprocess_call_to_docker(self, run_path: Union[str, Path], action: str) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, action: str) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
