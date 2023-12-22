@@ -422,10 +422,10 @@ class ModelicaRunner(object):
             for f in path.glob(pattern):  # type: ignore
                 Path(f).unlink(missing_ok=True)
 
-        # remove the 'tmp' folder that was created, because it will
+        # remove the 'tmp' folder that was created by 5G simulations, because it will
         # have different permissions than the user running the container
         if (path / 'tmp' / 'temperatureResponseMatrix').exists():
-            (path / 'tmp').chmod(0o666)
+            (path / 'tmp').chmod(0o777)
             shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
             # check if the tmp folder is empty now, and if so remove
             if not any((path / 'tmp').iterdir()):
