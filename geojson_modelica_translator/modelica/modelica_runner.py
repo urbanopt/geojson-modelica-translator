@@ -189,8 +189,8 @@ class ModelicaRunner(object):
             # While we're still working here, remove the 'tmp' folder that was created by 5G simulations,
             # because it will have different permissions than the user running the container (especially in CI)
             if (run_path / 'tmp' / 'temperatureResponseMatrix').exists():
-                # print(f'Removing {run_path / "tmp" / "temperatureResponseMatrix"}...')
-                # (run_path / 'tmp').chmod(0o777)
+                print(f'Removing {run_path / "tmp" / "temperatureResponseMatrix"}...')
+                (run_path / 'tmp').chmod(0o666)
                 shutil.rmtree(run_path / 'tmp' / 'temperatureResponseMatrix')
                 # check if the tmp folder is empty now, and if so remove
                 if not any((run_path / 'tmp').iterdir()):
