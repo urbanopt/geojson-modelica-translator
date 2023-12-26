@@ -186,15 +186,6 @@ class ModelicaRunner(object):
             # Remind user why the simulation didn't complete
             raise SystemExit("Simulation stopped by user KeyboardInterrupt")
         finally:
-            # While we're still working here, remove the 'tmp' folder that was created by 5G simulations,
-            # because it will have different permissions than the user running the container (especially in CI)
-            if (run_path / 'tmp' / 'temperatureResponseMatrix').exists():
-                print(f'Removing {run_path / "tmp" / "temperatureResponseMatrix"}...')
-                (run_path / 'tmp').chmod(0o666)
-                shutil.rmtree(run_path / 'tmp' / 'temperatureResponseMatrix')
-                # check if the tmp folder is empty now, and if so remove
-                if not any((run_path / 'tmp').iterdir()):
-                    (run_path / 'tmp').rmdir()
             os.chdir(curdir)
             stdout_log.close()
             logger.debug('Closed stdout.log')
@@ -429,3 +420,15 @@ class ModelicaRunner(object):
         for pattern in remove_files_glob:
             for f in path.glob(pattern):  # type: ignore
                 Path(f).unlink(missing_ok=True)
+
+        # Remove the 'tmp' folder that was created by 5G simulations,
+        # because it will have different permissions than the user running the container (especially in CI)
+        if (path / 'tmp' / 'temperatureResponseMatrix').is_dir():
+            # print(f'Removing {path / "tmp" / "temperatureResponseMatrix/"}...')
+            # print(os.stat(path / 'tmp').st_mode)
+            (path / 'tmp').chmod(0o777)
+            # print(os.stat(path / 'tmp').st_mode)
+            shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
+            # check if the tmp folder is empty now, and if so remove
+            if not any((path / 'tmp').iterdir()):
+                (path / 'tmp').rmdir()
