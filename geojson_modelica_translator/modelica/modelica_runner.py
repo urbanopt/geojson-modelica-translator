@@ -426,7 +426,7 @@ class ModelicaRunner(object):
         if (path / 'tmp' / 'temperatureResponseMatrix').exists():
             logger.debug(f'Removing {path / "tmp" / "temperatureResponseMatrix/"}...')
             logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
-            (path / 'tmp' / 'temperatureResponseMatrix').chmod(0o666)
+            # (path / 'tmp' / 'temperatureResponseMatrix').chmod(0o666)
             logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
             shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
             # check if the tmp folder is empty now, and if so remove
