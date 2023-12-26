@@ -72,8 +72,11 @@ jobs:
       - name: Run pytest (including simulations)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        if: matrix.test_env == 'python'
+        if: matrix.test_env == 'python' && matrix.os == 'ubuntu-latest'
         run: poetry run pytest tests --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov .
+      - name: Run Pytest (no compilation or simulation)
+        if: matrix.test_env == 'python' && matrix.os == 'windows-latest'
+        run: poetry run pytest tests --doctest-modules -v -m 'not simulation and not compilation and not dymola'
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
         with:
