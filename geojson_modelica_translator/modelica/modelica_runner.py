@@ -159,7 +159,7 @@ class ModelicaRunner(object):
                          '/bin/bash', '-c', f"cd mnt/shared/{model_name} && omc {mo_script}.mos"]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
-            exitcode = subprocess.run(
+            completed_process = subprocess.run(
                 exec_call,  # type: ignore
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
@@ -169,7 +169,7 @@ class ModelicaRunner(object):
             # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
-            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {exitcode.args}")
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}")
         except KeyboardInterrupt:
             # List all containers and their images
             docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
@@ -186,11 +186,20 @@ class ModelicaRunner(object):
             # Remind user why the simulation didn't complete
             raise SystemExit("Simulation stopped by user KeyboardInterrupt")
         finally:
+            # While we're still working here, remove the 'tmp' folder that was created by 5G simulations,
+            # because it will have different permissions than the user running the container (especially in CI)
+            if (run_path / 'tmp' / 'temperatureResponseMatrix').exists():
+                # print(f'Removing {run_path / "tmp" / "temperatureResponseMatrix"}...')
+                # (run_path / 'tmp').chmod(0o777)
+                shutil.rmtree(run_path / 'tmp' / 'temperatureResponseMatrix')
+                # check if the tmp folder is empty now, and if so remove
+                if not any((run_path / 'tmp').iterdir()):
+                    (run_path / 'tmp').rmdir()
             os.chdir(curdir)
             stdout_log.close()
             logger.debug('Closed stdout.log')
 
-        return exitcode
+        return completed_process.returncode
 
     def run_in_docker(self, action: str, model_name: str, file_to_load: Union[str, Path, None] = None,
                       run_path: Union[str, Path, None] = None, **kwargs) -> tuple[bool, Union[str, Path]]:
@@ -420,12 +429,3 @@ class ModelicaRunner(object):
         for pattern in remove_files_glob:
             for f in path.glob(pattern):  # type: ignore
                 Path(f).unlink(missing_ok=True)
-
-        # remove the 'tmp' folder that was created by 5G simulations, because it will
-        # have different permissions than the user running the container
-        if (path / 'tmp' / 'temperatureResponseMatrix').exists():
-            (path / 'tmp').chmod(0o777)
-            shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
-            # check if the tmp folder is empty now, and if so remove
-            if not any((path / 'tmp').iterdir()):
-                (path / 'tmp').rmdir()
