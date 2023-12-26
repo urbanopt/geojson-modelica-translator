@@ -159,7 +159,7 @@ class ModelicaRunner(object):
                          '/bin/bash', '-c', f"cd mnt/shared/{model_name} && omc {mo_script}.mos"]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
-            p = subprocess.Popen(
+            exitcode = subprocess.run(
                 exec_call,  # type: ignore
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
@@ -169,8 +169,7 @@ class ModelicaRunner(object):
             # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
-            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
-            exitcode = p.wait()
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {exitcode.args}")
         except KeyboardInterrupt:
             # List all containers and their images
             docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
