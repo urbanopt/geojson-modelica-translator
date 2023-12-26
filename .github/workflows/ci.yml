@@ -21,9 +21,12 @@ jobs:
         test_env: [python, docs, mypy]
         mbl_tag: [v9.1.1]
         exclude:
-          # only test mypy & docs on linux for all versions of python
+          # only test mypy on linux for all versions of python
           - os: windows-latest
-            test_env: [mypy, docs]
+            test_env: mypy
+          # only test docs on linux for all versions of python
+          - os: windows-latest
+            test_env: docs
     runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
@@ -38,7 +41,7 @@ jobs:
           docker --version
           docker-compose --version
       - name: Install Poetry
-        uses: Gr1N/setup-poetry@v8
+        uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version. Defaults to latest
       - name: Install dependencies with Poetry
         # poetry setuptools workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
         run: |
@@ -94,7 +97,8 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' }}
-        run: poetry run coveralls
+        run: |
+          poetry run coveralls
       - name: Job Failed
         if: ${{ failure() }}
         run: |
