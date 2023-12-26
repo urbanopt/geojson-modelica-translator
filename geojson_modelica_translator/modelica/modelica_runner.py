@@ -423,7 +423,7 @@ class ModelicaRunner(object):
 
         # Remove the 'tmp' folder that was created by 5G simulations,
         # because it will have different permissions than the user running the container (especially in CI)
-        if (path / 'tmp' / 'temperatureResponseMatrix').is_dir():
+        if (path / 'tmp' / 'temperatureResponseMatrix').exists():
             logger.debug(f'Removing {path / "tmp" / "temperatureResponseMatrix/"}...')
             logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
             (path / 'tmp' / 'temperatureResponseMatrix').chmod(0o666)
