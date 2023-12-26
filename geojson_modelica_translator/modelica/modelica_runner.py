@@ -392,11 +392,9 @@ class ModelicaRunner(object):
             f"{model_name.replace('.', '_')}_info.json",
             f"{model_name.replace('.', '_')}_FMU.makefile",
             f"{model_name.replace('.', '_')}_FMU.libs",
-            'tmp'
         ]
 
         conditional_remove_files = [
-            'om_docker.sh',
             'compile_fmu.mos',
             'simulate.mos',
             'run.mos',
