@@ -428,8 +428,8 @@ class ModelicaRunner(object):
         #     # (path / 'tmp' / 'temperatureResponseMatrix').chmod(0o666)
         #     logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
         # Delete this temp dir if it exists
-        shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix', ignore_errors=True)
+        shutil.rmtree(path / 'tmp', ignore_errors=True)
         # check if the tmp folder is empty now, and if so remove
-        (path / 'tmp').chmod(0o666)
-        if not any((path / 'tmp').iterdir()):
-            (path / 'tmp').rmdir()
+        # (path / 'tmp').chmod(0o666)
+        # if not any((path / 'tmp').iterdir()):
+        #     (path / 'tmp').rmdir()
