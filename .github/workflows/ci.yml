@@ -75,7 +75,7 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         if: matrix.test_env == 'python' && matrix.os == 'ubuntu-latest'
-        run: poetry run pytest tests/model_connectors/test_district_single_ghe.py --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
+        run: poetry run pytest tests/model_connectors/test_district_single_ghe.py --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov .
       # - name: Run Pytest (no compilation or simulation)
       #   if: matrix.test_env == 'python' && matrix.os == 'windows-latest'
       #   run: poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
