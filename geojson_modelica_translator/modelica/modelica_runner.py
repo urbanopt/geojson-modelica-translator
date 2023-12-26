@@ -392,6 +392,7 @@ class ModelicaRunner(object):
             f"{model_name.replace('.', '_')}_info.json",
             f"{model_name.replace('.', '_')}_FMU.makefile",
             f"{model_name.replace('.', '_')}_FMU.libs",
+            'tmp'
         ]
 
         conditional_remove_files = [
@@ -423,12 +424,13 @@ class ModelicaRunner(object):
 
         # Remove the 'tmp' folder that was created by 5G simulations,
         # because it will have different permissions than the user running the container (especially in CI)
-        if (path / 'tmp' / 'temperatureResponseMatrix').exists():
-            logger.debug(f'Removing {path / "tmp" / "temperatureResponseMatrix/"}...')
-            logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
-            # (path / 'tmp' / 'temperatureResponseMatrix').chmod(0o666)
-            logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
-            shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix')
-            # check if the tmp folder is empty now, and if so remove
-            if not any((path / 'tmp').iterdir()):
-                (path / 'tmp').rmdir()
+        # if (path / 'tmp' / 'temperatureResponseMatrix').exists():
+        #     logger.debug(f'Removing {path / "tmp" / "temperatureResponseMatrix/"}...')
+        #     logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
+        #     # (path / 'tmp' / 'temperatureResponseMatrix').chmod(0o666)
+        #     logger.debug((path / 'tmp' / 'temperatureResponseMatrix').stat().st_mode)
+        # Delete this temp dir if it exists
+        shutil.rmtree(path / 'tmp' / 'temperatureResponseMatrix', ignore_errors=True)
+        # check if the tmp folder is empty now, and if so remove
+        if not any((path / 'tmp').iterdir()):
+            (path / 'tmp').rmdir()
