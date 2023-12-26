@@ -28,6 +28,7 @@ jobs:
           - os: windows-latest
             test_env: docs
     runs-on: ${{ matrix.os }}
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
