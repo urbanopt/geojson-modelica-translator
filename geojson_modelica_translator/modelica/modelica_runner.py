@@ -31,21 +31,10 @@ class ModelicaRunner(object):
         'run': 'Running FMU',
     }
 
-    def __init__(self, modelica_lib_path=None):
+    def __init__(self):
         """
         Initialize the runner with data needed for simulation
-
-        :param modelica_lib_path: string, Path to the MBL to run against
         """
-        # check if the user has defined a MODELICAPATH, is so, then use that.
-        if os.environ.get('MODELICAPATH', None):
-            print('Using predefined MODELICAPATH')
-            self.modelica_lib_path = os.environ['MODELICAPATH']
-            logger.debug(f'MODELICAPATH: {self.modelica_lib_path}')
-        else:
-            self.modelica_lib_path = modelica_lib_path
-        local_path = Path(__file__).parent.resolve()
-        self.om_docker_path = local_path / 'lib' / 'runner' / 'om_docker.sh'
 
         # Verify that docker is up and running, if needed.
         r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -147,12 +136,7 @@ class ModelicaRunner(object):
         with open(run_path / 'compile_fmu.mos', 'w') as f:
             f.write(template.render(**model_data))
 
-        # new om_docker.sh file name
-        new_om_docker = run_path / self.om_docker_path.name
-        shutil.copyfile(self.om_docker_path, new_om_docker)
-        new_om_docker.chmod(0o775)
-
-    def _subprocess_call_to_docker(self, run_path: Union[str, Path], action: str) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, action: str) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
@@ -166,16 +150,16 @@ class ModelicaRunner(object):
         curdir = Path.cwd()
         os.chdir(run_path)
         stdout_log = open('stdout.log', 'w')
+        model_name = run_path.parts[-1]
+        image_name = 'nrel/gmt-om-runner:v1.22.1'
+        mo_script = 'compile_fmu' if action == 'compile' else 'simulate'
         try:
-            # get the relative difference between the file to run and the path which everything is running in.
-            # make sure to simulate at a directory above the project directory!
-
-            # Use slashes for the location of the model to run. We can make these periods `.replace(os.sep, '.')`
-            # but must strip off the .mo extension on the model to run
-            # run_model = Path(file_to_run).relative_to(run_path)
-            exec_call = ['./om_docker.sh', action]
+            # create the command to call the open modelica compiler inside the docker image
+            exec_call = ['docker', 'run', '-v', f'{run_path}:/mnt/shared/{model_name}', f'{image_name}',
+                         '/bin/bash', '-c', f"cd mnt/shared/{model_name} && omc {mo_script}.mos"]
+            # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
-            p = subprocess.Popen(
+            completed_process = subprocess.run(
                 exec_call,  # type: ignore
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
@@ -185,15 +169,13 @@ class ModelicaRunner(object):
             # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
-            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {p.args}")
-            exitcode = p.wait()
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}")
         except KeyboardInterrupt:
             # List all containers and their images
             docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
             containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split('\n')
 
             # Find containers from our image
-            image_name = 'nrel/gmt-om-runner'
             for container_line in containers_list:
                 container_id, container_image = container_line.split()
                 if container_image == image_name:
@@ -208,7 +190,7 @@ class ModelicaRunner(object):
             stdout_log.close()
             logger.debug('Closed stdout.log')
 
-        return exitcode
+        return completed_process.returncode
 
     def run_in_docker(self, action: str, model_name: str, file_to_load: Union[str, Path, None] = None,
                       run_path: Union[str, Path, None] = None, **kwargs) -> tuple[bool, Union[str, Path]]:
@@ -414,7 +396,6 @@ class ModelicaRunner(object):
         ]
 
         conditional_remove_files = [
-            'om_docker.sh',
             'compile_fmu.mos',
             'simulate.mos',
             'run.mos',
@@ -440,5 +421,6 @@ class ModelicaRunner(object):
             for f in path.glob(pattern):  # type: ignore
                 Path(f).unlink(missing_ok=True)
 
-        # Note that the om.py script that runs within the container does cleanup
-        # the 'tmp' folder including the 'tmp/temperatureResponseMatrix' folder
+        # Remove the 'tmp' folder that was created by 5G simulations
+        # Dir won't exist for 4G simulations, so ignoring errors
+        shutil.rmtree(path / 'tmp', ignore_errors=True)

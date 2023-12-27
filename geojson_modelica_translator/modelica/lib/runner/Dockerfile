@@ -1,4 +1,4 @@
-FROM openmodelica/openmodelica:v1.22.0-gui
+FROM openmodelica/openmodelica:v1.22.1-gui
 
 # libgfortran4 is needed to load FMU for FMUZoneAdapterZones1.mo
 RUN apt update && apt --no-install-recommends install -y \
@@ -15,5 +15,9 @@ RUN echo \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# Put the om.py CLI into the container
-COPY ./om.py /mnt/lib/om.py
+# Install MBL 9.1.0
+# WARNING: Update the version in modelica-builder when updating the version here
+RUN echo \
+  "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"9.1.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
+  omc /tmp/installMBL.mos && \
+  rm /tmp/installMBL.mos
