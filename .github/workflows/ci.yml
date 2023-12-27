@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.11"]
         test_env: [python, docs, mypy]
-        mbl_branch: [maint_10.0.x]
+        mbl_tag: [v9.1.1]
         exclude:
           # only test mypy on linux for all versions of python
           - os: windows-latest
@@ -28,10 +28,11 @@ jobs:
           - os: windows-latest
             test_env: docs
     runs-on: ${{ matrix.os }}
+    permissions: write-all
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Display system info
@@ -59,52 +60,43 @@ jobs:
             mv modelicafmt '/c/Program Files/'
           fi
       - name: Install MBL
-        env:
-          MATRIX_OS: ${{ matrix.os }}
-          MBL_BRANCH: ${{ matrix.mbl_branch }}
         run: |
-          if [[ "${MATRIX_OS}" == 'ubuntu-latest' ]]; then
+          if [[ '${{ matrix.os }}' == 'ubuntu-latest' ]]; then
             MODELICAPATH='/home/runner/work/modelica-buildings'
           else
             echo $GITHUB_WORKSPACE
             MODELICAPATH='/c/Program Files/modelica-buildings'
           fi
-          git clone --single-branch --branch ${MBL_BRANCH} https://github.com/lbl-srg/modelica-buildings.git "${MODELICAPATH}"
+          git clone --single-branch --branch ${{ matrix.mbl_tag }} https://github.com/lbl-srg/modelica-buildings.git "${MODELICAPATH}"
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
           echo "MODELICAPATH=${MODELICAPATH}" >> $GITHUB_ENV
-      - name: Run pytest (simulation on linux only)
+      - name: Run pytest (including simulations)
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: |
-          if [ '${{ matrix.test_env }}' == 'python' ]; then
-            if [ '${{ matrix.os }}' == 'windows-latest' ]; then
-              poetry run pytest --doctest-modules -v -m 'not simulation and not compilation and not dymola' ./tests
-            else
-              poetry run pytest --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov . ./tests
-            fi
-          fi
+        if: matrix.test_env == 'python' && matrix.os == 'ubuntu-latest'
+        run: poetry run pytest tests --doctest-modules -v -m 'not dymola' --cov-report term-missing --cov .
+      - name: Run Pytest (no compilation or simulation)
+        if: matrix.test_env == 'python' && matrix.os == 'windows-latest'
+        run: poetry run pytest tests --doctest-modules -v -m 'not simulation and not compilation and not dymola'
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0
         with:
           extra_args: --all-files
       - name: Run mypy
-        run: |
-          if [ '${{ matrix.test_env }}' == 'mypy' ]; then
-            poetry run mypy --install-types --non-interactive --show-error-codes .
-          fi
+        if: matrix.test_env =='mypy'
+        run: poetry run mypy --install-types --non-interactive --show-error-codes .
       - name: Build docs
+        if: matrix.test_env == 'docs'
         run: |
-          if [ '${{ matrix.test_env }}' == 'docs' ]; then
-            cd docs
-            poetry run make html
-          fi
+          cd docs
+          poetry run make html
       - name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' && matrix.mbl_branch == 'maint_9.1.x' }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' }}
         run: |
           poetry run coveralls
       - name: Job Failed
