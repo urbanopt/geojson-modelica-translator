@@ -9,13 +9,13 @@ RUN apt update && apt --no-install-recommends install -y \
     cmake \
     && rm -rf /var/lib/apt/lists/*
 
-# Install MSL 4.0.0
+# Install MSL 4.0
 RUN echo \
   "updatePackageIndex(); getErrorString(); installPackage(Modelica, \"4.0.0\", exactMatch=false); getErrorString();" >> /tmp/installMSL.mos && \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# Install MBL 10.0.0
+# Install MBL 10.0
 # WARNING: Update the version in modelica-builder when updating the version here
 RUN echo \
   "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"10.0.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
