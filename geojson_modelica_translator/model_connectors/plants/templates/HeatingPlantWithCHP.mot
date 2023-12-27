@@ -175,8 +175,7 @@ within {{ project_name }}.Plants;
     annotation (Placement(transformation(extent={{-120,52},{-100,72}})));
   Buildings.Fluid.Movers.Preconfigured.FlowControlled_m_flow fan(
     redeclare package Medium=Medium,
-    m_flow_nominal=0.4,
-    nominalValuesDefineDefaultPressureCurve=true)
+    m_flow_nominal=0.4)
     annotation (Placement(transformation(extent={{-172,-132},{-152,-110}})));
   Buildings.HeatTransfer.Sources.FixedTemperature preTem(
     T(
