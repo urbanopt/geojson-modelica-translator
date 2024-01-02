@@ -67,16 +67,15 @@ Follow the instructions below in order to configure your local environment:
         * `pyenv <https://github.com/pyenv/pyenv>`_ and `the virtualenv plugin <https://github.com/pyenv/pyenv-virtualenv>`_ work together nicely for Linux/Mac machines
         * `virtualenv <https://virtualenv.pypa.io/en/latest/>`_
         * `miniconda <https://docs.conda.io/projects/miniconda/en/latest/>`_
-* For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
+* For developers, dependency management is through `Poetry`_. Poetry can be acquired by running :code:`pip install poetry`.
     * If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.
-* Move to the GMT root directory and run :code:`poetry install`
+* Move to the GMT root directory and run :code:`poetry install` to install the dependencies.
 * Verify that everything is installed correctly by running :code:`poetry run pytest -m 'not compilation and not simulation and not dymola'`. This will run all the unit and integration tests.
 * Follow the instructions below to install pre-commit.
 * To test pre-commit and building the documentation, you can run
 
 .. code-block::
 
-    poetry install
     poetry run pytest -m 'not compilation and not simulation and not dymola' --doctest-modules -v --cov-report term-missing --cov .
 
 The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
@@ -216,9 +215,7 @@ simulation mapper class from existing at that level.
 Running Simulations
 -------------------
 
-The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. The test suite uses this to run most of our models with OpenModelica, except for developers using Windows.
-
-The GMT does not include automated Modelica simulations for Windows users as of Oct 1, 2023. Windows users should `install OpenModelica <https://openmodelica.org/>`_ themselves. After running the tests (not compilation or simulation, see :ref:`Getting Started as a Developer`) any model may be opened by hand in OpenModelica and simulated.
+The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. The test suite uses this to run most of our models with OpenModelica.
 
 Release Instructions
 --------------------
