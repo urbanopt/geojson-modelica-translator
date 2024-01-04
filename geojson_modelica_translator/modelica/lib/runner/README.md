@@ -2,19 +2,32 @@
 
 ## Building and Pushing Docker Container
 
-The OpenModelica docker container needs to be built locally or pushed to Docker hub for wide-spread use.
+The OpenModelica docker container provides compilation and simulation capabilities without needing to install OpenModelica on a client computer. The container
+includes Modelica Standards Library and a version of the Modelica Buildings Library. The table below shows the versions fo the dependencies.
 
-The public use image is hosted on Docker hub under https://hub.docker.com/r/nrel/gmt-om-runner.
+The GMT requires a locally built image or a version from Docker hub to run tests. The public use image is hosted on [Docker hub](https://hub.docker.com/r/nrel/gmt-om-runner).
 
 To build the docker container locally, follow the below instructions:
 
 ```bash
+# <from gmt root directory>
 cd geojson_modelica_translator/modelica/lib/runner
 
 docker build -t nrel/gmt-om-runner:latest .
 ```
 
-The default tag will be `nrel/gmt-om-runner:latest`, which is the default version used in the om_docker.sh file.
+The default tag will be `nrel/gmt-om-runner:v2.0.0`, which is the default version used in the modelica_runner.py file.
+
+### Versioning
+
+In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner version.
+
+| GTM Runner Version | OM Version | MSL Version | MBL Version |
+| ------------------ | ---------- | ----------- | ----------- |
+| 2.0.0              | 1.22.1     | 4.0.0       | 10.0.0      |
+| 1.22.1             | 1.22.1     | 4.0.0       | 9.1.1       |
+| 1.22.0             | 1.21.0     | 4.0.0       | 9.1.0       |
+| 1.20.0             | 1.20.0     | 4.0.0       | 9.1.0       |
 
 ### Releasing a new container for users
 
@@ -32,7 +45,10 @@ docker buildx create --use
 
 # update version of OMC and determine if the latest should be updated. Ideally, the latest should be updated
 # only if the new OMC release is needed to fix previous issues.
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nrel/gmt-om-runner:v1.22.0 --push .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nrel/gmt-om-runner:v2.0.0 --push .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nrel/gmt-om-runner:latest --push .
 
 ```
+
+Sign into [Docker Hub](https://hub.docker.com/repository/docker/nrel/gmt-om-runner/general) and update the version
+table in the Repository Overview section
