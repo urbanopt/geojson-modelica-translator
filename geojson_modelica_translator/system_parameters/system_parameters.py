@@ -159,7 +159,7 @@ class SystemParameters(object):
         :return: variant, the value from the data
         """
 
-        # TODO: check that ids are unique in the system parameters file, i.e. a building_id doesn't match a ghe_id
+        # TODO: check that ids are unique in the system parameters file, i.e., a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
             if b.get("geojson_id") == id:
                 return self.get_param(jsonpath, data=b)

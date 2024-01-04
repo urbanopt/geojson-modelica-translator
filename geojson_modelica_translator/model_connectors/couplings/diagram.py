@@ -20,10 +20,10 @@ NodePort = namedtuple('NodePort', ['node', 'port'])
 class DiagramNode:
     def __init__(self, context_id, model_name, model_type):
         """
-        :param context_id: str, used for "grouping" nodes. E.g. this would be
+        :param context_id: str, used for "grouping" nodes, e.g., this would be
           either the coupling id or the model id (depending on where the icon is declared)
         :param model_name: str
-        :param model_type: str, general type of the component (e.g. load, network, etc)
+        :param model_type: str, general type of the component (e.g., load, network, etc)
         """
         self.context_id = context_id
         self.model_name = model_name
@@ -134,7 +134,7 @@ class Diagram:
         line_template = Template('Line(points={$points},color={0,0,127})')
 
         # add transformations defined within this id's context
-        # e.g. if id is for a model, add all transformations defined in the model instance template
+        # e.g., if id is for a model, add all transformations defined in the model instance template
         for component_name, diagram_node in self._initial_diagram_graph.get(context_id, {}).items():
             # x1, y1 is lower left of icon, x2, y2 is upper right
             x_pos, y_pos = self._grid_to_coord(diagram_node.grid_col, diagram_node.grid_row)
@@ -160,7 +160,7 @@ class Diagram:
                         # include this connection if either:
                         #   - we're working on the coupling lines
                         #   - this connects to another model we might be interested in
-                        #     (e.g. model a instance connecting to model b instance)
+                        #     (e.g., model a instance connecting to model b instance)
                         include_line = this_context_id == context_id or other_node.context_id in diagram_ids
                         if include_line:
                             points = self._calculate_connector_line(
@@ -339,7 +339,7 @@ class Diagram:
         {
             '<model instance or coupling id>' : {
                 '<component name>': {
-                    'type': '<component type e.g. load>',
+                    'type': '<component type, e.g., load>',
                     'edges': {
                         '<component port name>': [
                             ('<other model instance or coupling id>', '<other component name>', '<other component port>'), ...
