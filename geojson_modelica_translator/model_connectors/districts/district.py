@@ -97,10 +97,6 @@ class District:
             }
         }
 
-        # # use num_buildings when building the distance string for 5G systems
-        # common_template_params['globals']['dhDis'] = self.build_string("dhDis = {", "0.5, ", common_template_params['sys_params']['num_buildings'])
-        # common_template_params['globals']['dhCon'] = self.build_string("dhCon = {", "0.5, ", common_template_params['sys_params']['num_buildings'])
-
         # render each coupling
         load_num = 1
         for coupling in self._coupling_graph.couplings:
@@ -163,19 +159,3 @@ class District:
         if 'Districts' not in root_package.order:
             root_package.add_model('Districts')
             root_package.save()
-
-    # def build_string(self, base_text: str, value: str, iterations: int) -> str:
-    #     """Builds a string with a comma separated list of values.
-
-    #     This is used to build 5G districts with arbitrary number of buildings.
-    #     It's ugly because of the Jinja/Modelica templating system.
-    #     This is a bit of a hack but it works.
-
-    #     Example output: lDis = { 0.5, 0.5, 0.5 }
-
-    #     Args:
-    #         base_text (str): The text to start the string with.
-    #         value (str): The value to add multiple times.
-    #         iterations (int): The number of values to add to the string."""
-    #     text = f"{base_text} {value * iterations}"
-    #     return text.removesuffix(", ") + " }"
