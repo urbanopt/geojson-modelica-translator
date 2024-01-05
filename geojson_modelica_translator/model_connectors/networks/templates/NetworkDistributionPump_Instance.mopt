@@ -21,7 +21,8 @@
     inputType=Buildings.Fluid.Types.InputType.Constant,
     use_inputFilter=true,
     riseTime=20,
-    m_flow_nominal=datDes.mPumDis_flow_nominal)
+    m_flow_nominal=datDes.mPumDis_flow_nominal,
+    dp_nominal=50000)
     "Distribution pump"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
   // pump controller
