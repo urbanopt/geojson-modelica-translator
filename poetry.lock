@@ -987,16 +987,20 @@ name = "modelica-builder"
 version = "0.5.0"
 description = "Modelica builder enables programmatic parsing and modification of Modelica files."
 optional = false
-python-versions = ">=3.9,<3.13"
-files = [
-    {file = "modelica_builder-0.5.0-py3-none-any.whl", hash = "sha256:bc394fe0244da5229a47edaf74518c07c98fe1dee5c55322c5f76865d3f21eb5"},
-    {file = "modelica_builder-0.5.0.tar.gz", hash = "sha256:d676250fe6c5485740aed5ee34b5c73c1dcb0223b43f8735748b0143b83b461c"},
-]
+python-versions = ">=3.9, <3.13"
+files = []
+develop = false
 
 [package.dependencies]
 antlr4-python3-runtime = "4.13.1"
 jinja2 = "3.1.2"
-pathspec = ">=0.11.2,<0.12.0"
+pathspec = "^0.11.2"
+
+[package.source]
+type = "git"
+url = "https://github.com/urbanopt/modelica-builder.git"
+reference = "mbl_version-bugfix"
+resolved_reference = "4c47f7456ab75c329b8048e7716e0b0e1e12c44f"
 
 [[package]]
 name = "mypy"
@@ -2183,4 +2187,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.13"
-content-hash = "3d7553ab2d06b435405c8759ce7e2341b8f34de1bb307f2b7a6fb115620431d3"
+content-hash = "ba4abc10d81dbf934733e4d13f4105adc34238b4a6f39aaf28c478b8c720be3c"
