@@ -984,23 +984,19 @@ python-dateutil = ">=2.7"
 
 [[package]]
 name = "modelica-builder"
-version = "0.5.0"
+version = "0.5.1"
 description = "Modelica builder enables programmatic parsing and modification of Modelica files."
 optional = false
-python-versions = ">=3.9, <3.13"
-files = []
-develop = false
+python-versions = ">=3.9,<3.13"
+files = [
+    {file = "modelica_builder-0.5.1-py3-none-any.whl", hash = "sha256:4187d09bb4e1d5233554d8ede11d956a20fd4eb6be667c32039ecbbcd681ede1"},
+    {file = "modelica_builder-0.5.1.tar.gz", hash = "sha256:69c3a618d9528d38ae9449f67ceb5a2321db4c09430ba20050f373238bb4e569"},
+]
 
 [package.dependencies]
 antlr4-python3-runtime = "4.13.1"
 jinja2 = "3.1.2"
-pathspec = "^0.11.2"
-
-[package.source]
-type = "git"
-url = "https://github.com/urbanopt/modelica-builder.git"
-reference = "mbl_version-bugfix"
-resolved_reference = "4c47f7456ab75c329b8048e7716e0b0e1e12c44f"
+pathspec = ">=0.11.2,<0.12.0"
 
 [[package]]
 name = "mypy"
@@ -1531,13 +1527,13 @@ files = [
 
 [[package]]
 name = "referencing"
-version = "0.32.0"
+version = "0.32.1"
 description = "JSON Referencing + Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "referencing-0.32.0-py3-none-any.whl", hash = "sha256:bdcd3efb936f82ff86f993093f6da7435c7de69a3b3a5a06678a6050184bee99"},
-    {file = "referencing-0.32.0.tar.gz", hash = "sha256:689e64fe121843dcfd57b71933318ef1f91188ffb45367332700a86ac8fd6161"},
+    {file = "referencing-0.32.1-py3-none-any.whl", hash = "sha256:7e4dc12271d8e15612bfe35792f5ea1c40970dadf8624602e33db2758f7ee554"},
+    {file = "referencing-0.32.1.tar.gz", hash = "sha256:3c57da0513e9563eb7e203ebe9bb3a1b509b042016433bd1e45a2853466c3dd3"},
 ]
 
 [package.dependencies]
@@ -2187,4 +2183,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.13"
-content-hash = "ba4abc10d81dbf934733e4d13f4105adc34238b4a6f39aaf28c478b8c720be3c"
+content-hash = "a0997de5201b82d45c393706b66a5635426cff0e37fecda699746620e1fb9130"
