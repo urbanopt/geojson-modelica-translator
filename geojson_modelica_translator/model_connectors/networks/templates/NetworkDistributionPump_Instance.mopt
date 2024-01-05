@@ -9,12 +9,10 @@
     final lDis=datDes.lDis,
     final lCon=datDes.lCon,
     final lEnd=datDes.lEnd,
-    final allowFlowReversal=allowFlowReversalSer,
-    {{ globals.dhDis }},
-    {{ globals.dhCon }}
+    final allowFlowReversal=allowFlowReversalSer
     )
     "Distribution network"
-    annotation (Placement(transformation(extent={{50,-20},{90,0}})));
+    {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
   {% endraw %}// ambient loop pump
   Buildings.Fluid.Movers.FlowControlled_m_flow pumDis(
     redeclare final package Medium = {{ globals.medium_w }},
@@ -26,19 +24,19 @@
     m_flow_nominal=datDes.mPumDis_flow_nominal)
     "Distribution pump"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
-  {% endraw %}// pump controller
+  // pump controller
   Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
     nMix=datDes.nBui,
     nSou=1,
     use_temperatureShift=false)
-    {% raw %}annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
+    annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"
-    {% raw %}annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
+    annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
   {% endraw %}// expansion vessel
   Buildings.Fluid.Sources.Boundary_pT expVes(
     redeclare final package Medium = {{ globals.medium_w }},
-    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp}}+273.15,
+    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }} + 273.15,
     nPorts=1)
     "Expansion vessel"
     {% raw %}annotation (Placement(transformation(extent={{140,-76},{120,-56}})));

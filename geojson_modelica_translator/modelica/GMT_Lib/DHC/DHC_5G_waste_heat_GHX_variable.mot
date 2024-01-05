@@ -9,7 +9,7 @@ model district
       mPumDis_flow_nominal={{ data['max_flow_rate'] }},
       mPla_flow_nominal={{ data['max_flow_rate'] }},
       mSto_flow_nominal={{ data['max_flow_rate'] / 10 }},
-      dp_length_nominal=10,
+      dp_length_nominal=100,
       epsPla=0.935,
       {{ data['lDis'] }},
       {{ data['lCon'] }}
