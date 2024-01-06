@@ -109,19 +109,32 @@ class Borefield(PlantBase):
 
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
-            gfunction = pd.read_csv(Path(template_data["gfunction"]["input_path"]) / template_data["gfunction"]["ghe_id"] / "Gfunction.csv", header=0, usecols=[0, 2])
+            gfunction = pd.read_csv(
+                Path(
+                    template_data["gfunction"]["input_path"])
+                / template_data["gfunction"]["ghe_id"]
+                / "Gfunction.csv",
+                header=0,
+                usecols=[
+                    0,
+                    2])
         else:
             sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
             try:
-                gfunction = pd.read_csv(sys_param_dir / template_data["gfunction"]["input_path"] / template_data["gfunction"]["ghe_id"] / "Gfunction.csv", header=0, usecols=[0, 2])
+                gfunction = pd.read_csv(sys_param_dir
+                                        / template_data["gfunction"]["input_path"]
+                                        / template_data["gfunction"]["ghe_id"]
+                                        / "Gfunction.csv", header=0, usecols=[0, 2])
             except FileNotFoundError:
-                raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your sys-param file is in.')
+                raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your sys-param file is in.')  # noqa: E501
         template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
 
         # convert the values to match Modelica gfunctions
         for i in range(len(gfunction)):
-            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * template_data["configuration"]["borehole_height"]**2 / (9 * template_data["soil"]["conductivity"] / template_data["soil"]["volumetric_heat_capacity"])
-            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / (template_data["configuration"]["number_of_boreholes"] * 2 * math.pi * template_data["configuration"]["borehole_height"] * template_data["soil"]["conductivity"])
+            gfunction[gfunction.columns[0]].iloc[i] = math.exp(gfunction[gfunction.columns[0]].iloc[i]) * template_data["configuration"]["borehole_height"]**2 / (
+                9 * template_data["soil"]["conductivity"] / template_data["soil"]["volumetric_heat_capacity"])
+            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / \
+                (template_data["configuration"]["number_of_boreholes"] * 2 * math.pi * template_data["configuration"]["borehole_height"] * template_data["soil"]["conductivity"])
 
         # add zeros to the first row
         new_row = pd.Series({gfunction.columns[0]: 0, gfunction.columns[1]: 0})
@@ -138,7 +151,8 @@ class Borefield(PlantBase):
 
         # process nominal mass flow rate
         if template_data["configuration"]["flow_type"] == "system":
-            template_data["configuration"]["nominal_mass_flow_per_borehole"] = template_data["configuration"]["nominal_mass_flow_per_borehole"] / template_data["configuration"]["number_of_boreholes"]
+            template_data["configuration"]["nominal_mass_flow_per_borehole"] = template_data["configuration"]["nominal_mass_flow_per_borehole"] / \
+                template_data["configuration"]["number_of_boreholes"]
 
         # process tube thickness
         if template_data["tube"]["outer_diameter"] and template_data["tube"]["inner_diameter"]:

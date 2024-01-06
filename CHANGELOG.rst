@@ -67,7 +67,7 @@ Version 0.5.0
 Version 0.4.1
 -------------
 ## What's Changed
-* Cli bugfixing
+* Cli bug fixes
 * Detailed models
 * End-of-year updates to GMT docs
 * Remove support for 3.7 in development, update development dependencies

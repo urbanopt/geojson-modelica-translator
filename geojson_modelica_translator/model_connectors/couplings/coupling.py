@@ -22,7 +22,7 @@ from geojson_modelica_translator.utils import simple_uuid
 
 
 class Coupling(object):
-    """A Coupling represents a connection/relationship between two models (e.g. a load and ets).
+    """A Coupling represents a connection/relationship between two models (e.g., a load and ets).
     More specifically, is used to create the required components and connections between two models.
     """
     _template_component_definitions = 'ComponentDefinitions.mopt'

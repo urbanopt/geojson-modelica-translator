@@ -214,7 +214,7 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(
-            'simulate', model_name, run_path=results_path, file_to_load=None  #, debug=True
+            'simulate', model_name, run_path=results_path, file_to_load=None  # , debug=True
         )
         self.assertTrue(success)
 

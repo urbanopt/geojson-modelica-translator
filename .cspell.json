@@ -3,6 +3,7 @@
   "language": "en",
   "words": [
     "autoload",
+    "borefield",
     "buildingspy",
     "buildx",
     "Combi",
@@ -13,8 +14,10 @@
     "endraw",
     "energyplus",
     "GDHC",
+    "gfunction",
     "HVAC",
     "IBPSA",
+    "interconnectivity",
     "Jing",
     "levelname",
     "libfortran",
