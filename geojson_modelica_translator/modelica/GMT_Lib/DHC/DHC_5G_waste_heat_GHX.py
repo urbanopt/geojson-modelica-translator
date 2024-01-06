@@ -77,7 +77,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 mos_file.save()
 
             # 4: Add the path to the param data with Modelica friendly path names
-            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"
+            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
             template_data['building_load_files'].append(f"modelica://{rel_path_name}")  # type: ignore
 
         # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
