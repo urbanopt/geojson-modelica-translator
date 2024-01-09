@@ -38,7 +38,7 @@ jsonpath-ng = "~1.6"
 jsonschema = "~4.19"
 modelica-builder = "^0.5.1"
 # modelica-builder = { path = "../modelica-builder", develop = true }
-# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "mbl_version-bugfix"}
+# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "mblv10"}
 pandas = "2.0.2"
 requests = "^2.28"
 teaser = "0.7.5"

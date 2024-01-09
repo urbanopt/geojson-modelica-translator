@@ -10,7 +10,11 @@ from modelica_builder.package_parser import PackageParser
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
+from geojson_modelica_translator.utils import (
+    ModelicaPath,
+    mbl_version,
+    simple_uuid
+)
 
 
 class TimeSeriesMFT(LoadBase):
@@ -144,7 +148,10 @@ class TimeSeriesMFT(LoadBase):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
+            scaffold.project_path,
+            scaffold.project_name,
+            ["Loads"],
+            mbl_version=mbl_version(),
         )
         pp.save()
 

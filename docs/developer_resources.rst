@@ -221,6 +221,7 @@ Release Instructions
 --------------------
 
 * Bump version to <NEW_VERSION> in pyproject.toml (use semantic versioning).
+* Ensure mbl_version() in geojson_modelica_translator/utils.py is returning the correct MBL version.
 * Run :code:`poetry update` to ensure the lock file is up to date with the latest "pinned" dependencies.
 * Run :code:`pre-commit run --all-files` to ensure code is formatted properly.
 * Create a PR into develop with the updated version.

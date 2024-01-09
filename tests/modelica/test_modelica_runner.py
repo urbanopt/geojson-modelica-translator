@@ -176,7 +176,7 @@ class ModelicaRunnerTest(unittest.TestCase):
 
     @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        model_name = 'Buildings.Controls.OBC.CDL.Reals.Validation.PID'
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker(
@@ -210,7 +210,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             shutil.rmtree(results_path, ignore_errors=True)
         results_path.mkdir(parents=True)
 
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        model_name = 'Buildings.Controls.OBC.CDL.Reals.Validation.PID'
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(
@@ -225,7 +225,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             shutil.rmtree(results_path, ignore_errors=True)
         results_path.mkdir(parents=True)
 
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        model_name = 'Buildings.Controls.OBC.CDL.Reals.Validation.PID'
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(

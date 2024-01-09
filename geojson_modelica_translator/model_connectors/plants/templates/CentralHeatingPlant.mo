@@ -73,7 +73,7 @@ model CentralHeatingPlant
     final unit="Pa")
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-160,-40},{-140,-20}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
-  Boiler_TParallel boiHotWat(
+  Boiler_TParallel_new boiHotWat(
     redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
     Q_flow_nominal=QBoi_flow_nominal,
@@ -161,6 +161,7 @@ model CentralHeatingPlant
     "Output pump speed"
     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
 equation
+  connect(on,heaWatPumCon.ON);
   connect(THeaSet,boiHotWat.THeaWatSet)
     annotation (Line(points={{-150,-50},{-72,-50},{-72,-56},{9,-56}},color={0,0,127}));
   connect(on,boiStaCon.on)
@@ -205,8 +206,6 @@ equation
     annotation (Line(points={{-99,-30},{-94,-30},{-94,4},{-82,4}},color={0,0,127}));
   connect(pumOn.y,pumHW.u)
     annotation (Line(points={{-59,10},{-46,10},{-46,72},{12,72},{12,54},{2,54}},color={0,0,127}));
-  connect(boiStaCon.y_On,heaWatPumCon.ON)
-    annotation (Line(points={{-99,70.6},{-88,70.6},{-88,24},{-128,24},{-128,-23.4},{-121,-23.4}},color={255,0,255}));
   connect(mPum_flow.y,heaWatPumCon.masFloPum)
     annotation (Line(points={{-121,40},{-134,40},{-134,-25.6},{-121,-25.6}},color={0,0,127}));
   annotation (

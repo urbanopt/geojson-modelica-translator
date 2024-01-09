@@ -87,7 +87,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip('Compilation failed in OMv1.21. Works in Dymola')
+    @pytest.mark.skip('Connector types are incompatible. HeatingPlantwithCHP:242')
     def test_simulate_chp_system(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
