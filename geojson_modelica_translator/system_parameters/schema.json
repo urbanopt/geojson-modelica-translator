@@ -1213,6 +1213,16 @@
                   }
                 }
               ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Height at which a pump can raise fluid up. ",
+                  "type": "number"
+                }
+              }
             }
           }
         }
@@ -1238,6 +1248,16 @@
                   }
                 }
               ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Height at which a pump can raise fluid up. ",
+                  "type": "number"
+                }
+              }
             }
           }
         }
