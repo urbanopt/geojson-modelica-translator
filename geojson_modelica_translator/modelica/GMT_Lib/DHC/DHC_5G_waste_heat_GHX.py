@@ -98,8 +98,6 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         nbuildings = len(template_data['building_load_files'])
         template_data['lDis'] = self.build_string("lDis = {", "0.5, ", nbuildings)
         template_data['lCon'] = self.build_string("lCon = {", "0.5, ", nbuildings)
-        template_data['dhDis'] = self.build_string("dhDis = {", "0.5, ", nbuildings)
-        template_data['dhCon'] = self.build_string("dhCon = {", "0.6, ", nbuildings)
 
         # 6: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),

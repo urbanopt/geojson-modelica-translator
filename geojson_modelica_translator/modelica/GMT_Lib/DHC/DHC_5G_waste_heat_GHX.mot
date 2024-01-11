@@ -13,10 +13,6 @@ model district
       epsPla=0.935,
       {{ data['lDis'] }},
       {{ data['lCon'] }}
-      ),
-      dis(
-        {{ data['dhDis'] }},
-        {{ data['dhCon'] }}
       )
       );
   parameter String filNam[nBui]={
