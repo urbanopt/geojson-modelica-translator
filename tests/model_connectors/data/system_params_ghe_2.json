@@ -82,6 +82,9 @@
       "central_heating_plant_parameters": {
         "temp_setpoint_hhw": 25
       },
+      "central_pump_parameters": {
+        "pump_design_head": 60000
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
