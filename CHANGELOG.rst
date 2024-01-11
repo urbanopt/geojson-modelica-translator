@@ -1,15 +1,67 @@
 Change Log
 ==========
 
-Version 0.6.0 RC2
------------------
-
-## What's Changed
-### Exciting New Features 🎉
+Version 0.6.0
+-------------
+Exciting New Features 🎉
+"""""""""""""""""""""""
+* Python 311 by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/518
+* add max_electrical_load to building sys-param data by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/530
+* Modifications for GHE  by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/526
+* Add Level 1 5G DES system by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/539
+* Set SWH peak to 1/10th of space heating or min 5000W by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/542
+* Added GHE templates - Issue511 by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/533
+* Add MOS file wrapper and size the 5G mass flow rate by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/548
+* Add OpenModelica compatibility by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/516
+* Modify GHE params by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/537
+* Fixing borefield test breaks due to schema changes by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/550
+* Updating GHE Parameters: Modifying GHE Parameters schema and example files by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/551
+* Enable compile & simulate with OpenModelica in Docker by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/545
+* Enhance and expand microgrid templates and code by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/549
+* Enable numberOfIntervals run option by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/562
+* Breakout package parser class by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/566
+* Add a new GHE district test with new network template models by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/561
+* Add GHE Properties to System Parameter File by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/570
+* Use `filNam` parameter for TEASER loads and add within parsing to PackageParser by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/574
+* Add new `ModelicaProject` class by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/575
+* Add Dymola runner by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/577
 * Template initial microgrid subsystem example by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/569
 * Microgrid heating by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/586
 * Change how ModelicaPaths are built so they also work on Windows computers by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/590
-### Other Changes
+* Refactoring and enhancing to support multiple GHEs in a single district by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/601
+* Replace shell script with call directly to docker by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/607
+* Implement a PyPI release workflow by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/603
+* Support Python 3.12 by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/593
+* Add district nominal pump head to system parameters file by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/610
+Other Changes
+"""""""""""""
+* specify ports for each time series building in instance template by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/525
+* Update license language by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/529
+* Read correct data from sys-param for microgrid electrical load by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/560
+* Prep for prerelease 0.6.0 by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/578
+* initialize empty variable before potential use by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/579
+* Include 5G partial model in generation by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/580
+* Allow skipping of specific files when cloning a modelica project by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/584
+* Add a quick fix for reading gfunction.csv from ghe_id subfolder by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/589
+* Move modelica methods from GMT to modelica-builder by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/591
+* Add model for controlled distribution loop mass flow rate by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/594
+* Allow user to specify Modelica load filename by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/599
+* Decouple gain for distribution and ghx mass flow rates by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/600
+* Closed-loop changes to existing test_single_ghe test by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/597
+* Update documentation for version 0.6.0 by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/592
+* Use Ubuntu 20 and fix CHP model by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/611
+
+**Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/v0.5.0...v0.6.0
+
+Version 0.6.0 RC2
+-----------------
+Exciting New Features 🎉
+"""""""""""""""""""""""
+* Template initial microgrid subsystem example by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/569
+* Microgrid heating by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/586
+* Change how ModelicaPaths are built so they also work on Windows computers by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/590
+Other Changes
+"""""""""""""
 * initialize empty variable before potential use by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/579
 * Include 5G partial model in generation by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/580
 * Allow skipping of specific files when cloning a modelica project by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/584
@@ -18,11 +70,10 @@ Version 0.6.0 RC2
 
 **Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0-rc1...v0.6.0-rc2
 
-
 Version 0.6.0 RC1
 -----------------
-## What's Changed
-### Exciting New Features 🎉
+Exciting New Features 🎉
+"""""""""""""""""""""""
 * Enable numberOfIntervals run option by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/562
 * Breakout package parser class by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/566
 * Add a new GHE district test with new network template models by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/561
@@ -31,17 +82,18 @@ Version 0.6.0 RC1
 * Add new `ModelicaProject` class by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/575
 * Add Dymola runner by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/577
 
-### Other Changes
+Other Changes
+"""""""""""""
 * Read correct data from sys-param for microgrid electrical load by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/560
 * remove ground loads from system parameter by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/576
 
 **Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/0.5.0...v0.6.0-rc1
 
-
 Version 0.5.0
 -------------
-## What's Changed
-### Exciting New Features 🎉
+
+Exciting New Features 🎉
+"""""""""""""""""""""""
 * Python 3.11 support by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/518
 * Add max_electrical_load to building sys-param data by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/530
 * Modifications for GHE by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/526
@@ -51,7 +103,8 @@ Version 0.5.0
 * Add OpenModelica compatibility by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/516
 * Modify GHE params by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/537
 * Enable compile & simulate with OpenModelica in Docker by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/545
-### Other Changes
+Other Changes
+"""""""""""""
 * Specify ports for each time series building in instance template by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/525
 * Update license language by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/529
 * Add MOS file wrapper and size the 5G mass flow rate by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/548
@@ -59,14 +112,16 @@ Version 0.5.0
 * Updating GHE Parameters: Modifying GHE Parameters schema and example files by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/551
 * Enhance and expand microgrid templates and code by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/549
 
-## New Contributors
+New Contributors
+""""""""""""""""
 * @tanushree04 made their first contribution in https://github.com/urbanopt/geojson-modelica-translator/pull/526
 
 **Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1...v0.5.0
 
 Version 0.4.1
 -------------
-## What's Changed
+What's Changed
+""""""""""""""
 * Cli bug fixes
 * Detailed models
 * End-of-year updates to GMT docs
@@ -78,6 +133,7 @@ Version 0.4.0
 As of version 0.4.0 changes will be published using Github automated formatting at the release itself. Those changes are copied here.
 
 Exciting New Features 🎉
+"""""""""""""""""""""""
 * Redeclare the teaser model to use buildings.media.air medium
 * Fmu runner
 * Spawn docker named args
@@ -88,6 +144,7 @@ Exciting New Features 🎉
 * Test with 3.10
 * 4G or 5G timeseries in Dymola
 Other Changes
+"""""""""""""
 * Breakout run in docker command
 * Better error message if modelica timeseries files from sdk are not found
 * Break out build and simulate tests
