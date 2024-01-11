@@ -35,7 +35,8 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 Releasing is only available to individuals with write access to the NREL org. Unfortunately, the NREL org is still
 under a free plan resulting in a maximum of 3 users for the entire org, which have already been allocated.
 
-Building for release is a bit different than development since you will need to handle multiple platforms. See
+Building for release is a bit different than development since you will need to handle multiple platforms (only supporting
+ARM64 and AMD64 as openmodelica does not support 32-bit [only armhf]). See
 [docker's multi-platform images documentation](https://docs.docker.com/build/building/multi-platform/) on how to configure.
 
 ```bash
@@ -46,9 +47,10 @@ docker buildx create --use
 
 # update version of OMC and determine if the latest should be updated. Ideally, the latest should be updated
 # only if the new OMC release is needed to fix previous issues.
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nrel/gmt-om-runner:v2.0.0 --push .
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t nrel/gmt-om-runner:latest --push .
+docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:v2.0.1 --push .
 
+# Push the latest, if required
+docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:latest --push .
 ```
 
 Sign into [Docker Hub](https://hub.docker.com/repository/docker/nrel/gmt-om-runner/general) and update the version

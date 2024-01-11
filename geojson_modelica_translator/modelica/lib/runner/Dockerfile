@@ -15,13 +15,15 @@ RUN apt update && apt --no-install-recommends install -y \
 # tests/GMT_Lib/test_gmt_lib_des.py fails with jammy, works with focal.
 ARG VERSION=1.22.1
 
-RUN export DEBIAN_FRONTEND="noninteractive" && echo "VERSION: $VERSION" && test ! -z "$VERSION" && apt-get update && apt-get upgrade -qy && apt-get dist-upgrade -qy \
-    && apt-get install -qy gnupg wget ca-certificates apt-transport-https \
+RUN export DEBIAN_FRONTEND="noninteractive" && echo "VERSION: $VERSION" && test ! -z "$VERSION" && apt update && apt upgrade -qy && apt dist-upgrade -qy \
+    && apt install -qy gnupg wget ca-certificates apt-transport-https \
     && echo "deb https://build.openmodelica.org/omc/builds/linux/releases/$VERSION/ `cat /etc/lsb-release | grep CODENAME | cut -d= -f2` release" > /etc/apt/sources.list.d/openmodelica.list \
-    && wget https://build.openmodelica.org/apt/openmodelica.asc -O- | apt-key add - \
-    && apt-get update && apt-get upgrade && apt-get dist-upgrade \
-    && apt-get install --no-install-recommends -qy omc \
-    && apt-get clean \
+    && wget -q https://build.openmodelica.org/apt/openmodelica.asc \
+    && apt-key add openmodelica.asc \
+    && rm openmodelica.asc \
+    && apt update && apt upgrade && apt dist-upgrade \
+    && apt install --no-install-recommends -qy omc \
+    && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install MSL 4.0
