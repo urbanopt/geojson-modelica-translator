@@ -5,7 +5,7 @@ description = "Package for converting GeoJSON to Modelica models for Urban Scale
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
 
-readme = "README.rst"
+readme = "README.md"
 
 homepage = "https://docs.urbanopt.net"
 repository = "https://github.com/urbanopt/geojson-modelica-translator"
