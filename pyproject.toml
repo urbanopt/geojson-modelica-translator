@@ -43,6 +43,8 @@ pandas = "2.0.2"
 requests = "^2.28"
 teaser = "0.7.5"
 #teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
+# What do we need Rust bindings for? Uncommenting for now.
+# rpds-py = "^0.17.1"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "~2.0"
