@@ -857,17 +857,17 @@ files = [
 
 [[package]]
 name = "m2r2"
-version = "0.3.3.post2"
+version = "0.3.2"
 description = "Markdown and reStructuredText in a single file."
 optional = false
-python-versions = ">=3.7"
+python-versions = "*"
 files = [
-    {file = "m2r2-0.3.3.post2-py3-none-any.whl", hash = "sha256:86157721eb6eabcd54d4eea7195890cc58fa6188b8d0abea633383cfbb5e11e3"},
-    {file = "m2r2-0.3.3.post2.tar.gz", hash = "sha256:e62bcb0e74b3ce19cda0737a0556b04cf4a43b785072fcef474558f2c1482ca8"},
+    {file = "m2r2-0.3.2-py3-none-any.whl", hash = "sha256:d3684086b61b4bebe2307f15189495360f05a123c9bda2a66462649b7ca236aa"},
+    {file = "m2r2-0.3.2.tar.gz", hash = "sha256:ccd95b052dcd1ac7442ecb3111262b2001c10e4119b459c34c93ac7a5c2c7868"},
 ]
 
 [package.dependencies]
-docutils = ">=0.19"
+docutils = "*"
 mistune = "0.8.4"
 
 [[package]]
@@ -2138,4 +2138,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9, <3.13"
-content-hash = "e2d1e80744f6cad26c5c7634b3c8725c50cb1b19a1fef1c7bc29208d9dba8df6"
+content-hash = "20334b09887eb8b6b70a25b6719a06509fcb3ddbdb98493549c4d9c2c0395420"
