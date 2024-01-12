@@ -56,12 +56,7 @@ class ModelBase(object):
         if system_parameters is not None:
             # TODO: DRY up this handling of different generations
             district_params = self.system_parameters.get_param("district_system")
-            if 'fifth_generation' in district_params:
-                self.district_template_data = {
-                    # "temp_setpoint_hhw": district_params['fifth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
-                    # "temp_setpoint_chw": district_params['fifth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
-                }
-            elif 'fourth_generation' in district_params:
+            if 'fourth_generation' in district_params:
                 self.district_template_data = {
                     "temp_setpoint_hhw": district_params['fourth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
                     "temp_setpoint_chw": district_params['fourth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
@@ -165,8 +160,8 @@ class ModelBase(object):
             output_dict['is_5g_district'] = ''
         return output_dict
 
-    # TODO: this should be implemented here, not in individual classes
+    # This method needs to be defined in each of the derived model connectors
     # def get_modelica_type(self, scaffold)
 
-    # These methods need to be defined in each of the derived model connectors
+    # This method needs to be defined in each of the derived model connectors
     # def to_modelica(self):

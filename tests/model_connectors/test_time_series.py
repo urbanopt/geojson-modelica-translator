@@ -4,6 +4,7 @@
 import os
 
 import pytest
+from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import (
     UrbanOptGeoJson
@@ -11,7 +12,6 @@ from geojson_modelica_translator.geojson.urbanopt_geojson import (
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
     TimeSeries
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.system_parameters.system_parameters import (
     SystemParameters
@@ -63,7 +63,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
             self.assertTrue(os.path.exists(file), f"File does not exist: {file}")
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="OMC Failure")
+    @pytest.mark.skip(reason="Because there is no district in this model, the GMT never instantiates `delTAirHea` and compilation fails.")
     # [/var/lib/jenkins2/ws/LINUX_BUILDS/tmp.build/openmodelica-1.21.0/OMCompiler/Compiler/NFFrontEnd/NFConnectEquations.mo:1038:5-1039:59:writable] Error: Internal error NFConnectEquations.lookupVarAttr could not find the variable ports_aHeaWat[1].m_flow
     def test_build_and_simulate_no_ets(self):
         # load system parameter data
@@ -96,5 +96,8 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         self.run_and_assert_in_docker(
             f'{self.scaffold.project_name}.Loads.B5a6b99ec37f4de7f94020090.TimeSeriesBuilding',
             file_to_load=self.scaffold.package_path,
-            run_path=self.scaffold.project_path
+            run_path=self.scaffold.project_path,
+            start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
+            stop_time=17366400,  # For 1 day duration (in seconds)
+            step_size=3600  # (in seconds)
         )

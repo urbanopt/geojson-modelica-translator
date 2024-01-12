@@ -1,4 +1,4 @@
-<!--Fill in the following information detailing the issue. Make sure to not disclose protected data (e.g. passwords). Screenshots are helpful.-->
+<!--Fill in the following information detailing the issue. Make sure to not disclose protected data (e.g., passwords). Screenshots are helpful.-->
 
 ### Expected Behavior
 
@@ -8,9 +8,9 @@
 
 ### Version Information
 
-<!--If appropriate, fill in the versions of the dependencies that may be causing the issue.-->
+<!--Please fill in the versions of your dependencies to help us diagnose the issue.-->
 
-Modelica Buildings Library: `9.1.0 or GitHubBranch/SHA (e.g., issue2204_gmt_mbl /SHA_XYZ)`
-Modelica Standard Library: `4.0`
-TEASER: `0.7.5`
-Python: `3.9.13`
+Modelica Buildings Library: `X.Y.Z`
+Modelica Standard Library: `X.Y.Z`
+TEASER: `X.Y.Z`
+Python: `X.Y.Z`

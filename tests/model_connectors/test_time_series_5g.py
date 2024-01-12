@@ -73,10 +73,22 @@ class DistrictSystemTest(TestCaseBase):
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="OMC Failure: Trying to override final element allowFlowReversalSer with modifier '= true'")
+    # test_district_5g.py is this same test but with both buildings, and it works.
+    @pytest.mark.skip(reason="https://github.com/urbanopt/geojson-modelica-translator/issues/572")
     def test_simulate_district_system(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path
+        )
+
+    @pytest.mark.dymola
+    @pytest.mark.skip(reason="Structurally singular error in Dymola.")
+    def test_simulate_district_system_in_dymola(self):
+        # need to just pass the dir, dymola runner looks for package.mo
+        self.run_and_assert_in_dymola(
+            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            file_to_load=self.district._scaffold.project_path,
+            run_path=self.district._scaffold.project_path,
+            # debug=True
         )

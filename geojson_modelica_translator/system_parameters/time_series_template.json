@@ -67,13 +67,80 @@
       },
       "central_heating_plant_parameters": {
         "heat_flow_nominal": 8001,
-        "mass_hhw_flow_nominal": 11,
-        "boiler_water_flow_minimum": 11,
+        "mass_hhw_flow_nominal": 1,
+        "boiler_water_flow_minimum": 0.1,
         "pressure_drop_hhw_nominal": 55001,
         "pressure_drop_setpoint": 50000,
         "temp_setpoint_hhw": 54,
         "pressure_drop_hhw_valve_nominal": 6001,
         "chp_installed": false
+      },
+      "central_pump_parameters": {
+        "pump_design_head": 60000
+      }
+    },
+    "fifth_generation": {
+      "ghe_parameters": {
+        "version": "1.0",
+        "ghe_dir": "tests/system_parameters/data",
+        "fluid": {
+          "fluid_name": "Water",
+          "concentration_percent": 0.0,
+          "temperature": 20
+        },
+        "grout": {
+          "conductivity": 1.0,
+          "rho_cp": 3901000
+        },
+        "soil": {
+          "conductivity": 2.0,
+          "rho_cp": 2343493,
+          "undisturbed_temp": 18.3
+        },
+        "pipe": {
+          "inner_diameter": 0.0216,
+          "outer_diameter": 0.0266,
+          "shank_spacing": 0.0323,
+          "roughness": 1e-06,
+          "conductivity": 0.4,
+          "rho_cp": 1542000,
+          "arrangement": "singleutube"
+        },
+        "simulation": {
+          "num_months": 240
+        },
+        "geometric_constraints": {
+          "b_min": 3.0,
+          "b_max": 10.0,
+          "max_height": 135.0,
+          "min_height": 60.0,
+          "method": "rectangle"
+        },
+        "design": {
+          "method": "AREAPROPORTIONAL",
+          "flow_rate": 0.2,
+          "flow_type": "borehole",
+          "max_eft": 35.0,
+          "min_eft": 5.0
+        },
+        "ghe_specific_params": [
+          {
+            "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+            "ghe_geometric_params": {
+              "length_of_ghe": 100,
+              "width_of_ghe": 100
+            },
+            "borehole": {
+              "buried_depth": 2.0,
+              "diameter": 0.15,
+              "length_of_boreholes": 1.0,
+              "number_of_boreholes": 5
+            }
+          }
+        ]
+      },
+      "central_pump_parameters": {
+        "pump_design_head": 60000
       }
     }
   },

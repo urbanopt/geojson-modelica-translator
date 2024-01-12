@@ -842,19 +842,19 @@
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "[unused] Nominal district heating load. (W)",
+          "description": "Nominal district heating load. (W)",
           "type": "number",
           "default": 8000
         },
         "mass_hhw_flow_nominal": {
-          "description": "[unused] Nominal heating water mass flow rate. (kg/s)",
+          "description": "Nominal heating water mass flow rate. (kg/s)",
           "type": "number",
-          "default": 10
+          "default": 1
         },
         "boiler_water_flow_minimum": {
           "description": "[unused] Boiler minimum  water mass flow rate. (kg/s)",
           "type": "number",
-          "default": 10
+          "default": 0.1
         },
         "pressure_drop_hhw_nominal": {
           "description": "[unused] Nominal heating water (boiler side) pressure drop. (Pa)",
@@ -919,7 +919,7 @@
           "type": "string"
         },
         "ghe_dir": {
-          "description": "Results directory for GHE Designer",
+          "description": "Results directory for GHE Designer. Absolute path, or relative to the sys-param file.",
           "type": "string"
         },
         "ghe_specific_params": {
@@ -1213,6 +1213,16 @@
                   }
                 }
               ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Measured in Pa",
+                  "type": "number"
+                }
+              }
             }
           }
         }
@@ -1225,15 +1235,6 @@
       "properties": {
         "fifth_generation": {
           "properties": {
-            "central_cooling_plant_parameters": {
-              "$ref": "#/definitions/central_cooling_plant_parameters"
-            },
-            "central_heating_plant_parameters": {
-              "$ref": "#/definitions/central_heating_plant_parameters"
-            },
-            "combined_heat_and_power_parameters": {
-              "$ref": "#/definitions/combined_heat_and_power_parameters"
-            },
             "ghe_parameters": {
               "$ref": "#/definitions/ghe_parameters"
             },
@@ -1247,6 +1248,16 @@
                   }
                 }
               ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Measured in Pa.",
+                  "type": "number"
+                }
+              }
             }
           }
         }
@@ -1388,13 +1399,6 @@
             "diameter"
           ],
           "additionalProperties": true
-        },
-        "ground_loads": {
-          "description": "Heat rejection or extraction loads (in Watts) of the ground heat exchanger. \n\n Determined from the Thermal Network sizing, and used for ground heat exchanger sizing.\n\n Heat extraction loads are positive, and heat rejection loads are negative.",
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
         },
         "ghe_geometric_params": {
           "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
@@ -1599,6 +1603,15 @@
       "description": "Design parameters used for GHE sizing.",
       "type": "object",
       "properties": {
+        "method": {
+          "description": "Building load distribution method for Ground Heat Exchanger sizing",
+          "type": "string",
+          "enum": [
+            "AREAPROPORTIONAL",
+            "UPSTREAM"
+          ],
+          "default": "AREAPROPORTIONAL"
+        },
         "flow_rate": {
           "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
           "type": "number",
@@ -1626,6 +1639,7 @@
         }
       },
       "required": [
+        "method",
         "flow_rate",
         "flow_type",
         "max_eft",

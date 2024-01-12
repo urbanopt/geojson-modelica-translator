@@ -12,6 +12,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Type hinting
+.mypy_cache/
+
 # Distribution / packaging
 .Python
 env/
@@ -104,7 +107,10 @@ tests/output
 tests/*/microgrid_output
 tests/output_ets
 tests/*/output
-/geojson_modelica_translator/modelica/buildingslibrary/
-not/a/real/**
-# TODO: this file shoud not be writtent out, but it is... fix this eventually
-/geojson_modelica_translator/modelica/ets_cooling_indirect_templated.mo
+tests/modelica/data/packages/*/*.mat
+tests/modelica/data/packages/*/*.txt
+tests/modelica/data/packages/*/*.c
+tests/modelica/data/packages/*/dymosim
+tests/management/data/sdk_project_scraps/run/baseline_scenario/system_parameter.json
+geojson_modelica_translator/modelica/buildingslibrary/
+not/

@@ -258,6 +258,7 @@ protected
     sta_default)
     "Specific heat capacity of the fluid";
 equation
+  connect(on,CHWPumCon.u);
   connect(weaDat.weaBus,weaBus)
     annotation (Line(points={{-120,-70},{-100,-70},{-100,-52}},color={255,204,51},thickness=0.5));
   connect(senTCHWSup.port_b,port_b)

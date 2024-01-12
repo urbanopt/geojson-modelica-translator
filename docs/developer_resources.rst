@@ -41,7 +41,7 @@ GMT has "building blocks" that it uses to define and connect models, which curre
 
 Each block type is a collection of models, e.g. the Loads includes time series and spawn models. A model in GMT refers to an abstracted Modelica model. It generates Modelica code (the Modelica model) and is used to define connections to other models.
 
-Each block type can "connect" (note this "connect" does not refer to Modelica's concept of "connect") to other specific block types. For example, you can connect a load to an ETS, but you cannot connect a load to a network.
+Each block type can "connect" (note this "connect" does not refer to Modelica's concept of "connect") to other specific block types. For example, you can connect a load to an ETS, but you cannot connect a load to a network. However, some models (i.e. 5G) have an ETS embedded in them.
 
 Each block type has a corresponding directory inside of :code:`geojson_modelica_translator/model_connectors`, which contains its different model types (e.g. for Loads it contains the Time Series model and others).
 
@@ -58,44 +58,42 @@ to follow the detailed instructions for :ref:`Docker Installation` in the Gettin
 
 Follow the instructions below in order to configure your local environment:
 
-* If you need a custom Modelica Buildings Library:
-    * Clone the `MBL <https://github.com/lbl-srg/modelica-buildings>`_ into a working directory outside of the GMT directory
-    * Ensure your MODELICAPATH env var is set to the MBL you want to use! See the documentation at :ref:`MBL Installation`
-    * Change to the directory inside the modelica-buildings repo you just checked out. (:code:`cd modelica-buildings`)
-    * Install git-lfs
-        * Mac: :code:`brew install git-lfs; git lfs install`
-        * Ubuntu: :code:`sudo apt install git-lfs; git lfs install`
-    * The current GMT code works with the :code:`maint_9.1.x` branch of the MBL. GMT version :code:`0.2.3`, which uses JModelica, requires the :code:`issue2204_gmt_mbl` branch of the MBL.
+* Get the Modelica Buildings Library. See the documentation at :ref:`MBL Installation`
 
 * Clone `the GMT repo <https://github.com/urbanopt/geojson-modelica-translator>`_ into a working directory
-* (optional/as-needed) Add Python 3 to the environment variables
-* For developers, dependency management is through `Poetry`_. Installation is accomplished by running :code:`pip install poetry`.
-* Return to the GMT root directory and run :code:`poetry install`
-* Test if everything is installed correctly by running :code:`poetry run pytest -m 'not compilation and not simulation'`. This will run all the unit and integration tests.
+    * (optional/as-needed) Add Python 3 to the environment variables
+    * As general guidance, we recommend using virtual environments to avoid dependencies colliding between your Python projects. `venv <https://docs.python.org/3/library/venv.html>`_ is the Python native solution that will work everywhere, though other options may be more user-friendly.
+    * Some popular alternatives are:
+        * `pyenv <https://github.com/pyenv/pyenv>`_ and `the virtualenv plugin <https://github.com/pyenv/pyenv-virtualenv>`_ work together nicely for Linux/Mac machines
+        * `virtualenv <https://virtualenv.pypa.io/en/latest/>`_
+        * `miniconda <https://docs.conda.io/projects/miniconda/en/latest/>`_
+* For developers, dependency management is through `Poetry`_. Poetry can be acquired by running :code:`pip install poetry`.
+    * If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.
+* Move to the GMT root directory and run :code:`poetry install` to install the dependencies.
+* Verify that everything is installed correctly by running :code:`poetry run pytest -m 'not compilation and not simulation and not dymola'`. This will run all the unit and integration tests.
 * Follow the instructions below to install pre-commit.
 * To test pre-commit and building the documentation, you can run
 
 .. code-block::
 
-    poetry install
-    poetry run pytest -m 'not compilation and not simulation' --doctest-modules -v --cov-report term-missing --cov .
+    poetry run pytest -m 'not compilation and not simulation and not dymola' --doctest-modules -v --cov-report term-missing --cov .
 
-The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
-of Modelica models that are created and persisted into the :code:`tests/output` folder and the
+The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
+of Modelica models that are created and persisted into the :code:`tests/GMT_Lib/output` folder and the
 :code:`tests/model_connectors/output` folder. These files can be inspected in your favorite Modelica editor.
 
 Pre-commit
 **********
 
 This project uses `pre-commit <https://pre-commit.com/>`_ to ensure code consistency.
-To enable pre-commit on every commit run the following from the command line from within the git checkout of the
+To enable pre-commit for your local development process, run the following from the command line from within the git checkout of the
 GMT:
 
 .. code-block:: bash
 
     pre-commit install
 
-To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.
+To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing. CI will fail if pre-commit hasn't been run locally.
 
 .. code-block:: bash
 
@@ -217,58 +215,13 @@ simulation mapper class from existing at that level.
 Running Simulations
 -------------------
 
-The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. It is recommended
-to use this method in a python script as it will copy the required files into the correct location. If
-desired, a user can run the simulations manually using JModelica (via Docker). Follow the steps below to configure
-the runner to work locally.
-
-* Make sure jm_ipython.sh is in your local path.
-* After running the :code:`pytest`, go into the :code:`geojson_modelica_translator/modelica/lib/runner/` directory.
-* Copy :code:`jmodelica.py` to the :code:`tests/model_connectors/output` directory.
-* From the :code:`tests/model_connectors/output` directory, run examples using either of the the following:
-    * :code:`jm_ipython.sh jmodelica.py spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling`
-    * :code:`jm_ipython.sh jmodelica.py spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo`
-    * The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.
-* Install matplotlib package. :code:`pip install matplotlib`
-* Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.
-
-    .. code-block:: python
-
-        %matplotlib inline
-        import os
-        import matplotlib.pyplot as plt
-
-        from buildingspy.io.outputfile import Reader
-
-        mat = Reader(os.path.join(
-            "tests", "model_connectors", "output", "spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat"),
-            "dymola"
-        )
-        # List off all the variables
-        for var in mat.varNames():
-            print(var)
-
-        (time1, zn_1_temp) = mat.values("bui.znPerimeter_ZN_3.TAir")
-        (_time1, zn_4_temp) = mat.values("bui.znPerimeter_ZN_4.TAir")
-        plt.style.use('seaborn-whitegrid')
-
-        fig = plt.figure(figsize=(16, 8))
-        ax = fig.add_subplot(211)
-        ax.plot(time1 / 3600, zn_1_temp - 273.15, 'r', label='$T_1$')
-        ax.plot(time1 / 3600, zn_4_temp - 273.15, 'b', label='$T_4$')
-        ax.set_xlabel('time [h]')
-        ax.set_ylabel(r'temperature [$^\circ$C]')
-        # Simulation is only for 168 hours?
-        ax.set_xlim([0, 168])
-        ax.legend()
-        ax.grid(True)
-        fig.savefig('indoor_temp_example.png')
-
+The GeoJSON to Modelica Translator contains a :code:`ModelicaRunner.run_in_docker(...)` method. The test suite uses this to run most of our models with OpenModelica.
 
 Release Instructions
 --------------------
 
 * Bump version to <NEW_VERSION> in pyproject.toml (use semantic versioning).
+* Ensure mbl_version() in geojson_modelica_translator/utils.py is returning the correct MBL version.
 * Run :code:`poetry update` to ensure the lock file is up to date with the latest "pinned" dependencies.
 * Run :code:`pre-commit run --all-files` to ensure code is formatted properly.
 * Create a PR into develop with the updated version.

@@ -5,10 +5,11 @@ import os
 import shutil
 from pathlib import Path
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.plants.plant_base import (
     PlantBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import simple_uuid
 
 
@@ -44,8 +45,8 @@ class CoolingPlant(PlantBase):
                 os.path.join(scaffold.plants_path.resources_dir, weather_filepath.name)
             )
             weather_file_modelica_string = f'modelica://{scaffold.project_name}/' \
-                                           f'{scaffold.plants_path.resources_relative_dir}/' \
-                                           f'{weather_filepath.name}'
+                f'{scaffold.plants_path.resources_relative_dir}/' \
+                f'{weather_filepath.name}'
 
         template_data = {
             "nominal_values": {
@@ -140,4 +141,4 @@ class CoolingPlant(PlantBase):
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Plants.CentralCoolingPlant'
+        return 'Plants.CentralCoolingPlant'

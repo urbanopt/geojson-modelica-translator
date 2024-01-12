@@ -1,0 +1,20 @@
+// Connections for sub-components
+  {% raw %}connect(dis.port_bDisSup, TIn.port_a)
+    annotation (Line(points={{90,10},{110,10},{110,-20}}, color={0,127,255}));
+  connect(TIn.port_b, pumDis.port_a)
+    annotation (Line(points={{110,-40},{110,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
+  connect(expVes.ports[1], pumDis.port_a)
+    annotation (Line(points={{-20,-100},{-20,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
+  connect(conPum.y, gai.u)
+    annotation (Line(points={{-98,-90},{-82,-90}}, color={0,0,127}));
+  connect(gai.y, pumDis.m_flow_in)
+   annotation (Line(points={{-58,-90},{-26,-90},{-26,-60},{-32,-60}}, color={0,0,127}));
+  connect(dis.TOut, conPum.TMix)
+   annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
+  connect(TIn.T, conPum.TSouIn[1])
+   annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
+  connect(TOut.port_b, dis.port_aDisSup)
+    annotation (Line(points={{26,10},{50,10}}, color={0,127,255}));
+  connect(TOut.T, conPum.TSouOut[1])
+    annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
+  {% endraw %}

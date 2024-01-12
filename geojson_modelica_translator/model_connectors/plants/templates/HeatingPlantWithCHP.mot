@@ -73,7 +73,7 @@ within {{ project_name }}.Plants;
     final unit="Pa")
     "Measured pressure difference"
     annotation (Placement(transformation(extent={{-160,-40},{-140,-20}}),iconTransformation(extent={{-140,-50},{-100,-10}})));
-  Boiler_TParallel boiHotWat(
+  Boiler_TParallel_new boiHotWat(
     redeclare package Medium=Medium,
     m_flow_nominal=mBoi_flow_nominal,
     Q_flow_nominal=QBoi_flow_nominal,
@@ -173,10 +173,9 @@ within {{ project_name }}.Plants;
   Modelica.Blocks.Sources.Constant TWatOutSet(
     k=273.15+60)
     annotation (Placement(transformation(extent={{-120,52},{-100,72}})));
-  Buildings.Fluid.Movers.FlowControlled_m_flow fan(
+  Buildings.Fluid.Movers.Preconfigured.FlowControlled_m_flow fan(
     redeclare package Medium=Medium,
-    m_flow_nominal=0.4,
-    nominalValuesDefineDefaultPressureCurve=true)
+    m_flow_nominal=0.4)
     annotation (Placement(transformation(extent={{-172,-132},{-152,-110}})));
   Buildings.HeatTransfer.Sources.FixedTemperature preTem(
     T(
@@ -240,7 +239,7 @@ equation
     annotation (Line(points={{-99,-30},{-94,-30},{-94,4},{-82,4}},color={0,0,127}));
   connect(pumOn.y,pumHW.u)
     annotation (Line(points={{-59,10},{-46,10},{-46,72},{12,72},{12,54},{2,54}},color={0,0,127}));
-  connect(boiStaCon.y_On,heaWatPumCon.ON)
+  connect(on,heaWatPumCon.ON)
     annotation (Line(points={{-99,70.6},{-88,70.6},{-88,24},{-128,24},{-128,-23.4},{-121,-23.4}},color={255,0,255}));
   connect(mPum_flow.y,heaWatPumCon.masFloPum)
     annotation (Line(points={{-121,40},{-134,40},{-134,-25.6},{-121,-25.6}},color={0,0,127}));

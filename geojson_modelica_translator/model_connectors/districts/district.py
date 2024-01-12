@@ -4,6 +4,7 @@
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
+from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import (
@@ -12,8 +13,8 @@ from geojson_modelica_translator.model_connectors.couplings.diagram import (
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.utils import mbl_version
 
 
 def render_template(template_name, template_params):
@@ -59,7 +60,11 @@ class District:
 
         # create the root package
         root_package = PackageParser.new_from_template(
-            self._scaffold.project_path, self._scaffold.project_name, order=[])
+            self._scaffold.project_path,
+            self._scaffold.project_name,
+            order=[],
+            mbl_version=mbl_version(),
+        )
         root_package.save()
 
         # generate model modelica files
@@ -103,7 +108,7 @@ class District:
             coupling_load = coupling.get_load()
             if coupling_load is not None:
                 # read sys params file for the load
-                building_sys_params = self.system_parameters.get_param_by_building_id(coupling_load.building_id, '$')
+                building_sys_params = self.system_parameters.get_param_by_id(coupling_load.building_id, '$')
                 template_context['sys_params']['building'] = building_sys_params
                 # Note which load is being used, so ports connect properly in couplings/5G_templates/ConnectStatements
                 template_context['sys_params']['load_num'] = load_num
@@ -128,7 +133,7 @@ class District:
             template_params.update(**common_template_params)
 
             if issubclass(type(model), LoadBase):
-                building_sys_params = self.system_parameters.get_param_by_building_id(model.building_id, '$')
+                building_sys_params = self.system_parameters.get_param_by_id(model.building_id, '$')
                 template_params['sys_params']['building'] = building_sys_params
 
             templated_instance, instance_template_path = model.render_instance(template_params)
@@ -141,7 +146,7 @@ class District:
         # render the full district file
         if 'fifth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem5G.mot', district_template_params)
-        else:
+        elif 'fourth_generation' in common_template_params['sys_params']['district_system']:
             final_result = render_template('DistrictEnergySystem.mot', district_template_params)
         with open(self.district_model_filepath, 'w') as f:
             f.write(final_result)

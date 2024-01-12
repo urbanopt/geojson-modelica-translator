@@ -39,6 +39,14 @@ def linecount(filename: Path) -> int:
     return len(open(filename).readlines())
 
 
+def mbl_version():
+    """
+    Returns the version of the Modelica Buildings Library (MBL) used by the
+    geojson-modelica-translator.
+    """
+    return "10.0.0"
+
+
 class ModelicaPath(object):
     """
     Class for storing Modelica paths. This allows the path to point to
@@ -83,7 +91,7 @@ class ModelicaPath(object):
         if self.root_dir is None:
             return self.files_relative_dir
         else:
-            return os.path.join(self.root_dir, self.name)
+            return f"{self.root_dir}/{self.name}"
 
     @property
     def resources_relative_dir(self):
@@ -93,7 +101,7 @@ class ModelicaPath(object):
 
         :return: string, relative resource's data path
         """
-        return os.path.join("Resources", "Data", self.name)
+        return f"Resources/Data/{self.name}"
 
     @property
     def scripts_relative_dir(self, platform='Dymola'):
@@ -102,7 +110,7 @@ class ModelicaPath(object):
 
         :return: string, relative scripts path
         """
-        return os.path.join("Resources", "Scripts", self.name, platform)
+        return f"Resources/Scripts/{self.name}/{platform}"
 
     @property
     def files_relative_dir(self):
@@ -120,7 +128,7 @@ class ModelicaPath(object):
         if self.root_dir is None:
             return self.resources_relative_dir
         else:
-            return os.path.join(self.root_dir, self.resources_relative_dir)
+            return f"{self.root_dir}/{self.resources_relative_dir}"
 
     @property
     def scripts_dir(self):
@@ -133,7 +141,7 @@ class ModelicaPath(object):
         if self.root_dir is None:
             return self.scripts_relative_dir
         else:
-            return os.path.join(self.root_dir, self.scripts_relative_dir)
+            return f"{self.root_dir}/{self.scripts_relative_dir}"
 
 
 # This is used for some test cases where we need deterministic IDs to be generated

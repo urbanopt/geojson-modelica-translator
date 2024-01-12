@@ -87,10 +87,12 @@ class CombinedHeatingPowerTest(TestCaseBase):
         assert (root_path / 'DistrictEnergySystem.mo').exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip('OMC Failure: Simulation execution failed for model')
     def test_simulate_chp_system(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
             file_to_load=self.district._scaffold.package_path,
-            run_path=self.district._scaffold.project_path
+            run_path=self.district._scaffold.project_path,
+            start_time=0,  # Day 0 (in seconds)
+            stop_time=9999,  # For 2.78 hours (in seconds)
+            step_size=300  # (in seconds)
         )

@@ -10,12 +10,12 @@ from tempfile import mkstemp
 
 import numpy as np
 from modelica_builder.model import Model
+from modelica_builder.package_parser import PackageParser
 from teaser.project import Project
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import (
     ModelicaPath,
     convert_c_to_k,
@@ -104,7 +104,7 @@ class Teaser(LoadBase):
             )
 
             prj.used_library_calc = "IBPSA"
-            prj.number_of_elements_calc = self.system_parameters.get_param_by_building_id(
+            prj.number_of_elements_calc = self.system_parameters.get_param_by_id(
                 self.building_id, "load_model_parameters.rc.order"
             )
             prj.merge_windows_calc = False
@@ -122,7 +122,7 @@ class Teaser(LoadBase):
     def fix_gains_file(self, f):
         """Temporary hack to fix the gains files in TEASER. This method does the following:
             * makes the dimension of the matrix to 8761,4
-            * addes in a timestep for t=0
+            * adds in a timestep for t=0
 
         :param f: string, fully qualified path to file
         :return: None
@@ -171,7 +171,6 @@ class Teaser(LoadBase):
         # This for loop does *a lot* of work to make the models compatible for the project structure.
         # Need to investigate moving this into a more testable location.
         # create a list of strings that we need to replace in all the file as we go along
-        string_replace_list = []
         mos_weather_filename = self.system_parameters.get_param("$.weather")
         # create a new modelica based path for the buildings # TODO: make this work at the toplevel, somehow.
         b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
@@ -196,13 +195,7 @@ class Teaser(LoadBase):
             # internal gain files. The next method can be removed once the TEASER development branch is
             # merged into master/main and released.
             self.fix_gains_file(f"{b_modelica_path.resources_dir}/{new_file_name}")
-
-            string_replace_list.append(
-                (
-                    f"Project/{self.building_name}/{self.building_name}_Models/{os.path.basename(f)}",
-                    f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}",
-                )
-            )
+            self.internal_gains_file = f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}"
 
         # process each of the thermal zones
         thermal_zone_files = []
@@ -228,19 +221,13 @@ class Teaser(LoadBase):
             mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTilRoof", "lat")
 
             # updating path to internal loads
-            for s in string_replace_list:
-                new_file_path = s[1]
-                new_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{new_file_path}")'''
-                old_file_path = s[0]
-                old_resource_arg = f'''Modelica.Utilities.Files.loadResource("modelica://{old_file_path}")'''
 
-                mofile.update_component_modification(
-                    "Modelica.Blocks.Sources.CombiTimeTable",
-                    "internalGains",
-                    "fileName",
-                    new_resource_arg,
-                    if_value=old_resource_arg
-                )
+            mofile.update_component_modification(
+                "Modelica.Blocks.Sources.CombiTimeTable",
+                "internalGains",
+                "fileName",
+                "Modelica.Utilities.Files.loadResource(filNam)"
+            )
 
             # add heat port convective heat flow.
             mofile.insert_component(
@@ -306,6 +293,13 @@ class Teaser(LoadBase):
                 string_comment='Number of fluid ports.',
                 annotations=['connectorSizing=true']
             )
+            # Add a parameter to put the load filename at the top of the model
+            mofile.add_parameter(
+                'String', 'filNam',
+                assigned_value=f'"modelica://{self.internal_gains_file}"',
+                string_comment='modelica path to the internal gains file used in the model CombiTimeTable'
+            )
+
             # Set the fraction latent person in the template by simply replacing the value
             mofile.insert_component(
                 'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
@@ -336,7 +330,7 @@ class Teaser(LoadBase):
             mofile.remove_connect('weaDat.weaBus', 'weaBus')
 
             # add new port connections
-            rc_order = self.system_parameters.get_param_by_building_id(
+            rc_order = self.system_parameters.get_param_by_id(
                 self.building_id, "load_model_parameters.rc.order"
             )
             thermal_zone_name = None
@@ -515,36 +509,36 @@ class Teaser(LoadBase):
                 "path": os.path.dirname(mos_weather_filename),
             },
             "nominal_values": {
-                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_supply"
                 )),
-                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_chw_return"
                 )),
-                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_supply"
                 )),
-                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_hw_return"
                 )),
-                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
                 )),
-                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_building_id(
+                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
                 )),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_liquid_heating",
                 ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_liquid_cooling",
                 ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_electric_heating",
                 ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.rc.has_electric_cooling",
                 ) else "false",
             }
@@ -634,4 +628,4 @@ class Teaser(LoadBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+        return f'Loads.{self.building_name}.building'

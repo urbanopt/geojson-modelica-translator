@@ -3,8 +3,9 @@
 
 from pathlib import Path
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 
 
 class SimpleGMTBase(ModelBase):
@@ -17,7 +18,7 @@ class SimpleGMTBase(ModelBase):
         super().__init__(system_parameters, template_dir)
 
     def to_modelica(self, output_dir: Path, model_name: str, param_data: dict, iteration=None,
-                    save_file_name=None, generate_package=False) -> None:
+                    save_file_name=None, generate_package=False, partial_files: dict = None) -> None:
         """Render the template to a Modelica file.
 
         Args:
@@ -31,6 +32,8 @@ class SimpleGMTBase(ModelBase):
                                             Defaults to None.
             generate_package (bool, optional): If True, then a package.mo and package.order file will be created
                                                alongside the rendered template (Modelica) file. Defaults to False.
+            partial_files (dict, optional): If the model has partial files, then this is a dictionary of the
+                                            partial file name and the Modelica file name to save it as. Defaults to None.
         """
         # render template to final modelica file
         model_template = self.template_env.get_template(f"{model_name}.mot")
@@ -52,13 +55,28 @@ class SimpleGMTBase(ModelBase):
             data=param_data
         )
 
+        # store the order of the models that will be in the package (if requested)
+        package_order = []
+        package_order.append(save_file_name.stem)
+
+        # Check if there are partial models (or other templated data) to be evaluated / saved.
+        if partial_files:
+            for template, filename in partial_files.items():
+                self.run_template(
+                    template=self.template_env.get_template(f"{template}.mot"),
+                    save_file_name=output_dir / f"{filename}.mo",
+                    project_name=output_dir.stem,
+                    data=param_data
+                )
+                package_order.insert(0, filename)
+
         # include package.mo and package.order files if requested.
         # TODO: This will need to be updated to support multiple models in the "order".
         if generate_package:
             package = PackageParser.new_from_template(
                 str(output_dir),
                 output_dir.stem,
-                order=[save_file_name.stem],
+                order=package_order,
                 within=output_dir.parent.stem
             )
             package.save()

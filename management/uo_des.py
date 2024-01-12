@@ -24,7 +24,7 @@ def cli():
 
 @cli.command(short_help="Create sys-param file")
 @click.argument(
-    'sys_param_filename',
+    "sys_param_filename",
     type=click.Path(file_okay=True, dir_okay=False),
 )
 @click.argument(
@@ -53,7 +53,21 @@ def cli():
     help="If specified, microgrid inputs will be added to system parameters file",
     default=False
 )
-def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Path, feature_file: Path, overwrite: bool, microgrid: bool):
+@click.option(
+    '-g',
+    '--ghe',
+    is_flag=True,
+    help="If specified, Ground Heat Exchanger properties will be added to System Parameters File",
+    default=False
+)
+def build_sys_param(model_type: str,
+                    sys_param_filename: Path,
+                    scenario_file: Path,
+                    feature_file: Path,
+                    ghe: bool,
+                    overwrite: bool,
+                    microgrid: bool
+                    ):
     """
     Create system parameters file using uo_sdk output
 
@@ -72,19 +86,21 @@ def build_sys_param(model_type: str, sys_param_filename: Path, scenario_file: Pa
     :param sys_param_filename: Path, location & name of json output file to save
     :param scenario_file: Path, location of SDK scenario_file
     :param feature_file: Path, location of SDK feature_file
+    :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
     :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
+    :param microgrid: Boolean, flag to add Microgrid properties to System Parameter File
     """
 
     # Use scenario_file to be consistent with sdk
     scenario_name = Path(scenario_file).stem
     scenario_dir = Path(scenario_file).parent / 'run' / scenario_name
-
     sp = SystemParameters()
     sp.csv_to_sys_param(
         model_type=model_type,
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
         feature_file=Path(feature_file),
+        ghe=ghe,
         overwrite=overwrite,
         microgrid=microgrid
     )
@@ -160,7 +176,25 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     required=True,
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-def run_model(modelica_project: Path):
+@click.argument(
+    "start_time",
+    default=17280000,
+    type=int,
+    required=False,
+)
+@click.argument(
+    "stop_time",
+    default=17366400,
+    type=int,
+    required=False,
+)
+@click.argument(
+    "step_size",
+    default=90,
+    type=int,
+    required=False,
+)
+def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int):
     """
     \b
     Run the Modelica project in a docker-based environment.
@@ -187,10 +221,14 @@ def run_model(modelica_project: Path):
     mr.run_in_docker('compile_and_run',
                      f'{project_name}.Districts.DistrictEnergySystem',
                      file_to_load=run_path / 'package.mo',
-                     run_path=run_path
+                     run_path=run_path,
+                     start_time=start_time,
+                     stop_time=stop_time,
+                     step_size=step_size,
                      )
 
-    if (run_path.parent / f'{project_name}/{project_name}.Districts.DistrictEnergySystem_results' / f'{project_name}_Districts_DistrictEnergySystem_res.mat').exists():
-        print(f"\nModelica model {project_name} ran successfully")
+    run_location = run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results'
+    if (run_location / f'{project_name}.Districts.DistrictEnergySystem_res.mat').exists():
+        print(f"\nModelica model {project_name} ran successfully and can be found in {run_location}")
     else:
-        raise SystemExit(f"\n{project_name} failed. Check the error log at {project_name}_results/stdout.log for more info.")
+        raise SystemExit(f"\n{project_name} failed. Check the error log at {run_location}/stdout.log for more info.")

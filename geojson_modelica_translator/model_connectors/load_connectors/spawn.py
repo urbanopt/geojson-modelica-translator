@@ -4,10 +4,11 @@
 import os
 import shutil
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
 from geojson_modelica_translator.utils import (
     ModelicaPath,
     convert_c_to_k,
@@ -48,48 +49,48 @@ class Spawn(LoadBase):
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier
 
-        idf_filename = self.system_parameters.get_param_by_building_id(
+        idf_filename = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.idf_filename"
         )
-        thermal_zones = self.system_parameters.get_param_by_building_id(
+        thermal_zones = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.thermal_zone_names",
         )
-        zone_nom_htg_loads = self.system_parameters.get_param_by_building_id(
+        zone_nom_htg_loads = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.zone_nom_htg_loads",
         )
-        zone_nom_clg_loads = self.system_parameters.get_param_by_building_id(
+        zone_nom_clg_loads = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
         )
         # TODO: pick up default value from schema if not specified in system_parameters,
         # to avoid the inline if/then statement in nominal_values below
-        has_liquid_heating = self.system_parameters.get_param_by_building_id(
+        has_liquid_heating = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.has_liquid_heating",
         )
-        has_liquid_cooling = self.system_parameters.get_param_by_building_id(
+        has_liquid_cooling = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.has_liquid_cooling",
         )
-        has_electric_heating = self.system_parameters.get_param_by_building_id(
+        has_electric_heating = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.has_electric_heating",
         )
-        has_electric_cooling = self.system_parameters.get_param_by_building_id(
+        has_electric_cooling = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.has_electric_cooling",
         )
-        hhw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        hhw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_supply",
         ))
-        hhw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        hhw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.temp_hw_return",
         ))
-        chw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        chw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.temp_chw_supply",
         ))
-        chw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        chw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.temp_chw_return",
         ))
-        temp_setpoint_cooling = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        temp_setpoint_cooling = convert_c_to_k(self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
         ))
-        temp_setpoint_heating = convert_c_to_k(self.system_parameters.get_param_by_building_id(
+        temp_setpoint_heating = convert_c_to_k(self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
         ))
 
@@ -241,4 +242,4 @@ class Spawn(LoadBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+        return f'Loads.{self.building_name}.building'

@@ -3,7 +3,7 @@
 
 import json
 import logging
-import os
+import math
 from copy import deepcopy
 from pathlib import Path
 from typing import Union
@@ -149,22 +149,31 @@ class SystemParameters(object):
         # otherwise return the list of values
         return results
 
-    def get_param_by_building_id(self, building_id, jsonpath):
+    def get_param_by_id(self, id, jsonpath):
         """
-        return a parameter for a specific building_id. This is similar to get_param but allows the user
-        to constrain the data based on the building id.
+        return a parameter for a specific id. This is similar to get_param but allows the user
+        to constrain the data based on the id.
 
-        :param building_id: string, id of the building to look up in the custom section of the system parameters
+        :param id: string, id of the object to look up in the system parameters file
         :param jsonpath: string, jsonpath formatted string to return
-        :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
 
+        # TODO: check that ids are unique in the system parameters file, i.e., a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
-            if b.get("geojson_id", None) == building_id:
+            if b.get("geojson_id") == id:
                 return self.get_param(jsonpath, data=b)
-        else:
-            raise SystemExit("No building_id submitted. Please retry and include the feature_id")
+        try:
+            district = self.param_template.get("district_system")
+            for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
+                if ghe.get("ghe_id") == id:
+                    return self.get_param(jsonpath, data=ghe)
+        except KeyError:
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # Don't crash or quit, just keep a stiff upper lip and carry on.
+            pass
+        if id is None:
+            raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
     def validate(self):
         """
@@ -479,8 +488,8 @@ class SystemParameters(object):
             capacitor banks (todo)
         """
         dss_data = {}
-        opendss_json_file = os.path.join(scenario_dir, 'scenario_report_opendss.json')
-        if (os.path.exists(opendss_json_file)):
+        opendss_json_file = Path(scenario_dir) / 'scenario_report_opendss.json'
+        if opendss_json_file.exists():
             with open(opendss_json_file, "r") as f:
                 dss_data = json.load(f)
 
@@ -554,13 +563,16 @@ class SystemParameters(object):
             for item in data:
                 t = {}
                 t['id'] = item['id']
-                t['nominal_capacity'] = None
-                if item['power_distribution']['nominal_capacity']:
-                    t['nominal_capacity'] = item['power_distribution']['nominal_capacity']
+                t['nominal_capacity'] = item['power_distribution'].get('nominal_capacity', None)
+                t['reactance_resistance_ratio'] = item['power_distribution'].get('reactance_resistance_ratio', None)
+                t['tx_incoming_voltage'] = item['power_distribution'].get('tx_incoming_voltage', None)
+                t['tx_outgoing_voltage'] = item['power_distribution'].get('tx_outgoing_voltage', None)
 
-                t['reactance_resistance_ratio'] = None
-                if item['power_distribution']['reactance_resistance_ratio']:
-                    t['reactance_resistance_ratio'] = item['power_distribution']['reactance_resistance_ratio']
+                # Validate transformer input voltage is same as substation output voltage
+                if t['tx_incoming_voltage'] is not None and t['tx_incoming_voltage'] != self.param_template['substations']['RMS_voltage_low_side']:
+                    raise ValueError(f"Transformer input voltage {t['tx_incoming_voltage']} does not "
+                                     f"match substation output voltage {self.param_template['substations']['RMS_voltage_low_side']}")
+
                 transformers.append(t)
 
             self.param_template['transformers'] = transformers
@@ -576,7 +588,7 @@ class SystemParameters(object):
                 if match:
                     # add data
                     bldg['load'] = {}
-                    # print("Found match for {}: {}".format(bldg['geojson_id'], match[0]['id']))
+                    # print(f"Found match for {bldg['geojson_id']}: {match[0]['id']}")
                     bldg['load']['nominal_voltage'] = match[0]['power_distribution']['nominal_voltage']
                     bldg['load']['max_power_kw'] = match[0]['power_distribution']['max_power_kw']
                     bldg['load']['max_reactive_power_kvar'] = match[0]['power_distribution']['max_reactive_power_kvar']
@@ -588,9 +600,9 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :return building, updated building list object
         """
-        feature_opt_file = os.path.join(
-            scenario_dir, building['geojson_id'], 'feature_reports', 'feature_optimization.json')
-        if (os.path.exists(feature_opt_file)):
+        feature_opt_file = Path(
+            scenario_dir) / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
+        if feature_opt_file.exists():
             with open(feature_opt_file, "r") as f:
                 reopt_data = json.load(f)
 
@@ -617,13 +629,13 @@ class SystemParameters(object):
         reopt_data = {}
         raw_data = {}
         # look for REopt scenario_optimization.json file in scenario dir (uo report)
-        scenario_opt_file = os.path.join(scenario_dir, 'scenario_optimization.json')
-        if (os.path.exists(scenario_opt_file)):
+        scenario_opt_file = Path(scenario_dir) / 'scenario_optimization.json'
+        if scenario_opt_file.exists():
             with open(scenario_opt_file, "r") as f:
                 reopt_data = json.load(f)
         # also look for raw REopt report with inputs and xzx for non-uo results
-        raw_scenario_file = os.path.join(scenario_dir, 'reopt', f'scenario_report_{scenario_dir.name}_reopt_run.json')
-        if (os.path.exists(raw_scenario_file)):
+        raw_scenario_file = Path(scenario_dir) / 'reopt' / f'scenario_report_{scenario_dir.name}_reopt_run.json'
+        if raw_scenario_file.exists():
             with open(raw_scenario_file, "r") as f:
                 raw_data = json.load(f)
 
@@ -674,13 +686,27 @@ class SystemParameters(object):
         # Power Converters
         # TODO: not handled in UO / OpenDSS
 
+    def calculate_dimensions(self, area, perimeter):
+
+        discriminant = perimeter ** 2 - 16 * area
+
+        if discriminant < 0:
+            raise ValueError("No valid rectangle dimensions exist for the given area and perimeter.")
+
+        length = (perimeter + math.sqrt(discriminant)) / 4
+        width = (perimeter - 2 * length) / 2
+
+        return length, width
+
     def csv_to_sys_param(self,
                          model_type: str,
                          scenario_dir: Path,
                          feature_file: Path,
                          sys_param_filename: Path,
+                         ghe=False,
                          overwrite=True,
-                         microgrid=False) -> None:
+                         microgrid=False,
+                         **kwargs) -> None:
         """
         Create a system parameters file using output from URBANopt SDK
 
@@ -689,13 +715,24 @@ class SystemParameters(object):
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
         :param overwrite: Boolean, whether to overwrite existing sys-param file
+        :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
+
+        :kwargs (optional):
+            - relative_path: Path, set the paths (time series files, weather file, etc) relate to `relative_path`
+            - skip_weather_download: Boolean, set to True to not download the weather file, defaults to False
+            - modelica_load_filename: str, name (only) of the file to load as the modelica load file, defaults to "modelica.mos"
         :return None, file created and saved to user-specified location
+
+
         """
         self.sys_param_filename = sys_param_filename
+        self.rel_path = kwargs.get('relative_path', None)
+        skip_weather_download = kwargs.get('skip_weather_download', False)
+        modelica_load_filename = kwargs.get('modelica_load_filename', 'modelica.mos')
 
         if model_type == 'time_series':
-            # TODO: delineate between time_series and time_series_mft
+            # TODO: delineate between time_series and time_series_massflow_rate
             if microgrid:
                 param_template_path = Path(__file__).parent / 'time_series_microgrid_template.json'
             else:
@@ -728,28 +765,29 @@ class SystemParameters(object):
                         if str(item).endswith('_export_time_series_modelica'):
                             measure_list.append(Path(item) / "building_loads.csv")  # used for mfrt
                         elif str(item).endswith('_export_modelica_loads'):
-                            measure_list.append(Path(item) / "modelica.mos")  # space heating/cooling & water heating
+                            measure_list.append(Path(item) / modelica_load_filename)  # space heating/cooling & water heating
                             measure_list.append(Path(item) / "building_loads.csv")  # used for max electricity load
 
-        # Get each feature id from the SDK FeatureFile
+        # Get each building feature id from the SDK FeatureFile
         building_ids = []
         with open(feature_file) as json_file:
             sdk_input = json.load(json_file)
-            weather_filename = sdk_input['project']['weather_filename']
-            weather_path = self.sys_param_filename.parent / weather_filename
-            for feature in sdk_input['features']:
-                # KAF change: this should only gather features of type 'Building'
-                if feature['properties']['type'] == 'Building':
-                    building_ids.append(feature['properties']['id'])
+        weather_filename = sdk_input['project']['weather_filename']
+        weather_path = self.sys_param_filename.parent / weather_filename
+        for feature in sdk_input['features']:
+            if feature['properties']['type'] == 'Building':
+                building_ids.append(feature['properties']['id'])
 
         # Check if the EPW weatherfile exists, if not, try to download
-        if not weather_path.exists():
-            self.download_weatherfile(weather_path.name, weather_path.parent)
+        if not skip_weather_download:
+            if not weather_path.exists():
+                self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # also download the MOS weatherfile -- this is the file that will be set in the sys param file
         mos_weather_path = weather_path.with_suffix('.mos')
-        if not mos_weather_path.exists():
-            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
+        if not skip_weather_download:
+            if not mos_weather_path.exists():
+                self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
 
         # Make sys_param template entries for each feature_id
         building_list = []
@@ -759,9 +797,9 @@ class SystemParameters(object):
             building_list.append(feature_info)
 
         # Grab the modelica file for the each Feature, and add it to the appropriate building dict
-        district_nominal_mfrt = 0
+        district_nominal_massflow_rate = 0
         for building in building_list:
-            building_nominal_mfrt = 0
+            building_nominal_massflow_rate = 0
             for measure_file_path in measure_list:
                 # Grab the relevant 2 components of the path: feature name and measure folder name, items -3 & -2 respectively
                 feature_name = Path(measure_file_path).parts[-3]
@@ -769,23 +807,31 @@ class SystemParameters(object):
                 if feature_name != building['geojson_id']:
                     continue
                 if (measure_file_path.suffix == '.mos'):
-                    building['load_model_parameters']['time_series']['filepath'] = str(measure_file_path.resolve())
+                    # if there is a relative path, then set the path relative
+                    to_file_path = measure_file_path.resolve()
+                    if self.rel_path:
+                        to_file_path = to_file_path.relative_to(self.rel_path)
+
+                    building['load_model_parameters']['time_series']['filepath'] = str(to_file_path)
                 if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
-                    mfrt_df = pd.read_csv(measure_file_path)
+                    massflow_rate_df = pd.read_csv(measure_file_path)
                     try:
-                        building_nominal_mfrt = round(mfrt_df['massFlowRateHeating'].max(), 3)  # round max to 3 decimal places
-                        # Force casting to float even if building_nominal_mfrt == 0
+                        building_nominal_massflow_rate = round(
+                            massflow_rate_df['massFlowRateHeating'].max(),
+                            3)  # round max to 3 decimal places
+                        # Force casting to float even if building_nominal_massflow_rate == 0
                         # FIXME: This might be related to building_type == `lodging` for non-zero building percentages
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_mfrt)
+                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_massflow_rate)
                     except KeyError:
                         # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
                         # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
                         logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
                         continue
-                district_nominal_mfrt += building_nominal_mfrt
+                district_nominal_massflow_rate += building_nominal_massflow_rate
                 if measure_file_path.suffix == '.csv' and measure_folder_name.endswith('_export_modelica_loads'):
                     try:
-                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])  # usecols to make the df small
+                        # only use the one column to make the df small
+                        building_loads = pd.read_csv(measure_file_path, usecols=['ElectricityFacility'])
                     except ValueError:  # hack to handle the case where there is no ElectricityFacility column in the csv
                         continue
                     max_electricity_load = int(building_loads['ElectricityFacility'].max())
@@ -803,7 +849,7 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_mfrt
+            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_massflow_rate
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
@@ -815,7 +861,10 @@ class SystemParameters(object):
 
         # Update district sys-param settings
         # Parens are to allow the line break
-        self.param_template['weather'] = str(mos_weather_path)
+        to_file_path = mos_weather_path
+        if self.rel_path:
+            to_file_path = to_file_path.relative_to(self.rel_path)
+        self.param_template['weather'] = str(to_file_path)
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
@@ -824,6 +873,55 @@ class SystemParameters(object):
         except UnboundLocalError:
             raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
                              "Perhaps you haven't run REopt post-processing step in the UO sdk?")
+
+        # Update ground heat exchanger properties if true
+        if ghe:
+            ghe_ids = []
+            # add properties from the feature file
+            with open(feature_file) as json_file:
+                sdk_input = json.load(json_file)
+            for feature in sdk_input['features']:
+                if feature['properties']['type'] == 'District System':
+                    try:
+                        district_system_type = feature['properties']['district_system_type']
+                    except KeyError:
+                        pass
+                    if district_system_type == 'Ground Heat Exchanger':
+                        length, width = self.calculate_dimensions(
+                            feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
+                        ghe_ids.append({'ghe_id': feature['properties']['id'],
+                                        'length_of_ghe': length,
+                                        'width_of_ghe': width})
+
+            ghe_sys_param = self.param_template['district_system']['fifth_generation']['ghe_parameters']
+            # Make sys_param template entries for GHE specific properties
+            ghe_list = []
+            for ghe in ghe_ids:
+                # update GHE specific properties
+                ghe_info = deepcopy(ghe_sys_param['ghe_specific_params'][0])
+                # Update GHE ID
+                ghe_info['ghe_id'] = str(ghe['ghe_id'])
+                # Add ghe geometric properties
+                ghe_info['ghe_geometric_params']['length_of_ghe'] = ghe['length_of_ghe']
+                ghe_info['ghe_geometric_params']['width_of_ghe'] = ghe['width_of_ghe']
+                ghe_list.append(ghe_info)
+
+            # Add all GHE specific properties to sys-param file
+            ghe_sys_param['ghe_specific_params'] = ghe_list
+
+            # Update ghe_dir
+            ghe_dir = scenario_dir / 'ghe_dir'
+            ghe_sys_param['ghe_dir'] = str(ghe_dir)
+
+            # remove fourth generation district system type
+            del self.param_template['district_system']['fourth_generation']
+
+        else:
+            # remove fifth generation district system type if it exists in template and ghe is not true
+            try:
+                del self.param_template['district_system']['fifth_generation']
+            except KeyError:
+                pass
 
         # save the file to disk
         self.save()

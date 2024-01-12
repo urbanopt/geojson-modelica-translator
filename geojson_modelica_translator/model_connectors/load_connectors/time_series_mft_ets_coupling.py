@@ -5,11 +5,16 @@ import os
 import shutil
 from pathlib import Path
 
+from modelica_builder.package_parser import PackageParser
+
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
     LoadBase
 )
-from geojson_modelica_translator.modelica.input_parser import PackageParser
-from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
+from geojson_modelica_translator.utils import (
+    ModelicaPath,
+    mbl_version,
+    simple_uuid
+)
 
 
 class TimeSeriesMFT(LoadBase):
@@ -41,7 +46,7 @@ class TimeSeriesMFT(LoadBase):
 
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier and respect the defaults
-        time_series_filename = self.system_parameters.get_param_by_building_id(
+        time_series_filename = self.system_parameters.get_param_by_id(
             self.building_id, "load_model_parameters.time_series.filepath"
         )
 
@@ -53,21 +58,21 @@ class TimeSeriesMFT(LoadBase):
                 "path": os.path.dirname(time_series_filename),
             },
             "nominal_values": {
-                "delTDisCoo": self.system_parameters.get_param_by_building_id(
+                "delTDisCoo": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delTDisCoo"
                 ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_liquid_heating",
                 ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_liquid_cooling",
                 ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_electric_heating",
                 ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_building_id(
+                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.has_electric_cooling",
                 ) else "false",
             }
@@ -81,11 +86,11 @@ class TimeSeriesMFT(LoadBase):
             raise Exception(f"Missing MOS file for time series: {template_data['time_series']['filepath']}")
 
         # Run templates to write actual Modelica models
-        ets_model_type = self.system_parameters.get_param_by_building_id(self.building_id, "ets_model")
+        ets_model_type = self.system_parameters.get_param_by_id(self.building_id, "ets_model")
 
         ets_data = None
         if ets_model_type == "Indirect Heating and Cooling":
-            ets_data = self.system_parameters.get_param_by_building_id(
+            ets_data = self.system_parameters.get_param_by_id(
                 self.building_id,
                 "ets_indirect_parameters"
             )
@@ -143,9 +148,12 @@ class TimeSeriesMFT(LoadBase):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         pp = PackageParser.new_from_template(
-            scaffold.project_path, scaffold.project_name, ["Loads"]
+            scaffold.project_path,
+            scaffold.project_name,
+            ["Loads"],
+            mbl_version=mbl_version(),
         )
         pp.save()
 
     def get_modelica_type(self, scaffold):
-        return f'{scaffold.project_name}.Loads.{self.building_name}.building'
+        return f'Loads.{self.building_name}.building'
