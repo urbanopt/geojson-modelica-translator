@@ -78,3 +78,13 @@ The building loads can be defined multiple ways depending on the fidelity of the
 #. Time Series as mass flow rate and delta temperature: This building load is similar to the other Time Series model but uses the load as seen by the ETS in the form of mass flow rate and delta temperature. The file format is similar to the other Time Series model but the columns are mass flow rate and delta temperature for heating and cooling separately.
 #. RC Model: This model leverages the TEASER framework to generate an RC model with the correct coefficients based on high level parameters that are extracted from the GeoJSON file including building area and building type.
 #. Spawn of EnergyPlus: This model uses EnergyPlus models to represent the thermal zone heat balance portion of the models while using Modelica for the remaining components. Spawn of EnergyPlus is still under development and currently only works on Linux-based systems.
+
+Release Instructions
+--------------------
+
+#. Create a branch names prep-0.x.y Release
+#. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature
+#. After tests pass, merge branch into develop
+#. Create new PR from develop into main named "Release 0.x.y"
+#. Using GitHub squash-merge into main
+#. From local repo, immediately merge main into develop (as a merge commit) and push. This can only be done with users that have bypass privileges on GitHub.
