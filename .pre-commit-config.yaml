@@ -49,7 +49,7 @@ repos:
             "--ignore-init-module-imports"
           ]
   - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.0.0
     hooks:
       - id: flake8
         args: ["--ignore=E501,E402,W503,W504,E731,F401"]
