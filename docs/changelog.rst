@@ -1,2 +1,3 @@
 .. _changelog:
-.. mdinclude:: ../CHANGELOG.md
+
+Go to the changelog on the GMT's repository
