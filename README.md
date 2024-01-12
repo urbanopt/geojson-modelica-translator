@@ -14,7 +14,7 @@ The project is motivated by the need to easily evaluate district energy systems.
 
 It is possible to test the GeoJSON to Modelica Translator (GMT) by simply installing the Python package and running the command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available [here](docs/getting_started.rst).
 
-To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola) then run the following code below up to the point of run-model. The example generates a complete 4th Generation District Heating and Cooling (4GDHC) system with time series loads that were generated from the URBANopt SDK using OpenStudio/EnergyPlus simulations.
+To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola, OpenModelica) then run the following code below up to the point of run-model. The example generates a complete 4th Generation District Heating and Cooling (4GDHC) system with time series loads that were generated from the URBANopt SDK using OpenStudio/EnergyPlus simulations.
 
 ``` bash
 pip install geojson-modelica-translator
@@ -48,16 +48,16 @@ As shown in the image, there are multiple building loads that can be deployed wi
 
 The building loads can be defined multiple ways depending on the fidelity of the required models. Each of the building load models are easily replaced using configuration settings within the System Parameters file. The 4 different building load models include:
 
-1. Time Series in Watts: This building load is the total heating, cooling, and domestic hot water loads represented in a CSV type file (MOS file). The units are Watts and should be reported at an hour interval; however, finer resolution is possible. The load is defined as the load seen by the ETS.
-2. Time Series as mass flow rate and delta temperature: This building load is similar to the other Time Series model but uses the load as seen by the ETS in the form of mass flow rate and delta temperature. The file format is similar to the other Time Series model but the columns are mass flow rate and delta temperature for heating and cooling separately.
-3. RC Model: This model leverages the TEASER framework to generate an RC model with the correct coefficients based on high level parameters that are extracted from the GeoJSON file including building area and building type.
-4. Spawn of EnergyPlus: This model uses EnergyPlus models to represent the thermal zone heat balance portion of the models while using Modelica for the remaining components. Spawn of EnergyPlus is still under development and currently only works on Linux-based systems.
+1. **Time Series in Watts**: This building load is the total heating, cooling, and domestic hot water loads represented in a CSV type file (MOS file). The units are Watts and should be reported at an hour interval; however, finer resolution is possible. The load is defined as the load seen by the ETS.
+2. **Time Series as mass flow rate and delta temperature**: This building load is similar to the other Time Series model but uses the load as seen by the ETS in the form of mass flow rate and delta temperature. The file format is similar to the other Time Series model but the columns are mass flow rate and delta temperature for heating and cooling separately.
+3. **RC Model**: This model leverages the TEASER framework to generate an RC model with the correct coefficients based on high level parameters that are extracted from the GeoJSON file including building area and building type.
+4. **Spawn of EnergyPlus**: This model uses EnergyPlus models to represent the thermal zone heat balance portion of the models while using Modelica for the remaining components. Spawn of EnergyPlus is still under development and currently only works on Linux-based systems.
 
 ## Release Instructions
 
-1. Create a branch names prep-0.x.y Release
-2. Update CHANGELOG using GitHub\'s \"Autogenerate Change Log\" feature
+1. Create a branch named `prep-0.x.y Release`
+2. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature
 3. After tests pass, merge branch into develop
-4. Create new PR from develop into main named \"Release 0.x.y\"
+4. Create new PR from develop into main named `Release 0.x.y`
 5. Using GitHub squash-merge into main
 6. From local repo, immediately merge main into develop (as a merge commit) and push. This can only be done with users that have bypass privileges on GitHub.
