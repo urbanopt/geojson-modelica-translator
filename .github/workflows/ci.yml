@@ -52,7 +52,7 @@ jobs:
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
           curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.2/modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz"
-          tar xzf modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz
+          tar --exclude='README.md' --exclude='CHANGELOG.md' -xzf modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz
           chmod +x modelicafmt
           if [[ $RUNNER_SYSTEM == 'Linux' ]]; then
             sudo mv modelicafmt /usr/local/bin/
