@@ -3,14 +3,14 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <title>Developer Resources &#8212; GeoJSON Modelica Translator v0.6.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css?v=4cc3df7e" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script src="_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="_static/documentation_options.js?v=741c5cc6"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="input_file_documentation.html" title="Input File Documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>  
@@ -74,7 +74,7 @@
 GMT has “building blocks” that it uses to define and connect models, which currently include: Energy Transfer Stations (ETSs), Loads, Networks, and Plants.</p>
 <img alt="_images/models-overview.png" src="_images/models-overview.png" />
 <p>Each block type is a collection of models, e.g. the Loads includes time series and spawn models. A model in GMT refers to an abstracted Modelica model. It generates Modelica code (the Modelica model) and is used to define connections to other models.</p>
-<p>Each block type can “connect” (note this “connect” does not refer to Modelica’s concept of “connect”) to other specific block types. For example, you can connect a load to an ETS, but you cannot connect a load to a network.</p>
+<p>Each block type can “connect” (note this “connect” does not refer to Modelica’s concept of “connect”) to other specific block types. For example, you can connect a load to an ETS, but you cannot connect a load to a network. However, some models (i.e. 5G) have an ETS embedded in them.</p>
 <p>Each block type has a corresponding directory inside of <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/model_connectors</span></code>, which contains its different model types (e.g. for Loads it contains the Time Series model and others).</p>
 <p>Because models are different, even within a block type (e.g. different properties and maybe even ports), the GMT uses the concept of couplings for connecting models. Couplings define how two <em>specific</em> models connect in modelica.
 For example, a coupling could define how the time series load actually connects to the heating indirect ETS.</p>
@@ -88,48 +88,51 @@ For example, a coupling could define how the time series load actually connects 
 to follow the detailed instructions for <a class="reference internal" href="getting_started.html#docker-installation"><span class="std std-ref">Docker Installation</span></a> in the Getting Started guide.</p>
 <p>Follow the instructions below in order to configure your local environment:</p>
 <ul class="simple">
+<li><p>Get the Modelica Buildings Library. See the documentation at <a class="reference internal" href="getting_started.html#mbl-installation"><span class="std std-ref">MBL Installation</span></a></p></li>
 <li><dl class="simple">
-<dt>If you need a custom Modelica Buildings Library:</dt><dd><ul>
-<li><p>Clone the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings">MBL</a> into a working directory outside of the GMT directory</p></li>
-<li><p>Ensure your MODELICAPATH env var is set to the MBL you want to use! See the documentation at <a class="reference internal" href="getting_started.html#mbl-installation"><span class="std std-ref">MBL Installation</span></a></p></li>
-<li><p>Change to the directory inside the modelica-buildings repo you just checked out. (<code class="code docutils literal notranslate"><span class="pre">cd</span> <span class="pre">modelica-buildings</span></code>)</p></li>
-<li><dl class="simple">
-<dt>Install git-lfs</dt><dd><ul>
-<li><p>Mac: <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
-<li><p>Ubuntu: <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git-lfs;</span> <span class="pre">git</span> <span class="pre">lfs</span> <span class="pre">install</span></code></p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>The current GMT code works with the <code class="code docutils literal notranslate"><span class="pre">maint_9.1.x</span></code> branch of the MBL. GMT version <code class="code docutils literal notranslate"><span class="pre">0.2.3</span></code>, which uses JModelica, requires the <code class="code docutils literal notranslate"><span class="pre">issue2204_gmt_mbl</span></code> branch of the MBL.</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>Clone <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator">the GMT repo</a> into a working directory</p></li>
+<dt>Clone <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator">the GMT repo</a> into a working directory</dt><dd><ul>
 <li><p>(optional/as-needed) Add Python 3 to the environment variables</p></li>
-<li><p>For developers, dependency management is through <a class="reference external" href="https://python-poetry.org/docs/">Poetry</a>. Installation is accomplished by running <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>.</p></li>
-<li><p>Return to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
-<li><p>Test if everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">compilation</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">simulation'</span></code>. This will run all the unit and integration tests.</p></li>
+<li><p>As general guidance, we recommend using virtual environments to avoid dependencies colliding between your Python projects. <a class="reference external" href="https://docs.python.org/3/library/venv.html">venv</a> is the Python native solution that will work everywhere, though other options may be more user-friendly.</p></li>
+<li><dl class="simple">
+<dt>Some popular alternatives are:</dt><dd><ul>
+<li><p><a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> and <a class="reference external" href="https://github.com/pyenv/pyenv-virtualenv">the virtualenv plugin</a> work together nicely for Linux/Mac machines</p></li>
+<li><p><a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a></p></li>
+<li><p><a class="reference external" href="https://docs.conda.io/projects/miniconda/en/latest/">miniconda</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>For developers, dependency management is through <a class="reference external" href="https://python-poetry.org/docs/">Poetry</a>. Poetry can be acquired by running <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">poetry</span></code>.</dt><dd><ul>
+<li><p>If you haven’t already installed a virtual environment, Poetry will automatically create a simplified environment for your project.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Move to the GMT root directory and run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code> to install the dependencies.</p></li>
+<li><p>Verify that everything is installed correctly by running <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">compilation</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">simulation</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">dymola'</span></code>. This will run all the unit and integration tests.</p></li>
 <li><p>Follow the instructions below to install pre-commit.</p></li>
 <li><p>To test pre-commit and building the documentation, you can run</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
-<span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span> <span class="o">-</span><span class="n">m</span> <span class="s1">&#39;not compilation and not simulation&#39;</span> <span class="o">--</span><span class="n">doctest</span><span class="o">-</span><span class="n">modules</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">cov</span><span class="o">-</span><span class="n">report</span> <span class="n">term</span><span class="o">-</span><span class="n">missing</span> <span class="o">--</span><span class="n">cov</span> <span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span> <span class="o">-</span><span class="n">m</span> <span class="s1">&#39;not compilation and not simulation and not dymola&#39;</span> <span class="o">--</span><span class="n">doctest</span><span class="o">-</span><span class="n">modules</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">cov</span><span class="o">-</span><span class="n">report</span> <span class="n">term</span><span class="o">-</span><span class="n">missing</span> <span class="o">--</span><span class="n">cov</span> <span class="o">.</span>
 </pre></div>
 </div>
-<p>The tests should all pass assuming the libraries are installed correctly on your computer. Also, there will be a set
-of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/output</span></code> folder and the
+<p>The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
+of Modelica models that are created and persisted into the <code class="code docutils literal notranslate"><span class="pre">tests/GMT_Lib/output</span></code> folder and the
 <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> folder. These files can be inspected in your favorite Modelica editor.</p>
 <section id="pre-commit">
 <h3>Pre-commit<a class="headerlink" href="#pre-commit" title="Link to this heading">¶</a></h3>
 <p>This project uses <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to ensure code consistency.
-To enable pre-commit on every commit run the following from the command line from within the git checkout of the
+To enable pre-commit for your local development process, run the following from the command line from within the git checkout of the
 GMT:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>install
 </pre></div>
 </div>
-<p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing.</p>
+<p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing. CI will fail if pre-commit hasn’t been run locally.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
 </pre></div>
 </div>
@@ -237,65 +240,13 @@ simulation mapper class from existing at that level.</p>
 </section>
 <section id="running-simulations">
 <h2>Running Simulations<a class="headerlink" href="#running-simulations" title="Link to this heading">¶</a></h2>
-<p>The GeoJSON to Modelica Translator contains a <code class="code docutils literal notranslate"><span class="pre">ModelicaRunner.run_in_docker(...)</span></code> method. It is recommended
-to use this method in a python script as it will copy the required files into the correct location. If
-desired, a user can run the simulations manually using JModelica (via Docker). Follow the steps below to configure
-the runner to work locally.</p>
-<ul>
-<li><p>Make sure jm_ipython.sh is in your local path.</p></li>
-<li><p>After running the <code class="code docutils literal notranslate"><span class="pre">pytest</span></code>, go into the <code class="code docutils literal notranslate"><span class="pre">geojson_modelica_translator/modelica/lib/runner/</span></code> directory.</p></li>
-<li><p>Copy <code class="code docutils literal notranslate"><span class="pre">jmodelica.py</span></code> to the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory.</p></li>
-<li><dl class="simple">
-<dt>From the <code class="code docutils literal notranslate"><span class="pre">tests/model_connectors/output</span></code> directory, run examples using either of the the following:</dt><dd><ul class="simple">
-<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_single.Loads.B5a6b99ec37f4de7f94020090.coupling</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">jm_ipython.sh</span> <span class="pre">jmodelica.py</span> <span class="pre">spawn_single/Loads/B5a6b99ec37f4de7f94020090/coupling.mo</span></code></p></li>
-<li><p>The warnings from the simulations can be ignored. A successful simulation will return Final Run Statistics.</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>Install matplotlib package. <code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">matplotlib</span></code></p></li>
-<li><p>Visualize the results by inspecting the resulting mat file using BuildingsPy. Run this from the root directory of the GMT.</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="kn">from</span> <span class="nn">buildingspy.io.outputfile</span> <span class="kn">import</span> <span class="n">Reader</span>
-
-<span class="n">mat</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-    <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;model_connectors&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;spawn_single_Loads_B5a6b99ec37f4de7f94020090_coupling_result.mat&quot;</span><span class="p">),</span>
-    <span class="s2">&quot;dymola&quot;</span>
-<span class="p">)</span>
-<span class="c1"># List off all the variables</span>
-<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">mat</span><span class="o">.</span><span class="n">varNames</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
-
-<span class="p">(</span><span class="n">time1</span><span class="p">,</span> <span class="n">zn_1_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;bui.znPerimeter_ZN_3.TAir&quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="n">_time1</span><span class="p">,</span> <span class="n">zn_4_temp</span><span class="p">)</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s2">&quot;bui.znPerimeter_ZN_4.TAir&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">)</span>
-
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">zn_1_temp</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_1$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time1</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">zn_4_temp</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$T_4$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [h]&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;temperature [$^\circ$C]&#39;</span><span class="p">)</span>
-<span class="c1"># Simulation is only for 168 hours?</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">168</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;indoor_temp_example.png&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-</ul>
+<p>The GeoJSON to Modelica Translator contains a <code class="code docutils literal notranslate"><span class="pre">ModelicaRunner.run_in_docker(...)</span></code> method. The test suite uses this to run most of our models with OpenModelica.</p>
 </section>
 <section id="release-instructions">
 <h2>Release Instructions<a class="headerlink" href="#release-instructions" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Bump version to &lt;NEW_VERSION&gt; in pyproject.toml (use semantic versioning).</p></li>
+<li><p>Ensure mbl_version() in geojson_modelica_translator/utils.py is returning the correct MBL version.</p></li>
 <li><p>Run <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">update</span></code> to ensure the lock file is up to date with the latest “pinned” dependencies.</p></li>
 <li><p>Run <code class="code docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code> to ensure code is formatted properly.</p></li>
 <li><p>Create a PR into develop with the updated version.</p></li>
@@ -438,7 +389,7 @@ poetry<span class="w"> </span>run<span class="w"> </span>make<span class="w"> </
         <li class="right" >
           <a href="input_file_documentation.html" title="Input File Documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Developer Resources</a></li> 
       </ul>
     </div>

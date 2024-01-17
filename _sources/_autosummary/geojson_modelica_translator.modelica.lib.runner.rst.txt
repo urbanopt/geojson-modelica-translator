@@ -24,11 +24,3 @@ runner
 
 
 
-.. rubric:: Modules
-
-.. autosummary::
-   :toctree:
-   :recursive:
-
-   geojson_modelica_translator.modelica.lib.runner.om
-

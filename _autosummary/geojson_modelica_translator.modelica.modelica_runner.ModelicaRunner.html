@@ -3,14 +3,14 @@
 <html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ModelicaRunner &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <title>ModelicaRunner &#8212; GeoJSON Modelica Translator v0.6.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=4cc3df7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script src="../_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="../_static/documentation_options.js?v=741c5cc6"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>
@@ -52,24 +52,19 @@
 <h1>ModelicaRunner<a class="headerlink" href="#modelicarunner" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.modelica_runner.</span></span><span class="sig-name descname"><span class="pre">ModelicaRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelica_lib_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geojson_modelica_translator.modelica.modelica_runner.</span></span><span class="sig-name descname"><span class="pre">ModelicaRunner</span></span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to run Modelica models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelica_lib_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="Link to this definition">¶</a></dt>
 <dd><p>Initialize the runner with data needed for simulation</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>modelica_lib_path</strong> – string, Path to the MBL to run against</p>
-</dd>
-</dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([modelica_lib_path])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p>Initialize the runner with data needed for simulation</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.cleanup_path" title="geojson_modelica_translator.modelica.modelica_runner.ModelicaRunner.cleanup_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cleanup_path</span></code></a>(path, model_name, **kwargs)</p></td>
@@ -265,7 +260,7 @@ debug (bool): whether to run in debug mode or not, prevents files from being del
         <li class="right" >
           <a href="geojson_modelica_translator.modelica.modelica_runner.html" title="modelica_runner"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../developer_resources.html" >Developer Resources</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="geojson_modelica_translator.html" >geojson_modelica_translator</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="geojson_modelica_translator.modelica.html" >modelica</a> &#187;</li>

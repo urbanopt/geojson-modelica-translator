@@ -3,14 +3,14 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <title>Getting Started &#8212; GeoJSON Modelica Translator v0.6.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css?v=4cc3df7e" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script src="_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="_static/documentation_options.js?v=741c5cc6"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="overview.html" title="Overview"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>  
@@ -55,8 +55,9 @@
 <p>Depending on the use case, the need to run all the steps above may not be needed. For example:
 it may be desirable to only generate the Modelica package and then open and run the model
 in a Modelica user interface such as Dymola. Or, there may be a case to simply generate the
-GeoJSON and System Parameter file from results of an URBANopt SDK simulation result set.</p>
-<p>This Getting Started guide is broken up into three major setup steps:</p>
+System Parameter file from results of an URBANopt SDK simulation. These files can then be
+customized by hand to build a district system to meet your needs.</p>
+<p>Therefore, this Getting Started guide is broken up into three major setup steps. Each one requires all previous steps to be completed first.</p>
 <ol class="arabic simple">
 <li><p>Installing the GMT from PyPi</p></li>
 <li><p>Installing and configuring the Modelica Buildings Library (MBL)</p></li>
@@ -64,13 +65,13 @@ GeoJSON and System Parameter file from results of an URBANopt SDK simulation res
 </ol>
 <section id="gmt-installation">
 <h2>GMT Installation<a class="headerlink" href="#gmt-installation" title="Link to this heading">¶</a></h2>
-<p>You must have PIP and Python 3.7 or later installed (run <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see what version you’re using). After installing Python and PIP run the following in a terminal (requires Python 3):</p>
+<p>You must have PIP and Python 3.9 or later installed (run <code class="code docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see what version you’re using). After installing Python and PIP run the following in a terminal:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>geojson-modelica-translator
 </pre></div>
 </div>
-<p>After installation of the GMT, a new command line interface (called the URBANopt District Energy Systems [UO DES] CLI) can be used to run various commands. Without needing to install the <a class="reference external" href="https://github.com/lbl-srg/modelica-buildings/">MBL</a> the user can use the CLI to build the system parameters file from the results of the URBANopt SDK. For more information run the following:</p>
+<p>After installation of the GMT, a new command line interface (called the URBANopt District Energy Systems [UO DES] CLI) can be used to run various commands. Without needing to install the <a class="reference external" href="https://simulationresearch.lbl.gov/modelica/index.html">MBL</a> the user can use the CLI to build the system parameters file from the results of the URBANopt SDK. For more information run the following:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des<span class="w"> </span>-h
-uo_des<span class="w"> </span>build-system-param<span class="w"> </span>-h
+uo_des<span class="w"> </span>build-sys-param<span class="w"> </span>-h
 
 <span class="c1"># the command below is only an example; however, it will run if the repository</span>
 <span class="c1"># is checked out and run in the following path: ./tests/management/data/sdk_project_scraps</span>
@@ -80,10 +81,23 @@ uo_des<span class="w"> </span>build-sys-param<span class="w"> </span>sys_param.j
 </section>
 <section id="mbl-installation">
 <h2>MBL Installation<a class="headerlink" href="#mbl-installation" title="Link to this heading">¶</a></h2>
-<p>The Modelica Buildings Library contains many models that are needed to assemble the district systems. Installation of the MBL is done through Git and GitHub. Follow the instructions below to install the MBL needed for the GMT:</p>
+<p>The Modelica Buildings Library contains many models that are needed to assemble the district systems. Follow the instructions below to install the MBL needed for the GMT:</p>
 <ul class="simple">
-<li><p>Download and extract the newest 9.1 version of the MBL from <a class="reference external" href="https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html">https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html</a></p></li>
-<li><p>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings). Restart your terminal to ensure that the MBL library is exported correctly.</p></li>
+<li><dl class="simple">
+<dt>Download and extract the appropriate version of the MBL from <a class="reference external" href="https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html">https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html</a></dt><dd><ul>
+<li><p>The appropriate version can be found in the right-hand column of the <a class="reference external" href="https://docs.urbanopt.net/developer_resources/compatibility_matrix.html#urbanopt-installer-matrix">installer matrix</a>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., <code class="code docutils literal notranslate"><span class="pre">export</span> <span class="pre">MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings</span></code>).</dt><dd><ul>
+<li><p>For help setting env vars on Windows, this documentation may help: <a class="reference external" href="https://www.howtogeek.com/787217/how-to-edit-environment-variables-on-windows-10-or-11/">https://www.howtogeek.com/787217/how-to-edit-environment-variables-on-windows-10-or-11/</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Restart your terminal to ensure that the environment variable for the MBL library is exported correctly.</p></li>
 </ul>
 <p>Once the MBL is installed, then the CLI can be used to create the model with the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uo_des<span class="w"> </span>create-model<span class="w"> </span>-h
@@ -95,19 +109,23 @@ uo_des<span class="w"> </span>create-model<span class="w"> </span>sys_param.json
 </div>
 <p>The resulting Modelica package will be created and can be opened in a Modelica editor. Open the <code class="code docutils literal notranslate"><span class="pre">package.mo</span></code> file in the root directory of the generated package. You will also need to
 load the MBL into your Modelica editor.</p>
-<p>The latest version of this repository uses MBL v9.0.0. This version does not support running JModelica due to the upgrade to Modelica Standard Library (MSL) version 4. For this reason, the unit tests no longer run the models; therefore, you will need to mark the pytest to not run the simulations with <code class="code docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">-m</span> <span class="pre">'not</span> <span class="pre">simulation'</span></code>.</p>
-<p>Test running the models with Dymola or OpenModelica. Dymola is used to test these models during development.</p>
+<p>Most models can be simulated for free using OpenModelica, which is included via Docker.</p>
+<p>Dymola is a more full-featured alternative to OpenModelica and is not free.</p>
 </section>
 <section id="docker-installation">
 <h2>Docker Installation<a class="headerlink" href="#docker-installation" title="Link to this heading">¶</a></h2>
-<p>The preferred method of running the simulations would be within Dymola; however, that is not a
-practical solution for many based on the license requirement. Version 0.2.3 of the GMT enables the running of the
-models using JModelica which requires the installation of <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a>. To configure Docker, do the
-following:</p>
+<p>Version 0.5.0+ of the GMT enables running the models using OpenModelica which requires the installation of <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a>.
+To configure Docker, do the following:</p>
 <ul class="simple">
 <li><p>Install <a class="reference external" href="https://docs.docker.com/get-docker/">Docker</a> for your system.</p></li>
-<li><p>Configure Docker Desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</p></li>
-<li><p>It is recommended to test the installation of Docker by simply running <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">hello-world</span></code> in a terminal.</p></li>
+<li><dl class="simple">
+<dt>Configure Docker Desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.</dt><dd><ul>
+<li><p>Larger models (more buildings) may require more resources in Docker.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>We recommend testing the Docker installation by simply running <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">hello-world</span></code> in a terminal to confirm it is working as intended.</p></li>
 </ul>
 <p>After Docker is installed and configured, you can use the CLI to run the model using the following
 command:</p>
@@ -186,7 +204,7 @@ uo_des<span class="w"> </span>run-model<span class="w"> </span>model_from_sdk
         <li class="right" >
           <a href="overview.html" title="Overview"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Getting Started</a></li> 
       </ul>
     </div>

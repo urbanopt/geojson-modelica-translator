@@ -1,0 +1,6 @@
+geojson\_modelica\_translator.utils.mbl\_version
+================================================
+
+.. currentmodule:: geojson_modelica_translator.utils
+
+.. autofunction:: mbl_version

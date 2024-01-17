@@ -3,14 +3,14 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Change Log &#8212; GeoJSON Modelica Translator v0.6.0-rc2 documentation</title>
+    <title>Change Log &#8212; GeoJSON Modelica Translator v0.6.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css?v=4cc3df7e" />
     <link rel="stylesheet" type="text/css" href="_static/custom_sphinx_styles.css?v=c57217d6" />
     
-    <script src="_static/documentation_options.js?v=5a89af5d"></script>
+    <script src="_static/documentation_options.js?v=741c5cc6"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="authors.html" title="Contributors"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Change Log</a></li> 
       </ul>
     </div>  
@@ -46,92 +46,143 @@
             
   <section id="change-log">
 <span id="changelog"></span><h1>Change Log<a class="headerlink" href="#change-log" title="Link to this heading">¶</a></h1>
-<section id="version-0-6-0-rc2">
-<h2>Version 0.6.0 RC2<a class="headerlink" href="#version-0-6-0-rc2" title="Link to this heading">¶</a></h2>
-<p>## What’s Changed
-### Exciting New Features 🎉
-* Template initial microgrid subsystem example by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/569">https://github.com/urbanopt/geojson-modelica-translator/pull/569</a>
-* Microgrid heating by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/586">https://github.com/urbanopt/geojson-modelica-translator/pull/586</a>
-* Change how ModelicaPaths are built so they also work on Windows computers by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/590">https://github.com/urbanopt/geojson-modelica-translator/pull/590</a>
-### Other Changes
-* initialize empty variable before potential use by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/579">https://github.com/urbanopt/geojson-modelica-translator/pull/579</a>
-* Include 5G partial model in generation by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/580">https://github.com/urbanopt/geojson-modelica-translator/pull/580</a>
-* Allow skipping of specific files when cloning a modelica project by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/584">https://github.com/urbanopt/geojson-modelica-translator/pull/584</a>
-* Add a quick fix for reading gfunction.csv from ghe_id subfolder by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/589">https://github.com/urbanopt/geojson-modelica-translator/pull/589</a>
-* Move modelica methods from GMT to modelica-builder by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/591">https://github.com/urbanopt/geojson-modelica-translator/pull/591</a></p>
-<p><strong>Full Changelog</strong>: <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0-rc1...v0.6.0-rc2">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0-rc1…v0.6.0-rc2</a></p>
+<section id="version-0-6-0">
+<h2>Version 0.6.0<a class="headerlink" href="#version-0-6-0" title="Link to this heading">¶</a></h2>
+<section id="exciting-new-features">
+<h3>Exciting New Features 🎉<a class="headerlink" href="#exciting-new-features" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Python 311 by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/518">https://github.com/urbanopt/geojson-modelica-translator/pull/518</a></p></li>
+<li><p>add max_electrical_load to building sys-param data by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/530">https://github.com/urbanopt/geojson-modelica-translator/pull/530</a></p></li>
+<li><p>Modifications for GHE by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></p></li>
+<li><p>Add Level 1 5G DES system by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/539">https://github.com/urbanopt/geojson-modelica-translator/pull/539</a></p></li>
+<li><p>Set SWH peak to 1/10th of space heating or min 5000W by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/542">https://github.com/urbanopt/geojson-modelica-translator/pull/542</a></p></li>
+<li><p>Added GHE templates - Issue511 by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/533">https://github.com/urbanopt/geojson-modelica-translator/pull/533</a></p></li>
+<li><p>Add MOS file wrapper and size the 5G mass flow rate by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/548">https://github.com/urbanopt/geojson-modelica-translator/pull/548</a></p></li>
+<li><p>Add OpenModelica compatibility by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/516">https://github.com/urbanopt/geojson-modelica-translator/pull/516</a></p></li>
+<li><p>Modify GHE params by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/537">https://github.com/urbanopt/geojson-modelica-translator/pull/537</a></p></li>
+<li><p>Fixing borefield test breaks due to schema changes by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/550">https://github.com/urbanopt/geojson-modelica-translator/pull/550</a></p></li>
+<li><p>Updating GHE Parameters: Modifying GHE Parameters schema and example files by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/551">https://github.com/urbanopt/geojson-modelica-translator/pull/551</a></p></li>
+<li><p>Enable compile &amp; simulate with OpenModelica in Docker by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/545">https://github.com/urbanopt/geojson-modelica-translator/pull/545</a></p></li>
+<li><p>Enhance and expand microgrid templates and code by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/549">https://github.com/urbanopt/geojson-modelica-translator/pull/549</a></p></li>
+<li><p>Enable numberOfIntervals run option by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/562">https://github.com/urbanopt/geojson-modelica-translator/pull/562</a></p></li>
+<li><p>Breakout package parser class by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/566">https://github.com/urbanopt/geojson-modelica-translator/pull/566</a></p></li>
+<li><p>Add a new GHE district test with new network template models by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/561">https://github.com/urbanopt/geojson-modelica-translator/pull/561</a></p></li>
+<li><p>Add GHE Properties to System Parameter File by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/570">https://github.com/urbanopt/geojson-modelica-translator/pull/570</a></p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">filNam</span></code> parameter for TEASER loads and add within parsing to PackageParser by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/574">https://github.com/urbanopt/geojson-modelica-translator/pull/574</a></p></li>
+<li><p>Add new <code class="docutils literal notranslate"><span class="pre">ModelicaProject</span></code> class by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/575">https://github.com/urbanopt/geojson-modelica-translator/pull/575</a></p></li>
+<li><p>Add Dymola runner by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/577">https://github.com/urbanopt/geojson-modelica-translator/pull/577</a></p></li>
+<li><p>Template initial microgrid subsystem example by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/569">https://github.com/urbanopt/geojson-modelica-translator/pull/569</a></p></li>
+<li><p>Microgrid heating by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/586">https://github.com/urbanopt/geojson-modelica-translator/pull/586</a></p></li>
+<li><p>Change how ModelicaPaths are built so they also work on Windows computers by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/590">https://github.com/urbanopt/geojson-modelica-translator/pull/590</a></p></li>
+<li><p>Refactoring and enhancing to support multiple GHEs in a single district by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/601">https://github.com/urbanopt/geojson-modelica-translator/pull/601</a></p></li>
+<li><p>Replace shell script with call directly to docker by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/607">https://github.com/urbanopt/geojson-modelica-translator/pull/607</a></p></li>
+<li><p>Implement a PyPI release workflow by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/603">https://github.com/urbanopt/geojson-modelica-translator/pull/603</a></p></li>
+<li><p>Support Python 3.12 by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/593">https://github.com/urbanopt/geojson-modelica-translator/pull/593</a></p></li>
+<li><p>Add district nominal pump head to system parameters file by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/610">https://github.com/urbanopt/geojson-modelica-translator/pull/610</a></p></li>
+</ul>
 </section>
-<section id="version-0-6-0-rc1">
-<h2>Version 0.6.0 RC1<a class="headerlink" href="#version-0-6-0-rc1" title="Link to this heading">¶</a></h2>
-<p>## What’s Changed
-### Exciting New Features 🎉
-* Enable numberOfIntervals run option by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/562">https://github.com/urbanopt/geojson-modelica-translator/pull/562</a>
-* Breakout package parser class by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/566">https://github.com/urbanopt/geojson-modelica-translator/pull/566</a>
-* Add a new GHE district test with new network template models by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/561">https://github.com/urbanopt/geojson-modelica-translator/pull/561</a>
-* Add GHE Properties to System Parameter File by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/570">https://github.com/urbanopt/geojson-modelica-translator/pull/570</a>
-* Use <cite>filNam</cite> parameter for TEASER loads and add within parsing to PackageParser by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/574">https://github.com/urbanopt/geojson-modelica-translator/pull/574</a>
-* Add new <cite>ModelicaProject</cite> class by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/575">https://github.com/urbanopt/geojson-modelica-translator/pull/575</a>
-* Add Dymola runner by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/577">https://github.com/urbanopt/geojson-modelica-translator/pull/577</a></p>
-<p>### Other Changes
-* Read correct data from sys-param for microgrid electrical load by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/560">https://github.com/urbanopt/geojson-modelica-translator/pull/560</a>
-* remove ground loads from system parameter by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/576">https://github.com/urbanopt/geojson-modelica-translator/pull/576</a></p>
-<p><strong>Full Changelog</strong>: <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/compare/0.5.0...v0.6.0-rc1">https://github.com/urbanopt/geojson-modelica-translator/compare/0.5.0…v0.6.0-rc1</a></p>
+<section id="other-changes">
+<h3>Other Changes<a class="headerlink" href="#other-changes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>specify ports for each time series building in instance template by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/525">https://github.com/urbanopt/geojson-modelica-translator/pull/525</a></p></li>
+<li><p>Update license language by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/529">https://github.com/urbanopt/geojson-modelica-translator/pull/529</a></p></li>
+<li><p>Read correct data from sys-param for microgrid electrical load by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/560">https://github.com/urbanopt/geojson-modelica-translator/pull/560</a></p></li>
+<li><p>Prep for prerelease 0.6.0 by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/578">https://github.com/urbanopt/geojson-modelica-translator/pull/578</a></p></li>
+<li><p>initialize empty variable before potential use by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/579">https://github.com/urbanopt/geojson-modelica-translator/pull/579</a></p></li>
+<li><p>Include 5G partial model in generation by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/580">https://github.com/urbanopt/geojson-modelica-translator/pull/580</a></p></li>
+<li><p>Allow skipping of specific files when cloning a modelica project by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/584">https://github.com/urbanopt/geojson-modelica-translator/pull/584</a></p></li>
+<li><p>Add a quick fix for reading gfunction.csv from ghe_id subfolder by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/589">https://github.com/urbanopt/geojson-modelica-translator/pull/589</a></p></li>
+<li><p>Move modelica methods from GMT to modelica-builder by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/591">https://github.com/urbanopt/geojson-modelica-translator/pull/591</a></p></li>
+<li><p>Add model for controlled distribution loop mass flow rate by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/594">https://github.com/urbanopt/geojson-modelica-translator/pull/594</a></p></li>
+<li><p>Allow user to specify Modelica load filename by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/599">https://github.com/urbanopt/geojson-modelica-translator/pull/599</a></p></li>
+<li><p>Decouple gain for distribution and ghx mass flow rates by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/600">https://github.com/urbanopt/geojson-modelica-translator/pull/600</a></p></li>
+<li><p>Closed-loop changes to existing test_single_ghe test by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/597">https://github.com/urbanopt/geojson-modelica-translator/pull/597</a></p></li>
+<li><p>Update documentation for version 0.6.0 by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/592">https://github.com/urbanopt/geojson-modelica-translator/pull/592</a></p></li>
+<li><p>Use Ubuntu 20 and fix CHP model by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/611">https://github.com/urbanopt/geojson-modelica-translator/pull/611</a></p></li>
+</ul>
+<p><strong>Full Changelog</strong>:
+<a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.5.0...v0.6.0">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.5.0…v0.6.0</a></p>
+</section>
 </section>
 <section id="version-0-5-0">
 <h2>Version 0.5.0<a class="headerlink" href="#version-0-5-0" title="Link to this heading">¶</a></h2>
-<p>## What’s Changed
-### Exciting New Features 🎉
-* Python 3.11 support by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/518">https://github.com/urbanopt/geojson-modelica-translator/pull/518</a>
-* Add max_electrical_load to building sys-param data by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/530">https://github.com/urbanopt/geojson-modelica-translator/pull/530</a>
-* Modifications for GHE by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a>
-* Add Level 1 - 5G DES system by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/539">https://github.com/urbanopt/geojson-modelica-translator/pull/539</a>
-* Set SWH peak to 1/10th of space heating or min 5000W by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/542">https://github.com/urbanopt/geojson-modelica-translator/pull/542</a>
-* Added GHE templates by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/533">https://github.com/urbanopt/geojson-modelica-translator/pull/533</a>
-* Add OpenModelica compatibility by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/516">https://github.com/urbanopt/geojson-modelica-translator/pull/516</a>
-* Modify GHE params by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/537">https://github.com/urbanopt/geojson-modelica-translator/pull/537</a>
-* Enable compile &amp; simulate with OpenModelica in Docker by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/545">https://github.com/urbanopt/geojson-modelica-translator/pull/545</a>
-### Other Changes
-* Specify ports for each time series building in instance template by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/525">https://github.com/urbanopt/geojson-modelica-translator/pull/525</a>
-* Update license language by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/529">https://github.com/urbanopt/geojson-modelica-translator/pull/529</a>
-* Add MOS file wrapper and size the 5G mass flow rate by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/548">https://github.com/urbanopt/geojson-modelica-translator/pull/548</a>
-* Fixing borefield test breaks due to schema changes by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/550">https://github.com/urbanopt/geojson-modelica-translator/pull/550</a>
-* Updating GHE Parameters: Modifying GHE Parameters schema and example files by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/551">https://github.com/urbanopt/geojson-modelica-translator/pull/551</a>
-* Enhance and expand microgrid templates and code by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/549">https://github.com/urbanopt/geojson-modelica-translator/pull/549</a></p>
-<p>## New Contributors
-* &#64;tanushree04 made their first contribution in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></p>
-<p><strong>Full Changelog</strong>: <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1...v0.5.0">https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1…v0.5.0</a></p>
+<section id="id1">
+<h3>Exciting New Features 🎉<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Python 3.11 support by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/518">https://github.com/urbanopt/geojson-modelica-translator/pull/518</a></p></li>
+<li><p>Add max_electrical_load to building sys-param data by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/530">https://github.com/urbanopt/geojson-modelica-translator/pull/530</a></p></li>
+<li><p>Modifications for GHE by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></p></li>
+<li><p>Add Level 1 - 5G DES system by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/539">https://github.com/urbanopt/geojson-modelica-translator/pull/539</a></p></li>
+<li><p>Set SWH peak to 1/10th of space heating or min 5000W by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/542">https://github.com/urbanopt/geojson-modelica-translator/pull/542</a></p></li>
+<li><p>Added GHE templates by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/533">https://github.com/urbanopt/geojson-modelica-translator/pull/533</a></p></li>
+<li><p>Add OpenModelica compatibility by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/516">https://github.com/urbanopt/geojson-modelica-translator/pull/516</a></p></li>
+<li><p>Modify GHE params by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/537">https://github.com/urbanopt/geojson-modelica-translator/pull/537</a></p></li>
+<li><p>Enable compile &amp; simulate with OpenModelica in Docker by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/545">https://github.com/urbanopt/geojson-modelica-translator/pull/545</a></p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Other Changes<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Specify ports for each time series building in instance template by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/525">https://github.com/urbanopt/geojson-modelica-translator/pull/525</a></p></li>
+<li><p>Update license language by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/529">https://github.com/urbanopt/geojson-modelica-translator/pull/529</a></p></li>
+<li><p>Add MOS file wrapper and size the 5G mass flow rate by &#64;nllong in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/548">https://github.com/urbanopt/geojson-modelica-translator/pull/548</a></p></li>
+<li><p>Fixing borefield test breaks due to schema changes by &#64;JingWang-CUB in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/550">https://github.com/urbanopt/geojson-modelica-translator/pull/550</a></p></li>
+<li><p>Updating GHE Parameters: Modifying GHE Parameters schema and example files by &#64;tanushree04 in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/551">https://github.com/urbanopt/geojson-modelica-translator/pull/551</a></p></li>
+<li><p>Enhance and expand microgrid templates and code by &#64;vtnate in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/549">https://github.com/urbanopt/geojson-modelica-translator/pull/549</a></p></li>
+</ul>
+</section>
+<section id="new-contributors">
+<h3>New Contributors<a class="headerlink" href="#new-contributors" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>&#64;tanushree04 made their first contribution in <a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></p></li>
+</ul>
+<p><strong>Full Changelog</strong>:
+<a class="reference external" href="https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1...v0.5.0">https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1…v0.5.0</a></p>
+</section>
 </section>
 <section id="version-0-4-1">
 <h2>Version 0.4.1<a class="headerlink" href="#version-0-4-1" title="Link to this heading">¶</a></h2>
-<p>## What’s Changed
-* Cli bugfixing
-* Detailed models
-* End-of-year updates to GMT docs
-* Remove support for 3.7 in development, update development dependencies
-* Update copyrights to 2023</p>
+<section id="what-s-changed">
+<h3>What's Changed<a class="headerlink" href="#what-s-changed" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Cli bug fixes</p></li>
+<li><p>Detailed models</p></li>
+<li><p>End-of-year updates to GMT docs</p></li>
+<li><p>Remove support for 3.7 in development, update development dependencies</p></li>
+<li><p>Update copyrights to 2023</p></li>
+</ul>
+</section>
 </section>
 <section id="version-0-4-0">
 <h2>Version 0.4.0<a class="headerlink" href="#version-0-4-0" title="Link to this heading">¶</a></h2>
 <p>As of version 0.4.0 changes will be published using Github automated formatting at the release itself. Those changes are copied here.</p>
-<p>Exciting New Features 🎉
-* Redeclare the teaser model to use buildings.media.air medium
-* Fmu runner
-* Spawn docker named args
-* Compile &amp; run with Spawn &amp; Optima
-* Microgrid lines
-* Add 5G to System Parameters file
-* Weather file at top level
-* Test with 3.10
-* 4G or 5G timeseries in Dymola
-Other Changes
-* Breakout run in docker command
-* Better error message if modelica timeseries files from sdk are not found
-* Break out build and simulate tests
-* Use Modelica Buildings Library (MBL) v9.0.0
-* Point tests to latest mbl release
-* Cli less brittle
-* Run compilation tasks on CI using spawn Modelica and Optimica
-* Update schema.json</p>
+<section id="id3">
+<h3>Exciting New Features 🎉<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Redeclare the teaser model to use buildings.media.air medium</p></li>
+<li><p>Fmu runner</p></li>
+<li><p>Spawn docker named args</p></li>
+<li><p>Compile &amp; run with Spawn &amp; Optima</p></li>
+<li><p>Microgrid lines</p></li>
+<li><p>Add 5G to System Parameters file</p></li>
+<li><p>Weather file at top level</p></li>
+<li><p>Test with 3.10</p></li>
+<li><p>4G or 5G timeseries in Dymola</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Other Changes<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Breakout run in docker command</p></li>
+<li><p>Better error message if modelica timeseries files from sdk are not found</p></li>
+<li><p>Break out build and simulate tests</p></li>
+<li><p>Use Modelica Buildings Library (MBL) v9.0.0</p></li>
+<li><p>Point tests to latest mbl release</p></li>
+<li><p>Cli less brittle</p></li>
+<li><p>Run compilation tasks on CI using spawn Modelica and Optimica</p></li>
+<li><p>Update schema.json</p></li>
+</ul>
+</section>
 </section>
 <section id="version-0-3-0">
 <h2>Version 0.3.0<a class="headerlink" href="#version-0-3-0" title="Link to this heading">¶</a></h2>
@@ -144,7 +195,7 @@ Other Changes
 <h2>Version 0.2.3<a class="headerlink" href="#version-0-2-3" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Add GMT Lib methods for Level 1 translation of Modelica-templated objects (for microgrid).</p></li>
-<li><p>Use MBL v9 (current master branch) for GMT Lib. The DES models still require the usage of the <cite>issue2204_gmt_mbl</cite> branch.</p></li>
+<li><p>Use MBL v9 (current master branch) for GMT Lib. The DES models still require the usage of the <code class="docutils literal notranslate"><span class="pre">issue2204_gmt_mbl</span></code> branch.</p></li>
 <li><p>Updated Jinja and Sphinx dependencies. Jinja is now a required dependency (no longer a testing dependency).</p></li>
 <li><p>Fix bug in CLI where commands only work in Unix-like operating systems, not Windows</p></li>
 <li><p>Fix bug in TEASER model for four-element RC models.</p></li>
@@ -161,8 +212,8 @@ Other Changes
 <section id="version-0-2-1">
 <h2>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>New command line interface (CLI) for scaffolding project using results of URBANopt SDK’s OpenStudio results</p></li>
-<li><p>New script for converting CSV file into Modelica mos file</p></li>
+<li><p>New command line interface (CLI) for scaffolding project using results of URBANopt SDK's OpenStudio results</p></li>
+<li><p>New script for converting CSV file into Modelica mos file.</p></li>
 <li><p>Cleanup of System Parameter Schema including renaming elements, adding definitions, and adding units</p></li>
 <li><p>Redesign the couplings and remove redundant model connector files</p></li>
 <li><p>Promote DES configuration variables to be accessible in the System Parameter file</p></li>
@@ -171,7 +222,7 @@ Other Changes
 <li><p>Upgrade to MBL 2.1.0</p></li>
 <li><p>Migrate to Poetry for development</p></li>
 <li><p>Add regression testing to full district energy system</p></li>
-<li><p>Auto-layout of templated components. This is a work in progress and the next version will include “pooling” of components.</p></li>
+<li><p>Auto-layout of templated components. This is a work in progress and  the next version will include &quot;pooling&quot; of components.</p></li>
 </ul>
 </section>
 <section id="version-0-2-0">
@@ -189,7 +240,8 @@ Other Changes
 </section>
 <section id="version-0-1-0">
 <h2>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading">¶</a></h2>
-<p>This is the initial release of the package and includes the following functionality:</p>
+<p>This is the initial release of the package and includes the following
+functionality:</p>
 <ul class="simple">
 <li><p>Initial implementation of a ModelicaRunner to call a Docker container to run the model.</p></li>
 <li><p>Create an RC model using Modelica 3.2.x, Modelica Buildings Library 7.0 and TEASER 0.7.2.</p></li>
@@ -209,11 +261,26 @@ Other Changes
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Change Log</a><ul>
-<li><a class="reference internal" href="#version-0-6-0-rc2">Version 0.6.0 RC2</a></li>
-<li><a class="reference internal" href="#version-0-6-0-rc1">Version 0.6.0 RC1</a></li>
-<li><a class="reference internal" href="#version-0-5-0">Version 0.5.0</a></li>
-<li><a class="reference internal" href="#version-0-4-1">Version 0.4.1</a></li>
-<li><a class="reference internal" href="#version-0-4-0">Version 0.4.0</a></li>
+<li><a class="reference internal" href="#version-0-6-0">Version 0.6.0</a><ul>
+<li><a class="reference internal" href="#exciting-new-features">Exciting New Features 🎉</a></li>
+<li><a class="reference internal" href="#other-changes">Other Changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-0-5-0">Version 0.5.0</a><ul>
+<li><a class="reference internal" href="#id1">Exciting New Features 🎉</a></li>
+<li><a class="reference internal" href="#id2">Other Changes</a></li>
+<li><a class="reference internal" href="#new-contributors">New Contributors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-0-4-1">Version 0.4.1</a><ul>
+<li><a class="reference internal" href="#what-s-changed">What's Changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-0-4-0">Version 0.4.0</a><ul>
+<li><a class="reference internal" href="#id3">Exciting New Features 🎉</a></li>
+<li><a class="reference internal" href="#id4">Other Changes</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#version-0-3-0">Version 0.3.0</a></li>
 <li><a class="reference internal" href="#version-0-2-3">Version 0.2.3</a></li>
 <li><a class="reference internal" href="#version-0-2-2">Version 0.2.2</a></li>
@@ -271,7 +338,7 @@ Other Changes
         <li class="right" >
           <a href="authors.html" title="Contributors"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0-rc2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">GeoJSON Modelica Translator v0.6.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Change Log</a></li> 
       </ul>
     </div>
