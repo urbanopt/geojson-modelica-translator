@@ -17,9 +17,9 @@ customized by hand to build a district system to meet your needs.
 
 Therefore, this Getting Started guide is broken up into three major setup steps. Each one requires all previous steps to be completed first.
 
-#. Installing the GMT from PyPi
+#. Installing the GMT from PyPI
 #. Installing and configuring the Modelica Buildings Library (MBL)
-#. Installing and configuring Docker in order to run simulations using JModelica. This step is currently not required due to the MSL v4 upgrade not supporting JModelica. Therefore, it is recommended to run the models in Dymola.
+#. Installing and configuring Docker in order to run simulations using OpenModelica.
 
 GMT Installation
 ----------------
