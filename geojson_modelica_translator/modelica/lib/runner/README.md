@@ -16,7 +16,7 @@ cd geojson_modelica_translator/modelica/lib/runner
 docker build -t nrel/gmt-om-runner:latest .
 ```
 
-The default tag will be `nrel/gmt-om-runner:v2.0.0`, which is the default version used in the modelica_runner.py file.
+The default tag will be `nrel/gmt-om-runner:v2.0.1`, which is the default version used in the modelica_runner.py file.
 
 ### Versioning
 

@@ -1,5 +1,5 @@
 within district_heating_and_cooling_systems.Plants;
-partial model PartialPlantParallel_v1new
+partial model PartialPlantParallel_v10
   "Partial source plant model with associated valves"
   extends PartialPlantParallelInterface;
   extends ValveParameters(
@@ -75,4 +75,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end PartialPlantParallel_v1new;
+end PartialPlantParallel_v10;
