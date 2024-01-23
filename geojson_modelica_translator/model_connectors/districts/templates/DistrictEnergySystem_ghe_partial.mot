@@ -2,39 +2,30 @@ within {{ district_within_path }};
 partial model DistrictEnergySystem_ghe_partial
   "Partial model for series network"
   extends Modelica.Icons.Example;
-  replaceable package Medium = Buildings.Media.Water "Medium model";
-  constant Real facMul = 10
+  replaceable package Medium=Buildings.Media.Water
+    "Medium model";
+  constant Real facMul=10
     "Building loads multiplier factor";
-  parameter Boolean allowFlowReversalBui = false
+  parameter Boolean allowFlowReversalBui=false
     "Set to true to allow flow reversal for in-building systems"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);
-
+    annotation (Dialog(tab="Assumptions"),Evaluate=true);
   // design flow rate needs to be checked #SMA_TBD
   // !!!!!! important !!!!!! #SMA_TBD
   parameter Modelica.Units.SI.MassFlowRate mPumDis_flow_nominal={{10*sum_design_flow_rate_all_borfields}}
     "Nominal mass flow rate of main distribution pump";
-
-  {% for num_of_bldg_group in range(num_of_bldg_groups) %}
-
-  parameter Integer nBuiGrp_{{num_of_bldg_group}} = datDes_buiGrp_{{num_of_bldg_group}}.nBui
+  {% for num_of_bldg_group in range(num_of_bldg_groups) %}parameter Integer nBuiGrp_{{num_of_bldg_group}}=datDes_buiGrp_{{num_of_bldg_group}}.nBui
     "Number of buildings connected to DHC system in building group {{num_of_bldg_group}}"
     annotation (Evaluate=true);
-
-  {% endfor %}
-
-  // Models
-  {% for model in models %}
-  //
+  {% endfor %}// Models
+  {% for model in models %}//
   // Begin Model Instance for {{ model.id }}
   // Source template: {{ model.instance_template_path }}
   //
-  {{ model.instance }}
-  //
+  {{ model.instance }} //
   // End Model Instance for {{ model.id }}
   //
   {% endfor %} // Model dependencies
-  {% for coupling in couplings %}
-  //
+  {% for coupling in couplings %} //
   // Begin Component Definitions for {{ coupling.id }}
   // Source template: {{ coupling.coupling_definitions_template_path }}
   //
@@ -42,21 +33,14 @@ partial model DistrictEnergySystem_ghe_partial
   //
   // End Component Definitions for {{ coupling.id }}
   //
-  {% endfor %}
-
-  {% for num_of_bldg_group in range(num_of_bldg_groups) %}
-
-  replaceable
-    Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS
-    buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}] constrainedby
-    Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
-    bui(each final facMul=facMul),
-    redeclare each final package MediumBui = Medium,
-    redeclare each final package MediumSer = Medium,
-    each final allowFlowReversalBui=allowFlowReversalBui,
-    each final allowFlowReversalSer=allowFlowReversalSer) "Building and ETS"
+  {% endfor %} {% for num_of_bldg_group in range(num_of_bldg_groups) %} replaceable Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}]
+    constrainedby Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
+      bui(
+        each final facMul=facMul),
+      redeclare each final package MediumBui=Medium,
+      redeclare each final package MediumSer=Medium,
+      each final allowFlowReversalBui=allowFlowReversalBui,
+      each final allowFlowReversalSer=allowFlowReversalSer)
+    "Building and ETS"
     annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["bui"]["extent_coo"]}})));
-
-  {% endfor %}
-
-end DistrictEnergySystem_ghe_partial;
+{% endfor %}end DistrictEnergySystem_ghe_partial;
