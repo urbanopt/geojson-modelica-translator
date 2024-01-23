@@ -1,16 +1,20 @@
 // Timeseries load and network coupling connections
-  connect(dis.ports_bCon[{{ sys_params.load_num }}], {{ coupling.load.id }}.port_aSerAmb)
-  {% raw %}annotation (Line(points={{58,0},{58,6},{46,6},{46,30},{60,30}}, color={0,127,255}));
-  {% endraw %}connect({{ coupling.load.id }}.port_bSerAmb, dis.ports_aCon[{{ sys_params.load_num }}])
-  {% raw %}annotation (Line(points={{80,30},{92,30},{92,6},{82,6},{82,0}}, color={0,127,255}));
-  {% endraw %}connect(THeaWatSupMinSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMinSet)
-  {% raw %}annotation (Line(points={{-98,80},{-80,80},{-80,100},{26,100},{26,39},{58,39}}, color={0,0,127}));
-  {% endraw %}connect(THeaWatSupMaxSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMaxSet)
-  {% raw %}annotation (Line(points={{-98,50},{34,50},{34,37},{58,37}}, color={0,0,127}));
-  {% endraw %}connect(TChiWatSupSet_{{ coupling.id }}.y, {{ coupling.load.id }}.TChiWatSupSet)
-  {% raw %}annotation (Line(points={{-98,20},{42,20},{42,35},{58,35}}, color={0,0,127}));
-  {% endraw %}connect(THotWatSupSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THotWatSupSet)
-  {% raw %}annotation (Line(points={{-98,-10},{-66,-10},{-66,16},{52,16},{52,33},{58,33}}, color={0,0,127}));
-  {% endraw %}connect(TColWat_{{ coupling.id }}.y, {{ coupling.load.id }}.TColWat)
-  {% raw %}annotation (Line(points={{-98,-40},{-62,-40},{-62,4},{62,4},{62,18}}, color={0,0,127}));
-  {% endraw %}
+
+  {% for num_of_bldg_group in range(sys_params["num_of_bldg_groups"]) %}
+
+  connect(THeaWatSupMaxSet_buiGrp_{{num_of_bldg_group}}.y, buiGrp_{{num_of_bldg_group}}.THeaWatSupMaxSet)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["THeaWatSupMaxSet_buiGrp"]["points"]}}));
+
+  connect(THeaWatSupMinSet_buiGrp_{{num_of_bldg_group}}.y, buiGrp_{{num_of_bldg_group}}.THeaWatSupMinSet)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["THeaWatSupMinSet_buiGrp"]["points"]}}));
+
+  connect(TChiWatSupSet_buiGrp_{{num_of_bldg_group}}.y, buiGrp_{{num_of_bldg_group}}.TChiWatSupSet)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["TChiWatSupSet_buiGrp"]["points"]}}));
+
+  connect(buiGrp_{{num_of_bldg_group}}.port_bSerAmb, disGrp_{{num_of_bldg_group}}.ports_aCon)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["buiGrp_disGrp"]["points"]}}));
+
+  connect(disGrp_{{num_of_bldg_group}}.ports_bCon, buiGrp_{{num_of_bldg_group}}.port_aSerAmb)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["disGrp_buiGrp"]["points"]}}));
+
+  {% endfor %}

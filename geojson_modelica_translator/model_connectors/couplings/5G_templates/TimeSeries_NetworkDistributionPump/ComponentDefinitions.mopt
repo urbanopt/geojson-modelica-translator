@@ -1,16 +1,16 @@
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMaxSet_{{ coupling.id }}(k=38 +
-        273.15) "Heating water supply temperature set point - Maximum value"
-    {% raw %}annotation (Placement(transformation(extent={{-120,40},{-100,60}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TChiWatSupSet_{{ coupling.id }}(k=18 + 273.15)
+  {% for num_of_bldg_group in range(sys_params["num_of_bldg_groups"]) %}
+
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMaxSet_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+    k=buiGrp_{{num_of_bldg_group}}.THeaWatSup_nominal)
+    "Heating water supply temperature set point - Maximum value"
+    annotation (Placement(transformation(extent={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Placement"]["THeaWatSupMaxSet"]["extent_coo"]}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TChiWatSupSet_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+    k=buiGrp_{{num_of_bldg_group}}.TChiWatSup_nominal)
     "Chilled water supply temperature set point"
-    {% raw %}annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMinSet_{{ coupling.id }}(k=28
-         + 273.15) "Heating water supply temperature set point - Minimum value"
-    {% raw %}annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THotWatSupSet_{{ coupling.id }}(k=63 + 273.15)
-    "Hot water supply temperature set point"
-    {% raw %}annotation (Placement(transformation(extent={{-120,-20},{-100,0}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TColWat_{{ coupling.id }}(k=15 + 273.15)
-    "Cold water temperature"
-    {% raw %}annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
-  {% endraw %}
+    annotation (Placement(transformation(extent={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Placement"]["TChiWatSupSet"]["extent_coo"]}})));
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THeaWatSupMinSet_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+    each k=28 + 273.15)
+    "Heating water supply temperature set point - Minimum value"
+    annotation (Placement(transformation(extent={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Placement"]["THeaWatSupMinSet"]["extent_coo"]}})));
+
+  {% endfor %}

@@ -1,46 +1,52 @@
-  // district distribution pipiline
-  Buildings.Experimental.DHC.Networks.Combined.UnidirectionalSeries dis(
-    redeclare final package Medium = {{ globals.medium_w }},
-    final nCon= datDes.nBui,
+// district distribution pipeline
+
+  {% for num_of_bldg_group in range(sys_params["num_of_bldg_groups"]) %}
+
+  Buildings.Experimental.DHC.Networks.Combined.UnidirectionalSeries
+    disGrp_{{num_of_bldg_group}}(
+    redeclare final package Medium = Medium,
+    final nCon=nBuiGrp_{{num_of_bldg_group}},
     show_TOut=true,
-    final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
-    final mCon_flow_nominal=datDes.mCon_flow_nominal,
-    final dp_length_nominal=datDes.dp_length_nominal,
-    final lDis=datDes.lDis,
-    final lCon=datDes.lCon,
-    final lEnd=datDes.lEnd,
-    final allowFlowReversal=allowFlowReversalSer)
-    "Distribution network"
-    {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
-  {% endraw %}// ambient loop pump
+    final mDis_flow_nominal=datDes_buiGrp_{{num_of_bldg_group}}.mPipDis_flow_nominal,
+    final mCon_flow_nominal=datDes_buiGrp_{{num_of_bldg_group}}.mCon_flow_nominal,
+    final dp_length_nominal=datDes_buiGrp_{{num_of_bldg_group}}.dp_length_nominal,
+    final lDis=datDes_buiGrp_{{num_of_bldg_group}}.lDis,
+    final lCon=datDes_buiGrp_{{num_of_bldg_group}}.lCon,
+    final lEnd=datDes_buiGrp_{{num_of_bldg_group}}.lEnd,
+    final allowFlowReversal=allowFlowReversalSer) "Distribution network"
+    annotation (Placement(transformation(extent={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Placement"]["dis"]["extent_coo"]}})));
+
+  Buildings.Fluid.Sensors.TemperatureTwoPort TDisWatSup_{{num_of_bldg_group}}(
+    redeclare final package Medium = Medium,
+  // design flow rate needs to be checked #SMA_TBD
+  // !!!!!! important !!!!!! #SMA_TBD
+    final m_flow_nominal=mPumDis_flow_nominal)
+    "District water supply temperature after building group {{num_of_bldg_group}}"
+    annotation (Placement(transformation(extent={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Placement"]["TDisWatSup"]["extent_coo"]}})));
+
+  {% endfor %}
+
+  Buildings.Fluid.Sensors.TemperatureTwoPort TDisWatRet(
+    redeclare final package Medium = Medium,
+  // design flow rate needs to be checked #SMA_TBD
+  // !!!!!! important !!!!!! #SMA_TBD
+    final m_flow_nominal=mPumDis_flow_nominal)
+    "District water return temperature"
+    annotation (Placement(transformation(extent={{sys_params["diagram_single_component_dict"]["district_loop"]["Placement"]["TDisWatRet"]["extent_coo"]}})));
+
+
+  // ambient loop pump
   Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumDis(
-    redeclare final package Medium = {{ globals.medium_w }},
-    m_flow_nominal=datDes.mPumDis_flow_nominal)
+    redeclare final package Medium = Medium,
+  // design flow rate needs to be checked #SMA_TBD
+  // !!!!!! important !!!!!! #SMA_TBD
+    m_flow_nominal=mPumDis_flow_nominal)
     "Distribution pump"
-    {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
-  {% endraw %}// pump controller
-  Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
-    nMix=datDes.nBui,
-    nSou=1,
-    use_temperatureShift=false)
-    {% raw %}annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
-    "Scale with nominal mass flow rate"
-    {% raw %}annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
-  {% endraw %}// expansion vessel
-  Buildings.Fluid.Sources.Boundary_pT expVes(
-    redeclare final package Medium = {{ globals.medium_w }},
-    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp}}+273.15,
+    annotation (Placement(transformation(extent={{sys_params["diagram_single_component_dict"]["district_loop"]["Placement"]["pumDis"]["extent_coo"]}})));
+  // expansion vessel
+  Buildings.Fluid.Sources.Boundary_pT bou(
+    redeclare final package Medium = Medium,
+    T={{sys_params["ghe_parameters"]["soil"]["undisturbed_temp"]}}+273.15,
     nPorts=1)
-    "Expansion vessel"
-    {% raw %}annotation (Placement(transformation(extent={{140,-76},{120,-56}})));
-  {% endraw %}// temperature sensors
-  Buildings.Fluid.Sensors.TemperatureTwoPort TIn(
-    redeclare final package Medium = {{ globals.medium_w }},
-    m_flow_nominal=datDes.mPumDis_flow_nominal)
-    {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=-90,origin={110,-30})));
-  {% endraw %}Buildings.Fluid.Sensors.TemperatureTwoPort TOut(
-    redeclare final package Medium = {{ globals.medium_w }},
-    m_flow_nominal=datDes.mPumDis_flow_nominal)
-    {% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={16,10})));
-  {% endraw %}
+    "Boundary pressure condition representing the expansion vessel"
+    annotation (Placement(transformation(extent={{sys_params["diagram_single_component_dict"]["district_loop"]["Placement"]["bou"]["extent_coo"]}})));

@@ -2,11 +2,371 @@
   "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
   "buildings": [
     {
-      "geojson_id": "0",
+      "geojson_id": "1",
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "To be populated",
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "2",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "3",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "4",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "5",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "7",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "8",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "9",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "10",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "11",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      }
+    },
+    {
+      "geojson_id": "13",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -40,6 +400,12 @@
   ],
   "district_system": {
     "fifth_generation": {
+      "central_cooling_plant_parameters": {
+        "temp_setpoint_chw": 10
+      },
+      "central_heating_plant_parameters": {
+        "temp_setpoint_hhw": 25
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
@@ -99,7 +465,7 @@
             }
           },
           {
-            "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2_02",
+            "ghe_id": "47fd01d3-3d72-46c0-85f2-a12854783764",
             "ghe_geometric_params": {
               "length_of_ghe": 411.7146746166177,
               "width_of_ghe": 254.28532538338231
@@ -107,7 +473,33 @@
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length_of_boreholes": 300,
+              "length_of_boreholes": 150,
+              "number_of_boreholes": 4
+            }
+          },
+          {
+            "ghe_id": "12",
+            "ghe_geometric_params": {
+              "length_of_ghe": 411.7146746166177,
+              "width_of_ghe": 254.28532538338231
+            },
+            "borehole": {
+              "buried_depth": 2.0,
+              "diameter": 0.15,
+              "length_of_boreholes": 150,
+              "number_of_boreholes": 4
+            }
+          },
+          {
+            "ghe_id": "6",
+            "ghe_geometric_params": {
+              "length_of_ghe": 411.7146746166177,
+              "width_of_ghe": 254.28532538338231
+            },
+            "borehole": {
+              "buried_depth": 2.0,
+              "diameter": 0.15,
+              "length_of_boreholes": 150,
               "number_of_boreholes": 4
             }
           }

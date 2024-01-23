@@ -1,7 +1,6 @@
   // heated water stub
   // TODO: move these components into a single component
-  {% for building in range( sys_params.num_buildings ) %}
-  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat_{{ building + 1 }} [nBorFie](
+  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat [nBorFie](
     redeclare package Medium={{ globals.medium_w }},
     use_T_in=false,
     m_flow={{sys_params["borefield_id"]}}Dat.conDat.mBorFie_flow_nominal,
@@ -14,20 +13,18 @@
     {% endif %}
     nPorts=1)
     "Heating water supply temperature (district side)."
-    {% raw %}annotation (Placement(transformation(extent={{-92,-70},{
-                -72,-50}}, rotation=0)));
-                {% endraw %}
-  {% endfor %}Buildings.Fluid.Sources.Boundary_pT sinHeaWat [nBorFie](
+    {% raw %}annotation (Placement(transformation(extent={{10,10},{-10,-10}}, rotation=180, origin={-230,20})));
+    {% endraw %}
+  Buildings.Fluid.Sources.Boundary_pT sinHeaWat [nBorFie](
     redeclare package Medium={{ globals.medium_w }},
     use_p_in=false,
     use_T_in=false,
-    nPorts={{ sys_params.num_buildings }},
+    nPorts=1,
     p=101330,
     T=283.15)
     "Heating water sink (district side)"
-    {% raw %}annotation (Placement(transformation(extent={{90,-70},{70,
-            -50}}, rotation=0)));
-            {% endraw %}
+    {% raw %}annotation (Placement(transformation(extent={{-60,10},{-80,30}}, rotation=0)));
+    {% endraw %}
 
   // NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
   parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=50000

@@ -139,21 +139,21 @@ class Borefield(PlantBase):
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
             gfunction = pd.read_csv(
-                Path(template_data["gfunction"]["input_path"]) / template_data["gfunction"]["ghe_id"] / "Gfunction.csv",
+                Path(
+                    template_data["gfunction"]["input_path"])
+                / template_data["gfunction"]["ghe_id"]
+                / "Gfunction.csv",
                 header=0,
-                usecols=[0, 2])
+                usecols=[
+                    0,
+                    2])
         else:
             sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
             try:
-                gfunction = pd.read_csv(
-                    sys_param_dir
-                    / template_data["gfunction"]["input_path"]
-                    / template_data["gfunction"]["ghe_id"]
-                    / "Gfunction.csv",
-                    header=0,
-                    usecols=[
-                        0,
-                        2])
+                gfunction = pd.read_csv(sys_param_dir
+                                        / template_data["gfunction"]["input_path"]
+                                        / template_data["gfunction"]["ghe_id"]
+                                        / "Gfunction.csv", header=0, usecols=[0, 2])
             except FileNotFoundError:
                 raise SystemExit(
                     f'When using a relative path to your ghe_dir, your path \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your sys-param file is in.')
@@ -225,7 +225,7 @@ class Borefield(PlantBase):
             package.add_model('Plants')
             package.save()
 
-        package_models = [self.borefield_name] + [Path(mo).stem for mo in self.required_mo_files]
+        package_models = [Path(mo).stem for mo in self.required_mo_files]
         plants_package = PackageParser(scaffold.plants_path.files_dir)
         if plants_package.order_data is None:
             plants_package = PackageParser.new_from_template(
