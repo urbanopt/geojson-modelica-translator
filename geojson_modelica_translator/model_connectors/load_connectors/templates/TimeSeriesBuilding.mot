@@ -100,14 +100,14 @@ model TimeSeriesBuilding
     smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1)
     "Reader for thermal loads (y[1] is cooling load, y[2] is heating load)"
     annotation (Placement(transformation(extent={{-280,-10},{-260,10}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet(
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant minTSet(
     k={{ data['nominal_values']['temp_setpoint_heating']  }},
     {% raw %}y(
       unit="K",
       displayUnit="degC"))
     "Minimum temperature set point"
     annotation (Placement(transformation(extent={{-280,170},{-260,190}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet(
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant maxTSet(
     k={{ data['nominal_values']['temp_setpoint_cooling']  }},
     {% raw %}y(
       unit="K",
@@ -158,8 +158,7 @@ model TimeSeriesBuilding
     T_aLoaHea_nominal=T_aLoaHea_nominal,
     k=k,
     Ti=Ti,
-    TRooHea_nominal=T_aLoaHea_nominal,
-    QRooHea_flow_nominal=QHea_flow_nominal/facMulCoo) if have_chiWat
+    QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
     constrainedby Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,
@@ -188,27 +187,27 @@ model TimeSeriesBuilding
     each unit="W") if have_cooLoa
     "Cooling load"
     annotation (Placement(transformation(extent={{300,-20},{340,20}}),iconTransformation(extent={{-20,-20},{20,20}},rotation=-90,origin={260,-320})));
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant noHea(
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant noHea(
     k=0) if not have_heaWat
     "No heating system"
     annotation (Placement(transformation(extent={{80,120},{100,140}})));
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant noCoo(
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant noCoo(
     k=0) if not have_chiWat
     "No cooling system"
     annotation (Placement(transformation(extent={{80,78},{100,98}})));
-  Buildings.Controls.OBC.CDL.Continuous.Add addPFan
+  Buildings.Controls.OBC.CDL.Reals.Add addPFan
     "Sum fan power"
     annotation (Placement(transformation(extent={{222,120},{242,140}})));
-  Buildings.Controls.OBC.CDL.Continuous.Add addPPum
+  Buildings.Controls.OBC.CDL.Reals.Add addPPum
     "Sum pump power"
     annotation (Placement(transformation(extent={{222,70},{242,90}})));
-  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter mulQReqHea_flow(
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter mulQReqHea_flow(
     u(
       unit="W"),
     k=facMul) if have_heaLoa
     "Scaling"
     annotation (Placement(transformation(extent={{272,30},{292,50}})));
-  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter mulQReqCoo_flow(
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter mulQReqCoo_flow(
     u(
       unit="W"),
     k=facMul) if have_cooLoa

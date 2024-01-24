@@ -89,6 +89,10 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
 
         template_data['max_flow_rate'] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)  # type: ignore
 
+        nbuildings = len(template_data['building_load_files'])
+        template_data['lDis'] = self.build_string("lDis = {", "0.5, ", nbuildings)
+        template_data['lCon'] = self.build_string("lCon = {", "0.5, ", nbuildings)
+
         # 6: generate the modelica files from the template
         self.to_modelica(output_dir=Path(scaffold.districts_path.files_dir),
                          model_name='DHC_5G_waste_heat_GHX_variable',
@@ -99,3 +103,19 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
 
         # 7: save the root package.mo
         package.save()
+
+    def build_string(self, base_text: str, value: str, iterations: int) -> str:
+        """Builds a string with a comma separated list of values.
+
+        This is used to build 5G districts with arbitrary number of buildings.
+        It's ugly because of the Jinja/Modelica templating system.
+        This is a bit of a hack but it works.
+
+        Example output: lDis = { 0.5, 0.5, 0.5 }
+
+        Args:
+            base_text (str): The text to start the string with.
+            value (str): The value to add multiple times.
+            iterations (int): The number of values to add to the string."""
+        text = f"{base_text} {value * iterations}"
+        return text.removesuffix(", ") + " }"

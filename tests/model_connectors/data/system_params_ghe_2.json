@@ -82,6 +82,9 @@
       "central_heating_plant_parameters": {
         "temp_setpoint_hhw": 25
       },
+      "central_pump_parameters": {
+        "pump_design_head": 60000
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
@@ -147,7 +150,7 @@
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length_of_boreholes": 150,
+              "length_of_boreholes": 99,
               "number_of_boreholes": 40
             }
           }

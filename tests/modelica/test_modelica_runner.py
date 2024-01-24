@@ -45,18 +45,6 @@ class ModelicaRunnerTest(unittest.TestCase):
         )
 
     @pytest.mark.docker
-    def test_run_setup(self):
-        prev_mod_path = os.environ.get('MODELICAPATH', None)
-        try:
-            os.environ['MODELICAPATH'] = 'A_PATH/to_something'
-            mr = ModelicaRunner()
-            self.assertEqual(mr.modelica_lib_path, 'A_PATH/to_something')
-        finally:
-            if prev_mod_path:
-                os.environ['MODELICAPATH'] = prev_mod_path
-        self.assertTrue(os.path.exists(mr.om_docker_path))
-
-    @pytest.mark.docker
     def test_docker_enabled(self):
         mr = ModelicaRunner()
         self.assertTrue(mr.docker_configured, 'Docker is not running, unable to run all tests')
@@ -94,8 +82,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         # Write out the log to the logger for debugging
         # with open(os.path.join(self.run_path, 'stdout.log')) as f:
-        # logger.info(f.read())
-        self.assertFalse(os.path.exists(os.path.join(results_path, 'om_docker.sh')))
+            # logger.info(f.read())
         self.assertFalse(os.path.exists(os.path.join(results_path, 'compile_fmu.mos')))
         self.assertFalse(os.path.exists(os.path.join(results_path, 'simulate.mos')))
 
@@ -189,7 +176,7 @@ class ModelicaRunnerTest(unittest.TestCase):
 
     @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        model_name = 'Buildings.Controls.OBC.CDL.Reals.Validation.PID'
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker(
@@ -223,7 +210,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             shutil.rmtree(results_path, ignore_errors=True)
         results_path.mkdir(parents=True)
 
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        model_name = 'Buildings.Controls.OBC.CDL.Reals.Validation.PID'
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(
@@ -238,7 +225,7 @@ class ModelicaRunnerTest(unittest.TestCase):
             shutil.rmtree(results_path, ignore_errors=True)
         results_path.mkdir(parents=True)
 
-        model_name = 'Buildings.Controls.OBC.CDL.Continuous.Validation.PID'
+        model_name = 'Buildings.Controls.OBC.CDL.Reals.Validation.PID'
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_dymola(

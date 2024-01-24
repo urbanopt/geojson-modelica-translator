@@ -18,7 +18,7 @@ from geojson_modelica_translator.model_connectors.load_connectors.load_base impo
     LoadBase
 )
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.utils import ModelicaPath, mbl_version
 
 
 def render_template(template_name, template_params):
@@ -279,7 +279,11 @@ class District:
 
         # create the root package
         root_package = PackageParser.new_from_template(
-            self._scaffold.project_path, self._scaffold.project_name, order=[])
+            self._scaffold.project_path,
+            self._scaffold.project_name,
+            order=[],
+            mbl_version=mbl_version(),
+        )
         root_package.save()
 
         # generate model modelica files

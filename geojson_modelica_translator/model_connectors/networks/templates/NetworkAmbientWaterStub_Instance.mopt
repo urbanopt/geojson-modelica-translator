@@ -1,14 +1,12 @@
   // heated water stub
   // TODO: move these components into a single component
-  Buildings.Fluid.Sources.MassFlowSource_T supHeaWat [nBorFie](
+  Buildings.Fluid.Sources.Boundary_pT supHeaWat [nBorFie](
     redeclare package Medium={{ globals.medium_w }},
     use_T_in=false,
     m_flow={{sys_params["borefield_id"]}}Dat.conDat.mBorFie_flow_nominal,
     {% if 'ghe_parameters' in sys_params.district_system['fifth_generation'] %}
-    use_m_flow_in=false,
     T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }}+273.15,
     {% else %}
-    use_m_flow_in=true,
     T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
     {% endif %}
     nPorts=1)
