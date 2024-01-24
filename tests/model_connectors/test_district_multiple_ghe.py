@@ -57,7 +57,7 @@ def add_bldg_ghe_group_num(connected_bldgs_and_ghes_by_order_in_loop, feature_ty
         if idx_connected_fea_typ_1 == 0:
             connected_bldgs_and_ghes_by_order_in_loop[key_connected_fea_typ_1][group_key] = fea_typ_group_counter
         else:
-            previous_key_connected_fea_typ = list_of_sorted_keys_connected_fea_typ[idx_connected_fea_typ_1-1]
+            previous_key_connected_fea_typ = list_of_sorted_keys_connected_fea_typ[idx_connected_fea_typ_1 - 1]
             if key_connected_fea_typ_1 - previous_key_connected_fea_typ != 1:
                 fea_typ_group_counter += 1
                 connected_bldgs_and_ghes_by_order_in_loop[key_connected_fea_typ_1][group_key] = fea_typ_group_counter
@@ -82,7 +82,8 @@ def add_bldg_ghe_group_num(connected_bldgs_and_ghes_by_order_in_loop, feature_ty
                 connected_bldgs_and_ghes_by_order_in_loop[key_connected_fea_typ_2][group_key] = 0
 
     num_of_fea_typ_groups = fea_typ_group_counter + 1
-    return(num_of_fea_typ_groups, boolean_group_is_wrapping)
+    return (num_of_fea_typ_groups, boolean_group_is_wrapping)
+
 
 def add_bldg_ghe_group_in_out(connected_bldgs_and_ghes_by_order_in_loop, feature_type):
     # the expression fea_typ (feature_type) represents either bldgs or ghes (not both)
@@ -100,7 +101,7 @@ def add_bldg_ghe_group_in_out(connected_bldgs_and_ghes_by_order_in_loop, feature
     list_of_sorted_keys_connected_bldgs_ghes = sorted(connected_bldgs_and_ghes_by_order_in_loop.keys())
     for idx_connected_bldg_ghe, key_connected_bldg_ghe in enumerate(list_of_sorted_keys_connected_bldgs_ghes):
         if connected_bldgs_and_ghes_by_order_in_loop[key_connected_bldg_ghe]["type"] == feature_type:
-            previous_key_connected_bldg_ghe = list_of_sorted_keys_connected_bldgs_ghes[idx_connected_bldg_ghe-1]
+            previous_key_connected_bldg_ghe = list_of_sorted_keys_connected_bldgs_ghes[idx_connected_bldg_ghe - 1]
             # if the key of the "Building" or "District System" is the last
             if idx_connected_bldg_ghe == len(list_of_sorted_keys_connected_bldgs_ghes) - 1:
                 adjusted_key_next_blg_ghe = (idx_connected_bldg_ghe + 1) - len(list_of_sorted_keys_connected_bldgs_ghes)
@@ -118,6 +119,7 @@ def add_bldg_ghe_group_in_out(connected_bldgs_and_ghes_by_order_in_loop, feature
             else:
                 connected_bldgs_and_ghes_by_order_in_loop[key_connected_bldg_ghe][group_out_key] = connected_bldgs_and_ghes_by_order_in_loop[next_key_connected_bldg_ghe][key_to_return_group_num]
 
+
 def dict_bldg_ghe_group_by_num(connected_bldgs_and_ghes_by_order_in_loop, num_of_fea_typ_groups, num_fea_typ_in_group_key, feature_type, group_key, lst_fea_typ_ids_in_group_key, boolean_group_is_wrapping, group_in_key):
     # the expression fea_typ (feature_type) represents either bldgs or ghes (not both)
     # feature_type ("Building" or "District System")
@@ -128,7 +130,7 @@ def dict_bldg_ghe_group_by_num(connected_bldgs_and_ghes_by_order_in_loop, num_of
     # dictionary of building groups by group number
     fea_typ_groups_by_num = dict()
     # group_in_key ("building_group_in" or "ghe_group_in")
-    group_out_key = group_in_key[:-3]+"_out"
+    group_out_key = group_in_key[:-3] + "_out"
     boolean_separate_first_fea_typ_ids_wrapping = True
     # this is a temporary list needed when a group is wrapping, it includes the ids of the first in loop features of the wrapping group
     # this list gets appended to the end of the list that has the ids of the last in loop features of the wrapping group
@@ -171,7 +173,8 @@ def dict_bldg_ghe_group_by_num(connected_bldgs_and_ghes_by_order_in_loop, num_of
             if connected_bldgs_and_ghes_by_order_in_loop[key_connected_bldg_ghe]["id"] == fea_typ_groups_by_num[num_of_fea_typ_group][lst_fea_typ_ids_in_group_key][-1]:
                 fea_typ_groups_by_num[num_of_fea_typ_group][group_out_key] = connected_bldgs_and_ghes_by_order_in_loop[key_connected_bldg_ghe][group_out_key]
 
-    return(fea_typ_groups_by_num)
+    return (fea_typ_groups_by_num)
+
 
 class DistrictSystemTest(TestCaseBase):
     def setUp(self):
@@ -225,7 +228,7 @@ class DistrictSystemTest(TestCaseBase):
         connected_bldgs_and_ghes_by_order_in_loop = dict()
         for feature_bldg_or_ghe_idx, feature_bldg_or_ghe in enumerate(lst_bldgs_and_ghes):
             # creating an empty nested dictionary
-            connected_bldgs_and_ghes_by_order_in_loop[feature_bldg_or_ghe_idx] = {"id": None,"type": None, "id_ThermalConnector_out": None}
+            connected_bldgs_and_ghes_by_order_in_loop[feature_bldg_or_ghe_idx] = {"id": None, "type": None, "id_ThermalConnector_out": None}
             # filling the data for the first "Building" and "District System" in the loop
             if feature_bldg_or_ghe["properties"]["id"] == start_bldg_or_ghe_id:
                 connected_bldgs_and_ghes_by_order_in_loop[0]["id"] = start_bldg_or_ghe_id
@@ -261,7 +264,7 @@ class DistrictSystemTest(TestCaseBase):
                 pass
             else:
                 # id of "ThermalConnector" connected to previous "Building" or "District System" in the loop
-                previous_thermal_connector_id = connected_bldgs_and_ghes_by_order_in_loop[num_in_loop-1]["id_ThermalConnector_out"]
+                previous_thermal_connector_id = connected_bldgs_and_ghes_by_order_in_loop[num_in_loop - 1]["id_ThermalConnector_out"]
                 # id of next "Building" of "District System" in the loop
                 next_bldg_or_ghe_in_loop = thermal_connectors_by_id[previous_thermal_connector_id]["endFeatureId"]
                 # id of "ThermalConnector" connected to next "Building" or "District System" in the loop
@@ -281,7 +284,6 @@ class DistrictSystemTest(TestCaseBase):
         # 3) returns if group is wrapping, i.e., that first and last feature in the loop is of the same feature_type ("Building" or "District System")
         num_of_bldg_groups, boolean_bldg_group_is_wrapping = add_bldg_ghe_group_num(connected_bldgs_and_ghes_by_order_in_loop, "Building", "building_group")
         num_of_ghe_groups, boolean_ghe_group_is_wrapping = add_bldg_ghe_group_num(connected_bldgs_and_ghes_by_order_in_loop, "District System", "ghe_group")
-
 
         # add group in and out to each feature (e.g., "building_group_in" and "building_group_out") to connected_bldgs_and_ghes_by_order_in_loop dictionary
         # (building groups are separated by ghe, and ghe groups are separated by buildings)
