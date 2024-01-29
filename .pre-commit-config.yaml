@@ -32,10 +32,19 @@ repos:
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix', '--no-sort-keys']
+  - repo: https://github.com/ErykMroczek/mofmt
+    rev: v0.3.6
+    hooks:
+      - id: mofmt
+        name: mofmt
+        description: Make your Modelica code pretty
+        entry: mofmt
+        language: python
+        files: '.*\.mo$'
   # Run the Ruff linter
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.8
+    rev: v0.1.14
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -43,16 +52,16 @@ repos:
       - id: ruff-format
   # Run the Ruff formatter
   # https://docs.astral.sh/ruff/integrations/#pre-commit
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.1.8
-  #   hooks:
-  #     - id: ruff-format
-  - repo: local
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.14
     hooks:
-      - id: modelica-fmt
-        name: Modelica Formatter
-        types: [file]
-        files: \.(mo|mot)$
-        entry: poetry run format_modelica_files
-        language: system
-        pass_filenames: false
+      - id: ruff-format
+  # - repo: local
+  #   hooks:
+  #     - id: modelica-fmt
+  #       name: Modelica Formatter
+  #       types: [file]
+  #       files: \.(mo|mot)$
+  #       entry: poetry run format_modelica_files
+  #       language: system
+  #       pass_filenames: false
