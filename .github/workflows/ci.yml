@@ -17,9 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.10", "3.12.1"]
         test_env: [python, docs, mypy]
-        mbl_tag: [v9.1.1]
+        mbl_tag: [v10.0.0]
         exclude:
           # only test mypy on linux for all versions of python
           - os: windows-latest
@@ -52,7 +52,7 @@ jobs:
         run: |
           RUNNER_SYSTEM=$(python -c 'import platform; print(platform.system())')
           curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.2/modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz"
-          tar xzf modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz
+          tar --exclude='README.md' --exclude='CHANGELOG.md' -xzf modelica-fmt_0.2-pr.2_${RUNNER_SYSTEM}_x86_64.tar.gz
           chmod +x modelicafmt
           if [[ $RUNNER_SYSTEM == 'Linux' ]]; then
             sudo mv modelicafmt /usr/local/bin/
@@ -81,9 +81,7 @@ jobs:
         if: matrix.test_env == 'python' && matrix.os == 'windows-latest'
         run: poetry run pytest tests --doctest-modules -v -m 'not simulation and not compilation and not dymola'
       - name: Run pre-commit
-        uses: pre-commit/action@v3.0.0
-        with:
-          extra_args: --all-files
+        run: poetry run pre-commit run --show-diff-on-failure --color=always --all-files
       - name: Run mypy
         if: matrix.test_env =='mypy'
         run: poetry run mypy --install-types --non-interactive --show-error-codes .

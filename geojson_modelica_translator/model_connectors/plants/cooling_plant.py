@@ -45,8 +45,8 @@ class CoolingPlant(PlantBase):
                 os.path.join(scaffold.plants_path.resources_dir, weather_filepath.name)
             )
             weather_file_modelica_string = f'modelica://{scaffold.project_name}/' \
-                                           f'{scaffold.plants_path.resources_relative_dir}/' \
-                                           f'{weather_filepath.name}'
+                f'{scaffold.plants_path.resources_relative_dir}/' \
+                f'{weather_filepath.name}'
 
         template_data = {
             "nominal_values": {

@@ -35,7 +35,7 @@ model HeatingWaterPumpSpeed
   Buildings.Controls.OBC.CDL.Interfaces.RealOutput deCouVal
     "Decoupler line valve."
     annotation (Placement(transformation(extent={{100,-60},{120,-40}})));
-  Buildings.Controls.OBC.CDL.Interfaces.BooleanInput ON[numPum]
+  Buildings.Controls.OBC.CDL.Interfaces.BooleanInput ON
     "Boiler on/off signal."
     annotation (Placement(transformation(extent={{-120,76},{-100,96}}),iconTransformation(extent={{-120,56},{-100,76}})));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput masFloPum(
@@ -97,13 +97,14 @@ model HeatingWaterPumpSpeed
     annotation (Placement(transformation(extent={{-40,-60},{-20,-40}})));
   Modelica.Blocks.Sources.RealExpression norDecMasFlo(
     y=meaFloByPas/(
-      if ON[numPum] then
+      if ON then
         numPum*mMin_flow
       else
         mMin_flow))
     "Normalised decoupler line measured mass flow rate."
     annotation (Placement(transformation(extent={{42,-84},{22,-64}})));
 equation
+  connect(ON,pumStaCon.on);
   connect(pumStaCon.masFloPum,masFloPum)
     annotation (Line(points={{-12,8},{-22,8},{-22,66},{-110,66}},color={0,0,127}));
   connect(conPID.y,pumStaCon.speSig)

@@ -26,7 +26,7 @@ model building
     computeWetBulbTemperature=true)
     "Weather data reader"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant minTSet[nZon](
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant minTSet[nZon](
     k=fill(
       {{ data['nominal_values']['temp_setpoint_heating']  }},
       nZon),
@@ -35,7 +35,7 @@ model building
       each displayUnit="degC"))
     "Minimum temperature set point"
     {% raw %} annotation (Placement(transformation(extent={{-290,230},{-270,250}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Continuous.Sources.Constant maxTSet[nZon](
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant maxTSet[nZon](
     k=fill(
       {{ data['nominal_values']['temp_setpoint_cooling']  }},
       nZon),
@@ -46,7 +46,7 @@ model building
     {% raw %} annotation (Placement(transformation(extent={{-290,190},{-270,210}})));
   {% endraw %}{% for zone in data['thermal_zones'] %}{{zone['model_name']}} {{zone['instance_name']}}
     annotation (Placement(transformation(extent={{zone['placement']}})));
-  {% endfor %}Buildings.Controls.OBC.CDL.Continuous.MultiSum mulSum(
+  {% endfor %}Buildings.Controls.OBC.CDL.Reals.MultiSum mulSum(
     nin=2) if have_pum
     {% raw %} annotation (Placement(transformation(extent={{260,70},{280,90}})));
   {% endraw %}Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4PipeHeatPorts terUni[nZon](

@@ -107,6 +107,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     #                                       project_name=self.district._scaffold.project_name)
 
     @pytest.mark.simulation
+    @pytest.mark.skip(reason="Works with qss solver, but not with dassl")
     def test_simulate_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
             f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',

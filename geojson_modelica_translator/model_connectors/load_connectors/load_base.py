@@ -20,7 +20,6 @@ class LoadBase(ModelBase):
         :param system_parameters: SystemParameter object, the entire system parameter file which will be used to
                                   generate this load.
         :param geojson_load: dict, the GeoJSON portion of the load to be added (a single feature).
-                             This is now a required field.
         """
         super().__init__(system_parameters, Path(__file__).parent / 'templates')
 

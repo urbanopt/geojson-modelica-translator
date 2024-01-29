@@ -151,7 +151,7 @@ class ModelicaRunner(object):
         os.chdir(run_path)
         stdout_log = open('stdout.log', 'w')
         model_name = run_path.parts[-1]
-        image_name = 'nrel/gmt-om-runner:v1.22.1'
+        image_name = 'nrel/gmt-om-runner:v2.0.1'
         mo_script = 'compile_fmu' if action == 'compile' else 'simulate'
         try:
             # create the command to call the open modelica compiler inside the docker image
@@ -228,13 +228,15 @@ class ModelicaRunner(object):
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, action)
 
-        logger.debug('checking stdout.log for errors')
-        # Check the stdout.log file for errors
+        logger.debug('Checking stdout.log for errors')
         with open(verified_run_path / 'stdout.log', 'r') as f:
             stdout_log = f.read()
             if 'Failed to build model' in stdout_log:
                 logger.error('Model failed to build')
                 exitcode = 1
+            elif 'Killed' in stdout_log:
+                logger.error('Model is too large for the Docker resources available.'
+                             ' Increase Docker resources, decrease number of buildings simulated, or both')
             elif 'division by zero at time' and 'Simulation execution failed for model:' in stdout_log:
                 logger.error('Model failed to run due to division by zero')
                 exitcode = 1
@@ -248,17 +250,17 @@ class ModelicaRunner(object):
                 logger.error('Model failed to run -- unknown error')
                 exitcode = 1
 
-        logger.debug('removing temporary files')
         # Cleanup all of the temporary files that get created
         self.cleanup_path(verified_run_path, model_name, debug=kwargs.get('debug', False))
 
-        logger.debug('moving results to results directory')
+        logger.debug('Moving results to results directory')
         # get the location of the results path
         results_path = Path(verified_run_path / f'{model_name}_results')
         self.move_results(verified_run_path, results_path, model_name)
         return (exitcode == 0, results_path)
 
-    def run_in_dymola(self, action: str, model_name: str, file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs) -> tuple[bool, Union[str, Path]]:
+    def run_in_dymola(self, action: str, model_name: str,
+                      file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs) -> tuple[bool, Union[str, Path]]:
         """If running on Windows or Linux, you can run Dymola (assuming you have a license),
         using the BuildingsPy library. This is not supported on Mac.
 
@@ -401,7 +403,10 @@ class ModelicaRunner(object):
             'run_translate.mos',
         ]
 
+        logger.debug('Removing temporary files')
+
         if not kwargs.get('debug', False):
+            logger.debug('...and removing intermediate files')
             files_to_remove.extend(conditional_remove_files)
 
         for f in files_to_remove:

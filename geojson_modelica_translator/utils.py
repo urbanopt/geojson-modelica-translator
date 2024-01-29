@@ -39,6 +39,14 @@ def linecount(filename: Path) -> int:
     return len(open(filename).readlines())
 
 
+def mbl_version():
+    """
+    Returns the version of the Modelica Buildings Library (MBL) used by the
+    geojson-modelica-translator.
+    """
+    return "10.0.0"
+
+
 class ModelicaPath(object):
     """
     Class for storing Modelica paths. This allows the path to point to
