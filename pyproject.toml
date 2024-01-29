@@ -61,9 +61,6 @@ toml = "~0.10"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.isort]
-multi_line_output = 3
-
 [tool.poetry.scripts]
 uo_des = 'management.uo_des:cli'
 format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
