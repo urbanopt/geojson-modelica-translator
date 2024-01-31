@@ -176,7 +176,7 @@ class SystemParameters:
             # Don't crash or quit, just keep a stiff upper lip and carry on.
             pass
         if param_id is None:
-            raise SystemExit("No param_id submitted. Please retry and include the appropriate id")
+            raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
     def validate(self):
         """
