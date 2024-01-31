@@ -35,7 +35,7 @@ class Schemas:
         if self.schemas.get(name):
             return self.schemas[name]
         else:
-            raise Exception("Schema for %s does not exist" % name)
+            raise NameError(f"Schema for {name} does not exist")
 
     def validate(self, name, instance):
         """
