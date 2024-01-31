@@ -10,7 +10,8 @@ class PlantBase(ModelBase):
     """
     Base class of the central plants.
     """
-    simple_gmt_type = 'plant'
+
+    simple_gmt_type = "plant"
 
     def __init__(self, system_parameters):
-        super().__init__(system_parameters, Path(__file__).parent / 'templates')
+        super().__init__(system_parameters, Path(__file__).parent / "templates")

@@ -14,8 +14,8 @@ class Capacitor(SimpleGMTBase):
         # There can be multiple capacitors so we need to loop over them
         for index, capacitor in enumerate(cap_params):
             cap_params = {
-                'nominal_capacity': capacitor["nominal_capacity"],
-                'model_name': f"Capacitor{index}",
+                "nominal_capacity": capacitor["nominal_capacity"],
+                "model_name": f"Capacitor{index}",
             }
             # render template to final modelica file
-            self.to_modelica(output_dir=output_dir, model_name='Capacitor', param_data=cap_params, iteration=index)
+            self.to_modelica(output_dir=output_dir, model_name="Capacitor", param_data=cap_params, iteration=index)

@@ -7,22 +7,16 @@ from pathlib import Path
 
 from modelica_builder.package_parser import PackageParser
 
-from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
-    LoadBase
-)
-from geojson_modelica_translator.utils import (
-    ModelicaPath,
-    mbl_version,
-    simple_uuid
-)
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.utils import ModelicaPath, mbl_version, simple_uuid
 
 
 class TimeSeriesMFT(LoadBase):
-    model_name = 'TimeSeriesMFT'
+    model_name = "TimeSeriesMFT"
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = 'TimeSerMFTLoa_' + simple_uuid()
+        self.id = "TimeSerMFTLoa_" + simple_uuid()
 
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.
@@ -40,9 +34,7 @@ class TimeSeriesMFT(LoadBase):
         peak_mfr_template = self.template_env.get_template("getPeakMassFlowRate.mot")
         templates = {"building.mo": time_series_mft_template, "getPeakMassFlowRate.mo": peak_mfr_template}
 
-        b_modelica_path = ModelicaPath(
-            self.building_name, scaffold.loads_path.files_dir, True
-        )
+        b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
 
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier and respect the defaults
@@ -63,19 +55,31 @@ class TimeSeriesMFT(LoadBase):
                 ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_liquid_heating",
-                ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_liquid_cooling",
-                ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_electric_heating",
-                ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_electric_cooling",
-                ) else "false",
-            }
+                "has_liquid_heating": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_liquid_heating",
+                )
+                else "false",
+                "has_liquid_cooling": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_liquid_cooling",
+                )
+                else "false",
+                "has_electric_heating": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_electric_heating",
+                )
+                else "false",
+                "has_electric_cooling": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_electric_cooling",
+                )
+                else "false",
+            },
         }
 
         if os.path.exists(template_data["time_series"]["filepath"]):
@@ -90,10 +94,7 @@ class TimeSeriesMFT(LoadBase):
 
         ets_data = None
         if ets_model_type == "Indirect Heating and Cooling":
-            ets_data = self.system_parameters.get_param_by_id(
-                self.building_id,
-                "ets_indirect_parameters"
-            )
+            ets_data = self.system_parameters.get_param_by_id(self.building_id, "ets_indirect_parameters")
         else:
             raise Exception("Only ETS Model of type 'Indirect Heating and Cooling' type enabled currently")
 
@@ -108,7 +109,7 @@ class TimeSeriesMFT(LoadBase):
                 ets_data=ets_data,
             )
 
-        self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
+        self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
 
         # Run post process to create the remaining project files for this building
         self.post_process(scaffold)
@@ -127,15 +128,12 @@ class TimeSeriesMFT(LoadBase):
         order_files += self.template_files_to_include
         b_modelica_path = Path(scaffold.loads_path.files_dir) / self.building_name
         new_package = PackageParser.new_from_template(
-            path=b_modelica_path,
-            name=self.building_name,
-            order=order_files,
-            within=f"{scaffold.project_name}.Loads"
+            path=b_modelica_path, name=self.building_name, order=order_files, within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
         # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
+        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, "package.mo")):
             load_package = PackageParser.new_from_template(
                 scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
             )
@@ -156,4 +154,4 @@ class TimeSeriesMFT(LoadBase):
         pp.save()
 
     def get_modelica_type(self, scaffold):
-        return f'Loads.{self.building_name}.building'
+        return f"Loads.{self.building_name}.building"

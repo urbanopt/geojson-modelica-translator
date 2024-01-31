@@ -1,13 +1,12 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import os
 from pathlib import Path
 from typing import Any, List, Tuple, Union
 
 
 # TODO: This needs to be removed. It is not used anywhere in the codebase.
-class InputParser(object):
+class InputParser:
     """Class to read in Modelica files (.mo) and provide basic operations.
 
     This class is not recommended to be used and ModelicaBuilder should be used
@@ -25,7 +24,7 @@ class InputParser(object):
             Exception: SyntaxError, unknown token
 
         """
-        if not os.path.exists(modelica_filename):
+        if not Path(modelica_filename).exists():
             raise Exception(f"Modelica file does not exist: {modelica_filename}")
 
         self.modelica_filename = modelica_filename
@@ -64,7 +63,7 @@ class InputParser(object):
         current_block = None
         obj_data = ""
         connect_data = ""
-        with open(self.modelica_filename, "r") as f:
+        with open(self.modelica_filename) as f:
             for line in f.readlines():
                 if line == "\n":
                     # Skip blank lines (for now?
@@ -99,11 +98,7 @@ class InputParser(object):
                 # now store data that is in between these other blocks
                 if current_block == "model":
                     # grab the lines that are comments:
-                    if (
-                        not obj_data
-                        and line.strip().startswith('"')
-                        and line.strip().endswith('"')
-                    ):
+                    if not obj_data and line.strip().startswith('"') and line.strip().endswith('"'):
                         self.model["comment"] = line.rstrip()
                         continue
 
@@ -130,8 +125,7 @@ class InputParser(object):
                     pass
 
     def save(self) -> None:
-        """Save the resulting file to the same file from which it was initialized
-        """
+        """Save the resulting file to the same file from which it was initialized"""
         return self.save_as(self.modelica_filename)
 
     def save_as(self, new_filename: Union[str, Path]) -> None:
@@ -177,8 +171,7 @@ class InputParser(object):
         return None, None
 
     def reload(self):
-        """Reparse the data. This will remove any unsaved changes.
-        """
+        """Reparse the data. This will remove any unsaved changes."""
         self.init_vars()
         self.parse_mo()
 
@@ -196,9 +189,7 @@ class InputParser(object):
         """
         index, _ = self.find_model_object(f"{model_name} {model_instance}")
         if index is not None:
-            self.model["objects"][index] = self.model["objects"][index].replace(
-                old_string, new_string
-            )
+            self.model["objects"][index] = self.model["objects"][index].replace(old_string, new_string)
 
     def add_model_object(self, model_name: str, model_instance: str, data: List[str]) -> None:
         """Add a new model object to the model
@@ -208,10 +199,10 @@ class InputParser(object):
             model_instance (str): model instance name
             data (List[str]): list of data to add
         """
-        str = f"  {model_name} {model_instance}\n"
+        model_obj_str = f"  {model_name} {model_instance}\n"
         for d in data:
-            str += f"    {d}\n"
-        self.model["objects"].append(str)
+            model_obj_str += f"    {d}\n"
+        self.model["objects"].append(model_obj_str)
 
     def add_parameter(self, var_type: str, var_name: str, value: Any, description: str) -> None:
         """Add a new parameter. Will be prepended to the top of the models list
@@ -227,7 +218,7 @@ class InputParser(object):
             value = f'"{value}"'
 
         # parameter Real fraLat= 0.8 "Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.";
-        new_str = f"  parameter {var_type} {var_name}={value} \"{description}\";\n"
+        new_str = f'  parameter {var_type} {var_name}={value} "{description}";\n'
         self.model["objects"].insert(0, new_str)
 
     def add_connect(self, a: str, b: str, annotation: str) -> None:
@@ -257,16 +248,16 @@ class InputParser(object):
         for index, c in enumerate(self.connections):
             if not port_a:
                 raise Exception("Unable to replace string in connect if unknown port A")
-            if not port_b:
-                if f"({port_a}, " in c:
-                    return index, c
-            if port_a and port_b:
-                if f"({port_a}, {port_b})" in c:
-                    return index, c
+            if not port_b and f"({port_a}, " in c:
+                return index, c
+            if port_a and port_b and (f"({port_a}, {port_b})" in c):
+                return index, c
 
         return None, None
 
-    def replace_connect_string(self, a: str, b: str, new_a: Union[str, None], new_b: Union[str, None], replace_all: bool = False) -> None:
+    def replace_connect_string(
+        self, a: str, b: str, new_a: Union[str, None], new_b: Union[str, None], replace_all: bool = False
+    ) -> None:
         """Replace content of the connect string with new_a and/or new_b
 
         Args:
@@ -307,18 +298,18 @@ class InputParser(object):
         """Serialize the modelica object to a string with line feeds
 
         Returns:
-            str: string representation of the data
+            string_data: string representation of the data
         """
-        str = f"within {self.within};\n"
-        str += f"model {self.model['name']}\n"
-        str += f"{self.model['comment']}\n\n"
+        string_data = f"within {self.within};\n"
+        string_data += f"model {self.model['name']}\n"
+        string_data += f"{self.model['comment']}\n\n"
         for o in self.model["objects"]:
             for lx in o:
-                str += lx
-        str += "equation\n"
+                string_data += lx
+        string_data += "equation\n"
         for c in self.connections:
-            str += c
+            string_data += c
         for e in self.equations:
-            str += e
-        str += f"end {self.model['name']};\n"
-        return str
+            string_data += e
+        string_data += f"end {self.model['name']};\n"
+        return string_data

@@ -10,7 +10,7 @@ from geojson_modelica_translator.utils import ModelicaPath
 _log = logging.getLogger(__name__)
 
 
-class Scaffold(object):
+class Scaffold:
     """Scaffold to hold the entire directory structure for the project. The purpose of this class is to
     allow a developer/user to easily access the various paths of the project without having to
     manually strip/replace strings/filenames/paths/etc.
@@ -53,7 +53,8 @@ class Scaffold(object):
         """run the scaffolding to create the directory structure for DES systems
 
         Args:
-            ignore_paths (list, optional): List of paths NOT to create. Choose from Loads, Substations, Plants, Districts, Networks. Defaults to [].
+            ignore_paths (list, optional): List of paths NOT to create.
+                Choose from Loads, Substations, Plants, Districts, Networks. Defaults to [].
         """
         # initialize all of path objects
         self.loads_path = None
@@ -63,19 +64,19 @@ class Scaffold(object):
         self.networks_path = None
 
         # leverage the ModelicaPath function
-        if 'Loads' not in ignore_paths:
+        if "Loads" not in ignore_paths:
             self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
 
-        if 'Substations' not in ignore_paths:
+        if "Substations" not in ignore_paths:
             self.substations_path = ModelicaPath("Substations", root_dir=self.project_path, overwrite=self.overwrite)
 
-        if 'Plants' not in ignore_paths:
+        if "Plants" not in ignore_paths:
             self.plants_path = ModelicaPath("Plants", root_dir=self.project_path, overwrite=self.overwrite)
 
-        if 'Districts' not in ignore_paths:
+        if "Districts" not in ignore_paths:
             self.districts_path = ModelicaPath("Districts", root_dir=self.project_path, overwrite=self.overwrite)
 
-        if 'Networks' not in ignore_paths:
+        if "Networks" not in ignore_paths:
             self.networks_path = ModelicaPath("Networks", root_dir=self.project_path, overwrite=self.overwrite)
 
     def clear_or_create_path(self, path, overwrite=False):

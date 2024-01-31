@@ -14,15 +14,16 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s: %(message)s',
-    datefmt='%d-%b-%y %H:%M:%S',
+    format="%(asctime)s - %(levelname)s: %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
 )
 
 
-class ModelBase(object):
+class ModelBase:
     """Base class of the model connectors. The connectors can utilize various methods to create a building (or other
     feature) to a detailed Modelica connection. For example, a simple RC model (using TEASER), a ROM, CSV file, etc.
     """
+
     # model_name must be overridden in subclass
     model_name: Union[str, None] = None
 
@@ -37,12 +38,11 @@ class ModelBase(object):
         # initialize the templating framework (Jinja2)
         self.template_dir = template_dir
         self.template_env = Environment(
-            loader=FileSystemLoader(searchpath=self.template_dir),
-            undefined=StrictUndefined
+            loader=FileSystemLoader(searchpath=self.template_dir), undefined=StrictUndefined
         )
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
-        self._template_instance = f'{self.model_name}_Instance.mopt'
+        self._template_instance = f"{self.model_name}_Instance.mopt"
 
         # store a list of the templated files to include when building the package
         self.template_files_to_include = []
@@ -56,10 +56,14 @@ class ModelBase(object):
         if system_parameters is not None:
             # TODO: DRY up this handling of different generations
             district_params = self.system_parameters.get_param("district_system")
-            if 'fourth_generation' in district_params:
+            if "fourth_generation" in district_params:
                 self.district_template_data = {
-                    "temp_setpoint_hhw": district_params['fourth_generation']['central_heating_plant_parameters']['temp_setpoint_hhw'],
-                    "temp_setpoint_chw": district_params['fourth_generation']['central_cooling_plant_parameters']['temp_setpoint_chw'],
+                    "temp_setpoint_hhw": district_params["fourth_generation"]["central_heating_plant_parameters"][
+                        "temp_setpoint_hhw"
+                    ],
+                    "temp_setpoint_chw": district_params["fourth_generation"]["central_cooling_plant_parameters"][
+                        "temp_setpoint_chw"
+                    ],
                 }
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
@@ -139,25 +143,21 @@ class ModelBase(object):
 
         # get template path relative to the package
         template_filename = Path(template.filename).as_posix()
-        _, template_filename = template_filename.rsplit('geojson_modelica_translator', 1)
+        _, template_filename = template_filename.rsplit("geojson_modelica_translator", 1)
 
         return template.render(template_params), template_filename
 
     def to_dict(self, scaffold):
-        output_dict = {
-            'id': self.id,
-            'modelica_type': self.get_modelica_type(scaffold)
-        }
+        output_dict = {"id": self.id, "modelica_type": self.get_modelica_type(scaffold)}
         district_params = self.system_parameters.get_param("district_system")
-        if 'fifth_generation' in district_params:
+        if "fifth_generation" in district_params:
             # 'bui' is how a 5G model refers to the 4G model while the templates build the model.
             # 4G model is already self-sufficient so it needs that string to not exist.
             # This is templated in TimeSeries_Instance.mopt
             # FIXME: need a better variable name than 'is_5g_district' to be clearer in the template
-            # TODO: A better if statement using Jinja conditionals in the above file might allow us to remove the 'else' block here
-            output_dict['is_5g_district'] = 'bui'
+            output_dict["is_5g_district"] = "bui"
         else:
-            output_dict['is_5g_district'] = ''
+            output_dict["is_5g_district"] = ""
         return output_dict
 
     # This method needs to be defined in each of the derived model connectors
