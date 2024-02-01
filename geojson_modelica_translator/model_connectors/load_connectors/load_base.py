@@ -111,71 +111,74 @@ class LoadBase(ModelBase):
 
         # TODO: Need to convert units, these should exist on the urbanopt_building object
         # TODO: Abstract out the GeoJSON functionality
-        if mapper is None and self.system_parameters:
-            for building in self.system_parameters.get_default("$.buildings", []):
-                # Only look at buildings in the sys-param file, not necessarily the entire feature file
-                if urbanopt_building.feature.properties["id"] == building["geojson_id"]:
-                    try:
-                        self.building_id = urbanopt_building.feature.properties["id"]
-                        building_type = urbanopt_building.feature.properties["building_type"]
-                        number_stories = urbanopt_building.feature.properties["number_of_stories"]
-                    except KeyError as ke:
-                        raise SystemExit(
-                            f"\nMissing property {ke} for building {self.building_id} in geojson feature file"
-                        )
+        if mapper is None:
+            if self.system_parameters:
+                for building in self.system_parameters.get_default("$.buildings", []):
+                    # Only look at buildings in the sys-param file, not necessarily the entire feature file
+                    if urbanopt_building.feature.properties["id"] == building["geojson_id"]:
+                        try:
+                            self.building_id = urbanopt_building.feature.properties["id"]
+                            building_type = urbanopt_building.feature.properties["building_type"]
+                            number_stories = urbanopt_building.feature.properties["number_of_stories"]
+                        except KeyError as ke:
+                            raise SystemExit(
+                                f"\nMissing property {ke} for building {self.building_id} in geojson feature file"
+                            )
 
-                    try:
-                        building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
-                    except KeyError:
-                        building_floor_area_m2 = 0
+                        try:
+                            building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
+                        except KeyError:
+                            building_floor_area_m2 = 0
 
-                    try:
-                        number_stories_above_ground = urbanopt_building.feature.properties[
-                            "number_of_stories_above_ground"
-                        ]
-                    except KeyError:
-                        number_stories_above_ground = number_stories
-                        print(f"\nAssuming all building levels are above ground for building_id: {self.building_id}")
+                        try:
+                            number_stories_above_ground = urbanopt_building.feature.properties[
+                                "number_of_stories_above_ground"
+                            ]
+                        except KeyError:
+                            number_stories_above_ground = number_stories
+                            print(
+                                f"\nAssuming all building levels are above ground for building_id: {self.building_id}"
+                            )
 
-                    try:
-                        floor_height = urbanopt_building.feature.properties["floor_height"]
-                    except KeyError:
-                        floor_height = 3  # Default height in meters from sdk
-                        print(
-                            f"No floor_height found in geojson feature file for building {self.building_id}. "
-                            f"Using default value of {floor_height}."
-                        )
+                        try:
+                            floor_height = urbanopt_building.feature.properties["floor_height"]
+                        except KeyError:
+                            floor_height = 3  # Default height in meters from sdk
+                            print(
+                                f"No floor_height found in geojson feature file for building {self.building_id}. "
+                                f"Using default value of {floor_height}."
+                            )
 
-                    # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-                    # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
-                    try:
-                        year_built = urbanopt_building.feature.properties["year_built"]
-                        if urbanopt_building.feature.properties["year_built"] > 2015:
+                        # UO SDK defaults to current year, however TEASER only supports up to Year 2015
+                        # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
+                        try:
+                            year_built = urbanopt_building.feature.properties["year_built"]
+                            if urbanopt_building.feature.properties["year_built"] > 2015:
+                                year_built = 2015
+                        except KeyError:
                             year_built = 2015
-                    except KeyError:
-                        year_built = 2015
-                        print(
-                            f"No year_built found in geojson feature file for building {self.building_id}. "
-                            f"Using default value of {year_built}."
-                        )
+                            print(
+                                f"No year_built found in geojson feature file for building {self.building_id}. "
+                                f"Using default value of {year_built}."
+                            )
 
-                    try:
-                        return {
-                            "building_id": self.building_id,
-                            "area": building_floor_area_m2,
-                            "building_type": building_type,
-                            "floor_height": floor_height,
-                            "num_stories": number_stories,
-                            "num_stories_below_grade": number_stories - number_stories_above_ground,
-                            "year_built": year_built,
-                        }
-                    except UnboundLocalError:
-                        print(
-                            f"Geojson feature file is missing data for building {self.building_id}. "
-                            "This may be caused by referencing a detailed osm in the feature file."
-                        )
-                else:
-                    continue
+                        try:
+                            return {
+                                "building_id": self.building_id,
+                                "area": building_floor_area_m2,
+                                "building_type": building_type,
+                                "floor_height": floor_height,
+                                "num_stories": number_stories,
+                                "num_stories_below_grade": number_stories - number_stories_above_ground,
+                                "year_built": year_built,
+                            }
+                        except UnboundLocalError:
+                            print(
+                                f"Geojson feature file is missing data for building {self.building_id}. "
+                                "This may be caused by referencing a detailed osm in the feature file."
+                            )
+                    else:
+                        continue
 
         else:
             raise SystemExit(f"Mapper {mapper} has been used")
