@@ -115,15 +115,10 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         (_, cool_m_flow_nominal) = mat_results.values(f"{load.id}.mLoaCoo_flow_nominal[1]")
         cool_m_flow_nominal = cool_m_flow_nominal[0]
 
-        # FIXME: Assert test is a non-empty tuple, which is always `True`
-        assert (  # noqa: F631
-            heat_m_flow <= pytest.approx(heat_m_flow_nominal, rel=m_flow_nominal_tolerance),
-            f"Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) "
-            f"plus a tolerance ({m_flow_nominal_tolerance * 100}%)",
-        )
-        # FIXME: Assert test is a non-empty tuple, which is always `True`
-        assert (  # noqa: F631
-            cool_m_flow <= pytest.approx(cool_m_flow_nominal, rel=m_flow_nominal_tolerance),
-            f"Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) "
-            f"plus a tolerance ({m_flow_nominal_tolerance * 100}%)",
-        )
+        assert (
+            heat_m_flow <= pytest.approx(heat_m_flow_nominal, rel=m_flow_nominal_tolerance).all()
+        ), f"Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"  # noqa: E501
+
+        assert (
+            cool_m_flow <= pytest.approx(cool_m_flow_nominal, rel=m_flow_nominal_tolerance).all()
+        ), f"Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"  # noqa: E501
