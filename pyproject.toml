@@ -70,10 +70,11 @@ format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
 update_schemas = 'management.update_schemas:update_schemas'
 check_sys_params = 'management.check_sys_params:check_sys_params'
 
+[tool.ruff]
+fix = true # automatically fix problems if possible
 
 # https://docs.astral.sh/ruff/linter/
 [tool.ruff.lint]
-fix = true # automatically fix problems if possible
 select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
 "Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
 ignore = ["PLR0913", "PLR2004", "PLR0402", "COM812", "COM819", "SIM108", "ARG002", "ISC001", "S603", "S607", "S701"] # except for these specific errors
