@@ -70,15 +70,16 @@ format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
 update_schemas = 'management.update_schemas:update_schemas'
 check_sys_params = 'management.check_sys_params:check_sys_params'
 
+# https://docs.astral.sh/ruff/tutorial/#configuration
 [tool.ruff]
 fix = true # automatically fix problems if possible
+line-length = 120
 
-# https://docs.astral.sh/ruff/linter/
+# https://docs.astral.sh/ruff/linter/#rule-selection
 [tool.ruff.lint]
-select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
+extend-select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
 "Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
 ignore = ["PLR0913", "PLR2004", "PLR0402", "COM812", "COM819", "SIM108", "ARG002", "ISC001", "S603", "S607", "S701"] # except for these specific errors
-line-length = 120
 
 [tool.ruff.lint.pylint]
 # system_parameters.py has many file lookups that necessitate nested statements & branches
@@ -86,7 +87,7 @@ line-length = 120
 max-statements = 58
 max-branches = 21
 
-# https://docs.astral.sh/ruff/settings/#format
+# https://docs.astral.sh/ruff/formatter/#configuration
 [tool.ruff.format]
 # quote-style = "double"
 
