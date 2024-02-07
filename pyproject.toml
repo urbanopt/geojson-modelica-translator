@@ -72,7 +72,7 @@ check_sys_params = 'management.check_sys_params:check_sys_params'
 
 
 # https://docs.astral.sh/ruff/linter/
-[tool.ruff]
+[tool.ruff.lint]
 fix = true # automatically fix problems if possible
 select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
 "Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
@@ -89,7 +89,7 @@ max-branches = 21
 [tool.ruff.format]
 # quote-style = "double"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"] # assert statements are allowed in tests, and paths are safe
 "geojson_modelica_translator/model_connectors/load_connectors/teaser.py" = ["PLR0915"]
 # Lots of statements in the teaser post-processing. Don't think we can avoid it.
