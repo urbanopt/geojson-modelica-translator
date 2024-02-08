@@ -179,24 +179,28 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     "-a",
     "--start_time",
     default=17280000,
+    help="Start time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-z",
     "--stop_time",
     default=17366400,
+    help="Stop time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-x",
     "--step_size",
     default=90,
+    help="Step size of the simulation (seconds)",
     type=int,
 )
 @click.option(
     "-i",
     "--intervals",
     default=100,
+    help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
 def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
