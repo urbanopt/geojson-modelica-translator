@@ -225,18 +225,19 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
 
     # setup modelica runner
     mr = ModelicaRunner()
-    mr.run_in_docker('compile_and_run',
-                     f'{project_name}.Districts.DistrictEnergySystem',
-                     file_to_load=run_path / 'package.mo',
-                     run_path=run_path,
-                     start_time=start_time,
-                     stop_time=stop_time,
-                     step_size=step_size,
-                     number_of_intervals=intervals
-                     )
+    mr.run_in_docker(
+        "compile_and_run",
+        f"{project_name}.Districts.DistrictEnergySystem",
+        file_to_load=run_path / "package.mo",
+        run_path=run_path,
+        start_time=start_time,
+        stop_time=stop_time,
+        step_size=step_size,
+        number_of_intervals=intervals,
+    )
 
-    run_location = run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results'
-    if (run_location / f'{project_name}.Districts.DistrictEnergySystem_res.mat').exists():
+    run_location = run_path.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"
+    if (run_location / f"{project_name}.Districts.DistrictEnergySystem_res.mat").exists():
         print(f"\nModelica model {project_name} ran successfully and can be found in {run_location}")
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {run_location}/stdout.log for more info.")

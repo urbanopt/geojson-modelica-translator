@@ -249,10 +249,13 @@ class CLIIntegrationTest(TestCase):
             [
                 "run-model",
                 str(self.output_dir / project_name),
-                '-a', str(self.day_200_in_seconds),
-                '-z', str(self.day_201_in_seconds),
-                '-x', str(self.step_size_90_seconds)
-            ]
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+            ],
         )
 
         # If this file exists, the cli command ran successfully
@@ -273,10 +276,13 @@ class CLIIntegrationTest(TestCase):
             [
                 "run-model",
                 str(self.output_dir / project_name),
-                '-a', str(self.day_200_in_seconds),
-                '-z', str(self.day_201_in_seconds),
-                '-x', str(self.step_size_90_seconds)
-            ]
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+            ],
         )
 
         # If this file exists, the cli command ran successfully
