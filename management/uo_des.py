@@ -142,7 +142,6 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     PROJECT_PATH: Path for Modelica project directory created with this command
 
     \f
-    :param model_type: String, type of model to create
     :param sys_param_file: Path, location and name of file created with this cli
     :param geojson_feature_file: Path, location and name of sdk feature_file
     :param project_path: Path, location and name of Modelica model dir to be created
@@ -176,25 +175,35 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     required=True,
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-@click.argument(
-    "start_time",
+@click.option(
+    "-a",
+    "--start_time",
     default=17280000,
+    help="Start time of the simulation (seconds of a year)",
     type=int,
-    required=False,
 )
-@click.argument(
-    "stop_time",
+@click.option(
+    "-z",
+    "--stop_time",
     default=17366400,
+    help="Stop time of the simulation (seconds of a year)",
     type=int,
-    required=False,
 )
-@click.argument(
-    "step_size",
+@click.option(
+    "-x",
+    "--step_size",
     default=90,
+    help="Step size of the simulation (seconds)",
     type=int,
-    required=False,
 )
-def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int):
+@click.option(
+    "-i",
+    "--intervals",
+    default=100,
+    help="Number of intervals to divide the simulation into (alternative to step_size)",
+    type=int,
+)
+def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
     """
     \b
     Run the Modelica project in a docker-based environment.
@@ -207,6 +216,10 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
 
     \f
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
+    :param start_time (int): start time of the simulation (seconds of a year)
+    :param stop_time (int): stop time of the simulation (seconds of a year)
+    :param step_size (int): step size of the simulation (seconds)
+    :param number_of_intervals (int): number of intervals to run the simulation
     """
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
@@ -225,6 +238,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
                      start_time=start_time,
                      stop_time=stop_time,
                      step_size=step_size,
+                     number_of_intervals=intervals
                      )
 
     run_location = run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results'
