@@ -41,9 +41,6 @@ class TimeSeriesMFT(LoadBase):
             self.building_id, "load_model_parameters.time_series.filepath"
         )
 
-        # This flag tells ruff to not format until the flag is reversed.
-        # https://docs.astral.sh/ruff/formatter/#format-suppression
-        # fmt: off
         template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "time_series": {
@@ -55,27 +52,39 @@ class TimeSeriesMFT(LoadBase):
                 "delTDisCoo": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delTDisCoo"
                 ),
-                # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_liquid_heating",
-                )
-                else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_liquid_cooling",
-                )
-                else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_electric_heating",
-                )
-                else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id,
-                    "load_model_parameters.time_series.has_electric_cooling",
-                )
-                else "false",
             },
         }
-        # fmt: on
+
+        # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
+        if self.system_parameters.get_param_by_id(
+            self.building_id,
+            "load_model_parameters.time_series.has_liquid_heating",
+        ):
+            template_data["nominal_values"]["has_liquid_heating"] = "true"
+        else:
+            template_data["nominal_values"]["has_liquid_heating"] = "false"
+        if self.system_parameters.get_param_by_id(
+            self.building_id,
+            "load_model_parameters.time_series.has_liquid_cooling",
+        ):
+            template_data["nominal_values"]["has_liquid_cooling"] = "true"
+        else:
+            template_data["nominal_values"]["has_liquid_cooling"] = "false"
+        if self.system_parameters.get_param_by_id(
+            self.building_id,
+            "load_model_parameters.time_series.has_electric_heating",
+        ):
+            template_data["nominal_values"]["has_electric_heating"] = "true"
+        else:
+            template_data["nominal_values"]["has_electric_heating"] = "false"
+        if self.system_parameters.get_param_by_id(
+            self.building_id,
+            "load_model_parameters.time_series.has_electric_cooling",
+        ):
+            template_data["nominal_values"]["has_electric_cooling"] = "true"
+        else:
+            template_data["nominal_values"]["has_electric_cooling"] = "false"
+
         if os.path.exists(template_data["time_series"]["filepath"]):
             new_file = os.path.join(b_modelica_path.resources_dir, template_data["time_series"]["filename"])
             os.makedirs(os.path.dirname(new_file), exist_ok=True)
