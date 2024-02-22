@@ -17,7 +17,7 @@ from geojson_modelica_translator.model_connectors.couplings.coupling import (
 from geojson_modelica_translator.model_connectors.couplings.graph import (
     CouplingGraph
 )
-from geojson_modelica_translator.model_connectors.districts.district import (
+from geojson_modelica_translator.model_connectors.districts.district_5g import (
     District
 )
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
