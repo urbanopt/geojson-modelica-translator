@@ -10,6 +10,7 @@
   "Design data"
   {% raw %}annotation (Placement(transformation(extent={{-160,260},{-140,280}})));
   {% endraw %}
+  {#  This is how to comment Jinja
   //   Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
   //   datDes(
   //   nBui={{ sys_params.num_buildings }},
@@ -36,6 +37,7 @@
   // !!!!!important!!!!!
   // !!!!!important!!!!!
   // this is a workaround
+  #}
 
   inner parameter
 
