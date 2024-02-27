@@ -144,9 +144,7 @@ class Borefield(PlantBase):
                 / template_data["gfunction"]["ghe_id"]
                 / "Gfunction.csv",
                 header=0,
-                usecols=[
-                    0,
-                    2])
+                usecols=[0, 2])
         else:
             sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
             try:
@@ -155,7 +153,10 @@ class Borefield(PlantBase):
                                         / template_data["gfunction"]["ghe_id"]
                                         / "Gfunction.csv", header=0, usecols=[0, 2])
             except FileNotFoundError:
-                raise SystemExit(f'When using a relative path to your ghe_dir, your path \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your sys-param file is in.')  # noqa: E501
+                raise SystemExit('\nERROR: No Gfunction.csv file found. Have you run `ghe_size` yet?\n'
+                                 'Or, if using a relative path to your ghe_dir, your path '
+                                 f'\'{template_data["gfunction"]["input_path"]}\' must be relative to the '
+                                 'dir your sys-param file is in.')
         template_data["gfunction"]["gfunction_file_rows"] = gfunction.shape[0] + 1
 
         # convert the values to match Modelica gfunctions
