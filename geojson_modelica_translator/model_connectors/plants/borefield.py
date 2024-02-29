@@ -188,20 +188,20 @@ class Borefield(PlantBase):
 
         if template_data["configuration"]["borehole_configuration"] == "singleutube":
             plant_template = oneutube_template
-            template_data["configuration"][
-                "borehole_configuration"
-            ] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.SingleUTube"
-            template_data["configuration"][
-                "borehole_type"
-            ] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube"
+            template_data["configuration"]["borehole_configuration"] = (
+                "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.SingleUTube"
+            )
+            template_data["configuration"]["borehole_type"] = (
+                "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.OneUTube"
+            )
         elif template_data["configuration"]["borehole_configuration"] == "doubleutube":
             plant_template = twoutube_template
-            template_data["configuration"][
-                "borehole_configuration"
-            ] = "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeSeries"
-            template_data["configuration"][
-                "borehole_type"
-            ] = "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube"
+            template_data["configuration"]["borehole_configuration"] = (
+                "Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeSeries"
+            )
+            template_data["configuration"]["borehole_type"] = (
+                "Buildings.Fluid.Geothermal.Borefields.BaseClasses.Boreholes.TwoUTube"
+            )
         else:
             raise ValueError("The type of geothermal heat exchanger pipe arrangement is not supported.")
 
