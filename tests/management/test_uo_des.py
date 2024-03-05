@@ -8,9 +8,7 @@ from unittest import TestCase
 import pytest
 from click.testing import CliRunner
 
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
-)
+from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
 from management.uo_des import cli
 
 # Integration tests that the CLI works as expected for an end user
@@ -19,13 +17,15 @@ from management.uo_des import cli
 class CLIIntegrationTest(TestCase):
     def setUp(self):
         self.runner = CliRunner()
-        self.data_dir = Path(__file__).parent / 'data'
-        self.output_dir = Path(__file__).parent / 'output'
+        self.data_dir = Path(__file__).parent / "data"
+        self.output_dir = Path(__file__).parent / "output"
         self.output_dir.mkdir(exist_ok=True)
-        self.scenario_file_path = self.data_dir / 'sdk_project_scraps' / 'baseline_scenario.csv'
-        self.feature_file_path = self.data_dir / 'sdk_project_scraps' / 'example_project.json'
-        self.feature_file_path_ghe = self.data_dir / 'sdk_project_scraps' / 'example_project_combine_GHE_2.json'
-        self.sys_param_path = self.data_dir / 'sdk_project_scraps' / 'run' / 'baseline_scenario' / 'system_parameter.json'
+        self.scenario_file_path = self.data_dir / "sdk_project_scraps" / "baseline_scenario.csv"
+        self.feature_file_path = self.data_dir / "sdk_project_scraps" / "example_project.json"
+        self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "example_project_combine_GHE_2.json"
+        self.sys_param_path = (
+            self.data_dir / "sdk_project_scraps" / "run" / "baseline_scenario" / "system_parameter.json"
+        )
         self.day_200_in_seconds = 17280000  # in seconds
         self.day_201_in_seconds = 17366400  # in seconds
         self.step_size_90_seconds = 90  # in seconds
@@ -37,42 +37,42 @@ class CLIIntegrationTest(TestCase):
         res = self.runner.invoke(
             cli,
             [
-                'build-sys-param',
+                "build-sys-param",
                 str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
-                str(self.feature_file_path.resolve())
-            ]
+                str(self.feature_file_path.resolve()),
+            ],
         )
 
         assert res.exit_code == 0
 
         # If this file exists, the cli command ran successfully
-        assert (self.sys_param_path).exists()
+        assert self.sys_param_path.exists()
 
     def test_cli_builds_sys_params_with_ghe(self):
         self.sys_param_path.unlink(missing_ok=True)
 
         # run subprocess as if we're an end-user
-        res = self.runner.invoke(cli,
-                                 [
-                                     'build-sys-param',
-                                     str(self.sys_param_path),
-                                     str(self.scenario_file_path.resolve()),
-                                     str(self.feature_file_path_ghe.resolve()),
-                                     '--ghe'
-                                 ]
-                                 )
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path),
+                str(self.scenario_file_path.resolve()),
+                str(self.feature_file_path_ghe.resolve()),
+                "--ghe",
+            ],
+        )
 
         assert res.exit_code == 0
 
         # If this file exists, the cli command ran successfully
-        assert (self.sys_param_path).exists()
+        assert self.sys_param_path.exists()
 
     def test_cli_makes_model(self):
-
         # -- Setup
         # Gnerate a sys-params file using the CLI
-        project_name = 'modelica_project_4g'
+        project_name = "modelica_project_4g"
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
 
@@ -82,17 +82,17 @@ class CLIIntegrationTest(TestCase):
         res = self.runner.invoke(
             cli,
             [
-                'build-sys-param',
+                "build-sys-param",
                 str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
-                str(self.feature_file_path.resolve())
-            ]
+                str(self.feature_file_path.resolve()),
+            ],
         )
 
         assert res.exit_code == 0
 
         # If this file exists, the cli successfully built the system parameter file
-        assert (self.sys_param_path).exists()
+        assert self.sys_param_path.exists()
 
         # Next, verify the package can be generated without the CLI (verify our files are valid)
 
@@ -106,7 +106,7 @@ class CLIIntegrationTest(TestCase):
         gmt.to_modelica()
 
         # If this file exists, the cli successfully built the model
-        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
         # Great! We know our files are good, let's cleanup and test the CLI
         rmtree(self.output_dir / project_name)
 
@@ -114,24 +114,23 @@ class CLIIntegrationTest(TestCase):
         res = self.runner.invoke(
             cli,
             [
-                'create-model',
+                "create-model",
                 str(self.sys_param_path),
                 str(self.feature_file_path),
-                str(self.output_dir / project_name)
-            ]
+                str(self.output_dir / project_name),
+            ],
         )
 
         # -- Assert
         assert res.exit_code == 0
         # If this file exists, the cli successfully built the model
-        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
 
     def test_cli_makes_model_with_ghe(self):
-
         # -- Setup
         # first verify the package can be generated without the CLI (ie verify our
         # files are valid)
-        project_name = 'modelica_project_5g'
+        project_name = "modelica_project_5g"
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
 
@@ -141,18 +140,18 @@ class CLIIntegrationTest(TestCase):
         res = self.runner.invoke(
             cli,
             [
-                'build-sys-param',
+                "build-sys-param",
                 str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
                 str(self.feature_file_path_ghe.resolve()),
-                '--ghe'
-            ]
+                "--ghe",
+            ],
         )
 
         assert res.exit_code == 0
 
         # If this file exists, the cli command ran successfully
-        assert (self.sys_param_path).exists()
+        assert self.sys_param_path.exists()
 
         # FIXME : we need error handling when system parameter is created for fifth gen GHE system.
         #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
@@ -166,7 +165,7 @@ class CLIIntegrationTest(TestCase):
         gmt.to_modelica()
 
         # If this file exists, the cli successfully built the model
-        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
         # Great! We know our files are good, let's cleanup and test the CLI
         rmtree(self.output_dir / project_name)
 
@@ -174,73 +173,73 @@ class CLIIntegrationTest(TestCase):
         res = self.runner.invoke(
             cli,
             [
-                'create-model',
+                "create-model",
                 str(self.sys_param_path),
                 str(self.feature_file_path),
-                str(self.output_dir / project_name)
-            ]
+                str(self.output_dir / project_name),
+            ],
         )
 
         # -- Assert
         assert res.exit_code == 0
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
 
     def test_cli_overwrites_properly(self):
         # run subprocess as if we're an end-user, expecting to hit error message
-        project_name = 'modelica_project'
+        project_name = "modelica_project"
         (self.output_dir / project_name).mkdir(exist_ok=True)
 
         no_overwrite_result = self.runner.invoke(
             cli,
             [
-                'create-model',
+                "create-model",
                 str(self.sys_param_path),
                 str(self.feature_file_path),
-                str(self.output_dir / project_name)
-            ]
+                str(self.output_dir / project_name),
+            ],
         )
 
         assert no_overwrite_result.exit_code != 0
-        self.assertIn("already exists and overwrite flag is not given", str(no_overwrite_result.exception))
+        assert "already exists and overwrite flag is not given" in str(no_overwrite_result.exception)
 
         # Run subprocess with overwrite flag, expect it to write new files without errors
         self.runner.invoke(
             cli,
             [
-                'create-model',
+                "create-model",
                 str(self.sys_param_path),
                 str(self.feature_file_path),
                 str(self.output_dir / project_name),
-                '--overwrite'
-            ]
+                "--overwrite",
+            ],
         )
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / project_name / 'Districts' / 'DistrictEnergySystem.mo').exists()
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
 
     def test_cli_returns_graceful_error_on_space(self):
-        bad_project_name = 'modelica project'
+        bad_project_name = "modelica project"
         # (self.output_dir / bad_project_name).mkdir(exist_ok=True)
 
         expected_failure = self.runner.invoke(
             cli,
             [
-                'create-model',
+                "create-model",
                 str(self.sys_param_path),
                 str(self.feature_file_path),
-                str(self.output_dir / bad_project_name)
-            ]
+                str(self.output_dir / bad_project_name),
+            ],
         )
 
         assert expected_failure.exit_code != 0
-        self.assertIn("Modelica does not support spaces in project names or paths.", str(expected_failure.exception))
+        assert "Modelica does not support spaces in project names or paths." in str(expected_failure.exception)
 
-    @pytest.mark.simulation
+    @pytest.mark.simulation()
     def test_cli_runs_existing_4g_model(self):
-        project_name = 'modelica_project_4g'
-        results_dir = f'{project_name}.Districts.DistrictEnergySystem_results'
+        project_name = "modelica_project_4g"
+        results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
 
@@ -248,21 +247,26 @@ class CLIIntegrationTest(TestCase):
         self.runner.invoke(
             cli,
             [
-                'run-model',
+                "run-model",
                 str(self.output_dir / project_name),
-                '-a', str(self.day_200_in_seconds),
-                '-z', str(self.day_201_in_seconds),
-                '-x', str(self.step_size_90_seconds)
-            ]
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+            ],
         )
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat").exists()
+        assert (
+            self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+        ).exists()
 
-    @pytest.mark.simulation
+    @pytest.mark.simulation()
     def test_cli_runs_existing_5g_model(self):
-        project_name = 'modelica_project_5g'
-        results_dir = f'{project_name}.Districts.DistrictEnergySystem_results'
+        project_name = "modelica_project_5g"
+        results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
 
@@ -270,13 +274,18 @@ class CLIIntegrationTest(TestCase):
         self.runner.invoke(
             cli,
             [
-                'run-model',
+                "run-model",
                 str(self.output_dir / project_name),
-                '-a', str(self.day_200_in_seconds),
-                '-z', str(self.day_201_in_seconds),
-                '-x', str(self.step_size_90_seconds)
-            ]
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+            ],
         )
 
         # If this file exists, the cli command ran successfully
-        assert (self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat").exists()
+        assert (
+            self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+        ).exists()

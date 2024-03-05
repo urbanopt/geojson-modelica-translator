@@ -5,45 +5,24 @@ from pathlib import Path
 
 import pytest
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import (
-    UrbanOptGeoJson
-)
-from geojson_modelica_translator.model_connectors.couplings.coupling import (
-    Coupling
-)
-from geojson_modelica_translator.model_connectors.couplings.graph import (
-    CouplingGraph
-)
-from geojson_modelica_translator.model_connectors.districts.district import (
-    District
-)
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import (
-    EtsColdWaterStub
-)
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import (
-    HeatingIndirect
-)
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import (
-    TimeSeries
-)
-from geojson_modelica_translator.model_connectors.networks.network_2_pipe import (
-    Network2Pipe
-)
-from geojson_modelica_translator.model_connectors.plants.chp import (
-    HeatingPlantWithOptionalCHP
-)
-from geojson_modelica_translator.system_parameters.system_parameters import (
-    SystemParameters
-)
-
-from ..base_test_case import TestCaseBase
+from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
+from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
+from geojson_modelica_translator.model_connectors.districts.district import District
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import EtsColdWaterStub
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import HeatingIndirect
+from geojson_modelica_translator.model_connectors.load_connectors.time_series import TimeSeries
+from geojson_modelica_translator.model_connectors.networks.network_2_pipe import Network2Pipe
+from geojson_modelica_translator.model_connectors.plants.chp import HeatingPlantWithOptionalCHP
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
+from tests.base_test_case import TestCaseBase
 
 
 class CombinedHeatingPowerTest(TestCaseBase):
     def setUp(self):
         super().setUp()
 
-        self.project_name = 'heat_with_chp'
+        self.project_name = "heat_with_chp"
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
@@ -59,9 +38,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         heating_plant = HeatingPlantWithOptionalCHP(self.sys_params)
 
         # create our our load/ets/stubs
-        all_couplings = [
-            Coupling(network, heating_plant)
-        ]
+        all_couplings = [Coupling(network, heating_plant)]
         for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
             geojson_load_id = geojson_load.feature.properties["id"]
@@ -78,21 +55,21 @@ class CombinedHeatingPowerTest(TestCaseBase):
             root_dir=self.output_dir,
             project_name=self.project_name,
             system_parameters=self.sys_params,
-            coupling_graph=graph
+            coupling_graph=graph,
         )
         self.district.to_modelica()
 
     def test_build_chp_system(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        assert (root_path / 'DistrictEnergySystem.mo').exists()
+        assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation
+    @pytest.mark.simulation()
     def test_simulate_chp_system(self):
         self.run_and_assert_in_docker(
-            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
             start_time=0,  # Day 0 (in seconds)
             stop_time=9999,  # For 2.78 hours (in seconds)
-            step_size=300  # (in seconds)
+            step_size=300,  # (in seconds)
         )

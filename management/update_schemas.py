@@ -17,18 +17,21 @@ files_to_download = [
     "thermal_junction_properties.json",
 ]
 
-baseurl = "https://raw.githubusercontent.com/urbanopt/urbanopt-geojson-gem/develop/lib/urbanopt/geojson/schema/"  # noqa
+baseurl = "https://raw.githubusercontent.com/urbanopt/urbanopt-geojson-gem/develop/lib/urbanopt/geojson/schema/"
 
 
 @click.command()
-@click.argument('schema', required=False)
+@click.argument("schema", required=False)
 def update_schemas(schema):
+    files_to_download.append(schema)
     for f in files_to_download:
         click.echo(f"Downloading schema: {f}")
-        response = requests.get(f"{baseurl}/{f}")
+        response = requests.get(f"{baseurl}/{f}", timeout=(5, 5))
         save_path = f"geojson_modelica_translator/geojson/data/schemas/{f}"
         with open(save_path, "w") as outf:
             json.dump(response.json(), outf, indent=2)
 
-        print("Note that the [unused] fields will have been overwritten by this operation. It is recommended to "
-              "open the previous version and new version in a diff tool to copy over the [unused] tags.")
+        print(
+            "Note that the [unused] fields will have been overwritten by this operation. It is recommended to "
+            "open the previous version and new version in a diff tool to copy over the [unused] tags."
+        )

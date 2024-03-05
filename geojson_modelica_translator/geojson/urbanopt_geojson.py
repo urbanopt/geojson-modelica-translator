@@ -16,7 +16,7 @@ class GeoJsonValidationError(Exception):
 
 
 # TODO: Inherit from GeoJSON Feature class, move to its own file
-class UrbanOptLoad(object):
+class UrbanOptLoad:
     """
     An UrbanOptLoad is a container for holding Building-related data in a dictionary. This object
     does not do much work on the GeoJSON definition of the data at the moment, rather it creates
@@ -35,7 +35,7 @@ class UrbanOptLoad(object):
         return f"ID: {self.id}"
 
 
-class UrbanOptGeoJson(object):
+class UrbanOptGeoJson:
     """
     Root class for parsing an URBANopt GeoJSON file. This class simply reads and parses
     URBANopt GeoJSON files.
@@ -50,7 +50,7 @@ class UrbanOptGeoJson(object):
         if not Path(filename).exists():
             raise GeoJsonValidationError(f"URBANopt GeoJSON file does not exist: {filename}")
 
-        with open(filename, "r") as f:
+        with open(filename) as f:
             self.data = geojson.load(f)
 
         self.schemas = Schemas()
@@ -62,8 +62,8 @@ class UrbanOptGeoJson(object):
             if feature["properties"]["type"] == "Building":
                 building = UrbanOptLoad(feature)
                 if not building_ids or building.id in building_ids:
-                    # Don't care about validation failures for features with 'detailed_model_filename' in the building properties
-                    # Buildings defined by an osm don't have all keys in geojson, they'll always fail validation
+                    # Ignore validation failures for features with 'detailed_model_filename' in the properties
+                    # Buildings defined by an osm don't have all keys in geojson, therefore will always fail validation
                     if "detailed_model_filename" not in feature["properties"]:
                         errors = self.schemas.validate("building", building.feature.properties)
                     if errors:
@@ -72,13 +72,13 @@ class UrbanOptGeoJson(object):
                         self.buildings.append(building)
 
         if building_errors:
-            formatted_errors = ''
+            formatted_errors = ""
             for building_id, errors in building_errors.items():
-                building_errors_bullets = ''.join([f'\n    * {error}' for error in errors])
-                formatted_errors += f'\n  ID {building_id}:{building_errors_bullets}'
+                building_errors_bullets = "".join([f"\n    * {error}" for error in errors])
+                formatted_errors += f"\n  ID {building_id}:{building_errors_bullets}"
 
-            message = f'GeoJSON file is not valid:{formatted_errors}'
+            message = f"GeoJSON file is not valid:{formatted_errors}"
             raise GeoJsonValidationError(message)
 
         if not self.buildings:
-            raise GeoJsonValidationError(f'No valid buildings found in GeoJSON file: {filename}')
+            raise GeoJsonValidationError(f"No valid buildings found in GeoJSON file: {filename}")

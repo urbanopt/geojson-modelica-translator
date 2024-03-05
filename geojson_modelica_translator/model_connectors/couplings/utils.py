@@ -4,33 +4,35 @@
 import re
 from collections import deque, namedtuple
 
-DiagramTransformation = namedtuple('DiagramTransformation', ['model_name', 'model_type'])
-DiagramLine = namedtuple('DiagramLine', ['a_name', 'a_port', 'b_name', 'b_port'])
+DiagramTransformation = namedtuple("DiagramTransformation", ["model_name", "model_type"])
+DiagramLine = namedtuple("DiagramLine", ["a_name", "a_port", "b_name", "b_port"])
 
-JINJA_EXPRESSION_REGEX = re.compile(r'{{\s*(.*?)\s*}}')
+JINJA_EXPRESSION_REGEX = re.compile(r"{{\s*(.*?)\s*}}")
 
 
 def parse_diagram_command(str_cmd):
     """Returns a diagram command or None if it's not a diagram command"""
-    cmd_args_list = str_cmd.split('.')
+    cmd_args_list = str_cmd.split(".")
     if len(cmd_args_list) <= 1:
         return None
 
     context = cmd_args_list.pop(0)
-    if context != 'diagram':
+    if context != "diagram":
         return None
 
     command = cmd_args_list.pop(0)
-    if command == 'transformation':
+    if command == "transformation":
         if len(cmd_args_list) != 2:
-            raise Exception(f'Invalid diagram templating command: "transformation" expects 2 arguments but got {cmd_args_list}')
+            raise TypeError(
+                f'Invalid diagram templating command: "transformation" expects 2 arguments but got {cmd_args_list}'
+            )
         return DiagramTransformation(*cmd_args_list)
-    elif command == 'line':
+    elif command == "line":
         if len(cmd_args_list) != 4:
-            raise Exception(f'Invalid diagram templating command: "line" expects 4 arguments but got {cmd_args_list}')
+            raise TypeError(f'Invalid diagram templating command: "line" expects 4 arguments but got {cmd_args_list}')
         return DiagramLine(*cmd_args_list)
     else:
-        raise Exception(f'Invalid diagram templating command "{command}"')
+        raise TypeError(f'Invalid diagram templating command "{command}"')
 
 
 def parse_diagram_commands(template_contents):
@@ -103,7 +105,7 @@ def find_path_bfs(matrix, start_row, start_col, end_row, end_col):
         visited.append(current)
 
         for neighbor in get_neighbors(current):
-            queue.append((path + [neighbor], neighbor))
+            queue.append(([*path, neighbor], neighbor))
 
     # failed to find a path
-    raise Exception(f'Failed to find path from {start} to {finish}')
+    raise Exception(f"Failed to find path from {start} to {finish}")

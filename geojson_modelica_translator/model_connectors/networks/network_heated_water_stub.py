@@ -1,17 +1,15 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-from geojson_modelica_translator.model_connectors.networks.network_base import (
-    NetworkBase
-)
+from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
 
 
 class NetworkHeatedWaterStub(NetworkBase):
-    model_name = 'NetworkHeatedWaterStub'
+    model_name = "NetworkHeatedWaterStub"
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'MyNetworkHeatedWaterStub'
+        self.id = "MyNetworkHeatedWaterStub"
 
     def to_modelica(self, scaffold):
         """
@@ -21,4 +19,4 @@ class NetworkHeatedWaterStub(NetworkBase):
 
     def get_modelica_type(self, scaffold):
         # this stub has no model, so there's no type
-        return 'UNIMPLEMENTED'
+        return "UNIMPLEMENTED"
