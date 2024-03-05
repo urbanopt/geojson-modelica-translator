@@ -229,6 +229,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type='time_series',
                 scenario_dir=missing_scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file)
         self.assertIn(
             f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}", str(context.exception))
@@ -239,6 +240,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=missing_feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file)
         self.assertIn(
             f"Unable to find your feature file. The path you provided was: {missing_feature_file}", str(context.exception))
@@ -251,6 +253,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file,
                 overwrite=True)
             sp = SystemParameters()
@@ -258,6 +261,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type='time_series',
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file,
                 overwrite=False)
         self.assertIn("Output file already exists and overwrite is False:", str(context.exception))
@@ -269,6 +273,7 @@ class SystemParametersTest(unittest.TestCase):
             model_type='time_series',
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
+            district_type="4G",
             sys_param_filename=output_sys_param_file)
 
         # debug
@@ -285,12 +290,11 @@ class SystemParametersTest(unittest.TestCase):
             model_type='time_series',
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
-            ghe=True,
+            district_type="5G_ghe",
             sys_param_filename=output_sys_param_file)
 
         self.assertTrue(output_sys_param_file.is_file())
-        with open(output_sys_param_file, "r") as f:
-            sys_param_data = json.load(f)
+        sys_param_data = json.loads(output_sys_param_file.read_text())
 
         # ghe
         self.assertTrue(sys_param_data['district_system']['fifth_generation']['ghe_parameters'])
@@ -302,6 +306,7 @@ class SystemParametersTest(unittest.TestCase):
             model_type='time_series',
             scenario_dir=self.microgrid_scenario_dir,
             feature_file=self.microgrid_feature_file,
+            district_type="4G",
             sys_param_filename=output_sys_param_file,
             microgrid=True)
         self.assertTrue(output_sys_param_file.exists())
@@ -330,6 +335,7 @@ class SystemParametersTest(unittest.TestCase):
             sp.csv_to_sys_param(
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file)
         self.assertIn("csv_to_sys_param() missing 1 required positional argument: 'model_type'",
                       str(context.exception))
@@ -340,6 +346,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type=bogus_template_type,
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file)
         self.assertIn(f"No template found. {bogus_template_type} is not a valid template", str(context.exception))
 
