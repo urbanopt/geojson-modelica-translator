@@ -4,6 +4,7 @@
 import json
 import logging
 import math
+from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
 from typing import Union
@@ -163,15 +164,13 @@ class SystemParameters(object):
         for b in self.param_template.get("buildings", []):
             if b.get("geojson_id") == id:
                 return self.get_param(jsonpath, data=b)
-        try:
+        with suppress(KeyError):
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # Don't crash or quit, just keep a stiff upper lip and carry on.
             district = self.param_template.get("district_system")
             for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
                 if ghe.get("ghe_id") == id:
                     return self.get_param(jsonpath, data=ghe)
-        except KeyError:
-            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
-            # Don't crash or quit, just keep a stiff upper lip and carry on.
-            pass
         if id is None:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
@@ -703,7 +702,7 @@ class SystemParameters(object):
                          scenario_dir: Path,
                          feature_file: Path,
                          sys_param_filename: Path,
-                         ghe=False,
+                         district_type: str,
                          overwrite=True,
                          microgrid=False,
                          **kwargs) -> None:
@@ -714,8 +713,8 @@ class SystemParameters(object):
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :param feature_file: Path, location/name of uo_sdk input file
         :param sys_param_filename: Path, location/name of system parameter file to be created
+        :param district_type: str, district type to model
         :param overwrite: Boolean, whether to overwrite existing sys-param file
-        :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
         :param microgrid: Boolean, Optional. If set to true, also process microgrid fields
 
         :kwargs (optional):
@@ -733,10 +732,7 @@ class SystemParameters(object):
 
         if model_type == 'time_series':
             # TODO: delineate between time_series and time_series_massflow_rate
-            if microgrid:
-                param_template_path = Path(__file__).parent / 'time_series_microgrid_template.json'
-            else:
-                param_template_path = Path(__file__).parent / 'time_series_template.json'
+            param_template_path = Path(__file__).parent / 'time_series_template.json'
         elif model_type == 'spawn':
             # TODO: We should support spawn as well
             raise SystemExit('Spawn models are not implemented at this time.')
@@ -752,8 +748,10 @@ class SystemParameters(object):
         if Path(self.sys_param_filename).is_file() and not overwrite:
             raise SystemExit(f"Output file already exists and overwrite is False: {self.sys_param_filename}")
 
-        with open(param_template_path, "r") as f:
-            self.param_template = json.load(f)
+        if district_type not in ['steam', '4G', '5G', '5G_ghe']:
+            raise SystemExit(f"{district_type} is not a valid district type. Available options are: ['steam', '4G', '5G', '5G_ghe']")
+
+        self.param_template = json.loads(param_template_path.read_text())
 
         measure_list = []
 
@@ -770,8 +768,7 @@ class SystemParameters(object):
 
         # Get each building feature id from the SDK FeatureFile
         building_ids = []
-        with open(feature_file) as json_file:
-            sdk_input = json.load(json_file)
+        sdk_input = json.loads(feature_file.read_text())
         weather_filename = sdk_input['project']['weather_filename']
         weather_path = self.sys_param_filename.parent / weather_filename
         for feature in sdk_input['features']:
@@ -792,9 +789,12 @@ class SystemParameters(object):
         # Make sys_param template entries for each feature_id
         building_list = []
         for building in building_ids:
-            feature_info = deepcopy(self.param_template['buildings'][0])
-            feature_info['geojson_id'] = str(building)
-            building_list.append(feature_info)
+            if "4G" in district_type:
+                building_params = deepcopy(self.param_template['buildings'][0])
+            elif "5G" in district_type:
+                building_params = deepcopy(self.param_template['buildings'][1])
+            building_params['geojson_id'] = str(building)
+            building_list.append(building_params)
 
         # Grab the modelica file for the each Feature, and add it to the appropriate building dict
         district_nominal_massflow_rate = 0
@@ -813,21 +813,6 @@ class SystemParameters(object):
                         to_file_path = to_file_path.relative_to(self.rel_path)
 
                     building['load_model_parameters']['time_series']['filepath'] = str(to_file_path)
-                if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
-                    massflow_rate_df = pd.read_csv(measure_file_path)
-                    try:
-                        building_nominal_massflow_rate = round(
-                            massflow_rate_df['massFlowRateHeating'].max(),
-                            3)  # round max to 3 decimal places
-                        # Force casting to float even if building_nominal_massflow_rate == 0
-                        # FIXME: This might be related to building_type == `lodging` for non-zero building percentages
-                        building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_massflow_rate)
-                    except KeyError:
-                        # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
-                        # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
-                        logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
-                        continue
-                district_nominal_massflow_rate += building_nominal_massflow_rate
                 if measure_file_path.suffix == '.csv' and measure_folder_name.endswith('_export_modelica_loads'):
                     try:
                         # only use the one column to make the df small
@@ -836,6 +821,22 @@ class SystemParameters(object):
                         continue
                     max_electricity_load = int(building_loads['ElectricityFacility'].max())
                     building['load_model_parameters']['time_series']['max_electrical_load'] = max_electricity_load
+                if "4G" in district_type:
+                    if (measure_file_path.suffix == '.csv') and ('_export_time_series_modelica' in str(measure_folder_name)):
+                        massflow_rate_df = pd.read_csv(measure_file_path)
+                        try:
+                            building_nominal_massflow_rate = round(
+                                massflow_rate_df['massFlowRateHeating'].max(),
+                                3)  # round max to 3 decimal places
+                            # Force casting to float even if building_nominal_massflow_rate == 0
+                            # FIXME: This might be related to building_type == `lodging` for non-zero building percentages
+                            building['ets_indirect_parameters']['nominal_mass_flow_building'] = float(building_nominal_massflow_rate)
+                        except KeyError:
+                            # If massFlowRateHeating is not in the export_time_series_modelica output, just skip this step.
+                            # It probably won't be in the export for hpxml residential buildings, at least as of 2022-06-29
+                            logger.info("mass-flow-rate heating is not present. It is not expected in residential buildings. Skipping.")
+                            continue
+                    district_nominal_massflow_rate += building_nominal_massflow_rate
 
         # Remove template buildings that weren't used or don't have successful simulations with modelica outputs
         # TODO: Another place where we only support time series for now.
@@ -849,7 +850,8 @@ class SystemParameters(object):
 
         # Update specific sys-param settings for each building
         for building in building_list:
-            building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_massflow_rate
+            if "4G" in district_type:
+                building['ets_indirect_parameters']['nominal_mass_flow_district'] = district_nominal_massflow_rate
             feature_opt_file = scenario_dir / building['geojson_id'] / 'feature_reports' / 'feature_optimization.json'
             if microgrid and not feature_opt_file.exists():
                 logger.debug(f"No feature optimization file found for {building['geojson_id']}. Skipping REopt for this building")
@@ -860,7 +862,7 @@ class SystemParameters(object):
         self.param_template['buildings'] = building_list
 
         # Update district sys-param settings
-        # Parens are to allow the line break
+        # Process community microgrid inputs
         to_file_path = mos_weather_path
         if self.rel_path:
             to_file_path = to_file_path.relative_to(self.rel_path)
@@ -868,24 +870,21 @@ class SystemParameters(object):
         if microgrid and not feature_opt_file.exists():
             logger.warn("Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                         "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid.")
-        try:
-            self.process_microgrid_inputs(scenario_dir)
-        except UnboundLocalError:
-            raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
-                             "Perhaps you haven't run REopt post-processing step in the UO sdk?")
+        elif microgrid and feature_opt_file.exists():
+            try:
+                self.process_microgrid_inputs(scenario_dir)
+            except UnboundLocalError:
+                raise SystemExit(f"\nError: No scenario_optimization.json file found in {scenario_dir}\n"
+                                 "Perhaps you haven't run REopt post-processing step in the UO sdk?")
 
         # Update ground heat exchanger properties if true
-        if ghe:
+        if "5G_ghe" in district_type:
             ghe_ids = []
             # add properties from the feature file
-            with open(feature_file) as json_file:
-                sdk_input = json.load(json_file)
             for feature in sdk_input['features']:
                 if feature['properties']['type'] == 'District System':
-                    try:
+                    with suppress(KeyError):
                         district_system_type = feature['properties']['district_system_type']
-                    except KeyError:
-                        pass
                     if district_system_type == 'Ground Heat Exchanger':
                         length, width = self.calculate_dimensions(
                             feature['properties']['footprint_area'], feature['properties']['footprint_perimeter'])
@@ -916,12 +915,10 @@ class SystemParameters(object):
             # remove fourth generation district system type
             del self.param_template['district_system']['fourth_generation']
 
-        else:
-            # remove fifth generation district system type if it exists in template and ghe is not true
-            try:
+        elif "4G" in district_type or "steam" in district_type:
+            # remove fifth generation district system type
+            with suppress(KeyError):
                 del self.param_template['district_system']['fifth_generation']
-            except KeyError:
-                pass
 
         # save the file to disk
         self.save()
