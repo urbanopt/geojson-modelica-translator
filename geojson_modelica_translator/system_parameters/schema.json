@@ -1329,6 +1329,7 @@
         "chilled_water_supply_temp",
         "hot_water_supply_temp",
         "cop_heat_pump_heating",
+        "cop_heat_pump_cooling",
         "pump_flow_rate",
         "pump_design_head",
         "ets_pump_flow_rate",
