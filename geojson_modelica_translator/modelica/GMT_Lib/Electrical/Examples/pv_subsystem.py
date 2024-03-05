@@ -11,4 +11,4 @@ class PVSubsystem(SimpleGMTBase):
 
     def build_from_template(self, output_dir: Path):
         pv_subsystem_params = self.system_parameters.get_param("$")
-        self.to_modelica(output_dir=output_dir, model_name='PVsubsystem', param_data=pv_subsystem_params)
+        self.to_modelica(output_dir=output_dir, model_name="PVsubsystem", param_data=pv_subsystem_params)

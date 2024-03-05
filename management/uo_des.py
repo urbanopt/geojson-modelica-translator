@@ -6,15 +6,11 @@ from shutil import rmtree
 
 import click
 
-from geojson_modelica_translator.geojson_modelica_translator import (
-    GeoJsonModelicaTranslator
-)
+from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
-from geojson_modelica_translator.system_parameters.system_parameters import (
-    SystemParameters
-)
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
@@ -37,34 +33,35 @@ def cli():
 )
 @click.argument(
     "district_type",
-    default='4G',
+    default="4G",
 )
 @click.argument(
     "model_type",
-    default='time_series',
+    default="time_series",
 )
 @click.option(
-    '-o',
-    '--overwrite',
+    "-o",
+    "--overwrite",
     is_flag=True,
     help="Delete and replace any existing file of the same name & location",
-    default=False
+    default=False,
 )
 @click.option(
-    '-m',
-    '--microgrid',
+    "-m",
+    "--microgrid",
     is_flag=True,
     help="If specified, microgrid inputs will be added to system parameters file",
-    default=False
+    default=False,
 )
-def build_sys_param(model_type: str,
-                    sys_param_filename: Path,
-                    scenario_file: Path,
-                    feature_file: Path,
-                    district_type: str,
-                    overwrite: bool,
-                    microgrid: bool
-                    ):
+def build_sys_param(
+    model_type: str,
+    sys_param_filename: Path,
+    scenario_file: Path,
+    feature_file: Path,
+    district_type: str,
+    overwrite: bool,
+    microgrid: bool,
+):
     """
     Create system parameters file using uo_sdk output
 
@@ -92,7 +89,7 @@ def build_sys_param(model_type: str,
 
     # Use scenario_file to be consistent with sdk
     scenario_name = Path(scenario_file).stem
-    scenario_dir = Path(scenario_file).parent / 'run' / scenario_name
+    scenario_dir = Path(scenario_file).parent / "run" / scenario_name
     sp = SystemParameters()
     sp.csv_to_sys_param(
         model_type=model_type,
@@ -101,7 +98,7 @@ def build_sys_param(model_type: str,
         feature_file=Path(feature_file),
         district_type=district_type,
         overwrite=overwrite,
-        microgrid=microgrid
+        microgrid=microgrid,
     )
 
     if Path(sys_param_filename).exists():
@@ -125,11 +122,11 @@ def build_sys_param(model_type: str,
     type=click.Path(exists=False, file_okay=False, dir_okay=True),
 )
 @click.option(
-    '-o',
-    '--overwrite',
+    "-o",
+    "--overwrite",
     is_flag=True,
     help="Delete and replace any existing folder of the same name & location",
-    default=False
+    default=False,
 )
 def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path: Path, overwrite: bool):
     """Build Modelica model from user data
@@ -155,14 +152,10 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     if len(project_path.name.split()) > 1:  # Modelica can't handle spaces in project name
         raise SystemExit(
             f"\n'{project_path}' failed. Modelica does not support spaces in project names or paths. "
-            "Please choose a different 'project_path'")
+            "Please choose a different 'project_path'"
+        )
 
-    gmt = GeoJsonModelicaTranslator(
-        geojson_feature_file,
-        sys_param_file,
-        project_path.parent,
-        project_path.name
-    )
+    gmt = GeoJsonModelicaTranslator(geojson_feature_file, sys_param_file, project_path.parent, project_path.name)
 
     gmt.to_modelica()
 
@@ -226,22 +219,24 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     if len(str(run_path).split()) > 1:  # Modelica can't handle spaces in project name or path
         raise SystemExit(
             f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
-            "Please update your directory tree to not include spaces in any name")
+            "Please update your directory tree to not include spaces in any name"
+        )
 
     # setup modelica runner
     mr = ModelicaRunner()
-    mr.run_in_docker('compile_and_run',
-                     f'{project_name}.Districts.DistrictEnergySystem',
-                     file_to_load=run_path / 'package.mo',
-                     run_path=run_path,
-                     start_time=start_time,
-                     stop_time=stop_time,
-                     step_size=step_size,
-                     number_of_intervals=intervals
-                     )
+    mr.run_in_docker(
+        "compile_and_run",
+        f"{project_name}.Districts.DistrictEnergySystem",
+        file_to_load=run_path / "package.mo",
+        run_path=run_path,
+        start_time=start_time,
+        stop_time=stop_time,
+        step_size=step_size,
+        number_of_intervals=intervals,
+    )
 
-    run_location = run_path.parent / project_name / f'{project_name}.Districts.DistrictEnergySystem_results'
-    if (run_location / f'{project_name}.Districts.DistrictEnergySystem_res.mat').exists():
+    run_location = run_path.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"
+    if (run_location / f"{project_name}.Districts.DistrictEnergySystem_res.mat").exists():
         print(f"\nModelica model {project_name} ran successfully and can be found in {run_location}")
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {run_location}/stdout.log for more info.")

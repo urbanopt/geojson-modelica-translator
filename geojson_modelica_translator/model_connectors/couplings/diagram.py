@@ -11,10 +11,10 @@ from geojson_modelica_translator.model_connectors.couplings.utils import (
     DiagramLine,
     DiagramTransformation,
     find_path_bfs,
-    parse_diagram_commands
+    parse_diagram_commands,
 )
 
-NodePort = namedtuple('NodePort', ['node', 'port'])
+NodePort = namedtuple("NodePort", ["node", "port"])
 
 
 class DiagramNode:
@@ -38,10 +38,7 @@ class DiagramNode:
             return False
 
         def _simple_eq(a, b):
-            return (
-                a.context_id == b.context_id
-                and a.model_name == b.model_name
-            )
+            return a.context_id == b.context_id and a.model_name == b.model_name
 
         if not _simple_eq(self, other):
             return False
@@ -50,7 +47,7 @@ class DiagramNode:
         if self.connections.keys() != other.connections.keys():
             return False
 
-        for port_name in self.connections.keys():
+        for port_name in self.connections:
             for self_conn, other_conn in zip(self.connections[port_name], other.connections[port_name]):
                 if not _simple_eq(self_conn.node, other_conn.node) or self_conn.port != other_conn.port:
                     return False
@@ -91,7 +88,7 @@ class Diagram:
         """
         half_width = self.grid_width_px / 2
         half_height = self.grid_height_px / 2
-        return f'{{{{-{half_width},-{half_height}}},{{{half_width},{half_height}}}}}'
+        return f"{{{{-{half_width},-{half_height}}},{{{half_width},{half_height}}}}}"
 
     def _grid_to_coord(self, col, row):
         return self.grid_cell_size * col, self.grid_cell_size * row
@@ -130,8 +127,8 @@ class Diagram:
         """
         transformations = defaultdict(dict)
         lines = defaultdict(dict)
-        transformation_template = Template('transformation(extent={{$x1,$y1},{$x2,$y2}})')
-        line_template = Template('Line(points={$points},color={0,0,127})')
+        transformation_template = Template("transformation(extent={{$x1,$y1},{$x2,$y2}})")
+        line_template = Template("Line(points={$points},color={0,0,127})")
 
         # add transformations defined within this id's context
         # e.g., if id is for a model, add all transformations defined in the model instance template
@@ -139,10 +136,10 @@ class Diagram:
             # x1, y1 is lower left of icon, x2, y2 is upper right
             x_pos, y_pos = self._grid_to_coord(diagram_node.grid_col, diagram_node.grid_row)
             coords = {
-                'x1': self._translate_x(x_pos),
-                'y1': self._translate_y(y_pos + (diagram_node.icon.height * self.grid_cell_size)),
-                'x2': self._translate_x(x_pos + (diagram_node.icon.width * self.grid_cell_size)),
-                'y2': self._translate_y(y_pos),
+                "x1": self._translate_x(x_pos),
+                "y1": self._translate_y(y_pos + (diagram_node.icon.height * self.grid_cell_size)),
+                "x2": self._translate_x(x_pos + (diagram_node.icon.width * self.grid_cell_size)),
+                "y2": self._translate_y(y_pos),
             }
             transformations[component_name][diagram_node.model_type] = transformation_template.substitute(coords)
 
@@ -164,29 +161,18 @@ class Diagram:
                         include_line = this_context_id == context_id or other_node.context_id in diagram_ids
                         if include_line:
                             points = self._calculate_connector_line(
-                                diagram_node,
-                                component_port,
-                                other_node,
-                                other_port
+                                diagram_node, component_port, other_node, other_port
                             )
-                            formatted_points = [f'{{{x},{y}}}' for x, y in points]
-                            line = line_template.substitute(
-                                points=','.join(formatted_points)
-                            )
+                            formatted_points = [f"{{{x},{y}}}" for x, y in points]
+                            line = line_template.substitute(points=",".join(formatted_points))
                             if component_port not in lines[component_name]:
-                                lines[component_name][component_port] = {
-                                    other_node.model_name: {
-                                        other_port: line
-                                    }
-                                }
+                                lines[component_name][component_port] = {other_node.model_name: {other_port: line}}
                             else:
-                                lines[component_name][component_port][other_node.model_name] = {
-                                    other_port: line
-                                }
+                                lines[component_name][component_port][other_node.model_name] = {other_port: line}
 
         return {
-            'transformation': transformations,
-            'line': lines,
+            "transformation": transformations,
+            "line": lines,
         }
 
     def _calculate_connector_line(self, node_a, port_a, node_b, port_b):
@@ -199,25 +185,18 @@ class Diagram:
         :return: list, list of x,y tuples
         """
         grid_path = find_path_bfs(
-            self._diagram_matrix,
-            node_a.grid_row,
-            node_a.grid_col,
-            node_b.grid_row,
-            node_b.grid_col
+            self._diagram_matrix, node_a.grid_row, node_a.grid_col, node_b.grid_row, node_b.grid_col
         )
 
         # convert grid path into a coordinate path for the diagram
         diagram_path = []
         half_cell = self.grid_cell_size / 2
         # hack: add a random offsets to make lines overlap less
-        x_offset = uniform(half_cell * -1, half_cell)
-        y_offset = uniform(half_cell * -1, half_cell)
+        x_offset = uniform(half_cell * -1, half_cell)  # noqa: S311
+        y_offset = uniform(half_cell * -1, half_cell)  # noqa: S311
         for pos in grid_path:
             x, y = self._grid_to_coord(pos[1] + 0.5, pos[0] + 0.5)
-            diagram_path.append((
-                self._translate_x(x + x_offset),
-                self._translate_y(y + y_offset)
-            ))
+            diagram_path.append((self._translate_x(x + x_offset), self._translate_y(y + y_offset)))
 
         return diagram_path
 
@@ -230,9 +209,9 @@ class Diagram:
             nodes = []
             for _, context_nodes in self._initial_diagram_graph.items():
                 for _, node in context_nodes.items():
-                    if node_type != 'auxillary' and node.model_type == node_type:
+                    if node_type != "auxillary" and node.model_type == node_type:
                         nodes.append(node)
-                    if node_type == 'auxillary' and node.model_type not in ['load', 'ets', 'plant', 'network']:
+                    if node_type == "auxillary" and node.model_type not in ["load", "ets", "plant", "network"]:
                         nodes.append(node)
             return nodes
 
@@ -246,23 +225,23 @@ class Diagram:
                         nodes.add(other_node)
             return list(nodes)
 
-        MAX_ICONS_PER_ROW = 4
+        max_icons_per_row = 4
 
         load_ets_rows = []
         # add loads and etses
-        loads = get_nodes_of_type('load')
+        loads = get_nodes_of_type("load")
         for load_node in loads:
-            etses = get_connected_nodes_of_type(load_node, 'ets')
+            etses = get_connected_nodes_of_type(load_node, "ets")
             for load_ets_pair in zip_longest(etses, [load_node], fillvalue=None):
                 load_ets_rows.append(list(load_ets_pair))
 
         network_plant_rows = []
         # add networks and plants
-        for i, plant in enumerate(get_nodes_of_type('plant')):
+        for i, plant in enumerate(get_nodes_of_type("plant")):
             grid_row = []
             grid_row.append(plant)
             # NOTE: should only have one plant connected to a network
-            for network in get_connected_nodes_of_type(plant, 'network'):
+            for network in get_connected_nodes_of_type(plant, "network"):
                 grid_row.append(network)
 
             network_plant_rows.append(grid_row)
@@ -273,15 +252,15 @@ class Diagram:
         if num_network_plant_rows < num_load_ets_rows:
             # pad the network plant rows
             num_pad_rows = num_load_ets_rows - num_network_plant_rows
-            NUM_ICONS = 2  # dehardcode
+            num_icons = 2  # dehardcode
             for _ in range(num_pad_rows):
-                network_plant_rows.append([None] * NUM_ICONS)
+                network_plant_rows.append([None] * num_icons)
         elif num_load_ets_rows < num_network_plant_rows:
             # pad the load ets rows
             num_pad_rows = num_network_plant_rows - num_load_ets_rows
-            NUM_ICONS = 2  # dehardcode
+            num_icons = 2  # dehardcode
             for _ in range(num_pad_rows):
-                load_ets_rows.append([None] * NUM_ICONS)
+                load_ets_rows.append([None] * num_icons)
 
         # merge all of the rows
         merged_rows = []
@@ -290,8 +269,8 @@ class Diagram:
 
         # add auxillary rows
         grid_row = []
-        for node in get_nodes_of_type('auxillary'):
-            if len(grid_row) == MAX_ICONS_PER_ROW:
+        for node in get_nodes_of_type("auxillary"):
+            if len(grid_row) == max_icons_per_row:
                 # start a new row
                 merged_rows.append(grid_row)
                 grid_row = [node]
@@ -306,11 +285,11 @@ class Diagram:
         # TODO: find better solution
         longest_row = max([len(row) for row in merged_rows])
         for row in merged_rows:
-            row += [None] * (longest_row - len(row))
+            row += [None] * (longest_row - len(row))  # noqa: PLW2901
 
         # add padding between icons by building an updated grid
         # first row should be empty (+1 to make sure there's pad on both sides)
-        grid_cells_per_row = 1 + MAX_ICONS_PER_ROW + (MAX_ICONS_PER_ROW * self.icon_padding)
+        grid_cells_per_row = 1 + max_icons_per_row + (max_icons_per_row * self.icon_padding)
         diagram_matrix = [[None] * grid_cells_per_row]
         for row in merged_rows:
             # first col of row should be empty
@@ -364,8 +343,9 @@ class Diagram:
                 try:
                     with open(template_file) as f:
                         diagram_commands_by_id[id_].extend(parse_diagram_commands(f.read()))
-                except Exception as e:
-                    raise Exception(f'Failed to parse diagram commands for {template_file}: {str(e)}')
+                except Exception as e:  # noqa: BLE001
+                    # TODO: Determine what error we are catching here
+                    raise Exception(f"Failed to parse diagram commands for {template_file}: {e!s}")
 
         return cls._diagram_commands_to_graph(diagram_commands_by_id, coupling_graph.couplings)
 
@@ -402,7 +382,9 @@ class Diagram:
                 if coupling:
                     coupling = coupling[0]
                 else:
-                    raise Exception(f'Invalid diagram line command: unable to find "{name}" in the context of {diagram_context_id}')
+                    raise Exception(
+                        f'Invalid diagram line command: unable to find "{name}" in the context of {diagram_context_id}'
+                    )
 
                 # search each of the coupling's models nodes for the element
                 model_a_id = coupling._model_a.id
@@ -413,8 +395,8 @@ class Diagram:
                 if found_in_model_a and found_in_model_b:
                     raise Exception(
                         f'Invalid diagram line command: unable to determine which model "{name}" '
-                        'should connect to since it was not in the coupling and was found in both '
-                        'of the coupling\'s models'
+                        "should connect to since it was not in the coupling and was found in both "
+                        "of the coupling's models"
                     )
                 elif found_in_model_a:
                     return model_a_id
@@ -422,18 +404,18 @@ class Diagram:
                     return model_b_id
                 else:
                     available_names_by_context_id = {
-                        'coupling ' + diagram_context_id: list(diagram_graph_by_id[diagram_context_id].keys()),
+                        "coupling " + diagram_context_id: list(diagram_graph_by_id[diagram_context_id].keys()),
                         model_a_id: list(diagram_graph_by_id[model_a_id].keys()),
-                        model_b_id: list(diagram_graph_by_id[model_b_id].keys())
+                        model_b_id: list(diagram_graph_by_id[model_b_id].keys()),
                     }
-                    available_names_formatted = 'Available names (source):'
+                    available_names_formatted = "Available names (source):"
                     for ctx, available_names in available_names_by_context_id.items():
                         for available_name in available_names:
-                            available_names_formatted += f'\n  {available_name} ({ctx})'
+                            available_names_formatted += f"\n  {available_name} ({ctx})"
                     raise Exception(
                         f'Invalid diagram line command: failed to find "{name}" '
-                        f'in the coupling or either of the coupled models ({model_a_id} and {model_b_id}).\n'
-                        f'{available_names_formatted}'
+                        f"in the coupling or either of the coupled models ({model_a_id} and {model_b_id}).\n"
+                        f"{available_names_formatted}"
                     )
 
         # add connections between nodes
@@ -467,9 +449,9 @@ class DiagramIcon(ABC):
 
     @staticmethod
     def get_icon(icon_type):
-        if icon_type == 'load':
+        if icon_type == "load":
             return LoadIcon()
-        elif icon_type == 'network':
+        elif icon_type == "network":
             return NetworkIcon()
         else:
             # use load icon as default for now

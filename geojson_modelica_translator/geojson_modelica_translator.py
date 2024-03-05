@@ -4,39 +4,18 @@
 import logging
 from pathlib import Path
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import (
-    UrbanOptGeoJson
-)
-from geojson_modelica_translator.model_connectors.couplings import (
-    Coupling,
-    CouplingGraph
-)
+from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.model_connectors.couplings import Coupling, CouplingGraph
 from geojson_modelica_translator.model_connectors.districts import District
-from geojson_modelica_translator.model_connectors.energy_transfer_systems import (
-    CoolingIndirect,
-    HeatingIndirect
-)
-from geojson_modelica_translator.model_connectors.load_connectors import (
-    Spawn,
-    Teaser,
-    TimeSeries,
-    TimeSeriesMFT
-)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems import CoolingIndirect, HeatingIndirect
+from geojson_modelica_translator.model_connectors.load_connectors import Spawn, Teaser, TimeSeries, TimeSeriesMFT
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
-from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import (
-    NetworkDistributionPump
-)
+from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
-from geojson_modelica_translator.model_connectors.plants.borefield import (
-    Borefield
-)
-from geojson_modelica_translator.model_connectors.plants.chp import (
-    HeatingPlantWithOptionalCHP
-)
+from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
+from geojson_modelica_translator.model_connectors.plants.chp import HeatingPlantWithOptionalCHP
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
-from geojson_modelica_translator.system_parameters.system_parameters import (
-    SystemParameters
-)
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 _log = logging.getLogger(__name__)
 
@@ -106,7 +85,7 @@ def _parse_couplings(geojson, sys_params, district_type=None):
     return all_couplings
 
 
-class ModelicaPackage(object):
+class ModelicaPackage:
     """Represents a modelica package which can be simulated"""
 
     def __init__(self, file_to_run, project_path, project_name):
@@ -122,13 +101,11 @@ class ModelicaPackage(object):
         """
         modelica_runner = ModelicaRunner()
         return modelica_runner.run_in_docker(
-            self._file_to_run,
-            run_path=self._project_path,
-            project_name=self._project_name
+            self._file_to_run, run_path=self._project_path, project_name=self._project_name
         )
 
 
-class GeoJsonModelicaTranslator(object):
+class GeoJsonModelicaTranslator:
     """
     Main class for using the GeoJSON to Modelica Translator.
     """
@@ -148,34 +125,26 @@ class GeoJsonModelicaTranslator(object):
         :project_name: str, name of the package
         """
         if not Path(geojson_filepath).exists():
-            raise FileNotFoundError(f'GeoJSON file path does not exist: {geojson_filepath}')
+            raise FileNotFoundError(f"GeoJSON file path does not exist: {geojson_filepath}")
         if not Path(sys_params_filepath).exists():
-            raise FileNotFoundError(f'System parameters file path does not exist: {sys_params_filepath}')
+            raise FileNotFoundError(f"System parameters file path does not exist: {sys_params_filepath}")
 
         self._system_parameters = SystemParameters(sys_params_filepath)
 
-        geojson_ids = self._system_parameters.get_default(
-            '$.buildings.[*].geojson_id',
-            []
-        )
+        geojson_ids = self._system_parameters.get_default("$.buildings.[*].geojson_id", [])
         self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)
 
         # Use different couplings for each district system type
         district_type = self._system_parameters.get_param("district_system")
-        if 'fifth_generation' in district_type:
-            self._couplings = _parse_couplings(self._geojson, self._system_parameters, district_type='5G')
-        elif 'fourth_generation' in district_type:
+        if "fifth_generation" in district_type:
+            self._couplings = _parse_couplings(self._geojson, self._system_parameters, district_type="5G")
+        elif "fourth_generation" in district_type:
             self._couplings = _parse_couplings(self._geojson, self._system_parameters)
 
         self._root_dir = root_dir
         self._project_name = project_name
         self._coupling_graph = CouplingGraph(self._couplings)
-        self._district = District(
-            self._root_dir,
-            self._project_name,
-            self._system_parameters,
-            self._coupling_graph
-        )
+        self._district = District(self._root_dir, self._project_name, self._system_parameters, self._coupling_graph)
         self._package_created = False
 
     def to_modelica(self):
@@ -186,8 +155,4 @@ class GeoJsonModelicaTranslator(object):
         """
         self._district.to_modelica()
 
-        return ModelicaPackage(
-            self._district.district_model_filepath,
-            self._root_dir,
-            self._project_name
-        )
+        return ModelicaPackage(self._district.district_model_filepath, self._root_dir, self._project_name)

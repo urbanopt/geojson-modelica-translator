@@ -1,17 +1,15 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-from geojson_modelica_translator.model_connectors.networks.network_base import (
-    NetworkBase
-)
+from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
 
 
 class NetworkDistributionPump(NetworkBase):
-    model_name = 'NetworkDistributionPump'
+    model_name = "NetworkDistributionPump"
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = 'MyNetworkDistributionPump'
+        self.id = "MyNetworkDistributionPump"
 
     def to_modelica(self, scaffold):
         """
@@ -21,4 +19,4 @@ class NetworkDistributionPump(NetworkBase):
 
     def get_modelica_type(self, scaffold):
         # this stub has no model, so there's no type
-        return 'UNIMPLEMENTED'
+        return "UNIMPLEMENTED"
