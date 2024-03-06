@@ -1619,7 +1619,7 @@
           "default": 0.3
         },
         "flow_type": {
-          "description": "Flow type for ground heat exchanger sizing, in l/s.",
+          "description": "Flow type for ground heat exchanger sizing",
           "type": "string",
           "enum": [
             "borehole",
