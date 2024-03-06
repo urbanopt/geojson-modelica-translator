@@ -95,6 +95,11 @@ max-branches = 21
 "tests/*" = ["S101"] # assert statements are allowed in tests, and paths are safe
 "geojson_modelica_translator/model_connectors/load_connectors/teaser.py" = ["PLR0915"]
 # Lots of statements in the teaser post-processing. Don't think we can avoid it.
+"geojson_modelica_translator/model_connectors/districts/district_5g.py" = ["PLR0915", "PLR0912"]
+# FIXME: setup for multi-ghe should be optimized
+"tests/model_connectors/test_district_multiple_ghe.py" = ["PLR0915"]
+# Lots of statements in the multi-ghe test setup.
+# FIXME: surely we can reduce that setup somehow, right?
 "geojson_modelica_translator/model_connectors/couplings/diagram.py" = ["E501"]
 # Only needed for _parse_coupling_graph docstring
 
