@@ -7,7 +7,7 @@ import os
 from jsonschema.validators import Draft202012Validator as LatestValidator
 
 
-class Schemas(object):
+class Schemas:
     """
     Class to hold the various schemas
     """
@@ -25,11 +25,9 @@ class Schemas(object):
             "thermal_junction": None,
         }
 
-        for s in self.schemas.keys():
-            path = os.path.join(
-                os.path.dirname(__file__), "data/schemas/%s_properties.json" % s
-            )
-            with open(path, "r") as f:
+        for s in self.schemas:
+            path = os.path.join(os.path.dirname(__file__), "data/schemas/%s_properties.json" % s)
+            with open(path) as f:
                 self.schemas[s] = json.load(f)
 
     def retrieve(self, name):
@@ -37,7 +35,7 @@ class Schemas(object):
         if self.schemas.get(name):
             return self.schemas[name]
         else:
-            raise Exception("Schema for %s does not exist" % name)
+            raise NameError(f"Schema for {name} does not exist")
 
     def validate(self, name, instance):
         """

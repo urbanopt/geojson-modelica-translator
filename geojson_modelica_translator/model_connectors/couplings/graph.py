@@ -9,7 +9,7 @@ class CouplingGraph:
 
     def __init__(self, couplings):
         if len(couplings) == 0:
-            raise Exception('At least one coupling must be provided')
+            raise Exception("At least one coupling must be provided")
         self._couplings = couplings
 
         self._models_by_id = {}
@@ -39,14 +39,14 @@ class CouplingGraph:
             grouped_couplings = defaultdict(list)
             for coupling in couplings:
                 other_model = coupling.get_other_model(self._models_by_id[model_id])
-                coupling_type = f'{other_model.simple_gmt_type}_couplings'
+                coupling_type = f"{other_model.simple_gmt_type}_couplings"
                 grouped_couplings[coupling_type].append(coupling)
 
             self._grouped_couplings_by_model_id[model_id] = grouped_couplings
 
     @property
     def couplings(self):
-        return [coupling for coupling in self._couplings]
+        return list(self._couplings)
 
     @property
     def models(self):
@@ -97,22 +97,22 @@ class CouplingGraph:
         :return: int
         """
         if model_a_id not in self._models_by_id:
-            raise Exception('Model A id was not found')
+            raise Exception("Model A id was not found")
         if model_b_id not in self._models_by_id:
-            raise Exception('Model B id was not found')
+            raise Exception("Model B id was not found")
 
         model_a, model_b = self._models_by_id[model_a_id], self._models_by_id[model_b_id]
         grouped_couplings = self._grouped_couplings_by_model_id[model_a.id]
-        coupling_type = f'{model_b.simple_gmt_type}_couplings'
+        coupling_type = f"{model_b.simple_gmt_type}_couplings"
         try:
             couplings = grouped_couplings[coupling_type]
             other_models = [coupling.get_other_model(model_a) for coupling in couplings]
             other_model_ids = [m.id for m in other_models]
             return other_model_ids.index(model_b.id)
         except KeyError:
-            raise Exception(f'model_a has no coupling with model_b\'s type ({model_b.simple_gmt_type})')
+            raise Exception(f"model_a has no coupling with model_b's type ({model_b.simple_gmt_type})")
         except ValueError:
-            raise Exception('model_a has no coupling with model_b')
+            raise Exception("model_a has no coupling with model_b")
 
     def get_coupled_load(self, ets_id):
         """Returns the load coupled to the provided ets
@@ -121,12 +121,12 @@ class CouplingGraph:
         :return: dict
         """
         if ets_id not in self._grouped_couplings_by_model_id:
-            raise Exception(f'No ETS with id {ets_id}')
+            raise Exception(f"No ETS with id {ets_id}")
         try:
-            load_couplings = self._grouped_couplings_by_model_id[ets_id]['load_couplings']
-            return load_couplings[0].to_dict()['load']
+            load_couplings = self._grouped_couplings_by_model_id[ets_id]["load_couplings"]
+            return load_couplings[0].to_dict()["load"]
         except (KeyError, IndexError):
-            raise Exception('ETS is not coupled to a load')
+            raise Exception("ETS is not coupled to a load")
 
     def get_coupling(self, coupling_id):
         for coupling in self._couplings:

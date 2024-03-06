@@ -85,6 +85,9 @@ target/
 # pyenv
 .python-version
 
+# ruff linting and formatting
+.ruff_cache/
+
 # celery beat schedule file
 celerybeat-schedule
 

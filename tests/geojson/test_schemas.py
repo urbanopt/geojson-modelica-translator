@@ -3,6 +3,8 @@
 
 import unittest
 
+import pytest
+
 from geojson_modelica_translator.geojson.schemas import Schemas
 
 
@@ -10,13 +12,13 @@ class SchemasTest(unittest.TestCase):
     def test_load_schemas(self):
         s = Schemas()
         data = s.retrieve("building")
-        self.assertEqual(data["title"], "URBANopt Building")
+        assert data["title"] == "URBANopt Building"
 
     def test_invalid_retrieve(self):
         s = Schemas()
-        with self.assertRaises(Exception) as context:
+        with pytest.raises(NameError) as context:
             s.retrieve("judicate")
-        self.assertEqual("Schema for judicate does not exist", str(context.exception))
+        assert "Schema for judicate does not exist" in str(context.value)
 
     def test_validate_schema(self):
         s = Schemas()
@@ -38,10 +40,10 @@ class SchemasTest(unittest.TestCase):
             "year_built": 2010,
         }
         res = s.validate("building", instance)
-        self.assertEqual(len(res), 0)
+        assert len(res) == 0
 
         # bad system_type
         instance["type"] = "MagicBuilding"
         res = s.validate("building", instance)
-        self.assertIn("'MagicBuilding' is not one of ['Building']", res[0])
-        self.assertEqual(len(res), 1)
+        assert "'MagicBuilding' is not one of ['Building']" in res[0]
+        assert len(res) == 1

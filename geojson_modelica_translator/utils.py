@@ -36,7 +36,9 @@ def linecount(filename: Path) -> int:
     """Counts the number of lines in a file
     Probably not the most efficient way to do this, but it works
     """
-    return len(open(filename).readlines())
+    with open(filename) as f:
+        filelength = len(f.readlines())
+    return filelength
 
 
 def mbl_version():
@@ -47,7 +49,7 @@ def mbl_version():
     return "10.0.0"
 
 
-class ModelicaPath(object):
+class ModelicaPath:
     """
     Class for storing Modelica paths. This allows the path to point to
     the model directory, resources, and scripts directory.
@@ -104,7 +106,8 @@ class ModelicaPath(object):
         return f"Resources/Data/{self.name}"
 
     @property
-    def scripts_relative_dir(self, platform='Dymola'):
+    def scripts_relative_dir(self, platform="Dymola"):  # noqa: PLR0206
+        # FIXME: https://docs.astral.sh/ruff/rules/property-with-parameters/
         """Return the scripts directory that is in the resources directory. This only returns the
         relative directory and is useful when replacing string values within Modelica files.
 
@@ -145,7 +148,7 @@ class ModelicaPath(object):
 
 
 # This is used for some test cases where we need deterministic IDs to be generated
-USE_DETERMINISTIC_ID = bool(os.environ.get('GMT_DETERMINISTIC_ID', False))
+USE_DETERMINISTIC_ID = bool(os.environ.get("GMT_DETERMINISTIC_ID", False))
 
 counter = 0
 
@@ -155,11 +158,11 @@ def simple_uuid():
 
     :return: string, uuid
     """
-    global counter
+    global counter  # noqa: PLW0603
 
     if not USE_DETERMINISTIC_ID:
         return str(uuid4()).split("-")[0]
     else:
-        id = str(counter)
+        string_id = str(counter)
         counter += 1
-        return id
+        return string_id

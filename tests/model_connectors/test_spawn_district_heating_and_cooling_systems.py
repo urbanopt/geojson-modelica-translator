@@ -6,34 +6,21 @@ from pathlib import Path
 import pytest
 from buildingspy.io.outputfile import Reader
 
-from geojson_modelica_translator.geojson.urbanopt_geojson import (
-    UrbanOptGeoJson
-)
-from geojson_modelica_translator.model_connectors.couplings import (
-    Coupling,
-    CouplingGraph
-)
+from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
+from geojson_modelica_translator.model_connectors.couplings import Coupling, CouplingGraph
 from geojson_modelica_translator.model_connectors.districts import District
-from geojson_modelica_translator.model_connectors.energy_transfer_systems import (
-    CoolingIndirect,
-    HeatingIndirect
-)
+from geojson_modelica_translator.model_connectors.energy_transfer_systems import CoolingIndirect, HeatingIndirect
 from geojson_modelica_translator.model_connectors.load_connectors import Spawn
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
-from geojson_modelica_translator.model_connectors.plants.chp import (
-    HeatingPlantWithOptionalCHP
-)
-from geojson_modelica_translator.system_parameters.system_parameters import (
-    SystemParameters
-)
-
-from ..base_test_case import TestCaseBase
+from geojson_modelica_translator.model_connectors.plants.chp import HeatingPlantWithOptionalCHP
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
+from tests.base_test_case import TestCaseBase
 
 
 class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
     def setUp(self):
-        self.project_name = 'spawn_district_heating_and_cooling_systems'
+        self.project_name = "spawn_district_heating_and_cooling_systems"
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         filename = Path(self.data_dir) / "spawn_geojson_ex1.json"
@@ -84,61 +71,54 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
             root_dir=self.output_dir,
             project_name=self.project_name,
             system_parameters=self.sys_params,
-            coupling_graph=graph
+            coupling_graph=graph,
         )
         self.district.to_modelica()
 
     def test_build_spawn_cooling(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        assert (root_path / 'DistrictEnergySystem.mo').exists()
+        assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation
+    @pytest.mark.simulation()
     @pytest.mark.skip("OMC Failed to find spawn executable in Buildings Library")
     def test_simulate_spawn_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
-            f'{self.district._scaffold.project_name}.Districts.DistrictEnergySystem',
+            f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
             start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
             stop_time=17366400,  # For 1 day duration (in seconds)
-            step_size=3600  # (in seconds)
+            step_size=3600,  # (in seconds)
         )
 
         #
         # Validate model outputs
         #
 
-        results_dir = f'{self.district._scaffold.project_path}/{self.project_name}.Districts.DistrictEnergySystem_results'
-        mat_file = f'{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_res.mat'
-        mat_results = Reader(mat_file, 'dymola')
+        results_dir = (
+            f"{self.district._scaffold.project_path}/{self.project_name}.Districts.DistrictEnergySystem_results"
+        )
+        mat_file = f"{results_dir}/{self.project_name}_Districts_DistrictEnergySystem_res.mat"
+        mat_results = Reader(mat_file, "dymola")
 
         # check the mass flow rates of the first load are in the expected range
         load = self.loads[0]
-        (_, heat_m_flow) = mat_results.values(f'{load.id}.ports_aHeaWat[1].m_flow')
-        (_, cool_m_flow) = mat_results.values(f'{load.id}.ports_aChiWat[1].m_flow')
-        self.assertTrue((heat_m_flow >= 0).all(), 'Heating mass flow rate must be greater than or equal to zero')
-        self.assertTrue((cool_m_flow >= 0).all(), 'Cooling mass flow rate must be greater than or equal to zero')
+        (_, heat_m_flow) = mat_results.values(f"{load.id}.ports_aHeaWat[1].m_flow")
+        (_, cool_m_flow) = mat_results.values(f"{load.id}.ports_aChiWat[1].m_flow")
+        assert (heat_m_flow >= 0).all(), "Heating mass flow rate must be greater than or equal to zero"
+        assert (cool_m_flow >= 0).all(), "Cooling mass flow rate must be greater than or equal to zero"
 
         # this tolerance determines how much we allow the actual mass flow rate to exceed the nominal value
-        M_FLOW_NOMINAL_TOLERANCE = 0.01
-        (_, heat_m_flow_nominal) = mat_results.values(f'{load.id}.mLoaHea_flow_nominal[1]')
+        m_flow_nominal_tolerance = 0.01
+        (_, heat_m_flow_nominal) = mat_results.values(f"{load.id}.mLoaHea_flow_nominal[1]")
         heat_m_flow_nominal = heat_m_flow_nominal[0]
-        (_, cool_m_flow_nominal) = mat_results.values(f'{load.id}.mLoaCoo_flow_nominal[1]')
+        (_, cool_m_flow_nominal) = mat_results.values(f"{load.id}.mLoaCoo_flow_nominal[1]")
         cool_m_flow_nominal = cool_m_flow_nominal[0]
-        # TODO: remove try/except this is fixed
-        try:
-            self.assertTrue(
-                (heat_m_flow <= heat_m_flow_nominal + (heat_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
-                f'Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) '
-                f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
-            )
-        except Exception as e:
-            print(f'WARNING: assertion failed: {e}')
-        try:
-            self.assertTrue(
-                (cool_m_flow <= cool_m_flow_nominal + (cool_m_flow_nominal * M_FLOW_NOMINAL_TOLERANCE)).all(),
-                f'Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) '
-                f'plus a tolerance ({M_FLOW_NOMINAL_TOLERANCE * 100}%)'
-            )
-        except Exception as e:
-            print(f'WARNING: assertion failed: {e}')
+
+        assert (
+            heat_m_flow <= pytest.approx(heat_m_flow_nominal, rel=m_flow_nominal_tolerance).all()
+        ), f"Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"  # noqa: E501
+
+        assert (
+            cool_m_flow <= pytest.approx(cool_m_flow_nominal, rel=m_flow_nominal_tolerance).all()
+        ), f"Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"  # noqa: E501

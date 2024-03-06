@@ -15,14 +15,11 @@ class Battery(SimpleGMTBase):
         # There can be multiple batteries so we need to loop over them
         for index, battery in enumerate(district_battery_params):
             district_battery_params = {
-                'nominal_capacity': battery["capacity"],
-                'nominal_voltage': battery["nominal_voltage"],
-                'model_name': f"AcBattery{index}",
+                "nominal_capacity": battery["capacity"],
+                "nominal_voltage": battery["nominal_voltage"],
+                "model_name": f"AcBattery{index}",
             }
             # render template to final modelica file
             self.to_modelica(
-                output_dir=output_dir,
-                model_name='AcBattery',
-                param_data=district_battery_params,
-                iteration=index
+                output_dir=output_dir, model_name="AcBattery", param_data=district_battery_params, iteration=index
             )
