@@ -10,7 +10,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
+from geojson_modelica_translator.utils import _add_water_heating_patch, mbl_version
 
 
 def render_template(template_name, template_params):
@@ -158,3 +158,6 @@ class District:
         if "Districts" not in root_package.order:
             root_package.add_model("Districts")
             root_package.save()
+
+        # Hack workaround for MBLv10.0.0 bug that requires DHW in the loads even if it's not used
+        _add_water_heating_patch(self._scaffold.project_path)

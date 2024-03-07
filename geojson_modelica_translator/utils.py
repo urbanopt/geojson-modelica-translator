@@ -49,6 +49,30 @@ def mbl_version():
     return "10.0.0"
 
 
+def _add_water_heating_patch(modelica_dir):
+    """Add a dummy value for water heating for MBL 10 limitation."""
+    data_dir = Path(modelica_dir) / "Loads" / "Resources" / "Data"
+    if data_dir.is_dir():
+        for bldg_dir in data_dir.iterdir():
+            mo_load_file = data_dir / bldg_dir / "modelica.mos"
+            if mo_load_file.is_file():
+                fixed_lines, fl_found = [], False
+                with open(mo_load_file) as mlf:
+                    for line in mlf:
+                        if line == "#Peak water heating load = 0 Watts\n":
+                            nl = "#Peak water heating load = 1 Watts\n"
+                            fixed_lines.append(nl)
+                        elif not fl_found and ";" in line:
+                            split_vals = line.split(";")
+                            split_vals[-1] = "1.0\n"
+                            fixed_lines.append(";".join(split_vals))
+                            fl_found = True
+                        else:
+                            fixed_lines.append(line)
+                with open(mo_load_file, "w") as mlf:
+                    mlf.write("".join(fixed_lines))
+
+
 class ModelicaPath:
     """
     Class for storing Modelica paths. This allows the path to point to
