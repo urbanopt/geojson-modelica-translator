@@ -7,7 +7,12 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
-_log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s: %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+)
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -47,6 +52,36 @@ def mbl_version():
     geojson-modelica-translator.
     """
     return "10.0.0"
+
+
+def _add_water_heating_patch(modelica_dir: Path):
+    """Add a dummy value for water heating for MBL 10 limitation."""
+    data_dir = Path(modelica_dir) / "Loads" / "Resources" / "Data"
+    if data_dir.is_dir():
+        for bldg_dir in data_dir.iterdir():
+            mo_load_file = data_dir / bldg_dir / "modelica.mos"
+            # In case the modelica loads file isn't named modelica.mos:
+            if not mo_load_file.is_file():
+                modelica_loads = list((data_dir / bldg_dir).rglob("*"))
+                if len(modelica_loads) == 1:
+                    mo_load_file = modelica_loads[0]
+            if mo_load_file.is_file():
+                fixed_lines, fl_found = [], False
+                with open(mo_load_file) as mlf:
+                    for line in mlf:
+                        if line == "#Peak water heating load = 0 Watts\n":
+                            logger.debug(f"Adding dummy value for water heating to {mo_load_file}")
+                            nl = "#Peak water heating load = 1 Watts\n"
+                            fixed_lines.append(nl)
+                        elif not fl_found and ";" in line:
+                            split_vals = line.split(";")
+                            split_vals[-1] = "1.0\n"
+                            fixed_lines.append(";".join(split_vals))
+                            fl_found = True
+                        else:
+                            fixed_lines.append(line)
+                with open(mo_load_file, "w") as mlf:
+                    mlf.write("".join(fixed_lines))
 
 
 class ModelicaPath:
