@@ -22,6 +22,9 @@
           "type": "object",
           "oneOf": [
             {
+              "$ref": "#/definitions/first_generation_def"
+            },
+            {
               "$ref": "#/definitions/fourth_generation_def"
             },
             {
@@ -841,11 +844,6 @@
       "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model.",
       "type": "object",
       "properties": {
-        "boiler_efficiency_nominal": {
-          "description": "Boiler efficiency (fraction)",
-          "type": "number",
-          "default": 0.9
-        },
         "heat_flow_nominal": {
           "description": "Nominal district heating load. (W)",
           "type": "number",
@@ -875,11 +873,6 @@
           "description": "Boiler isolation valve pressure drop. (Pa)",
           "type": "number",
           "default": 6000
-        },
-        "steam_pressure_setpoint": {
-          "description": "The heating water circuit pressure drop setpoint. (Pa)",
-          "type": "number",
-          "default": 500000
         },
         "chp_installed": {
           "description": "True if heating plant is a Combined Heat and Power plant",
@@ -917,6 +910,22 @@
         "performance_data_path": {
           "description": "Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP",
           "type": "string"
+        }
+      }
+    },
+    "central_steam_plant_parameters": {
+      "description": "Central steam heating plant.",
+      "type": "object",
+      "properties": {
+        "boiler_efficiency_nominal": {
+          "description": "Boiler efficiency (fraction)",
+          "type": "number",
+          "default": 0.7
+        },
+        "steam_pressure_setpoint": {
+          "description": "The heating water circuit pressure drop setpoint. (Pa)",
+          "type": "number",
+          "default": 500000
         }
       }
     },
@@ -1200,6 +1209,30 @@
         }
       }
     },
+    "first_generation_def": {
+      "properties": {
+        "first_generation": {
+          "properties": {
+            "central_steam_plant_parameters": {
+              "$ref": "#/definitions/central_steam_plant_parameters"
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "first_generation"
+      ]
+    },
     "fourth_generation_def": {
       "properties": {
         "fourth_generation": {
@@ -1229,7 +1262,7 @@
               "type": "object",
               "properties": {
                 "pump_design_head": {
-                  "description": "Measured in Pa",
+                  "description": "Central pump nominal pressure (Pa)",
                   "type": "number"
                 }
               }
@@ -1264,7 +1297,7 @@
               "type": "object",
               "properties": {
                 "pump_design_head": {
-                  "description": "Measured in Pa.",
+                  "description": "Central pump nominal pressure (Pa)",
                   "type": "number"
                 }
               }
