@@ -7,7 +7,12 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
-_log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s: %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+)
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -49,7 +54,7 @@ def mbl_version():
     return "10.0.0"
 
 
-def _add_water_heating_patch(modelica_dir):
+def _add_water_heating_patch(modelica_dir: Path):
     """Add a dummy value for water heating for MBL 10 limitation."""
     data_dir = Path(modelica_dir) / "Loads" / "Resources" / "Data"
     if data_dir.is_dir():
@@ -60,6 +65,7 @@ def _add_water_heating_patch(modelica_dir):
                 with open(mo_load_file) as mlf:
                     for line in mlf:
                         if line == "#Peak water heating load = 0 Watts\n":
+                            logger.debug(f"Adding dummy value for water heating for {bldg_dir}")
                             nl = "#Peak water heating load = 1 Watts\n"
                             fixed_lines.append(nl)
                         elif not fl_found and ";" in line:
