@@ -160,4 +160,5 @@ class District:
             root_package.save()
 
         # Hack workaround for MBLv10.0.0 bug that requires DHW in the loads even if it's not used
+        # This hack runs after the scaffold is created and before the simulation is run.
         _add_water_heating_patch(self._scaffold.project_path)
