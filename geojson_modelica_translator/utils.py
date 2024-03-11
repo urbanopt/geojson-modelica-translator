@@ -60,12 +60,17 @@ def _add_water_heating_patch(modelica_dir: Path):
     if data_dir.is_dir():
         for bldg_dir in data_dir.iterdir():
             mo_load_file = data_dir / bldg_dir / "modelica.mos"
+            # In case the modelica loads file isn't named modelica.mos:
+            if not mo_load_file.is_file():
+                modelica_loads = list((data_dir / bldg_dir).rglob("*"))
+                if len(modelica_loads) == 1:
+                    mo_load_file = modelica_loads[0]
             if mo_load_file.is_file():
                 fixed_lines, fl_found = [], False
                 with open(mo_load_file) as mlf:
                     for line in mlf:
                         if line == "#Peak water heating load = 0 Watts\n":
-                            logger.debug(f"Adding dummy value for water heating for {bldg_dir}")
+                            logger.debug(f"Adding dummy value for water heating to {mo_load_file}")
                             nl = "#Peak water heating load = 1 Watts\n"
                             fixed_lines.append(nl)
                         elif not fl_found and ";" in line:
