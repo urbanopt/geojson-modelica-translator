@@ -923,9 +923,14 @@
           "default": 0.7
         },
         "steam_pressure_setpoint": {
-          "description": "The heating water circuit pressure drop setpoint. (Pa)",
+          "description": "The saturation pressure, high pressure setpoint. (Pa)",
           "type": "number",
           "default": 500000
+        },
+        "condensate_pressure_drop_nominal": {
+          "description": "Nominal pressure drop along the condensate return pipe. (Pa)",
+          "type": "number",
+          "default": 6000
         }
       }
     },
