@@ -1613,13 +1613,13 @@
           "default": "AREAPROPORTIONAL"
         },
         "flow_rate": {
-          "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
+          "description": "Nominal design mass flow rate, in l/s. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
           "type": "number",
           "minimum": 0,
           "default": 0.3
         },
         "flow_type": {
-          "description": "Flow type for ground heat exchanger sizing, in l/s.",
+          "description": "Flow type for ground heat exchanger sizing",
           "type": "string",
           "enum": [
             "borehole",
