@@ -942,7 +942,7 @@ class SystemParameters:
         if "5G_ghe" in district_type:
             self.process_ghe_inputs(scenario_dir)
         elif "4G" in district_type or "steam" in district_type:
-            # remove fifth generation district system type if it exists in template and ghe is not true
+            # remove fifth generation district system type if it's not appropriate
             with suppress(KeyError):
                 del self.param_template["district_system"]["fifth_generation"]
 

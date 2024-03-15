@@ -22,6 +22,9 @@
           "type": "object",
           "oneOf": [
             {
+              "$ref": "#/definitions/first_generation_def"
+            },
+            {
               "$ref": "#/definitions/fourth_generation_def"
             },
             {
@@ -910,6 +913,27 @@
         }
       }
     },
+    "central_steam_plant_parameters": {
+      "description": "Central steam heating plant.",
+      "type": "object",
+      "properties": {
+        "boiler_efficiency_nominal": {
+          "description": "Boiler efficiency (fraction)",
+          "type": "number",
+          "default": 0.7
+        },
+        "steam_pressure_setpoint": {
+          "description": "The saturation pressure, high pressure setpoint. (Pa)",
+          "type": "number",
+          "default": 500000
+        },
+        "condensate_pressure_drop_nominal": {
+          "description": "Nominal pressure drop along the condensate return pipe. (Pa)",
+          "type": "number",
+          "default": 6000
+        }
+      }
+    },
     "ghe_parameters": {
       "description": "Parameters associated with Ground Heat Exchangers.",
       "type": "object",
@@ -1190,6 +1214,30 @@
         }
       }
     },
+    "first_generation_def": {
+      "properties": {
+        "first_generation": {
+          "properties": {
+            "central_steam_plant_parameters": {
+              "$ref": "#/definitions/central_steam_plant_parameters"
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "first_generation"
+      ]
+    },
     "fourth_generation_def": {
       "properties": {
         "fourth_generation": {
@@ -1219,7 +1267,7 @@
               "type": "object",
               "properties": {
                 "pump_design_head": {
-                  "description": "Measured in Pa",
+                  "description": "Central pump nominal pressure (Pa)",
                   "type": "number"
                 }
               }
@@ -1254,7 +1302,7 @@
               "type": "object",
               "properties": {
                 "pump_design_head": {
-                  "description": "Measured in Pa.",
+                  "description": "Central pump nominal pressure (Pa)",
                   "type": "number"
                 }
               }
@@ -1614,13 +1662,13 @@
           "default": "AREAPROPORTIONAL"
         },
         "flow_rate": {
-          "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
+          "description": "Nominal design mass flow rate, in l/s. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
           "type": "number",
           "minimum": 0,
           "default": 0.3
         },
         "flow_type": {
-          "description": "Flow type for ground heat exchanger sizing, in l/s.",
+          "description": "Flow type for ground heat exchanger sizing",
           "type": "string",
           "enum": [
             "borehole",
