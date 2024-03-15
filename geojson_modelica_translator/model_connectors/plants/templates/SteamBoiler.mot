@@ -2,7 +2,7 @@ within {{ project_name }}.Plants;
 model SteamBoiler
   //   "Single steam boiler model for GMT level 1 testing in district heating application"
   // Central heating plant
-  parameter Real boiler_efficiency[:]={{data["boiler_efficiency"]}}
+  parameter Real boiler_efficiency[:]={{ data["nominal_values"]["boiler_efficiency"] }}
     "Coefficients for boiler efficiency curve";
   // Steam properties
   parameter Modelica.Units.SI.AbsolutePressure pSat_GMT={{data["Saturatation pressure"]}}
