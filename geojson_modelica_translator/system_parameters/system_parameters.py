@@ -918,7 +918,7 @@ class SystemParameters:
             mos_weather_path = mos_weather_path.relative_to(self.rel_path)
         self.param_template["weather"] = str(mos_weather_path)
         if microgrid and not feature_opt_file.exists():
-            logger.warning(
+            logger.warn(
                 "Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                 "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid."
             )
