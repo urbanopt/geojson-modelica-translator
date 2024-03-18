@@ -8,11 +8,6 @@ from pathlib import Path
 from uuid import uuid4
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
