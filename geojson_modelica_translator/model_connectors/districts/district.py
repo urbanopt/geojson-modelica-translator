@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import logging
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -12,6 +13,8 @@ from geojson_modelica_translator.model_connectors.couplings.diagram import Diagr
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.utils import mbl_version
+
+logger = logging.getLogger(__name__)
 
 
 def render_template(template_name, template_params):
@@ -183,4 +186,7 @@ class District:
                         mos_file.save()
         else:
             # The scaffold didn't get built properly or there are no loads in the Modelica package.
-            raise SystemExit(f"Could not find Modelica data directory {data_dir}")
+            logger.warn(
+                f"Could not find Modelica data directory {data_dir}. Perhaps there are no loads in the model,"
+                " and perhaps that is intentional."
+            )
