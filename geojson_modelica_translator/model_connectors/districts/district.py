@@ -186,7 +186,7 @@ class District:
                         mos_file.save()
         else:
             # The scaffold didn't get built properly or there are no loads in the Modelica package.
-            logger.warn(
+            logger.warning(
                 f"Could not find Modelica data directory {data_dir}. Perhaps there are no loads in the model,"
                 " and perhaps that is intentional."
             )
