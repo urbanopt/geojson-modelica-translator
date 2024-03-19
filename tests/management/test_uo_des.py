@@ -60,7 +60,7 @@ class CLIIntegrationTest(TestCase):
                 str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
                 str(self.feature_file_path_ghe.resolve()),
-                "--ghe",
+                "5G_ghe",
             ],
         )
 
@@ -144,7 +144,7 @@ class CLIIntegrationTest(TestCase):
                 str(self.sys_param_path),
                 str(self.scenario_file_path.resolve()),
                 str(self.feature_file_path_ghe.resolve()),
-                "--ghe",
+                "5G_ghe",
             ],
         )
 
