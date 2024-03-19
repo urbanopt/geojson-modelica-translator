@@ -15,11 +15,6 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class ModelicaRunner:

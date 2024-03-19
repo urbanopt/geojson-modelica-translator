@@ -4,11 +4,6 @@ from pathlib import Path
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class Grid(SimpleGMTBase):

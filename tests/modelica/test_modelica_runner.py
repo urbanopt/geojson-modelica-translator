@@ -12,11 +12,6 @@ from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s: %(message)s',
-    datefmt='%d-%b-%y %H:%M:%S',
-)
 
 
 class ModelicaRunnerTest(unittest.TestCase):

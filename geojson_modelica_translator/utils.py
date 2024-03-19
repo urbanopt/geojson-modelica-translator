@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 from uuid import uuid4
 
-_log = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
