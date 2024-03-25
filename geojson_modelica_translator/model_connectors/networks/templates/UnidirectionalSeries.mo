@@ -10,17 +10,19 @@ model UnidirectionalSeries
       final lCon=lCon,
       final dhDis=dhDis,
       final dhCon=dhCon,
-      final dIns=dIns,
-      final thickness=thickness),
+      each final dIns=dIns,
+      each final kIns=kIns,
+      each final thickness=thickness),
     redeclare model Model_pipDis =
         Buildings.Fluid.FixedResistances.PlugFlowPipe (
       roughness=7e-6,
       fac=1.5,
       final dIns=dIns,
+      final kIns=kIns,
       final thickness=thickness,
       final dh(fixed=true)=dhEnd,
       final length=lEnd));
-  parameter Real dp_length_nominal(final unit="Pa/m") = 250
+  parameter Real dp_length_nominal(unit="Pa/m")=250
     "Pressure drop per pipe length at nominal flow rate";
   parameter Modelica.Units.SI.Length lDis[nCon]
     "Length of the distribution pipe before each connection";
@@ -28,22 +30,18 @@ model UnidirectionalSeries
     "Length of each connection pipe (supply only, not counting return line)";
   parameter Modelica.Units.SI.Length lEnd
     "Length of the end of the distribution line (after last connection)";
-  parameter Modelica.Units.SI.Length dhDis[nCon](
-    each fixed=false,
-    each start=0.05,
-    each min=0.01)
+  parameter Modelica.Units.SI.Length dhDis[nCon]
     "Hydraulic diameter of the distribution pipe before each connection";
   parameter Modelica.Units.SI.Length dhCon[nCon](
     each fixed=false,
     each start=0.05,
     each min=0.01) "Hydraulic diameter of each connection pipe";
-  parameter Modelica.Units.SI.Length dhEnd(
-    fixed=false,
-    start=0.05,
-    min=0.01)
+  parameter Modelica.Units.SI.Length dhEnd
     "Hydraulic diameter of of the end of the distribution line (after last connection)";
   parameter Modelica.Units.SI.Length dIns
     "Thickness of pipe insulation, used to compute R";
+  parameter Modelica.Units.SI.ThermalConductivity kIns
+    "Heat conductivity of pipe insulation, used to compute R";
   parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness";
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortRet
     "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"

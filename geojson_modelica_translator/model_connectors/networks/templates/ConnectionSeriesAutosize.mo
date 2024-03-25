@@ -9,6 +9,7 @@ model ConnectionSeriesAutosize
         roughness=7e-6,
         fac=1.5,
         final dIns=dIns,
+        final kIns=kIns,
         final thickness=thickness,
         final length=lDis,
         final dh(fixed=true) = dhDis),
@@ -19,10 +20,12 @@ model ConnectionSeriesAutosize
         final length=2*lCon,
         final dh(fixed=true) = dhCon,
         final dp_length_nominal=dp_length_nominal));
-  parameter Real dp_length_nominal(final unit="Pa/m") = 250
+  parameter Real dp_length_nominal(unit="Pa/m")=250
     "Pressure drop per pipe length at nominal flow rate";
   parameter Modelica.Units.SI.Length dIns
     "Thickness of pipe insulation, used to compute R";
+  parameter Modelica.Units.SI.ThermalConductivity kIns
+    "Heat conductivity of pipe insulation, used to compute R";
   parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness";
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
     "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"

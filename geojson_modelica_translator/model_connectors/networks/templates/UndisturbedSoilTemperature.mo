@@ -1,7 +1,7 @@
 within district_single_ghe.Networks;
 model UndisturbedSoilTemperature "Undisturbed soil temperature"
   parameter Modelica.Units.SI.Length dep "Soil depth";
-  replaceable parameter Buildings.HeatTransfer.Data.Soil.Generic
+  replaceable parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone
     soiDat "Soil thermal properties";
 
   parameter Modelica.Units.SI.Temperature TSurMea(displayUnit="degC")
@@ -21,8 +21,8 @@ protected
   constant Modelica.Units.SI.Angle pi=Modelica.Constants.pi;
   constant Modelica.Units.SI.Duration Year=365
     "Annual period length, in days";
-  parameter Modelica.Units.SI.ThermalDiffusivity soiDif=soiDat.k/soiDat.c/
-      soiDat.d*60*60*24 "Soil diffusivity";
+  parameter Modelica.Units.SI.ThermalDiffusivity soiDif=soiDat.kSoi/soiDat.cSoi/
+      soiDat.dSoi*60*60*24 "Soil diffusivity";
   parameter Real pha1 = - dep * (pi/soiDif/Year)^0.5
     "First phase angle of ground temperature sinusoid";
   parameter Real pha2 = - dep * (2*pi/soiDif/Year)^0.5
