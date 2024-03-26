@@ -1474,6 +1474,15 @@
             "doubleutube"
           ],
           "default": "singleutube"
+        },
+        "doubleutube_configuration": {
+          "description": "Borehole configuration when the borefield is doubleutube.",
+          "type": "string",
+          "enum": [
+            "parallel",
+            "series"
+          ],
+          "default": "series"
         }
       },
       "required": [

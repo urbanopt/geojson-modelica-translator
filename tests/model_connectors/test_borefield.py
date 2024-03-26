@@ -39,7 +39,13 @@ class DistrictSystemTest(TestCaseBase):
         )
 
         self.district = District(
-            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, coupling_graph=graph
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            coupling_graph=graph,
+            borehole_pipe_arrangement=borefield.pipe_arrangement,
+            borefield_borehole_configuration_type=borefield.borehole_configuration_type,
+            borefield_id=borefield.id,
         )
         self.district.to_modelica()
 

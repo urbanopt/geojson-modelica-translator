@@ -1,6 +1,21 @@
 // Borefield ambient coupling connections
-  connect(pumDis.port_b, {{ coupling.plant.id }}.port_a)
-  {% raw %}annotation (Line(points={{-44,-50},{-44,-10},{-20,-10}},color={0,127,255}));
-  {% endraw %}connect({{ coupling.plant.id }}.port_b, TOut.port_a)
-  {% raw %}annotation (Line(points={{-10,10},{6,10}}, color={0,127,255}));
-  {% endraw %}
+
+
+
+  {% for num_of_ghe_group in range(sys_params["num_of_ghe_groups"]) %}
+
+
+  connect(disStoGrp_{{num_of_ghe_group}}.ports_bCon, pumStoGrp_{{num_of_ghe_group}}.port_a)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["disStoGrp_pumStoGrp"]["points"]}}));
+  connect(pumStoGrp_{{num_of_ghe_group}}.port_b, T{{ coupling.plant.id[6:] }}InGrp_{{num_of_ghe_group}}.port_a)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["pumStoGrp_TUTubInGrp"]["points"]}}));
+  connect(T{{ coupling.plant.id[6:] }}InGrp_{{num_of_ghe_group}}.port_b, {{ coupling.plant.id }}Grp_{{num_of_ghe_group}}.port_a)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["TUTubInGrp_borFieUTubGrp"]["points"]}}));
+  connect({{ coupling.plant.id }}Grp_{{num_of_ghe_group}}.port_b, disStoGrp_{{num_of_ghe_group}}.ports_aCon)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["borFieUTubGrp_disStoGrp"]["points"]}}));
+
+  {% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}
+  connect(pumStoGrp_{{num_of_ghe_group}}[{{borefield+1}}].m_flow_in, gai.y)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["gai_pumStoGrp"]["points"]}}));
+  {% endfor %}
+  {% endfor %}

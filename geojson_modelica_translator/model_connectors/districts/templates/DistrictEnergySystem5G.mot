@@ -22,6 +22,65 @@ model DistrictEnergySystem
     final mCon_flow_nominal={18})
     "Design data";
   {% endif %}
+
+
+  {% if project_name == "district_multiple_ghe" %}
+
+  parameter Boolean have_hotWat = false
+    "Set to true if SHW load is included in the time series"
+    annotation (Evaluate=true, Dialog(group="Configuration"));
+
+  extends {{ district_within_path }}.DistrictEnergySystem_ghe_partial(
+    {% for num_of_bldg_group in range(num_of_bldg_groups) %}
+
+    redeclare Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+      final filNam=filNam_buiGrp_{{num_of_bldg_group}},
+      bui(have_hotWat=have_hotWat),
+      ets(have_hotWat=have_hotWat)),
+
+
+    datDes_buiGrp_{{num_of_bldg_group}}(
+      nBui={{bldg_groups_by_num[num_of_bldg_group]["num_bldgs_in_group"]}},
+      dp_length_nominal=250),
+
+    {% endfor %}
+
+    facMul = 1,
+    redeclare package Medium = MediumW,
+    mPumDis_flow_nominal={{10*sum_design_flow_rate_all_borfields}}
+    );
+
+  {% for num_of_bldg_group in range(num_of_bldg_groups) %}
+
+  // This would work if the quotation marks were "" instead of ''
+  parameter String filNam_buiGrp_{{num_of_bldg_group}} [nBuiGrp_{{num_of_bldg_group}}]=Modelica.Utilities.Files.loadResource(vector([
+    {% for time_series_file_path in bldg_groups_by_num[num_of_bldg_group]["list_of_time_series_file_paths"] %}{% if loop.index != bldg_groups_by_num[num_of_bldg_group]["list_of_time_series_file_paths"]|length %}"{{time_series_file_path}}",
+    {% else %}"{{time_series_file_path}}"])){% endif %}{% endfor %}
+    "Library paths of the files with thermal loads as time series";
+
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THotWatSupSet_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+    k=fill(63 + 273.15, nBuiGrp_{{num_of_bldg_group}}))
+    "Hot water supply temperature set point"
+    annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["THotWatSupSet"]["extent_coo"]}})));
+
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TColWat_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+    k=fill(15 + 273.15, nBuiGrp_{{num_of_bldg_group}}))
+    "Cold water temperature"
+    annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["TColWat"]["extent_coo"]}})));
+
+  {% endfor %}
+  // design flow rate needs to be checked #SMA_TBD
+  // !!!!!! important !!!!!! #SMA_TBD
+  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(k=mPumDis_flow_nominal)
+    "Scale with nominal mass flow rate"
+    {% raw %}annotation (Placement(transformation(extent={{-240,-170},{-220,-150}})));
+    {% endraw %}
+  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant One(k=1) "Temporary"
+    {% raw %}annotation (Placement(transformation(extent={{-300,-170},{-280,-150}})));
+    {% endraw %}
+
+  {%else%}
+
   // Models
   {% for model in models %}
   //
@@ -40,9 +99,30 @@ model DistrictEnergySystem
   //
   {{ coupling.component_definitions }}
   //
-// End Component Definitions for {{ coupling.id }}
-//
-{% endfor %} equation
+  // End Component Definitions for {{ coupling.id }}
+  //
+  {% endfor %}
+
+  {% endif %}
+
+equation
+
+  {% if project_name == "district_multiple_ghe" %}
+
+  {% for num_of_bldg_group in range(num_of_bldg_groups) %}
+
+  connect(THotWatSupSet_buiGrp_{{num_of_bldg_group}}.y, buiGrp_{{num_of_bldg_group}}.THotWatSupSet)
+    annotation (Line(points={{bldg_groups_by_num[num_of_bldg_group]["Line"]["THotWatSupSet_buiGrp"]["points"]}}));
+  connect(TColWat_buiGrp_{{num_of_bldg_group}}.y, buiGrp_{{num_of_bldg_group}}.TColWat)
+    annotation (Line(points={{bldg_groups_by_num[num_of_bldg_group]["Line"]["TColWat_buiGrp"]["points"]}}));
+
+
+
+
+  {% endfor %}
+
+  {% endif %}
+
 // Connections
 {% for coupling in couplings %}
 //
@@ -61,7 +141,11 @@ model DistrictEnergySystem
   Diagram(
     coordinateSystem(
       preserveAspectRatio=false,
+  {% if project_name == "district_multiple_ghe" %}
+      extent={{diagram_single_component_dict["diagram"]["Placement"]["diagram_extent"]["extent_coo"]}})),
+  {%else%}
       extent={{ diagram.extent }})),
+  {%endif%}
   Documentation(
     revisions="<html>
  <li>

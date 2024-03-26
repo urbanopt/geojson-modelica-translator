@@ -1,1 +1,37 @@
   // No components for borefield and ambient loop coupling
+  {% for num_of_ghe_group in range(sys_params["num_of_ghe_groups"]) %}
+
+  Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumStoGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
+    redeclare final package Medium = Medium,
+    // datDes needs adjustment #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    m_flow_nominal={{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}.conDat.mBorFie_flow_nominal)
+    "Bore field pump"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["pumSto"]["extent_coo"]}})));
+
+  Buildings.Experimental.DHC.Networks.Combined.UnidirectionalSeries
+    disStoGrp_{{num_of_ghe_group}}(
+    redeclare final package Medium = Medium,
+    final nCon=nBorFieGrp_{{num_of_ghe_group}},
+    show_TOut=true,
+    // check #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    final mDis_flow_nominal=datDes_buiGrp_{{sys_params["ghe_groups_by_num"][num_of_ghe_group]["building_group_out"]}}.mPipDis_flow_nominal,
+    final mCon_flow_nominal={{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}.conDat.mBorFie_flow_nominal,
+    // these are parameters of the conSto component (not for this component) (check it out) #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    // final dhDis=0.2, #SMA_TBD
+    // final dhCon=0.2, #SMA_TBD
+    // this was included in original dis component (check it out) #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    //final dp_length_nominal=datDes.dp_length_nominal, #SMA_TBD
+    final lDis=fill(0, nBorFieGrp_{{num_of_ghe_group}}),
+    final lCon=fill(0, nBorFieGrp_{{num_of_ghe_group}}),
+    // this was included in original dis component (check it out) #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    final lEnd=datDes_buiGrp_{{sys_params["ghe_groups_by_num"][num_of_ghe_group]["building_group_out"]}}.lEnd,
+    final allowFlowReversal=allowFlowReversalSer)
+    "Distribution network (Connection to the bore field)"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["disSto"]["extent_coo"]}})));
+
+  {% endfor %}

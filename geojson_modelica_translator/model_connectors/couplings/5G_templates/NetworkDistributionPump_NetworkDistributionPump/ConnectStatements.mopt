@@ -1,20 +1,70 @@
 // Connections for sub-components
-  {% raw %}connect(dis.port_bDisSup, TIn.port_a)
-    annotation (Line(points={{90,10},{110,10},{110,-20}}, color={0,127,255}));
-  connect(TIn.port_b, pumDis.port_a)
-    annotation (Line(points={{110,-40},{110,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
-  connect(expVes.ports[1], pumDis.port_a)
-    annotation (Line(points={{-20,-100},{-20,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
-  connect(conPum.y, gai.u)
-    annotation (Line(points={{-98,-90},{-82,-90}}, color={0,0,127}));
+
+  {% for num_of_bldg_group in range(sys_params["num_of_bldg_groups"]) %}
+
+  {% for num_of_ghe_group in range(sys_params["num_of_ghe_groups"]) %}
+
+
+
+
+  {% if sys_params["ghe_groups_by_num"][num_of_ghe_group]["building_group_out"] == num_of_bldg_group %}
+
+
+
+
+
+  {% if num_of_bldg_group == 0 %}
+
+  connect(pumDis.port_b, disStoGrp_{{num_of_ghe_group}}.port_aDisSup)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["pumDis_disStoGrp"]["points"]}}));
+
+  {% else %}
+
+
+
+  connect(disGrp_{{sys_params["ghe_groups_by_num"][num_of_ghe_group]["building_group_in"]}}.port_bDisSup, disStoGrp_{{num_of_ghe_group}}.port_aDisSup)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["disGrp_disStoGrp"]["points"]}}));
+
+  {% endif %}
+
+  connect(disStoGrp_{{num_of_ghe_group}}.port_bDisSup, TDisWatSup_{{num_of_bldg_group}}.port_a)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["disStoGrp_TDisWatSup"]["points"]}}));
+
+
+
+
+
+  {% endif %}
+
+
+
+
+
+  {% endfor %}
+
+  connect(TDisWatSup_{{num_of_bldg_group}}.port_b, disGrp_{{num_of_bldg_group}}.port_aDisSup)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["TDisWatSup_disGrp"]["points"]}}));
+
+
+  {% if num_of_bldg_group == sys_params["num_of_bldg_groups"] - 1 %}
+
+  connect(bou.ports[1],pumDis. port_a)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["bou_pumDis"]["points"]}}));
+
+  connect(disGrp_{{num_of_bldg_group}}.port_bDisSup, TDisWatRet.port_a)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["disGrp_TDisWatRet"]["points"]}}));
+
+
+  connect(TDisWatRet.port_b, pumDis.port_a)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["TDisWatRet_pumDis"]["points"]}}));
+
+  {% endif %}
+
+  {% endfor %}
+
+  connect(One.y, gai.u)
+    {% raw %}annotation (Line(points={{-280,-160},{-240,-160}}, color={0,0,127}));
+    {% endraw %}
   connect(gai.y, pumDis.m_flow_in)
-   annotation (Line(points={{-58,-90},{-26,-90},{-26,-60},{-32,-60}}, color={0,0,127}));
-  connect(dis.TOut, conPum.TMix)
-   annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
-  connect(TIn.T, conPum.TSouIn[1])
-   annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
-  connect(TOut.port_b, dis.port_aDisSup)
-    annotation (Line(points={{26,10},{50,10}}, color={0,127,255}));
-  connect(TOut.T, conPum.TSouOut[1])
-    annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
-  {% endraw %}
+    {% raw %}annotation (Line(points={{-220,-160},{400,-160}}, color={0,0,127}));
+    {% endraw %}
