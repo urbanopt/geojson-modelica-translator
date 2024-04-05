@@ -14,11 +14,6 @@ from geojson_modelica_translator.model_connectors.plants.plant_base import Plant
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class Borefield(PlantBase):

@@ -15,11 +15,6 @@ from jsonpath_ng.ext import parse
 from jsonschema.validators import Draft202012Validator as LatestValidator
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class SystemParameters:
