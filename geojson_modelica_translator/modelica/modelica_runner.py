@@ -290,7 +290,7 @@ class ModelicaRunner:
             ```modelica
             // If using Dymola 2024, then the MSL v4.0.0 is already loaded
             // If needed, install the patch of the Modelica Standard Library v4.0.0 (Services)
-            openModel("/home/username/Dymola/MSL_v4_ServicesPatch/ModelicaServices/package.mo", changeDirectory=false); 
+            openModel("/home/username/Dymola/MSL_v4_ServicesPatch/ModelicaServices/package.mo", changeDirectory=false);
             // If needed, install MSL v4
             openModel("/home/username/Dymola/config/Modelica 4.0.0/package.mo", changeDirectory=false);
 
