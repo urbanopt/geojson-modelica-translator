@@ -18,9 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class SystemParameters:
-    """
-    Object to hold the system parameter data (and schema).
-    """
+    """Object to hold the system parameter data and schema"""
 
     PATH_ELEMENTS = (  # immutable tuple of dicts
         {"json_path": "$.buildings[?load_model=spawn].load_model_parameters.spawn.idf_filename"},
@@ -36,8 +34,7 @@ class SystemParameters:
     )
 
     def __init__(self, filename=None):
-        """
-        Read in the system design parameter file
+        """Read in the system design parameter file
 
         :param filename: string, (optional) path to file to load
         """
@@ -64,8 +61,8 @@ class SystemParameters:
 
     @classmethod
     def loadd(cls, d, validate_on_load=True):
-        """
-        Create a system parameters instance from a dictionary
+        """Create a system parameters instance from a dictionary
+
         :param d: dict, system parameter data
 
         :return: object, SystemParameters
@@ -148,8 +145,7 @@ class SystemParameters:
         return results
 
     def get_param_by_id(self, param_id, jsonpath):
-        """
-        return a parameter for a specific id. This is similar to get_param but allows the user
+        """Return a parameter for a specific id. This is similar to get_param but allows the user
         to constrain the data based on the id.
 
         :param param_id: string, id of the object to look up in the system parameters file
@@ -172,10 +168,10 @@ class SystemParameters:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
     def validate(self):
-        """
-        Validate an instance against a loaded schema
+        """Validate an instance against a loaded schema
 
         :param instance: dict, json instance to validate
+
         :return: validation results
         """
         results = []
@@ -254,8 +250,8 @@ class SystemParameters:
         return list_inputs
 
     def process_wind(self, inputs):
-        """
-        Processes wind inputs and insert into template
+        """Processes wind inputs and insert into template
+
         :param inputs: object, wind inputs
         """
         wind_turbines = []
@@ -350,8 +346,8 @@ class SystemParameters:
         return power_curves
 
     def process_pv(self, inputs, latitude):
-        """
-        Processes pv inputs
+        """Processes PV inputs
+
         :param inputs: object, pv inputs
         :return photovoltaic_panels section to be inserted per-building or globally
         """
@@ -384,8 +380,8 @@ class SystemParameters:
         return pvs
 
     def process_chp(self, inputs):
-        """
-        Processes global chp inputs and insert into template
+        """Processes global CHP inputs and insert into template
+
         :param inputs: object, raw inputs
         """
         # this uses the raw inputs
@@ -415,8 +411,8 @@ class SystemParameters:
         self.param_template["combined_heat_and_power_systems"] = chps
 
     def process_storage(self, inputs):
-        """
-        Processes global battery bank outputs and insert into template
+        """Processes global battery bank outputs and insert into template
+
         :param inputs: object, raw inputs
         """
         # this uses the raw inputs
@@ -439,8 +435,8 @@ class SystemParameters:
         self.param_template["battery_banks"] = batts
 
     def process_generators(self, inputs):
-        """
-        Processes generators outputs and insert into template
+        """Processes generators outputs and insert into template
+
         :param inputs: object, raw inputs
         """
         # this uses the raw inputs
@@ -477,12 +473,8 @@ class SystemParameters:
         self.param_template["electrical_grid"] = grid
 
     def process_electrical_components(self, scenario_dir: Path):
-        """process electrical results from OpenDSS
-        electrical grid
-        substations
-        transformers
-        distribution lines
-        capacitor banks (todo)
+        """Process electrical results from OpenDSS, including electrical grid, substations,
+        transformers, distribution lines, and capacitor banks (todo)
         """
         dss_data = {}
         opendss_json_file = Path(scenario_dir) / "scenario_report_opendss.json"
@@ -584,8 +576,8 @@ class SystemParameters:
                     bldg["load"]["max_reactive_power_kvar"] = match[0]["power_distribution"]["max_reactive_power_kvar"]
 
     def process_building_microgrid_inputs(self, building, scenario_dir: Path):
-        """
-        Processes microgrid inputs for a single building
+        """Processes microgrid inputs for a single building
+
         :param building: dict, single building being built for the sys-param file
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         :return building, updated building list object
@@ -612,8 +604,8 @@ class SystemParameters:
         return building
 
     def process_microgrid_inputs(self, scenario_dir: Path):
-        """
-        Processes microgrid inputs and adds them to param_template from csv_to_sys_param method
+        """Processes microgrid inputs and adds them to param_template from csv_to_sys_param method
+
         :param scenario_dir: Path, location/name of folder with uo_sdk results
         """
         reopt_data = {}
@@ -831,8 +823,7 @@ class SystemParameters:
         microgrid=False,
         **kwargs,
     ) -> None:
-        """
-        Create a system parameters file using output from URBANopt SDK
+        """Create a system parameters file using output from URBANopt SDK
 
         :param model_type: str, model type to select which sys_param template to use
         :param scenario_dir: Path, location/name of folder with uo_sdk results
@@ -847,8 +838,6 @@ class SystemParameters:
             - skip_weather_download: Boolean, set to True to not download the weather file, defaults to False
             - modelica_load_filename: str, name (only) of file for the modelica load file, defaults to "modelica.mos"
         :return None, file created and saved to user-specified location
-
-
         """
         self.sys_param_filename = sys_param_filename
         self.rel_path = kwargs.get("relative_path", None)
@@ -945,8 +934,6 @@ class SystemParameters:
         self.save()
 
     def save(self):
-        """
-        Write the system parameters file with param_template and save
-        """
+        """Write the system parameters file with param_template and save"""
         with open(self.sys_param_filename, "w") as outfile:
             json.dump(self.param_template, outfile, indent=2)

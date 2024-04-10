@@ -12,7 +12,8 @@ class NetworkDistributionPump(NetworkBase):
         self.id = "MyNetworkDistributionPump"
 
     def to_modelica(self, scaffold):
-        """
+        """Convert the NetworkDistributionPump to Modelica code
+
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         # this stub has no model to generate, its fully implemented in the coupling currently

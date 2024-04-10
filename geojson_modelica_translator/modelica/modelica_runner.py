@@ -18,9 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class ModelicaRunner:
-    """
-    Class to run Modelica models.
-    """
+    """Class to run Modelica models."""
 
     ACTION_LOG_MAP = {  # noqa: RUF012
         "compile": "Compiling mo file",  # creates an FMU
@@ -29,9 +27,7 @@ class ModelicaRunner:
     }
 
     def __init__(self):
-        """
-        Initialize the runner with data needed for simulation
-        """
+        """Initialize the runner with data needed for simulation"""
 
         # Verify that docker is up and running, if needed.
         r = subprocess.call(["docker", "ps"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -289,7 +285,21 @@ class ModelicaRunner:
 
         For using Dymola with the GMT, you need to ensure that MSL v4.0 are loaded correctly and that the
         Buildings library is in the MODELICAPATH. I added the MSL openModel via appending it to the Dymola's
-        /opt/<install>/install/dymola.mos file on Linux.
+        /opt/<install>/insert/dymola.mos file on Linux. The additions to the dymola.mos will look like the following:
+
+            ```modelica
+            // If using Dymola 2024, then the MSL v4.0.0 is already loaded
+            // If needed, install the patch of the Modelica Standard Library v4.0.0 (Services)
+            openModel("/home/username/Dymola/MSL_v4_ServicesPatch/ModelicaServices/package.mo", changeDirectory=false); 
+            // If needed, install MSL v4
+            openModel("/home/username/Dymola/config/Modelica 4.0.0/package.mo", changeDirectory=false);
+
+            // Open MBL
+            openModel("/home/username/working/modelica-buildings/Buildings/package.mo", changeDirectory=false);
+
+            // Set the home directory
+            cd("/home/username/working")
+            ```
 
         Args:
             action (str): compile (translate) or simulate

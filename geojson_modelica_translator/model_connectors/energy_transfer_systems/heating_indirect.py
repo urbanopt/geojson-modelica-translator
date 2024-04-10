@@ -22,8 +22,7 @@ class HeatingIndirect(EnergyTransferBase):
         self._model_filename = f"HeatingIndirect_{self._geojson_load_id}"
 
     def to_modelica(self, scaffold):
-        """
-        Create indirect heating models based on the data in the buildings and geojsons
+        """Create indirect heating models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
