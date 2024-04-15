@@ -33,7 +33,7 @@ RUN echo \
   rm /tmp/installMSL.mos
 
 # Install MBL 10.0
-# WARNING: Update the version in modelica-builder when updating the version here
+# ALERT: Update the version in utils.py when updating the version here
 RUN echo \
   "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"10.0.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
   omc /tmp/installMBL.mos && \
