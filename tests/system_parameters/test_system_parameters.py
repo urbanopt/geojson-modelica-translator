@@ -223,6 +223,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type="time_series",
                 scenario_dir=missing_scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file,
             )
         assert f"Unable to find your scenario. The path you provided was: {missing_scenario_dir}" in str(context.value)
@@ -233,6 +234,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type="time_series",
                 scenario_dir=self.scenario_dir,
                 feature_file=missing_feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file,
             )
         assert f"Unable to find your feature file. The path you provided was: {missing_feature_file}" in str(
@@ -246,6 +248,7 @@ class SystemParametersTest(unittest.TestCase):
             model_type="time_series",
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
+            district_type="4G",
             sys_param_filename=output_sys_param_file,
             overwrite=True,
         )
@@ -283,7 +286,7 @@ class SystemParametersTest(unittest.TestCase):
             model_type="time_series",
             scenario_dir=self.scenario_dir,
             feature_file=self.feature_file,
-            ghe=True,
+            district_type="5G_ghe",
             sys_param_filename=output_sys_param_file,
         )
 
@@ -301,6 +304,7 @@ class SystemParametersTest(unittest.TestCase):
             model_type="time_series",
             scenario_dir=self.microgrid_scenario_dir,
             feature_file=self.microgrid_feature_file,
+            district_type="4G",
             sys_param_filename=output_sys_param_file,
             microgrid=True,
         )
@@ -328,7 +332,10 @@ class SystemParametersTest(unittest.TestCase):
         sp = SystemParameters()
         with pytest.raises(TypeError) as context:
             sp.csv_to_sys_param(
-                scenario_dir=self.scenario_dir, feature_file=self.feature_file, sys_param_filename=output_sys_param_file
+                scenario_dir=self.scenario_dir,
+                feature_file=self.feature_file,
+                district_type="4G",
+                sys_param_filename=output_sys_param_file,
             )
         assert "missing 1 required positional argument: 'model_type'" in str(context.value)
         bogus_template_type = "openstudio"
@@ -338,6 +345,7 @@ class SystemParametersTest(unittest.TestCase):
                 model_type=bogus_template_type,
                 scenario_dir=self.scenario_dir,
                 feature_file=self.feature_file,
+                district_type="4G",
                 sys_param_filename=output_sys_param_file,
             )
         assert f"No template found. {bogus_template_type} is not a valid template" in str(context.value)

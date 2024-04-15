@@ -32,6 +32,10 @@ def cli():
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
 )
 @click.argument(
+    "district_type",
+    default="4G",
+)
+@click.argument(
     "model_type",
     default="time_series",
 )
@@ -49,19 +53,12 @@ def cli():
     help="If specified, microgrid inputs will be added to system parameters file",
     default=False,
 )
-@click.option(
-    "-g",
-    "--ghe",
-    is_flag=True,
-    help="If specified, Ground Heat Exchanger properties will be added to System Parameters File",
-    default=False,
-)
 def build_sys_param(
     model_type: str,
     sys_param_filename: Path,
     scenario_file: Path,
     feature_file: Path,
-    ghe: bool,
+    district_type: str,
     overwrite: bool,
     microgrid: bool,
 ):
@@ -74,6 +71,8 @@ def build_sys_param(
 
     FEATURE_FILE: Path to sdk json feature file with data about the buildings.
 
+    DISTRICT_TYPE: selection for which kind of simulation this sys-param file will support.
+
     \b
     MODEL_TYPE: selection for which kind of simulation this sys-param file will support.
         Valid choices for MODEL_TYPE: "time_series"
@@ -83,7 +82,7 @@ def build_sys_param(
     :param sys_param_filename: Path, location & name of json output file to save
     :param scenario_file: Path, location of SDK scenario_file
     :param feature_file: Path, location of SDK feature_file
-    :param ghe: Boolean, flag to add Ground Heat Exchanger properties to System Parameter File
+    :param district_type: string, district type to model
     :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
     :param microgrid: Boolean, flag to add Microgrid properties to System Parameter File
     """
@@ -97,7 +96,7 @@ def build_sys_param(
         sys_param_filename=Path(sys_param_filename),
         scenario_dir=Path(scenario_dir),
         feature_file=Path(feature_file),
-        ghe=ghe,
+        district_type=district_type,
         overwrite=overwrite,
         microgrid=microgrid,
     )
