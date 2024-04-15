@@ -58,12 +58,12 @@ model DistrictEnergySystem
     {% else %}"{{time_series_file_path}}"])){% endif %}{% endfor %}
     "Library paths of the files with thermal loads as time series";
 
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant THotWatSupSet_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant THotWatSupSet_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
     k=fill(63 + 273.15, nBuiGrp_{{num_of_bldg_group}}))
     "Hot water supply temperature set point"
     annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["THotWatSupSet"]["extent_coo"]}})));
 
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant TColWat_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant TColWat_buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
     k=fill(15 + 273.15, nBuiGrp_{{num_of_bldg_group}}))
     "Cold water temperature"
     annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["TColWat"]["extent_coo"]}})));
@@ -71,11 +71,11 @@ model DistrictEnergySystem
   {% endfor %}
   // design flow rate needs to be checked #SMA_TBD
   // !!!!!! important !!!!!! #SMA_TBD
-  Buildings.Controls.OBC.CDL.Continuous.MultiplyByParameter gai(k=mPumDis_flow_nominal)
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"
     {% raw %}annotation (Placement(transformation(extent={{-240,-170},{-220,-150}})));
     {% endraw %}
-  Buildings.Controls.OBC.CDL.Continuous.Sources.Constant One(k=1) "Temporary"
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant One(k=1) "Temporary"
     {% raw %}annotation (Placement(transformation(extent={{-300,-170},{-280,-150}})));
     {% endraw %}
 
