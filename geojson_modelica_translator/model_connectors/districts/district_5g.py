@@ -615,7 +615,7 @@ class District:
                         diagram_district_loop_components_origin_dict,
                         "extent_coo",
                         "Placement",
-                        False,
+                        # False,  # TODO: @Shadi check that connection_boolean is not needed in this method
                         bldg_delta_x_coo,
                         num_of_bldg_group,
                         "district_loop",
@@ -671,7 +671,7 @@ class District:
                     diagram_ghe_components_origin_dict,
                     "extent_coo",
                     "Placement",
-                    False,
+                    # False,  # TODO: @Shadi check that connection_boolean is not needed in this method
                     ghe_delta_x_coo,
                     num_of_ghe_group,
                     "District System",
