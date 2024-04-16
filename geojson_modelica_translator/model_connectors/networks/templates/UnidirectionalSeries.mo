@@ -12,14 +12,19 @@ model UnidirectionalSeries
       final dhCon=dhCon,
       each final dIns=dIns,
       each final kIns=kIns,
-      each final thickness=thickness),
+      each final thickness=thickness,
+      each final roughness=roughness,
+      each final cPip=cPip,
+      each final rhoPip=rhoPip),
     redeclare model Model_pipDis =
         Buildings.Fluid.FixedResistances.PlugFlowPipe (
-      roughness=7e-6,
       fac=1.5,
       final dIns=dIns,
       final kIns=kIns,
       final thickness=thickness,
+      final roughness=roughness,
+      final cPip=cPip,
+      final rhoPip=rhoPip,
       final dh(fixed=true)=dhEnd,
       final length=lEnd));
   parameter Real dp_length_nominal(unit="Pa/m")=250
@@ -34,15 +39,28 @@ model UnidirectionalSeries
     "Hydraulic diameter of the distribution pipe before each connection";
   parameter Modelica.Units.SI.Length dhCon[nCon](
     each fixed=false,
-    each start=0.05,
-    each min=0.01) "Hydraulic diameter of each connection pipe";
+    each min=0.01,
+    each start=0.05)
+    "Hydraulic diameter of each connection pipe";
   parameter Modelica.Units.SI.Length dhEnd
     "Hydraulic diameter of of the end of the distribution line (after last connection)";
   parameter Modelica.Units.SI.Length dIns
-    "Thickness of pipe insulation, used to compute R";
+    "Thickness of pipe insulation, used to compute R"
+    annotation (Dialog(group="Pipe material"));
   parameter Modelica.Units.SI.ThermalConductivity kIns
-    "Heat conductivity of pipe insulation, used to compute R";
-  parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness";
+    "Heat conductivity of pipe insulation, used to compute R"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.Height roughness=2.5e-5
+    "Average height of surface asperities (default: smooth steel pipe)"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.SpecificHeatCapacity cPip=2300
+    "Specific heat of pipe wall material. 2300 for PE, 500 for steel"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.Density rhoPip(displayUnit="kg/m3")=930
+    "Density of pipe wall material. 930 for PE, 8000 for steel"
+    annotation (Dialog(group="Pipe material"));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortRet
     "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"
     annotation (Placement(transformation(extent={{60,-110},{80,-90}})));

@@ -6,16 +6,18 @@ model ConnectionSeriesAutosize
     tau=5*60,
     redeclare replaceable model Model_pipDis =
         Buildings.Fluid.FixedResistances.PlugFlowPipe (
-        roughness=7e-6,
         fac=1.5,
         final dIns=dIns,
         final kIns=kIns,
         final thickness=thickness,
+        final roughness=roughness,
+        final cPip=cPip,
+        final rhoPip=rhoPip,
         final length=lDis,
         final dh(fixed=true) = dhDis),
     redeclare replaceable model Model_pipCon =
         Buildings.Experimental.DHC.Networks.Combined.BaseClasses.PipeAutosize (
-        roughness=2.5e-5,
+        roughness=roughness,
         fac=2,
         final length=2*lCon,
         final dh(fixed=true) = dhCon,
@@ -23,10 +25,22 @@ model ConnectionSeriesAutosize
   parameter Real dp_length_nominal(unit="Pa/m")=250
     "Pressure drop per pipe length at nominal flow rate";
   parameter Modelica.Units.SI.Length dIns
-    "Thickness of pipe insulation, used to compute R";
+    "Thickness of pipe insulation, used to compute R"
+    annotation (Dialog(group="Pipe material"));
   parameter Modelica.Units.SI.ThermalConductivity kIns
-    "Heat conductivity of pipe insulation, used to compute R";
-  parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness";
+    "Heat conductivity of pipe insulation, used to compute R"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness"
+  annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.Height roughness=2.5e-5
+    "Average height of surface asperities (default: smooth steel pipe)"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.SpecificHeatCapacity cPip=2300
+    "Specific heat of pipe wall material. 2300 for PE, 500 for steel"
+    annotation (Dialog(group="Pipe material"));
+  parameter Modelica.Units.SI.Density rhoPip(displayUnit="kg/m3")=930
+    "Density of pipe wall material. 930 for PE, 8000 for steel"
+    annotation (Dialog(group="Pipe material"));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
     "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
