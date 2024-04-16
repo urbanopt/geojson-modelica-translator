@@ -61,17 +61,14 @@ model UnidirectionalSeries
   parameter Modelica.Units.SI.Density rhoPip(displayUnit="kg/m3")=930
     "Density of pipe wall material. 930 for PE, 8000 for steel"
     annotation (Dialog(group="Pipe material"));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortRet
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortGro[nCon+1]
     "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"
-    annotation (Placement(transformation(extent={{60,-110},{80,-90}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortSup[nCon]
-    "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"
-    annotation (Placement(transformation(extent={{-80,-110},{-60,-90}})));
+    annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
 equation
-  connect(pipEnd.heatPort, heatPortRet) annotation (Line(points={{50,10},{50,12},
-          {36,12},{36,-86},{70,-86},{70,-100}}, color={191,0,0}));
-  connect(con.heatPort, heatPortSup) annotation (Line(points={{-10,0},{-10,-86},
-          {-70,-86},{-70,-100}}, color={191,0,0}));
+  connect(con.heatPort, heatPortGro[1:nCon]) annotation (Line(points={{-10,0},{-20,0},{-20,
+          -86},{0,-86},{0,-100}},color={191,0,0}));
+  connect(pipEnd.heatPort, heatPortGro[nCon + 1]) annotation (Line(points={{50,10},
+          {32,10},{32,-86},{0,-86},{0,-100}}, color={191,0,0}));
   annotation (Documentation(info="<html>
 <p>
 This model represents a one-pipe distribution network with built-in computation
