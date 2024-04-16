@@ -1599,6 +1599,11 @@
             "rectangle"
           ],
           "default": "rectangle"
+        },
+        "lEnd": {
+          "description": "Length of the end of the distribution line (after last borefield connection), in meters.",
+          "type": "number",
+          "default": 100
         }
       },
       "required": [

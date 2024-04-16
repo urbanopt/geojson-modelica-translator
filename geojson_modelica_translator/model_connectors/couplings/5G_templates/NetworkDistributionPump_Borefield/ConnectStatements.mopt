@@ -15,7 +15,9 @@
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["borFieUTubGrp_disStoGrp"]["points"]}}));
 
   {% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}
-  connect(pumStoGrp_{{num_of_ghe_group}}[{{borefield+1}}].m_flow_in, gai.y)
-    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["gai_pumStoGrp"]["points"]}}));
+  connect(gaiStoGrp_{{num_of_ghe_group}}.y, pumStoGrp_{{num_of_ghe_group}}.m_flow_in)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["gaiStoGrp_pumStoGrp"]["points"]}}));
+  connect(gaiStoGrp_{{num_of_ghe_group}}[{{borefield+1}}].u, One.y)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["one_gaiStoGrp"]["points"]}}));
   {% endfor %}
   {% endfor %}

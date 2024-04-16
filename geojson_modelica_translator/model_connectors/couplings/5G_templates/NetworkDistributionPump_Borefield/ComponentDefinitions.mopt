@@ -29,9 +29,14 @@
     final lCon=fill(0, nBorFieGrp_{{num_of_ghe_group}}),
     // this was included in original dis component (check it out) #SMA_TBD
     // !!!!!! important !!!!!! #SMA_TBD
-    final lEnd=datDes_buiGrp_{{sys_params["ghe_groups_by_num"][num_of_ghe_group]["building_group_out"]}}.lEnd,
+    final lEnd={{sys_params["ghe_parameters"]["geometric_constraints"]["lEnd"]}},
+    dp_length_nominal=150,
     final allowFlowReversal=allowFlowReversalSer)
     "Distribution network (Connection to the bore field)"
     annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["disSto"]["extent_coo"]}})));
+
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gaiStoGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](k={{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}.conDat.mBorFie_flow_nominal)
+    "Scale with nominal mass flow rate"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["gaiStoGrp"]["extent_coo"]}})));
 
   {% endfor %}

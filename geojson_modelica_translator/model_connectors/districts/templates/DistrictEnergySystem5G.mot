@@ -26,7 +26,9 @@ model DistrictEnergySystem
 
   {% if project_name == "district_multiple_ghe" %}
 
-  parameter Boolean have_hotWat = false
+  //parameter Boolean have_hotWat = false # TODO: SMA_TBD check
+
+  parameter Boolean have_hotWat = true
     "Set to true if SHW load is included in the time series"
     annotation (Evaluate=true, Dialog(group="Configuration"));
 
@@ -41,13 +43,15 @@ model DistrictEnergySystem
 
     datDes_buiGrp_{{num_of_bldg_group}}(
       nBui={{bldg_groups_by_num[num_of_bldg_group]["num_bldgs_in_group"]}},
-      dp_length_nominal=250),
+      dp_length_nominal=150,
+      lDis=fill(10,nBuiGrp_{{num_of_bldg_group}})),
 
     {% endfor %}
 
     facMul = 1,
     redeclare package Medium = MediumW,
-    mPumDis_flow_nominal={{10*sum_design_flow_rate_all_borfields}}
+    //mPumDis_flow_nominal={{10*sum_design_flow_rate_all_borfields}} TODO: SMA_TBD check
+    mPumDis_flow_nominal={{sum_design_flow_rate_all_borfields}}
     );
 
   {% for num_of_bldg_group in range(num_of_bldg_groups) %}
@@ -73,7 +77,7 @@ model DistrictEnergySystem
   // !!!!!! important !!!!!! #SMA_TBD
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"
-    {% raw %}annotation (Placement(transformation(extent={{-240,-170},{-220,-150}})));
+    {% raw %}annotation (Placement(transformation(extent={{360,-170},{380,-150}})));
     {% endraw %}
   Buildings.Controls.OBC.CDL.Reals.Sources.Constant One(k=1) "Temporary"
     {% raw %}annotation (Placement(transformation(extent={{-300,-170},{-280,-150}})));

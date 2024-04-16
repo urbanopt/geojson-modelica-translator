@@ -496,6 +496,7 @@ class District:
                 "borFieUTubDat": {"extent_coo": [[-110, -150], [-90, -130]]},
                 "borFieUTub": {"extent_coo": [[-70, -110], [-50, -90]]},
                 "TUTubIn": {"extent_coo": [[-110, -110], [-90, -90]]},
+                "gaiStoGrp": {"extent_coo": [[-170, -150], [-150, -130]]},
             }
 
             diagram_components_dict = {
@@ -535,7 +536,7 @@ class District:
                 "TDisWatRet_pumDis": {"points": [[60, -50], [90, -50], [90, -150]], "color": ",color={0,127,255}"},
                 "pumDis_disStoGrp": {
                     "points": [[90, -160], [90, -190]],
-                    "points_no_change": ",{-180,-190},{-180,-50},{-120,-50}}",
+                    "points_no_change": ",{-190,-190},{-190,-50},{-120,-50}}",
                     "color": ",color={0,127,255}",
                 },
                 "disStoGrp_TDisWatSup": {"points": [[-80, -50], [-60, -50]], "color": ",color={0,127,255}"},
@@ -554,9 +555,13 @@ class District:
                     "points": [[-50, -100], [-40, -100], [-40, -80], [-88, -80], [-88, -60]],
                     "color": ",color={0,127,255}",
                 },
-                "gai_pumStoGrp": {
-                    "points": [[-140, -110], [-140, -160]],
-                    "points_no_change": ",{-220,-160}}",
+                "one_gaiStoGrp": {
+                    "points": [[-172, -140], [-180, -140], [-180, -160]],
+                    "points_no_change": ",{-278,-160}}",
+                    "color": ",color={0,0,127}",
+                },
+                "gaiStoGrp_pumStoGrp": {
+                    "points": [[-148, -140], [-140, -140], [-140, -112]],
                     "color": ",color={0,0,127}",
                 },
             }

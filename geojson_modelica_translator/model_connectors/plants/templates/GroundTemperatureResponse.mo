@@ -7,6 +7,11 @@ model GroundTemperatureResponse
   parameter Integer nCel(
     min=1)=5
     "Number of cells per aggregation level";
+  parameter Integer nClu(min=1)=5
+    "Number of borehole clusters to use in the calculation of the g-function"
+    annotation (Dialog(tab="Advanced", group="g-function"));
+  parameter Integer nSeg=12
+    "Number of segments per borehole for g-function calculation";
   parameter Boolean forceGFunCalc=false
     "Set to true to force the thermal response to be calculated at the start instead of checking whether it has been pre-computed";
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Template borFieDat
@@ -30,13 +35,6 @@ model GroundTemperatureResponse
 protected
   constant Integer nSegMax=1500
     "Max total number of segments in g-function calculation";
-  final parameter Integer nSeg=integer(
-    if 12*borFieDat.conDat.nBor < nSegMax then
-      12
-    else
-      floor(
-        nSegMax/borFieDat.conDat.nBor))
-    "Number of segments per borehole for g-function calculation";
   //constant Integer nTimSho = 20 "Number of time steps in short time region";
   //constant Integer nTimLon = 56 "Number of time steps in long time region";
   constant Real ttsMax=exp(

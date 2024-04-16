@@ -438,7 +438,8 @@
           "b_max": 10.0,
           "max_height": 135.0,
           "min_height": 60.0,
-          "method": "rectangle"
+          "method": "rectangle",
+          "lEnd": 10.0
         },
         "design": {
           "method": "AREAPROPORTIONAL",
