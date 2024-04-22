@@ -106,9 +106,7 @@ class ModelicaPackage:
 
 
 class GeoJsonModelicaTranslator:
-    """
-    Main class for using the GeoJSON to Modelica Translator.
-    """
+    """Main class for using the GeoJSON to Modelica Translator."""
 
     def __init__(
         self,

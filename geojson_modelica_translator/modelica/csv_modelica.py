@@ -8,8 +8,7 @@ import pandas as pd
 
 class CSVModelica:
     def __init__(self, input_csv_file_path, sig_fig=3):
-        """
-        Convert a CSV file into the format required by Modelica. Expects a file resulting from
+        """Convert a CSV file into the format required by Modelica. Expects a file resulting from
         https://github.com/urbanopt/DES_HVAC/tree/develop/Measures/export_time_series_modelica, which is included
         in the URBANopt SDK (potentially via common-measures-gem).
         FIXME: this is in process as of 2020-11-18
@@ -114,8 +113,7 @@ class CSVModelica:
     def timeseries_to_modelica_data(
         self, output_modelica_file_name, energyplus_timesteps_per_hour=4, data_type="double", overwrite=True
     ):
-        """
-        Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
+        """Convert the loaded data to the format needed for Modelica by adding in the nominal heating water mass flow
         rate and the nominal cooling water mass flow rate into the header.
 
         :param output_modelica_file_name: string, The path to the desired output file name.

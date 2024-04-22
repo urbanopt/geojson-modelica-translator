@@ -23,8 +23,7 @@ class TimeSeriesMFT(LoadBase):
         # self.required_mo_files.append(os.path.join(self.template_dir, 'getPeakMassFlowRate.mo'))
 
     def to_modelica(self, scaffold):
-        """
-        Create TimeSeries models based on the data in the building and geojson
+        """Create TimeSeries models based on the data in the building and geojson
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
@@ -118,8 +117,7 @@ class TimeSeriesMFT(LoadBase):
         self.post_process(scaffold)
 
     def post_process(self, scaffold):
-        """
-        Cleanup the export of TimeSeries files into a format suitable for the district-based analysis. This includes
+        """Cleanup the export of TimeSeries files into a format suitable for the district-based analysis. This includes
         the following:
             * Add a Loads project
             * Add a project level project
