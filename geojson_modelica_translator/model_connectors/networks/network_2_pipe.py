@@ -13,7 +13,8 @@ class Network2Pipe(NetworkBase):
         self.id = "disNet_" + simple_uuid()
 
     def to_modelica(self, scaffold):
-        """
+        """Convert the Network2Pipe to Modelica code
+
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         # no model to generate, its fully implemented in the Modelica Buildings library

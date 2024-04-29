@@ -12,11 +12,6 @@ from modelica_builder.model import Model
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class ModelBase:
@@ -28,8 +23,7 @@ class ModelBase:
     model_name: Union[str, None] = None
 
     def __init__(self, system_parameters, template_dir):
-        """
-        Base initializer
+        """Base initializer
 
         :param system_parameters: SystemParameters object
         """
@@ -67,8 +61,7 @@ class ModelBase:
                 }
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
-        """
-        Converts square feet to square meters
+        """Converts square feet to square meters
 
         :param area_in_ft2: Area in square feet to be converted to square meters
         """
@@ -101,8 +94,7 @@ class ModelBase:
         return result
 
     def run_template(self, template, save_file_name, do_not_add_to_list=False, **kwargs):
-        """
-        Helper method to create the file from Jinja2's templating framework.
+        """Helper method to create the file from Jinja2's templating framework.
 
         :param template: object, Jinja template from the `template_env.get_template()` command.
         :param save_file_name: string, fully qualified path to save the rendered template to.

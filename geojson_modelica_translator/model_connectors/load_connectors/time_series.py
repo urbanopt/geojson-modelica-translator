@@ -18,8 +18,7 @@ class TimeSeries(LoadBase):
         self.id = "TimeSerLoa_" + simple_uuid()
 
     def to_modelica(self, scaffold):
-        """
-        Create timeSeries models based on the data in the buildings and geojsons
+        """Create timeSeries models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
@@ -158,8 +157,7 @@ class TimeSeries(LoadBase):
         self.post_process(scaffold)
 
     def post_process(self, scaffold):
-        """
-        Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
+        """Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project
