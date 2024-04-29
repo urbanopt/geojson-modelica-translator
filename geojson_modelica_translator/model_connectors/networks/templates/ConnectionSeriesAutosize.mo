@@ -1,4 +1,4 @@
-within district_single_ghe.Networks;
+within {{ project_name }}.Networks;
 model ConnectionSeriesAutosize
   "Model for connecting an agent to the DHC system"
   extends

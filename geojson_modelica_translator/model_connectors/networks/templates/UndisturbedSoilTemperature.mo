@@ -1,4 +1,4 @@
-within district_single_ghe.Networks;
+within {{ project_name }}.Networks;
 model UndisturbedSoilTemperature "Undisturbed soil temperature"
   parameter Modelica.Units.SI.Length dep "Soil depth";
   replaceable parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone

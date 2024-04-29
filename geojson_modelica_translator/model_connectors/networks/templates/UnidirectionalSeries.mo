@@ -1,10 +1,10 @@
-within district_single_ghe.Networks;
+within {{ project_name }}.Networks;
 model UnidirectionalSeries
   "Hydronic network for unidirectional series DHC system"
   extends
     Buildings.Experimental.DHC.Networks.BaseClasses.PartialDistribution1Pipe(
     tau=5*60,
-    redeclare district_single_ghe.Networks.ConnectionSeriesAutosize con[nCon](
+    redeclare {{ project_name }}.Networks.ConnectionSeriesAutosize con[nCon](
       each final dp_length_nominal=dp_length_nominal,
       final lDis=lDis,
       final lCon=lCon,
