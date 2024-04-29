@@ -1,0 +1,9 @@
+  {{ model.modelica_type }} {{ model.id }}(
+    soiDat={{coupling.network.id}}.borFieDat.soiDat,
+    len=cat(
+        1,
+        datDes.lDis,
+        {datDes.lEnd}),
+    rad={0.5*dis.dhDis[1] + dis.thickness + dis.dIns})
+    "Ground coupling" 
+      annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={150,50})));
