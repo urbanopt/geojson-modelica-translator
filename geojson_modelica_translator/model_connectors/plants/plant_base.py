@@ -7,9 +7,7 @@ from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
 class PlantBase(ModelBase):
-    """
-    Base class of the central plants.
-    """
+    """Base class of the central plants."""
 
     simple_gmt_type = "plant"
 

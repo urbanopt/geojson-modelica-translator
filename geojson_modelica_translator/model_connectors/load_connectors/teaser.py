@@ -73,8 +73,7 @@ class Teaser(LoadBase):
             raise Exception(f"Building type of {building_type} not defined in GeoJSON to TEASER mappings")
 
     def to_modelica(self, scaffold, keep_original_models=False):
-        """
-        Save the TEASER representation of a sinlge building to the filesystem. The path will
+        """Save the TEASER representation of a sinlge building to the filesystem. The path will
         be scaffold.loads_path.files_dir.
 
         :param scaffold: Scaffold object, contains all the paths of the project

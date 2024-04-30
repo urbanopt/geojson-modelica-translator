@@ -8,15 +8,12 @@ from geojson_modelica_translator.utils import convert_c_to_k
 
 
 class LoadBase(ModelBase):
-    """
-    Base class of the load connectors.
-    """
+    """Base class of the load connectors."""
 
     simple_gmt_type = "load"
 
     def __init__(self, system_parameters, geojson_load):
-        """
-        Base class for load connectors.
+        """Base class for load connectors.
 
         :param system_parameters: SystemParameter object, the entire system parameter file which will be used to
                                   generate this load.
@@ -102,8 +99,7 @@ class LoadBase(ModelBase):
             }
 
     def add_building(self, urbanopt_building, mapper=None):
-        """
-        Add building to the load to be translated. This is simply a helper method.
+        """Add building to the load to be translated. This is simply a helper method.
 
         :param urbanopt_building: an urbanopt_building (also known as a geojson_load)
         :param mapper: placeholder object for mapping between urbanopt_building and load_connector building.

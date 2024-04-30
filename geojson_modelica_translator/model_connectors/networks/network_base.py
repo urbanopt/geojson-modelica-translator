@@ -7,9 +7,7 @@ from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
 class NetworkBase(ModelBase):
-    """
-    Base class of the network connectors.
-    """
+    """Base class of the network connectors."""
 
     simple_gmt_type = "network"
 

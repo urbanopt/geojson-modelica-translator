@@ -32,8 +32,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
         self.required_mo_files.append(Path(self.template_dir) / "ValveParameters.mo")
 
     def to_modelica(self, scaffold):
-        """
-        Create timeSeries models based on the data in the buildings and geojsons
+        """Create time series models based on the data in the buildings and GeoJSONs
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """

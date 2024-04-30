@@ -14,11 +14,6 @@ from geojson_modelica_translator.model_connectors.plants.plant_base import Plant
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class Borefield(PlantBase):
@@ -32,8 +27,8 @@ class Borefield(PlantBase):
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
 
     def to_modelica(self, scaffold):
-        """
-        Create timeSeries models based on the data in the buildings and geojsons
+        """Convert the Borefield to Modelica code
+        Create timeSeries models based on the data in the buildings and GeoJSONs
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """

@@ -12,7 +12,7 @@ class NetworkChilledWaterStub(NetworkBase):
         self.id = "MyNetworkChilledWaterStub"
 
     def to_modelica(self, scaffold):
-        """
+        """Convert the NetworkChilledWaterStub to Modelica code
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
         # this stub has no model to generate, its fully implemented in the coupling currently

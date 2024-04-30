@@ -17,8 +17,7 @@ class GeoJsonValidationError(Exception):
 
 # TODO: Inherit from GeoJSON Feature class, move to its own file
 class UrbanOptLoad:
-    """
-    An UrbanOptLoad is a container for holding Building-related data in a dictionary. This object
+    """An UrbanOptLoad is a container for holding Building-related data in a dictionary. This object
     does not do much work on the GeoJSON definition of the data at the moment, rather it creates
     an isolation layer between the GeoJSON data and the GMT.
     """
@@ -36,13 +35,13 @@ class UrbanOptLoad:
 
 
 class UrbanOptGeoJson:
-    """
-    Root class for parsing an URBANopt GeoJSON file. This class simply reads and parses
+    """Root class for parsing an URBANopt GeoJSON file. This class simply reads and parses
     URBANopt GeoJSON files.
     """
 
     def __init__(self, filename, building_ids=None):
-        """
+        """Initialize the UrbanOptGeoJson object by reading the GeoJSON file
+
         :param filename: str, path to the GeoJSON file to parse
         :param building_ids: list[str | int] | None, optional, list of GeoJSON building
             IDs to parse from the file. If None or an empty list, parse all buildings.
