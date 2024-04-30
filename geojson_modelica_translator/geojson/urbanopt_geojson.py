@@ -81,3 +81,18 @@ class UrbanOptGeoJson:
 
         if not self.buildings:
             raise GeoJsonValidationError(f"No valid buildings found in GeoJSON file: {filename}")
+
+    def get_feature_by_id(self, feature_id=None):
+        """
+        return geojson data for a specific feature (building, pipe, wire, junction, district system, etc).
+
+        :param feature_id: string, id of the object to look up in the geojson file
+        :return: dict, full feature data for the object with the given id
+        """
+
+        if feature_id is None:
+            raise SystemExit("No id submitted. Please retry and include the appropriate id")
+
+        for feature in self.data.features:
+            if feature["properties"]["id"] == str(feature_id):
+                return feature
