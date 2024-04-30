@@ -10,7 +10,7 @@ import pandas as pd
 import scipy.io as sio
 from modelica_builder.package_parser import PackageParser
 
-from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
+from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 logger = logging.getLogger(__name__)
@@ -21,13 +21,13 @@ logging.basicConfig(
 )
 
 
-class Borefield(PlantBase):
-    model_name = "Borefield"
+class GroundCoupling(NetworkBase):
+    model_name = "GroundCoupling"
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
-        self.id = "borFie_" + simple_uuid()
-        self.borefield_name = "Borefield_" + simple_uuid()
+        self.id = "groCou_" + simple_uuid()
+        self.ground_coupling_name = "GroundCoupling_" + simple_uuid()
 
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
 
