@@ -14,22 +14,22 @@ model Steam "Example model for a complete steam district heating system with a
       h_default=2738100)
     "Water medium";
 
-  parameter Modelica.Units.SI.AbsolutePressure pSat=400000
+  parameter Modelica.Units.SI.AbsolutePressure pSat={{ data["steam_pressure_setpoint"] }}
     "Saturation pressure, high pressure";
-  parameter Modelica.Units.SI.AbsolutePressure pLow=200000
+  parameter Modelica.Units.SI.AbsolutePressure pLow={{ data["reduced_pressure_setpoint"] }}
     "Reduced pressure, after PRV";
   parameter Modelica.Units.SI.Temperature TSat=
      MediumSte.saturationTemperature(pSat)
      "Saturation temperature, at high pressure";
 
-  parameter Integer N = {{ sys_params.num_buildings }} "Number of buildings";
+  parameter Integer N = 3 "Number of buildings";
   parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal=sum(bld.m_flow_nominal)*1.2
     "Nominal mass flow rate of entire district";
   parameter Modelica.Units.SI.HeatFlowRate QDis_flow_nominal=QBui_flow_nominal*N
     "Nominal heat flow rate of entire district";
   parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal=20000
     "Nominal heat flow rate of each building";
-  parameter Modelica.Units.SI.PressureDifference dpPip=6000
+  parameter Modelica.Units.SI.PressureDifference dpPip={{ data["condensate_pressure_drop_nominal"] }}
     "Pressure drop in the condensate return pipe";
 
   parameter Buildings.Fluid.Movers.Data.Generic perPumFW(
@@ -56,7 +56,7 @@ model Steam "Example model for a complete steam district heating system with a
     each timeScale(displayUnit="s") = 3600,
     each show_T=true)
     "Buildings"
-    annotation (Placement(transformation(extent={{60,20},{40,40}})));
+    {% raw %}annotation (Placement(transformation(extent={{60,20},{40,40}})));
   Buildings.Experimental.DHC.Networks.Steam.DistributionCondensatePipe dis(
     redeclare final package MediumSup = MediumSte,
     redeclare final package MediumRet = MediumWat,
@@ -132,4 +132,4 @@ Energy Systems (OSMSES 2022)</i>, Aachen, German, April 4-5, 2022.
 <a href=\"https://doi.org/10.1109/OSMSES54027.2022.9769121\">10.1109/OSMSES54027.2022.9769121</a>
 </p>
 </html>"));
-end Steam;
+end Steam;{% endraw %}
