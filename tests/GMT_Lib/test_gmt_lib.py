@@ -10,6 +10,9 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from geojson_modelica_translator.modelica.GMT_Lib.DHC.Components.Plants.Heating.boiler_polynomial import (
     PolynomialBoiler,
 )
+from geojson_modelica_translator.modelica.GMT_Lib.DHC.steam_example import (
+    Steam,
+)
 from geojson_modelica_translator.modelica.GMT_Lib.Electrical.AC.ThreePhasesBalanced.Conversion.ACACTransformer import (
     ACACTransformer,
 )
@@ -39,6 +42,7 @@ PARENT_DIR = Path(__file__).parent
 GMT_LIB_PATH = PARENT_DIR.parent.parent / "geojson_modelica_translator" / "modelica" / "GMT_Lib"
 COOLING_PLANT_PATH = GMT_LIB_PATH / "DHC" / "Components" / "Plants" / "Cooling"
 MICROGRID_PARAMS = PARENT_DIR.parent / "data_shared" / "system_params_microgrid_example.json"
+STEAM_PARAMS = PARENT_DIR.parent / "data_shared" / "system_params_steam.json"
 
 env = Environment(
     loader=FileSystemLoader(GMT_LIB_PATH),
@@ -598,6 +602,22 @@ def test_simulate_transformer():
     assert linecount(package_output_dir / "ACACTransformer0.mo") > 20
     # Did the simulation run?
     assert success is True
+
+
+# @pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_transformer")
+def test_build_steam_example():
+    # -- Setup
+    package_output_dir = PARENT_DIR / "output" / "SteamExample"
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(STEAM_PARAMS)
+
+    # -- Act
+    steam = Steam(sys_params)
+    steam.build_from_template(package_output_dir)
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / "Steam.mo") > 20
 
 
 # Keeping the code below because it may come back and this was a weird issue.
