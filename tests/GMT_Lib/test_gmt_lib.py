@@ -604,7 +604,7 @@ def test_simulate_transformer():
     assert success is True
 
 
-# @pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_transformer")
+# @pytest.mark.skip(reason="This functionality is entirely captured by asdf")
 def test_build_steam_example():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "SteamExample"
@@ -618,6 +618,32 @@ def test_build_steam_example():
     # -- Assert
     # Did the mofile get created?
     assert linecount(package_output_dir / "Steam.mo") > 20
+
+
+@pytest.mark.simulation()
+def test_simulate_steam_example():
+    # -- Setup
+    package_output_dir = PARENT_DIR / "output" / "SteamExample"
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(STEAM_PARAMS)
+
+    # -- Act
+    steam = Steam(sys_params)
+    steam.build_from_template(package_output_dir)
+
+    runner = ModelicaRunner()
+    success, _ = runner.run_in_docker(
+        "compile_and_run",
+        "Steam",
+        file_to_load=package_output_dir / "Steam.mo",
+        run_path=package_output_dir,
+    )
+
+    # -- Assert
+    # Did the mofile get created?
+    assert linecount(package_output_dir / "Steam.mo") > 20
+    # Did the simulation run?
+    assert success is True
 
 
 # Keeping the code below because it may come back and this was a weird issue.
