@@ -917,7 +917,7 @@
       "description": "Central steam heating plant.",
       "type": "object",
       "properties": {
-        "boiler_efficiency_nominal": {
+        "boiler_efficiency": {
           "description": "Boiler efficiency (fraction)",
           "type": "number",
           "default": 0.7
@@ -926,6 +926,11 @@
           "description": "The saturation pressure, high pressure setpoint. (Pa)",
           "type": "number",
           "default": 500000
+        },
+        "reduced_pressure_setpoint": {
+          "description": "The reduced pressure, after the PRV. (Pa)",
+          "type": "number",
+          "default": 200000
         },
         "condensate_pressure_drop_nominal": {
           "description": "Nominal pressure drop along the condensate return pipe. (Pa)",
