@@ -13,7 +13,9 @@ class Steam(SimpleGMTBase):
         super().__init__(self.system_parameters, self.template_dir)
 
     def build_from_template(self, output_dir: Path):
-        steam_params = self.system_parameters.get_param("$.asdf")
+        steam_params = self.system_parameters.get_param(
+            "$.district_system.first_generation.central_steam_plant_parameters"
+        )
         # render template to final modelica file
         self.to_modelica(
             output_dir=output_dir,
