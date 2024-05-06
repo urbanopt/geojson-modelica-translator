@@ -1,6 +1,6 @@
 # Change Log
 
-## Version 0.6.1
+## Version 0.7.0
 
 ### Exciting New Features 🎉
 * Rename new modelica models to clarify MBL version by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/618
