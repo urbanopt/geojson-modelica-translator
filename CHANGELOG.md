@@ -1,5 +1,22 @@
 # Change Log
 
+## Version 0.6.1
+
+### Exciting New Features 🎉
+* Rename new modelica models to clarify MBL version by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/618
+* Minor improvements to the CLI by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/620
+* Enable more detail when specifying district types by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/622
+* Force a dummy value for SHW in modelica loads even if not present by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/626
+
+### Other Changes
+* Move README and CHANGELOG to markdown and update deployment notes by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/615
+* Update instructions for releasing documentation publicly by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/617
+* Specify units of GHE flow_rate by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/623
+* Code documentation cleanup by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/631
+* Expose borehole variables by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/630
+
+**Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0...v0.7.0
+
 ## Version 0.6.0
 
 ### Exciting New Features 🎉
