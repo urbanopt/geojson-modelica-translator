@@ -6,26 +6,19 @@ import shutil
 
 from modelica_builder.package_parser import PackageParser
 
-from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
-    LoadBase
-)
-from geojson_modelica_translator.utils import (
-    ModelicaPath,
-    convert_c_to_k,
-    simple_uuid
-)
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, simple_uuid
 
 
 class Spawn(LoadBase):
-    model_name = 'Spawn'
+    model_name = "Spawn"
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = 'SpawnLoad_' + simple_uuid()
+        self.id = "SpawnLoad_" + simple_uuid()
 
     def to_modelica(self, scaffold, keep_original_models=False):
-        """
-        Create spawn models based on the data in the buildings and geojsons
+        """Create spawn models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
@@ -37,12 +30,10 @@ class Spawn(LoadBase):
         print(f"Creating spawn for building: {self.building_id}")
 
         # Path for building data
-        b_modelica_path = ModelicaPath(
-            self.building_name, scaffold.loads_path.files_dir, True
-        )
+        b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
 
         mos_weather_filename = self.system_parameters.get_param("$.weather")
-        epw_filename = os.path.splitext(mos_weather_filename)[0] + '.epw'
+        epw_filename = os.path.splitext(mos_weather_filename)[0] + ".epw"
         # This assumes the epw and mos files are named the same and in the same directory.
         # If coming from the SDK, this is a safe assumption.
 
@@ -53,46 +44,71 @@ class Spawn(LoadBase):
             self.building_id, "load_model_parameters.spawn.idf_filename"
         )
         thermal_zones = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.thermal_zone_names",
+            self.building_id,
+            "load_model_parameters.spawn.thermal_zone_names",
         )
         zone_nom_htg_loads = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.zone_nom_htg_loads",
+            self.building_id,
+            "load_model_parameters.spawn.zone_nom_htg_loads",
         )
         zone_nom_clg_loads = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.zone_nom_clg_loads",
+            self.building_id,
+            "load_model_parameters.spawn.zone_nom_clg_loads",
         )
         # TODO: pick up default value from schema if not specified in system_parameters,
         # to avoid the inline if/then statement in nominal_values below
         has_liquid_heating = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.has_liquid_heating",
+            self.building_id,
+            "load_model_parameters.spawn.has_liquid_heating",
         )
         has_liquid_cooling = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.has_liquid_cooling",
+            self.building_id,
+            "load_model_parameters.spawn.has_liquid_cooling",
         )
         has_electric_heating = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.has_electric_heating",
+            self.building_id,
+            "load_model_parameters.spawn.has_electric_heating",
         )
         has_electric_cooling = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.has_electric_cooling",
+            self.building_id,
+            "load_model_parameters.spawn.has_electric_cooling",
         )
-        hhw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.temp_hw_supply",
-        ))
-        hhw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.temp_hw_return",
-        ))
-        chw_supply_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.temp_chw_supply",
-        ))
-        chw_return_temp = convert_c_to_k(self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.temp_chw_return",
-        ))
-        temp_setpoint_cooling = convert_c_to_k(self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.temp_setpoint_cooling",
-        ))
-        temp_setpoint_heating = convert_c_to_k(self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.temp_setpoint_heating",
-        ))
+        hhw_supply_temp = convert_c_to_k(
+            self.system_parameters.get_param_by_id(
+                self.building_id,
+                "load_model_parameters.spawn.temp_hw_supply",
+            )
+        )
+        hhw_return_temp = convert_c_to_k(
+            self.system_parameters.get_param_by_id(
+                self.building_id,
+                "load_model_parameters.spawn.temp_hw_return",
+            )
+        )
+        chw_supply_temp = convert_c_to_k(
+            self.system_parameters.get_param_by_id(
+                self.building_id,
+                "load_model_parameters.spawn.temp_chw_supply",
+            )
+        )
+        chw_return_temp = convert_c_to_k(
+            self.system_parameters.get_param_by_id(
+                self.building_id,
+                "load_model_parameters.spawn.temp_chw_return",
+            )
+        )
+        temp_setpoint_cooling = convert_c_to_k(
+            self.system_parameters.get_param_by_id(
+                self.building_id,
+                "load_model_parameters.spawn.temp_setpoint_cooling",
+            )
+        )
+        temp_setpoint_heating = convert_c_to_k(
+            self.system_parameters.get_param_by_id(
+                self.building_id,
+                "load_model_parameters.spawn.temp_setpoint_heating",
+            )
+        )
 
         # construct the dict to pass into the template
         building_template_data = {
@@ -127,14 +143,18 @@ class Spawn(LoadBase):
                 "has_electric_cooling": "true" if has_electric_cooling else "false",
             },
             # Reformatting lists for Modelica
-            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
-            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads))
+            .replace("[", "{")
+            .replace("]", "}")
+            .split("rray(", 1)[-1],
+            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads))
+            .replace("[", "{")
+            .replace("]", "}")
+            .split("rray(", 1)[-1],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica
-            building_template_data["thermal_zones"].append(
-                {"modelica_object_name": f"zn{tz}", "spawn_object_name": tz}
-            )
+            building_template_data["thermal_zones"].append({"modelica_object_name": f"zn{tz}", "spawn_object_name": tz})
 
         # copy over the resource files for this building
         # TODO: move some of this over to a validation step
@@ -147,28 +167,29 @@ class Spawn(LoadBase):
                 ),
             )
         else:
-            raise Exception(
-                f"Missing IDF file for Spawn: {building_template_data['idf']['idf_filename']}"
-            )
+            raise Exception(f"Missing IDF file for Spawn: {building_template_data['idf']['idf_filename']}")
 
         if os.path.exists(building_template_data["epw"]["epw_filename"]):
-            shutil.copy(building_template_data["epw"]["epw_filename"],
-                        os.path.join(b_modelica_path.resources_dir, building_template_data["epw"]["filename"]))
+            shutil.copy(
+                building_template_data["epw"]["epw_filename"],
+                os.path.join(b_modelica_path.resources_dir, building_template_data["epw"]["filename"]),
+            )
         else:
             raise Exception(f"Missing EPW file for Spawn: {building_template_data['epw']['epw_filename']}")
 
         if os.path.exists(building_template_data["mos_weather"]["mos_weather_filename"]):
             shutil.copy(
                 building_template_data["mos_weather"]["mos_weather_filename"],
-                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"])
+                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"]),
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}")
+                f"Missing MOS weather file for Spawn: {building_template_data['mos_weather']['mos_weather_filename']}"
+            )
         # merge ets template values from load_base.py into the building nominal values
         # If there is no ets defined in sys-param file, use the building template data alone
         try:
-            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            nominal_values = {**building_template_data["nominal_values"], **self.ets_template_data}
             combined_template_data = {**building_template_data, **nominal_values}
         except AttributeError:
             combined_template_data = building_template_data
@@ -178,14 +199,12 @@ class Spawn(LoadBase):
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=combined_template_data
+            data=combined_template_data,
         )
 
         full_model_name = os.path.join(
-            scaffold.project_name,
-            scaffold.loads_path.files_relative_dir,
-            self.building_name,
-            "coupling").replace(os.path.sep, '.')
+            scaffold.project_name, scaffold.loads_path.files_relative_dir, self.building_name, "coupling"
+        ).replace(os.path.sep, ".")
 
         file_data = spawn_mos_template.render(full_model_name=full_model_name, model_name=self.model_name)
         with open(os.path.join(b_modelica_path.scripts_dir, "RunSpawnCouplingBuilding.mos"), "w") as f:
@@ -196,18 +215,17 @@ class Spawn(LoadBase):
             os.path.join(b_modelica_path.files_dir, "coupling.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=combined_template_data
+            data=combined_template_data,
         )
 
         # Copy the required modelica files
-        self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
+        self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold, keep_original_models=keep_original_models)
 
     def post_process(self, scaffold, keep_original_models=False):
-        """
-        Cleanup the export of Spawn files into a format suitable for the district-based analysis. This includes
+        """Cleanup the export of Spawn files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project
@@ -224,7 +242,7 @@ class Spawn(LoadBase):
         new_package.save()
 
         # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
+        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, "package.mo")):
             load_package = PackageParser.new_from_template(
                 scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
             )
@@ -237,9 +255,9 @@ class Spawn(LoadBase):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         package = PackageParser(scaffold.project_path)
-        if 'Loads' not in package.order:
-            package.add_model('Loads')
+        if "Loads" not in package.order:
+            package.add_model("Loads")
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'Loads.{self.building_name}.building'
+        return f"Loads.{self.building_name}.building"

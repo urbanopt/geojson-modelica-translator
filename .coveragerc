@@ -12,7 +12,6 @@ omit =
     management/check_sys_params.py
     geojson_modelica_translator/model_connectors/load_connectors/templates/RunSpawnCouplingBuilding.most
     geojson_modelica_translator/modelica/lib/runner/__init__.py
-    geojson_modelica_translator/modelica/lib/runner/jmodelica.py
     tests/*
 
 # Regexes for lines to exclude from consideration

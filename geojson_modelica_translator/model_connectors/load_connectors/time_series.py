@@ -6,26 +6,19 @@ import shutil
 
 from modelica_builder.package_parser import PackageParser
 
-from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
-    LoadBase
-)
-from geojson_modelica_translator.utils import (
-    ModelicaPath,
-    convert_c_to_k,
-    simple_uuid
-)
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, simple_uuid
 
 
 class TimeSeries(LoadBase):
-    model_name = 'TimeSeries'
+    model_name = "TimeSeries"
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = 'TimeSerLoa_' + simple_uuid()
+        self.id = "TimeSerLoa_" + simple_uuid()
 
     def to_modelica(self, scaffold):
-        """
-        Create timeSeries models based on the data in the buildings and geojsons
+        """Create timeSeries models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
@@ -33,14 +26,12 @@ class TimeSeries(LoadBase):
         time_series_building_with_ets_template = self.template_env.get_template("TimeSeriesBuildingWithETS.mot")
         # These templates will be rendered in order for a 5G system. 4G system uses only the first.
         building_templates = {}
-        building_templates['TimeSeriesBuilding'] = time_series_building_template
-        building_templates['building'] = time_series_building_with_ets_template
+        building_templates["TimeSeriesBuilding"] = time_series_building_template
+        building_templates["building"] = time_series_building_with_ets_template
 
-        b_modelica_path = ModelicaPath(
-            self.building_name, scaffold.loads_path.files_dir, True
-        )
+        b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
 
-        self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
+        self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
 
         # Note that the system_parameters object when accessing filepaths will fully resolve the
         # location of the file.
@@ -50,7 +41,7 @@ class TimeSeries(LoadBase):
 
         if not os.path.exists(time_series_filename):
             raise Exception(f"Missing MOS file for time series: {time_series_filename}")
-        elif os.path.splitext(time_series_filename)[1].lower() == '.csv':
+        elif os.path.splitext(time_series_filename)[1].lower() == ".csv":
             raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
 
         # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
@@ -62,9 +53,7 @@ class TimeSeries(LoadBase):
                 "filename": os.path.basename(time_series_filename),
                 "path": os.path.dirname(time_series_filename),
             },
-            "district_type": self.system_parameters.get_param(
-                "district_system"
-            ),
+            "district_type": self.system_parameters.get_param("district_system"),
             "nominal_values": {
                 "delta_temp_air_cooling": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_cooling"
@@ -72,45 +61,69 @@ class TimeSeries(LoadBase):
                 "delta_temp_air_heating": self.system_parameters.get_param_by_id(
                     self.building_id, "load_model_parameters.time_series.delta_temp_air_heating"
                 ),
-                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
-                )),
-                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.temp_setpoint_cooling"
-                )),
-                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.temp_chw_supply"
-                )),
-                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.temp_chw_return"
-                )),
-                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.temp_hw_supply"
-                )),
-                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.temp_hw_return"
-                )),
+                "temp_setpoint_heating": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.time_series.temp_setpoint_heating"
+                    )
+                ),
+                "temp_setpoint_cooling": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.time_series.temp_setpoint_cooling"
+                    )
+                ),
+                "chw_supply_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.time_series.temp_chw_supply"
+                    )
+                ),
+                "chw_return_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.time_series.temp_chw_return"
+                    )
+                ),
+                "hhw_supply_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.time_series.temp_hw_supply"
+                    )
+                ),
+                "hhw_return_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.time_series.temp_hw_return"
+                    )
+                ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_liquid_heating",
-                ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_liquid_cooling",
-                ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_electric_heating",
-                ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.time_series.has_electric_cooling",
-                ) else "false",
-            }
+                "has_liquid_heating": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_liquid_heating",
+                )
+                else "false",
+                "has_liquid_cooling": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_liquid_cooling",
+                )
+                else "false",
+                "has_electric_heating": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_electric_heating",
+                )
+                else "false",
+                "has_electric_cooling": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.time_series.has_electric_cooling",
+                )
+                else "false",
+            },
         }
 
         # merge ets template values from load_base.py into the building nominal values
         # If there is no ets defined in sys-param file, use the building template data alone
         try:
-            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            nominal_values = {**building_template_data["nominal_values"], **self.ets_template_data}
             combined_template_data = {**building_template_data, **nominal_values}
         except AttributeError:
             combined_template_data = building_template_data
@@ -122,13 +135,13 @@ class TimeSeries(LoadBase):
         shutil.copy(time_series_filename, new_file)
 
         # This if statement exists only because we can't use the 5G model to run a 4G building.
-        if 'fifth_generation' not in building_template_data['district_type']:
+        if "fifth_generation" not in building_template_data["district_type"]:
             self.run_template(
                 template=time_series_building_template,
                 save_file_name=os.path.join(b_modelica_path.files_dir, "TimeSeriesBuilding.mo"),
                 project_name=scaffold.project_name,
                 model_name=self.building_name,
-                data=combined_template_data
+                data=combined_template_data,
             )
         else:
             for k, v in building_templates.items():
@@ -137,15 +150,14 @@ class TimeSeries(LoadBase):
                     save_file_name=os.path.join(b_modelica_path.files_dir, f"{k}.mo"),
                     project_name=scaffold.project_name,
                     model_name=self.building_name,
-                    data=combined_template_data
+                    data=combined_template_data,
                 )
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold)
 
     def post_process(self, scaffold):
-        """
-        Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
+        """Cleanup the export of time series files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project
@@ -156,13 +168,12 @@ class TimeSeries(LoadBase):
         """
         b_modelica_path = os.path.join(scaffold.loads_path.files_dir, self.building_name)
         new_package = PackageParser.new_from_template(
-            b_modelica_path, self.building_name, self.template_files_to_include,
-            within=f"{scaffold.project_name}.Loads"
+            b_modelica_path, self.building_name, self.template_files_to_include, within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
         # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
+        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, "package.mo")):
             load_package = PackageParser.new_from_template(
                 scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
             )
@@ -175,13 +186,13 @@ class TimeSeries(LoadBase):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         package = PackageParser(scaffold.project_path)
-        if 'Loads' not in package.order:
-            package.add_model('Loads')
+        if "Loads" not in package.order:
+            package.add_model("Loads")
             package.save()
 
     def get_modelica_type(self, scaffold):
         district_params = self.system_parameters.get_param("district_system")
-        if 'fifth_generation' not in district_params:
-            return f'Loads.{self.building_name}.TimeSeriesBuilding'
+        if "fifth_generation" not in district_params:
+            return f"Loads.{self.building_name}.TimeSeriesBuilding"
         else:
-            return f'Loads.{self.building_name}.building'
+            return f"Loads.{self.building_name}.building"

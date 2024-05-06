@@ -21,9 +21,36 @@ partial model PartialSeries "Partial model for series network"
     Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(final mCon_flow_nominal=bui.ets.mSerWat_flow_nominal) "Design data"
     annotation (Placement(transformation(extent={{-340,220},{-320,240}})));
+  parameter Integer nBor = 300
+    "Number of boreholes";
+  parameter Integer hBor = 350
+    "Total height of borehole, meters";
+  parameter Real rTub = 0.02
+    "Outer radius of the tube, meters";
+  parameter Real rBor = 0.095
+    "Radius of the borehole, meters";
+  parameter Real xC = 0.05
+    "Shank spacing between the pipes and center of boreholes, meters";
+  parameter Real dxyBor = 10
+    "Distance between boreholes, meters";
+  final parameter Modelica.Units.SI.Length cooBor[nBor,2]={dxyBor*{mod(i - 1,
+      10),floor((i - 1)/10)} for i in 1:nBor}
+    "Cartesian coordinates of the boreholes in meters";
   // COMPONENTS
   Buildings.Experimental.DHC.Plants.Reservoir.BoreField
-    borFie(redeclare final package Medium = Medium) "Bore field" annotation (
+    borFie(redeclare final package Medium = Medium, borFieDat(conDat=
+          Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Example(
+          borCon=Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeParallel,
+          dp_nominal=35000,
+          hBor=hBor,
+          rBor=rBor,
+          dBor=1,
+          nBor=nBor,
+          cooBor=cooBor,
+          rTub=rTub,
+          kTub=0.5,
+          eTub=0.0037,
+          xC=xC))) "Bore field" annotation (
       Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -276,6 +303,11 @@ equation
     coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
       Documentation(revisions="<html>
 <ul>
+<li>
+March 3, 2024, by Nicholas Long:<br/>
+Exposed underlying borehole field data for easy access within
+Modelica Builder.
+</li>
 <li>
 November 16, 2023, by Nicholas Long:<br/>
 Default the facMul to 1. The loads for the GMT are coming from real buildings

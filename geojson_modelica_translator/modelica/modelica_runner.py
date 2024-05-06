@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+# from __future__ import annotations
 import logging
 import os
 import shutil
@@ -14,30 +15,22 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s: %(message)s',
-    datefmt='%d-%b-%y %H:%M:%S',
-)
 
 
-class ModelicaRunner(object):
-    """
-    Class to run Modelica models.
-    """
-    ACTION_LOG_MAP = {
-        'compile': 'Compiling mo file',  # creates an FMU
-        'compile_and_run': 'Compile and run the mo file',
-        'run': 'Running FMU',
+class ModelicaRunner:
+    """Class to run Modelica models."""
+
+    ACTION_LOG_MAP = {  # noqa: RUF012
+        "compile": "Compiling mo file",  # creates an FMU
+        "compile_and_run": "Compile and run the mo file",
+        "run": "Running FMU",
     }
 
     def __init__(self):
-        """
-        Initialize the runner with data needed for simulation
-        """
+        """Initialize the runner with data needed for simulation"""
 
         # Verify that docker is up and running, if needed.
-        r = subprocess.call(['docker', 'ps'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        r = subprocess.call(["docker", "ps"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
     def _verify_docker_run_capability(self, file_to_load: Union[str, Path, None]):
@@ -51,14 +44,16 @@ class ModelicaRunner(object):
             SystemExit: _description_
         """
         if not self.docker_configured:
-            raise SystemExit('Docker not configured on host computer, unable to run')
+            raise SystemExit("Docker not configured on host computer, unable to run")
 
         # If there is a file to load (meaning that we aren't loading from the library),
         # then check that it exists
         if file_to_load and not Path(file_to_load).exists():
-            raise SystemExit(f'File not found to run {file_to_load}')
+            raise SystemExit(f"File not found to run {file_to_load}")
 
-    def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]) -> Path:
+    def _verify_run_path_for_docker(
+        self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]
+    ) -> Path:
         """If there is no run_path, then run it in the same directory as the
         file being run. This works fine for simple Modelica projects but typically
         the run_path needs to be a few levels higher in order to include other
@@ -76,7 +71,7 @@ class ModelicaRunner(object):
             Path: Return the run_path as a Path object
         """
         if not run_path:
-            run_path = Path(file_to_run).parent  # type: ignore
+            run_path = Path(file_to_run).parent  # type: ignore[arg-type]
         new_run_path = Path(run_path)
 
         # Modelica can't handle spaces in project name or path
@@ -84,10 +79,13 @@ class ModelicaRunner(object):
             raise SystemExit(
                 f"\nModelica does not support spaces in project names or paths. "
                 f"You used '{new_run_path}' for run path and {file_to_run} for model project name. "
-                "Please update your directory path or model name to not include spaces anywhere.")
+                "Please update your directory path or model name to not include spaces anywhere."
+            )
         return new_run_path
 
-    def _copy_over_docker_resources(self, run_path: Path, filename: Union[str, Path, None], model_name: str, **kwargs) -> None:
+    def _copy_over_docker_resources(
+        self, run_path: Path, filename: Union[str, Path, None], model_name: str, **kwargs
+    ) -> None:
         """Copy over files needed to run the simulation, this includes
         the generation of the OpenModelica scripts to load and compile/run
         the simulation.
@@ -107,33 +105,34 @@ class ModelicaRunner(object):
                 number_of_intervals (int): number of intervals to run the simulation
         """
         # read in the start, stop, and step times
-        project_in_library = kwargs.get('project_in_library', False)
-        start_time = kwargs.get('start_time', None)
-        stop_time = kwargs.get('stop_time', None)
-        step_size = kwargs.get('step_size', None)
-        number_of_intervals = kwargs.get('number_of_intervals', None)
+        project_in_library = kwargs.get("project_in_library", False)
+        start_time = kwargs.get("start_time", None)
+        stop_time = kwargs.get("stop_time", None)
+        step_size = kwargs.get("step_size", None)
+        number_of_intervals = kwargs.get("number_of_intervals", None)
 
         # initialize the templating framework (Jinja2)
         template_env = Environment(
-            loader=FileSystemLoader(searchpath=Path(__file__).parent.resolve() / 'lib' / 'runner'),
-            undefined=StrictUndefined
+            loader=FileSystemLoader(searchpath=Path(__file__).parent.resolve() / "lib" / "runner"),
+            undefined=StrictUndefined,
         )
         template_env.filters.update(ALL_CUSTOM_FILTERS)
-        template = template_env.get_template('simulate.most')
+        template = template_env.get_template("simulate.most")
         model_data = {
             "project_in_library": project_in_library,
             "file_to_load": Path(filename).name if filename else None,
             "model_name": model_name,
-            "use_default_time_params": False if start_time is not None and stop_time is not None else True,
+            "use_default_time_params": not start_time
+            and not stop_time,  # https://docs.astral.sh/ruff/rules/if-expr-with-false-true/#flake8-simplify-sim
             "start_time": start_time,
             "stop_time": stop_time,
             "step_size": step_size,
             "number_of_intervals": number_of_intervals,
         }
-        with open(run_path / 'simulate.mos', 'w') as f:
+        with open(run_path / "simulate.mos", "w") as f:
             f.write(template.render(**model_data))
-        template = template_env.get_template('compile_fmu.most')
-        with open(run_path / 'compile_fmu.mos', 'w') as f:
+        template = template_env.get_template("compile_fmu.most")
+        with open(run_path / "compile_fmu.mos", "w") as f:
             f.write(template.render(**model_data))
 
     def _subprocess_call_to_docker(self, run_path: Path, action: str) -> int:
@@ -149,31 +148,42 @@ class ModelicaRunner(object):
         # Set up the run content
         curdir = Path.cwd()
         os.chdir(run_path)
-        stdout_log = open('stdout.log', 'w')
+        stdout_log = open("stdout.log", "w")  # noqa: SIM115
         model_name = run_path.parts[-1]
-        image_name = 'nrel/gmt-om-runner:v2.0.1'
-        mo_script = 'compile_fmu' if action == 'compile' else 'simulate'
+        image_name = "nrel/gmt-om-runner:v2.0.1"
+        mo_script = "compile_fmu" if action == "compile" else "simulate"
         try:
             # create the command to call the open modelica compiler inside the docker image
-            exec_call = ['docker', 'run', '-v', f'{run_path}:/mnt/shared/{model_name}', f'{image_name}',
-                         '/bin/bash', '-c', f"cd mnt/shared/{model_name} && omc {mo_script}.mos"]
+            exec_call = [
+                "docker",
+                "run",
+                "-v",
+                f"{run_path}:/mnt/shared/{model_name}",
+                f"{image_name}",
+                "/bin/bash",
+                "-c",
+                f"cd mnt/shared/{model_name} && omc {mo_script}.mos",
+            ]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
             completed_process = subprocess.run(
-                exec_call,  # type: ignore
+                exec_call,
                 stdout=stdout_log,
                 stderr=subprocess.STDOUT,
-                cwd=run_path
+                cwd=run_path,
+                check=False,
             )
             # Uncomment this section and rebuild the container in order to pause the container
             # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
-            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}")
+            logger.debug(
+                f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}"
+            )
         except KeyboardInterrupt:
             # List all containers and their images
-            docker_containers_cmd = ['docker', 'ps', '--format', '{{.ID}} {{.Image}}']
-            containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split('\n')
+            docker_containers_cmd = ["docker", "ps", "--format", "{{.ID}} {{.Image}}"]
+            containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split("\n")
 
             # Find containers from our image
             for container_line in containers_list:
@@ -188,14 +198,22 @@ class ModelicaRunner(object):
         finally:
             os.chdir(curdir)
             stdout_log.close()
-            logger.debug('Closed stdout.log')
+            logger.debug("Closed stdout.log")
 
         return completed_process.returncode
 
-    def run_in_docker(self, action: str, model_name: str, file_to_load: Union[str, Path, None] = None,
-                      run_path: Union[str, Path, None] = None, **kwargs) -> tuple[bool, Union[str, Path]]:
-        """Run the Modelica project in a docker-based environment. The action will determine
-        what type of run will be conducted. This method supports either a file path pointing to the package to load, or a modelica path which is a period separated path. Results are saved into run_path.
+    def run_in_docker(
+        self,
+        action: str,
+        model_name: str,
+        file_to_load: Union[str, Path, None] = None,
+        run_path: Union[str, Path, None] = None,
+        **kwargs,
+    ) -> tuple[bool, Union[str, Path]]:
+        """Run the Modelica project in a docker-based environment.
+        The action will determine what type of run will be conducted.
+        This method supports either a file path pointing to the package to load, or a modelica path which is a
+        period separated path. Results are saved into run_path.
 
         stdout.log will store both stdout and stderr of the simulations
 
@@ -217,56 +235,71 @@ class ModelicaRunner(object):
         """
         # Verify that the action is in the list of valid actions
         if action not in ModelicaRunner.ACTION_LOG_MAP:
-            raise SystemExit(f'Invalid action {action}, must be one of {list(ModelicaRunner.ACTION_LOG_MAP.keys())}')
+            raise SystemExit(f"Invalid action {action}, must be one of {list(ModelicaRunner.ACTION_LOG_MAP.keys())}")
 
         self._verify_docker_run_capability(file_to_load)
         verified_run_path = self._verify_run_path_for_docker(run_path, file_to_load)
 
-        self._copy_over_docker_resources(
-            verified_run_path, file_to_load, model_name, **kwargs
-        )
+        self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
         exitcode = self._subprocess_call_to_docker(verified_run_path, action)
 
-        logger.debug('Checking stdout.log for errors')
-        with open(verified_run_path / 'stdout.log', 'r') as f:
+        logger.debug("Checking stdout.log for errors")
+        with open(verified_run_path / "stdout.log") as f:
             stdout_log = f.read()
-            if 'Failed to build model' in stdout_log:
-                logger.error('Model failed to build')
+            if "Failed to build model" in stdout_log:
+                logger.error("Model failed to build")
                 exitcode = 1
-            elif 'Killed' in stdout_log:
-                logger.error('Model is too large for the Docker resources available.'
-                             ' Increase Docker resources, decrease number of buildings simulated, or both')
-            elif 'division by zero at time' and 'Simulation execution failed for model:' in stdout_log:
-                logger.error('Model failed to run due to division by zero')
+            elif "Killed" in stdout_log:
+                logger.error(
+                    "Model is too large for the Docker resources available."
+                    " Increase Docker resources, decrease number of buildings simulated, or both"
+                )
+            elif "division by zero at time" and "Simulation execution failed for model:" in stdout_log:
+                logger.error("Model failed to run due to division by zero")
                 exitcode = 1
-            elif 'The simulation finished successfully' in stdout_log:
-                logger.info('Model ran successfully')
+            elif "The simulation finished successfully" in stdout_log:
+                logger.info("Model ran successfully")
                 exitcode = 0
-            elif action == 'compile':
-                logger.info('Model compiled successfully -- no errors')
+            elif action == "compile":
+                logger.info("Model compiled successfully -- no errors")
                 exitcode = 0
             else:
-                logger.error('Model failed to run -- unknown error')
+                logger.error("Model failed to run -- unknown error")
                 exitcode = 1
 
         # Cleanup all of the temporary files that get created
-        self.cleanup_path(verified_run_path, model_name, debug=kwargs.get('debug', False))
+        self.cleanup_path(verified_run_path, model_name, debug=kwargs.get("debug", False))
 
-        logger.debug('Moving results to results directory')
+        logger.debug("Moving results to results directory")
         # get the location of the results path
-        results_path = Path(verified_run_path / f'{model_name}_results')
+        results_path = Path(verified_run_path / f"{model_name}_results")
         self.move_results(verified_run_path, results_path, model_name)
         return (exitcode == 0, results_path)
 
-    def run_in_dymola(self, action: str, model_name: str,
-                      file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs) -> tuple[bool, Union[str, Path]]:
+    def run_in_dymola(
+        self, action: str, model_name: str, file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs
+    ) -> tuple[bool, Union[str, Path]]:
         """If running on Windows or Linux, you can run Dymola (assuming you have a license),
         using the BuildingsPy library. This is not supported on Mac.
 
         For using Dymola with the GMT, you need to ensure that MSL v4.0 are loaded correctly and that the
         Buildings library is in the MODELICAPATH. I added the MSL openModel via appending it to the Dymola's
-        /opt/<install>/install/dymola.mos file on Linux.
+        /opt/<install>/insert/dymola.mos file on Linux. The additions to the dymola.mos will look like the following:
+
+            ```modelica
+            // If using Dymola 2024, then the MSL v4.0.0 is already loaded
+            // If needed, install the patch of the Modelica Standard Library v4.0.0 (Services)
+            openModel("/home/username/Dymola/MSL_v4_ServicesPatch/ModelicaServices/package.mo", changeDirectory=false);
+            // If needed, install MSL v4
+            openModel("/home/username/Dymola/config/Modelica 4.0.0/package.mo", changeDirectory=false);
+
+            // Open MBL
+            openModel("/home/username/working/modelica-buildings/Buildings/package.mo", changeDirectory=false);
+
+            // Set the home directory
+            cd("/home/username/working")
+            ```
 
         Args:
             action (str): compile (translate) or simulate
@@ -305,9 +338,9 @@ class ModelicaRunner(object):
             # dymola_simulator.addParameters({'PI.k': 10.0, 'PI.Ti': 0.1})
             dymola_simulator.setSolver("dassl")
 
-            start_time = kwargs.get('start_time', 0)
-            stop_time = kwargs.get('stop_time', 300)
-            step_size = kwargs.get('step_size', 5)
+            start_time = kwargs.get("start_time", 0)
+            stop_time = kwargs.get("stop_time", 300)
+            step_size = kwargs.get("step_size", 5)
 
             # calculate the number of intervals based on the step size
             number_of_intervals = int((stop_time - start_time) / step_size)
@@ -319,24 +352,24 @@ class ModelicaRunner(object):
             # Do not show progressbar! -- It will cause an "elapsed time used before assigned" error.
             # dymola_simulator.showProgressBar(show=True)
 
-            if kwargs.get('debug', False):
+            if kwargs.get("debug", False):
                 dymola_simulator.showGUI(show=True)
                 dymola_simulator.exitSimulator(False)
 
             # BuildingPy throws an exception if the model errs
             try:
-                if action == 'compile':
+                if action == "compile":
                     dymola_simulator.translate()
                     # the results of this does not create an FMU, just
                     # the status of the translation/compilation.
-                elif action == 'simulate':
+                elif action == "simulate":
                     dymola_simulator.simulate()
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 logger.error(f"Exception running Dymola: {e}")
                 return False, run_path
 
             # remove some of the unneeded results
-            self.cleanup_path(Path(run_path), model_name, debug=kwargs.get('debug', False))
+            self.cleanup_path(Path(run_path), model_name, debug=kwargs.get("debug", False))
         finally:
             os.chdir(current_dir)
 
@@ -357,19 +390,26 @@ class ModelicaRunner(object):
         to_path.mkdir(parents=True, exist_ok=True)
 
         files_to_move = [
-            'stdout.log',
+            "stdout.log",
         ]
         if model_name is not None:
-            files_to_move.append(f'{model_name}.log',)
-            files_to_move.append(f'{model_name}.fmu',)
-            files_to_move.append(f"{model_name.replace('.', '_')}.log",)
-            files_to_move.append(f"{model_name.replace('.', '_')}_FMU.log",)
+            files_to_move.append(
+                f"{model_name}.log",
+            )
+            files_to_move.append(
+                f"{model_name}.fmu",
+            )
+            files_to_move.append(
+                f"{model_name.replace('.', '_')}.log",
+            )
+            files_to_move.append(
+                f"{model_name.replace('.', '_')}_FMU.log",
+            )
 
         for to_move in from_path.iterdir():
-            if not to_move == to_path:
-                if (to_move.name in files_to_move) or to_move.name.startswith(f'{model_name}_'):
-                    # typecast back to strings for the shutil method.
-                    shutil.move(str(to_move), str(to_path / to_move.name))
+            if to_move != to_path and ((to_move.name in files_to_move) or to_move.name.startswith(f"{model_name}_")):
+                # typecast back to strings for the shutil method.
+                shutil.move(str(to_move), str(to_path / to_move.name))
 
     def cleanup_path(self, path: Path, model_name: str, **kwargs: dict) -> None:
         """Clean up the files in the path that was presumably used to run the simulation.
@@ -384,29 +424,29 @@ class ModelicaRunner(object):
         """
         # list of files to always remove
         files_to_remove = [
-            'dsin.txt',
-            'dsmodel.c',
-            'dymosim',
-            'request.',
-            f'{model_name}',
-            f'{model_name}.makefile',
-            f'{model_name}.libs',
+            "dsin.txt",
+            "dsmodel.c",
+            "dymosim",
+            "request.",
+            f"{model_name}",
+            f"{model_name}.makefile",
+            f"{model_name}.libs",
             f"{model_name.replace('.', '_')}_info.json",
             f"{model_name.replace('.', '_')}_FMU.makefile",
             f"{model_name.replace('.', '_')}_FMU.libs",
         ]
 
         conditional_remove_files = [
-            'compile_fmu.mos',
-            'simulate.mos',
-            'run.mos',
-            'run_translate.mos',
+            "compile_fmu.mos",
+            "simulate.mos",
+            "run.mos",
+            "run_translate.mos",
         ]
 
-        logger.debug('Removing temporary files')
+        logger.debug("Removing temporary files")
 
-        if not kwargs.get('debug', False):
-            logger.debug('...and removing intermediate files')
+        if not kwargs.get("debug", False):
+            logger.debug("...and removing intermediate files")
             files_to_remove.extend(conditional_remove_files)
 
         for f in files_to_remove:
@@ -416,15 +456,15 @@ class ModelicaRunner(object):
 
         # glob for the .c, .h, .o, .bin files to remove
         remove_files_glob = [
-            f'{model_name}*.c',
-            f'{model_name}*.h',
-            f'{model_name}*.o',
-            f'{model_name}*.bin',
+            f"{model_name}*.c",
+            f"{model_name}*.h",
+            f"{model_name}*.o",
+            f"{model_name}*.bin",
         ]
         for pattern in remove_files_glob:
-            for f in path.glob(pattern):  # type: ignore
+            for f in path.glob(pattern):  # type: ignore[assignment]
                 Path(f).unlink(missing_ok=True)
 
         # Remove the 'tmp' folder that was created by 5G simulations
         # Dir won't exist for 4G simulations, so ignoring errors
-        shutil.rmtree(path / 'tmp', ignore_errors=True)
+        shutil.rmtree(path / "tmp", ignore_errors=True)

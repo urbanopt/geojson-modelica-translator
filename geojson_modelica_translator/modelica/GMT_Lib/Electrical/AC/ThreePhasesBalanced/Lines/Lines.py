@@ -16,19 +16,19 @@ class DistributionLines(SimpleGMTBase):
             # This is how we map from ditto-reader to mbl. It's pretty brittle, and will need updating in this state
             # https://github.com/urbanopt/urbanopt-ditto-reader/blob/develop/example/extended_catalog.json
             for wire in line["commercial_line_type"]:
-                if '477kcmil' in wire:
-                    mbl_wire = 'Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_500'
-                if '750kcmil' in wire:
+                if "477kcmil" in wire:
+                    mbl_wire = "Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_500"
+                if "750kcmil" in wire:
                     # FIXME: This mapping from 750kcmil to 1000kcmil is not ideal
                     # A 750kcmil has been proposed for the MBL
                     # The temporary alternative is to map to 500 kcmil, which didn't seem right to me
-                    mbl_wire = 'Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000'
+                    mbl_wire = "Buildings.Electrical.Transmission.MediumVoltageCables.Annealed_Al_1000"
             line_params = {
-                'length': line["length"],
-                'ampacity': line["ampacity"],
-                'nominal_voltage': line["nominal_voltage"],
-                'commercial_line_type': mbl_wire,
-                'model_name': f"Line{index}",
+                "length": line["length"],
+                "ampacity": line["ampacity"],
+                "nominal_voltage": line["nominal_voltage"],
+                "commercial_line_type": mbl_wire,
+                "model_name": f"Line{index}",
             }
             # render template to final modelica file
-            self.to_modelica(output_dir=output_dir, model_name='ACLine', param_data=line_params, iteration=index)
+            self.to_modelica(output_dir=output_dir, model_name="ACLine", param_data=line_params, iteration=index)

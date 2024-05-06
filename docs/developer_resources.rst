@@ -224,28 +224,13 @@ Release Instructions
 * Ensure mbl_version() in geojson_modelica_translator/utils.py is returning the correct MBL version.
 * Run :code:`poetry update` to ensure the lock file is up to date with the latest "pinned" dependencies.
 * Run :code:`pre-commit run --all-files` to ensure code is formatted properly.
-* Create a PR into develop with the updated version.
-* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and create a temp release tag to generate the CHANGELOG.
-* Copy in the CHANGELOG entries that are relevant to the new version, commit, push, and merge after CI passes.
+* Go to `GitHub release page <https://github.com/urbanopt/geojson-modelica-translator/tags>`_ and create a temp release tag to generate the CHANGELOG from PR labels.
+* Copy in the CHANGELOG entries that are relevant to the new version.
+* * Create a PR into develop with the updated version and CHANGELOG updates.
 * Create a PR against develop into main.
-* After main branch passes, merge and checkout the main branch. Build the distribution using the following code:
-
-.. code-block:: bash
-
-    # Remove old dist packages
-    rm -rf dist/*
-
-* Run :code:`git tag <NEW_VERSION>`.
-
-* Run the following to release.
-
-.. code-block:: bash
-
-    poetry publish --build
-
-* Enter your PyPI username and password
-* (If the build fails) verify that the files in the dist/* folder have the correct version (no dirty, no sha).
-* Build and release the documentation.
+* After any conflicts are resolved and CI on the main branch passes and is approved, merge.
+* Complete the release in GitHub, marking as latest, which will trigger the release to PyPI.
+* Build and release the documentation:
 
 .. code-block:: bash
 
@@ -257,8 +242,7 @@ Release Instructions
     # release using
     ./docs/publish_docs.sh
 
-* Run :code:`git push origin <new_tag_version>`
-* Verify new documentation on the `docs website <https://docs.urbanopt.net/geojson-modelica-translator/>`_.
+* Wait a few minutes, then verify the new documentation on the `docs website <https://docs.urbanopt.net/geojson-modelica-translator/>`_.
 
 Code Documentation
 ------------------

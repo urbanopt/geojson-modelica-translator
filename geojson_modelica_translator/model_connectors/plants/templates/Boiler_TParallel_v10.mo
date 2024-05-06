@@ -1,7 +1,7 @@
 within district_heating_and_cooling_systems.Plants;
-model Boiler_TParallel_new
+model Boiler_TParallel_v10
   "Multiple identical boiler"
-  extends PartialPlantParallel_v1new(
+  extends PartialPlantParallel_v10(
     num=numBoi,
     redeclare Buildings.Fluid.Boilers.BoilerPolynomial boi(
       each Q_flow_nominal=Q_flow_nominal,
@@ -113,4 +113,4 @@ equation
         Rectangle(
           extent={{-54,54},{54,-54}},
           lineColor={102,44,145})}));
-end Boiler_TParallel_new;
+end Boiler_TParallel_v10;

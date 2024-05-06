@@ -13,25 +13,19 @@ from modelica_builder.model import Model
 from modelica_builder.package_parser import PackageParser
 from teaser.project import Project
 
-from geojson_modelica_translator.model_connectors.load_connectors.load_base import (
-    LoadBase
-)
-from geojson_modelica_translator.utils import (
-    ModelicaPath,
-    convert_c_to_k,
-    copytree,
-    simple_uuid
-)
+from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, copytree, simple_uuid
 
 
 class Teaser(LoadBase):
     """TEASER is different than the other model connectors since TEASER creates all of the building models with
     multiple thermal zones when running, at which point each building then needs to be processed."""
-    model_name = 'Teaser'
+
+    model_name = "Teaser"
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = 'TeaserLoad_' + simple_uuid()
+        self.id = "TeaserLoad_" + simple_uuid()
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
@@ -40,7 +34,8 @@ class Teaser(LoadBase):
         https://github.com/RWTH-EBC/TEASER/tree/development/teaser/logic/archetypebuildings/bmvbs
         """
 
-        # Also look at using JSON as the input: https://github.com/RWTH-EBC/TEASER/blob/master/teaser/examples/examplefiles/ASHRAE140_600.json  # noqa
+        # Also look at using JSON as the input:
+        # https://github.com/RWTH-EBC/TEASER/blob/master/teaser/examples/examplefiles/ASHRAE140_600.json
         mapping = {
             # Single Family is not configured right now.
             "Single-Family": "SingleFamilyDwelling",
@@ -72,14 +67,13 @@ class Teaser(LoadBase):
         #         "Mixed use",
         #         "Uncovered Parking",
         #         "Covered Parking"
-        if building_type in mapping.keys():
+        if building_type in mapping:
             return mapping[building_type]
         else:
             raise Exception(f"Building type of {building_type} not defined in GeoJSON to TEASER mappings")
 
     def to_modelica(self, scaffold, keep_original_models=False):
-        """
-        Save the TEASER representation of a sinlge building to the filesystem. The path will
+        """Save the TEASER representation of a sinlge building to the filesystem. The path will
         be scaffold.loads_path.files_dir.
 
         :param scaffold: Scaffold object, contains all the paths of the project
@@ -128,15 +122,14 @@ class Teaser(LoadBase):
         :return: None
         """
         fh, abs_path = mkstemp()  # make a temp file
-        with fdopen(fh, 'w') as new_file:
-            with open(f) as old_file:
-                for line in old_file:
-                    if "double Internals(8760" in line:  # Finding the line, which may have one of several #s of columns
-                        new_file.write("double Internals(8761, 4)\n")
-                    elif line.startswith("3600\t"):
-                        new_file.write(line.replace('3600\t', '0\t') + line)
-                    else:
-                        new_file.write(line)
+        with fdopen(fh, "w") as new_file, open(f) as old_file:
+            for line in old_file:
+                if "double Internals(8760" in line:  # Finding the line, which may have one of several #s of columns
+                    new_file.write("double Internals(8761, 4)\n")
+                elif line.startswith("3600\t"):
+                    new_file.write(line.replace("3600\t", "0\t") + line)
+                else:
+                    new_file.write(line)
         copymode(f, abs_path)  # copies permissions
         remove(f)
         move(abs_path, f)
@@ -195,7 +188,9 @@ class Teaser(LoadBase):
             # internal gain files. The next method can be removed once the TEASER development branch is
             # merged into master/main and released.
             self.fix_gains_file(f"{b_modelica_path.resources_dir}/{new_file_name}")
-            self.internal_gains_file = f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}"
+            self.internal_gains_file = (
+                f"{scaffold.project_name}/Loads/{b_modelica_path.resources_relative_dir}/{new_file_name}"
+            )
 
         # process each of the thermal zones
         thermal_zone_files = []
@@ -209,16 +204,24 @@ class Teaser(LoadBase):
 
             # previous paths and replace with the new one.
             # Make sure to update the names of any resources as well.
-            mofile.set_within_statement(f'{scaffold.project_name}.Loads.{self.building_name}')
+            mofile.set_within_statement(f"{scaffold.project_name}.Loads.{self.building_name}")
 
             # remove ReaderTMY3
             mofile.remove_component("Buildings.BoundaryConditions.WeatherData.ReaderTMY3", "weaDat")
 
             # Remove `lat` from diffuse & direct solar gains (removed from MBL in version 9)
-            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTil", "lat")
-            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTilRoof", "lat")
-            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTil", "lat")
-            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTilRoof", "lat")
+            mofile.remove_component_argument(
+                "Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTil", "lat"
+            )
+            mofile.remove_component_argument(
+                "Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTilRoof", "lat"
+            )
+            mofile.remove_component_argument(
+                "Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTil", "lat"
+            )
+            mofile.remove_component_argument(
+                "Buildings.BoundaryConditions.SolarIrradiation.DirectTiltedSurface", "HDirTilRoof", "lat"
+            )
 
             # updating path to internal loads
 
@@ -226,39 +229,40 @@ class Teaser(LoadBase):
                 "Modelica.Blocks.Sources.CombiTimeTable",
                 "internalGains",
                 "fileName",
-                "Modelica.Utilities.Files.loadResource(filNam)"
+                "Modelica.Utilities.Files.loadResource(filNam)",
             )
 
             # add heat port convective heat flow.
             mofile.insert_component(
-                "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_a",
-                string_comment='Heat port for convective heat flow.',
+                "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a",
+                "port_a",
+                string_comment="Heat port for convective heat flow.",
                 annotations=[
                     "Placement(transformation(extent={{-10,90},{10,110}}), "
                     "iconTransformation(extent={{-10,90},{10,110}}))"
-                ]
+                ],
             )
             # add heat port radiative heat flow.
             mofile.insert_component(
-                "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a", "port_b",
-                string_comment='Heat port for radiative heat flow.',
+                "Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a",
+                "port_b",
+                string_comment="Heat port for radiative heat flow.",
                 annotations=[
                     "Placement(transformation(extent={{30,-110},{50,-90}}, "
                     "iconTransformation(extent={{40,-112},{60,-92}})))"
-                ]
+                ],
             )
             # add fluid ports for the indoor air volume.
             mofile.insert_component(
-                "Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b", "ports[nPorts]",
-                string_comment='Auxiliary fluid inlets and outlets to indoor air volume.',
-                modifications={
-                    'redeclare each final package Medium': 'Buildings.Media.Air'
-                },
+                "Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b",
+                "ports[nPorts]",
+                string_comment="Auxiliary fluid inlets and outlets to indoor air volume.",
+                modifications={"redeclare each final package Medium": "Buildings.Media.Air"},
                 annotations=[
                     "Placement(transformation(extent={{-30, -8}, {30, 8}},origin={0, -100}), "
                     "iconTransformation(extent={{-23.25, -7.25}, {23.25, 7.25}},"
                     "origin={-0.75, -98.75}))"
-                ]
+                ],
             )
 
             fraction_latent_person = self.system_parameters.get_param(
@@ -266,101 +270,104 @@ class Teaser(LoadBase):
             )
 
             use_moisture_balance = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.use_moisture_balance", default='false'
+                "buildings.load_model_parameters.rc.use_moisture_balance", default="false"
             )
 
-            n_ports = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.nPorts", default=0
-            )
+            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts", default=0)
 
             # create a new parameter for fraction latent person
             mofile.add_parameter(
-                'Real', 'fraLat',
+                "Real",
+                "fraLat",
                 assigned_value=fraction_latent_person,
-                string_comment='Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.'
+                string_comment="Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.",
             )
             # create a new Boolean parameter to evaluate the persons latent loads.
             mofile.add_parameter(
-                'Boolean', 'use_moisture_balance',
+                "Boolean",
+                "use_moisture_balance",
                 assigned_value=use_moisture_balance,
-                string_comment='If true, input connector QLat_flow is enabled and room air computes'
-                               ' moisture balance.'
+                string_comment="If true, input connector QLat_flow is enabled and room air computes"
+                " moisture balance.",
             )
             # create a integer parameter to evaluate number of connected ports.
             mofile.add_parameter(
-                'Integer', 'nPorts',
+                "Integer",
+                "nPorts",
                 assigned_value=n_ports,
-                string_comment='Number of fluid ports.',
-                annotations=['connectorSizing=true']
+                string_comment="Number of fluid ports.",
+                annotations=["connectorSizing=true"],
             )
             # Add a parameter to put the load filename at the top of the model
             mofile.add_parameter(
-                'String', 'filNam',
+                "String",
+                "filNam",
                 assigned_value=f'"modelica://{self.internal_gains_file}"',
-                string_comment='modelica path to the internal gains file used in the model CombiTimeTable'
+                string_comment="modelica path to the internal gains file used in the model CombiTimeTable",
             )
 
             # Set the fraction latent person in the template by simply replacing the value
             mofile.insert_component(
-                'Modelica.Blocks.Sources.RealExpression', 'perLatLoa',
+                "Modelica.Blocks.Sources.RealExpression",
+                "perLatLoa",
                 modifications={
-                    'y': 'internalGains.y[2]*fraLat',
+                    "y": "internalGains.y[2]*fraLat",
                 },
-                conditional='if use_moisture_balance',
-                string_comment='Latent person loads',
-                annotations=['Placement(transformation(extent={{-80,-60},{-60,-40}}))']
+                conditional="if use_moisture_balance",
+                string_comment="Latent person loads",
+                annotations=["Placement(transformation(extent={{-80,-60},{-60,-40}}))"],
             )
 
             # add TRad output
             mofile.insert_component(
-                'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TRad',
+                "Buildings.Controls.OBC.CDL.Interfaces.RealOutput",
+                "TRad",
                 modifications={
-                    'quantity': '"ThermodynamicTemperature"',
-                    'unit': '"K"',
-                    'displayUnit': '"degC"',
+                    "quantity": '"ThermodynamicTemperature"',
+                    "unit": '"K"',
+                    "displayUnit": '"degC"',
                 },
-                string_comment='Mean indoor radiation temperature',
-                annotations=['Placement(transformation(extent={{100,-10},{120,10}}))']
+                string_comment="Mean indoor radiation temperature",
+                annotations=["Placement(transformation(extent={{100,-10},{120,10}}))"],
             )
 
             # All existing weaDat.weaBus connections need to be updated to simply weaBus
             # (except for the connections where 'weaBus' is port_b, we will just delete these)
-            mofile.edit_connect('weaDat.weaBus', '!weaBus', new_port_a='weaBus')
+            mofile.edit_connect("weaDat.weaBus", "!weaBus", new_port_a="weaBus")
             # Now remove the unnecessary weaDat.weaBus -> weaBus connection
-            mofile.remove_connect('weaDat.weaBus', 'weaBus')
+            mofile.remove_connect("weaDat.weaBus", "weaBus")
 
             # add new port connections
-            rc_order = self.system_parameters.get_param_by_id(
-                self.building_id, "load_model_parameters.rc.order"
-            )
+            rc_order = self.system_parameters.get_param_by_id(self.building_id, "load_model_parameters.rc.order")
             thermal_zone_name = None
             thermal_zone_type = None
             if rc_order == 1:
-                thermal_zone_type = 'OneElement'
-                thermal_zone_name = 'thermalZoneOneElement'
+                thermal_zone_type = "OneElement"
+                thermal_zone_name = "thermalZoneOneElement"
             elif rc_order == 2:
-                thermal_zone_type = 'TwoElements'
-                thermal_zone_name = 'thermalZoneTwoElements'
+                thermal_zone_type = "TwoElements"
+                thermal_zone_name = "thermalZoneTwoElements"
             elif rc_order == 3:
-                thermal_zone_type = 'ThreeElements'
-                thermal_zone_name = 'thermalZoneThreeElements'
+                thermal_zone_type = "ThreeElements"
+                thermal_zone_name = "thermalZoneThreeElements"
             elif rc_order == 4:
-                thermal_zone_type = 'FourElements'
-                thermal_zone_name = 'thermalZoneFourElements'
+                thermal_zone_type = "FourElements"
+                thermal_zone_name = "thermalZoneFourElements"
 
             if thermal_zone_name is not None and thermal_zone_type is not None:
                 # add TAir output - This has been moved away from the other insert_component blocks
                 # to use thermal_zone_name
                 mofile.insert_component(
-                    'Buildings.Controls.OBC.CDL.Interfaces.RealOutput', 'TAir',
+                    "Buildings.Controls.OBC.CDL.Interfaces.RealOutput",
+                    "TAir",
                     modifications={
-                        'quantity': '"ThermodynamicTemperature"',
-                        'unit': '"K"',
-                        'displayUnit': '"degC"',
+                        "quantity": '"ThermodynamicTemperature"',
+                        "unit": '"K"',
+                        "displayUnit": '"degC"',
                     },
-                    conditional=f'if {thermal_zone_name}.VAir > 0',
-                    string_comment='Room air temperature',
-                    annotations=['Placement(transformation(extent={{100,38},{120,58}}))']
+                    conditional=f"if {thermal_zone_name}.VAir > 0",
+                    string_comment="Room air temperature",
+                    annotations=["Placement(transformation(extent={{100,38},{120,58}}))"],
                 )
 
                 # In TEASER 0.7.5 the hConvWinOut, hConvExt, hConvWin, hConvInt, hConvFloor, hConvRoof in various of
@@ -370,20 +377,20 @@ class Teaser(LoadBase):
                     "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
                     "eqAirTemp",
                     "hConvWallOut",
-                    "hConWallOut"
+                    "hConWallOut",
                 )
                 mofile.rename_component_argument(
                     "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007WithWindow",
                     "eqAirTemp",
                     "hConvWinOut",
-                    "hConWinOut"
+                    "hConWinOut",
                 )
 
                 mofile.rename_component_argument(
                     "Buildings.ThermalZones.ReducedOrder.EquivalentAirTemperature.VDI6007",
                     "eqAirTempVDI",
                     "hConvWallOut",
-                    "hConWallOut"
+                    "hConWallOut",
                 )
 
                 renames = {
@@ -396,53 +403,49 @@ class Teaser(LoadBase):
                 }
                 for from_, to_ in renames.items():
                     mofile.rename_component_argument(
-                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
-                        thermal_zone_name,
-                        from_,
-                        to_
+                        f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}", thermal_zone_name, from_, to_
                     )
 
                 mofile.update_component_modifications(
                     f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                     thermal_zone_name,
-                    {"use_moisture_balance": "use_moisture_balance"}
+                    {"use_moisture_balance": "use_moisture_balance"},
                 )
 
                 mofile.update_component_modifications(
                     f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                     thermal_zone_name,
-                    {"nPorts": "nPorts"}
+                    {"nPorts": "nPorts"},
                 )
 
                 mofile.add_connect(
-                    'port_a', f'{thermal_zone_name}.intGainsConv',
-                    annotations=['Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0})']
+                    "port_a",
+                    f"{thermal_zone_name}.intGainsConv",
+                    annotations=["Line(points={{0,100},{96,100},{96,20},{92,20}}, color={191,0,0})"],
                 )
 
                 mofile.add_connect(
-                    f'{thermal_zone_name}.TAir', 'TAir',
-                    annotations=[
-                        'Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})'
-                    ]
+                    f"{thermal_zone_name}.TAir",
+                    "TAir",
+                    annotations=["Line(points={{93,32},{98,32},{98,48},{110,48}}, color={0,0,127})"],
                 )
                 mofile.add_connect(
-                    f'{thermal_zone_name}.TRad', 'TRad',
-                    annotations=[
-                        'Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})'
-                    ]
+                    f"{thermal_zone_name}.TRad",
+                    "TRad",
+                    annotations=["Line(points={{93,28},{98,28},{98,-20},{110,-20}}, color={0,0,127})"],
                 )
                 mofile.add_connect(
-                    f'{thermal_zone_name}.QLat_flow', 'perLatLoa.y',
+                    f"{thermal_zone_name}.QLat_flow",
+                    "perLatLoa.y",
                     annotations=[
-                        'Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})'
-                    ]
+                        "Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})"
+                    ],
                 )
 
                 mofile.add_connect(
-                    f'{thermal_zone_name}.intGainsRad', 'port_b',
-                    annotations=[
-                        'Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})'
-                    ]
+                    f"{thermal_zone_name}.intGainsRad",
+                    "port_b",
+                    annotations=["Line(points={{92, 24}, {98, 24}, {98, -100}, {40, -100}}, color={191, 0, 0})"],
                 )
                 mofile.insert_equation_for_loop(
                     index_identifier="i",
@@ -460,7 +463,7 @@ class Teaser(LoadBase):
                 mofile.overwrite_component_redeclaration(
                     f"Buildings.ThermalZones.ReducedOrder.RC.{thermal_zone_type}",
                     thermal_zone_name,
-                    "Medium = Buildings.Media.Air"
+                    "Medium = Buildings.Media.Air",
                 )
 
             # change the name of the modelica model to remove the building id, update in package too!
@@ -483,14 +486,16 @@ class Teaser(LoadBase):
         for index, tz in enumerate(thermal_zone_files):
             # take /a/file/Meeting.mo -> zone_map["Meeting"] = "meeting"
             tz_process = os.path.splitext(os.path.basename(tz))[0]
-            zone_list.append({
-                "index": index,
-                "model_name": tz_process,
-                "instance_name": tz_process.lower(),
-                # process where this will be stored in python otherwise too many {{}}, yes ridiculous.
-                # This needs to result in {{a,b},{x,y}}
-                "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}"
-            })
+            zone_list.append(
+                {
+                    "index": index,
+                    "model_name": tz_process,
+                    "instance_name": tz_process.lower(),
+                    # process where this will be stored in python otherwise too many {{}}, yes ridiculous.
+                    # This needs to result in {{a,b},{x,y}}
+                    "placement": f"{{{{{-160 + index * 40},-20}},{{{-140 + index * 40},0}}}}",
+                }
+            )
 
         # Handle setting nominal load for IT room zone
         nom_cool_flow = np.array([-10000] * len(zone_list))
@@ -500,8 +505,14 @@ class Teaser(LoadBase):
         nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
-            "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1]
+            .replace("[", "{")
+            .replace("]", "}")
+            .split("rray(", 1)[-1],
+            "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1]
+            .replace("[", "{")
+            .replace("]", "}")
+            .split("rray(", 1)[-1],
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
                 "mos_weather_filename": mos_weather_filename,
@@ -509,45 +520,61 @@ class Teaser(LoadBase):
                 "path": os.path.dirname(mos_weather_filename),
             },
             "nominal_values": {
-                "chw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.temp_chw_supply"
-                )),
-                "chw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.temp_chw_return"
-                )),
-                "hhw_supply_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.temp_hw_supply"
-                )),
-                "hhw_return_temp": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.temp_hw_return"
-                )),
-                "temp_setpoint_heating": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
-                )),
-                "temp_setpoint_cooling": convert_c_to_k(self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
-                )),
+                "chw_supply_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(self.building_id, "load_model_parameters.rc.temp_chw_supply")
+                ),
+                "chw_return_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(self.building_id, "load_model_parameters.rc.temp_chw_return")
+                ),
+                "hhw_supply_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(self.building_id, "load_model_parameters.rc.temp_hw_supply")
+                ),
+                "hhw_return_temp": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(self.building_id, "load_model_parameters.rc.temp_hw_return")
+                ),
+                "temp_setpoint_heating": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.rc.temp_setpoint_heating"
+                    )
+                ),
+                "temp_setpoint_cooling": convert_c_to_k(
+                    self.system_parameters.get_param_by_id(
+                        self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
+                    )
+                ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
-                "has_liquid_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.has_liquid_heating",
-                ) else "false",
-                "has_liquid_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.has_liquid_cooling",
-                ) else "false",
-                "has_electric_heating": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.has_electric_heating",
-                ) else "false",
-                "has_electric_cooling": "true" if self.system_parameters.get_param_by_id(
-                    self.building_id, "load_model_parameters.rc.has_electric_cooling",
-                ) else "false",
-            }
+                "has_liquid_heating": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.rc.has_liquid_heating",
+                )
+                else "false",
+                "has_liquid_cooling": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.rc.has_liquid_cooling",
+                )
+                else "false",
+                "has_electric_heating": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.rc.has_electric_heating",
+                )
+                else "false",
+                "has_electric_cooling": "true"
+                if self.system_parameters.get_param_by_id(
+                    self.building_id,
+                    "load_model_parameters.rc.has_electric_cooling",
+                )
+                else "false",
+            },
         }
 
         # merge ets template values from load_base.py into the building nominal values
         # If there is no ets defined in sys-param file, use the building template data alone
         try:
-            nominal_values = {**building_template_data['nominal_values'], **self.ets_template_data}
+            nominal_values = {**building_template_data["nominal_values"], **self.ets_template_data}
             combined_template_data = {**building_template_data, **nominal_values}
         except AttributeError:
             combined_template_data = building_template_data
@@ -557,7 +584,7 @@ class Teaser(LoadBase):
             os.path.join(b_modelica_path.files_dir, "building.mo"),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=combined_template_data
+            data=combined_template_data,
         )
 
         self.run_template(
@@ -565,15 +592,12 @@ class Teaser(LoadBase):
             os.path.join(os.path.join(b_modelica_path.files_dir, "coupling.mo")),
             project_name=scaffold.project_name,
             model_name=self.building_name,
-            data=combined_template_data
+            data=combined_template_data,
         )
 
         full_model_name = os.path.join(
-            scaffold.project_name,
-            scaffold.loads_path.files_relative_dir,
-            self.building_name,
-            "coupling"
-        ).replace(os.path.sep, '.')
+            scaffold.project_name, scaffold.loads_path.files_relative_dir, self.building_name, "coupling"
+        ).replace(os.path.sep, ".")
 
         self.run_template(
             run_coupling_template,
@@ -583,11 +607,11 @@ class Teaser(LoadBase):
         )
 
         # copy over the required mo files and add the other models to the package order
-        mo_files = self.copy_required_mo_files(b_modelica_path.files_dir, within=f'{scaffold.project_name}.Loads')
+        mo_files = self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
         for f in mo_files:
             package.add_model(os.path.splitext(os.path.basename(f))[0])
-        package.add_model('building')
-        package.add_model('coupling')
+        package.add_model("building")
+        package.add_model("coupling")
 
         # save the updated package.mo and package.order in the Loads.B{} folder
         new_package = PackageParser.new_from_template(
@@ -598,11 +622,12 @@ class Teaser(LoadBase):
         if os.path.exists(building_template_data["mos_weather"]["mos_weather_filename"]):
             shutil.copy(
                 building_template_data["mos_weather"]["mos_weather_filename"],
-                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"])
+                os.path.join(b_modelica_path.resources_dir, building_template_data["mos_weather"]["filename"]),
             )
         else:
             raise Exception(
-                f"Missing MOS weather file for Teaser: {building_template_data['mos_weather']['mos_weather_filename']}")
+                f"Missing MOS weather file for Teaser: {building_template_data['mos_weather']['mos_weather_filename']}"
+            )
         # end of what AA added 9/24
 
         # remaining clean up tasks across the entire exported project
@@ -610,7 +635,7 @@ class Teaser(LoadBase):
             shutil.rmtree(os.path.join(scaffold.loads_path.files_dir, "Project"))
 
         # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, 'package.mo')):
+        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, "package.mo")):
             load_package = PackageParser.new_from_template(
                 scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
             )
@@ -623,9 +648,9 @@ class Teaser(LoadBase):
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
         # do it here for now to aid in testing.
         package = PackageParser(scaffold.project_path)
-        if 'Loads' not in package.order:
-            package.add_model('Loads')
+        if "Loads" not in package.order:
+            package.add_model("Loads")
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f'Loads.{self.building_name}.building'
+        return f"Loads.{self.building_name}.building"

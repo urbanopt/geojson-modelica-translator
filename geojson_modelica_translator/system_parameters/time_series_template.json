@@ -1,7 +1,7 @@
 {
   "buildings": [
     {
-      "geojson_id": "0",
+      "geojson_id": "4G",
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
@@ -40,7 +40,49 @@
         "cooling_controller_y_min": 0,
         "heating_controller_y_max": 1,
         "heating_controller_y_min": 0
-      }
+      },
+      "photovoltaic_panels": [],
+      "diesel_generators": [],
+      "battery_banks": []
+    },
+    {
+      "geojson_id": "5G",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "To be populated",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "supply_water_temperature_building": 15,
+        "chilled_water_supply_temp": 5,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "pump_flow_rate": 0.01,
+        "pump_design_head": 150000,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      },
+      "photovoltaic_panels": [],
+      "diesel_generators": [],
+      "battery_banks": []
     }
   ],
   "district_system": {
@@ -144,5 +186,15 @@
       }
     }
   },
-  "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos"
+  "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+  "electrical_grid": {},
+  "photovoltaic_panels": [],
+  "wind_turbines": [],
+  "combined_heat_and_power_systems": [],
+  "capacitor_banks": [],
+  "substations": [],
+  "transformers": [],
+  "power_converters": [],
+  "distribution_lines": [],
+  "battery_banks": []
 }
