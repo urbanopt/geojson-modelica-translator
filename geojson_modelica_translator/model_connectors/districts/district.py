@@ -32,9 +32,7 @@ def render_template(template_name, template_params):
 
 
 class District:
-    """
-    Class for modeling entire district energy systems
-    """
+    """Class for modeling entire district energy systems"""
 
     def __init__(self, root_dir, project_name, system_parameters, coupling_graph):
         self._scaffold = Scaffold(root_dir, project_name)

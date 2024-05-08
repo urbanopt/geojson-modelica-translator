@@ -27,7 +27,7 @@ class TestCaseBase(GMTTestCase):
     SHARED_DATA_DIR = Path(__file__).parent / "data_shared"
 
     def set_up(self, root_folder, project_name):
-        """
+        """Base setup for the test case
 
         :param root_folder: Folder where the test is to run. This is also the path where the input data are located.
         :param project_name: Name of the project folder to create.

@@ -13,8 +13,7 @@ class EtsColdWaterStub(EnergyTransferBase):
         self.id = "etsColWatStub_" + simple_uuid()
 
     def to_modelica(self, scaffold):
-        """
-        Create cooling water stub models
+        """Create cooling water stub models
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """

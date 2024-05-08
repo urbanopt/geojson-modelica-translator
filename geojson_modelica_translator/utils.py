@@ -11,9 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
-    """
-    Alternate version of copytree that will work if the directory already exists (use instead of shutil)
-    """
+    """Alternate version of copytree that will work if the directory already exists (use instead of shutil)"""
     for item in os.listdir(src):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
@@ -42,22 +40,19 @@ def linecount(filename: Path) -> int:
 
 
 def mbl_version():
-    """
-    Returns the version of the Modelica Buildings Library (MBL) used by the
+    """Returns the version of the Modelica Buildings Library (MBL) used by the
     geojson-modelica-translator.
     """
     return "10.0.0"
 
 
 class ModelicaPath:
-    """
-    Class for storing Modelica paths. This allows the path to point to
+    """Class for storing Modelica paths. This allows the path to point to
     the model directory, resources, and scripts directory.
     """
 
     def __init__(self, name, root_dir, overwrite=False):
-        """
-        Create a new modelica-based path with name of 'name'
+        """Create a new modelica-based path with name of 'name'
 
         :param name: Name to create
         """
@@ -84,8 +79,7 @@ class ModelicaPath:
 
     @property
     def files_dir(self):
-        """
-        Return the path to the files (models) for the specified ModelicaPath. This path does not include the
+        """Return the path to the files (models) for the specified ModelicaPath. This path does not include the
         trailing slash.
 
         :return: string, path to where files (models) are stored, without trailing slash
@@ -97,8 +91,7 @@ class ModelicaPath:
 
     @property
     def resources_relative_dir(self):
-        """
-        Return the relative resource directory instead of the full path. This is useful when replacing
+        """Return the relative resource directory instead of the full path. This is useful when replacing
         strings within modelica files which are relative to the package.
 
         :return: string, relative resource's data path
@@ -122,8 +115,7 @@ class ModelicaPath:
 
     @property
     def resources_dir(self):
-        """
-        Return the path to the resources directory for the specified ModelicaPath. This path does not include
+        """Return the path to the resources directory for the specified ModelicaPath. This path does not include
         the trailing slash.
 
         :return: string, path to where resources are stored, without trailing slash.
@@ -135,8 +127,7 @@ class ModelicaPath:
 
     @property
     def scripts_dir(self):
-        """
-        Return the path to the scripts directory (in the resources dir) for the specified ModelicaPath.
+        """Return the path to the scripts directory (in the resources dir) for the specified ModelicaPath.
         This path does not include the trailing slash.
 
         :return: string, path to where scripts are stored, without trailing slash.

@@ -18,8 +18,7 @@ class Spawn(LoadBase):
         self.id = "SpawnLoad_" + simple_uuid()
 
     def to_modelica(self, scaffold, keep_original_models=False):
-        """
-        Create spawn models based on the data in the buildings and geojsons
+        """Create spawn models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
@@ -226,8 +225,7 @@ class Spawn(LoadBase):
         self.post_process(scaffold, keep_original_models=keep_original_models)
 
     def post_process(self, scaffold, keep_original_models=False):
-        """
-        Cleanup the export of Spawn files into a format suitable for the district-based analysis. This includes
+        """Cleanup the export of Spawn files into a format suitable for the district-based analysis. This includes
         the following:
 
             * Add a Loads project

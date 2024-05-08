@@ -7,9 +7,7 @@ from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
 class EnergyTransferBase(ModelBase):
-    """
-    Base class of the energy transfer connectors.
-    """
+    """Base class of the energy transfer connectors."""
 
     simple_gmt_type = "ets"
 

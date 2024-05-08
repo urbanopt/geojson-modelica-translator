@@ -38,8 +38,7 @@ class FormattingError(Exception):
 
 
 def apply_formatter(filepath: str):
-    """
-    Run modelicafmt on a file
+    """Run modelicafmt on a file
 
     :param filepath: str, path to file
     """
@@ -52,17 +51,14 @@ def apply_formatter(filepath: str):
 
 
 class SubMap:
-    """
-    Class for managing substitutions into modelica template files (ie Jinja templates)
-    """
+    """Class for managing substitutions into modelica template files (i.e., Jinja templates)"""
 
     def __init__(self):
         self._cur_id = 1
         self._map = {}
 
     def add_sub(self, text):
-        """
-        Registers a substitution and returns the substitution name
+        """Registers a substitution and returns the substitution name
 
         :param text: str, text to substitute
         :returns: str, substitution name/id
@@ -74,8 +70,7 @@ class SubMap:
         return sub_id
 
     def get_text(self, sub):
-        """
-        Get original text for a substitution
+        """Get original text for a substitution
 
         :param sub: str, substitution name
         :returns: str, text corresponding to that substitution name
@@ -93,8 +88,7 @@ GENERIC_CONTROL_REGEX = re.compile("({%.*?%})")
 
 
 def sub_generic(text, sub_map):
-    """
-    Substitutes all Jinja control statements, those that look like {% ... %}
+    """Substitutes all Jinja control statements, those that look like {% ... %}
 
     :param text: str, text to make substitutions in
     :param sub_map: SubMap
@@ -112,8 +106,7 @@ EXPRESSION_REGEX = re.compile("({{.*?}})")
 
 
 def sub_expression(text, sub_map):
-    """
-    Substitutes all Jinja expression statements, those that look like {{ ... }}
+    """Substitutes all Jinja expression statements, those that look like {{ ... }}
 
     :param text: str, text to make substitutions in
     :param sub_map: SubMap
@@ -132,8 +125,7 @@ NORMAL_SUB = re.compile(r"JINJA_SUB_\d\d\d")
 
 
 def reverse_sub(text, sub_map):
-    """
-    Reverses Jinja substitutions, ie replaces the JINJA_SUB_XXX texts with their
+    """Reverses Jinja substitutions, ie replaces the JINJA_SUB_XXX texts with their
     original texts
 
     :param text: str, text to reverse substitutions
@@ -153,8 +145,7 @@ def reverse_sub(text, sub_map):
 
 
 def preprocess_and_format(filename, outfilename=None):
-    """
-    Formats modelica files that include Jinja templating.
+    """Formats modelica files that include Jinja templating.
 
     :param filename: str, template file to format
     """
