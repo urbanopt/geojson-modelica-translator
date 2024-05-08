@@ -26,9 +26,6 @@
             },
             {
               "$ref": "#/definitions/fifth_generation_def"
-            },
-            {
-              "$ref": "#/definitions/horizontal_piping_parameters_def"
             }
           ]
         },
@@ -965,6 +962,43 @@
         "design"
       ]
     },
+    "horizontal_piping_parameters": {
+      "type": "object",
+      "properties": {
+        "hydraulic_diameter": {
+          "description": "Hydraulic diameter of the distribution pipe",
+          "type": "number"
+        },
+        "insulation_thickness": {
+          "description": "Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
+          "type": "number"
+        },
+        "insulation_conductivity": {
+          "description": "Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
+          "type": "number"
+        },
+        "diameter_ratio": {
+          "description": "The ratio of pipe outer diameter to pipe wall thickness",
+          "type": "number"
+        },
+        "roughness": {
+          "description": "Average height of pipe material surface asperities",
+          "type": "number"
+        },
+        "rho_cp": {
+          "description": "Volumetric heat capacity of the pipe wall material",
+          "type": "number"
+        },
+        "number_of_segments": {
+          "description": "Number of axial pipe segments, used to discretize pipe models",
+          "type": "integer"
+        },
+        "buried_depth": {
+          "description": "Pipes buried depth",
+          "type": "number"
+        }
+      }
+    },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
       "type": "object",
@@ -1193,49 +1227,6 @@
         }
       }
     },
-    "horizontal_piping_parameters_def": {
-      "properties": {
-        "horizontal_piping_parameters": {
-          "properties": {
-            "hydraulic_diameter": {
-              "description": "Hydraulic diameter of the distribution pipe",
-              "type": "number"
-            },
-            "insulation_thickness": {
-              "description": "Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
-              "type": "number"
-            },
-            "insulation_conductivity": {
-              "description": "Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
-              "type": "number"
-            },
-            "diameter_ratio": {
-              "description": "The ratio of pipe outer diameter to pipe wall thickness",
-              "type": "number"
-            },
-            "roughness": {
-              "description": "Average height of pipe material surface asperities",
-              "type": "number"
-            },
-            "rho_cp": {
-              "description": "Volumetric heat capacity of the pipe wall material",
-              "type": "number"
-            },
-            "number_of_segments": {
-              "description": "Number of axial pipe segments, used to discretize pipe models",
-              "type": "integer"
-            },
-            "buried_depth": {
-              "description": "Pipes buried depth",
-              "type": "number"
-            }
-          }
-        }
-      },
-      "required": [
-        "horizontal_piping_parameters"
-      ]
-    },
     "fourth_generation_def": {
       "properties": {
         "fourth_generation": {
@@ -1304,6 +1295,9 @@
                   "type": "number"
                 }
               }
+            },
+            "horizontal_piping_parameters": {
+              "$ref": "#/definitions/horizontal_piping_parameters"
             }
           }
         }
