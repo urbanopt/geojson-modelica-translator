@@ -2,32 +2,25 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
-import math
 import os
 from pathlib import Path
 
-import pandas as pd
-import scipy.io as sio
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
 from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
 
 
 class GroundCoupling(NetworkBase):
     model_name = "GroundCoupling"
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, geojson_file):
         super().__init__(system_parameters)
         self.id = "groCou_" + simple_uuid()
         self.ground_coupling_name = "GroundCoupling_" + simple_uuid()
+        self.gj = geojson_file
 
         self.required_mo_files.append(os.path.join(self.template_dir, "UndisturbedSoilTemperature.mo"))
         self.required_mo_files.append(os.path.join(self.template_dir, "UnidirectionalSeries.mo"))
@@ -78,7 +71,11 @@ class GroundCoupling(NetworkBase):
         # get location from weather file and search for coefficients for calculating soil temperature
 
         # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
-        
+        # TODO: only check for total_length if type==ThermalConnector
+        # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
+        template_data["list_of_horizontal_pipe_lengths"] = self.gj.get_feature("$.features.[*].properties.total_length")
+        template_data["total_horizontal_pipe_length"] = sum(template_data["list_of_pipe_lengths"])
+
         # create horizontal piping package paths
         b_modelica_path = ModelicaPath(self.ground_coupling_name, scaffold.networks_path.files_dir, True)
 
@@ -118,7 +115,10 @@ class GroundCoupling(NetworkBase):
         networks_package = PackageParser(scaffold.networks_path.files_dir)
         if networks_package.order_data is None:
             networks_package = PackageParser.new_from_template(
-                path=scaffold.networks_path.files_dir, name="Networks", order=package_models, within=scaffold.project_name
+                path=scaffold.networks_path.files_dir,
+                name="Networks",
+                order=package_models,
+                within=scaffold.project_name,
             )
         else:
             for model_name in package_models:
