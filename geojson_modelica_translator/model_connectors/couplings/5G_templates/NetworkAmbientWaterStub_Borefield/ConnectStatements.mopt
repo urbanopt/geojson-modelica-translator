@@ -2,15 +2,39 @@
   {% for borefield in range( sys_params["number_of_borefields"] ) %}
 
   connect(supHeaWat[{{borefield+1}}].ports[1], T{{ coupling.plant.id[6:] }}In[{{borefield+1}}].port_a)
-    {% raw %}annotation (Line(points={{-212,20},{-200,20}}, color={0,127,255}));
+    {% raw %}annotation (Line(points={{-220,20},{-200,20}}, color={0,127,255}));
     {% endraw %}
+
+{#
+  // start code block 6 (if you apply comment out code block 7 below, and code block 5 in /home/sabdelh/GitHubRepos/geojson-modelica-translator/geojson_modelica_translator/model_connectors/plants/templates/Borefield_Instance.mopt)
+  // Dymola alternative (before moving to OpenModelica)
+
   connect(T{{ coupling.plant.id[6:] }}In[{{borefield+1}}].port_b, {{ coupling.plant.id }}[{{borefield+1}}].port_a)
     {% raw %}annotation (Line(points={{-180,20},{-150,20}}, color={0,127,255}));
     {% endraw %}
   connect({{ coupling.plant.id }}[{{borefield+1}}].port_b, T{{ coupling.plant.id[6:] }}Out[{{borefield+1}}].port_a)
     {% raw %}annotation (Line(points={{-130,20},{-100,20}},          color={0,127,255}));
     {% endraw %}
+
+  // end code block 6
+#}
+
+
+  // start code block 7
+
+  // OpenModelica alternative (using code block 4 in OpenModelica resulted in error, most probably because OpenModelica does not allow records to have array parameters). https://trac.openmodelica.org/OpenModelica/ticket/5991#comment:15:~:text=I%20suspect%20the%20issue%20is%20the%20same%20that%20plagues%20the%20Building%20library%2C%20which%20often%20uses%20record%20to%20hold%20datasheets%2C%20which%20may%20contain%20structural%20parameters%20for%20array%20dimensions.)
+
+
+  connect({{ coupling.plant.id }}_{{borefield+1}}.port_a,T{{ coupling.plant.id[6:] }}In[{{borefield+1}}].port_b)
+    annotation (Line(points={{sys_params["diagram_ghe_components_OpenModelica"][borefield]["Line"]["TUTubIn_boreFieUTub"]["points"]}}));
+
+  connect({{ coupling.plant.id }}_{{borefield+1}}.port_b, T{{ coupling.plant.id[6:] }}Out[{{borefield+1}}].port_a)
+    annotation (Line(points={{sys_params["diagram_ghe_components_OpenModelica"][borefield]["Line"]["boreFieUTub_TUTubOut"]["points"]}}));
+
+  // end code block 7
+
+
   connect(T{{ coupling.plant.id[6:] }}Out[{{borefield+1}}].port_b, sinHeaWat[{{borefield+1}}].ports[1])
-    {% raw %}annotation (Line(points={{-80,20},{-70,20}},          color={0,127,255}));
+    {% raw %}annotation (Line(points={{-100,20},{-80,20}},          color={0,127,255}));
     {% endraw %}
   {% endfor %}

@@ -21,14 +21,25 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
   {% if sys_params["project_name"] == "district_multiple_ghe" %}
   {% for num_of_ghe_group in range(sys_params["num_of_ghe_groups"]) %}
   {% if num_of_ghe_group == 0 %}
+  {#
+  // Dymola workaround
   parameter Integer nBorHol={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["lst_number_of_boreholes_in_group"][0]}}
+    "Number of boreholes (must be a square number)";
+  #}
+  // OpenModelica workaround
+  parameter Integer nBorHol=4
     "Number of boreholes (must be a square number)";
   {% endif %}
   {% endfor %}
   {%else%}
+  {#
+  // Dymola workaround
   parameter Integer nBorHol={{sys_params["flipped_sys_params"]["borehole"]["number_of_boreholes"][0]}}
     "Number of boreholes (must be a square number)";
-
+  #}
+  // OpenModelica workaround
+  parameter Integer nBorHol=4
+    "Number of boreholes (must be a square number)";
   {% endif %}
   //////////////////////
   parameter Modelica.Units.SI.Distance dxy=6
@@ -56,6 +67,10 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
     {% for gfunction_file_path in sys_params["ghe_groups_by_num"][num_of_ghe_group]["list_of_gfunction_file_paths"] %}{% if loop.index != sys_params["ghe_groups_by_num"][num_of_ghe_group]["list_of_gfunction_file_paths"]|length %}"{{gfunction_file_path}}",
     {% else %}"{{gfunction_file_path}}"])){% endif %}{% endfor %}
     "File name of g-function data file in MAT format";
+
+{#
+  // start code block 4
+  // Dymola alternative (before moving to OpenModelica)
 
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite filDatGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
     kFil=fill({{sys_params["ghe_parameters"]["grout"]["conductivity"]}},nBorFieGrp_{{num_of_ghe_group}}),
@@ -92,14 +107,14 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
 
 
   Buildings.Fluid.Geothermal.Borefields.{{sys_params["borefield_name"]}} {{ model.id }}Grp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
-    redeclare package Medium = Medium,
+    redeclare each package Medium = Medium,
     borFieDat={{ model.id }}DatGrp_{{num_of_ghe_group}},
-    tLoaAgg=tLoaAgg,
-    dynFil=false,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    TExt0_start=TGro,
-    nCel=nCel,
-    forceGFunCalc=forceGFunCalc,
+    each tLoaAgg=tLoaAgg,
+    each dynFil=false,
+    each energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    each TExt0_start=TGro,
+    each nCel=nCel,
+    each forceGFunCalc=forceGFunCalc,
     redeclare {{sys_params["project_name"]}}.Plants.GroundTemperatureResponse groTemRes(
       final gFunFilNam=gFunFilNamGrp_{{num_of_ghe_group}},
       final nTimTot=nTimTotGrp_{{num_of_ghe_group}}
@@ -110,11 +125,85 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
 
 
   Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}InGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
-    redeclare package Medium = Medium,
+    redeclare each package Medium = Medium,
     m_flow_nominal={{ model.id }}DatGrp_{{num_of_ghe_group}}.conDat.mBorFie_flow_nominal,
-    tau=0)
+    each tau=0)
     "Inlet temperature of the borefield with UTube configuration"
     annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["TUTubIn"]["extent_coo"]}})));
+
+  // end code block 4
+
+#}
+
+  // start code block 5
+
+
+  // OpenModelica alternative (using code block 4 in OpenModelica resulted in error, most probably because OpenModelica does not allow records to have array parameters). https://trac.openmodelica.org/OpenModelica/ticket/5991#comment:15:~:text=I%20suspect%20the%20issue%20is%20the%20same%20that%20plagues%20the%20Building%20library%2C%20which%20often%20uses%20record%20to%20hold%20datasheets%2C%20which%20may%20contain%20structural%20parameters%20for%20array%20dimensions.)
+
+  {% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite filDatGrp_{{num_of_ghe_group}}_{{borefield+1}}(
+    kFil={{sys_params["ghe_parameters"]["grout"]["conductivity"]}},
+    cFil={{sys_params["ghe_parameters"]["grout"]["rho_cp"]}}/1450,
+    dFil=1450
+    )
+    "Filling data";
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone soiDatGrp_{{num_of_ghe_group}}_{{borefield+1}}(
+    kSoi={{sys_params["ghe_parameters"]["soil"]["conductivity"]}},
+    cSoi={{sys_params["ghe_parameters"]["soil"]["rho_cp"]}}/1450,
+    dSoi=2600
+    )
+    "Soil data";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Template conDatGrp_{{num_of_ghe_group}}_{{borefield+1}}(
+    borCon={{sys_params["borefield_borehole_configuration_type"]}},
+    mBor_flow_nominal={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["lst_borehole_design_flow_rate_in_group"][borefield]}},
+    hBor={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["lst_length_of_boreholes_in_group"][borefield]}},
+    dBor={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["lst_borehole_buried_depth_in_group"][borefield]}},
+    rBor={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["lst_borehole_diameter_in_group"][borefield]}}/2,
+    rTub={{sys_params["ghe_parameters"]["pipe"]["outer_diameter"]}}/2,
+    kTub={{sys_params["ghe_parameters"]["pipe"]["conductivity"]}},
+    eTub={{sys_params["pipe_thickness"]}},
+    xC={{sys_params["pipe_shank_spacing"]}},
+    dp_nominal=35000,
+    cooBor = cooBor)
+    "Borefield configuration";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Example {{ model.id }}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}(
+      filDat = filDatGrp_{{num_of_ghe_group}}_{{borefield+1}},
+      soiDat = soiDatGrp_{{num_of_ghe_group}}_{{borefield+1}},
+      conDat = conDatGrp_{{num_of_ghe_group}}_{{borefield+1}})
+      annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["borefields_diagram"][borefield]["Placement"]["borFieUTubDat"]["extent_coo"]}})));
+
+
+  Buildings.Fluid.Geothermal.Borefields.{{sys_params["borefield_name"]}} {{ model.id }}Grp_{{num_of_ghe_group}}_{{borefield+1}}(
+    redeclare package Medium = Medium,
+    borFieDat={{ model.id }}DatGrp_{{num_of_ghe_group}}_{{borefield+1}},
+    tLoaAgg=tLoaAgg,
+    dynFil=false,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    TExt0_start=TGro,
+    nCel=nCel,
+    forceGFunCalc=forceGFunCalc,
+    redeclare {{sys_params["project_name"]}}.Plants.GroundTemperatureResponse groTemRes(
+      final gFunFilNam=gFunFilNamGrp_{{num_of_ghe_group}}[{{borefield+1}}],
+      final nTimTot=nTimTotGrp_{{num_of_ghe_group}}[{{borefield+1}}]
+      )
+    )
+    "Borefield with a U-tube borehole configuration"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["borefields_diagram"][borefield]["Placement"]["borFieUTub"]["extent_coo"]}})));
+
+
+  {% endfor %}
+
+  Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}InGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
+    redeclare each package Medium = Medium,
+    m_flow_nominal={% raw %}{{% endraw %}{% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}{% if loop.index != sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] %}{{ model.id }}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal,{% else %}{{ model.id }}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal},{% endif %}{% endfor %}
+    each tau=0)
+    "Inlet temperature of the borefield with UTube configuration"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["TUTubIn"]["extent_coo"]}})));
+
+  // end code block 5
 
   {% endfor %}
 
@@ -151,6 +240,9 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
     {% for gfunction_file_path in sys_params["list_of_gfunction_file_paths"] %}{% if loop.index != sys_params["list_of_gfunction_file_paths"]|length %}"{{gfunction_file_path}}",
     {% else %}"{{gfunction_file_path}}"])){% endif %}{% endfor %}
     "File name of g-function data file in MAT format";
+{#
+  // start code block 4
+  // Dymola alternative (before moving to OpenModelica)
 
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite filDat [nBorFie](
     kFil=fill({{sys_params["ghe_parameters"]["grout"]["conductivity"]}},nBorFie),
@@ -187,14 +279,14 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
       {% endraw %}
 
   Buildings.Fluid.Geothermal.Borefields.{{sys_params["borefield_name"]}} {{ model.id }} [nBorFie](
-    redeclare package Medium = MediumW,
+    redeclare each package Medium = MediumW,
     borFieDat={{ model.id }}Dat,
-    tLoaAgg=tLoaAgg,
-    dynFil=false,
-    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    TExt0_start=TGro,
-    nCel=nCel,
-    forceGFunCalc=forceGFunCalc,
+    each tLoaAgg=tLoaAgg,
+    each dynFil=false,
+    each energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    each TExt0_start=TGro,
+    each nCel=nCel,
+    each forceGFunCalc=forceGFunCalc,
     redeclare {{sys_params["project_name"]}}.Plants.GroundTemperatureResponse groTemRes(
       final gFunFilNam=gFunFilNam,
       final nTimTot=nTimTot
@@ -204,18 +296,110 @@ parameter Modelica.Units.SI.Time tLoaAgg=300
     {% raw %}annotation (Placement(transformation(extent={{-160,10},{-140,30}})));
   {% endraw %}
 
-  Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}In [nBorFie](
-    redeclare package Medium = MediumW,
+    Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}In [nBorFie](
+    redeclare each package Medium = MediumW,
     m_flow_nominal={{ model.id }}Dat.conDat.mBorFie_flow_nominal,
-    tau=0)
+    each tau=0)
     "Inlet temperature of the borefield with UTube configuration"
     {% raw %}annotation (Placement(transformation(extent={{-200,10},{-180,30}})));
     {% endraw %}
   Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}Out [nBorFie](
-    redeclare package Medium = MediumW,
+    redeclare each package Medium = MediumW,
     m_flow_nominal={{ model.id }}Dat.conDat.mBorFie_flow_nominal,
-    tau=0)
+    each tau=0)
     "Inlet temperature of the borefield with UTube configuration"
     {% raw %}annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
     {% endraw %}
   {% endif %}
+
+  // end code block 4
+
+#}
+
+
+
+
+
+  // start code block 5
+
+
+  // OpenModelica alternative (using code block 4 in OpenModelica resulted in error, most probably because OpenModelica does not allow records to have array parameters). https://trac.openmodelica.org/OpenModelica/ticket/5991#comment:15:~:text=I%20suspect%20the%20issue%20is%20the%20same%20that%20plagues%20the%20Building%20library%2C%20which%20often%20uses%20record%20to%20hold%20datasheets%2C%20which%20may%20contain%20structural%20parameters%20for%20array%20dimensions.)
+
+  {% for borefield in range( sys_params["number_of_borefields"] ) %}
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Filling.Bentonite filDat_{{borefield+1}}(
+    kFil={{sys_params["ghe_parameters"]["grout"]["conductivity"]}},
+    cFil={{sys_params["ghe_parameters"]["grout"]["rho_cp"]}}/1450,
+    dFil=1450
+    )
+    "Filling data";
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone soiDat_{{borefield+1}}(
+    kSoi={{sys_params["ghe_parameters"]["soil"]["conductivity"]}},
+    cSoi={{sys_params["ghe_parameters"]["soil"]["rho_cp"]}}/1450,
+    dSoi=2600
+    )
+    "Soil data";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Template conDat_{{borefield+1}}(
+    borCon={{sys_params["borefield_borehole_configuration_type"]}},
+    mBor_flow_nominal={{sys_params["design_flow_rate"][borefield]}},
+    hBor={{sys_params["flipped_sys_params"]["borehole"]["length_of_boreholes"][borefield]}},
+    dBor={{sys_params["flipped_sys_params"]["borehole"]["buried_depth"][borefield]}},
+    rBor={{sys_params["flipped_sys_params"]["borehole"]["diameter"][borefield]}}/2,
+    rTub={{sys_params["ghe_parameters"]["pipe"]["outer_diameter"]}}/2,
+    kTub={{sys_params["ghe_parameters"]["pipe"]["conductivity"]}},
+    eTub={{sys_params["pipe_thickness"]}},
+    xC={{sys_params["pipe_shank_spacing"]}},
+    dp_nominal=35000,
+    cooBor = cooBor)
+    "Borefield configuration";
+
+  parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Example {{ model.id }}Dat_{{borefield+1}}(
+      filDat = filDat_{{borefield+1}},
+      soiDat = soiDat_{{borefield+1}},
+      conDat = conDat_{{borefield+1}})
+      annotation (Placement(transformation(extent={{sys_params["diagram_ghe_components_OpenModelica"][borefield]["Placement"]["borFieUTubDat"]["extent_coo"]}})));
+
+  Buildings.Fluid.Geothermal.Borefields.{{sys_params["borefield_name"]}} {{ model.id }}_{{borefield+1}}(
+    redeclare package Medium = MediumW,
+    borFieDat={{ model.id }}Dat_{{borefield+1}},
+    tLoaAgg=tLoaAgg,
+    dynFil=false,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    TExt0_start=TGro,
+    nCel=nCel,
+    forceGFunCalc=forceGFunCalc,
+    redeclare {{sys_params["project_name"]}}.Plants.GroundTemperatureResponse groTemRes(
+      final gFunFilNam=gFunFilNam[{{borefield+1}}],
+      final nTimTot=nTimTot[{{borefield+1}}]
+      )
+    )
+    "Borefield with a U-tube borehole configuration"
+    annotation (Placement(transformation(extent={{sys_params["diagram_ghe_components_OpenModelica"][borefield]["Placement"]["borFieUTub"]["extent_coo"]}})));
+
+
+
+  {% endfor %}
+
+
+
+
+
+
+  Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}In [nBorFie](
+    redeclare each package Medium = MediumW,
+    m_flow_nominal={% raw %}{{% endraw %}{% for borefield in range( sys_params["number_of_borefields"] ) %}{% if loop.index != sys_params["number_of_borefields"] %}{{ model.id }}Dat_{{borefield+1}}.conDat.mBorFie_flow_nominal,{% else %}{{ model.id }}Dat_{{borefield+1}}.conDat.mBorFie_flow_nominal},{% endif %}{% endfor %}
+    each tau=0)
+    "Inlet temperature of the borefield with UTube configuration"
+    {% raw %}annotation (Placement(transformation(extent={{-200,10},{-180,30}})));
+    {% endraw %}
+  Buildings.Fluid.Sensors.TemperatureTwoPort T{{ model.id[6:] }}Out [nBorFie](
+    redeclare each package Medium = MediumW,
+    m_flow_nominal={% raw %}{{% endraw %}{% for borefield in range( sys_params["number_of_borefields"] ) %}{% if loop.index != sys_params["number_of_borefields"] %}{{ model.id }}Dat_{{borefield+1}}.conDat.mBorFie_flow_nominal,{% else %}{{ model.id }}Dat_{{borefield+1}}.conDat.mBorFie_flow_nominal},{% endif %}{% endfor %}
+    each tau=0)
+    "Inlet temperature of the borefield with UTube configuration"
+    {% raw %}annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
+    {% endraw %}
+  {% endif %}
+
+  // end code block 5

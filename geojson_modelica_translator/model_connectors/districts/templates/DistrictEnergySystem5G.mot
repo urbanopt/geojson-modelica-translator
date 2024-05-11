@@ -37,13 +37,13 @@ model DistrictEnergySystem
 
     redeclare Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS buiGrp_{{num_of_bldg_group}}[nBuiGrp_{{num_of_bldg_group}}](
       final filNam=filNam_buiGrp_{{num_of_bldg_group}},
-      bui(have_hotWat=have_hotWat),
-      ets(have_hotWat=have_hotWat)),
+      bui(each have_hotWat=have_hotWat),
+      ets(each have_hotWat=have_hotWat)),
 
 
     datDes_buiGrp_{{num_of_bldg_group}}(
       nBui={{bldg_groups_by_num[num_of_bldg_group]["num_bldgs_in_group"]}},
-      dp_length_nominal=150,
+      dp_length_nominal=140,
       lDis=fill(10,nBuiGrp_{{num_of_bldg_group}})),
 
     {% endfor %}
@@ -72,16 +72,20 @@ model DistrictEnergySystem
     "Cold water temperature"
     annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["TColWat"]["extent_coo"]}})));
 
+  {% if num_of_bldg_group == 0 %}
+
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant One(k=1) "Temporary"
+    annotation (Placement(transformation(extent={{bldg_groups_by_num[num_of_bldg_group]["Placement"]["One"]["extent_coo"]}})));
+
+  {% endif %}
+
   {% endfor %}
   // design flow rate needs to be checked #SMA_TBD
   // !!!!!! important !!!!!! #SMA_TBD
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"
-    {% raw %}annotation (Placement(transformation(extent={{360,-170},{380,-150}})));
-    {% endraw %}
-  Buildings.Controls.OBC.CDL.Reals.Sources.Constant One(k=1) "Temporary"
-    {% raw %}annotation (Placement(transformation(extent={{-300,-170},{-280,-150}})));
-    {% endraw %}
+    annotation (Placement(transformation(extent={{diagram_single_component_dict["district_loop"]["Placement"]["gai"]["extent_coo"]}})));
+
 
   {%else%}
 

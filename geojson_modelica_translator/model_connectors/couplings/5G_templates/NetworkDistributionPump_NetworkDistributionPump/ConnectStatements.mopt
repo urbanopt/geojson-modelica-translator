@@ -58,13 +58,12 @@
   connect(TDisWatRet.port_b, pumDis.port_a)
     annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["TDisWatRet_pumDis"]["points"]}}));
 
+  connect(gai.y, pumDis.m_flow_in)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["gai_pumDis"]["points"]}}));
+
+  connect(One.y, gai.u)
+    annotation (Line(points={{sys_params["bldg_groups_by_num"][num_of_bldg_group]["Line"]["one_gai"]["points"]}}));
+
   {% endif %}
 
   {% endfor %}
-
-  connect(One.y, gai.u)
-    {% raw %}annotation (Line(points={{-280,-160},{-240,-160}}, color={0,0,127}));
-    {% endraw %}
-  connect(gai.y, pumDis.m_flow_in)
-    {% raw %}annotation (Line(points={{-220,-160},{400,-160}}, color={0,0,127}));
-    {% endraw %}

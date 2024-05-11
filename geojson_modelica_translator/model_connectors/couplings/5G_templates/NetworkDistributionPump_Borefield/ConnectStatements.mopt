@@ -9,14 +9,35 @@
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["disStoGrp_pumStoGrp"]["points"]}}));
   connect(pumStoGrp_{{num_of_ghe_group}}.port_b, T{{ coupling.plant.id[6:] }}InGrp_{{num_of_ghe_group}}.port_a)
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["pumStoGrp_TUTubInGrp"]["points"]}}));
+
+{#
+  // start code block 6 (if you apply comment out code block 7 below, and code block 5 in /home/sabdelh/GitHubRepos/geojson-modelica-translator/geojson_modelica_translator/model_connectors/plants/templates/Borefield_Instance.mopt)
+  // Dymola alternative (before moving to OpenModelica)
+
   connect(T{{ coupling.plant.id[6:] }}InGrp_{{num_of_ghe_group}}.port_b, {{ coupling.plant.id }}Grp_{{num_of_ghe_group}}.port_a)
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["TUTubInGrp_borFieUTubGrp"]["points"]}}));
   connect({{ coupling.plant.id }}Grp_{{num_of_ghe_group}}.port_b, disStoGrp_{{num_of_ghe_group}}.ports_aCon)
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["borFieUTubGrp_disStoGrp"]["points"]}}));
 
-  {% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}
+  // end code block 6
+#}
+
   connect(gaiStoGrp_{{num_of_ghe_group}}.y, pumStoGrp_{{num_of_ghe_group}}.m_flow_in)
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["gaiStoGrp_pumStoGrp"]["points"]}}));
+
+  {% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}
+
+  // start code block 7
+
+  // OpenModelica alternative (using code block 4 in OpenModelica resulted in error, most probably because OpenModelica does not allow records to have array parameters). https://trac.openmodelica.org/OpenModelica/ticket/5991#comment:15:~:text=I%20suspect%20the%20issue%20is%20the%20same%20that%20plagues%20the%20Building%20library%2C%20which%20often%20uses%20record%20to%20hold%20datasheets%2C%20which%20may%20contain%20structural%20parameters%20for%20array%20dimensions.)
+
+  connect({{ coupling.plant.id }}Grp_{{num_of_ghe_group}}_{{borefield+1}}.port_a,T{{ coupling.plant.id[6:] }}InGrp_{{num_of_ghe_group}}[{{borefield+1}}].port_b)
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["borefields_diagram"][borefield]["Line"]["TUTubInGrp_borFieUTubGrp"]["points"]}}));
+  connect({{ coupling.plant.id }}Grp_{{num_of_ghe_group}}_{{borefield+1}}.port_b, disStoGrp_{{num_of_ghe_group}}.ports_aCon[{{borefield+1}}])
+    annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["borefields_diagram"][borefield]["Line"]["borFieUTubGrp_disStoGrp"]["points"]}}));
+
+  // end code block 7
+
   connect(gaiStoGrp_{{num_of_ghe_group}}[{{borefield+1}}].u, One.y)
     annotation (Line(points={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Line"]["one_gaiStoGrp"]["points"]}}));
   {% endfor %}

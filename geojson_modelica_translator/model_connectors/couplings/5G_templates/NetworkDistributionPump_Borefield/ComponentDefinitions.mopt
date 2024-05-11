@@ -1,6 +1,10 @@
   // No components for borefield and ambient loop coupling
   {% for num_of_ghe_group in range(sys_params["num_of_ghe_groups"]) %}
 
+{#
+  // start code block 4
+  // Dymola alternative (before moving to OpenModelica)
+
   Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumStoGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
     redeclare final package Medium = Medium,
     // datDes needs adjustment #SMA_TBD
@@ -38,5 +42,54 @@
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gaiStoGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](k={{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}.conDat.mBorFie_flow_nominal)
     "Scale with nominal mass flow rate"
     annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["gaiStoGrp"]["extent_coo"]}})));
+
+  // end code block 4
+
+#}
+
+  // start code block 5
+
+  // OpenModelica alternative (using code block 4 in OpenModelica resulted in error, most probably because OpenModelica does not allow records to have array parameters). https://trac.openmodelica.org/OpenModelica/ticket/5991#comment:15:~:text=I%20suspect%20the%20issue%20is%20the%20same%20that%20plagues%20the%20Building%20library%2C%20which%20often%20uses%20record%20to%20hold%20datasheets%2C%20which%20may%20contain%20structural%20parameters%20for%20array%20dimensions.)
+
+  Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumStoGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
+    redeclare final package Medium = Medium,
+    // datDes needs adjustment #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    m_flow_nominal={% raw %}{{% endraw %}{% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}{% if loop.index != sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] %}{{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal,{% else %}{{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal}){% endif %}{% endfor %}
+    "Bore field pump"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["pumSto"]["extent_coo"]}})));
+
+  Buildings.Experimental.DHC.Networks.Combined.UnidirectionalSeries
+    disStoGrp_{{num_of_ghe_group}}(
+    redeclare final package Medium = Medium,
+    final nCon=nBorFieGrp_{{num_of_ghe_group}},
+    show_TOut=true,
+    // check #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    final mDis_flow_nominal=datDes_buiGrp_{{sys_params["ghe_groups_by_num"][num_of_ghe_group]["building_group_out"]}}.mPipDis_flow_nominal,
+    final mCon_flow_nominal={% raw %}{{% endraw %}{% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}{% if loop.index != sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] %}{{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal,{% else %}{{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal}{% endif %}{% endfor %},
+    // these are parameters of the conSto component (not for this component) (check it out) #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    // final dhDis=0.2, #SMA_TBD
+    // final dhCon=0.2, #SMA_TBD
+    // this was included in original dis component (check it out) #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    //final dp_length_nominal=datDes.dp_length_nominal, #SMA_TBD
+    final lDis=fill(0, nBorFieGrp_{{num_of_ghe_group}}),
+    final lCon=fill(0, nBorFieGrp_{{num_of_ghe_group}}),
+    // this was included in original dis component (check it out) #SMA_TBD
+    // !!!!!! important !!!!!! #SMA_TBD
+    final lEnd={{sys_params["ghe_parameters"]["geometric_constraints"]["lEnd"]}},
+    dp_length_nominal=150,
+    final allowFlowReversal=allowFlowReversalSer)
+    "Distribution network (Connection to the bore field)"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["disSto"]["extent_coo"]}})));
+
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gaiStoGrp_{{num_of_ghe_group}} [nBorFieGrp_{{num_of_ghe_group}}](
+    k={% raw %}{{% endraw %}{% for borefield in range( sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] ) %}{% if loop.index != sys_params["ghe_groups_by_num"][num_of_ghe_group]["num_ghes_in_group"] %}{{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal,{% else %}{{coupling.plant.id}}DatGrp_{{num_of_ghe_group}}_{{borefield+1}}.conDat.mBorFie_flow_nominal}{% endif %}{% endfor %})
+    "Scale with nominal mass flow rate"
+    annotation (Placement(transformation(extent={{sys_params["ghe_groups_by_num"][num_of_ghe_group]["Placement"]["gaiStoGrp"]["extent_coo"]}})));
+
+  // end code block 5
 
   {% endfor %}

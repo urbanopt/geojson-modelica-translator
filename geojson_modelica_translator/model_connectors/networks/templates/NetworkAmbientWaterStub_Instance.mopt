@@ -1,25 +1,25 @@
   // heated water stub
   // TODO: move these components into a single component
   Buildings.Fluid.Sources.Boundary_pT supHeaWat [nBorFie](
-    redeclare package Medium={{ globals.medium_w }},
-    use_T_in=false,
+    redeclare each package Medium={{ globals.medium_w }},
+    each use_T_in=false,
     //m_flow={{sys_params["borefield_id"]}}Dat.conDat.mBorFie_flow_nominal, # TODO: SMA_TBD check
     {% if 'ghe_parameters' in sys_params.district_system['fifth_generation'] %}
-    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }}+273.15,
+    each T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }}+273.15,
     {% else %}
-    T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
+    each T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
     {% endif %}
-    nPorts=1)
+    each nPorts=1)
     "Heating water supply temperature (district side)."
     {% raw %}annotation (Placement(transformation(extent={{10,10},{-10,-10}}, rotation=180, origin={-230,20})));
     {% endraw %}
   Buildings.Fluid.Sources.Boundary_pT sinHeaWat [nBorFie](
-    redeclare package Medium={{ globals.medium_w }},
-    use_p_in=false,
-    use_T_in=false,
-    nPorts=1,
-    p=101330,
-    T=283.15)
+    redeclare each package Medium={{ globals.medium_w }},
+    each use_p_in=false,
+    each use_T_in=false,
+    each nPorts=1,
+    each p=101330,
+    each T=283.15)
     "Heating water sink (district side)"
     {% raw %}annotation (Placement(transformation(extent={{-60,10},{-80,30}}, rotation=0)));
     {% endraw %}
