@@ -62,9 +62,7 @@ class GroundCoupling(NetworkBase):
 
         # process pipe wall thickness
         if template_data["hydraulic_diameter"] and template_data["diameter_ratio"]:
-            template_data["pipe_wall_thickness"] = (
-                template_data["tube"]["outer_diameter"] - template_data["tube"]["inner_diameter"]
-            ) / 2
+            template_data["pipe_wall_thickness"] = template_data["hydraulic_diameter"]/(template_data["diameter_ratio"]-2)
         else:
             template_data["pipe_wall_thickness"] = None
 
