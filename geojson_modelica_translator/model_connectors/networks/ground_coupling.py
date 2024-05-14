@@ -96,7 +96,8 @@ class GroundCoupling(NetworkBase):
         # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
         # TODO: only check for total_length if type==ThermalConnector
         # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-        template_data["list_of_horizontal_pipe_lengths"] = self.gj.get_feature("$.features.[*].properties.total_length")
+        # TODO: make sure the list of lengths is starting from the outlet of the ghe
+        template_data["list_of_pipe_lengths"] = self.gj.get_feature("$.features.[*].properties.total_length")
         template_data["total_horizontal_pipe_length"] = sum(template_data["list_of_pipe_lengths"])
 
         # create horizontal piping package paths
