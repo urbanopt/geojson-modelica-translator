@@ -27,8 +27,8 @@ model GroundCoupling
     displayUnit="d")={{ piping_data["second_phase_lag"] }}
     "Second phase lag of soil surface temperature, in days"
     annotation (Dialog(group="Soil Temp calculation"));
-  parameter Modelica.Units.SI.Length tot_horizontal_pipe_length={{ piping_data["total_horizontal_pipe_length"] }}
-    "Total pipe length";
+  parameter Modelica.Units.SI.Length len[nSeg]
+    "Pipes length";
   parameter Modelica.Units.SI.Length dep[nPip]={{ piping_data["buried_depth"] }}
     {% raw %} "Pipes buried depth";
   parameter Modelica.Units.SI.Length pos[nPip]={0}
