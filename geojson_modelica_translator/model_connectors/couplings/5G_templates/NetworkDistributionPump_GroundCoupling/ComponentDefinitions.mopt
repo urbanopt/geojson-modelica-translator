@@ -1,0 +1,24 @@
+  // district distribution pipiline
+  {{ project_name }}.Networks.UnidirectionalSeries dis(
+    redeclare final package Medium = {{ globals.medium_w }},
+    final nCon= datDes.nBui,
+    show_TOut=true,
+    final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
+    final mCon_flow_nominal=datDes.mCon_flow_nominal,
+    final dp_length_nominal=datDes.dp_length_nominal,
+    final lDis=datDes.lDis,
+    final lCon=datDes.lCon,
+    final lEnd=datDes.lEnd,
+    final allowFlowReversal=allowFlowReversalSer,
+    dhDis=fill({{ piping_data["hydraulic_diameter"] }}, datDes.nBui),
+    dhEnd={{ piping_data["hydraulic_diameter"] }},
+    dIns={{ piping_data["insulation_thickness"] }},
+    kIns={{ piping_data["insulation_conductivity"] }},
+    thickness={{ piping_data["pipe_wall_thickness"] }},
+    roughness={{ piping_data["roughness"] }},
+    cPip=2300,
+    rhoPip={{ piping_data["rho_cp"] }}/cPip
+    )
+    "Distribution network"
+    {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
+    {% endraw %}
