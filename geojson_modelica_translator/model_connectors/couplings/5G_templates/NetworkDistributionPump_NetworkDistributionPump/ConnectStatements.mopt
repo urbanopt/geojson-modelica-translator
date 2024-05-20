@@ -1,5 +1,7 @@
 // Connections for sub-components
-  {% raw %}connect(dis.port_bDisSup, TIn.port_a)
+  connect(dis.heatPortGro,{{ coupling.network.id }}.ports[1, :]) 
+  {% raw %}annotation (Line(points={{70,-20},{70,-36},{104,-36},{104,28},{150,28},{150,40}},color={191,0,0}));
+  connect(dis.port_bDisSup, TIn.port_a)
     annotation (Line(points={{90,10},{110,10},{110,-20}}, color={0,127,255}));
   connect(TIn.port_b, pumDis.port_a)
     annotation (Line(points={{110,-40},{110,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
