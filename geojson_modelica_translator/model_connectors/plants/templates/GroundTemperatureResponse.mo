@@ -7,9 +7,10 @@ model GroundTemperatureResponse
   parameter Integer nCel(
     min=1)=5
     "Number of cells per aggregation level";
-  parameter Integer nClu(min=1)=5
+  parameter Integer nClu(
+    min=1)=5
     "Number of borehole clusters to use in the calculation of the g-function"
-    annotation (Dialog(tab="Advanced", group="g-function"));
+    annotation (Dialog(tab="Advanced",group="g-function"));
   parameter Integer nSeg=12
     "Number of segments per borehole for g-function calculation";
   parameter Boolean forceGFunCalc=false
@@ -23,7 +24,7 @@ model GroundTemperatureResponse
   parameter Integer nTimTot=76
     "Total length of g-function vector";
   Boolean writegFun
-    "True if g-function was succesfully written to file";
+    "True if g-function was successfully written to file";
   Modelica.Blocks.Interfaces.RealOutput delTBor(
     unit="K")
     "Temperature difference current borehole wall temperature minus initial borehole wall temperature"
