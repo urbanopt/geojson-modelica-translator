@@ -26,7 +26,7 @@ class Schemas:
         }
 
         for s in self.schemas:
-            path = os.path.join(os.path.dirname(__file__), "data/schemas/%s_properties.json" % s)
+            path = os.path.join(os.path.dirname(__file__), f"data/schemas/{s}_properties.json")
             with open(path) as f:
                 self.schemas[s] = json.load(f)
 
