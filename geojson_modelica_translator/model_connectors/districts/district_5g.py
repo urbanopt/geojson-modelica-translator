@@ -168,23 +168,24 @@ def move_bldg_ghe_grp_diagram_extent_or_points(
     num_of_bldg_ghe_group,
     component_type,
     adj_ghe_num_grp_for_diagram_only=None,
-    num_borFie_in_grp=None,
+    num_bor_fie_in_grp=None,
 ):
     # "borefield_stub" temporary solution (OpenModelica)
-    # component_type ("District System", "Building", "diagram", or "borefield_stub") (may also be "district_loop" but for now it is not used)
+    # component_type ("District System", "Building", "diagram", or "borefield_stub")
+    # (may also be "district_loop" but for now it is not used)
     # this if statement will not be applied to "District System" because it has a adj_ghe_num_grp_for_diagram_only
-    if adj_ghe_num_grp_for_diagram_only == None:
+    if adj_ghe_num_grp_for_diagram_only is None:
         adj_ghe_num_grp_for_diagram_only = num_of_bldg_ghe_group
     for key, value in dictionary.items():
         for idx, point in enumerate(value[value_key]):
             point_x = point[0] + (delta_x_coo * adj_ghe_num_grp_for_diagram_only)
 
-            if num_borFie_in_grp == None:
+            if num_bor_fie_in_grp is None:
                 point_y = point[1] + (delta_y_coo * adj_ghe_num_grp_for_diagram_only)
-            elif num_borFie_in_grp == 0:
+            elif num_bor_fie_in_grp == 0:
                 point_y = point[1]
             else:
-                point_y = point[1] + (delta_y_coo * num_borFie_in_grp)
+                point_y = point[1] + (delta_y_coo * num_bor_fie_in_grp)
 
             if idx == 0:
                 # "one_gai" is temporary solution
@@ -217,17 +218,17 @@ def move_bldg_ghe_grp_diagram_extent_or_points(
         if component_type == "Building":
             self.bldg_groups_by_num[num_of_bldg_ghe_group][annotation_key][key] = {value_key: point_value}
         elif component_type == "District System":
-            if num_borFie_in_grp == None:
+            if num_bor_fie_in_grp is None:
                 self.ghe_groups_by_num[num_of_bldg_ghe_group][annotation_key][key] = {value_key: point_value}
             else:
-                self.ghe_groups_by_num[num_of_bldg_ghe_group]["borefields_diagram"][num_borFie_in_grp][annotation_key][
+                self.ghe_groups_by_num[num_of_bldg_ghe_group]["borefields_diagram"][num_bor_fie_in_grp][annotation_key][
                     key
                 ] = {value_key: point_value}
         elif component_type == "diagram":
             self.diagram_single_component_dict[component_type][annotation_key][key] = {value_key: point_value}
         # "borefield_stub" temporary solution (OpenModelica)
         elif component_type == "borefield_stub":
-            self.diagram_ghe_components_OpenModelica[num_of_bldg_ghe_group][annotation_key][key] = {
+            self.diagram_ghe_components_openmodelica[num_of_bldg_ghe_group][annotation_key][key] = {
                 value_key: point_value
             }
 
@@ -359,7 +360,7 @@ class District:
             for num_of_bldg_group in range(self.num_of_bldg_groups):
                 list_of_time_series_file_paths = []
                 sys_params_bldgs_grp = []
-                for bldg_id_in_grp in self.bldg_groups_by_num[num_of_bldg_group]["lst_bldg_ids_in_group"]:
+                for bldg_id_in_grp in self.bldg_groups_by_num[num_of_bldg_group]["list_bldg_ids_in_group"]:
                     for sys_params_bldg in sys_params_buildings:
                         if sys_params_bldg["geojson_id"] == bldg_id_in_grp:
                             sys_params_bldgs_grp.append(sys_params_bldg)
@@ -399,7 +400,7 @@ class District:
                 self.ghe_groups_by_num[num_of_ghe_group]["lst_borehole_buried_depth_in_group"] = []
                 self.ghe_groups_by_num[num_of_ghe_group]["lst_borehole_diameter_in_group"] = []
                 # iterates on list of ghe ids in one ghe group at a time
-                for ghe_id_in_grp in self.ghe_groups_by_num[num_of_ghe_group]["lst_ghe_ids_in_group"]:
+                for ghe_id_in_grp in self.ghe_groups_by_num[num_of_ghe_group]["list_ghe_ids_in_group"]:
                     # iterates on all ghes within system paramaters file
                     for sys_params_of_ghe in sys_params_ghe_specific_params:
                         # if this is true, then this is the instance of ghe of interest, thus, we collect its parameters
@@ -481,12 +482,12 @@ class District:
 
         if self._scaffold.project_name == "district_multiple_ghe":
             for num_of_ghe_group in range(self.num_of_ghe_groups):
-                lst_ghe_ids_in_group = self.ghe_groups_by_num[num_of_ghe_group]["lst_ghe_ids_in_group"]
+                list_ghe_ids_in_group = self.ghe_groups_by_num[num_of_ghe_group]["list_ghe_ids_in_group"]
                 # returns number of rows in Gfunction.csv and the pd.read_csv of Gfunction.csv
                 (
                     self.ghe_groups_by_num[num_of_ghe_group]["ghe_dir_gfunction_file_rows"],
                     self.ghe_groups_by_num[num_of_ghe_group]["list_of_gfunctions"],
-                ) = process_gfunction_file(self, lst_ghe_ids_in_group, sys_params_ghe_parameters)
+                ) = process_gfunction_file(self, list_ghe_ids_in_group, sys_params_ghe_parameters)
 
         ghe_dir_gfunction_file_rows, list_of_gfunctions = process_gfunction_file(
             self, flipped_sys_params["ghe_id"], sys_params_ghe_parameters
@@ -502,7 +503,7 @@ class District:
             ghe_delta_x_coo = 220
             bldg_delta_y_coo = 0
             ghe_delta_y_coo = 0
-            ghe_delta_y_coo_OpenModelica = -25
+            ghe_delta_y_coo_openmodelica = -25
 
             lst_max_num_ghes_in_group_diagram = []
             for num_of_ghe_group in range(self.num_of_ghe_groups):
@@ -510,7 +511,7 @@ class District:
 
             max_num_ghes_in_group_diagram = max(lst_max_num_ghes_in_group_diagram)
 
-            diagram_y_adj = (max_num_ghes_in_group_diagram - 2) * ghe_delta_y_coo_OpenModelica
+            diagram_y_adj = (max_num_ghes_in_group_diagram - 2) * ghe_delta_y_coo_openmodelica
 
             # adjusting diagram for some components (placement with extent)
             # diagram parameters if there is only one building group
@@ -536,7 +537,7 @@ class District:
             }
 
             # OpenModelica (stretch in x- and y-axis instead of only in x-axis)
-            diagram_ghe_components_OpenModelica_dict_2 = {
+            diagram_ghe_components_openmodelica_dict_2 = {
                 "borFieUTubDat": {"extent_coo": [[-30, -110], [-10, -90]]},
                 "borFieUTub": {"extent_coo": [[-70, -110], [-50, -90]]},
             }
@@ -644,7 +645,7 @@ class District:
             }
 
             # OpenModelica
-            diagram_ghe_connections_OpenModelica_dict_2 = {
+            diagram_ghe_connections_openmodelica_dict_2 = {
                 "TUTubInGrp_borFieUTubGrp": {
                     "points": [[-90, -100], [-80, -100], [-80, -100], [-70, -100]],
                     "color": ",color={0,127,255}",
@@ -755,7 +756,7 @@ class District:
 
                 adj_points_no_change = ghe_delta_x_coo * adj_ghe_num_grp_for_diagram_only
 
-                diagram_ghe_connections_OpenModelica_dict_2_temp = {
+                diagram_ghe_connections_openmodelica_dict_2_temp = {
                     "TUTubInGrp_borFieUTubGrp": {
                         "points": [[-70, -100], [-80, -100]],
                         "points_no_change": ",{"
@@ -802,34 +803,34 @@ class District:
                     # adjusting diagram for some components (placement with extent)
                     move_bldg_ghe_grp_diagram_extent_or_points(
                         self=self,
-                        dictionary=diagram_ghe_components_OpenModelica_dict_2,
+                        dictionary=diagram_ghe_components_openmodelica_dict_2,
                         value_key="extent_coo",
                         annotation_key="Placement",
                         connection_boolean=False,
                         delta_x_coo=ghe_delta_x_coo,
-                        delta_y_coo=ghe_delta_y_coo_OpenModelica,
+                        delta_y_coo=ghe_delta_y_coo_openmodelica,
                         num_of_bldg_ghe_group=num_of_ghe_group,
                         component_type="District System",
                         adj_ghe_num_grp_for_diagram_only=adj_ghe_num_grp_for_diagram_only,
-                        num_borFie_in_grp=idx_borefield_2,
+                        num_bor_fie_in_grp=idx_borefield_2,
                     )
                     if idx_borefield_2 == 0:
-                        diagram_ghe_connections_OM_2 = diagram_ghe_connections_OpenModelica_dict_2
+                        diagram_ghe_connections_om_2 = diagram_ghe_connections_openmodelica_dict_2
                     else:
-                        diagram_ghe_connections_OM_2 = diagram_ghe_connections_OpenModelica_dict_2_temp
+                        diagram_ghe_connections_om_2 = diagram_ghe_connections_openmodelica_dict_2_temp
 
                     move_bldg_ghe_grp_diagram_extent_or_points(
                         self=self,
-                        dictionary=diagram_ghe_connections_OM_2,
+                        dictionary=diagram_ghe_connections_om_2,
                         value_key="points",
                         annotation_key="Line",
                         connection_boolean=True,
                         delta_x_coo=ghe_delta_x_coo,
-                        delta_y_coo=ghe_delta_y_coo_OpenModelica,
+                        delta_y_coo=ghe_delta_y_coo_openmodelica,
                         num_of_bldg_ghe_group=num_of_ghe_group,
                         component_type="District System",
                         adj_ghe_num_grp_for_diagram_only=adj_ghe_num_grp_for_diagram_only,
-                        num_borFie_in_grp=idx_borefield_2,
+                        num_bor_fie_in_grp=idx_borefield_2,
                     )
 
                 # adjusting diagram for some connections
@@ -861,15 +862,15 @@ class District:
                 )
 
         elif self._scaffold.project_name == "borefield_stub":
-            ghe_delta_x_coo_OpenModelica = 0
-            ghe_delta_y_coo_OpenModelica = -25
+            ghe_delta_x_coo_openmodelica = 0
+            ghe_delta_y_coo_openmodelica = -25
 
-            diagram_ghe_components_OpenModelica_dict = {
+            diagram_ghe_components_openmodelica_dict = {
                 "borFieUTub": {"extent_coo": [[-160, -20], [-140, 0]]},
                 "borFieUTubDat": {"extent_coo": [[-120, -20], [-100, 0]]},
             }
 
-            diagram_ghe_connections_OpenModelica_dict = {
+            diagram_ghe_connections_openmodelica_dict = {
                 "TUTubIn_boreFieUTub": {
                     "points": [[-160, -10], [-170, -10]],
                     "points_no_change": ",{-170,20},{-180,20}}",
@@ -882,34 +883,34 @@ class District:
                 },
             }
 
-            self.diagram_ghe_components_OpenModelica = dict()
+            self.diagram_ghe_components_openmodelica = {}
 
             for idx_borefield in range(number_of_borefields):
-                self.diagram_ghe_components_OpenModelica[idx_borefield] = {}
-                self.diagram_ghe_components_OpenModelica[idx_borefield]["Placement"] = {}
-                self.diagram_ghe_components_OpenModelica[idx_borefield]["Line"] = {}
+                self.diagram_ghe_components_openmodelica[idx_borefield] = {}
+                self.diagram_ghe_components_openmodelica[idx_borefield]["Placement"] = {}
+                self.diagram_ghe_components_openmodelica[idx_borefield]["Line"] = {}
 
                 # adjusting diagram for some components (placement with extent)
                 move_bldg_ghe_grp_diagram_extent_or_points(
                     self=self,
-                    dictionary=diagram_ghe_components_OpenModelica_dict,
+                    dictionary=diagram_ghe_components_openmodelica_dict,
                     value_key="extent_coo",
                     annotation_key="Placement",
                     connection_boolean=False,
-                    delta_x_coo=ghe_delta_x_coo_OpenModelica,
-                    delta_y_coo=ghe_delta_y_coo_OpenModelica,
+                    delta_x_coo=ghe_delta_x_coo_openmodelica,
+                    delta_y_coo=ghe_delta_y_coo_openmodelica,
                     num_of_bldg_ghe_group=idx_borefield,
                     component_type="borefield_stub",
                 )
 
                 move_bldg_ghe_grp_diagram_extent_or_points(
                     self=self,
-                    dictionary=diagram_ghe_connections_OpenModelica_dict,
+                    dictionary=diagram_ghe_connections_openmodelica_dict,
                     value_key="points",
                     annotation_key="Line",
                     connection_boolean=True,
-                    delta_x_coo=ghe_delta_x_coo_OpenModelica,
-                    delta_y_coo=ghe_delta_y_coo_OpenModelica,
+                    delta_x_coo=ghe_delta_x_coo_openmodelica,
+                    delta_y_coo=ghe_delta_y_coo_openmodelica,
                     num_of_bldg_ghe_group=idx_borefield,
                     component_type="borefield_stub",
                 )
@@ -928,7 +929,7 @@ class District:
                     sys_params_ghe_parameters,
                     b_modelica_path,
                     self._scaffold.project_name,
-                    self.ghe_groups_by_num[num_of_ghe_group]["lst_ghe_ids_in_group"],
+                    self.ghe_groups_by_num[num_of_ghe_group]["list_ghe_ids_in_group"],
                 )
 
         else:
@@ -998,8 +999,8 @@ class District:
             common_template_params["sys_params"]["number_of_borefields"] = number_of_borefields
             common_template_params["sys_params"]["design_flow_rate"] = design_flow_rate
             common_template_params["sys_params"]["list_of_gfunction_file_paths"] = list_of_gfunction_file_paths
-            common_template_params["sys_params"]["diagram_ghe_components_OpenModelica"] = (
-                self.diagram_ghe_components_OpenModelica
+            common_template_params["sys_params"]["diagram_ghe_components_openmodelica"] = (
+                self.diagram_ghe_components_openmodelica
             )
 
         list_of_updated_couplings = []
