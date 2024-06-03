@@ -2,7 +2,6 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import json
-import os
 from pathlib import Path
 
 import pytest
@@ -24,7 +23,9 @@ class DistrictSystemTest(TestCaseBase):
         super().setUp()
 
         project_name = "district_multiple_ghe"
-        self.data_dir, self.output_dir = self.set_up(os.path.dirname(__file__), project_name)
+        self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
+        # path to a sample UO project run with ghe features and TN sizing already run
+        # We'll need to set up a test environment for this eventually
         example_dir = Path.home() / "github" / "aaa"
 
         # load in the example geojson with multiple buildings
@@ -85,6 +86,12 @@ class DistrictSystemTest(TestCaseBase):
         )
 
         self.district.to_modelica()
+
+        # Remove temporary files that were created by ThermalNetwork to aid in building the Modelica model
+        if ghe_order_filepath.exists():
+            ghe_order_filepath.unlink()
+        if loop_order_filepath.exists():
+            loop_order_filepath.unlink()
 
     def test_build_district_system(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
