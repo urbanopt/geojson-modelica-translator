@@ -15,8 +15,8 @@
     {{ graph.couplings_by_type(coupling.network.id).load_couplings[building].load.id }}.ets.mSerWat_flow_nominal,
     {% endfor %}
     {{ graph.couplings_by_type(coupling.network.id).load_couplings[sys_params.num_buildings-1].load.id }}.ets.mSerWat_flow_nominal},
-    lDis={{ piping_data["list_of_pipe_lengths"][:-1] }},
-    lEnd={{ piping_data["list_of_pipe_lengths"][-1] }})
+    lDis={{ globals["list_of_pipe_lengths"][:-1] }},
+    lEnd={{ globals["list_of_pipe_lengths"][-1] }})
     "Design data"
     {% raw %}annotation (Placement(transformation(extent={{-140,100},{-120,120}})));
   parameter Boolean allowFlowReversalSer = true

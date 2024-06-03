@@ -93,13 +93,6 @@ class GroundCoupling(NetworkBase):
             template_data["first_phase_lag"]=matching_rows['PL1'].iloc[0]
             template_data["second_phase_lag"]=matching_rows['PL2'].iloc[0]
 
-        # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
-        # TODO: only check for total_length if type==ThermalConnector
-        # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-        # TODO: make sure the list of lengths is starting from the outlet of the ghe
-        template_data["list_of_pipe_lengths"] = self.gj.get_feature("$.features.[*].properties.total_length")
-        template_data["total_horizontal_pipe_length"] = sum(template_data["list_of_pipe_lengths"])
-
         # create horizontal piping package paths
         b_modelica_path = ModelicaPath(self.ground_coupling_name, scaffold.networks_path.files_dir, True)
 
