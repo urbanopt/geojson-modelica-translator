@@ -8,9 +8,7 @@ from jsonschema.validators import Draft202012Validator as LatestValidator
 
 
 class Schemas:
-    """
-    Class to hold the various schemas
-    """
+    """Class to hold the various schemas"""
 
     def __init__(self):
         """Load in the schemas"""
@@ -31,15 +29,14 @@ class Schemas:
                 self.schemas[s] = json.load(f)
 
     def retrieve(self, name):
-        """name of the schema to retrieve"""
+        """Name of the schema to retrieve"""
         if self.schemas.get(name):
             return self.schemas[name]
         else:
             raise NameError(f"Schema for {name} does not exist")
 
     def validate(self, name, instance):
-        """
-        Validate an instance against a loaded schema
+        """Validate an instance against a loaded schema
 
         :param name: str, name of the schema to validate against
         :param instance: dict, instance to validate

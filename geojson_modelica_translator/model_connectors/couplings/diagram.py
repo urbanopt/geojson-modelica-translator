@@ -19,7 +19,8 @@ NodePort = namedtuple("NodePort", ["node", "port"])
 
 class DiagramNode:
     def __init__(self, context_id, model_name, model_type):
-        """
+        """DiagramNode represents a node in the diagram graph
+
         :param context_id: str, used for "grouping" nodes, e.g., this would be
           either the coupling id or the model id (depending on where the icon is declared)
         :param model_name: str
@@ -58,7 +59,8 @@ class DiagramNode:
         return hash((self.context_id, self.model_name, self.model_type))
 
     def add_connection(self, this_port, other_node, other_port):
-        """
+        """Add a connection to the diagram
+
         :param this_port: str, name or dotted path of port for this node (should not start with '.' though)
         :param other_node: DiagramNode, other node connecting to
         :param other_port: str, name or dotted path of port for other node (should not start with '.' though)
@@ -440,12 +442,12 @@ class DiagramIcon(ABC):
     @property
     @abstractmethod
     def height(self):
-        """fraction of a diagram grid cell height (1 is full height, 0.5 is half, etc)"""
+        """Fraction of a diagram grid cell height (1 is full height, 0.5 is half, etc)"""
 
     @property
     @abstractmethod
     def width(self):
-        """fraction of a diagram grid cell width (1 is full width, 0.5 is half, etc)"""
+        """Fraction of a diagram grid cell width (1 is full width, 0.5 is half, etc)"""
 
     @staticmethod
     def get_icon(icon_type):

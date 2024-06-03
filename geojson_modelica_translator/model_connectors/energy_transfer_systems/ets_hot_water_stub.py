@@ -13,8 +13,7 @@ class EtsHotWaterStub(EnergyTransferBase):
         self.id = "etsHotWatStub_" + simple_uuid()
 
     def to_modelica(self, scaffold):
-        """
-        Create indirect cooling models based on the data in the buildings and geojsons
+        """Create indirect cooling models based on the data in the buildings and geojsons
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """

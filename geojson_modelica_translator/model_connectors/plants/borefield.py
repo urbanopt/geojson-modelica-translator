@@ -64,8 +64,8 @@ class Borefield(PlantBase):
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
 
     def to_modelica(self, scaffold):
-        """
-        Create timeSeries models based on the data in the buildings and geojsons
+        """Convert the Borefield to Modelica code
+        Create timeSeries models based on the data in the buildings and GeoJSONs
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """

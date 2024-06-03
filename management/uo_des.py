@@ -62,8 +62,8 @@ def build_sys_param(
     overwrite: bool,
     microgrid: bool,
 ):
-    """
-    Create system parameters file using uo_sdk output
+    """Create system parameters file using uo_sdk output
+    #FIXME: Formatting of the args...
 
     SYS_PARAM_FILENAME: Path/name to sys-param file be created. Be sure to include the ".json" suffix.
 
@@ -196,7 +196,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     type=int,
 )
 def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
-    """
+    """Run the model
     \b
     Run the Modelica project in a docker-based environment.
     Results are saved at the same level as the project path that is passed.
