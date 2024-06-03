@@ -1,5 +1,5 @@
   {{ model.modelica_type }} {{ model.id }}(
-    soiDat={{coupling.network.id}}.borFieDat.soiDat,
+    soiDat={{coupling.plant.id}}.borFieDat.soiDat,
     len=cat(
         1,
         datDes.lDis,
