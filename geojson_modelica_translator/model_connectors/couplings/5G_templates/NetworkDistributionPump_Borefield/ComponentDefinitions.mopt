@@ -1,6 +1,10 @@
   // No components for borefield and ambient loop coupling
+  // The code in this file only applies to multi-ghe (as implemented spring 2024)
+  // I'm struggling with a basic Jinja if-statement though :(
+  {% if "num_of_ghe_groups" in sys_params}
   {% for num_of_ghe_group in range(sys_params["num_of_ghe_groups"]) %}
 
+// {# is how you comment a whole block of Jinja. Code block 4 is not supported by OM
 {#
   // start code block 4
   // Dymola alternative (before moving to OpenModelica)
@@ -93,3 +97,4 @@
   // end code block 5
 
   {% endfor %}
+  {% endif }
