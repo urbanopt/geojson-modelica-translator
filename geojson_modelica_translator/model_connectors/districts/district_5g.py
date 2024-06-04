@@ -401,7 +401,7 @@ class District:
                 self.ghe_groups_by_num[num_of_ghe_group]["lst_borehole_diameter_in_group"] = []
                 # iterates on list of ghe ids in one ghe group at a time
                 for ghe_id_in_grp in self.ghe_groups_by_num[num_of_ghe_group]["list_ghe_ids_in_group"]:
-                    # iterates on all ghes within system paramaters file
+                    # iterates on all ghes within system parameters file
                     for sys_params_of_ghe in sys_params_ghe_specific_params:
                         # if this is true, then this is the instance of ghe of interest, thus, we collect its parameters
                         if ghe_id_in_grp == sys_params_of_ghe["ghe_id"]:
@@ -729,7 +729,6 @@ class District:
                         dictionary=diagram_district_loop_components_origin_dict,
                         value_key="extent_coo",
                         annotation_key="Placement",
-                        # False,  # TODO: @Shadi check that connection_boolean is not needed in this method
                         delta_x_coo=bldg_delta_x_coo,
                         num_of_bldg_ghe_group=num_of_bldg_group,
                         component_type="district_loop",
@@ -853,7 +852,6 @@ class District:
                     dictionary=diagram_ghe_components_origin_dict,
                     value_key="extent_coo",
                     annotation_key="Placement",
-                    # False,  # TODO: @Shadi check that connection_boolean is not needed in this method
                     delta_x_coo=ghe_delta_x_coo,
                     num_of_bldg_ghe_group=num_of_ghe_group,
                     component_type="District System",
