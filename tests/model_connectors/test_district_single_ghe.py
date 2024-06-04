@@ -52,7 +52,7 @@ class DistrictSystemTest(TestCaseBase):
         graph = CouplingGraph(all_couplings)
 
         self.district = District(
-            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, coupling_graph=graph
+            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, geojson_file=self.gj, coupling_graph=graph
         )
 
         self.district.to_modelica()

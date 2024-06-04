@@ -34,9 +34,10 @@ def render_template(template_name, template_params):
 class District:
     """Class for modeling entire district energy systems"""
 
-    def __init__(self, root_dir, project_name, system_parameters, coupling_graph):
+    def __init__(self, root_dir, project_name, system_parameters, geojson_file, coupling_graph):
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
+        self.gj = geojson_file
         self._coupling_graph = coupling_graph
         self.district_model_filepath = None
         # Modelica can't handle spaces in project name or path
@@ -90,7 +91,6 @@ class District:
                 # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
                 # TODO: make sure the list of lengths is starting from the outlet of the ghe
                 "list_of_pipe_lengths": self.gj.get_feature("$.features.[*].properties.total_length"),
-                "total_horizontal_pipe_length": sum(globals["list_of_pipe_lengths"]),
             },
             "graph": self._coupling_graph,
             "sys_params": {

@@ -18,11 +18,10 @@ logger = logging.getLogger(__name__)
 class GroundCoupling(NetworkBase):
     model_name = "GroundCoupling"
 
-    def __init__(self, system_parameters, geojson_file):
+    def __init__(self, system_parameters):
         super().__init__(system_parameters)
         self.id = "groCou_" + simple_uuid()
         self.ground_coupling_name = "GroundCoupling_" + simple_uuid()
-        self.gj = geojson_file
 
         self.required_mo_files.append(os.path.join(self.template_dir, "UndisturbedSoilTemperature.mo"))
         self.required_mo_files.append(os.path.join(self.template_dir, "UnidirectionalSeries.mo"))
