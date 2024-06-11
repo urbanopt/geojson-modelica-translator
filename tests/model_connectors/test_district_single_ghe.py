@@ -25,7 +25,7 @@ class DistrictSystemTest(TestCaseBase):
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load in the example geojson with multiple buildings
-        filename = Path(self.data_dir) / "time_series_ex1.json"
+        filename = Path(self.data_dir) / "time_series_ex2.json"
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
