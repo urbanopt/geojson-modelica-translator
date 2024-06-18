@@ -48,6 +48,7 @@ class DistrictSystemTest(TestCaseBase):
             all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="5G"))
         all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="5G"))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="5G"))
+        all_couplings.append(Coupling(ground_coupling, borefield, district_type="5G"))
 
         graph = CouplingGraph(all_couplings)
 
