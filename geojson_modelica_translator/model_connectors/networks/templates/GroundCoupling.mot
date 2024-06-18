@@ -1,11 +1,11 @@
-within {{ project_name }}.Networks;
+within {{ project_name }}.Networks.{{ model_name }};
 model GroundCoupling
   "Thermal coupling between buried pipes and ground"
   parameter Integer nPip(
     min=1)=1
     "Number of buried pipes";
   parameter Integer nSeg(
-    min=1)={{ sys_params.num_buildings }}+1
+    min=1)={{ piping_data["num_buildings"] }}+1
     "Number of axial segments";
   replaceable parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone soiDat
     "Soil thermal properties";

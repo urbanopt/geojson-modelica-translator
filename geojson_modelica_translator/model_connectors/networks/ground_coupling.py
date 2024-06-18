@@ -62,6 +62,7 @@ class GroundCoupling(NetworkBase):
             "weather": self.system_parameters.get_param(
                 "$.weather"
             ),
+            "num_buildings": len(self.system_parameters.get_param("$.buildings"))
         }
 
         # process pipe wall thickness
