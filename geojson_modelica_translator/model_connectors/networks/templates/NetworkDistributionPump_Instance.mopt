@@ -14,10 +14,10 @@
     dhEnd={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }},
     dIns={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.insulation_thickness }},
     kIns={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.insulation_conductivity }},
-    thickness={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.pipe_wall_thickness }},
+    thickness={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }}/({{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.diameter_ratio }}-2),
     roughness={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.roughness }},
     cPip=2300,
-    rhoPip={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.rho_cp }}/cPip
+    rhoPip={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.rho_cp }}/dis.cPip
     )
     "Distribution network"
     {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
