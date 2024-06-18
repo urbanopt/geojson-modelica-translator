@@ -1,4 +1,4 @@
-within {{ project_name }}.Networks;
+within geojson_modelica_translator.model_connectors.templates;
 model ConnectionSeriesAutosize
   "Model for connecting an agent to the DHC system"
   extends

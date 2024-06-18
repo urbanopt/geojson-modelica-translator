@@ -1,15 +1,15 @@
-within {{ project_name }}.Networks;
+within geojson_modelica_translator.model_connectors.templates;
 model UnidirectionalSeries
   "Hydronic network for unidirectional series DHC system"
   extends
     Buildings.Experimental.DHC.Networks.BaseClasses.PartialDistribution1Pipe(
     tau=5*60,
-    redeclare {{ project_name }}.Networks.ConnectionSeriesAutosize con[nCon](
-      each final dp_length_nominal=dp_length_nominal,
+    redeclare Networks.ConnectionSeriesAutosize con[nCon](
       final lDis=lDis,
       final lCon=lCon,
       final dhDis=dhDis,
       final dhCon=dhCon,
+      each final dp_length_nominal=dp_length_nominal,
       each final dIns=dIns,
       each final kIns=kIns,
       each final thickness=thickness,

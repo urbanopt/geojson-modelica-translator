@@ -1,4 +1,4 @@
-within {{ project_name }}.Networks;
+within geojson_modelica_translator.model_connectors.templates;
 model UndisturbedSoilTemperature "Undisturbed soil temperature"
   parameter Modelica.Units.SI.Length dep "Soil depth";
   replaceable parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone
