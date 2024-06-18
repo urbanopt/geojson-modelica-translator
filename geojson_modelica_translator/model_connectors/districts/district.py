@@ -89,7 +89,7 @@ class District:
                 # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
                 # TODO: only check for total_length if type==ThermalConnector
                 # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-                # TODO: make sure the list of lengths is starting from the outlet of the ghe
+                # TODO: make sure the list of lengths is starting from the outlet of the ghe, convert units to meter
                 "list_of_pipe_lengths": self.gj.get_feature("$.features.[*].properties.total_length"),
             },
             "graph": self._coupling_graph,
