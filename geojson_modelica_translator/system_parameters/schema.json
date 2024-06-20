@@ -1258,6 +1258,20 @@
                   "type": "number"
                 }
               }
+            },
+            "wahp": {
+              "description": "Parameters for WAHP",
+              "type": "object",
+              "properties": {
+                "cop_c": {
+                  "description": "Efficiency of heat pump during cooling.",
+                  "type": "number"
+                },
+                "cop_h": {
+                  "description": "Efficiency of heat pump during heating.",
+                  "type": "number"
+                }
+              }
             }
           }
         }
