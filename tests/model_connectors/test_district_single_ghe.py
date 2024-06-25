@@ -10,8 +10,8 @@ from geojson_modelica_translator.model_connectors.couplings.coupling import Coup
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
 from geojson_modelica_translator.model_connectors.districts.district import District
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import TimeSeries
-from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.networks.ground_coupling import GroundCoupling
+from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from tests.base_test_case import TestCaseBase
@@ -53,7 +53,11 @@ class DistrictSystemTest(TestCaseBase):
         graph = CouplingGraph(all_couplings)
 
         self.district = District(
-            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, geojson_file=self.gj, coupling_graph=graph
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            geojson_file=self.gj,
+            coupling_graph=graph,
         )
 
         self.district.to_modelica()

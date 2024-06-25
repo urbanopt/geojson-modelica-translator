@@ -85,16 +85,16 @@
       "central_pump_parameters": {
         "pump_design_head": 60000
       },
-	  "horizontal_piping_parameters": {
-		"hydraulic_diameter": 0.089,
-		"insulation_thickness": 0.2,
-		"insulation_conductivity": 2.3,
-		"diameter_ratio": 11,
-		"roughness": 1e-6,
-		"rho_cp": 2139000,
-		"number_of_segments": 1,
-		"buried_depth": 1.5
-	  },
+      "horizontal_piping_parameters": {
+        "hydraulic_diameter": 0.089,
+        "insulation_thickness": 0.2,
+        "insulation_conductivity": 2.3,
+        "diameter_ratio": 11,
+        "roughness": 1e-06,
+        "rho_cp": 2139000,
+        "number_of_segments": 1,
+        "buried_depth": 1.5
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",

@@ -36,7 +36,7 @@ def convert_ft_to_m(f):
     :param c: float, length in ft
     :return: float, length in meter
     """
-    return 0.3048*f
+    return 0.3048 * f
 
 
 def linecount(filename: Path) -> int:

@@ -12,8 +12,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
-from geojson_modelica_translator.utils import convert_ft_to_m
+from geojson_modelica_translator.utils import convert_ft_to_m, mbl_version
 
 logger = logging.getLogger(__name__)
 
@@ -50,9 +49,8 @@ class District:
             )
 
     def to_modelica(self):
-        """Generate modelica files for the models as well as the modelica file for
-        the entire district system.
-        """
+        """Generate modelica files for the models as well as the modelica file for the entire district system."""
+
         # scaffold the project
         self._scaffold.create()
         self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
@@ -97,8 +95,8 @@ class District:
                 # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
                 # TODO: only check for total_length if type==ThermalConnector
                 # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-                # TODO: make sure the list of lengths is starting from the outlet of the ghe, convert units to meter
-                "lDis": str(list_of_pipe_lengths[:-1]).replace('[','{').replace(']','}'),
+                # TODO: make sure the list of lengths is starting from the outlet of the ghe
+                "lDis": str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}"),
                 "lEnd": list_of_pipe_lengths[-1],
             },
             "graph": self._coupling_graph,

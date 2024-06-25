@@ -59,39 +59,40 @@ class GroundCoupling(NetworkBase):
             "buried_depth": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.horizontal_piping_parameters.buried_depth"
             ),
-            "weather": self.system_parameters.get_param(
-                "$.weather"
-            ),
-            "num_buildings": len(self.system_parameters.get_param("$.buildings"))
+            "weather": self.system_parameters.get_param("$.weather"),
+            "num_buildings": len(self.system_parameters.get_param("$.buildings")),
         }
 
         # process pipe wall thickness
         if template_data["hydraulic_diameter"] and template_data["diameter_ratio"]:
-            template_data["pipe_wall_thickness"] = template_data["hydraulic_diameter"]/(template_data["diameter_ratio"]-2)
+            template_data["pipe_wall_thickness"] = template_data["hydraulic_diameter"] / (
+                template_data["diameter_ratio"] - 2
+            )
         else:
             template_data["pipe_wall_thickness"] = None
 
-        # get weather station name from weather file 
+        # get weather station name from weather file
         parts = template_data["weather"].split("/")[-1].split("_")
-        if len(parts)==4:
-            station_name=parts[2]
-        elif len(parts)==3:
-            station_name=parts[1]
-        station_name = re.sub(r'\d+', '', station_name).replace('.', ' ')
+        if len(parts) == 4:
+            station_name = parts[2]
+        elif len(parts) == 3:
+            station_name = parts[1]
+        station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
 
         # search for coefficients for calculating soil temperature based on station
-        df = pd.read_excel(Path(__file__).parent / "data" / "Soil_temp_coefficients.xlsx")
-        matching_rows = df[df.apply(lambda row: row.astype(str).str.contains(station_name).any(), axis=1)]
-        if len(matching_rows)==0:
+        coefs = pd.read_excel(Path(__file__).parent / "data" / "Soil_temp_coefficients.xlsx")
+        matching_rows = coefs[coefs.apply(lambda row: row.astype(str).str.contains(station_name).any(), axis=1)]
+        if len(matching_rows) == 0:
             raise ValueError(
                 "No matching weather station has been found. Please check your weather file name format."
-                "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)")
+                "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
+            )
         else:
-            template_data["surface_temp"]=matching_rows['Ts,avg, °C'].iloc[0]
-            template_data["first_amplitude"]=matching_rows['Ts,amplitude,1, °C'].iloc[0]
-            template_data["second_amplitude"]=matching_rows['Ts,amplitude,2, °C'].iloc[0]
-            template_data["first_phase_lag"]=matching_rows['PL1'].iloc[0]
-            template_data["second_phase_lag"]=matching_rows['PL2'].iloc[0]
+            template_data["surface_temp"] = matching_rows["Ts,avg, °C"].iloc[0]
+            template_data["first_amplitude"] = matching_rows["Ts,amplitude,1, °C"].iloc[0]
+            template_data["second_amplitude"] = matching_rows["Ts,amplitude,2, °C"].iloc[0]
+            template_data["first_phase_lag"] = matching_rows["PL1"].iloc[0]
+            template_data["second_phase_lag"] = matching_rows["PL2"].iloc[0]
 
         # create horizontal piping package paths
         b_modelica_path = ModelicaPath(self.ground_coupling_name, scaffold.networks_path.files_dir, True)

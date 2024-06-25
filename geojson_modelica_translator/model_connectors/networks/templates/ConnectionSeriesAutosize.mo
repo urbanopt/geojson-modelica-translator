@@ -59,7 +59,7 @@ First implementation.
 This model represents the supply and return lines to connect an
 agent (e.g., an energy transfer station) to a one-pipe main distribution
 system.
-The instances of the pipe model are autosized based on the pressure drop per pipe length 
+The instances of the pipe model are autosized based on the pressure drop per pipe length
 at nominal flow rate.
 </p>
 </html>"));
