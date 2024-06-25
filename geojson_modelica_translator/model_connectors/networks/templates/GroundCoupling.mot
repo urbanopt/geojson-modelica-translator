@@ -29,8 +29,8 @@ model GroundCoupling
     annotation (Dialog(group="Soil Temp calculation"));
   parameter Modelica.Units.SI.Length len[nSeg]
     "Pipes length";
-  parameter Modelica.Units.SI.Length dep[nPip]={% raw %}{{% endraw %}{{ piping_data["buried_depth"] }}{% raw %}}{% endraw %}
-    {% raw %} "Pipes buried depth";
+  parameter Modelica.Units.SI.Length dep[nPip]={% raw %}{{% endraw %}{{ piping_data["buried_depth"] }} {% raw %}}
+    {% endraw %} {% raw %} "Pipes buried depth";
   parameter Modelica.Units.SI.Length pos[nPip]={0}
     "Pipes horizontal coordinate (to an arbitrary reference point)";
   parameter Modelica.Units.SI.Length rad[nPip]
@@ -60,8 +60,8 @@ protected
 equation
   for seg in 1:nSeg loop
     ports[:,seg].T .- soi.T=P*ports[:,seg].Q_flow/(2*Modelica.Constants.pi*soiDat.kSoi*len[seg]);
-  end for;{% raw %}
-  annotation (
+  end for;
+  {% raw %}annotation (
     Icon(
       graphics={
         Text(
@@ -333,4 +333,5 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end GroundCoupling;{% endraw %}
+end GroundCoupling;
+{% endraw %}
