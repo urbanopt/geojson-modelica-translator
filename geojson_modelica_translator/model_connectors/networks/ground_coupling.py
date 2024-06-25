@@ -80,7 +80,7 @@ class GroundCoupling(NetworkBase):
         station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
 
         # search for coefficients for calculating soil temperature based on station
-        coefs = pd.read_excel(Path(__file__).parent / "data" / "Soil_temp_coefficients.xlsx")
+        coefs = pd.read_csv(Path(__file__).parent / "data" / "Soil_temp_coefficients.csv")
         matching_rows = coefs[coefs.apply(lambda row: row.astype(str).str.contains(station_name).any(), axis=1)]
         if len(matching_rows) == 0:
             raise ValueError(
@@ -88,9 +88,9 @@ class GroundCoupling(NetworkBase):
                 "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
             )
         else:
-            template_data["surface_temp"] = matching_rows["Ts,avg, °C"].iloc[0]
-            template_data["first_amplitude"] = matching_rows["Ts,amplitude,1, °C"].iloc[0]
-            template_data["second_amplitude"] = matching_rows["Ts,amplitude,2, °C"].iloc[0]
+            template_data["surface_temp"] = matching_rows["Ts,avg, C"].iloc[0] + 273.15
+            template_data["first_amplitude"] = matching_rows["Ts,amplitude,1, C"].iloc[0]
+            template_data["second_amplitude"] = matching_rows["Ts,amplitude,2, C"].iloc[0]
             template_data["first_phase_lag"] = matching_rows["PL1"].iloc[0]
             template_data["second_phase_lag"] = matching_rows["PL2"].iloc[0]
 
