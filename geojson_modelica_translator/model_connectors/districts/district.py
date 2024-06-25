@@ -34,7 +34,7 @@ def render_template(template_name, template_params):
 class District:
     """Class for modeling entire district energy systems"""
 
-    def __init__(self, root_dir, project_name, system_parameters, geojson_file, coupling_graph):
+    def __init__(self, root_dir, project_name, system_parameters, coupling_graph, geojson_file=None):
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
         self.gj = geojson_file
@@ -79,6 +79,11 @@ class District:
             "models": [],
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
         }
+        if self.gj:
+            list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
+        else:
+            # this is a placeholder list to avoid breaking district tests when a geojson is not passed
+            list_of_pipe_lengths = [0]
         common_template_params = {
             "globals": {
                 "medium_w": "MediumW",
@@ -90,7 +95,8 @@ class District:
                 # TODO: only check for total_length if type==ThermalConnector
                 # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
                 # TODO: make sure the list of lengths is starting from the outlet of the ghe, convert units to meter
-                "list_of_pipe_lengths": self.gj.get_feature("$.features.[*].properties.total_length"),
+                "lDis": str(list_of_pipe_lengths[:-1]).replace('[','{').replace(']','}'),
+                "lEnd": list_of_pipe_lengths[-1],
             },
             "graph": self._coupling_graph,
             "sys_params": {
