@@ -29,7 +29,7 @@ model GroundCoupling
     annotation (Dialog(group="Soil Temp calculation"));
   parameter Modelica.Units.SI.Length len[nSeg]
     "Pipes length";
-  parameter Modelica.Units.SI.Length dep[nPip]={{ piping_data["buried_depth"] }}
+  parameter Modelica.Units.SI.Length dep[nPip]={% raw %}{{% endraw %}{{ piping_data["buried_depth"] }}{% raw %}}{% endraw %}
     {% raw %} "Pipes buried depth";
   parameter Modelica.Units.SI.Length pos[nPip]={0}
     "Pipes horizontal coordinate (to an arbitrary reference point)";
