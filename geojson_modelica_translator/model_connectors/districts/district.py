@@ -13,6 +13,7 @@ from geojson_modelica_translator.model_connectors.couplings.diagram import Diagr
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.utils import mbl_version
+from geojson_modelica_translator.utils import convert_ft_to_m
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,8 @@ class District:
         }
         if self.gj:
             list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
+            for i in range(len(list_of_pipe_lengths)):
+                list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
         else:
             # this is a placeholder list to avoid breaking district tests when a geojson is not passed
             list_of_pipe_lengths = [0]
