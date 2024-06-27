@@ -1260,7 +1260,7 @@
               }
             },
             "wahp": {
-              "description": "Parameters for WAHP",
+              "description": "Parameters for a Water-to-Air Heat Pump",
               "type": "object",
               "properties": {
                 "cop_c": {
