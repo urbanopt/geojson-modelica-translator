@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:noble
 
 # These libraries help compile and simulate separately.
 # libgfortran4 is needed to load FMU for FMUZoneAdapterZones1.mo
@@ -13,7 +13,7 @@ RUN apt update && apt --no-install-recommends install -y \
 # Duplicating code from OM Dockerfile: https://github.com/OpenModelica/OpenModelicaDockerImages/blob/v1.22.1/Dockerfile
 # This allows us to use a different Ubuntu version than the OM Dockerfile
 # tests/GMT_Lib/test_gmt_lib_des.py fails with jammy, works with focal.
-ARG VERSION=1.22.1
+ARG VERSION=1.23.0
 
 RUN export DEBIAN_FRONTEND="noninteractive" && echo "VERSION: $VERSION" && test ! -z "$VERSION" && apt update && apt upgrade -qy && apt dist-upgrade -qy \
     && apt install -qy gnupg wget ca-certificates apt-transport-https \
