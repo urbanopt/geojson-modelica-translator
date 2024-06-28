@@ -1488,6 +1488,15 @@
             "doubleutube"
           ],
           "default": "singleutube"
+        },
+        "doubleutube_configuration": {
+          "description": "Borehole configuration when the borefield is doubleutube.",
+          "type": "string",
+          "enum": [
+            "parallel",
+            "series"
+          ],
+          "default": "series"
         }
       },
       "required": [
@@ -1604,6 +1613,11 @@
             "rectangle"
           ],
           "default": "rectangle"
+        },
+        "lEnd": {
+          "description": "Length of the end of the distribution line (after last borefield connection), in meters.",
+          "type": "number",
+          "default": 100
         }
       },
       "required": [

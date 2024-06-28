@@ -69,8 +69,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         # compile the project
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile', 'BouncingBall',
-                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'),
-                         run_path=self.run_path)
+                                      file_to_load=os.path.join(self.run_path, 'BouncingBall.mo'),
+                                      run_path=self.run_path)
 
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall.fmu')))
@@ -85,8 +85,8 @@ class ModelicaRunnerTest(unittest.TestCase):
     def test_simulate_bouncing_ball_in_docker(self):
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile_and_run', 'BouncingBall',
-                         file_to_load = os.path.join(self.run_path, 'BouncingBall.mo'),
-                         run_path=self.run_path)
+                                      file_to_load=os.path.join(self.run_path, 'BouncingBall.mo'),
+                                      run_path=self.run_path)
 
         self.assertTrue(success)
 
@@ -106,8 +106,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         # run the project
         mr = ModelicaRunner()
         mr.run_in_docker('run', 'BouncingBall',
-                         file_to_load = os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
-                         run_path = self.fmu_run_path)
+                         file_to_load=os.path.join(self.fmu_run_path, 'BouncingBall.fmu'),
+                         run_path=self.fmu_run_path)
 
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
         self.assertTrue(os.path.exists(os.path.join(results_path, 'BouncingBall_result.mat')))
@@ -147,8 +147,8 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile_and_run', model_name,
-                         run_path=self.msl_run_path, project_in_library=True,
-                         start_time=0, stop_time=60, step_size=0.1)
+                                      run_path=self.msl_run_path, project_in_library=True,
+                                      start_time=0, stop_time=60, step_size=0.1)
 
         self.assertTrue(success)
         self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
@@ -162,8 +162,8 @@ class ModelicaRunnerTest(unittest.TestCase):
 
         mr = ModelicaRunner()
         success, _ = mr.run_in_docker('compile_and_run', model_name,
-                         run_path=self.msl_run_path, project_in_library=True,
-                         start_time=0, stop_time=60, number_of_intervals=6)
+                                      run_path=self.msl_run_path, project_in_library=True,
+                                      start_time=0, stop_time=60, number_of_intervals=6)
 
         self.assertTrue(success)
         self.assertTrue((results_path / 'stdout.log').exists())

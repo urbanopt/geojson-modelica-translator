@@ -71,7 +71,7 @@ class CLIIntegrationTest(TestCase):
 
     def test_cli_makes_model(self):
         # -- Setup
-        # Gnerate a sys-params file using the CLI
+        # Generate a sys-params file using the CLI
         project_name = "modelica_project_4g"
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)

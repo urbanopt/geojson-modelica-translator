@@ -7,7 +7,7 @@ import pytest
 
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
-from geojson_modelica_translator.model_connectors.districts.district import District
+from geojson_modelica_translator.model_connectors.districts.district_5g import District
 from geojson_modelica_translator.model_connectors.networks.network_ambient_water_stub import NetworkAmbientWaterStub
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
@@ -39,7 +39,13 @@ class DistrictSystemTest(TestCaseBase):
         )
 
         self.district = District(
-            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, coupling_graph=graph
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            coupling_graph=graph,
+            borehole_pipe_arrangement=borefield.pipe_arrangement,
+            borefield_borehole_configuration_type=borefield.borehole_configuration_type,
+            borefield_id=borefield.id,
         )
         self.district.to_modelica()
 

@@ -45,7 +45,7 @@ class Scaffold:
         self.package_path = os.path.join(self.project_path, "package.mo")
         if os.path.exists(self.project_path):
             if not self.overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % self.project_path)
+                raise Exception(f"Directory already exists and overwrite is false for {self.project_path}")
             else:
                 shutil.rmtree(self.project_path)
 
@@ -82,7 +82,7 @@ class Scaffold:
     def clear_or_create_path(self, path, overwrite=False):
         if os.path.exists(path):
             if not overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % path)
+                raise Exception(f"Directory already exists and overwrite is false for {path}")
             else:
                 shutil.rmtree(path)
         os.makedirs(path, exist_ok=True)

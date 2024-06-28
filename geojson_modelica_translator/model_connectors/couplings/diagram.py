@@ -211,9 +211,9 @@ class Diagram:
             nodes = []
             for _, context_nodes in self._initial_diagram_graph.items():
                 for _, node in context_nodes.items():
-                    if node_type != "auxillary" and node.model_type == node_type:
+                    if node_type != "auxiliary" and node.model_type == node_type:
                         nodes.append(node)
-                    if node_type == "auxillary" and node.model_type not in ["load", "ets", "plant", "network"]:
+                    if node_type == "auxiliary" and node.model_type not in ["load", "ets", "plant", "network"]:
                         nodes.append(node)
             return nodes
 
@@ -269,9 +269,9 @@ class Diagram:
         for left, right in zip(network_plant_rows, load_ets_rows):
             merged_rows.append(left + right)
 
-        # add auxillary rows
+        # add auxiliary rows
         grid_row = []
-        for node in get_nodes_of_type("auxillary"):
+        for node in get_nodes_of_type("auxiliary"):
             if len(grid_row) == max_icons_per_row:
                 # start a new row
                 merged_rows.append(grid_row)
