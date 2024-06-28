@@ -184,7 +184,7 @@
       "central_pump_parameters": {
         "pump_design_head": 60000
       },
-      "wahp": {
+      "water_to_air_heat_pump": {
         "cop_c": 3.0,
         "cop_h": 3.0
       }
