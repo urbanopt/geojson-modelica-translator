@@ -295,7 +295,7 @@
               "type": "number"
             },
             "max_power": {
-              "description": "Maximim load power (kW)",
+              "description": "Maximum load power (kW)",
               "type": "number"
             },
             "max_reactive_power": {
@@ -1003,7 +1003,7 @@
           "description": "Net PV Surface Area (m2)",
           "type": "number"
         },
-        "suface_tilt": {
+        "surface_tilt": {
           "description": "PV Surface Tilt (degrees)",
           "type": "number"
         },
@@ -1255,6 +1255,20 @@
               "properties": {
                 "pump_design_head": {
                   "description": "Measured in Pa.",
+                  "type": "number"
+                }
+              }
+            },
+            "water_to_air_heat_pump": {
+              "description": "Parameters for a Water-to-Air Heat Pump",
+              "type": "object",
+              "properties": {
+                "cop_c": {
+                  "description": "Efficiency of heat pump during cooling.",
+                  "type": "number"
+                },
+                "cop_h": {
+                  "description": "Efficiency of heat pump during heating.",
                   "type": "number"
                 }
               }
