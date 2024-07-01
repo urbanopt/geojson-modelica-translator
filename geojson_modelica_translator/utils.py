@@ -33,7 +33,7 @@ def convert_c_to_k(c):
 def convert_ft_to_m(f):
     """Converts a length in foot to meter
 
-    :param c: float, length in ft
+    :param f: float, length in ft
     :return: float, length in meter
     """
     return 0.3048 * f
