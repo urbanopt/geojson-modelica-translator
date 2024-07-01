@@ -78,7 +78,7 @@ class District:
             "models": [],
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
         }
-            
+
         common_template_params = {
             "globals": {
                 "medium_w": "MediumW",
@@ -94,7 +94,7 @@ class District:
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
         }
-        
+
         if self.gj:
             # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
             # TODO: only check for total_length if type==ThermalConnector
@@ -103,8 +103,10 @@ class District:
             list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
             for i in range(len(list_of_pipe_lengths)):
                 list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
-            common_template_params["globals"]["lDis"] = str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}")
-            common_template_params["globals"]["lEnd"] = list_of_pipe_lengths[-1]  
+            common_template_params["globals"]["lDis"] = (
+                str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}")
+            )
+            common_template_params["globals"]["lEnd"] = list_of_pipe_lengths[-1]
 
         # render each coupling
         load_num = 1

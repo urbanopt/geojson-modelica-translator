@@ -147,7 +147,9 @@ class GeoJsonModelicaTranslator:
         self._project_name = project_name
         self._coupling_graph = CouplingGraph(self._couplings)
         if "fifth_generation" in district_type:
-            self._district = District(self._root_dir, self._project_name, self._system_parameters, self._coupling_graph, self._geojson)
+            self._district = District(
+                self._root_dir, self._project_name, self._system_parameters, self._coupling_graph, self._geojson
+            )
         else:
             self._district = District(self._root_dir, self._project_name, self._system_parameters, self._coupling_graph)
         self._package_created = False
