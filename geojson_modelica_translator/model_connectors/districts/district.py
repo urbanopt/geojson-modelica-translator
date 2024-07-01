@@ -78,13 +78,7 @@ class District:
             "models": [],
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
         }
-        if self.gj:
-            list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
-            for i in range(len(list_of_pipe_lengths)):
-                list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
-        else:
-            # this is a placeholder list to avoid breaking district tests when a geojson is not passed
-            list_of_pipe_lengths = [0]
+            
         common_template_params = {
             "globals": {
                 "medium_w": "MediumW",
@@ -92,12 +86,6 @@ class District:
                 "delChiWatTemDis": "delChiWatTemDis",
                 "delHeaWatTemBui": "delHeaWatTemBui",
                 "delHeaWatTemDis": "delHeaWatTemDis",
-                # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
-                # TODO: only check for total_length if type==ThermalConnector
-                # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-                # TODO: make sure the list of lengths is starting from the outlet of the ghe
-                "lDis": str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}"),
-                "lEnd": list_of_pipe_lengths[-1],
             },
             "graph": self._coupling_graph,
             "sys_params": {
@@ -106,6 +94,17 @@ class District:
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
         }
+        
+        if self.gj:
+            # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
+            # TODO: only check for total_length if type==ThermalConnector
+            # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
+            # TODO: make sure the list of lengths is starting from the outlet of the ghe
+            list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
+            for i in range(len(list_of_pipe_lengths)):
+                list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
+            common_template_params["globals"]["lDis"] = str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}")
+            common_template_params["globals"]["lEnd"] = list_of_pipe_lengths[-1]  
 
         # render each coupling
         load_num = 1
