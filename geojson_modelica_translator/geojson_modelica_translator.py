@@ -10,6 +10,7 @@ from geojson_modelica_translator.model_connectors.districts import District
 from geojson_modelica_translator.model_connectors.energy_transfer_systems import CoolingIndirect, HeatingIndirect
 from geojson_modelica_translator.model_connectors.load_connectors import Spawn, Teaser, TimeSeries, TimeSeriesMFT
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
+from geojson_modelica_translator.model_connectors.networks.ground_coupling import GroundCoupling
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
@@ -62,8 +63,11 @@ def _parse_couplings(geojson, sys_params, district_type=None):
         ambient_water_stub = NetworkDistributionPump(sys_params)
         # create borefield
         borefield = Borefield(sys_params)
+        # create ground coupling
+        ground_coupling = GroundCoupling(sys_params)
         all_couplings.append(Coupling(borefield, ambient_water_stub, district_type))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type))
+        all_couplings.append(Coupling(ground_coupling, borefield, district_type="5G"))
 
     # create the loads and their ETSes
     for building in geojson.buildings:
@@ -142,7 +146,10 @@ class GeoJsonModelicaTranslator:
         self._root_dir = root_dir
         self._project_name = project_name
         self._coupling_graph = CouplingGraph(self._couplings)
-        self._district = District(self._root_dir, self._project_name, self._system_parameters, self._coupling_graph)
+        if "fifth_generation" in district_type:
+            self._district = District(self._root_dir, self._project_name, self._system_parameters, self._coupling_graph, self._geojson)
+        else:
+            self._district = District(self._root_dir, self._project_name, self._system_parameters, self._coupling_graph)
         self._package_created = False
 
     def to_modelica(self):
