@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:focal
 
 # These libraries help compile and simulate separately.
 # libgfortran4 is needed to load FMU for FMUZoneAdapterZones1.mo
