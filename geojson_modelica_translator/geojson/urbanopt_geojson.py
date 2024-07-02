@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 
 import geojson
+from jsonpath_ng.ext import parse
 
 from geojson_modelica_translator.geojson.schemas import Schemas
 
@@ -81,3 +82,42 @@ class UrbanOptGeoJson:
 
         if not self.buildings:
             raise GeoJsonValidationError(f"No valid buildings found in GeoJSON file: {filename}")
+
+    def get_feature_by_id(self, feature_id=None):
+        """return geojson data for a specific feature (building, pipe, wire, junction, district system, etc).
+
+        :param feature_id: string, id of the object to look up in the geojson file
+        :return: dict, full feature data for the object with the given id
+        """
+
+        if feature_id is None:
+            raise SystemExit("No id submitted. Please retry and include the appropriate id")
+
+        for feature in self.data.features:
+            if feature["properties"]["id"] == str(feature_id):
+                return feature
+
+    def get_feature(self, jsonpath):
+        """Return the parameter(s) from a jsonpath.
+
+        :param path: string, period delimited path of the data to retrieve
+        :return: dict, full feature data for the object with the given id
+        """
+
+        if jsonpath is None or jsonpath == "":
+            return None
+
+        matches = parse(jsonpath).find(self.data)
+
+        results = []
+        for match in matches:
+            results.append(match.value)
+
+        if len(results) == 1:
+            # If only one value, then return that value and not a list of values
+            results = results[0]
+        elif len(results) == 0:
+            return print(f"No matches found for jsonpath {jsonpath}")
+
+        # otherwise return the list of values
+        return results
