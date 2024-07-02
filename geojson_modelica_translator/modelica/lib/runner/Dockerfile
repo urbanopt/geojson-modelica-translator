@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:focal
 
 # These libraries help compile and simulate separately.
 # libgfortran4 is needed to load FMU for FMUZoneAdapterZones1.mo
@@ -7,22 +7,21 @@ RUN apt update && apt --no-install-recommends install -y \
     gfortran \
     libpython3-dev \
     curl \
-    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 # Duplicating code from OM Dockerfile: https://github.com/OpenModelica/OpenModelicaDockerImages/blob/v1.22.1/Dockerfile
 # This allows us to use a different Ubuntu version than the OM Dockerfile
 # tests/GMT_Lib/test_gmt_lib_des.py fails with jammy, works with focal.
-ARG VERSION=1.23.0
+ARG OM_VERSION=1.23.0
 
-RUN export DEBIAN_FRONTEND="noninteractive" && echo "VERSION: $VERSION" && test ! -z "$VERSION" && apt update && apt upgrade -qy && apt dist-upgrade -qy \
+RUN export DEBIAN_FRONTEND="noninteractive" && echo "VERSION: $OM_VERSION" && test ! -z "$OM_VERSION" && apt update && apt upgrade -qy && apt dist-upgrade -qy \
     && apt install -qy gnupg wget ca-certificates apt-transport-https \
-    && echo "deb https://build.openmodelica.org/omc/builds/linux/releases/$VERSION/ `cat /etc/lsb-release | grep CODENAME | cut -d= -f2` release" > /etc/apt/sources.list.d/openmodelica.list \
+    && echo "deb https://build.openmodelica.org/omc/builds/linux/releases/$OM_VERSION/ `cat /etc/lsb-release | grep CODENAME | cut -d= -f2` release" > /etc/apt/sources.list.d/openmodelica.list \
     && wget -q https://build.openmodelica.org/apt/openmodelica.asc \
     && apt-key add openmodelica.asc \
     && rm openmodelica.asc \
     && apt update && apt upgrade && apt dist-upgrade \
-    && apt install --no-install-recommends -qy omc \
+    && apt install --no-install-recommends -qy omc cmake \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
