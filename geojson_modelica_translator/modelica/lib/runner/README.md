@@ -3,7 +3,7 @@
 ## Building and Pushing Docker Container
 
 The OpenModelica docker container provides compilation and simulation capabilities without needing to install OpenModelica on a client computer. The container
-includes Modelica Standards Library and a version of the Modelica Buildings Library. The table below shows the versions fo the dependencies.
+includes Modelica Standards Library and a version of the Modelica Buildings Library. The table below shows the versions of the dependencies.
 
 The GMT requires a locally built image or a version from Docker hub to run tests. The public use image is hosted on [Docker hub](https://hub.docker.com/r/nrel/gmt-om-runner).
 
@@ -16,7 +16,7 @@ cd geojson_modelica_translator/modelica/lib/runner
 docker build -t nrel/gmt-om-runner:latest .
 ```
 
-The default tag will be `nrel/gmt-om-runner:v2.0.1`, which is the default version used in the modelica_runner.py file.
+The default tag will be `nrel/gmt-om-runner:v2.1.0`, which is the default version used in the modelica_runner.py file.
 
 ### Versioning
 
@@ -24,6 +24,7 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 | GTM Runner Version | OM Version | MSL Version | MBL Version |
 | ------------------ | ---------- | ----------- | ----------- |
+| 2.1.0              | 1.23.0     | 4.0.0       | 10.0.0      |
 | 2.0.1              | 1.22.1     | 4.0.0       | 10.0.0      |
 | 2.0.0              | 1.22.1     | 4.0.0       | 10.0.0      |
 | 1.22.1             | 1.22.1     | 4.0.0       | 9.1.1       |
