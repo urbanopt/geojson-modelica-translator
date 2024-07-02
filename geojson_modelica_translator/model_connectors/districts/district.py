@@ -12,7 +12,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
+from geojson_modelica_translator.utils import convert_ft_to_m, mbl_version
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +34,10 @@ def render_template(template_name, template_params):
 class District:
     """Class for modeling entire district energy systems"""
 
-    def __init__(self, root_dir, project_name, system_parameters, coupling_graph):
+    def __init__(self, root_dir, project_name, system_parameters, coupling_graph, geojson_file=None):
         self._scaffold = Scaffold(root_dir, project_name)
         self.system_parameters = system_parameters
+        self.gj = geojson_file
         self._coupling_graph = coupling_graph
         self.district_model_filepath = None
         # Modelica can't handle spaces in project name or path
@@ -48,9 +49,8 @@ class District:
             )
 
     def to_modelica(self):
-        """Generate modelica files for the models as well as the modelica file for
-        the entire district system.
-        """
+        """Generate modelica files for the models as well as the modelica file for the entire district system."""
+
         # scaffold the project
         self._scaffold.create()
         self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
@@ -78,6 +78,7 @@ class District:
             "models": [],
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
         }
+
         common_template_params = {
             "globals": {
                 "medium_w": "MediumW",
@@ -93,6 +94,19 @@ class District:
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
         }
+
+        if self.gj:
+            # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
+            # TODO: only check for total_length if type==ThermalConnector
+            # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
+            # TODO: make sure the list of lengths is starting from the outlet of the ghe
+            list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
+            for i in range(len(list_of_pipe_lengths)):
+                list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
+            common_template_params["globals"]["lDis"] = (
+                str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}")
+            )
+            common_template_params["globals"]["lEnd"] = list_of_pipe_lengths[-1]
 
         # render each coupling
         load_num = 1
