@@ -19,10 +19,11 @@ logger = logging.getLogger(__name__)
 class Borefield(PlantBase):
     model_name = "Borefield"
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, ghe=None):
         super().__init__(system_parameters)
         self.id = "borFie_" + simple_uuid()
         self.borefield_name = "Borefield_" + simple_uuid()
+        self.ghe_id = ghe["ghe_id"]
 
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
 
@@ -38,9 +39,7 @@ class Borefield(PlantBase):
                 "input_path": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.ghe_parameters.ghe_dir"
                 ),
-                "ghe_id": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].ghe_id"
-                ),
+                "ghe_id": self.ghe_id,
             },
             "soil": {
                 "initial_ground_temperature": self.system_parameters.get_param(
@@ -71,17 +70,13 @@ class Borefield(PlantBase):
                 "flow_type": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
-                "borehole_height": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.length_of_boreholes"
+                "borehole_height": self.system_parameters.get_param_by_id(
+                    self.ghe_id, "$.borehole.length_of_boreholes"
                 ),
-                "borehole_diameter": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.diameter"
-                ),
-                "borehole_buried_depth": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.buried_depth"
-                ),
-                "number_of_boreholes": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params[0].borehole.number_of_boreholes"
+                "borehole_diameter": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.diameter"),
+                "borehole_buried_depth": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.buried_depth"),
+                "number_of_boreholes": self.system_parameters.get_param_by_id(
+                    self.ghe_id, "$.borehole.number_of_boreholes"
                 ),
             },
             "tube": {
@@ -120,7 +115,8 @@ class Borefield(PlantBase):
                 )
             except FileNotFoundError:
                 raise SystemExit(
-                    'When using a relative path to your ghe_dir, your path '
+                    "Can't find your g-function file.\n"
+                    'If using a relative path to your ghe_dir, your path '
                     f' \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your '
                     'sys-param file is in.'
                 )
