@@ -115,7 +115,7 @@ class Borefield(PlantBase):
                 )
             except FileNotFoundError:
                 raise SystemExit(
-                    "Can't find your g-function file.\n"
+                    f"Can't find g-function file for ghe with ID: {template_data['gfunction']['ghe_id']}.\n"
                     'If using a relative path to your ghe_dir, your path '
                     f' \'{template_data["gfunction"]["input_path"]}\' must be relative to the dir your '
                     'sys-param file is in.'
