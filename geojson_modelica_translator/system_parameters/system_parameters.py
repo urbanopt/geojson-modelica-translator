@@ -156,7 +156,7 @@ class SystemParameters:
         # TODO: check that ids are unique in the system parameters file, i.e., a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
             if b.get("geojson_id") == param_id:
-                logger.debug(f"Found building with id {param_id}")
+                # logger.debug(f"Found building with id {param_id}")
                 return self.get_param(jsonpath, data=b)
         with suppress(KeyError):
             # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
@@ -164,7 +164,7 @@ class SystemParameters:
             district = self.param_template.get("district_system", {})
             for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
                 if ghe.get("ghe_id") == param_id:
-                    logger.debug(f"Found ghe with id {param_id}")
+                    # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
         if param_id is None:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
