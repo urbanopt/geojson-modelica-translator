@@ -153,8 +153,6 @@ class CLIIntegrationTest(TestCase):
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
 
-        # FIXME : we need error handling when system parameter is created for fifth gen GHE system.
-        #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
             self.feature_file_path_ghe,
             self.sys_param_path,
