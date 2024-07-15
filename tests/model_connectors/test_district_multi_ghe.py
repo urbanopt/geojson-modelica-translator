@@ -44,14 +44,14 @@ class DistrictSystemTest(TestCaseBase):
             # create the building time series load
             time_series_load = TimeSeries(sys_params, geojson_load)
             # couple each time series load to the thermal loop
-            all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="5G"))
+            all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation"))
         for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
             # create borefields
             borefield = Borefield(sys_params, ghe)
             # couple each borefield to the thermal loop
-            all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="5G"))
-        all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="5G"))
-        all_couplings.append(Coupling(ground_coupling, borefield, district_type="5G"))
+            all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="fifth_generation"))
+        all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
+        all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
 
         graph = CouplingGraph(all_couplings)
 

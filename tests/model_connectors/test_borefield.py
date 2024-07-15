@@ -33,7 +33,7 @@ class DistrictSystemTest(TestCaseBase):
             # create borefields
             borefield = Borefield(sys_params, ghe)
             # couple each borefield to the thermal loop
-            all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="5G"))
+            all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="fifth_generation"))
 
         graph = CouplingGraph(all_couplings)
 
