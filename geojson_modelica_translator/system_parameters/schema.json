@@ -950,7 +950,6 @@
       },
       "required": [
         "ghe_specific_params",
-        "soil",
         "pipe",
         "fluid",
         "grout",
