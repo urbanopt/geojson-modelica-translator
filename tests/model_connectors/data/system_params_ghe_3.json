@@ -95,6 +95,11 @@
         "number_of_segments": 1,
         "buried_depth": 1.5
       },
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
@@ -106,11 +111,6 @@
         "grout": {
           "conductivity": 1.0,
           "rho_cp": 3901000
-        },
-        "soil": {
-          "conductivity": 2.0,
-          "rho_cp": 2343493,
-          "undisturbed_temp": 18.3
         },
         "pipe": {
           "inner_diameter": 0.0216,

@@ -43,13 +43,13 @@ class Borefield(PlantBase):
             },
             "soil": {
                 "initial_ground_temperature": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp"
+                    "$.district_system.fifth_generation.soil.undisturbed_temp"
                 ),
                 "conductivity": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.soil.conductivity"
+                    "$.district_system.fifth_generation.soil.conductivity"
                 ),
                 "volumetric_heat_capacity": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.soil.rho_cp"
+                    "$.district_system.fifth_generation.soil.rho_cp"
                 ),
             },
             "fill": {

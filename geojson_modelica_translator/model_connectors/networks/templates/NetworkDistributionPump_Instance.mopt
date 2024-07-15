@@ -45,7 +45,7 @@
   {% endraw %}// expansion vessel
   Buildings.Fluid.Sources.Boundary_pT expVes(
     redeclare final package Medium = {{ globals.medium_w }},
-    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }} + 273.15,
+    T={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15,
     nPorts=1)
     "Expansion vessel"
     {% raw %}annotation (Placement(transformation(extent={{140,-76},{120,-56}})));
