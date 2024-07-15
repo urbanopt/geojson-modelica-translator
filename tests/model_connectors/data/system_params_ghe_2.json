@@ -76,12 +76,6 @@
   ],
   "district_system": {
     "fifth_generation": {
-      "central_cooling_plant_parameters": {
-        "temp_setpoint_chw": 10
-      },
-      "central_heating_plant_parameters": {
-        "temp_setpoint_hhw": 25
-      },
       "central_pump_parameters": {
         "pump_design_head": 60000
       },
