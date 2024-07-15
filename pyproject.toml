@@ -42,7 +42,7 @@ modelica-builder = "^0.5.1"
 # modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "mblv10"}
 pandas = "~2"
 requests = "^2.28"
-teaser = "0.7.5"
+teaser = "0.7.7"
 #teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
 [tool.poetry.dev-dependencies]
