@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import json
 import logging
 from pathlib import Path
 
@@ -30,7 +31,7 @@ LOAD_MODEL_TO_CLASS = {
 }
 
 
-def _parse_couplings(geojson, sys_params, sys_params_filepath, sys_param_district_type):  # # noqa: ARG001
+def _parse_couplings(geojson, sys_params, sys_params_filepath, sys_param_district_type):  #
     """Given config files, construct the necessary models and their couplings which
     can then be passed to CouplingGraph.
 
@@ -60,15 +61,15 @@ def _parse_couplings(geojson, sys_params, sys_params_filepath, sys_param_distric
             Coupling(heating_plant, heating_network),
         ]
     elif sys_param_district_type == "fifth_generation":
-        # load loop order
-        # ghe_loop_order_path = Path(sys_params_filepath).parent / "ghe_loop_order.json"
-        # load_loop_order = Path(sys_params_filepath).parent / "loop_order.json"
-        # ghe_order: dict = json.loads(ghe_loop_order_path.read_text())
-        # load_order: dict = json.loads(load_loop_order.read_text())
         # create ambient water stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
 
         if sys_params.get_param("$.district_system.fifth_generation.ghe_parameters"):
+            # load loop order from ThermalNetwork library
+            ghe_loop_order_path = Path(sys_params_filepath).parent / "ghe_loop_order.json"
+            load_loop_order = Path(sys_params_filepath).parent / "loop_order.json"
+            ghe_order: dict = json.loads(ghe_loop_order_path.read_text())
+            load_order: dict = json.loads(load_loop_order.read_text())
             # create ground coupling
             ground_coupling = GroundCoupling(sys_params)
             for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
