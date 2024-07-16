@@ -5,7 +5,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/1/022_export_modelica_loads/modelica.mos",
+          "filepath": "../1/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -44,7 +44,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/2/022_export_modelica_loads/modelica.mos",
+          "filepath": "../2/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -83,7 +83,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/3/022_export_modelica_loads/modelica.mos",
+          "filepath": "../3/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -122,7 +122,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/4/022_export_modelica_loads/modelica.mos",
+          "filepath": "../4/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -161,7 +161,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/5/022_export_modelica_loads/modelica.mos",
+          "filepath": "../5/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -200,7 +200,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/6/022_export_modelica_loads/modelica.mos",
+          "filepath": "../6/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -239,7 +239,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/7/022_export_modelica_loads/modelica.mos",
+          "filepath": "../7/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -278,7 +278,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/8/022_export_modelica_loads/modelica.mos",
+          "filepath": "../8/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -317,7 +317,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/9/022_export_modelica_loads/modelica.mos",
+          "filepath": "../9/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -356,7 +356,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/10/022_export_modelica_loads/modelica.mos",
+          "filepath": "../10/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -395,7 +395,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/11/022_export_modelica_loads/modelica.mos",
+          "filepath": "../11/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -434,7 +434,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/12/022_export_modelica_loads/modelica.mos",
+          "filepath": "../12/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -473,7 +473,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "/Users/nmoore/github/ccc/run/baseline_scenario/13/022_export_modelica_loads/modelica.mos",
+          "filepath": "../13/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -512,7 +512,7 @@
     "fifth_generation": {
       "ghe_parameters": {
         "version": "0.2.5",
-        "ghe_dir": "../ccc/run/baseline_scenario/ghe_dir",
+        "ghe_dir": "../ghe_dir",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
