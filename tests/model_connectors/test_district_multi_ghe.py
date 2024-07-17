@@ -29,7 +29,14 @@ class DistrictSystemTest(TestCaseBase):
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = Path(self.data_dir) / "sdk_output_skeleton_13_buildings" / "run" / "baseline_scenario" / "ghe_dir" / "sys_params_proportional.json"
+        filename = (
+            Path(self.data_dir)
+            / "sdk_output_skeleton_13_buildings"
+            / "run"
+            / "baseline_scenario"
+            / "ghe_dir"
+            / "sys_params_proportional.json"
+        )
         sys_params = SystemParameters(filename)
 
         # create ambient water stub

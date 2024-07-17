@@ -510,7 +510,7 @@
   ],
   "district_system": {
     "fifth_generation": {
-	  "horizontal_piping_parameters": {
+      "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
@@ -520,11 +520,11 @@
         "number_of_segments": 1,
         "buried_depth": 1.5
       },
-	  "soil": {
-          "conductivity": 2.0,
-          "rho_cp": 2343493,
-          "undisturbed_temp": 18.3
-        },
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
       "ghe_parameters": {
         "version": "0.2.5",
         "ghe_dir": "../ghe_dir",
