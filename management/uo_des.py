@@ -269,5 +269,3 @@ def des_process(sys_param_file: Path, modelica_project: Path):
     """
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
-
-    print(project_name)
