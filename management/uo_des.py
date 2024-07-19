@@ -203,15 +203,14 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     The model that runs is hard coded to be the Districts/DistrictEnergySystem.mo within the package.
 
     \b
+    SYS_PARAM_FILE: Path/name to sys-param file, possibly created with this CLI.
+
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
         default = ./model_from_sdk
 
     \f
+    :param sys_param_file: Path, location and name of file created with this cli
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
-    :param start_time (int): start time of the simulation (seconds of a year)
-    :param stop_time (int): stop time of the simulation (seconds of a year)
-    :param step_size (int): step size of the simulation (seconds)
-    :param number_of_intervals (int): number of intervals to run the simulation
     """
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
@@ -221,7 +220,8 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
             f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
             "Please update your directory tree to not include spaces in any name"
         )
-
+    print(run_path)
+    # setup modelica results 
     # setup modelica runner
     mr = ModelicaRunner()
     mr.run_in_docker(
@@ -240,3 +240,34 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
         print(f"\nModelica model {project_name} ran successfully and can be found in {run_location}")
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {run_location}/stdout.log for more info.")
+
+@cli.command(short_help="Process Modelica model")
+@click.argument(
+    "modelica_project",
+    default="./model_from_sdk",
+    required=True,
+    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+)
+@click.argument(
+    "sys_param_file",
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+)
+def des_process(sys_param_file: Path, modelica_project: Path):
+    """Post Process the model
+    \b
+    Post process results from Modelica project run previously, for GHP LCCA analysis
+    \b
+    MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
+        default = ./model_from_sdk
+
+    \f
+    :param modelica_project: Path, name & location of modelica project, possibly created with this cli
+    :param start_time (int): start time of the simulation (seconds of a year)
+    :param stop_time (int): stop time of the simulation (seconds of a year)
+    :param step_size (int): step size of the simulation (seconds)
+    :param number_of_intervals (int): number of intervals to run the simulation
+    """
+    run_path = Path(modelica_project).resolve()
+    project_name = run_path.stem
+
+    print(project_name)
