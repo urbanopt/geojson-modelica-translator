@@ -4,6 +4,7 @@
 from pathlib import Path
 
 import pytest
+import json
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
@@ -45,6 +46,13 @@ class DistrictSystemTest(TestCaseBase):
         # create ground coupling
         ground_coupling = GroundCoupling(sys_params)
 
+        # read the loop order and create building groups
+        filename = Path(self.data_dir) / "sdk_output_skeleton_13_buildings" / "run" / "baseline_scenario" / "ghe_dir" / "loop_order1.json"
+        with open(filename, 'r') as file:
+            loop_order = json.load(file)
+        num_group = len(loop_order)
+        print(len(loop_order))
+        
         # create the couplings and graph
         all_couplings = []
         for geojson_load in self.gj.buildings:
