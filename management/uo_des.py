@@ -8,6 +8,7 @@ import click
 
 from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.results_ghp import ResultsModelica
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
@@ -170,28 +171,28 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-a",
     "--start_time",
-    default=17280000,
+    default=15638400,
     help="Start time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-z",
     "--stop_time",
-    default=17366400,
+    default=18316800,
     help="Stop time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-x",
     "--step_size",
-    default=90,
+    default=3600,
     help="Step size of the simulation (seconds)",
     type=int,
 )
 @click.option(
     "-i",
     "--intervals",
-    default=100,
+    default=744,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
@@ -220,7 +221,6 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
             f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
             "Please update your directory tree to not include spaces in any name"
         )
-    print(run_path)
     # setup modelica results 
     # setup modelica runner
     mr = ModelicaRunner()
@@ -248,11 +248,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     required=True,
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
 )
-@click.argument(
-    "sys_param_file",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
-)
-def des_process(sys_param_file: Path, modelica_project: Path):
+def des_process(modelica_project: Path):
     """Post Process the model
     \b
     Post process results from Modelica project run previously, for GHP LCCA analysis
@@ -262,10 +258,7 @@ def des_process(sys_param_file: Path, modelica_project: Path):
 
     \f
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
-    :param start_time (int): start time of the simulation (seconds of a year)
-    :param stop_time (int): stop time of the simulation (seconds of a year)
-    :param step_size (int): step size of the simulation (seconds)
-    :param number_of_intervals (int): number of intervals to run the simulation
     """
-    run_path = Path(modelica_project).resolve()
-    project_name = run_path.stem
+    modelica_path = Path(modelica_project).resolve()
+    result = ResultsModelica(modelica_path)
+    result.calculate_results()

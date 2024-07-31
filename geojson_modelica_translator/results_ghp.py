@@ -1,40 +1,94 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
-
-import os
-import re
 import pandas as pd
-import numpy 
-
+from datetime import datetime, timezone
+from pathlib import Path
 from buildingspy.io.outputfile import Reader
-
 
 class ResultsModelica:
     """Results from Modelica Project Simulation"""
 
-    def __init__(self, sys_param_file, modelica_project):
-        self._sys_param_file = sys_param_file
-        self._modelica_project = modelica_project
+    def __init__(self, modelica_project):
+        self._modelica_project = Path(modelica_project).resolve()
 
-    def calculate_results(self, sys_param_file, modelica_project):
-        """Calculate timeseries results for a previously run Modelica project."""
-        result_mat_file = os.path.join(modelica_project, f"{modelica_project}.Districts.DistrictEnergySystem_results", f"{modelica_project}.Districts.DistrictEnergySystem_res.mat")
+    def calculate_results(self):
+        # Extract the project name from the modelica_project path
+        project_name = self._modelica_project.name
 
-        if os.path.exists(result_mat_file):
+        # Construct the path for the .mat file
+        result_mat_file = self._modelica_project / f"{project_name}.Districts.DistrictEnergySystem_results" / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+
+        # Print the resulting path for debugging purposes
+        print(f"Generated path: {result_mat_file}")
+
+        if result_mat_file.exists():
             print(f"The path {result_mat_file} exists.")
         else:
             print(f"The path {result_mat_file} does not exist.")
-          
-        results=Reader(result_mat_file, "dymola")
+            return
 
-        heating_electric_power = results.varNames(r'^TimeSerLoa_\w+\.PHea$')
+        # Initialize the Reader object
+        results = Reader(result_mat_file, "dymola")
 
-        heating_electric_power = results
+        # Define patterns and output variable names
+        patterns = {
+            "heating_electric_power": r'^TimeSerLoa_\w+\.PHea$',
+            "cooling_electric_power": r'^TimeSerLoa_\w+\.PCoo$',
+            "pump_power": r'^TimeSerLoa_\w+\.PPum$',
+            "ets_pump_power": r'^TimeSerLoa_\w+\.PPumETS$',
+            "Heating system capacity": r'^TimeSerLoa_\w+\.ets.QHeaWat_flow_nominal$',
+            "Cooling system capacity": r'^TimeSerLoa_\w+\.ets.QChiWat_flow_nominal$',
+            "electrical_power_consumed": 'pumDis.P'
+        }
 
-       
+        # Collect key-value pairs directly
+        key_value_pairs = {}
+        time_values = None
 
+        for name, pattern in patterns.items():
+            for var in results.varNames(pattern):
+                time, values = results.values(var)  # Unpack the tuple
+                if time_values is None:
+                    time_values = time.tolist()  # Initialize time_values from the first variable
+                key_value_pairs[var] = values.tolist()
 
+        # Convert seconds to timezone-aware datetime and adjust year to 2017
+        def adjust_year(dt):
+            return dt.replace(year=2017)
 
+        # Convert timestamps to timezone-aware datetime objects in UTC
+        time_values = [datetime.fromtimestamp(t, tz=timezone.utc) for t in time_values]
+        adjusted_time_values = [adjust_year(dt) for dt in time_values]
 
+        # Create DataFrame
+        data_for_df = {"Datetime": adjusted_time_values, "TimeInSeconds": [int(dt.timestamp()) for dt in adjusted_time_values]}
+        for var, values in key_value_pairs.items():
+            if len(values) < len(adjusted_time_values):
+                values.extend([None] * (len(adjusted_time_values) - len(values)))
+            elif len(values) > len(adjusted_time_values):
+                values = values[:len(adjusted_time_values)]
+            data_for_df[var] = values
 
+        df = pd.DataFrame(data_for_df)
 
+        # Convert 'Datetime' to datetime and set it as index
+        df['Datetime'] = pd.to_datetime(df['Datetime'])
+        df.set_index('Datetime', inplace=True)
+
+        # Resample to hourly data, taking the first occurrence for each hour
+        df_resampled = df.resample('h').first().reset_index()
+
+        # Format datetime to desired format
+        df_resampled['Datetime'] = df_resampled['Datetime'].dt.strftime('%m/%d/%Y %H:%M')
+
+        # Define the path to save the CSV file
+        results_dir = self._modelica_project / f"{project_name}.Districts.DistrictEnergySystem_results"
+        csv_file_path = results_dir / f"{project_name}.Districts.DistrictEnergySystem_result.csv"
+        
+        # Ensure the results directory exists
+        results_dir.mkdir(parents=True, exist_ok=True)
+
+        # Save DataFrame to CSV
+        df_resampled.to_csv(csv_file_path, index=False)
+
+        print(f"Results saved at: {csv_file_path}")
