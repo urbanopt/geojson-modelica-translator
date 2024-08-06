@@ -1,0 +1,19 @@
+// Borefield and distribution coupling connections
+  connect(pumDis.port_b, TIn_{{ coupling.id }}.port_a)
+  {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
+  {% endraw %}connect(TIn_{{ coupling.id }}.port_b, {{ coupling.plant.id }}.port_a)
+  {% raw %}annotation (Line(points={{-20,10},{-10,10}}, color={0,127,255}));
+  {% endraw %}connect({{ coupling.plant.id }}.port_b, TOut_{{ coupling.id }}.port_a)
+  {% raw %}annotation (Line(points={{10,10},{6,10}}, color={0,127,255}));
+  {% endraw %}connect(TOut_{{ coupling.id }}.port_b, {{ coupling.network.id }}.port_aDisSup)
+  {% raw %}annotation (Line(points={{26,10},{38,10},{38,-10},{50,-10}}, color={0,127,255}));
+  {% endraw %}connect({{ coupling.network.id }}.port_bDisSup, pumDis.port_a)
+  {% raw %}annotation (Line(points={{90,-10},{110,-10},{110,-20}}, color={0,127,255}));
+  // control related connections
+  {% endraw %}connect({{ coupling.network.id }}.TOut, conPum.TMix)
+  {% raw %}annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
+  {% endraw %}connect(TIn_{{ coupling.id }}.T, conPum.TSouIn[1])
+  {% raw %}annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
+  {% endraw %}connect(TOut_{{ coupling.id }}.T, conPum.TSouOut[1])
+  {% raw %}annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
+  {% endraw %}
