@@ -1,6 +1,6 @@
   {{ model.modelica_type }} {{ model.id }}(
     redeclare final package Medium = {{ globals.medium_w }},
-    final nCon= datDes.nBui,
+    final nCon= {{ sys_params.load_num }},
     show_TOut=true,
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
     final mCon_flow_nominal=datDes.mCon_flow_nominal,
