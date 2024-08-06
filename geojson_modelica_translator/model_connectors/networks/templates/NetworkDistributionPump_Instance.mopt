@@ -1,26 +1,3 @@
-  // district distribution pipiline
-  Networks.UnidirectionalSeries dis(
-    redeclare final package Medium = {{ globals.medium_w }},
-    final nCon= datDes.nBui,
-    show_TOut=true,
-    final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
-    final mCon_flow_nominal=datDes.mCon_flow_nominal,
-    final dp_length_nominal=datDes.dp_length_nominal,
-    final lDis=datDes.lDis,
-    final lCon=datDes.lCon,
-    final lEnd=datDes.lEnd,
-    final allowFlowReversal=allowFlowReversalSer,
-    dhDis=fill({{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }}, datDes.nBui),
-    dhEnd={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }},
-    dIns={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.insulation_thickness }},
-    kIns={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.insulation_conductivity }},
-    thickness={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }}/({{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.diameter_ratio }}-2),
-    roughness={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.roughness }},
-    cPip=2300,
-    rhoPip={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.rho_cp }}/dis.cPip
-    )
-    "Distribution network"
-    {% raw %}annotation (Placement(transformation(extent={{50,-20},{90,0}})));
   // ambient loop pump
   {% endraw %}Buildings.Fluid.Movers.FlowControlled_m_flow pumDis(
     redeclare final package Medium = {{ globals.medium_w }},
@@ -36,6 +13,7 @@
   // pump controller
   Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
     nMix=datDes.nBui,
+    # TODO: nSou should be the number of building groups!!!
     nSou=1,
     use_temperatureShift=false)
     annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
@@ -49,13 +27,4 @@
     nPorts=1)
     "Expansion vessel"
     {% raw %}annotation (Placement(transformation(extent={{140,-76},{120,-56}})));
-  {% endraw %}// temperature sensors
-  Buildings.Fluid.Sensors.TemperatureTwoPort TIn(
-    redeclare final package Medium = {{ globals.medium_w }},
-    m_flow_nominal=datDes.mPumDis_flow_nominal)
-    {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=-90,origin={110,-30})));
-  {% endraw %}Buildings.Fluid.Sensors.TemperatureTwoPort TOut(
-    redeclare final package Medium = {{ globals.medium_w }},
-    m_flow_nominal=datDes.mPumDis_flow_nominal)
-    {% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={16,10})));
   {% endraw %}
