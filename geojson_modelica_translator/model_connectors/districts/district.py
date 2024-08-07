@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import json
 import logging
 from pathlib import Path
 
@@ -71,6 +72,11 @@ class District:
         # construct graph of visual components
         diagram = Diagram(self._coupling_graph)
 
+        # load loop order info from ThermalNetwork
+        # loop order file is always saved next to the system parameters file
+        loop_order_path = Path(self.system_parameters.filename).parent / "_loop_order.json"
+        loop_order: list = json.loads(loop_order_path.read_text())
+
         district_template_params = {
             "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
             "diagram": diagram,
@@ -92,6 +98,10 @@ class District:
                 "district_system": self.system_parameters.get_param("$.district_system"),
                 # num_buildings counts the ports required for 5G systems
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
+            },
+            "loop_order": {
+                "number_of_loops": len(loop_order),
+                "data": loop_order,
             },
         }
 
