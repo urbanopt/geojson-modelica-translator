@@ -1,5 +1,5 @@
   // ambient loop pump
-  {% endraw %}Buildings.Fluid.Movers.FlowControlled_m_flow pumDis(
+  Buildings.Fluid.Movers.FlowControlled_m_flow pumDis(
     redeclare final package Medium = {{ globals.medium_w }},
     allowFlowReversal=true,
     redeclare Buildings.Fluid.Movers.Data.Generic per,
