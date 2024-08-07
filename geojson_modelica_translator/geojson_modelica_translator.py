@@ -1,7 +1,6 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import json
 import logging
 from pathlib import Path
 
@@ -31,13 +30,12 @@ LOAD_MODEL_TO_CLASS = {
 }
 
 
-def _parse_couplings(geojson, sys_params, sys_params_filepath, sys_param_district_type):  #
+def _parse_couplings(geojson, sys_params, sys_param_district_type):  #
     """Given config files, construct the necessary models and their couplings which
     can then be passed to CouplingGraph.
 
     :param geojson: UrbanOptGeoJson
     :param sys_params: SystemParameters
-    :param sys_params_filepath: str - path to system parameters file
     :param sys_param_district_type: str - type of district ["fourth_generation", "fifth_generation"]
     :return: list[Coupling], list of couplings to be passed to CouplingGraph
     """
@@ -65,15 +63,13 @@ def _parse_couplings(geojson, sys_params, sys_params_filepath, sys_param_distric
         ambient_water_stub = NetworkDistributionPump(sys_params)
 
         if sys_params.get_param("$.district_system.fifth_generation.ghe_parameters"):
-            # load loop order from ThermalNetwork library
-            ghe_loop_order_path = Path(sys_params_filepath).parent / "ghe_loop_order.json"
-            load_loop_order_path = Path(sys_params_filepath).parent / "loop_order.json"
-            if not ghe_loop_order_path.is_file() or not load_loop_order_path.is_file():
+            # load loop order file exported from ThermalNetwork library
+            loop_order_path = Path(sys_params.filename).parent / "_loop_order.json"
+            if not loop_order_path.is_file():
                 raise SystemExit(
-                    "Sizing data from ThermalNetwork library not found. That is required to generate a GHE model. Exiting."
+                    "Sizing data from ThermalNetwork library not found. Required to generate a GHE model. Exiting."
                 )
-            ghe_order: dict = json.loads(ghe_loop_order_path.read_text())
-            load_order: dict = json.loads(load_loop_order_path.read_text())
+            # loop_order: dict = json.loads(loop_order_path.read_text())
             # create ground coupling
             ground_coupling = GroundCoupling(sys_params)
             for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
@@ -156,9 +152,7 @@ class GeoJsonModelicaTranslator:
         # Use different couplings for each district system type
         # The first key of district_system is always the district system type
         sys_param_district_type = next(iter(self._system_parameters.get_param("district_system")))
-        self._couplings = _parse_couplings(
-            self._geojson, self._system_parameters, sys_params_filepath, sys_param_district_type
-        )
+        self._couplings = _parse_couplings(self._geojson, self._system_parameters, sys_param_district_type)
 
         self._root_dir = root_dir
         self._project_name = project_name
