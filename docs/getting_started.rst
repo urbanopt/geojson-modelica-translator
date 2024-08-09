@@ -78,6 +78,7 @@ To configure Docker, do the following:
 
 * Install `Docker <https://docs.docker.com/get-docker/>`_ for your system.
 * Configure Docker Desktop to have at least 4 GB Ram and 2 cores. This is configured under the Docker Preferences.
+    * Windows users can refer to `these instructions <https://docs.docker.com/desktop/settings/windows/>`_ for more detail on adjusting Docker resources and may also be helped by `this page <https://learn.microsoft.com/en-us/windows/wsl/wsl-config#wslconfig>`_, which documents how to change resources in WSL.
     * Larger models (more buildings) may require more resources in Docker.
 * We recommend testing the Docker installation by simply running :code:`docker run hello-world` in a terminal to confirm it is working as intended.
 

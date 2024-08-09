@@ -22,7 +22,7 @@ class CLIIntegrationTest(TestCase):
         self.output_dir.mkdir(exist_ok=True)
         self.scenario_file_path = self.data_dir / "sdk_project_scraps" / "baseline_scenario.csv"
         self.feature_file_path = self.data_dir / "sdk_project_scraps" / "example_project.json"
-        self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "example_project_combine_GHE_2.json"
+        self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "example_project_combine_GHE.json"
         self.sys_param_path = (
             self.data_dir / "sdk_project_scraps" / "run" / "baseline_scenario" / "system_parameter.json"
         )
@@ -156,7 +156,7 @@ class CLIIntegrationTest(TestCase):
         # FIXME : we need error handling when system parameter is created for fifth gen GHE system.
         #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
-            self.feature_file_path,
+            self.feature_file_path_ghe,
             self.sys_param_path,
             self.output_dir,
             project_name,
@@ -175,7 +175,7 @@ class CLIIntegrationTest(TestCase):
             [
                 "create-model",
                 str(self.sys_param_path),
-                str(self.feature_file_path),
+                str(self.feature_file_path_ghe),
                 str(self.output_dir / project_name),
             ],
         )
@@ -196,7 +196,7 @@ class CLIIntegrationTest(TestCase):
             [
                 "create-model",
                 str(self.sys_param_path),
-                str(self.feature_file_path),
+                str(self.feature_file_path_ghe),
                 str(self.output_dir / project_name),
             ],
         )
@@ -210,7 +210,7 @@ class CLIIntegrationTest(TestCase):
             [
                 "create-model",
                 str(self.sys_param_path),
-                str(self.feature_file_path),
+                str(self.feature_file_path_ghe),
                 str(self.output_dir / project_name),
                 "--overwrite",
             ],

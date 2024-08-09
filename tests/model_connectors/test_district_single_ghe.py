@@ -10,6 +10,7 @@ from geojson_modelica_translator.model_connectors.couplings.coupling import Coup
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
 from geojson_modelica_translator.model_connectors.districts.district import District
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import TimeSeries
+from geojson_modelica_translator.model_connectors.networks.ground_coupling import GroundCoupling
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
@@ -24,11 +25,11 @@ class DistrictSystemTest(TestCaseBase):
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load in the example geojson with multiple buildings
-        filename = Path(self.data_dir) / "time_series_ex1.json"
+        filename = Path(self.data_dir) / "time_series_ex2.json"
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
-        filename = Path(self.data_dir) / "system_params_ghe_2.json"
+        filename = Path(self.data_dir) / "system_params_ghe_3.json"
         sys_params = SystemParameters(filename)
 
         # create borefield
@@ -37,6 +38,9 @@ class DistrictSystemTest(TestCaseBase):
         # create ambient water stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
 
+        # create ground coupling
+        ground_coupling = GroundCoupling(sys_params)
+
         # create the couplings and graph
         all_couplings = []
         for geojson_load in self.gj.buildings:
@@ -44,11 +48,16 @@ class DistrictSystemTest(TestCaseBase):
             all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="5G"))
         all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="5G"))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="5G"))
+        all_couplings.append(Coupling(ground_coupling, borefield, district_type="5G"))
 
         graph = CouplingGraph(all_couplings)
 
         self.district = District(
-            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, coupling_graph=graph
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            geojson_file=self.gj,
+            coupling_graph=graph,
         )
 
         self.district.to_modelica()
