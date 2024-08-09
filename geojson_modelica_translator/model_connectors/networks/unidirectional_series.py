@@ -3,10 +3,8 @@
 
 import logging
 import os
-import re
 from pathlib import Path
 
-import pandas as pd
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
