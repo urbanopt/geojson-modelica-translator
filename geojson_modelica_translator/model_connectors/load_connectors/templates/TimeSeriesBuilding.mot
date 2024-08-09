@@ -1,7 +1,7 @@
 within {{ project_name }}.Loads.{{ model_name }};
 model TimeSeriesBuilding
   "Building model with heating and cooling loads provided as time series"
-  extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
+  extends Buildings.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=Buildings.Media.Water,
     have_fan=false,
     have_pum=true,
@@ -62,13 +62,13 @@ model TimeSeriesBuilding
     min=1)
     "Nominal heating air temperature difference across the terminal unit heat exchanger";
   parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
-    max=-Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
+    max=-Modelica.Constants.eps)=Buildings.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space cooling load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design cooling heat flow rate (<=0)"
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal(
-    min=Modelica.Constants.eps)=Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
+    min=Modelica.Constants.eps)=Buildings.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak space heating load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Design heating heat flow rate (>=0)"
@@ -114,10 +114,10 @@ model TimeSeriesBuilding
       displayUnit="degC"))
     "Maximum temperature set point"
     annotation (Placement(transformation(extent={{-280,210},{-260,230}})));
-  replaceable Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
+  replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
     k=k,
     Ti=Ti) if have_heaWat
-    constrainedby Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit(
+    constrainedby Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,
       allowFlowReversal=allowFlowReversal,
@@ -130,36 +130,36 @@ model TimeSeriesBuilding
       T_aLoaHea_nominal=T_aLoaHea_nominal)
     "Heating terminal unit"
     annotation (Placement(transformation(extent={{70,-34},{90,-14}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
+  Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=Medium,
     allowFlowReversal=allowFlowReversal,
     m_flow_nominal=mHeaWat_flow_nominal,
     have_pum=true,
-    typCtr=Buildings.Experimental.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
+    typCtr=Buildings.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
     dp_nominal=100000,
     nPorts_a1=1,
     nPorts_b1=1) if have_heaWat
     "Heating water distribution system"
     annotation (Placement(transformation(extent={{120,-70},{140,-50}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
+  Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=Medium,
     allowFlowReversal=allowFlowReversal,
     m_flow_nominal=mChiWat_flow_nominal,
-    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
+    typDis=Buildings.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     have_pum=true,
-    typCtr=Buildings.Experimental.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
+    typCtr=Buildings.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
     dp_nominal=100000,
     nPorts_b1=1,
     nPorts_a1=1) if have_chiWat
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{120,-270},{140,-250}})));
-  replaceable Buildings.Experimental.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
+  replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
     QHea_flow_nominal=QHea_flow_nominal/facMulHea,
     T_aLoaHea_nominal=T_aLoaHea_nominal,
     k=k,
     Ti=Ti,
     QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
-    constrainedby Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit(
+    constrainedby Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,
       allowFlowReversal=allowFlowReversal,

@@ -49,7 +49,7 @@ env = Environment(
 
 COOLING_PLANT_PARAMS = {
     "chiller_performance": "Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes",
-    "plant_type": "Buildings.Experimental.DHC.Plants.Cooling.ElectricChillerParallel",
+    "plant_type": "Buildings.DHC.Plants.Cooling.ElectricChillerParallel",
     "delta_temp_approach": 3,
     "chw_mass_flow_nominal": 18.3,
     "chw_pressure_drop_nominal": 44800,

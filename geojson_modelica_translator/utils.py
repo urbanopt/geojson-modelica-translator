@@ -52,7 +52,7 @@ def mbl_version():
     """Returns the version of the Modelica Buildings Library (MBL) used by the
     geojson-modelica-translator.
     """
-    return "10.0.0"
+    return "11.0.0"
 
 
 class ModelicaPath:

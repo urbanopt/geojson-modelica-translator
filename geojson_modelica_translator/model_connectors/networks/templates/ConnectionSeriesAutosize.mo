@@ -1,7 +1,7 @@
 within geojson_modelica_translator.model_connectors.templates;
 model ConnectionSeriesAutosize
   "Model for connecting an agent to the DHC system"
-  extends Buildings.Experimental.DHC.Networks.Combined.BaseClasses.ConnectionSeriesStandard(
+  extends Buildings.DHC.Networks.Combined.BaseClasses.ConnectionSeriesStandard(
     tau=5*60,
     redeclare replaceable model Model_pipDis=Buildings.Fluid.FixedResistances.PlugFlowPipe(
       fac=1.5,
@@ -14,7 +14,7 @@ model ConnectionSeriesAutosize
       final length=lDis,
       final dh(
         fixed=true)=dhDis),
-    redeclare replaceable model Model_pipCon=Buildings.Experimental.DHC.Networks.Combined.BaseClasses.PipeAutosize(
+    redeclare replaceable model Model_pipCon=Buildings.DHC.Networks.Combined.BaseClasses.PipeAutosize(
       roughness=roughness,
       fac=2,
       final length=2*lCon,

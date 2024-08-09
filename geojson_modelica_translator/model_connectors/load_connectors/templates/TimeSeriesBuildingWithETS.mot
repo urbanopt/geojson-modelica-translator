@@ -1,7 +1,7 @@
 within {{ project_name }}.Loads.{{ model_name }};
 {% raw %}model building
   "Model of a building with an internal ETS. Building loads provided as time series"
-  extends Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
+  extends Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
     {% endraw %}redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
       {% raw %}have_hotWat=true,
@@ -27,7 +27,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Space heating design load (>=0)"
     annotation (Dialog(group="Design parameter"));
   final parameter Modelica.Units.SI.HeatFlowRate QHot_flow_nominal(
-    min=Modelica.Constants.eps)=bui.facMul*Buildings.Experimental.DHC.Loads.BaseClasses.getPeakLoad(
+    min=Modelica.Constants.eps)=bui.facMul*Buildings.DHC.Loads.BaseClasses.getPeakLoad(
     string="#Peak water heating load",
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
@@ -95,8 +95,8 @@ equation
       info="<html>
 <p>
 This model is composed of a heat pump based energy transfer station model
-<a href=\"modelica://Buildings.Experimental.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger\">
-Buildings.Experimental.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger</a>
+<a href=\"modelica://Buildings.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger\">
+Buildings.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger</a>
 connected to a simplified building model where the space heating, cooling
 and hot water loads are provided as time series.
 </p>

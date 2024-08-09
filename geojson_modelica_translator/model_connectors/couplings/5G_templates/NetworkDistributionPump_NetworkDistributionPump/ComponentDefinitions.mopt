@@ -1,5 +1,5 @@
   inner parameter
-    Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
+    Buildings.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(
     nBui={{ sys_params.num_buildings }},
     {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}

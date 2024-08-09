@@ -34,7 +34,7 @@
     "Distribution pump"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
   // pump controller
-  Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
+  Buildings.DHC.Networks.Controls.MainPump conPum(
     nMix=datDes.nBui,
     nSou=1,
     use_temperatureShift=false)

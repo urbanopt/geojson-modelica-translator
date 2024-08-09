@@ -3,7 +3,7 @@ model district
   "Series connection with variable district water mass flow rate"
   extends
     PartialSeries(redeclare
-      Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS
+      Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
       bui[nBui](final filNam=filNam), datDes(
       nBui={{ data['building_load_files'] | count }},
       mPumDis_flow_nominal={{ data['max_flow_rate'] }},
@@ -32,7 +32,7 @@ model district
     k=fill(15 + 273.15, nBui))
     "Cold water temperature"
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
-  Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
+  Buildings.DHC.Networks.Controls.MainPump conPum(
     nMix=nBui,
     nSou=2,
     TMin=279.15,
@@ -87,8 +87,8 @@ equation
     Documentation(info="<html>
 <p>
 This model is identical to
-<a href=\"Buildings.Experimental.DHC.Examples.Combined.SeriesConstantFlow\">
-Buildings.Experimental.DHC.Examples.Combined.SeriesConstantFlow</a>
+<a href=\"Buildings.DHC.Examples.Combined.SeriesConstantFlow\">
+Buildings.DHC.Examples.Combined.SeriesConstantFlow</a>
 except for the pipe diameter and the control of the main circulation pump.
 Rather than having a constant mass flow rate, the mass flow rate is varied
 based on the mixing temperatures after each agent.

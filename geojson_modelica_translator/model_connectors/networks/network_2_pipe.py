@@ -20,4 +20,4 @@ class Network2Pipe(NetworkBase):
         # no model to generate, its fully implemented in the Modelica Buildings library
 
     def get_modelica_type(self, scaffold):
-        return "Buildings.Experimental.DHC.Networks.Distribution2Pipe"
+        return "Buildings.DHC.Networks.Distribution2Pipe"
