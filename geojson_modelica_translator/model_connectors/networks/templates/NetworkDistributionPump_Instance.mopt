@@ -34,10 +34,9 @@
     "Distribution pump"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
   // pump controller
-  Buildings.DHC.Networks.Controls.MainPump conPum(
+  Buildings.DHC.Networks.Controls.MainPump1Pipe conPum(
     nMix=datDes.nBui,
-    nSou=1,
-    use_temperatureShift=false)
+    nSou=1)
     annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"

@@ -32,12 +32,11 @@ model district
     k=fill(15 + 273.15, nBui))
     "Cold water temperature"
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
-  Buildings.DHC.Networks.Controls.MainPump conPum(
+  Buildings.DHC.Networks.Controls.MainPump1Pipe conPum(
     nMix=nBui,
     nSou=2,
     TMin=279.15,
-    TMax=290.15,
-    use_temperatureShift=false) "Main pump controller"
+    TMax=290.15) "Main pump controller"
     annotation (Placement(transformation(extent={{-280,-70},{-260,-50}})));
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gaiPumDis(k=datDes.mPumDis_flow_nominal)
     "Scale with nominal mass flow rate for distribution pump"
