@@ -15,8 +15,8 @@ RUN apt update && apt --no-install-recommends install -y \
 ARG OM_VERSION=1.23.1
 
 RUN export DEBIAN_FRONTEND="noninteractive" && echo "VERSION: $OM_VERSION" && test ! -z "$OM_VERSION" && apt-get update && apt-get upgrade -qy && apt-get dist-upgrade -qy \
-    && apt-get install -qy gnupg wget apt-transport-https \
-    && echo "deb https://build.openmodelica.org/omc/builds/linux/releases/$OM_VERSION/dists `cat /etc/lsb-release | grep CODENAME | cut -d= -f2` release" > /etc/apt/sources.list.d/openmodelica.list \
+    && apt-get install -qy gnupg wget ca-certificates apt-transport-https \
+    && echo "deb https://build.openmodelica.org/omc/builds/linux/releases/$OM_VERSION/ `cat /etc/lsb-release | grep CODENAME | cut -d= -f2` release" > /etc/apt/sources.list.d/openmodelica.list \
     && wget https://build.openmodelica.org/apt/openmodelica.asc -O- | apt-key add - \
     && apt-get update && apt-get upgrade && apt-get dist-upgrade \
     && apt-get install --no-install-recommends -qy omc cmake \
