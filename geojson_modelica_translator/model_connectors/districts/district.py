@@ -74,7 +74,7 @@ class District:
 
         # load loop order info from ThermalNetwork
         # loop order file is always saved next to the system parameters file
-        loop_order_path = Path(self.system_parameters.filename).parent / "_loop_order.json"
+        loop_order_path = Path(self.system_parameters.filename).parent / "_loop_order_list.json"
         loop_order: list = json.loads(loop_order_path.read_text())
 
         district_template_params = {
@@ -100,8 +100,8 @@ class District:
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
             "loop_order": {
-                "number_of_loops": len(loop_order),
-                "data": loop_order,
+                "number_of_loops": len(loop_order["sub_loops"]),
+                "data": loop_order["sub_loops"],
             },
         }
 
