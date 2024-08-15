@@ -53,7 +53,7 @@ class DistrictSystemTest(TestCaseBase):
             / "run"
             / "baseline_scenario"
             / "ghe_dir"
-            / "_loop_order_list.json"
+            / "_loop_order.json"
         )
         with open(filename) as file:
             loop_order = json.load(file)
