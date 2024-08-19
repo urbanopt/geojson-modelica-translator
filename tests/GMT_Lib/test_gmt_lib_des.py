@@ -27,7 +27,7 @@ env = Environment(
 
 
 class GmtLibDesTest(unittest.TestCase):
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_5G_des_waste_heat_and_ghx(self):  # noqa: N802
         # -- Setup
         package_output_dir = PARENT_DIR / "output"
@@ -62,7 +62,7 @@ class GmtLibDesTest(unittest.TestCase):
 
         assert success is True
 
-    @pytest.mark.dymola()
+    @pytest.mark.dymola
     def test_5G_des_waste_heat_and_ghx_dymola(self):  # noqa: N802
         # -- Setup
         package_output_dir = PARENT_DIR / "output"
@@ -99,7 +99,7 @@ class GmtLibDesTest(unittest.TestCase):
 
         assert success is True
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_5G_des_waste_heat_and_ghx_variable(self):  # noqa: N802
         # -- Setup
         package_output_dir = PARENT_DIR / "output"
@@ -134,7 +134,7 @@ class GmtLibDesTest(unittest.TestCase):
 
         assert success is True
 
-    @pytest.mark.dymola()
+    @pytest.mark.dymola
     def test_5G_des_waste_heat_and_ghx_variable_dymola(self):  # noqa: N802
         # -- Setup
         package_output_dir = PARENT_DIR / "output"

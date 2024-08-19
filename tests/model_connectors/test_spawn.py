@@ -53,7 +53,7 @@ class SpawnModelConnectorSingleBuildingTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip("OMC Failed to find spawn executable in Buildings Library")
     def test_simulate_spawn_single(self):
         self.run_and_assert_in_docker(
