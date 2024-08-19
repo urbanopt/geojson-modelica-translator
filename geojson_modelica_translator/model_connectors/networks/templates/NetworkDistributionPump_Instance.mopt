@@ -13,8 +13,7 @@
   // pump controller
   Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
     nMix=datDes.nBui,
-    # TODO: nSou should be the number of building groups!!!
-    nSou=1,
+    nSou={{ loop_order.number_of_loops }},
     use_temperatureShift=false)
     annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
