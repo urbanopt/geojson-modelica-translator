@@ -10,12 +10,13 @@
     dp_nominal={{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_design_head }})
     "Distribution pump"
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
+    {% endraw %}
   // pump controller
   Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
     nMix=datDes.nBui,
     nSou={{ loop_order.number_of_loops }},
     use_temperatureShift=false)
-    annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
+    {% raw %}annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"
     annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));

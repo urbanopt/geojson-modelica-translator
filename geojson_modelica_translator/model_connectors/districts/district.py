@@ -72,11 +72,6 @@ class District:
         # construct graph of visual components
         diagram = Diagram(self._coupling_graph)
 
-        # load loop order info from ThermalNetwork
-        # loop order file is always saved next to the system parameters file
-        loop_order_path = Path(self.system_parameters.filename).parent / "_loop_order_list.json"
-        loop_order: list = json.loads(loop_order_path.read_text())
-
         district_template_params = {
             "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
             "diagram": diagram,
@@ -99,11 +94,18 @@ class District:
                 # num_buildings counts the ports required for 5G systems
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
-            "loop_order": {
-                "number_of_loops": len(loop_order["sub_loops"]),
-                "data": loop_order["sub_loops"],
-            },
         }
+
+        if district_template_params["is_ghe_district"]:
+            # load loop order info from ThermalNetwork
+            # loop order file is always saved next to the system parameters file
+            loop_order_path = Path(self.system_parameters.filename).parent / "_loop_order.json"
+            loop_order: list = json.loads(loop_order_path.read_text())
+
+            common_template_params["loop_order"] = {
+                "number_of_loops": len(loop_order),
+                "data": loop_order,
+            }
 
         if self.gj:
             # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
