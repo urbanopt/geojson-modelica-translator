@@ -13,6 +13,7 @@ from geojson_modelica_translator.model_connectors.districts.district import Dist
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import TimeSeries
 from geojson_modelica_translator.model_connectors.networks.ground_coupling import GroundCoupling
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
+from geojson_modelica_translator.model_connectors.networks.unidirectional_series import UnidirectionalSeries
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from tests.base_test_case import TestCaseBase
@@ -55,25 +56,28 @@ class DistrictSystemTest(TestCaseBase):
             / "ghe_dir"
             / "_loop_order_list.json"
         )
-        with open(filename) as file:
-            loop_order = json.load(file)
-        # num_group = len(loop_order)
-        print(len(loop_order))
+        loop_order: list = json.loads(filename.read_text())
 
         # create the couplings and graph
         all_couplings = []
-        for geojson_load in self.gj.buildings:
-            # create the building time series load
-            time_series_load = TimeSeries(sys_params, geojson_load)
-            # couple each time series load to the thermal loop
-            all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation"))
-        for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
-            # create borefields
-            borefield = Borefield(sys_params, ghe)
-            # couple each borefield to the thermal loop
-            all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="fifth_generation"))
+        for sub_loop in loop_order["sub_loops"]:
+            ghe_id = sub_loop["list_ghe_ids_in_group"][0]
+            for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
+                if ghe_id == ghe["ghe_id"]:
+                    borefield = Borefield(sys_params, ghe)
+            distribution = UnidirectionalSeries(sys_params)
+            for bldg_id in sub_loop["list_bldg_ids_in_group"]:
+                for geojson_load in self.gj.buildings:
+                    if bldg_id == geojson_load.id:
+                        # create the building time series load
+                        time_series_load = TimeSeries(sys_params, geojson_load)
+                        # couple each time series load to distribution
+                        all_couplings.append(Coupling(time_series_load, distribution, district_type="fifth_generation"))
+            # couple each borefield and distribution
+            all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
+            # couple distribution and ground coupling
+            all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))   
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
-        all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
 
         graph = CouplingGraph(all_couplings)
 
