@@ -24,8 +24,6 @@ class GroundCoupling(NetworkBase):
         self.ground_coupling_name = "GroundCoupling_" + simple_uuid()
 
         self.required_mo_files.append(os.path.join(self.template_dir, "UndisturbedSoilTemperature.mo"))
-        self.required_mo_files.append(os.path.join(self.template_dir, "UnidirectionalSeries.mo"))
-        self.required_mo_files.append(os.path.join(self.template_dir, "ConnectionSeriesAutosize.mo"))
 
     def to_modelica(self, scaffold):
         """
