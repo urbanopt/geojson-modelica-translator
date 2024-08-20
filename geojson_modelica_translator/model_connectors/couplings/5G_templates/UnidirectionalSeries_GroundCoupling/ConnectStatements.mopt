@@ -6,15 +6,15 @@
   {% if group_num == 0 %}
   connect({{ id }}.heatPortGro, {{ coupling.get_other_model(id) }}.ports[1:1+loop_order.data[0].num_bldgs_in_group])
   {% else %}
-  {% sum_bldg = 0 %}
+  sum_bldg = 0
   {% for k in range(group_num) %}
-  {% sum_bldg += loop_order.data[k].num_bldgs_in_group %}
+  sum_bldg += loop_order.data[k].num_bldgs_in_group
   {% endfor %}
   connect({{ id }}.heatPortGro, {{ coupling.get_other_model(id) }}.ports[1+group_num+sum_bldg:1+group_num+sum_bldg+loop_order.data[group_num].num_bldgs_in_group])
   {% endif %}
   {% endif %}
   {% endfor %}
   {% endif %}
-  {% endfor %} 
+  {% endfor %}
   {% raw %}annotation (Line(points={{70,-20},{70,-36},{104,-36},{104,28},{150,28},{150,40}},color={191,0,0}));
   {% endraw %}

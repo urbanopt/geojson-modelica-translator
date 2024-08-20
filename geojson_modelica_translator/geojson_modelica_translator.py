@@ -63,13 +63,6 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):  #
         ambient_water_stub = NetworkDistributionPump(sys_params)
 
         if sys_params.get_param("$.district_system.fifth_generation.ghe_parameters"):
-            # load loop order file exported from ThermalNetwork library
-            loop_order_path = Path(sys_params.filename).parent / "_loop_order.json"
-            if not loop_order_path.is_file():
-                raise SystemExit(
-                    "Sizing data from ThermalNetwork library not found. Required to generate a GHE model. Exiting."
-                )
-            # loop_order: dict = json.loads(loop_order_path.read_text())
             # create ground coupling
             ground_coupling = GroundCoupling(sys_params)
             for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
