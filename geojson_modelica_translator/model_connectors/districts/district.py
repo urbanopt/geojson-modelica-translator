@@ -1,7 +1,6 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import json
 import logging
 from pathlib import Path
 
@@ -13,7 +12,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import convert_ft_to_m, mbl_version
+from geojson_modelica_translator.utils import convert_ft_to_m, load_loop_order, mbl_version
 
 logger = logging.getLogger(__name__)
 
@@ -98,9 +97,7 @@ class District:
 
         if district_template_params["is_ghe_district"]:
             # load loop order info from ThermalNetwork
-            # loop order file is always saved next to the system parameters file
-            loop_order_path = Path(self.system_parameters.filename).parent / "_loop_order.json"
-            loop_order: list = json.loads(loop_order_path.read_text())
+            loop_order = load_loop_order(self.system_parameters.filename)
 
             common_template_params["loop_order"] = {
                 "number_of_loops": len(loop_order),
