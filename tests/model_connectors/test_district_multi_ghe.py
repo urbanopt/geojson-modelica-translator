@@ -91,12 +91,12 @@ class DistrictSystemTest(TestCaseBase):
 
         self.district.to_modelica()
 
-    def test_build_district_system(self):
+    def test_build_multi_ghe_district(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation()
-    def test_simulate_district_system(self):
+    def test_simulate_multi_ghe_district(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             run_path=self.district._scaffold.project_path,
