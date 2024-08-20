@@ -73,6 +73,7 @@ class DistrictSystemTest(TestCaseBase):
                         time_series_load = TimeSeries(sys_params, geojson_load)
                         # couple each time series load to distribution
                         all_couplings.append(Coupling(time_series_load, distribution, district_type="fifth_generation"))
+                        all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation"))
             # couple each borefield and distribution
             all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
             # couple distribution and ground coupling
