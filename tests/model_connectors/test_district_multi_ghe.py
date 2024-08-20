@@ -60,13 +60,13 @@ class DistrictSystemTest(TestCaseBase):
 
         # create the couplings and graph
         all_couplings = []
-        for sub_loop in loop_order["sub_loops"]:
-            ghe_id = sub_loop["list_ghe_ids_in_group"][0]
+        for loop in loop_order:
+            ghe_id = loop["list_ghe_ids_in_group"][0]
             for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
                 if ghe_id == ghe["ghe_id"]:
                     borefield = Borefield(sys_params, ghe)
             distribution = UnidirectionalSeries(sys_params)
-            for bldg_id in sub_loop["list_bldg_ids_in_group"]:
+            for bldg_id in loop["list_bldg_ids_in_group"]:
                 for geojson_load in self.gj.buildings:
                     if bldg_id == geojson_load.id:
                         # create the building time series load
@@ -76,7 +76,7 @@ class DistrictSystemTest(TestCaseBase):
             # couple each borefield and distribution
             all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
             # couple distribution and ground coupling
-            all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))   
+            all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
 
         graph = CouplingGraph(all_couplings)
