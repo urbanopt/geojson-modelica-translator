@@ -1,4 +1,3 @@
-  // No components for borefield and distribution coupling
   // temperature sensors
   Buildings.Fluid.Sensors.TemperatureTwoPort TIn_{{ coupling.id }}(
     redeclare final package Medium = {{ globals.medium_w }},
