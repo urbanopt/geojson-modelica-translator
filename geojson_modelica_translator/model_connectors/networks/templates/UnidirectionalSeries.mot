@@ -62,7 +62,7 @@ model UnidirectionalSeries
     "Specific heat of pipe wall material. 2300 for PE, 500 for steel"
     annotation (Dialog(group="Pipe material"));
   parameter Modelica.Units.SI.Density rhoPip(
-    displayUnit="kg/m3")={{ distribution_data["rho_cp"] / cPip }}
+    displayUnit="kg/m3")={{ distribution_data["rho_cp"] }}/cPip
     {% raw %} "Density of pipe wall material. 930 for PE, 8000 for steel"
     annotation (Dialog(group="Pipe material"));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortGro[nCon+1]
