@@ -11,9 +11,9 @@
     final lDis=datDes.lDis[1:loop_order.data[0].num_bldgs_in_group],
     final lEnd=datDes.lDis[1+loop_order.data[0].num_bldgs_in_group],
     {% else %}
-    {% sum_bldg = 0 %}
+    sum_bldg = 0
     {% for k in range(group_num) %}
-    {% sum_bldg += loop_order.data[k].num_bldgs_in_group %}
+    sum_bldg += loop_order.data[k].num_bldgs_in_group
     {% endfor %}
     final lDis=datDes.lDis[1+group_num+sum_bldg:group_num+sum_bldg+loop_order.data[group_num].num_bldgs_in_group],
     final lEnd=datDes.lDis[1+group_num+sum_bldg+loop_order.data[group_num].num_bldgs_in_group],
