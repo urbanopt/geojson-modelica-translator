@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.6.0"
+version = "0.7.0"
 description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
@@ -96,6 +96,8 @@ max-branches = 24
 "tests/*" = ["S101"] # assert statements are allowed in tests, and paths are safe
 "geojson_modelica_translator/model_connectors/load_connectors/teaser.py" = ["PLR0915"]
 # Lots of statements in the teaser post-processing. Don't think we can avoid it.
+"geojson_modelica_translator/model_connectors/districts/district.py" = ["PLR0915", "PLR0912"]
+# FIXME: The District.to_modelica method is large and probably should be broken into a few separate methods.
 "geojson_modelica_translator/model_connectors/couplings/diagram.py" = ["E501"]
 # Only needed for _parse_coupling_graph docstring
 
