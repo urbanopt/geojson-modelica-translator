@@ -80,6 +80,8 @@ class DistrictSystemTest(TestCaseBase):
             all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
             # couple distribution and ground coupling
             all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
+        # empty couple between borefield and ground
+        all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
 
         graph = CouplingGraph(all_couplings)
