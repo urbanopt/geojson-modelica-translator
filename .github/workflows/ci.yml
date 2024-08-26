@@ -41,7 +41,7 @@ jobs:
           docker --version
           docker compose version
       - name: Install Poetry
-        uses: Gr1N/setup-poetry@v8 # optionally set specific poetry version. Defaults to latest
+        uses: Gr1N/setup-poetry@v9 # optionally set specific poetry version. Defaults to latest
       - name: Install dependencies with Poetry
         # poetry setuptools workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
         run: |
