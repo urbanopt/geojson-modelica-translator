@@ -117,3 +117,4 @@ tests/modelica/data/packages/*/dymosim
 tests/management/data/sdk_project_scraps/run/baseline_scenario/system_parameter.json
 geojson_modelica_translator/modelica/buildingslibrary/
 not/
+tests/geojson_modelica_translator/data/modelica_5/modelica_5.Districts.DistrictEnergySystem_results/modelica_5.Districts.DistrictEnergySystem_result.csv

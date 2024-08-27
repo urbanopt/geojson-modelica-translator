@@ -38,10 +38,10 @@ class ResultsModelica:
             "ets_pump_power": r'^TimeSerLoa_\w+\.PPumETS$',
             "Heating system capacity": r'^TimeSerLoa_\w+\.ets.QHeaWat_flow_nominal$',
             "Cooling system capacity": r'^TimeSerLoa_\w+\.ets.QChiWat_flow_nominal$',
-            "electrical_power_consumed": 'pumDis.P'
+            "electrical_power_consumed": 'pumDis.P',
+            "file_name": r'^TimeSerLoa_\w+\.filNam$'
         }
 
-        # Collect key-value pairs directly
         key_value_pairs = {}
         time_values = None
 
@@ -60,7 +60,6 @@ class ResultsModelica:
         time_values = [datetime.fromtimestamp(t, tz=timezone.utc) for t in time_values]
         adjusted_time_values = [adjust_year(dt) for dt in time_values]
 
-        # Create DataFrame
         data_for_df = {"Datetime": adjusted_time_values, "TimeInSeconds": [int(dt.timestamp()) for dt in adjusted_time_values]}
         for var, values in key_value_pairs.items():
             if len(values) < len(adjusted_time_values):
@@ -75,8 +74,8 @@ class ResultsModelica:
         df['Datetime'] = pd.to_datetime(df['Datetime'])
         df.set_index('Datetime', inplace=True)
 
-        # Resample to hourly data, taking the first occurrence for each hour
-        df_resampled = df.resample('h').first().reset_index()
+        # Resample to 15-minute data, taking the first occurrence for each interval
+        df_resampled = df.resample('15min').first().reset_index()
 
         # Format datetime to desired format
         df_resampled['Datetime'] = df_resampled['Datetime'].dt.strftime('%m/%d/%Y %H:%M')
@@ -88,7 +87,7 @@ class ResultsModelica:
         # Ensure the results directory exists
         results_dir.mkdir(parents=True, exist_ok=True)
 
-        # Save DataFrame to CSV
         df_resampled.to_csv(csv_file_path, index=False)
 
         print(f"Results saved at: {csv_file_path}")
+

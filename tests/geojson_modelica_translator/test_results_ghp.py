@@ -5,8 +5,8 @@
 import shutil
 import unittest
 import os
+import pandas as pd
 from pathlib import Path
-
 from geojson_modelica_translator.results_ghp import ResultsModelica
 
 class ResultsTest(unittest.TestCase):
@@ -28,7 +28,17 @@ class ResultsTest(unittest.TestCase):
 
         # Construct the path to the CSV file
         csv_file_path = modelica_path / "modelica_5.Districts.DistrictEnergySystem_results" / "modelica_5.Districts.DistrictEnergySystem_result.csv"
-        print(csv_file_path)
 
         # Check if the CSV file exists
         assert csv_file_path.exists(), f"File does not exist at path: {csv_file_path}"
+
+        # Read the CSV file into a DataFrame
+        df = pd.read_csv(csv_file_path)
+
+        # Check if the 'Datetime' column exists
+        assert 'Datetime' in df.columns, "The 'Datetime' column is missing from the CSV file."
+
+        #TO DO uncomment when input arguments are set for 1 year simulation with 15 min intervals
+        # Check the length of the 'Datetime' column
+        expected_length = 35_040  # Number of 15-minute intervals in a standard year
+        #assert len(df['Datetime']) == expected_length, f"Expected {expected_length} rows but found {len(df['Datetime'])}."
