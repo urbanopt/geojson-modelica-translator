@@ -237,6 +237,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {run_location}/stdout.log for more info.")
 
+
 @cli.command(short_help="Process Modelica model")
 @click.argument(
     "modelica_project",
