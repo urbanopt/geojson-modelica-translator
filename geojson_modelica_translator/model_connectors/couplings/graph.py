@@ -152,3 +152,18 @@ class CouplingGraph:
             return model_b.ghe_id
 
         return None
+    
+    def get_other_model(self, coupling_id, model_id):
+        """Returns the other model in the coupling
+
+        :param model: Model
+        :return: Model
+        """
+        coupling = self.get_coupling(coupling_id)
+        if model_id == coupling._model_a.id:
+            return coupling._model_b
+        elif model_id == coupling._model_b.id:
+            return coupling._model_a
+        raise Exception(
+            f'Provided model, "{model_id}", is not part of the coupling ({coupling._model_a.id}, {coupling._model_b.id})'
+        )
