@@ -146,9 +146,9 @@ class CouplingGraph:
         coupling = self.get_coupling(coupling_id)
         model_a, model_b = coupling._model_a, coupling._model_b
         
-        if coupling._get_model_superclass(model_a) is PlantBase and "borFie" in model_a.model_name:
+        if coupling._get_model_superclass(model_a) is PlantBase and "Borefield" in model_a.model_name:
             return model_a.ghe_id
-        elif coupling._get_model_superclass(model_b) is PlantBase and "borFie" in model_b.model_name:
+        elif coupling._get_model_superclass(model_b) is PlantBase and "Borefield" in model_b.model_name:
             return model_b.ghe_id
 
         return None
