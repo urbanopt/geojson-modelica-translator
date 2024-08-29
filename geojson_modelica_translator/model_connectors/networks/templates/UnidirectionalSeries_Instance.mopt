@@ -1,22 +1,23 @@
   {{ model.modelica_type }} {{ model.id }}(
     redeclare final package Medium = {{ globals.medium_w }},
-    final nCon= {{ sys_params.load_num }},
     show_TOut=true,
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
     final mCon_flow_nominal=datDes.mCon_flow_nominal,
     final dp_length_nominal=datDes.dp_length_nominal,
     {% for group_num in range(loop_order.number_of_loops) %}
-    {% if graph.couplings_by_type(model.id).plant_couplings[0].id == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    {% if graph.get_ghe_id(graph.couplings_by_type(model.id).plant_couplings[0].id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    final nCon= {{ loop_order.data[group_num].list_bldg_ids_in_group|length }},
     {% if group_num == 0 %}
-    final lDis=datDes.lDis[1:loop_order.data[0].num_bldgs_in_group],
-    final lEnd=datDes.lDis[1+loop_order.data[0].num_bldgs_in_group],
+    final lDis=datDes.lDis[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+    final lEnd=datDes.lDis[{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}],
     {% else %}
-    sum_bldg = 0
-    {% for k in range(group_num) %}
-    sum_bldg += loop_order.data[k].num_bldgs_in_group
-    {% endfor %}
-    final lDis=datDes.lDis[1+group_num+sum_bldg:group_num+sum_bldg+loop_order.data[group_num].num_bldgs_in_group],
-    final lEnd=datDes.lDis[1+group_num+sum_bldg+loop_order.data[group_num].num_bldgs_in_group],
+    {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
+    final lDis=datDes.lDis[{{ 1+group_num+sum_bldg }}:{{ group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+    {% if group_num == loop_order.number_of_loops-1 %}
+    final lEnd = datDes.lEnd,
+    {% else %}
+    final lEnd=datDes.lDis[{{ 1+group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+    {% endif %}
     {% endif %}
     {% endif %}
     {% endfor %}
