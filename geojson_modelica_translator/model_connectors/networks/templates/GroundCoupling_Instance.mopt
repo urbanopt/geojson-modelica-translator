@@ -4,8 +4,8 @@
         1,
         datDes.lDis,
         {datDes.lEnd}),
-    rad={0.5*{{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }} 
-        + {{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }} 
+    rad={0.5*{{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }}
+        + {{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.hydraulic_diameter }}
         / ({{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.diameter_ratio }} - 2)
         + {{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.insulation_thickness }}})
     {% raw %}"Ground coupling"

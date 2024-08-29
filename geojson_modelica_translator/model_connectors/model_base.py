@@ -60,7 +60,8 @@ class ModelBase:
                         "temp_setpoint_chw"
                     ],
                 }
-            self.loop_order: list = load_loop_order(self.system_parameters.filename)
+            if "fifth_generation" in district_params and "ghe_parameters" in district_params["fifth_generation"]:
+                self.loop_order: list = load_loop_order(self.system_parameters.filename)
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """Converts square feet to square meters
