@@ -2,6 +2,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 from collections import defaultdict
+from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
 
 
 class CouplingGraph:
@@ -133,3 +134,21 @@ class CouplingGraph:
             if coupling.id == coupling_id:
                 return coupling
         raise Exception(f'No coupling found with id "{coupling_id}"')
+    
+        
+    def get_ghe_id(self, coupling_id):
+        """If there's a GHE model in the coupling, it returns the ghe_id of the model. Else
+        it returns None.
+
+        :return: ghe_id | None
+        """
+        
+        coupling = self.get_coupling(coupling_id)
+        model_a, model_b = coupling._model_a, coupling._model_b
+        
+        if coupling._get_model_superclass(model_a) is PlantBase and "borFie" in model_a.model_name:
+            return model_a.ghe_id
+        elif coupling._get_model_superclass(model_b) is PlantBase and "borFie" in model_b.model_name:
+            return model_b.ghe_id
+
+        return None
