@@ -14,7 +14,7 @@ from modelica_builder.package_parser import PackageParser
 from teaser.project import Project
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
-from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, copytree, simple_uuid
+from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, copytree
 
 
 class Teaser(LoadBase):
@@ -25,7 +25,7 @@ class Teaser(LoadBase):
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = "TeaserLoad_" + simple_uuid()
+        self.id = f"TeaserLoad_{self.building_name}"
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
