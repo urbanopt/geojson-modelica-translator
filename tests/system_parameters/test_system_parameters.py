@@ -350,14 +350,25 @@ class SystemParametersTest(unittest.TestCase):
             )
         assert f"No template found. {bogus_template_type} is not a valid template" in str(context.value)
 
-    def test_download_mos(self):
+    def test_download_usa_mos(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+
+        weather_filename = "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos"
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        assert (Path(self.weather_dir) / weather_filename).exists()
+
+    def test_download_usa_epw(self):
         sdp = SystemParameters()
         print(f"saving results to f{self.weather_dir}")
         weather_filename = "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
         sdp.download_weatherfile(weather_filename, self.weather_dir)
         assert (Path(self.weather_dir) / weather_filename).exists()
 
-        weather_filename = "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos"
+    def test_download_german_epw(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+        weather_filename = "DEU_Stuttgart.107380_IWEC.epw"
         sdp.download_weatherfile(weather_filename, self.weather_dir)
         assert (Path(self.weather_dir) / weather_filename).exists()
 
