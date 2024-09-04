@@ -60,6 +60,7 @@ class ModelBase:
                         "temp_setpoint_chw"
                     ],
                 }
+            # Get access to loop order output from ThermalNetwork package.
             if "fifth_generation" in district_params and "ghe_parameters" in district_params["fifth_generation"]:
                 self.loop_order: list = load_loop_order(self.system_parameters.filename)
 
