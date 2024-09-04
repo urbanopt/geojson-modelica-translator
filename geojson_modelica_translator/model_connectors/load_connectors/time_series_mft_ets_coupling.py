@@ -8,7 +8,7 @@ from pathlib import Path
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
-from geojson_modelica_translator.utils import ModelicaPath, mbl_version, simple_uuid
+from geojson_modelica_translator.utils import ModelicaPath, mbl_version
 
 
 class TimeSeriesMFT(LoadBase):
@@ -16,7 +16,7 @@ class TimeSeriesMFT(LoadBase):
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = "TimeSerMFTLoa_" + simple_uuid()
+        self.id = f"TimeSerMFTLoa_{self.building_name}"
 
         # Note that the order of the required MO files is important as it will be the order that
         # the "package.order" will be in.

@@ -75,9 +75,9 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
     def test_mft_time_series_to_modelica_and_run(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         mo_file_name = Path(root_path) / "DistrictEnergySystem.mo"
-        # set the run time to 31536000 (full year in seconds)
         mofile = Model(mo_file_name)
-        mofile.update_model_annotation({"experiment": {"StopTime": 31536000}})
+        one_year_in_seconds = 31536000  # 1 year in seconds
+        mofile.update_model_annotation({"experiment": {"StopTime": one_year_in_seconds}})
         mofile.save()
 
         self.run_and_assert_in_docker(
@@ -85,7 +85,7 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
             start_time=0,
-            stop_time=31536000,
+            stop_time=one_year_in_seconds,
         )
 
         # Check the results
@@ -101,7 +101,8 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
         coolflow_var = None
         heatflow_var = None
         for var in mat_results.varNames():
-            m = re.match("TimeSerMFTLoa_(.{8})", var)
+            # search for 25 characters because that is the length of the id for the test load
+            m = re.match("TimeSerMFTLoa_(.{25})", var)
             if m:
                 timeseries_load_var = m[1]
                 continue

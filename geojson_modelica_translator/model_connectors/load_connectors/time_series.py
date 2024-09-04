@@ -7,7 +7,7 @@ import shutil
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
-from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, simple_uuid
+from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k
 
 
 class TimeSeries(LoadBase):
@@ -15,7 +15,7 @@ class TimeSeries(LoadBase):
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = "TimeSerLoa_" + simple_uuid()
+        self.id = f"TimeSerLoa_{self.building_name}"
 
     def to_modelica(self, scaffold):
         """Create timeSeries models based on the data in the buildings and geojsons
