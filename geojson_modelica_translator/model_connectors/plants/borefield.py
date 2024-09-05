@@ -11,7 +11,7 @@ import scipy.io as sio
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
-from geojson_modelica_translator.utils import ModelicaPath
+from geojson_modelica_translator.utils import ModelicaPath, simple_uuid
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +21,9 @@ class Borefield(PlantBase):
 
     def __init__(self, system_parameters, ghe=None):
         super().__init__(system_parameters)
+        self.id = "borFie_" + simple_uuid()
+        self.borefield_name = "Borefield_" + simple_uuid()
         self.ghe_id = ghe["ghe_id"]
-        self.id = f"borFie_{self.ghe_id}"
-        self.borefield_name = f"Borefield_{self.ghe_id}"
 
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
 
