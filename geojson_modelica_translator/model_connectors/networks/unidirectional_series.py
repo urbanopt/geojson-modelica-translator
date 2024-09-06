@@ -111,7 +111,10 @@ class UnidirectionalSeries(NetworkBase):
             )
         else:
             for model_name in package_models:
-                networks_package.add_model(model_name)
+                # We only want a single model named ConnectionSeriesAutosize to be included, so we skip adding
+                # (One was included when the Networks package order_data was first created just above)
+                if model_name != "ConnectionSeriesAutosize":
+                    networks_package.add_model(model_name)
         networks_package.save()
 
     def get_modelica_type(self, scaffold):
