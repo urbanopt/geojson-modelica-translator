@@ -51,7 +51,7 @@
           "has_liquid_heating": true,
           "has_electric_cooling": false,
           "has_electric_heating": false,
-          "max_electrical_load": 816088000,
+          "max_electrical_load": 816027000,
           "temp_chw_return": 12,
           "temp_chw_supply": 7,
           "temp_hw_return": 35,
@@ -207,7 +207,7 @@
           "has_liquid_heating": true,
           "has_electric_cooling": false,
           "has_electric_heating": false,
-          "max_electrical_load": 57376200,
+          "max_electrical_load": 57376300,
           "temp_chw_return": 12,
           "temp_chw_supply": 7,
           "temp_hw_return": 35,
@@ -363,7 +363,7 @@
           "has_liquid_heating": true,
           "has_electric_cooling": false,
           "has_electric_heating": false,
-          "max_electrical_load": 21337600000,
+          "max_electrical_load": 21333600000,
           "temp_chw_return": 12,
           "temp_chw_supply": 7,
           "temp_hw_return": 35,
@@ -480,7 +480,7 @@
           "has_liquid_heating": true,
           "has_electric_cooling": false,
           "has_electric_heating": false,
-          "max_electrical_load": 4121860000,
+          "max_electrical_load": 4119850000,
           "temp_chw_return": 12,
           "temp_chw_supply": 7,
           "temp_hw_return": 35,
@@ -567,40 +567,40 @@
           {
             "ghe_id": "344421ab-b416-403e-bd22-7b8af7b581a2",
             "ghe_geometric_params": {
-              "length_of_ghe": 527.3877277187404,
-              "width_of_ghe": 253.6122722812596
+              "length_of_ghe": 694.3287743700416,
+              "width_of_ghe": 487.17122562995837
             },
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length_of_boreholes": 1.0,
-              "number_of_boreholes": 5
+              "length_of_boreholes": 130.5300693149386,
+              "number_of_boreholes": 1633
             }
           },
           {
             "ghe_id": "8410c9a9-d52e-4c68-b7bc-4affae974481",
             "ghe_geometric_params": {
-              "length_of_ghe": 348.145994886069,
-              "width_of_ghe": 286.354005113931
+              "length_of_ghe": 523.1004518062042,
+              "width_of_ghe": 323.8995481937958
             },
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length_of_boreholes": 1.0,
-              "number_of_boreholes": 5
+              "length_of_boreholes": 130.5300693149386,
+              "number_of_boreholes": 1633
             }
           },
           {
             "ghe_id": "3eb26af6-a1f7-4daa-8372-ec016ca185a4",
             "ghe_geometric_params": {
-              "length_of_ghe": 223.18122107133283,
-              "width_of_ghe": 167.81877892866717
+              "length_of_ghe": 785.0109484676316,
+              "width_of_ghe": 510.9890515323684
             },
             "borehole": {
               "buried_depth": 2.0,
               "diameter": 0.15,
-              "length_of_boreholes": 1.0,
-              "number_of_boreholes": 5
+              "length_of_boreholes": 130.5300693149386,
+              "number_of_boreholes": 1633
             }
           }
         ]

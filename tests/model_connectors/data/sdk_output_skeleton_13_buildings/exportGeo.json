@@ -643,9 +643,9 @@
         "geometryType": "Rectangle",
         "name": "North Borefield",
         "type": "District System",
-        "footprint_area": 133752,
-        "footprint_perimeter": 1562,
-        "floor_area": 133752,
+        "footprint_area": 338257,
+        "footprint_perimeter": 2363,
+        "floor_area": 338257,
         "district_system_type": "Ground Heat Exchanger",
         "equipment": [
           "Ground Source Heat Pump--Ambient Water"
@@ -656,24 +656,24 @@
         "coordinates": [
           [
             [
-              -78.85163916936783,
-              42.82074320995312
+              -78.8494754734399,
+              42.82050338210456
             ],
             [
-              -78.85136365592606,
-              42.82008083837874
+              -78.85000302272807,
+              42.821771667056765
+            ],
+            [
+              -78.85249688629608,
+              42.82121359285
+            ],
+            [
+              -78.85196933700792,
+              42.81994529644987
             ],
             [
               -78.8494754734399,
-              42.82050338210453
-            ],
-            [
-              -78.84975098688165,
-              42.82116574915224
-            ],
-            [
-              -78.85163916936783,
-              42.82074320995312
+              42.82050338210456
             ]
           ]
         ]
@@ -686,9 +686,9 @@
         "geometryType": "Rectangle",
         "name": "Central Borefield",
         "type": "District System",
-        "footprint_area": 99693,
-        "footprint_perimeter": 1269,
-        "floor_area": 99693,
+        "footprint_area": 169432,
+        "footprint_perimeter": 1694,
+        "floor_area": 169432,
         "district_system_type": "Ground Heat Exchanger",
         "equipment": [
           "Ground Source Heat Pump--Ambient Water"
@@ -699,24 +699,24 @@
         "coordinates": [
           [
             [
-              -78.85000803242056,
-              42.81634732725519
+              -78.84836114361686,
+              42.81543376574956
             ],
             [
-              -78.84959891333052,
-              42.81543060729646
+              -78.84897169269317,
+              42.81680182817098
             ],
             [
-              -78.84859504144411,
-              42.81567167720456
+              -78.85011493002771,
+              42.816527295971554
             ],
             [
-              -78.84900416053414,
-              42.816588393589626
+              -78.84950438095142,
+              42.81515922747664
             ],
             [
-              -78.85000803242056,
-              42.81634732725519
+              -78.84836114361686,
+              42.81543376574956
             ]
           ]
         ]
@@ -729,9 +729,9 @@
         "geometryType": "Rectangle",
         "name": "South Borefield",
         "type": "District System",
-        "footprint_area": 37454,
-        "footprint_perimeter": 782,
-        "floor_area": 37454,
+        "footprint_area": 401132,
+        "footprint_perimeter": 2592,
+        "floor_area": 401132,
         "district_system_type": "Ground Heat Exchanger",
         "equipment": [
           "Ground Source Heat Pump--Ambient Water"
@@ -742,24 +742,24 @@
         "coordinates": [
           [
             [
-              -78.84880719381741,
-              42.8133261604288
+              -78.8475235233357,
+              42.81365318468062
             ],
             [
-              -78.84860276280502,
-              42.81289433718402
+              -78.8503059584367,
+              42.81294433721632
             ],
             [
-              -78.84781175578134,
-              42.81309585350186
+              -78.84968353436723,
+              42.81162956233865
             ],
             [
-              -78.84801618679373,
-              42.81352767533957
+              -78.84690109926622,
+              42.812338424872195
             ],
             [
-              -78.84880719381741,
-              42.8133261604288
+              -78.8475235233357,
+              42.81365318468062
             ]
           ]
         ]
@@ -777,8 +777,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.85121659323072,
-          42.820113748659104
+          -78.8512349598372,
+          42.82010963850706
         ]
       }
     },
@@ -802,8 +802,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "24c8b516-0fd6-43a1-854e-5ba83a9df09b",
+        "type": "ThermalConnector",
         "startJunctionId": "4e02c927-5835-4d64-98ad-b4505c85ca68",
         "endJunctionId": "a92f0127-cb83-492a-8095-946934aa4e46",
         "startFeatureId": "344421ab-b416-403e-bd22-7b8af7b581a2",
@@ -817,8 +817,8 @@
         "type": "LineString",
         "coordinates": [
           [
-            -78.85121659323072,
-            42.820113748659104
+            -78.8512349598372,
+            42.82010963850706
           ],
           [
             -78.85113487080939,
@@ -865,8 +865,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "337c8520-bfb5-40f1-bda7-7c176cd67185",
+        "type": "ThermalConnector",
         "startJunctionId": "9c117354-989c-4f37-83fc-d5c52118d9b3",
         "endJunctionId": "5c3cfa78-74c0-42f5-942d-4eb218988976",
         "startFeatureId": "10",
@@ -927,8 +927,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "68c0a041-8660-4cd5-aee0-b6ae128cecbf",
+        "type": "ThermalConnector",
         "startJunctionId": "68582bc2-aa6f-49aa-860e-9ac2e93406cc",
         "endJunctionId": "664c0efd-2e35-4b0b-9a2d-eba14a10501c",
         "startFeatureId": "2",
@@ -989,8 +989,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "f03fbac3-1f6d-47f3-a69e-2f946eaf70ba",
+        "type": "ThermalConnector",
         "startJunctionId": "e27399ff-7af8-4b77-b427-51b797d3d4a7",
         "endJunctionId": "f8b3e7bb-88f8-4de0-be15-d46e3f91a4e5",
         "startFeatureId": "9",
@@ -1051,8 +1051,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "3ea70c8c-743d-4fa8-92a8-04ae837829b5",
+        "type": "ThermalConnector",
         "startJunctionId": "869047c8-266a-414b-8053-ec63f00ffd17",
         "endJunctionId": "a254ee32-f689-4f6e-888d-f30ddce0847d",
         "startFeatureId": "8",
@@ -1105,16 +1105,16 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.84880719381742,
-          42.81332616042881
+          -78.84922659316274,
+          42.81321931506611
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "1289f364-1e6b-4c47-89ae-e4c015451e5b",
+        "type": "ThermalConnector",
         "startJunctionId": "c17ce719-9294-47eb-a99e-42b9c6932f6f",
         "endJunctionId": "d348e659-d761-420d-8ed5-3d76a350be8d",
         "startFeatureId": "3",
@@ -1132,8 +1132,8 @@
             42.8133708383824
           ],
           [
-            -78.84880719381742,
-            42.81332616042881
+            -78.84922659316274,
+            42.81321931506611
           ]
         ]
       }
@@ -1150,8 +1150,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.84852976351321,
-          42.813396837932856
+          -78.84854087453262,
+          42.81339400731676
         ]
       }
     },
@@ -1175,8 +1175,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "ad833451-0cf9-4df2-912b-3b5d911e1379",
+        "type": "ThermalConnector",
         "startJunctionId": "333ed6c9-2d06-43cc-b7cc-783a1549dec3",
         "endJunctionId": "8fb90f73-ef48-4956-b3ad-680b39f967ca",
         "startFeatureId": "3eb26af6-a1f7-4daa-8372-ec016ca185a4",
@@ -1190,8 +1190,8 @@
         "type": "LineString",
         "coordinates": [
           [
-            -78.84852976351321,
-            42.813396837932856
+            -78.84854087453262,
+            42.81339400731676
           ],
           [
             -78.84862090048107,
@@ -1237,8 +1237,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "12d62c5e-a095-444b-8396-985eeb3c232f",
+        "type": "ThermalConnector",
         "startJunctionId": "5eec9115-9bc9-4424-b1e2-193b0c5ec433",
         "endJunctionId": "a2a7f8b8-5b70-4fc3-86c6-ff3585500889",
         "startFeatureId": "4",
@@ -1299,8 +1299,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "cf27d678-b6fd-4613-ae81-28d06fe388fe",
+        "type": "ThermalConnector",
         "startJunctionId": "31403690-cf1c-4ec8-a0a7-360b8363966a",
         "endJunctionId": "9253923f-16e3-4927-9902-4e9b7ed2d7e2",
         "startFeatureId": "5",
@@ -1361,8 +1361,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "b4d230d5-ef87-47fa-8afc-60bdf2ddec99",
+        "type": "ThermalConnector",
         "startJunctionId": "d9da0243-8682-4004-9dc4-baa14dd5740d",
         "endJunctionId": "990d19db-100a-4fc1-bce8-70164a7ffa00",
         "startFeatureId": "6",
@@ -1415,16 +1415,16 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.84959891333054,
-          42.815430607296456
+          -78.84931588748674,
+          42.815204492588805
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "08933dfd-517a-4977-a9ed-dcf8eeb8b0b9",
+        "type": "ThermalConnector",
         "startJunctionId": "d4e9f032-56c0-4c41-91a8-3e5f320f2012",
         "endJunctionId": "1f826cdb-b01a-4eea-95b0-a12d5d829da7",
         "startFeatureId": "11",
@@ -1442,8 +1442,8 @@
             42.81472064501694
           ],
           [
-            -78.84959891333054,
-            42.815430607296456
+            -78.84931588748674,
+            42.815204492588805
           ]
         ]
       }
@@ -1460,8 +1460,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.84859504144413,
-          42.81567167720455
+          -78.84852513772356,
+          42.815394384098994
         ]
       }
     },
@@ -1485,8 +1485,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "d9e01378-ff3d-4cbc-8dcf-85f9241e0e6a",
+        "type": "ThermalConnector",
         "startJunctionId": "4bd65984-b0e4-4fa4-b928-9ff8ebabc162",
         "endJunctionId": "f19a7a1f-b5c9-4a85-ab36-6067dd783d11",
         "startFeatureId": "8410c9a9-d52e-4c68-b7bc-4affae974481",
@@ -1500,8 +1500,8 @@
         "type": "LineString",
         "coordinates": [
           [
-            -78.84859504144413,
-            42.81567167720455
+            -78.84852513772356,
+            42.815394384098994
           ],
           [
             -78.84786797764679,
@@ -1547,8 +1547,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "e938175b-f2c6-4cac-a801-186a38fa5f7f",
+        "type": "ThermalConnector",
         "startJunctionId": "17ae1e5a-d90f-45c3-8768-aa68f8656905",
         "endJunctionId": "ef0291b5-c3f4-4ca4-832b-dde9ed38a177",
         "startFeatureId": "1",
@@ -1609,8 +1609,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "a4615595-37c1-4fd1-ba57-0674050fa5b8",
+        "type": "ThermalConnector",
         "startJunctionId": "cf9ac376-f9d0-41ec-aeb9-1d0d4b21f58d",
         "endJunctionId": "b540c81d-8462-425d-8972-a637f6f8c898",
         "startFeatureId": "7",
@@ -1671,8 +1671,8 @@
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "8f5a9a67-2106-4395-8df4-2d883913d6b3",
+        "type": "ThermalConnector",
         "startJunctionId": "09b1387d-7aeb-4386-bedc-5655a562a099",
         "endJunctionId": "b2de161d-2def-41b3-bf3a-f20b4972d44a",
         "startFeatureId": "12",
@@ -1725,16 +1725,16 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.84967476113944,
-          42.82045878497989
+          -78.84967859089735,
+          42.82045792794628
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "type": "ThermalConnector",
         "id": "35dbde87-cc0b-4f48-9e88-5b02d4bf0d63",
+        "type": "ThermalConnector",
         "startJunctionId": "21736b3d-2f02-457e-8332-376ca1751815",
         "endJunctionId": "cd0bbd2f-2cb8-489d-ab31-4a034e0c5e08",
         "startFeatureId": "13",
@@ -1752,8 +1752,8 @@
             42.82027851644776
           ],
           [
-            -78.84967476113944,
-            42.82045878497989
+            -78.84967859089735,
+            42.82045792794628
           ]
         ]
       }
