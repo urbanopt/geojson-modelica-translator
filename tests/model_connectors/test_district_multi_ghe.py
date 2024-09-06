@@ -11,10 +11,10 @@ from geojson_modelica_translator.model_connectors.couplings.coupling import Coup
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
 from geojson_modelica_translator.model_connectors.districts.district import District
 from geojson_modelica_translator.model_connectors.load_connectors.time_series import TimeSeries
+from geojson_modelica_translator.model_connectors.networks.design_data_series import DesignDataSeries
 from geojson_modelica_translator.model_connectors.networks.ground_coupling import GroundCoupling
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.networks.unidirectional_series import UnidirectionalSeries
-from geojson_modelica_translator.model_connectors.networks.design_data_series import DesignDataSeries
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from tests.base_test_case import TestCaseBase
@@ -50,7 +50,7 @@ class DistrictSystemTest(TestCaseBase):
 
         # create district data
         design_data = DesignDataSeries(sys_params)
-        
+
         # read the loop order and create building groups
         filename = (
             Path(self.data_dir)
@@ -88,7 +88,6 @@ class DistrictSystemTest(TestCaseBase):
             # empty couple between borefield and ground
             all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
-        
 
         graph = CouplingGraph(all_couplings)
 

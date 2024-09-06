@@ -8,8 +8,7 @@ from pathlib import Path
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
-from geojson_modelica_translator.utils import ModelicaPath
-from geojson_modelica_translator.utils import load_loop_order
+from geojson_modelica_translator.utils import ModelicaPath, load_loop_order
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +20,6 @@ class DesignDataSeries(NetworkBase):
         super().__init__(system_parameters)
         self.id = "datDes"
         self.design_data_name = "DesignDataSeries"
-
 
     def to_modelica(self, scaffold):
         """
