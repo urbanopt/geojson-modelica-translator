@@ -5,12 +5,20 @@
     redeclare package Medium={{ globals.medium_w }},
     use_T_in=false,
     T={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }}+273.15,
+    {% if sys_params.district_system.fifth_generation.ghe_parameters %}
+    nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
+    {% else %}
     nPorts=1)
+    {% endif %}
     "Heating water supply temperature (district side)."
     annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
   {% endfor %}Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium={{ globals.medium_w }},
+    {% if sys_params.district_system.fifth_generation.ghe_parameters %}
+    nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
+    {% else %}
     nPorts={{ sys_params.num_buildings }})
+    {% endif %}
     "Heating water sink (district side)"
     annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));
 
