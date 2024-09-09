@@ -67,7 +67,7 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         assert sdp is not None
         assert len(sdp.validate()) == 0
-        assert [] == sdp.validate()
+        assert sdp.validate() == []
 
     def test_error_system_parameters_ghe(self):
         filename = self.data_dir / "system_params_ghe_invalid.json"
@@ -164,7 +164,7 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_id("defgh2345", "ets_model")
         assert value == "Indirect Heating and Cooling"
         value = sdp.get_param_by_id("defgh2345", "ets_indirect_parameters")
-        assert {
+        assert value == {
             "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
@@ -182,7 +182,7 @@ class SystemParametersTest(unittest.TestCase):
             "cooling_controller_y_min": 0,
             "heating_controller_y_max": 1,
             "heating_controller_y_min": 0,
-        } == value
+        }
 
     def test_get_param_with_ghe_id(self):
         # Setup
@@ -194,7 +194,7 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40033", "borehole")
 
         # Assert
-        assert {"buried_depth": 2.0, "diameter": 0.15} == value
+        assert value == {"buried_depth": 2.0, "diameter": 0.15}
 
         # Act
         second_ghe_borehole = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40034", "borehole")

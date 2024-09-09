@@ -17,7 +17,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import Syst
 from tests.base_test_case import TestCaseBase
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 class MixedLoadsTest(TestCaseBase):
     def setUp(self):
         super().setUp()
@@ -88,7 +88,7 @@ class MixedLoadsTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip("OMC Spawn - Failed to find spawn executable in Buildings Library")
     def test_simulate_mixed_loads_district_energy_system(self):
         self.run_and_assert_in_docker(
