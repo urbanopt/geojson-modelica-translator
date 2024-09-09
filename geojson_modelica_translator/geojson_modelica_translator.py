@@ -105,7 +105,10 @@ class ModelicaPackage:
         """
         modelica_runner = ModelicaRunner()
         return modelica_runner.run_in_docker(
-            self._file_to_run, run_path=self._project_path, project_name=self._project_name
+            action="compile_and_run",
+            file_to_load=self._file_to_run,
+            run_path=self._project_path,
+            model_name=self._project_name,
         )
 
 
