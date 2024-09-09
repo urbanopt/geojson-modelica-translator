@@ -17,7 +17,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -30,7 +29,7 @@ packages = [
 [tool.poetry.dependencies]
 # https://python-poetry.org/docs/dependency-specification/
 # Urbanopt SDK requires Python 3.10 as of UOv0.9.0
-python = ">=3.9, <3.13"
+python = ">=3.10, <3.13"
 BuildingsPy = "4.0.0"
 click = "^8.1"
 geojson = "^3.1"
@@ -45,15 +44,15 @@ requests = "^2.28"
 teaser = "0.7.5"
 #teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
 
+myst-parser = "^4.0.0"
 [tool.poetry.dev-dependencies]
 coveralls = "~3.3"
 # lock the rpds-py to 0.16.2 until we can update due to issue with Python 3.12.x
 rpds-py = "0.16.2"
-m2r2 = "^0.3.3.post2"
-mypy = "^1.8"
-pre-commit = "^3.8"
-pytest = "^8.3"
-pytest-cov = "^5.0"
+mypy = "~1.8"
+pre-commit = "~3.6"
+pytest = "~7.4"
+pytest-cov = "~4.1"
 # don't update sphinx right now
 sphinx = "~7.2"
 sphinx_rtd_theme = "~2.0"

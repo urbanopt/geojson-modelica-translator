@@ -89,6 +89,7 @@ jobs:
         if: matrix.test_env == 'docs'
         run: |
           cd docs
+          pip install setuptools
           poetry run make html
       - name: Coveralls
         env:
