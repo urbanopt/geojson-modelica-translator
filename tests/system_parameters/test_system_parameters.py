@@ -372,6 +372,13 @@ class SystemParametersTest(unittest.TestCase):
         sdp.download_weatherfile(weather_filename, self.weather_dir)
         assert (Path(self.weather_dir) / weather_filename).exists()
 
+    def test_download_german_mos(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+        weather_filename = "DEU_Stuttgart.107380_IWEC.mos"
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        assert (Path(self.weather_dir) / weather_filename).exists()
+
     def test_download_invalid_savepath(self):
         sdp = SystemParameters()
         weather_filename = "irrelevant weather file"
