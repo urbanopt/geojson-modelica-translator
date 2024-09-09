@@ -10,7 +10,11 @@
     final mCon_flow_nominal=datDes.mCon_flow_nominal[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
     final lDis=datDes.lDis[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
     final lCon=datDes.lCon[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+    {% if loop_order.number_of_loops == 1 %}
+    final lEnd = datDes.lEnd,
+    {% else %}
     final lEnd=datDes.lDis[{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}],
+    {% endif %}
     {% else %}
     {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
     final mCon_flow_nominal=datDes.mCon_flow_nominal[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
