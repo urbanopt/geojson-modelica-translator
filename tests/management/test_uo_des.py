@@ -236,7 +236,7 @@ class CLIIntegrationTest(TestCase):
         assert expected_failure.exit_code != 0
         assert "Modelica does not support spaces in project names or paths." in str(expected_failure.exception)
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_cli_runs_existing_4g_model(self):
         project_name = "modelica_project_4g"
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
@@ -263,7 +263,7 @@ class CLIIntegrationTest(TestCase):
             self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
         ).exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_cli_runs_existing_5g_model(self):
         project_name = "modelica_project_5g"
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"

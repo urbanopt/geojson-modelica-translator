@@ -60,7 +60,7 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_simulate_district_heating_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
