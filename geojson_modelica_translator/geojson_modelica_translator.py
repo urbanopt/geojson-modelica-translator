@@ -92,8 +92,7 @@ def _parse_couplings(geojson, sys_params, district_type=None):
 class ModelicaPackage:
     """Represents a modelica package which can be simulated"""
 
-    def __init__(self, file_to_run, project_path, project_name):
-        self._file_to_run = file_to_run
+    def __init__(self, project_path, project_name):
         self._project_path = project_path
         self._project_name = project_name
 
@@ -103,12 +102,16 @@ class ModelicaPackage:
         :return: tuple(bool, pathlib.Path), True or False depending on simulation success
             followed by the path to the results directory
         """
+        _log.debug(f"Model name: {self._project_name}.Districts.DistrictEnergySystem")
+        _log.debug(f"file to load: {self._project_path / self._project_name / 'package.mo'}")
+        _log.debug(f"run path: {self._project_path / self._project_name}")
+
         modelica_runner = ModelicaRunner()
         return modelica_runner.run_in_docker(
             action="compile_and_run",
-            file_to_load=self._file_to_run,
-            run_path=self._project_path,
-            model_name=self._project_name,
+            model_name=f"{self._project_name}.Districts.DistrictEnergySystem",
+            file_to_load=self._project_path / self._project_name / "package.mo",
+            run_path=self._project_path / self._project_name,
         )
 
 
@@ -165,4 +168,4 @@ class GeoJsonModelicaTranslator:
         """
         self._district.to_modelica()
 
-        return ModelicaPackage(self._district.district_model_filepath, self._root_dir, self._project_name)
+        return ModelicaPackage(self._root_dir, self._project_name)
