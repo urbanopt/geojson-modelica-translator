@@ -71,7 +71,7 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_mft_time_series_to_modelica_and_run(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         mo_file_name = Path(root_path) / "DistrictEnergySystem.mo"

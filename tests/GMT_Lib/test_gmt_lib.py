@@ -91,7 +91,7 @@ def test_build_cooling_plant():
     assert linecount(package_output_dir / "CoolingPlant.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_cooling_plant():
     # -- Setup
     template_path = (COOLING_PLANT_PATH / "CoolingPlant.mot").relative_to(GMT_LIB_PATH)
@@ -120,7 +120,7 @@ def test_simulate_cooling_plant():
     assert success is True
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_polynomial_boiler():
     # -- Setup
 
@@ -165,7 +165,7 @@ def test_build_community_pv():
     assert linecount(package_output_dir / "PVPanels1.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_community_pv():
     # -- Setup
 
@@ -204,7 +204,7 @@ def test_build_wind_turbine():
     assert linecount(package_output_dir / "WindTurbine0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_wind_turbine():
     # -- Setup
 
@@ -246,7 +246,7 @@ def test_build_distribution_lines():
     assert linecount(package_output_dir / "ACLine0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_distribution_lines():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "DistributionLines"
@@ -286,7 +286,7 @@ def test_build_capacitor():
 
 
 @pytest.mark.skip(reason="Capacitors are not yet implemented")
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_capacitor():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Capacitor"
@@ -324,7 +324,7 @@ def test_build_battery():
     assert linecount(package_output_dir / "AcBattery0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_battery():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Battery"
@@ -362,7 +362,7 @@ def test_build_generator():
     assert linecount(package_output_dir / "Generator0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_generator():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Generator"
@@ -400,7 +400,7 @@ def test_build_grid():
     assert linecount(package_output_dir / "Grid.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_grid():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Grid"
@@ -438,7 +438,7 @@ def test_build_capacitive_load():
     assert linecount(package_output_dir / "Capacitive0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_capacitive_load():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Capacitive"
@@ -479,7 +479,7 @@ def test_build_inductive_load():
     assert linecount(package_output_dir / "Inductive0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_inductive_load():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Inductive"
@@ -523,7 +523,7 @@ def test_build_pv_subsystem():
     assert linecount(package_output_dir / "PVsubsystem.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_pv_subsystem():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "PVsubsystem"
@@ -566,7 +566,7 @@ def test_build_transformer():
     assert linecount(package_output_dir / "ACACTransformer0.mo") > 20
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 def test_simulate_transformer():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "ACACTransformer"

@@ -96,7 +96,7 @@ class ModelicaPath:
     def clear_or_create_path(self, path):
         if os.path.exists(path):
             if not self.overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % path)
+                raise Exception(f"Directory already exists and overwrite is false for {path}")
             else:
                 shutil.rmtree(path)
         os.makedirs(path, exist_ok=True)
