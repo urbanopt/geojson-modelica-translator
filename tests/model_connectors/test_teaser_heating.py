@@ -60,7 +60,7 @@ class TestTeaserHeating(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip(reason="Takes forever to run, might be crashing.")
     def test_simulate_teaser_heating(self):
         self.run_and_assert_in_docker(

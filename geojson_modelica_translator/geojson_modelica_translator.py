@@ -30,7 +30,7 @@ LOAD_MODEL_TO_CLASS = {
 }
 
 
-def _parse_couplings(geojson, sys_params, sys_param_district_type):  #
+def _parse_couplings(geojson, sys_params, sys_param_district_type):
     """Given config files, construct the necessary models and their couplings which
     can then be passed to CouplingGraph.
 

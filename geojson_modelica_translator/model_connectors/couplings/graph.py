@@ -37,9 +37,9 @@ class CouplingGraph:
         #   ...
         # }
         self._grouped_couplings_by_model_id = {}
-        for model_id, couplings in self._couplings_by_model_id.items():
+        for model_id, couplings_list in self._couplings_by_model_id.items():
             grouped_couplings = defaultdict(list)
-            for coupling in couplings:
+            for coupling in couplings_list:
                 other_model = coupling.get_other_model(self._models_by_id[model_id])
                 coupling_type = f"{other_model.simple_gmt_type}_couplings"
                 grouped_couplings[coupling_type].append(coupling)

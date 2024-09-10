@@ -53,7 +53,7 @@ class TimeSeriesModelConnectorSingleBuildingTest(TestCaseBase):
         for file in files:
             assert Path(file).exists(), f"File does not exist: {file}"
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip(
         reason="There is no district in this model so the GMT never instantiates `delTAirHea` and compilation fails."
     )

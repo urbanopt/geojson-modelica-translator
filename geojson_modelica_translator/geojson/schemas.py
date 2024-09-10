@@ -2,7 +2,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import json
-import os
+from pathlib import Path
 
 from jsonschema.validators import Draft202012Validator as LatestValidator
 
@@ -24,7 +24,7 @@ class Schemas:
         }
 
         for s in self.schemas:
-            path = os.path.join(os.path.dirname(__file__), "data/schemas/%s_properties.json" % s)
+            path = Path(__file__).parent / "data" / "schemas" / f"{s}_properties.json"
             with open(path) as f:
                 self.schemas[s] = json.load(f)
 
