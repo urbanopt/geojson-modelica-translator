@@ -72,7 +72,7 @@ def build_sys_param(
 
     FEATURE_FILE: Path to sdk json feature file with data about the buildings.
 
-    DISTRICT_TYPE: selection for which kind of simulation this sys-param file will support.
+    DISTRICT_TYPE: selection for which kind of simulation this sys-param file will support. Possible options 5G_ghe, 4G.
 
     \b
     MODEL_TYPE: selection for which kind of simulation this sys-param file will support.

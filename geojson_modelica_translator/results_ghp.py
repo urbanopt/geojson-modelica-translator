@@ -44,8 +44,7 @@ class ResultsModelica:
             "ets_pump_power": r"^TimeSerLoa_\w+\.PPumETS$",
             "Heating system capacity": r"^TimeSerLoa_\w+\.ets.QHeaWat_flow_nominal$",
             "Cooling system capacity": r"^TimeSerLoa_\w+\.ets.QChiWat_flow_nominal$",
-            "electrical_power_consumed": "pumDis.P",
-            "file_name": r"^TimeSerLoa_\w+\.filNam$",
+            "electrical_power_consumed": "pumDis.P"
         }
 
         key_value_pairs = {}
