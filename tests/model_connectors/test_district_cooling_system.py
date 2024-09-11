@@ -18,7 +18,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import Syst
 from tests.base_test_case import TestCaseBase
 
 
-@pytest.mark.simulation()
+@pytest.mark.simulation
 class DistrictCoolingSystemTest(TestCaseBase):
     def setUp(self):
         # TODO: remove all the unittest stuff since we use pytest
@@ -62,7 +62,7 @@ class DistrictCoolingSystemTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_simulate_district_cooling_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
