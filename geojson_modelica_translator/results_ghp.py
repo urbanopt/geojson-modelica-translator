@@ -90,9 +90,10 @@ class ResultsModelica:
         # Format datetime to desired format
         df_resampled["Datetime"] = df_resampled["Datetime"].dt.strftime("%m/%d/%Y %H:%M")
 
-        # Interpolate missing values
-        df_resampled.interpolate(method='linear', inplace=True)    
-
+        # Interpolate only numeric columns
+        numeric_columns = df_resampled.select_dtypes(include=['number']).columns
+        df_resampled[numeric_columns] = df_resampled[numeric_columns].interpolate(method='linear', inplace=False)
+        
         # Check if the number of rows is not equal to 8760 (hourly) or 8760 * 4 (15-minute)
         if df_resampled.shape[0] != 8760 or df_resampled.shape[0] != 8760 * 4:
             print("Data length is incorrect. Expected 8760 (hourly) or 8760 * 4 (15-minute) entries.")
