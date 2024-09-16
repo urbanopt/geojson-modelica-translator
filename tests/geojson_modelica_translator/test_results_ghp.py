@@ -13,10 +13,6 @@ from geojson_modelica_translator.results_ghp import ResultsModelica
 class ResultsTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / "data"
-        # self.output_dir = Path(__file__).parent / "output"
-        # if self.output_dir.exists():
-        #     shutil.rmtree(self.output_dir)
-        # self.output_dir.mkdir(exist_ok=True)
 
     def test_result(self):
         # Construct the path to the Modelica project directory
@@ -39,10 +35,10 @@ class ResultsTest(unittest.TestCase):
         # Read the CSV file into a DataFrame
         df = pd.read_csv(csv_file_path)
 
-        # Check if the 'Datetime' column exists
         assert "Datetime" in df.columns, "The 'Datetime' column is missing from the CSV file."
 
-        # TO DO uncomment when input arguments are set for 1 year simulation with 15 min intervals
-        # Check the length of the 'Datetime' column
-        expected_length = 35_040  # Number of 15-minute intervals in a standard year
-        # assert len(df['Datetime']) == expected_length, f"Expected {expected_length} rows but found {len(df['Datetime'])}."
+        assert "heating_electric_power_d55aa383" in df.columns, "The heating_electric_power column is missing from the CSV file."
+
+        assert "pump_power_3da62a1d" in df.columns, "The pump_power column is missing from the CSV file."
+
+        assert "electrical_power_consumed" in df.columns, "The electrical_power_consumed column is missing from the CSV file."

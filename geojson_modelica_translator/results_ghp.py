@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
+import re
 from buildingspy.io.outputfile import Reader
 
 
@@ -69,6 +70,7 @@ class ResultsModelica:
             "Datetime": adjusted_time_values,
             "TimeInSeconds": [int(dt.timestamp()) for dt in adjusted_time_values],
         }
+        
         for var, values in key_value_pairs.items():
             if len(values) < len(adjusted_time_values):
                 values.extend([None] * (len(adjusted_time_values) - len(values)))
@@ -88,6 +90,43 @@ class ResultsModelica:
         # Format datetime to desired format
         df_resampled["Datetime"] = df_resampled["Datetime"].dt.strftime("%m/%d/%Y %H:%M")
 
+        # Interpolate missing values
+        df_resampled.interpolate(method='linear', inplace=True)    
+
+        # Check if the number of rows is not equal to 8760 (hourly) or 8760 * 4 (15-minute)
+        if df_resampled.shape[0] != 8760 or df_resampled.shape[0] != 8760 * 4:
+            print("Data length is incorrect. Expected 8760 (hourly) or 8760 * 4 (15-minute) entries.")
+
+        # Define patterns with placeholders
+        patterns = {
+            "heating_electric_power_#{building_id}": r"^TimeSerLoa_(\w+)\.PHea$",
+            "cooling_electric_power_#{building_id}": r"^TimeSerLoa_(\w+)\.PCoo$",
+            "pump_power_#{building_id}": r"^TimeSerLoa_(\w+)\.PPum$",
+            "ets_pump_power_#{building_id}": r"^TimeSerLoa_(\w+)\.PPumETS$",
+            "heating_system_capacity_#{building_id}": r"^TimeSerLoa_(\w+)\.ets.QHeaWat_flow_nominal$",
+            "cooling_system_capacity_#{building_id}": r"^TimeSerLoa_(\w+)\.ets.QChiWat_flow_nominal$",
+            "electrical_power_consumed": "pumDis.P"
+        }
+        
+        # Function to rename columns based on patterns
+        def rename_column(col_name):
+            for key, pattern in patterns.items():
+                match = re.match(pattern, col_name)
+                if match:
+                    if key == "electrical_power_consumed":
+                        return key
+                    try:
+                        building_id = match.group(1)
+                        return key.replace("#{building_id}", building_id)
+                    except IndexError:
+                        print(f"Error: Column '{col_name}' does not match expected pattern.")
+                        return col_name
+            # If no pattern matches, return the original column name
+            return col_name
+
+        # Rename columns
+        df_resampled.columns = [rename_column(col) for col in df_resampled.columns]
+        
         # Define the path to save the CSV file
         results_dir = self._modelica_project / f"{project_name}.Districts.DistrictEnergySystem_results"
         csv_file_path = results_dir / f"{project_name}.Districts.DistrictEnergySystem_result.csv"
