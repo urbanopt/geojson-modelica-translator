@@ -1,0 +1,3 @@
+Feature Id,Feature Name,Mapper Class
+2,Restaurant 1,URBANopt::Scenario::BaselineMapper
+5,District Office 1,URBANopt::Scenario::BaselineMapper
