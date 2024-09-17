@@ -10,9 +10,9 @@ from geojson_modelica_translator.model_connectors.districts import District
 from geojson_modelica_translator.model_connectors.energy_transfer_systems import CoolingIndirect, HeatingIndirect
 from geojson_modelica_translator.model_connectors.load_connectors import Spawn, Teaser, TimeSeries, TimeSeriesMFT
 from geojson_modelica_translator.model_connectors.networks import Network2Pipe
+from geojson_modelica_translator.model_connectors.networks.design_data_series import DesignDataSeries
 from geojson_modelica_translator.model_connectors.networks.ground_coupling import GroundCoupling
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
-from geojson_modelica_translator.model_connectors.networks.design_data_series import DesignDataSeries
 from geojson_modelica_translator.model_connectors.networks.unidirectional_series import UnidirectionalSeries
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
@@ -74,7 +74,9 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
             ground_coupling = GroundCoupling(sys_params)
             for loop in loop_order:
                 ghe_id = loop["list_ghe_ids_in_group"][0]
-                for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
+                for ghe in sys_params.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"
+                ):
                     if ghe_id == ghe["ghe_id"]:
                         borefield = Borefield(sys_params, ghe)
                 distribution = UnidirectionalSeries(sys_params)
@@ -84,11 +86,15 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
                             # create the building time series load
                             time_series_load = TimeSeries(sys_params, geojson_load)
                             # couple each time series load to distribution
-                            all_couplings.append(Coupling(time_series_load, distribution, district_type="fifth_generation"))
+                            all_couplings.append(
+                                Coupling(time_series_load, distribution, district_type="fifth_generation")
+                            )
                             all_couplings.append(
                                 Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
                             )
-                            all_couplings.append(Coupling(time_series_load, design_data, district_type="fifth_generation"))
+                            all_couplings.append(
+                                Coupling(time_series_load, design_data, district_type="fifth_generation")
+                            )
                 # couple each borefield and distribution
                 all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
                 # couple distribution and ground coupling
