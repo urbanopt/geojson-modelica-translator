@@ -116,7 +116,5 @@ tests/modelica/data/packages/*/*.c
 tests/modelica/data/packages/*/dymosim
 tests/management/data/sdk_project_scraps/run/baseline_scenario/system_parameter.json
 tests/management/data/sdk_project_scraps/run/baseline_scenario/DEU_Stuttgart.107380_IWEC*
-tests/model_connectors/data/sdk_output_skeleton_13_buildings/run/baseline_scenario/system_parameter.json
-tests/model_connectors/data/sdk_output_skeleton_13_buildings/run/baseline_scenario/USA_NY*
 geojson_modelica_translator/modelica/buildingslibrary/
 not/
