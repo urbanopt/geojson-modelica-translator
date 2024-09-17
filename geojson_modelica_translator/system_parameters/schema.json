@@ -1338,11 +1338,6 @@
           "type": "number",
           "default": 0.01
         },
-        "pump_design_head": {
-          "description": "Design head pressure of the ambient loop pump. (Pa)",
-          "type": "number",
-          "default": 150000
-        },
         "ets_pump_flow_rate": {
           "description": "Design volume flow rate of the ETS pump. (m3/s)",
           "type": "number",
@@ -1371,7 +1366,6 @@
         "cop_heat_pump_heating",
         "cop_heat_pump_cooling",
         "pump_flow_rate",
-        "pump_design_head",
         "ets_pump_flow_rate",
         "ets_pump_head",
         "fan_design_flow_rate",
