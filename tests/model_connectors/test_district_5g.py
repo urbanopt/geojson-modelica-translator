@@ -37,7 +37,7 @@ class DistrictSystemTest(TestCaseBase):
         all_couplings = []
         for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(sys_params, geojson_load)
-            all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="5G"))
+            all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation"))
 
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)

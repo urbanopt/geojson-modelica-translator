@@ -149,7 +149,6 @@ def test_simulate_polynomial_boiler():
     assert success is True
 
 
-# @pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_community_pv")
 def test_build_community_pv():
     # -- Setup
 
@@ -190,7 +189,6 @@ def test_simulate_community_pv():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_wind_turbine")
 def test_build_wind_turbine():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "WindTurbine"
@@ -271,7 +269,7 @@ def test_simulate_distribution_lines():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_capacitor")
+@pytest.mark.skip(reason="Capacitors are not yet implemented")
 def test_build_capacitor():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Capacitor"
@@ -311,7 +309,6 @@ def test_simulate_capacitor():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_battery")
 def test_build_battery():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Battery"
@@ -350,7 +347,6 @@ def test_simulate_battery():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_generator")
 def test_build_generator():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Generator"
@@ -389,7 +385,6 @@ def test_simulate_generator():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_grid")
 def test_build_grid():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Grid"
@@ -428,7 +423,6 @@ def test_simulate_grid():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_capacitive_load")
 def test_build_capacitive_load():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "Capacitive"
@@ -514,7 +508,6 @@ def test_simulate_inductive_load():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_pv_subsystem")
 def test_build_pv_subsystem():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "PVSubsystem"
@@ -558,7 +551,6 @@ def test_simulate_pv_subsystem():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_transformer")
 def test_build_transformer():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "ACACTransformer"

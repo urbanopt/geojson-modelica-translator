@@ -24,8 +24,6 @@ class GroundCoupling(NetworkBase):
         self.ground_coupling_name = "GroundCoupling_" + simple_uuid()
 
         self.required_mo_files.append(os.path.join(self.template_dir, "UndisturbedSoilTemperature.mo"))
-        self.required_mo_files.append(os.path.join(self.template_dir, "UnidirectionalSeries.mo"))
-        self.required_mo_files.append(os.path.join(self.template_dir, "ConnectionSeriesAutosize.mo"))
 
     def to_modelica(self, scaffold):
         """
@@ -61,6 +59,10 @@ class GroundCoupling(NetworkBase):
             ),
             "weather": self.system_parameters.get_param("$.weather"),
             "num_buildings": len(self.system_parameters.get_param("$.buildings")),
+            "loop_order": {
+                "number_of_loops": len(self.loop_order),
+                "data": self.loop_order,
+            },
         }
 
         # process pipe wall thickness

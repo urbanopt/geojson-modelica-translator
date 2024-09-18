@@ -52,6 +52,11 @@
         "pump_design_head": 60000,
         "pump_flow_rate": 0.01
       },
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
@@ -63,11 +68,6 @@
         "grout": {
           "conductivity": 1.0,
           "rho_cp": 3901000
-        },
-        "soil": {
-          "conductivity": 2.0,
-          "rho_cp": 2343493,
-          "undisturbed_temp": 18.3
         },
         "pipe": {
           "inner_diameter": 0.0216,

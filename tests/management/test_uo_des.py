@@ -92,7 +92,7 @@ class CLIIntegrationTest(TestCase):
 
     def test_cli_makes_model(self):
         # -- Setup
-        # Gnerate a sys-params file using the CLI
+        # Generate a sys-params file using the CLI
         project_name = "modelica_project_4g"
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
@@ -174,8 +174,6 @@ class CLIIntegrationTest(TestCase):
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
 
-        # FIXME : we need error handling when system parameter is created for fifth gen GHE system.
-        #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
             self.feature_file_path_ghe,
             self.sys_param_path,
@@ -185,7 +183,7 @@ class CLIIntegrationTest(TestCase):
 
         gmt.to_modelica()
 
-        # If this file exists, the cli successfully built the model
+        # If this file exists, the code successfully built the model
         assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
         # Great! We know our files are good, let's cleanup and test the CLI
         rmtree(self.output_dir / project_name)

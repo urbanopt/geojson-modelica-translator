@@ -4,17 +4,21 @@
   Buildings.Fluid.Sources.Boundary_pT supHeaWat_{{ building + 1 }}(
     redeclare package Medium={{ globals.medium_w }},
     use_T_in=false,
-    {% if 'ghe_parameters' in sys_params.district_system['fifth_generation'] %}
-    T={{ sys_params.district_system.fifth_generation.ghe_parameters.soil.undisturbed_temp }}+273.15,
+    T={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }}+273.15,
+    {% if 'ghe_parameters' in sys_params.district_system.fifth_generation %}
+    nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
     {% else %}
-    T={{ sys_params.district_system.fifth_generation.central_heating_plant_parameters.temp_setpoint_hhw }}+273.15,
-    {% endif %}
     nPorts=1)
+    {% endif %}
     "Heating water supply temperature (district side)."
     annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
   {% endfor %}Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
     redeclare package Medium={{ globals.medium_w }},
+    {% if 'ghe_parameters' in sys_params.district_system.fifth_generation %}
+    nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
+    {% else %}
     nPorts={{ sys_params.num_buildings }})
+    {% endif %}
     "Heating water sink (district side)"
     annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));
 

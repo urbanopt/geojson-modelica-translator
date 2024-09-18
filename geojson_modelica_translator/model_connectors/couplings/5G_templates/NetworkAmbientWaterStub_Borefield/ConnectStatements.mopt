@@ -1,6 +1,10 @@
 // Borefield ambient coupling connections
-  connect(supHeaWat_1.ports[1], {{ coupling.plant.id }}.port_a)
+  {% for group_num in range(sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length) %}
+  {% if graph.get_ghe_id(coupling.id) == sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params[group_num].ghe_id %}
+  connect(supHeaWat_1.ports[{{ group_num+1 }}], {{ coupling.plant.id }}.port_a)
   {% raw %}annotation (Line(points={{-70,10},{-10,10}}, color={0,127,255}));
-  {% endraw %}connect({{ coupling.plant.id }}.port_b, sinHeaWat.ports[1])
+  {% endraw %}connect({{ coupling.plant.id }}.port_b, sinHeaWat.ports[{{ group_num+1 }}])
   {% raw %}annotation (Line(points={{10,10},{60,10}}, color={0,127,255}));
   {% endraw %}
+  {% endif %}
+  {% endfor %}
