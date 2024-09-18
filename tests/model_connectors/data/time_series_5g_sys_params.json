@@ -80,6 +80,11 @@
         "number_of_segments": 1,
         "buried_depth": 1.5
       },
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
       "central_pump_parameters": {
         "pump_design_head": 60000,
         "pump_flow_rate": 0.01
