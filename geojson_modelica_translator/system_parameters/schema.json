@@ -1258,6 +1258,11 @@
                 "pump_design_head": {
                   "description": "Measured in Pa",
                   "type": "number"
+                },
+                "pump_flow_rate": {
+                  "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+                  "type": "number",
+                  "default": 0.01
                 }
               }
             }
@@ -1293,6 +1298,11 @@
                 "pump_design_head": {
                   "description": "Measured in Pa.",
                   "type": "number"
+                },
+                "pump_flow_rate": {
+                  "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+                  "type": "number",
+                  "default": 0.01
                 }
               }
             },
@@ -1333,11 +1343,6 @@
           "type": "number",
           "default": 3.5
         },
-        "pump_flow_rate": {
-          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
-          "type": "number",
-          "default": 0.01
-        },
         "ets_pump_flow_rate": {
           "description": "Design volume flow rate of the ETS pump. (m3/s)",
           "type": "number",
@@ -1365,7 +1370,6 @@
         "hot_water_supply_temp",
         "cop_heat_pump_heating",
         "cop_heat_pump_cooling",
-        "pump_flow_rate",
         "ets_pump_flow_rate",
         "ets_pump_head",
         "fan_design_flow_rate",

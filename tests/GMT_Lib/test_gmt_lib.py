@@ -149,7 +149,7 @@ def test_simulate_polynomial_boiler():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_community_pv")
+# @pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_community_pv")
 def test_build_community_pv():
     # -- Setup
 

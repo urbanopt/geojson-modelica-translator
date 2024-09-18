@@ -117,6 +117,10 @@
         "chp_installed": true,
         "chp_thermal_following": true
       }
+    },
+    "central_pump_parameters": {
+      "pump_design_head": 60000,
+      "pump_flow_rate": 0.01
     }
   }
 }

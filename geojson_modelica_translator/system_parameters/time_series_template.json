@@ -73,7 +73,6 @@
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
-        "pump_flow_rate": 0.01,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -117,7 +116,8 @@
         "chp_installed": false
       },
       "central_pump_parameters": {
-        "pump_design_head": 60000
+        "pump_design_head": 60000,
+        "pump_flow_rate": 0.01
       }
     },
     "fifth_generation": {
@@ -191,7 +191,8 @@
         ]
       },
       "central_pump_parameters": {
-        "pump_design_head": 60000
+        "pump_design_head": 60000,
+        "pump_flow_rate": 0.01
       }
     }
   },

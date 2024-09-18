@@ -29,8 +29,6 @@
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
-        "pump_flow_rate": 0.01,
-        "pump_design_head": 150000,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -65,8 +63,6 @@
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
-        "pump_flow_rate": 0.01,
-        "pump_design_head": 150000,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -76,14 +72,9 @@
   ],
   "district_system": {
     "fifth_generation": {
-      "central_cooling_plant_parameters": {
-        "temp_setpoint_chw": 10
-      },
-      "central_heating_plant_parameters": {
-        "temp_setpoint_hhw": 25
-      },
       "central_pump_parameters": {
-        "pump_design_head": 60000
+        "pump_design_head": 60000,
+        "pump_flow_rate": 0.01
       },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
@@ -125,18 +116,6 @@
           "num_months": 240
         },
         "geometric_constraints": {
-          "ghe_geometric_params": [
-            {
-              "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-              "length": 100,
-              "width": 100
-            },
-            {
-              "ghe_id": "93b98fa5-a83e-455f-8d95-05a6a81fed74",
-              "length": 100,
-              "width": 100
-            }
-          ],
           "b_min": 3.0,
           "b_max": 10.0,
           "max_height": 135.0,
