@@ -1,10 +1,10 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
-import re
 from buildingspy.io.outputfile import Reader
 
 
@@ -45,7 +45,7 @@ class ResultsModelica:
             "ets_pump_power": r"^TimeSerLoa_\w+\.PPumETS$",
             "Heating system capacity": r"^TimeSerLoa_\w+\.ets.QHeaWat_flow_nominal$",
             "Cooling system capacity": r"^TimeSerLoa_\w+\.ets.QChiWat_flow_nominal$",
-            "electrical_power_consumed": "pumDis.P"
+            "electrical_power_consumed": "pumDis.P",
         }
 
         key_value_pairs = {}
@@ -70,7 +70,7 @@ class ResultsModelica:
             "Datetime": adjusted_time_values,
             "TimeInSeconds": [int(dt.timestamp()) for dt in adjusted_time_values],
         }
-        
+
         for var, values in key_value_pairs.items():
             if len(values) < len(adjusted_time_values):
                 values.extend([None] * (len(adjusted_time_values) - len(values)))
@@ -91,9 +91,9 @@ class ResultsModelica:
         df_resampled["Datetime"] = df_resampled["Datetime"].dt.strftime("%m/%d/%Y %H:%M")
 
         # Interpolate only numeric columns
-        numeric_columns = df_resampled.select_dtypes(include=['number']).columns
-        df_resampled[numeric_columns] = df_resampled[numeric_columns].interpolate(method='linear', inplace=False)
-        
+        numeric_columns = df_resampled.select_dtypes(include=["number"]).columns
+        df_resampled[numeric_columns] = df_resampled[numeric_columns].interpolate(method="linear", inplace=False)
+
         # Check if the number of rows is not equal to 8760 (hourly) or 8760 * 4 (15-minute)
         if df_resampled.shape[0] != 8760 or df_resampled.shape[0] != 8760 * 4:
             print("Data length is incorrect. Expected 8760 (hourly) or 8760 * 4 (15-minute) entries.")
@@ -106,9 +106,9 @@ class ResultsModelica:
             "ets_pump_power_#{building_id}": r"^TimeSerLoa_(\w+)\.PPumETS$",
             "heating_system_capacity_#{building_id}": r"^TimeSerLoa_(\w+)\.ets.QHeaWat_flow_nominal$",
             "cooling_system_capacity_#{building_id}": r"^TimeSerLoa_(\w+)\.ets.QChiWat_flow_nominal$",
-            "electrical_power_consumed": "pumDis.P"
+            "electrical_power_consumed": "pumDis.P",
         }
-        
+
         # Function to rename columns based on patterns
         def rename_column(col_name):
             for key, pattern in patterns.items():
@@ -127,7 +127,7 @@ class ResultsModelica:
 
         # Rename columns
         df_resampled.columns = [rename_column(col) for col in df_resampled.columns]
-        
+
         # Define the path to save the CSV file
         results_dir = self._modelica_project / f"{project_name}.Districts.DistrictEnergySystem_results"
         csv_file_path = results_dir / f"{project_name}.Districts.DistrictEnergySystem_result.csv"
