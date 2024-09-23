@@ -171,28 +171,28 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-a",
     "--start_time",
-    default=15638400,
+    default=0,
     help="Start time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-z",
     "--stop_time",
-    default=18316800,
+    default=31536000,
     help="Stop time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-x",
     "--step_size",
-    default=3600,
+    default=900,
     help="Step size of the simulation (seconds)",
     type=int,
 )
 @click.option(
     "-i",
     "--intervals",
-    default=744,
+    default=35050,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
