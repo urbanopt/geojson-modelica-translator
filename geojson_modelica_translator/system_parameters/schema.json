@@ -1688,10 +1688,7 @@
         "central_pump_parameters": {
           "$ref": "#/definitions/central_pump_parameters"
         }
-      },
-      "required": [
-        "central_pump_parameters"
-      ]
+      }
     }
   }
 }
