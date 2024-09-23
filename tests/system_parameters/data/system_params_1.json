@@ -204,10 +204,6 @@
         "temp_setpoint_hhw": 54,
         "pressure_drop_hhw_valve_nominal": 6001,
         "chp_installed": false
-      },
-      "central_pump_parameters": {
-        "pump_design_head": 60000,
-        "pump_flow_rate": 0.01
       }
     }
   }
