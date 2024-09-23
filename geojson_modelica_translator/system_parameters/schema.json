@@ -1684,9 +1684,6 @@
               }
             }
           ]
-        },
-        "central_pump_parameters": {
-          "$ref": "#/definitions/central_pump_parameters"
         }
       },
       "anyOf": [
