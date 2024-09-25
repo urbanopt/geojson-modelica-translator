@@ -1,0 +1,36 @@
+[
+  {
+    "list_bldg_ids_in_group": [
+      "10",
+      "2",
+      "9",
+      "8",
+      "3"
+    ],
+    "list_ghe_ids_in_group": [
+      "3eb26af6-a1f7-4daa-8372-ec016ca185a4"
+    ]
+  },
+  {
+    "list_bldg_ids_in_group": [
+      "4",
+      "5",
+      "6",
+      "11"
+    ],
+    "list_ghe_ids_in_group": [
+      "8410c9a9-d52e-4c68-b7bc-4affae974481"
+    ]
+  },
+  {
+    "list_bldg_ids_in_group": [
+      "1",
+      "7",
+      "12",
+      "13"
+    ],
+    "list_ghe_ids_in_group": [
+      "344421ab-b416-403e-bd22-7b8af7b581a2"
+    ]
+  }
+]

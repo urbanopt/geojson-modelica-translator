@@ -929,9 +929,6 @@
             "$ref": "#/definitions/ghe_specific_params_def"
           }
         },
-        "soil": {
-          "$ref": "#/definitions/soil_def"
-        },
         "pipe": {
           "$ref": "#/definitions/pipe_def"
         },
@@ -953,7 +950,6 @@
       },
       "required": [
         "ghe_specific_params",
-        "soil",
         "pipe",
         "fluid",
         "grout",
@@ -1272,6 +1268,9 @@
       "properties": {
         "fifth_generation": {
           "properties": {
+            "soil": {
+              "$ref": "#/definitions/soil_def"
+            },
             "ghe_parameters": {
               "$ref": "#/definitions/ghe_parameters"
             },

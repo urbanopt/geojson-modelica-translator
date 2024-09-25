@@ -5,7 +5,7 @@ model GroundCoupling
     min=1)=1
     "Number of buried pipes";
   parameter Integer nSeg(
-    min=1)={{ piping_data["num_buildings"] }}+1
+    min=1)={{ piping_data["num_buildings"] }}+{{ piping_data["loop_order"]["number_of_loops"] }}
     "Number of axial segments";
   replaceable parameter Buildings.Fluid.Geothermal.Borefields.Data.Soil.SandStone soiDat
     "Soil thermal properties";
