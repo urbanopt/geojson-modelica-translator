@@ -1,27 +1,28 @@
   // heated water stub
   // TODO: move these components into a single component
-  {% for building in range( sys_params.num_buildings ) %}
+{% for building in range( sys_params.num_buildings ) %}
   Buildings.Fluid.Sources.Boundary_pT supHeaWat_{{ building + 1 }}(
     redeclare package Medium={{ globals.medium_w }},
     use_T_in=false,
     T={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }}+273.15,
     {% if 'ghe_parameters' in sys_params.district_system.fifth_generation %}
-    nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
+      nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
     {% else %}
-    nPorts=1)
+      nPorts=1)
     {% endif %}
     "Heating water supply temperature (district side)."
     annotation (Placement({{ diagram.transformation.sup_hea_wat.boundary_pt }}));
-  {% endfor %}Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
-    redeclare package Medium={{ globals.medium_w }},
-    {% if 'ghe_parameters' in sys_params.district_system.fifth_generation %}
+{% endfor %}
+Buildings.Fluid.Sources.Boundary_pT sinHeaWat(
+  redeclare package Medium={{ globals.medium_w }},
+  {% if 'ghe_parameters' in sys_params.district_system.fifth_generation %}
     nPorts={{ sys_params.district_system.fifth_generation.ghe_parameters.ghe_specific_params|length }})
-    {% else %}
+  {% else %}
     nPorts={{ sys_params.num_buildings }})
-    {% endif %}
-    "Heating water sink (district side)"
-    annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));
+  {% endif %}
+  "Heating water sink (district side)"
+  annotation (Placement({{ diagram.transformation.sin_hea_wat.boundary_pt }}));
 
-  // NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
-  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=50000
-    "Differential pressure setpoint";
+// NOTE: this differential pressure setpoint is currently utilized by plants elsewhere
+parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=50000
+  "Differential pressure setpoint";
