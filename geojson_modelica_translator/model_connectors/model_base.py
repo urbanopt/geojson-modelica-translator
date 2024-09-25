@@ -9,8 +9,8 @@ from typing import Union
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
 
+from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
-from geojson_modelica_translator.utils import load_loop_order
 
 logger = logging.getLogger(__name__)
 

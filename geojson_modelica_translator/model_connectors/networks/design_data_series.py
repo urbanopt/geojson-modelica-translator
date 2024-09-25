@@ -7,8 +7,9 @@ from pathlib import Path
 
 from modelica_builder.package_parser import PackageParser
 
+from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
-from geojson_modelica_translator.utils import ModelicaPath, load_loop_order
+from geojson_modelica_translator.utils import ModelicaPath
 
 logger = logging.getLogger(__name__)
 

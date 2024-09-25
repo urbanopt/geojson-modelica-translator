@@ -1,11 +1,11 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import json
 from pathlib import Path
 
 import pytest
 
+from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
@@ -28,11 +28,11 @@ class DistrictSystemTest(TestCaseBase):
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load in the example geojson with multiple buildings
-        filename = Path(self.data_dir) / "sdk_output_skeleton_13_buildings" / "exportGeo.json"
-        self.gj = UrbanOptGeoJson(filename)
+        geojson_filename = Path(self.data_dir) / "sdk_output_skeleton_13_buildings" / "exportGeo.json"
+        self.gj = UrbanOptGeoJson(geojson_filename)
 
         # load system parameter data
-        filename = (
+        sys_param_filename = (
             Path(self.data_dir)
             / "sdk_output_skeleton_13_buildings"
             / "run"
@@ -40,7 +40,10 @@ class DistrictSystemTest(TestCaseBase):
             / "ghe_dir"
             / "sys_params_proportional.json"
         )
-        sys_params = SystemParameters(filename)
+        sys_params = SystemParameters(sys_param_filename)
+
+        # read the loop order and create building groups
+        loop_order: list = load_loop_order(sys_param_filename)
 
         # create ambient water stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
@@ -50,17 +53,6 @@ class DistrictSystemTest(TestCaseBase):
 
         # create district data
         design_data = DesignDataSeries(sys_params)
-
-        # read the loop order and create building groups
-        filename = (
-            Path(self.data_dir)
-            / "sdk_output_skeleton_13_buildings"
-            / "run"
-            / "baseline_scenario"
-            / "ghe_dir"
-            / "_loop_order.json"
-        )
-        loop_order: list = json.loads(filename.read_text())
 
         # create the couplings and graph
         all_couplings = []

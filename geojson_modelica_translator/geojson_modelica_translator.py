@@ -4,6 +4,7 @@
 import logging
 from pathlib import Path
 
+from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings import Coupling, CouplingGraph
 from geojson_modelica_translator.model_connectors.districts import District
@@ -19,7 +20,6 @@ from geojson_modelica_translator.model_connectors.plants.borefield import Borefi
 from geojson_modelica_translator.model_connectors.plants.chp import HeatingPlantWithOptionalCHP
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
-from geojson_modelica_translator.utils import load_loop_order
 
 _log = logging.getLogger(__name__)
 
