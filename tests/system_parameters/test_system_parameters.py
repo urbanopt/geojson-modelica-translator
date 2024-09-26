@@ -158,7 +158,7 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.maxDiff = None
         value = sdp.get_param_by_id("abcd1234", "ets_model")
-        assert value == "None"
+        assert value == "Indirect Heating and Cooling"
 
         # grab the schema default
         value = sdp.get_param_by_id("defgh2345", "ets_model")
