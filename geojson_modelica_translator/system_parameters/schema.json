@@ -243,7 +243,24 @@
               "$ref": "#/definitions/time_series_model_parameters"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "anyOf": [
+            {
+              "required": [
+                "spawn"
+              ]
+            },
+            {
+              "required": [
+                "rc"
+              ]
+            },
+            {
+              "required": [
+                "time_series"
+              ]
+            }
+          ]
         },
         "ets_model": {
           "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
@@ -307,7 +324,9 @@
       },
       "required": [
         "geojson_id",
-        "ets_model"
+        "ets_model",
+        "load_model",
+        "load_model_parameters"
       ]
     },
     "connector_def": {
@@ -1053,7 +1072,14 @@
           "type": "number",
           "default": 480
         }
-      }
+      },
+      "required": [
+        "net_surface_area",
+        "surface_tilt",
+        "surface_azimuth",
+        "latitude",
+        "nominal_voltage"
+      ]
     },
     "wind_turbine_parameters": {
       "description": "Wind turbine parameters used by the microgrid model.",
@@ -1094,7 +1120,10 @@
           "description": "Nominal Capacity (var)",
           "type": "number"
         }
-      }
+      },
+      "required": [
+        "nominal_capacity"
+      ]
     },
     "substation_parameters": {
       "description": "Substation parameters used by the microgrid model.",
@@ -1625,7 +1654,11 @@
           "type": "number",
           "default": 0.01
         }
-      }
+      },
+      "required": [
+        "pump_design_head",
+        "pump_flow_rate"
+      ]
     },
     "fifth_generation": {
       "description": "Fifth generation district parameters, for an ambient loop system.",
