@@ -8,11 +8,12 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from modelica_builder.modelica_mos_file import ModelicaMOS
 from modelica_builder.package_parser import PackageParser
 
+from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import convert_ft_to_m, load_loop_order, mbl_version
+from geojson_modelica_translator.utils import convert_ft_to_m, mbl_version
 
 logger = logging.getLogger(__name__)
 
