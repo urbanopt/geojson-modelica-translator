@@ -217,7 +217,7 @@
       "type": "object",
       "properties": {
         "geojson_id": {
-          "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
+          "description": "The GeoJSON ID as defined in the GeoJSON file.",
           "type": "string"
         },
         "load_model": {
@@ -266,7 +266,6 @@
           "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
           "type": "string",
           "enum": [
-            "None",
             "Indirect Heating and Cooling",
             "Fifth Gen Heat Pump"
           ]
@@ -322,6 +321,18 @@
           }
         }
       },
+      "oneOf": [
+        {
+          "required": [
+            "ets_indirect_parameters"
+          ]
+        },
+        {
+          "required": [
+            "fifth_gen_ets_parameters"
+          ]
+        }
+      ],
       "required": [
         "geojson_id",
         "ets_model",
