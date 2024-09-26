@@ -1,7 +1,6 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
-import json
 import logging
 import os
 import shutil
@@ -38,20 +37,6 @@ def convert_ft_to_m(f):
     :return: float, length in meter
     """
     return 0.3048 * f
-
-
-def load_loop_order(system_parameters_file: Path) -> list:
-    """Loads the loop order from a JSON file
-
-    loop_order file is always saved next to the system parameters file
-
-    :param system_parameters_file: Path to the system parameters file
-    :return: list of building & ghe ids in loop order
-    """
-    loop_order_path = Path(system_parameters_file).parent / "_loop_order.json"
-    if not loop_order_path.is_file():
-        raise FileNotFoundError(f"Loop order file not found at {loop_order_path}")
-    return json.loads(loop_order_path.read_text())
 
 
 def linecount(filename: Path) -> int:
