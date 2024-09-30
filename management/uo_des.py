@@ -72,11 +72,12 @@ def build_sys_param(
 
     FEATURE_FILE: Path to sdk json feature file with data about the buildings.
 
-    DISTRICT_TYPE: selection for which kind of simulation this sys-param file will support. Possible options 5G_ghe, 4G.
+    DISTRICT_TYPE: selection for which kind of simulation this sys-param file will support.
+    Available options are: ['steam', '4G', '5G', '5G_ghe']
 
     \b
     MODEL_TYPE: selection for which kind of simulation this sys-param file will support.
-        Valid choices for MODEL_TYPE: "time_series"
+    Available options are: "time_series"
 
     \f
     :param model_type: string, selection of which model type to use in the GMT

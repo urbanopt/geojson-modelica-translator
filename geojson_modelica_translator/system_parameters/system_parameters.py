@@ -156,13 +156,15 @@ class SystemParameters:
         # TODO: check that ids are unique in the system parameters file, i.e., a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
             if b.get("geojson_id") == param_id:
+                # logger.debug(f"Found building with id {param_id}")
                 return self.get_param(jsonpath, data=b)
         with suppress(KeyError):
             # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
             # Don't crash or quit, just keep a stiff upper lip and carry on.
-            district = self.param_template.get("district_system")
+            district = self.param_template.get("district_system", {})
             for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
                 if ghe.get("ghe_id") == param_id:
+                    # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
         if param_id is None:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
@@ -796,9 +798,6 @@ class SystemParameters:
         ghe_dir = scenario_dir / "ghe_dir"
         ghe_sys_param["ghe_dir"] = str(ghe_dir)
 
-        # remove fourth generation district system type
-        del self.param_template["district_system"]["fourth_generation"]
-
         return ghe_sys_param
 
     def retrieve_building_data_from_sdk(
@@ -1018,9 +1017,15 @@ class SystemParameters:
                 )
 
         # Update ground heat exchanger properties if true
-        if "5G_ghe" in district_type:
-            self.process_ghe_inputs(scenario_dir)
-        elif "4G" in district_type or "steam" in district_type:
+        if district_type in ["5G_ghe", "5G"]:
+            if district_type == "5G_ghe":
+                self.process_ghe_inputs(scenario_dir)
+            elif district_type == "5G":
+                # Process waste-heat inputs
+                del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
+            # remove fourth generation district system type
+            del self.param_template["district_system"]["fourth_generation"]
+        elif district_type in ["4G", "steam"]:
             # remove fifth generation district system type if it exists in template and ghe is not true
             with suppress(KeyError):
                 del self.param_template["district_system"]["fifth_generation"]

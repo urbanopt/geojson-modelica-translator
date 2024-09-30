@@ -36,7 +36,7 @@ class DistrictSystemTest(TestCaseBase):
 
         # create ambient water stub
         ambient_water_stub = NetworkAmbientWaterStub(sys_params)
-        five_g_coupling = Coupling(time_series_load, ambient_water_stub, district_type="5G")
+        five_g_coupling = Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
 
         graph = CouplingGraph(
             [
