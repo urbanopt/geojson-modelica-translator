@@ -2,15 +2,15 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 
-import unittest
 from pathlib import Path
 
 import pandas as pd
 
 from geojson_modelica_translator.results_ghp import ResultsModelica
+from tests.base_test_case import TestCaseBase
 
 
-class ResultsTest(unittest.TestCase):
+class ResultsTest(TestCaseBase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / "data"
 

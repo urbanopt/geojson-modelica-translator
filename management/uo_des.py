@@ -172,7 +172,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-a",
     "--start_time",
-    default=0,
+    default=17280000,
     help="Start time of the simulation (seconds of a year)",
     type=int,
 )
@@ -210,6 +210,10 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     \f
     :param sys_param_file: Path, location and name of file created with this cli
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
+    :param start_time (int): start time of the simulation (seconds of a year)
+    :param stop_time (int): stop time of the simulation (seconds of a year)
+    :param step_size (int): step size of the simulation (seconds)
+    :param number_of_intervals (int): number of intervals to run the simulation
     """
     run_path = Path(modelica_project).resolve()
     project_name = run_path.stem
