@@ -37,18 +37,18 @@ class ResultsTest(TestCaseBase):
         assert csv_file_path.exists(), f"File does not exist at path: {csv_file_path}"
 
         # Read the CSV file into a DataFrame
-        df = pd.read_csv(csv_file_path)
+        csv_data = pd.read_csv(csv_file_path)
 
-        assert "Datetime" in df.columns, "The 'Datetime' column is missing from the CSV file."
+        assert "Datetime" in csv_data.columns, "The 'Datetime' column is missing from the CSV file."
 
         assert (
-            "heating_electric_power_d55aa383" in df.columns
+            "heating_electric_power_d55aa383" in csv_data.columns
         ), "The heating_electric_power column is missing from the CSV file."
 
-        assert "pump_power_3da62a1d" in df.columns, "The pump_power column is missing from the CSV file."
+        assert "pump_power_3da62a1d" in csv_data.columns, "The pump_power column is missing from the CSV file."
 
         assert (
-            "electrical_power_consumed" in df.columns
+            "electrical_power_consumed" in csv_data.columns
         ), "The electrical_power_consumed column is missing from the CSV file."
 
     def test_result_multiple_ghp(self):
@@ -74,28 +74,26 @@ class ResultsTest(TestCaseBase):
         assert csv_file_path.exists(), f"File does not exist at path: {csv_file_path}"
 
         # Read the CSV file into a DataFrame
-        df = pd.read_csv(csv_file_path)
+        csv_data_multiple = pd.read_csv(csv_file_path)
 
-        assert "Datetime" in df.columns, "The 'Datetime' column is missing from the CSV file."
+        assert "Datetime" in csv_data_multiple.columns, "The 'Datetime' column is missing from the CSV file."
 
         # Check if any columns contain the "heating_electric_power_" substring
-        heating_electric_power = [col for col in df.columns if "heating_electric_power_" in col]
+        heating_electric_power = [col for col in csv_data_multiple.columns if "heating_electric_power_" in col]
 
         assert heating_electric_power, "No columns with 'heating_electric_power' found in the CSV file."
 
         assert (
             len(heating_electric_power) == 13
-        ), f"Expected 13 columns with 'heating_electric_power_' but found {len(heating_electric_power)}. Missing or extra columns in the CSV file."
+        ), f"Expected 13 columns with 'heating_electric_power_' but found {len(heating_electric_power)}."
 
-        pump_power = [col for col in df.columns if "pump_power_" in col]
+        pump_power = [col for col in csv_data_multiple.columns if "pump_power_" in col]
 
         # Assert that there is at least one column with the substring
         assert pump_power, "No columns with 'pump_power' found in the CSV file."
 
-        assert (
-            len(pump_power) == 26
-        ), f"Expected 26 columns with 'pump_power' but found {len(pump_power)}. Missing or extra columns in the CSV file."
+        assert len(pump_power) == 26, f"Expected 26 columns with 'pump_power' but found {len(pump_power)}."
 
         assert (
-            "electrical_power_consumed" in df.columns
+            "electrical_power_consumed" in csv_data_multiple.columns
         ), "The electrical_power_consumed column is missing from the CSV file."

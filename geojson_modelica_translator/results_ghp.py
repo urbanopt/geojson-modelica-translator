@@ -75,17 +75,19 @@ class ResultsModelica:
             if len(values) < len(adjusted_time_values):
                 values.extend([None] * (len(adjusted_time_values) - len(values)))
             elif len(values) > len(adjusted_time_values):
-                values = values[: len(adjusted_time_values)]
-            data_for_df[var] = values
+                trimmed_values = values[: len(adjusted_time_values)]
+                data_for_df[var] = trimmed_values
+            else:
+                data_for_df[var] = values
 
-        df = pd.DataFrame(data_for_df)
+        df_values = pd.DataFrame(data_for_df)
 
         # Convert 'Datetime' to datetime and set it as index
-        df["Datetime"] = pd.to_datetime(df["Datetime"])
-        df.set_index("Datetime", inplace=True)
+        df_values["Datetime"] = pd.to_datetime(df_values["Datetime"])
+        df_values = df_values.set_index("Datetime")
 
         # Resample to 15-minute data, taking the first occurrence for each interval
-        df_resampled = df.resample("15min").first().reset_index()
+        df_resampled = df_values.resample("15min").first().reset_index()
 
         # Format datetime to desired format
         df_resampled["Datetime"] = df_resampled["Datetime"].dt.strftime("%m/%d/%Y %H:%M")
