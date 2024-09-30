@@ -86,8 +86,8 @@ class ResultsModelica:
         df_values["Datetime"] = pd.to_datetime(df_values["Datetime"])
         df_values = df_values.set_index("Datetime")
 
-        # Resample to 15-minute data, taking the first occurrence for each interval
-        df_resampled = df_values.resample("15min").first().reset_index()
+        # Resample to 1 hour data, taking the first occurrence for each interval
+        df_resampled = df_values.resample("1H").first().reset_index()
 
         # Format datetime to desired format
         df_resampled["Datetime"] = df_resampled["Datetime"].dt.strftime("%m/%d/%Y %H:%M")
