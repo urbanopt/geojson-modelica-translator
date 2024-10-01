@@ -118,3 +118,6 @@ tests/management/data/sdk_project_scraps/run/baseline_scenario/system_parameter.
 tests/management/data/sdk_project_scraps/run/baseline_scenario/DEU_Stuttgart.107380_IWEC*
 geojson_modelica_translator/modelica/buildingslibrary/
 not/
+tests/geojson_modelica_translator/data/modelica_5/modelica_5.Districts.DistrictEnergySystem_results/modelica_5.Districts.DistrictEnergySystem_result.csv
+tests/geojson_modelica_translator/data/modelica_model
+tests/geojson_modelica_translator/data/modelica_multiple/modelica_multiple.Districts.DistrictEnergySystem_results/modelica_multiple.Districts.DistrictEnergySystem_result.csv

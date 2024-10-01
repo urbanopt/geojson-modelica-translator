@@ -8,6 +8,7 @@ import click
 
 from geojson_modelica_translator.geojson_modelica_translator import GeoJsonModelicaTranslator
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
+from geojson_modelica_translator.results_ghp import ResultsModelica
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
@@ -192,7 +193,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-i",
     "--intervals",
-    default=100,
+    default=144,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
@@ -208,6 +209,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
         default = ./model_from_sdk
 
     \f
+    :param sys_param_file: Path, location and name of file created with this cli
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
     :param start_time (int): start time of the simulation (seconds of a year)
     :param stop_time (int): stop time of the simulation (seconds of a year)
@@ -241,3 +243,28 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
         print(f"\nModelica model {project_name} ran successfully and can be found in {run_location}")
     else:
         raise SystemExit(f"\n{project_name} failed. Check the error log at {run_location}/stdout.log for more info.")
+
+
+@cli.command(short_help="Process Modelica model")
+@click.argument(
+    "modelica_project",
+    default="./model_from_sdk",
+    required=True,
+    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+)
+def des_process(modelica_project: Path):
+    """Post Process the model
+
+    \b
+    Post process results from Modelica project run previously, for GHP LCCA analysis
+
+    \b
+    MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
+        default = ./model_from_sdk
+
+    \f
+    :param modelica_project: Path, name & location of modelica project, possibly created with this cli
+    """
+    modelica_path = Path(modelica_project).resolve()
+    result = ResultsModelica(modelica_path)
+    result.calculate_results()
