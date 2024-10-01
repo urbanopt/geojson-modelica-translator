@@ -95,12 +95,13 @@ class SystemParametersTest(unittest.TestCase):
             SystemParameters.loadd(incomplete_teaser_params)
 
         sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
-        assert len(sp.validate()) == 6
+        assert "'None' is not one of ['Indirect Heating and Cooling', 'Fifth Gen Heat Pump']" in sp.validate()
         assert "'fraction_latent_person' is a required property" in sp.validate()
         assert "'temp_hw_supply' is a required property" in sp.validate()
         assert "'temp_setpoint_cooling' is a required property" in sp.validate()
         assert "'temp_setpoint_heating' is a required property" in sp.validate()
         assert "5 is not one of [1, 2, 3, 4]" in sp.validate()
+        assert len(sp.validate()) == 8
 
     def test_get_param(self):
         data = {
@@ -108,7 +109,26 @@ class SystemParametersTest(unittest.TestCase):
             "buildings": [
                 {
                     "geojson_id": "asdf",
-                    "ets_model": "None",
+                    "ets_model": "Indirect Heating and Cooling",
+                    "ets_indirect_parameters": {
+                        "heat_flow_nominal": 8000,
+                        "heat_exchanger_efficiency": 0.8,
+                        "nominal_mass_flow_district": 0.5,
+                        "nominal_mass_flow_building": 0.5,
+                        "valve_pressure_drop": 6000,
+                        "heat_exchanger_secondary_pressure_drop": 500,
+                        "heat_exchanger_primary_pressure_drop": 500,
+                        "cooling_supply_water_temperature_building": 7,
+                        "heating_supply_water_temperature_building": 50,
+                        "delta_temp_chw_building": 5,
+                        "delta_temp_chw_district": 8,
+                        "delta_temp_hw_building": 15,
+                        "delta_temp_hw_district": 20,
+                        "cooling_controller_y_max": 1,
+                        "cooling_controller_y_min": 0,
+                        "heating_controller_y_max": 1,
+                        "heating_controller_y_min": 0,
+                    },
                     "load_model": "rc",
                     "load_model_parameters": {
                         "rc": {
@@ -133,7 +153,26 @@ class SystemParametersTest(unittest.TestCase):
         assert value == [
             {
                 "geojson_id": "asdf",
-                "ets_model": "None",
+                "ets_model": "Indirect Heating and Cooling",
+                "ets_indirect_parameters": {
+                    "heat_flow_nominal": 8000,
+                    "heat_exchanger_efficiency": 0.8,
+                    "nominal_mass_flow_district": 0.5,
+                    "nominal_mass_flow_building": 0.5,
+                    "valve_pressure_drop": 6000,
+                    "heat_exchanger_secondary_pressure_drop": 500,
+                    "heat_exchanger_primary_pressure_drop": 500,
+                    "cooling_supply_water_temperature_building": 7,
+                    "heating_supply_water_temperature_building": 50,
+                    "delta_temp_chw_building": 5,
+                    "delta_temp_chw_district": 8,
+                    "delta_temp_hw_building": 15,
+                    "delta_temp_hw_district": 20,
+                    "cooling_controller_y_max": 1,
+                    "cooling_controller_y_min": 0,
+                    "heating_controller_y_max": 1,
+                    "heating_controller_y_min": 0,
+                },
                 "load_model": "rc",
                 "load_model_parameters": {
                     "rc": {
@@ -158,7 +197,7 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         self.maxDiff = None
         value = sdp.get_param_by_id("abcd1234", "ets_model")
-        assert value == "None"
+        assert value == "Indirect Heating and Cooling"
 
         # grab the schema default
         value = sdp.get_param_by_id("defgh2345", "ets_model")
