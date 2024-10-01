@@ -254,7 +254,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
 )
 def des_process(modelica_project: Path):
     """Post Process the model
-    
+
     \b
     Post process results from Modelica project run previously, for GHP LCCA analysis
 
