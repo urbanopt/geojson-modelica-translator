@@ -193,7 +193,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-i",
     "--intervals",
-    default=35050,
+    default=144,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
@@ -204,6 +204,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     Results are saved at the same level as the project path that is passed.
     The model that runs is hard coded to be the Districts/DistrictEnergySystem.mo within the package.
 
+    \b
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
         default = ./model_from_sdk
 
@@ -223,6 +224,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
             f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
             "Please update your directory tree to not include spaces in any name"
         )
+
     # setup modelica runner
     mr = ModelicaRunner()
     mr.run_in_docker(
@@ -252,6 +254,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
 )
 def des_process(modelica_project: Path):
     """Post Process the model
+    
     \b
     Post process results from Modelica project run previously, for GHP LCCA analysis
 
