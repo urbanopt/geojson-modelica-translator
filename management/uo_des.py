@@ -179,14 +179,14 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-z",
     "--stop_time",
-    default=31536000,
+    default=17366400,
     help="Stop time of the simulation (seconds of a year)",
     type=int,
 )
 @click.option(
     "-x",
     "--step_size",
-    default=900,
+    default=90,
     help="Step size of the simulation (seconds)",
     type=int,
 )
@@ -254,6 +254,7 @@ def des_process(modelica_project: Path):
     """Post Process the model
     \b
     Post process results from Modelica project run previously, for GHP LCCA analysis
+
     \b
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
         default = ./model_from_sdk
