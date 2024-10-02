@@ -934,7 +934,7 @@ class SystemParameters:
         :return None, file created and saved to user-specified location
         """
         self.sys_param_filename = sys_param_filename
-        self.rel_path = kwargs.get("relative_path", None)
+        self.rel_path = kwargs.get("relative_path")
         skip_weather_download = kwargs.get("skip_weather_download", False)
         modelica_load_filename = kwargs.get("modelica_load_filename", "modelica.mos")
 
