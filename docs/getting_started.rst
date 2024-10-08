@@ -47,7 +47,7 @@ MBL Installation
 The Modelica Buildings Library contains many models that are needed to assemble the district systems. Follow the instructions below to install the MBL needed for the GMT:
 
 * Download and extract the appropriate version of the MBL from `<https://simulationresearch.lbl.gov/modelica/downloads/archive/modelica-buildings.html>`_
-    * The appropriate version can be found in the right-hand column of the `installer matrix <https://docs.urbanopt.net/developer_resources/compatibility_matrix.html#urbanopt-installer-matrix>`_.
+    * The appropriate version can be found in the right-hand column of the `installer matrix <https://docs.urbanopt.net/developer_resources/compatibility_matrix.html#urbanopt-installer-matrix>`_ (may need to scroll to show that column).
 * Add the Modelica Buildings Library path to your MODELICAPATH environment variable (e.g., :code:`export MODELICAPATH=${MODELICAPATH}:$HOME/path/to/modelica-buildings`).
     * For help setting env vars on Windows, this documentation may help: `<https://www.howtogeek.com/787217/how-to-edit-environment-variables-on-windows-10-or-11/>`_
 * Restart your terminal to ensure that the environment variable for the MBL library is exported correctly.
