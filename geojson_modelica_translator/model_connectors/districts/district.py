@@ -8,6 +8,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from modelica_builder.modelica_mos_file import ModelicaMOS
 from modelica_builder.package_parser import PackageParser
 
+from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
@@ -94,6 +95,15 @@ class District:
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
         }
+
+        if district_template_params["is_ghe_district"]:
+            # load loop order info from ThermalNetwork
+            loop_order = load_loop_order(self.system_parameters.filename)
+
+            common_template_params["loop_order"] = {
+                "number_of_loops": len(loop_order),
+                "data": loop_order,
+            }
 
         if self.gj:
             # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe

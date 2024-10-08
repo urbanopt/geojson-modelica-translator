@@ -36,7 +36,7 @@ class DistrictSystemTest(TestCaseBase):
 
         # create ambient water stub
         ambient_water_stub = NetworkAmbientWaterStub(sys_params)
-        five_g_coupling = Coupling(time_series_load, ambient_water_stub, district_type="5G")
+        five_g_coupling = Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
 
         graph = CouplingGraph(
             [
@@ -55,7 +55,7 @@ class DistrictSystemTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     # test_district_5g.py is this same test but with both buildings, and it works.
     @pytest.mark.skip(reason="https://github.com/urbanopt/geojson-modelica-translator/issues/572")
     def test_simulate_district_system(self):
@@ -65,7 +65,7 @@ class DistrictSystemTest(TestCaseBase):
             run_path=self.district._scaffold.project_path,
         )
 
-    @pytest.mark.dymola()
+    @pytest.mark.dymola
     @pytest.mark.skip(reason="Structurally singular error in Dymola.")
     def test_simulate_district_system_in_dymola(self):
         # need to just pass the dir, dymola runner looks for package.mo

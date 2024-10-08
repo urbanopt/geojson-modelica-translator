@@ -39,6 +39,10 @@ class DistrictSystemTest(TestCaseBase):
         heating_indirect_system = HeatingIndirect(sys_params, geojson_load_id)
         ts_hi_coupling = Coupling(time_series_load, heating_indirect_system)
 
+        assert time_series_load is not None
+        assert time_series_load.building is not None
+        assert time_series_load.system_parameters.get_param("buildings")[0]["load_model"] == "time_series"
+
         # create heated water stub for the ets
         heated_water_stub = NetworkHeatedWaterStub(sys_params)
         hi_hw_coupling = Coupling(heating_indirect_system, heated_water_stub)
@@ -65,7 +69,7 @@ class DistrictSystemTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_simulate_district_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",

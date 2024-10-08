@@ -1,0 +1,49 @@
+// Borefield and distribution coupling connections
+{% if graph.get_ghe_id(coupling.id) == loop_order.data[0].list_ghe_ids_in_group[0] %}
+  connect(pumDis.port_b, TIn_{{ coupling.id }}.port_a)
+  {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
+  {% endraw %}
+{% endif %}
+connect(TIn_{{ coupling.id }}.port_b, {{ coupling.plant.id }}.port_a)
+{% raw %}annotation (Line(points={{-20,10},{-10,10}}, color={0,127,255}));
+{% endraw %}connect({{ coupling.plant.id }}.port_b, TOut_{{ coupling.id }}.port_a)
+{% raw %}annotation (Line(points={{10,10},{6,10}}, color={0,127,255}));
+{% endraw %}connect(TOut_{{ coupling.id }}.port_b, {{ coupling.network.id }}.port_aDisSup)
+{% raw %}annotation (Line(points={{26,10},{38,10},{38,-10},{50,-10}}, color={0,127,255}));
+{% endraw %}
+{% for group_num in range(loop_order.number_of_loops) %}
+  {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    {% if group_num == loop_order.number_of_loops-1 %}
+      connect({{ coupling.network.id }}.port_bDisSup, pumDis.port_a)
+      {% raw %}annotation (Line(points={{90,-10},{110,-10},{110,-20}}, color={0,127,255}));
+      {% endraw %}
+    {% else %}
+      {% set ground_id = graph.couplings_by_type(coupling.network.id).network_couplings[0].network.id %}
+      {% set next_borefield_id = graph.couplings_by_type(ground_id).plant_couplings[group_num+1].plant.id %}
+      {% set next_dis_id = graph.couplings_by_type(next_borefield_id).network_couplings[0].network.id %}
+      connect({{ coupling.network.id }}.port_bDisSup, TIn_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
+      {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
+      {% endraw %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+// control related connections
+{% for group_num in range(loop_order.number_of_loops) %}
+  {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    {% if group_num == 0 %}
+      connect({{ coupling.network.id }}.TOut, conPum.TMix[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}])
+      {% raw %}annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
+      {% endraw %}
+    {% else %}
+      {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
+      connect({{ coupling.network.id }}.TOut, conPum.TMix[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}])
+      {% raw %}annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
+      {% endraw %}
+    {% endif %}
+    connect(TIn_{{ coupling.id }}.T, conPum.TSouIn[{{ group_num+1 }}])
+    {% raw %}annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
+    {% endraw %}connect(TOut_{{ coupling.id }}.T, conPum.TSouOut[{{ group_num+1 }}])
+    {% raw %}annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
+    {% endraw %}
+  {% endif %}
+{% endfor %}

@@ -79,7 +79,7 @@ class DistrictHeatingAndCoolingSystemsTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip("OMC Failed to find spawn executable in Buildings Library")
     def test_simulate_spawn_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
