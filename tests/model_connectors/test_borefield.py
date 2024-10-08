@@ -25,18 +25,17 @@ class DistrictSystemTest(TestCaseBase):
         filename = Path(self.data_dir) / "system_params_ghe.json"
         sys_params = SystemParameters(filename)
 
-        # Create the time series load, ets and their coupling
-        borefield = Borefield(sys_params)
-
         # create ambient water stub
         ambient_water_stub = NetworkAmbientWaterStub(sys_params)
-        five_g_coupling = Coupling(borefield, ambient_water_stub, district_type="5G")
 
-        graph = CouplingGraph(
-            [
-                five_g_coupling,
-            ]
-        )
+        all_couplings = []
+        for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
+            # create borefields
+            borefield = Borefield(sys_params, ghe)
+            # couple each borefield to the thermal loop
+            all_couplings.append(Coupling(borefield, ambient_water_stub, district_type="fifth_generation"))
+
+        graph = CouplingGraph(all_couplings)
 
         self.district = District(
             root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, coupling_graph=graph
@@ -47,7 +46,7 @@ class DistrictSystemTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_simulate_district_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",

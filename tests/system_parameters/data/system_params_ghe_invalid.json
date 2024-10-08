@@ -175,6 +175,11 @@
   },
   "district_system": {
     "fifth_generation": {
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
       "ghe_parameters": {
         "version": "0.5",
         "fluid": {
@@ -184,11 +189,6 @@
         "grout": {
           "conductivity": -1,
           "rho_cp": 3901000
-        },
-        "soil": {
-          "conductivity": 2.0,
-          "rho_cp": 2343493,
-          "undisturbed_temp": 18.3
         },
         "pipe": {
           "inner_diameter": 0.0216,

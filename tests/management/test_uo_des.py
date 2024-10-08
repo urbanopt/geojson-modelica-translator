@@ -23,6 +23,7 @@ class CLIIntegrationTest(TestCase):
         self.scenario_file_path = self.data_dir / "sdk_project_scraps" / "baseline_scenario.csv"
         self.feature_file_path = self.data_dir / "sdk_project_scraps" / "example_project.json"
         self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "example_project_combine_GHE.json"
+        self.feature_file_path_germany = self.data_dir / "sdk_project_scraps" / "example_project_germany_ghe.json"
         self.sys_param_path = (
             self.data_dir / "sdk_project_scraps" / "run" / "baseline_scenario" / "system_parameter.json"
         )
@@ -69,9 +70,29 @@ class CLIIntegrationTest(TestCase):
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
 
+    def test_cli_builds_sys_params_with_german_weatherfile(self):
+        self.sys_param_path.unlink(missing_ok=True)
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path),
+                str(self.scenario_file_path.resolve()),
+                str(self.feature_file_path_germany.resolve()),
+                "5G_ghe",
+            ],
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert self.sys_param_path.exists()
+
     def test_cli_makes_model(self):
         # -- Setup
-        # Gnerate a sys-params file using the CLI
+        # Generate a sys-params file using the CLI
         project_name = "modelica_project_4g"
         if (self.output_dir / project_name).exists():
             rmtree(self.output_dir / project_name)
@@ -153,10 +174,66 @@ class CLIIntegrationTest(TestCase):
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
 
-        # FIXME : we need error handling when system parameter is created for fifth gen GHE system.
-        #  Currently this method raises an error : 'dict object' has no attribute 'temp_setpoint_chw'
         gmt = GeoJsonModelicaTranslator(
             self.feature_file_path_ghe,
+            self.sys_param_path,
+            self.output_dir,
+            project_name,
+        )
+
+        gmt.to_modelica()
+
+        # If this file exists, the code successfully built the model
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
+        # Great! We know our files are good, let's cleanup and test the CLI
+        rmtree(self.output_dir / project_name)
+
+        # -- Act
+        res = self.runner.invoke(
+            cli,
+            [
+                "create-model",
+                str(self.sys_param_path),
+                str(self.feature_file_path_ghe),
+                str(self.output_dir / project_name),
+            ],
+        )
+
+        # -- Assert
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
+
+    def test_cli_makes_model_with_german_weather(self):
+        # -- Setup
+        # first verify the package can be generated without the CLI (ie verify our
+        # files are valid)
+        project_name = "modelica_project_germany"
+        if (self.output_dir / project_name).exists():
+            rmtree(self.output_dir / project_name)
+
+        self.sys_param_path.unlink(missing_ok=True)
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path),
+                str(self.scenario_file_path.resolve()),
+                str(self.feature_file_path_germany.resolve()),
+                "5G_ghe",
+            ],
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert self.sys_param_path.exists()
+
+        gmt = GeoJsonModelicaTranslator(
+            self.feature_file_path_germany,
             self.sys_param_path,
             self.output_dir,
             project_name,
@@ -175,7 +252,7 @@ class CLIIntegrationTest(TestCase):
             [
                 "create-model",
                 str(self.sys_param_path),
-                str(self.feature_file_path_ghe),
+                str(self.feature_file_path_germany),
                 str(self.output_dir / project_name),
             ],
         )
@@ -236,7 +313,7 @@ class CLIIntegrationTest(TestCase):
         assert expected_failure.exit_code != 0
         assert "Modelica does not support spaces in project names or paths." in str(expected_failure.exception)
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_cli_runs_existing_4g_model(self):
         project_name = "modelica_project_4g"
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
@@ -263,7 +340,7 @@ class CLIIntegrationTest(TestCase):
             self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
         ).exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     def test_cli_runs_existing_5g_model(self):
         project_name = "modelica_project_5g"
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"

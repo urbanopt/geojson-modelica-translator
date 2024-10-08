@@ -217,7 +217,7 @@
       "type": "object",
       "properties": {
         "geojson_id": {
-          "description": "The GeoJSON ID as defined in the GeoJSON file. This is used to overwrite the default data for a specific building. This option is not used in the default section.",
+          "description": "The GeoJSON ID as defined in the GeoJSON file.",
           "type": "string"
         },
         "load_model": {
@@ -243,13 +243,29 @@
               "$ref": "#/definitions/time_series_model_parameters"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "anyOf": [
+            {
+              "required": [
+                "spawn"
+              ]
+            },
+            {
+              "required": [
+                "rc"
+              ]
+            },
+            {
+              "required": [
+                "time_series"
+              ]
+            }
+          ]
         },
         "ets_model": {
           "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
           "type": "string",
           "enum": [
-            "None",
             "Indirect Heating and Cooling",
             "Fifth Gen Heat Pump"
           ]
@@ -305,9 +321,23 @@
           }
         }
       },
+      "oneOf": [
+        {
+          "required": [
+            "ets_indirect_parameters"
+          ]
+        },
+        {
+          "required": [
+            "fifth_gen_ets_parameters"
+          ]
+        }
+      ],
       "required": [
         "geojson_id",
-        "ets_model"
+        "ets_model",
+        "load_model",
+        "load_model_parameters"
       ]
     },
     "connector_def": {
@@ -929,9 +959,6 @@
             "$ref": "#/definitions/ghe_specific_params_def"
           }
         },
-        "soil": {
-          "$ref": "#/definitions/soil_def"
-        },
         "pipe": {
           "$ref": "#/definitions/pipe_def"
         },
@@ -953,7 +980,6 @@
       },
       "required": [
         "ghe_specific_params",
-        "soil",
         "pipe",
         "fluid",
         "grout",
@@ -1057,7 +1083,14 @@
           "type": "number",
           "default": 480
         }
-      }
+      },
+      "required": [
+        "net_surface_area",
+        "surface_tilt",
+        "surface_azimuth",
+        "latitude",
+        "nominal_voltage"
+      ]
     },
     "wind_turbine_parameters": {
       "description": "Wind turbine parameters used by the microgrid model.",
@@ -1098,7 +1131,10 @@
           "description": "Nominal Capacity (var)",
           "type": "number"
         }
-      }
+      },
+      "required": [
+        "nominal_capacity"
+      ]
     },
     "substation_parameters": {
       "description": "Substation parameters used by the microgrid model.",
@@ -1230,38 +1266,7 @@
     "fourth_generation_def": {
       "properties": {
         "fourth_generation": {
-          "properties": {
-            "central_cooling_plant_parameters": {
-              "$ref": "#/definitions/central_cooling_plant_parameters"
-            },
-            "central_heating_plant_parameters": {
-              "$ref": "#/definitions/central_heating_plant_parameters"
-            },
-            "combined_heat_and_power_parameters": {
-              "$ref": "#/definitions/combined_heat_and_power_parameters"
-            },
-            "connected_buildings": {
-              "items": [
-                {
-                  "properties": {
-                    "building_id": {
-                      "description": "This is the geojson_id that is defined in the building object."
-                    }
-                  }
-                }
-              ]
-            },
-            "central_pump_parameters": {
-              "description": "Parameters for central pump",
-              "type": "object",
-              "properties": {
-                "pump_design_head": {
-                  "description": "Measured in Pa",
-                  "type": "number"
-                }
-              }
-            }
-          }
+          "$ref": "#/definitions/fourth_generation"
         }
       },
       "required": [
@@ -1271,35 +1276,7 @@
     "fifth_generation_def": {
       "properties": {
         "fifth_generation": {
-          "properties": {
-            "ghe_parameters": {
-              "$ref": "#/definitions/ghe_parameters"
-            },
-            "connected_buildings": {
-              "items": [
-                {
-                  "properties": {
-                    "building_id": {
-                      "description": "This is the geojson_id that is defined in the building object."
-                    }
-                  }
-                }
-              ]
-            },
-            "central_pump_parameters": {
-              "description": "Parameters for central pump",
-              "type": "object",
-              "properties": {
-                "pump_design_head": {
-                  "description": "Measured in Pa.",
-                  "type": "number"
-                }
-              }
-            },
-            "horizontal_piping_parameters": {
-              "$ref": "#/definitions/horizontal_piping_parameters"
-            }
-          }
+          "$ref": "#/definitions/fifth_generation"
         }
       },
       "required": [
@@ -1333,16 +1310,6 @@
           "type": "number",
           "default": 3.5
         },
-        "pump_flow_rate": {
-          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
-          "type": "number",
-          "default": 0.01
-        },
-        "pump_design_head": {
-          "description": "Design head pressure of the ambient loop pump. (Pa)",
-          "type": "number",
-          "default": 150000
-        },
         "ets_pump_flow_rate": {
           "description": "Design volume flow rate of the ETS pump. (m3/s)",
           "type": "number",
@@ -1370,8 +1337,6 @@
         "hot_water_supply_temp",
         "cop_heat_pump_heating",
         "cop_heat_pump_cooling",
-        "pump_flow_rate",
-        "pump_design_head",
         "ets_pump_flow_rate",
         "ets_pump_head",
         "fan_design_flow_rate",
@@ -1685,6 +1650,102 @@
         "flow_type",
         "max_eft",
         "min_eft"
+      ]
+    },
+    "central_pump_parameters": {
+      "description": "Parameters for central pump",
+      "type": "object",
+      "properties": {
+        "pump_design_head": {
+          "description": "Measured in Pa.",
+          "type": "number"
+        },
+        "pump_flow_rate": {
+          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+          "type": "number",
+          "default": 0.01
+        }
+      },
+      "required": [
+        "pump_design_head",
+        "pump_flow_rate"
+      ]
+    },
+    "fifth_generation": {
+      "description": "Fifth generation district parameters, for an ambient loop system.",
+      "type": "object",
+      "properties": {
+        "soil": {
+          "$ref": "#/definitions/soil_def"
+        },
+        "ghe_parameters": {
+          "$ref": "#/definitions/ghe_parameters"
+        },
+        "connected_buildings": {
+          "items": [
+            {
+              "properties": {
+                "building_id": {
+                  "description": "This is the geojson_id that is defined in the building object."
+                }
+              }
+            }
+          ]
+        },
+        "central_pump_parameters": {
+          "$ref": "#/definitions/central_pump_parameters"
+        },
+        "horizontal_piping_parameters": {
+          "$ref": "#/definitions/horizontal_piping_parameters"
+        }
+      },
+      "required": [
+        "soil",
+        "horizontal_piping_parameters",
+        "central_pump_parameters"
+      ]
+    },
+    "fourth_generation": {
+      "description": "Fourth generation district parameters, for a central loop system.",
+      "type": "object",
+      "properties": {
+        "central_cooling_plant_parameters": {
+          "$ref": "#/definitions/central_cooling_plant_parameters"
+        },
+        "central_heating_plant_parameters": {
+          "$ref": "#/definitions/central_heating_plant_parameters"
+        },
+        "combined_heat_and_power_parameters": {
+          "$ref": "#/definitions/combined_heat_and_power_parameters"
+        },
+        "connected_buildings": {
+          "items": [
+            {
+              "properties": {
+                "building_id": {
+                  "description": "This is the geojson_id that is defined in the building object."
+                }
+              }
+            }
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "central_cooling_plant_parameters"
+          ]
+        },
+        {
+          "required": [
+            "central_heating_plant_parameters"
+          ]
+        },
+        {
+          "required": [
+            "combined_heat_and_power_parameters"
+          ]
+        }
       ]
     }
   }
