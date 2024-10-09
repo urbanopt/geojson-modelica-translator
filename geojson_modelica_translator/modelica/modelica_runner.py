@@ -150,7 +150,7 @@ class ModelicaRunner:
         os.chdir(run_path)
         stdout_log = open("stdout.log", "w")  # noqa: SIM115
         model_name = run_path.parts[-1]
-        image_name = "nrel/gmt-om-runner:2.1.0"
+        image_name = "nrel/gmt-om-runner:3.0.0"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
         try:
             # create the command to call the open modelica compiler inside the docker image
