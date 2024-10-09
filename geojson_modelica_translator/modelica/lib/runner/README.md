@@ -18,10 +18,10 @@ To build the docker container locally, follow the below instructions:
 # <from gmt root directory>
 cd geojson_modelica_translator/modelica/lib/runner
 
-docker build -t nrel/gmt-om-runner:latest .
+docker build -t nrel/gmt-om-runner:<tag> .
 ```
 
-The default tag will be `nrel/gmt-om-runner:v2.1.0`, which is the default version used in the modelica_runner.py file.
+The default tag will be `nrel/gmt-om-runner:3.0.0`, which is the default version used in the modelica_runner.py file.
 
 ### Versioning
 
@@ -52,12 +52,9 @@ docker login
 # Build for more platforms on release due to newer macos, etc., etc.
 docker buildx create --use
 
-# update version of OMC and determine if the latest should be updated. Ideally, the latest should be updated
-# only if the new OMC release is needed to fix previous issues.
-docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:v2.0.1 --push .
-
-# Push the latest, if required
-docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:latest --push .
+# update version of OMC and determine if the latest should be updated. Bump the major version of the GMT Runner for an MBL version,
+# and bump the minor version for OM minor version updates.
+docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:3.0.0 --push .
 ```
 
 Sign into [Docker Hub](https://hub.docker.com/repository/docker/nrel/gmt-om-runner/general) and update the version
