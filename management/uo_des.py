@@ -22,15 +22,15 @@ def cli():
 @cli.command(short_help="Create sys-param file")
 @click.argument(
     "sys_param_filename",
-    type=click.Path(file_okay=True, dir_okay=False),
+    type=click.Path(file_okay=True, dir_okay=False, path_type=Path, readable=True, resolve_path=True),
 )
 @click.argument(
     "scenario_file",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, path_type=Path, readable=True, resolve_path=True),
 )
 @click.argument(
     "feature_file",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, path_type=Path, readable=True, resolve_path=True),
 )
 @click.argument(
     "district_type",
@@ -64,16 +64,16 @@ def build_sys_param(
     microgrid: bool,
 ):
     """Create system parameters file using uo_sdk output
-    #FIXME: Formatting of the args...
 
     SYS_PARAM_FILENAME: Path/name to sys-param file be created. Be sure to include the ".json" suffix.
 
-    SCENARIO_FILE: Path to sdk scenario file.
+    SCENARIO_FILE: Path/name to sdk scenario file.
 
-    FEATURE_FILE: Path to sdk json feature file with data about the buildings.
+    FEATURE_FILE: Path/name to sdk json feature file with data about the buildings.
 
     DISTRICT_TYPE: selection for which kind of simulation this sys-param file will support.
     Available options are: ['steam', '4G', '5G', '5G_ghe']
+    Defaults to '4G'
 
     \b
     MODEL_TYPE: selection for which kind of simulation this sys-param file will support.
@@ -90,14 +90,14 @@ def build_sys_param(
     """
 
     # Use scenario_file to be consistent with sdk
-    scenario_name = Path(scenario_file).stem
-    scenario_dir = Path(scenario_file).parent / "run" / scenario_name
+    scenario_name = scenario_file.stem
+    scenario_dir = scenario_file.parent / "run" / scenario_name
     sp = SystemParameters()
     sp.csv_to_sys_param(
         model_type=model_type,
-        sys_param_filename=Path(sys_param_filename),
-        scenario_dir=Path(scenario_dir),
-        feature_file=Path(feature_file),
+        sys_param_filename=sys_param_filename,
+        scenario_dir=scenario_dir,
+        feature_file=feature_file,
         district_type=district_type,
         overwrite=overwrite,
         microgrid=microgrid,
@@ -112,16 +112,16 @@ def build_sys_param(
 @cli.command(short_help="Create Modelica model")
 @click.argument(
     "sys_param_file",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, path_type=Path, readable=True, resolve_path=True),
 )
 @click.argument(
     "geojson_feature_file",
-    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, path_type=Path, readable=True, resolve_path=True),
 )
 @click.argument(
     "project_path",
     default="model_from_sdk",
-    type=click.Path(exists=False, file_okay=False, dir_okay=True),
+    type=click.Path(exists=False, file_okay=False, dir_okay=True, path_type=Path, readable=True, resolve_path=True),
 )
 @click.option(
     "-o",
@@ -145,7 +145,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     :param project_path: Path, location and name of Modelica model dir to be created
     :param overwrite: Boolean, flag to overwrite an existing file of the same name/location
     """
-    project_path = Path(project_path)
+
     if project_path.exists():
         if overwrite:
             rmtree(project_path, ignore_errors=True)
@@ -167,7 +167,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     "modelica_project",
     default="./model_from_sdk",
     required=True,
-    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path, readable=True, resolve_path=True),
 )
 @click.option(
     "-a",
@@ -199,6 +199,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 )
 def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
     """Run the model
+
     \b
     Run the Modelica project in a docker-based environment.
     Results are saved at the same level as the project path that is passed.
@@ -206,7 +207,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
 
     \b
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
-        default = ./model_from_sdk
+    default = ./model_from_sdk
 
     \f
     :param sys_param_file: Path, location and name of file created with this cli
@@ -216,12 +217,11 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
     """
-    run_path = Path(modelica_project).resolve()
-    project_name = run_path.stem
+    project_name = modelica_project.stem
 
-    if len(str(run_path).split()) > 1:  # Modelica can't handle spaces in project name or path
+    if len(str(modelica_project).split()) > 1:  # Modelica can't handle spaces in project name or path
         raise SystemExit(
-            f"\n'{run_path}' failed. Modelica does not support spaces in project names or paths. "
+            f"\n'{modelica_project}' failed. Modelica does not support spaces in project names or paths. "
             "Please update your directory tree to not include spaces in any name"
         )
 
@@ -230,15 +230,15 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     mr.run_in_docker(
         "compile_and_run",
         f"{project_name}.Districts.DistrictEnergySystem",
-        file_to_load=run_path / "package.mo",
-        run_path=run_path,
+        file_to_load=modelica_project / "package.mo",
+        run_path=modelica_project,
         start_time=start_time,
         stop_time=stop_time,
         step_size=step_size,
         number_of_intervals=intervals,
     )
 
-    run_location = run_path.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"
+    run_location = modelica_project.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"
     if (run_location / f"{project_name}.Districts.DistrictEnergySystem_res.mat").exists():
         print(f"\nModelica model {project_name} ran successfully and can be found in {run_location}")
     else:
@@ -250,7 +250,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     "modelica_project",
     default="./model_from_sdk",
     required=True,
-    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path, readable=True, resolve_path=True),
 )
 def des_process(modelica_project: Path):
     """Post Process the model
@@ -260,11 +260,11 @@ def des_process(modelica_project: Path):
 
     \b
     MODELICA_PROJECT: Path to the Modelica project, possibly created by this cli
-        default = ./model_from_sdk
+    default = ./model_from_sdk
 
     \f
     :param modelica_project: Path, name & location of modelica project, possibly created with this cli
     """
-    modelica_path = Path(modelica_project).resolve()
-    result = ResultsModelica(modelica_path)
+
+    result = ResultsModelica(modelica_project)
     result.calculate_results()
