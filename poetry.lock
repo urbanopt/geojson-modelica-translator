@@ -2206,19 +2206,27 @@ pytest = ">=7.0.0,<9.0.0"
 
 [[package]]
 name = "teaser"
-version = "0.7.5"
+version = "1.0.0"
 description = "Tool for Energy Analysis and Simulation for Efficient Retrofit"
 optional = false
 python-versions = "*"
-files = [
-    {file = "teaser-0.7.5.tar.gz", hash = "sha256:0fa848418628431922a3dec4d876f457445cb0b479eda2cf1f306e45596ed0e3"},
-]
+files = []
+develop = false
 
 [package.dependencies]
 mako = "*"
 numpy = "*"
 pandas = "*"
 pytest = "*"
+
+[package.extras]
+report = ["plotly"]
+
+[package.source]
+type = "git"
+url = "https://github.com/RWTH-EBC/TEASER.git"
+reference = "development"
+resolved_reference = "1e17567ccd9301d84b8995686605cb5b624a8592"
 
 [[package]]
 name = "toml"
@@ -2304,4 +2312,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10, <3.13"
-content-hash = "c3d6e4fa2b8a27de54ae005cb57949d96cf16420077e0a272f1a3b0897b89473"
+content-hash = "53284dbf8a44d2a4b83a792de5b4ca70185ea4fcdfaebaba28acddf8b1b9e6e3"
