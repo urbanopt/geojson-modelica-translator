@@ -51,7 +51,7 @@ protected
   parameter Modelica.Units.SI.Length depMea=sum(
     dep)/nPip
     "Average depth";
-  parameter Real P[nPip,nPip]=Buildings.Fluid.Geothermal.BuriedPipes.BaseClasses.groundCouplingFactors(
+  parameter Real P[nPip,nPip]=Buildings.Fluid.FixedResistances.BuriedPipes.BaseClasses.groundCouplingFactors(
     nPip,
     dep,
     pos,
