@@ -11,7 +11,19 @@ within {{ project_name }}.Loads.{{ model_name }};
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
       facMulHea=10*QHea_flow_nominal/(1.7E5),
       facMulCoo=40*QCoo_flow_nominal/(-1.5E5)),
-    ets(
+    redeclare 
+      Buildings.DHC.ETS.Combined.HeatPumpHeatExchanger
+      ets(
+      final dT_nominal=dT_nominal,
+      final TDisWatMin=TDisWatMin,
+      final TDisWatMax=TDisWatMax,
+      final TChiWatSup_nominal=TChiWatSup_nominal,
+      final THeaWatSup_nominal=THeaWatSup_nominal,
+      final THotWatSup_nominal=THotWatSup_nominal,
+      final TColWat_nominal=TColWat_nominal,
+      final dp_nominal=dp_nominal,
+      final COPHeaWat_nominal=COPHeaWat_nominal,
+      final COPHotWat_nominal=COPHotWat_nominal,
       have_hotWat=true,
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
@@ -59,7 +71,7 @@ within {{ project_name }}.Loads.{{ model_name }};
     "Normalized cooling load"
     annotation (Placement(transformation(extent={{-200,-150},{-180,-130}})));
 equation
-  connect(bui.QReqHotWat_flow,ets.loaSHW)
+  connect(bui.QReqHotWat_flow,ets.QReqHotWat_flow)
     annotation (Line(points={{28,4},{28,-10},{-64,-10},{-64,-74},{-34,-74}},color={0,0,127}));
   connect(THotWatSupSet,ets.THotWatSupSet)
     annotation (Line(points={{-320,40},{-136,40},{-136,-66},{-34,-66}},color={0,0,127}));
