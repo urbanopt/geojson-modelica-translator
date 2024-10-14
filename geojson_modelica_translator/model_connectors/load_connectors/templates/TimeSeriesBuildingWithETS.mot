@@ -11,7 +11,7 @@ within {{ project_name }}.Loads.{{ model_name }};
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
       facMulHea=10*QHea_flow_nominal/(1.7E5),
       facMulCoo=40*QCoo_flow_nominal/(-1.5E5)),
-    redeclare 
+    redeclare
       Buildings.DHC.ETS.Combined.HeatPumpHeatExchanger
       ets(
       final dT_nominal=dT_nominal,

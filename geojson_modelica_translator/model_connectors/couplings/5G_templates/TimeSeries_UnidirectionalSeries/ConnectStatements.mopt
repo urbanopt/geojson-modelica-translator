@@ -13,7 +13,7 @@
         {% endraw %}
         connect({{ coupling.load.id }}.port_bSerAmb, {{ coupling.network.id }}.ports_aCon[{{ bldg_num+1 }}])
         {% raw %}annotation (Line(points={{80,30},{92,30},{92,6},{82,6},{82,0}}, color={0,127,255}));
-        {% endraw %}connect({{ coupling.load.id }}.QCoo_flow, conPum.QCoo_flow[{{ bldg_num+1 }}]) 
+        {% endraw %}connect({{ coupling.load.id }}.QCoo_flow, conPum.QCoo_flow[{{ bldg_num+1 }}])
         {% raw %}annotation (Line(points={{67,-12},{128,-12},{128,-112},{-124,-112},{-124,-96},{-121.692,-96}}, color={0,0,127}));
         {% endraw %}
       {% endif %}
