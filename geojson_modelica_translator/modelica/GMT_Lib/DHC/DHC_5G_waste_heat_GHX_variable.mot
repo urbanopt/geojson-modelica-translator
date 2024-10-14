@@ -34,6 +34,7 @@ model district
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
   Buildings.DHC.Networks.Controls.MainPump1Pipe conPum(
     nMix=nBui,
+    nBui=nBui,
     nSou=2,
     TMin=279.15,
     TMax=290.15) "Main pump controller"
@@ -75,6 +76,8 @@ equation
           -102},{-248,-60},{-242,-60}}, color={0,0,127}));
   connect(gaiPumSto.y, pumSto.m_flow_in) annotation (Line(points={{-218,-102},{
           -210,-102},{-210,-62},{-180,-62},{-180,-68}}, color={0,0,127}));
+  connect(bui.QCoo_flow, conPum.QCoo_flow) annotation (Line(points={{7,168},{6,168},
+          {6,156},{-130,156},{-130,130},{-312,130},{-312,-66},{-281.692,-66}}, color={0,0,127}));
   annotation (
   Diagram(
   coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
