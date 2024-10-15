@@ -84,13 +84,13 @@ within {{project_name}}.Loads.{{model_name}};
       info="<html>
 <p>
 This example illustrates the use of
-<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding\">
-Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding</a>,
-<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit\">
-Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialBuilding\">
+Buildings.DHC.Loads.BaseClasses.PartialBuilding</a>,
+<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
 and
-<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution\">
-Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution</a>
+<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.FlowDistribution\">
+Buildings.DHC.Loads.BaseClasses.FlowDistribution</a>
 in a configuration with:
 </p>
 <ul>

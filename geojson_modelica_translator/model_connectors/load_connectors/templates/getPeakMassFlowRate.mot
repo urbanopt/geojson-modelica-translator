@@ -83,8 +83,8 @@ terminates the simulation with an assertion.
 </p>
 <p>
 See
-<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate\">
-Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate</a>
+<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate\">
+Buildings.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate</a>
 for how to invoke this function.
 </p>
 </html>",
