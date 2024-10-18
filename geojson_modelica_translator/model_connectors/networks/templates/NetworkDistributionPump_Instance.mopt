@@ -12,8 +12,9 @@
     {% raw %}annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=270,origin={-44,-60})));
     {% endraw %}
   // pump controller
-  Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
+  Buildings.DHC.Networks.Controls.MainPump1Pipe conPum(
     nMix=datDes.nBui,
+    nBui=datDes.nBui,
     nSou={{ loop_order.number_of_loops }},
     use_temperatureShift=false)
     {% raw %}annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));

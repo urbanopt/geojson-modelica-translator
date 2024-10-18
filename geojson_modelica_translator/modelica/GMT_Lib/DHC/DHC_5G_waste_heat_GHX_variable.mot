@@ -3,7 +3,7 @@ model district
   "Series connection with variable district water mass flow rate"
   extends
     PartialSeries(redeclare
-      Buildings.Experimental.DHC.Loads.Combined.BuildingTimeSeriesWithETS
+      Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
       bui[nBui](final filNam=filNam), datDes(
       nBui={{ data['building_load_files'] | count }},
       mPumDis_flow_nominal={{ data['max_flow_rate'] }},
@@ -32,12 +32,12 @@ model district
     k=fill(15 + 273.15, nBui))
     "Cold water temperature"
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
-  Buildings.Experimental.DHC.Networks.Controls.MainPump conPum(
+  Buildings.DHC.Networks.Controls.MainPump1Pipe conPum(
     nMix=nBui,
+    nBui=nBui,
     nSou=2,
     TMin=279.15,
-    TMax=290.15,
-    use_temperatureShift=false) "Main pump controller"
+    TMax=290.15) "Main pump controller"
     annotation (Placement(transformation(extent={{-280,-70},{-260,-50}})));
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gaiPumDis(k=datDes.mPumDis_flow_nominal)
     "Scale with nominal mass flow rate for distribution pump"
@@ -76,6 +76,8 @@ equation
           -102},{-248,-60},{-242,-60}}, color={0,0,127}));
   connect(gaiPumSto.y, pumSto.m_flow_in) annotation (Line(points={{-218,-102},{
           -210,-102},{-210,-62},{-180,-62},{-180,-68}}, color={0,0,127}));
+  connect(bui.QCoo_flow, conPum.QCoo_flow) annotation (Line(points={{7,168},{6,168},
+          {6,156},{-130,156},{-130,130},{-312,130},{-312,-66},{-281.692,-66}}, color={0,0,127}));
   annotation (
   Diagram(
   coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
@@ -87,8 +89,8 @@ equation
     Documentation(info="<html>
 <p>
 This model is identical to
-<a href=\"Buildings.Experimental.DHC.Examples.Combined.SeriesConstantFlow\">
-Buildings.Experimental.DHC.Examples.Combined.SeriesConstantFlow</a>
+<a href=\"Buildings.DHC.Examples.Combined.SeriesConstantFlow\">
+Buildings.DHC.Examples.Combined.SeriesConstantFlow</a>
 except for the pipe diameter and the control of the main circulation pump.
 Rather than having a constant mass flow rate, the mass flow rate is varied
 based on the mixing temperatures after each agent.
