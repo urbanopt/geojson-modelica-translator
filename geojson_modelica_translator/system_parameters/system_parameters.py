@@ -90,62 +90,34 @@ class SystemParameters:
                 new_path = Path(filepath) / match.value
                 parse(str(match.full_path)).update(self.param_template, new_path.as_posix())
 
-    # def resolve_defaults(self):
-    #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
-    #     specificed in the custom block then that will be used, otherwise the default value will be replaced"""
-    #     pass
-
-    def get_default(self, jsonpath, default=None):
-        """Return either the default in the system parameter file, or the specified default.
-
-        :param jsonpath: string, raw jsonpath to what parameter was being requested
-        :param default: variant, default value
-        :return: value
-        """
-        schema_default = self.get_param(jsonpath, impute_default=False)
-        return schema_default or default
-
-    def get_param(self, jsonpath, data=None, default=None, impute_default=True):
-        """Return the parameter(s) from a jsonpath. If the default is not specified, then will attempt to read the
-        default from the "default" section of the file. If there is no default there, then it will use the value
-        specified as the argument. It is not recommended to use the argument default as those values will not be
-        configurable. Argument-based defaults should be used sparingly.
+    def get_param(self, jsonpath, data=None):
+        """Return the parameter(s) from a jsonpath.
 
         :param path: string, period delimited path of the data to retrieve
         :param data: dict, (optional) the data to parse
-        :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
         if jsonpath is None or jsonpath == "":
             return None
 
-        # If this is the first entry into the method, then set the data to the
         data = data or self.param_template
         matches = parse(jsonpath).find(data)
 
-        default_value = default
-        if impute_default:
-            default_value = self.get_default(jsonpath, default)
-
         results = []
-        for index, match in enumerate(matches):
-            # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
-            if match.value is None:
-                results.append(default_value)
-            else:
-                results.append(match.value)
+        for match in matches:
+            results.append(match.value)
 
         if len(results) == 1:
-            # If only one value, then return that value and not a list of values
+            # If only one value, then return that value and not a list of values.
             results = results[0]
         elif len(results) == 0:
-            return default_value
+            return None
 
         # otherwise return the list of values
         return results
 
     def get_param_by_id(self, param_id, jsonpath):
-        """Return a parameter for a specific id. This is similar to get_param but allows the user
+        """Return a parameter for a specific id. This wrapper to get_param allows the user
         to constrain the data based on the id.
 
         :param param_id: string, id of the object to look up in the system parameters file
