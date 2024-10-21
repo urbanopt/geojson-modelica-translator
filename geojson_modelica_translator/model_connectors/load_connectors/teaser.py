@@ -272,8 +272,14 @@ class Teaser(LoadBase):
             use_moisture_balance = self.system_parameters.get_param(
                 "buildings.load_model_parameters.rc.use_moisture_balance"
             )
+            if use_moisture_balance is None:
+                use_moisture_balance = "false"
 
+            # TODO: Determine why we are looking for use_moisture_balance & nPorts in the sys-param file.
+            # Is this just an allowance for future flexibility?
             n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts")
+            if n_ports is None:
+                n_ports = 1
 
             # create a new parameter for fraction latent person
             mofile.add_parameter(
