@@ -167,7 +167,7 @@ class GeoJsonModelicaTranslator:
 
         self._system_parameters = SystemParameters(sys_params_filepath)
 
-        geojson_ids = self._system_parameters.get_default("$.buildings.[*].geojson_id", [])
+        geojson_ids = self._system_parameters.get_param("$.buildings.[*].geojson_id")
         self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)
 
         # Use different couplings for each district system type
