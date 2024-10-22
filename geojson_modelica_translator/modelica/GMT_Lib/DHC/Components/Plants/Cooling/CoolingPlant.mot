@@ -1,6 +1,6 @@
 model CoolingPlant
   "Isolated central cooling plant template model."
-  extends Buildings.Experimental.DHC.Plants.Cooling.Examples.ElectricChillerParallel(
+  extends Buildings.DHC.Plants.Cooling.Examples.ElectricChillerParallel(
   redeclare {$ chiller_performance $} perChi(
     mEva_flow_nominal=mCHW_flow_nominal,
     mCon_flow_nominal=mCW_flow_nominal,

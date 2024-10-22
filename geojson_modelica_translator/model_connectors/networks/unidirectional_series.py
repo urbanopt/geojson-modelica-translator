@@ -21,7 +21,7 @@ class UnidirectionalSeries(NetworkBase):
         self.id = "dis_" + simple_uuid()
         self.unidirectional_series_name = "UnidirectionalSeries_" + simple_uuid()
 
-        self.required_mo_files.append(os.path.join(self.template_dir, "ConnectionSeriesAutosize.mo"))
+        self.required_mo_files.append(os.path.join(self.template_dir, "Connection1PipePlugFlow_v.mo"))
 
     def to_modelica(self, scaffold):
         """
@@ -111,9 +111,9 @@ class UnidirectionalSeries(NetworkBase):
             )
         else:
             for model_name in package_models:
-                # We only want a single model named ConnectionSeriesAutosize to be included, so we skip adding
+                # We only want a single model named Connection1PipePlugFlow_v to be included, so we skip adding
                 # (One was included when the Networks package order_data was first created just above)
-                if model_name != "ConnectionSeriesAutosize":
+                if model_name != "Connection1PipePlugFlow_v":
                     networks_package.add_model(model_name)
         networks_package.save()
 
