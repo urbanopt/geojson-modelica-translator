@@ -9,7 +9,7 @@ RUN apt update && apt --no-install-recommends install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Duplicating code from OM Dockerfile: https://github.com/OpenModelica/OpenModelicaDockerImages/blob/v1.22.1/Dockerfile
+# Duplicating code from OM Dockerfile: https://github.com/OpenModelica/OpenModelicaDockerImages/blob/v1.23.1/Dockerfile
 # This allows us to use a different Ubuntu version than the OM Dockerfile
 # tests/GMT_Lib/test_gmt_lib_des.py fails with jammy, works with focal.
 ARG OM_VERSION=1.24.0
@@ -31,9 +31,9 @@ RUN echo \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# Install MBL 10.0
+# Install MBL 11.0
 # ALERT: Update the version in utils.py when updating the version here
 RUN echo \
-  "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"10.0.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
+  "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"11.0.0\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
   omc /tmp/installMBL.mos && \
   rm /tmp/installMBL.mos
