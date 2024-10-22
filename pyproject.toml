@@ -38,6 +38,7 @@ jsonpath-ng = "~1.6"
 jsonschema = "~4.20"
 # modelica-builder = "^0.6.0"
 # modelica-builder = { path = "../modelica-builder", develop = true }
+# TODO: Use v0.6.0 when we're ready to merge
 modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "mblv11"}
 pandas = "~2"
 requests = "^2.28"
