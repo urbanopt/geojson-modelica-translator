@@ -106,10 +106,10 @@ class ModelicaRunner:
         """
         # read in the start, stop, and step times
         project_in_library = kwargs.get("project_in_library", False)
-        start_time = kwargs.get("start_time", None)
-        stop_time = kwargs.get("stop_time", None)
-        step_size = kwargs.get("step_size", None)
-        number_of_intervals = kwargs.get("number_of_intervals", None)
+        start_time = kwargs.get("start_time")
+        stop_time = kwargs.get("stop_time")
+        step_size = kwargs.get("step_size")
+        number_of_intervals = kwargs.get("number_of_intervals")
 
         # initialize the templating framework (Jinja2)
         template_env = Environment(

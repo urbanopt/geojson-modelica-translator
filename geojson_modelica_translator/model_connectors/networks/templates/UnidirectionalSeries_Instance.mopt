@@ -1,0 +1,34 @@
+{{ model.modelica_type }} {{ model.id }}(
+  redeclare final package Medium = {{ globals.medium_w }},
+  show_TOut=true,
+  final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
+  final dp_length_nominal=datDes.dp_length_nominal,
+  {% for group_num in range(loop_order.number_of_loops) %}
+    {% if graph.get_ghe_id(graph.couplings_by_type(model.id).plant_couplings[0].id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+      final nCon= {{ loop_order.data[group_num].list_bldg_ids_in_group|length }},
+      {% if group_num == 0 %}
+        final mCon_flow_nominal=datDes.mCon_flow_nominal[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+        final lDis=datDes.lDis[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+        final lCon=datDes.lCon[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+        {% if loop_order.number_of_loops == 1 %}
+          final lEnd = datDes.lEnd,
+        {% else %}
+          final lEnd=datDes.lDis[{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}],
+        {% endif %}
+      {% else %}
+        {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
+        final mCon_flow_nominal=datDes.mCon_flow_nominal[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+        final lDis=datDes.lDis[{{ 1+group_num+sum_bldg }}:{{ group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+        final lCon=datDes.lCon[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+        {% if group_num == loop_order.number_of_loops-1 %}
+          final lEnd = datDes.lEnd,
+        {% else %}
+          final lEnd=datDes.lDis[{{ 1+group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  final allowFlowReversal=allowFlowReversalSer)
+  {% raw %}"Ground coupling"
+    annotation (Placement(transformation(extent={{50,-20},{90,0}})));
+{% endraw %}
