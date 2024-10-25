@@ -236,7 +236,6 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("$.buildings.[*].ets_indirect_parameters.heat_flow_nominal")
         assert value == [8000, 10000]
 
-
     def test_get_param_with_building_id(self):
         filename = self.data_dir / "system_params_1.json"
         sdp = SystemParameters(filename)
