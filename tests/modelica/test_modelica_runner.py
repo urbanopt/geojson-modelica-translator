@@ -123,8 +123,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         success, _ = mr.run_in_docker('compile', model_name, run_path=self.msl_run_path, project_in_library=True)
 
         self.assertTrue(success)
-        self.assertTrue(os.path.exists(os.path.join(results_path, 'stdout.log')))
-        self.assertTrue(os.path.exists(os.path.join(results_path, f'{model_name}.fmu')))
+        self.assertTrue((Path(results_path) / 'stdout.log').exists())
+        fmu_basename = model_name.split('.')[-1]
+        self.assertTrue((Path(results_path).parent / f'{fmu_basename}.fmu').exists())
 
     @pytest.mark.simulation
     def test_simulate_msl_in_docker(self):
