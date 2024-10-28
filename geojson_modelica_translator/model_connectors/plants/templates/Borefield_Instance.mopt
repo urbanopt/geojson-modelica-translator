@@ -1,3 +1,40 @@
+  parameter Modelica.Units.SI.Length dhSto_{{ model.id }}(fixed=false,start=0.05,min=0.01)
+    "Hydraulic diameter of the distribution pipe before each connection";
+  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumSto_{{ model.id }}(
+    dp_nominal=30000,
+    redeclare final package Medium = MediumW,
+    m_flow_nominal=datDes.mSto_flow_nominal)
+    "Bore field pump"
+    annotation (Placement(transformation(
+      extent={{10,10},{-10,-10}},
+      rotation=180,
+      origin={-30,50})));
+  Buildings.DHC.Networks.Connections.Connection1Pipe_R_{{ model.id }} conSto(
+    redeclare final package Medium = MediumW,
+    final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
+    final mCon_flow_nominal=datDes.mSto_flow_nominal,
+    lDis=10,
+    final allowFlowReversal=allowFlowReversalSer,
+    dhDis=dhSto)
+    "Connection to the bore field (pressure drop lumped in plant and network model)"
+    annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={-18,10})));
+  Buildings.DHC.Networks.Controls.AgentPump1Pipe conBor_{{ model.id }}(
+    yPumMin=0,
+    dToff=0.45,
+    k=1.1,
+    Ti=600,
+    uLowHea=0.25,
+    uHighHea=0.5,
+    uLowCoo=0.15,
+    uHighCoo=0.4) "Borefield GHE pump controller"
+    annotation (Placement(transformation(extent={{-60,80},{-40,100}})));
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter_{{ model.id }} gai1(k=datDes.mSto_flow_nominal)
+    "Scale with nominal mass flow rate"
+    annotation (Placement(transformation(extent={{-30,80},{-10,100}})));
+  
   {{ model.modelica_type }} {{ model.id }}
   {% raw %}annotation (Placement(transformation(extent={{-10,0},{10,20}})));
 {% endraw %}
