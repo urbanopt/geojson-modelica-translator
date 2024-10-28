@@ -16,7 +16,7 @@
 * Add detail to Docker setup docs for Windows users by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/643
 * Use the correct ETS heat pump COP by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/642
 * Use feature ids in load names instead of simple_uuid by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/652
-* Remove alfalfa from contest by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/665
+* Remove alfalfa from conftest.py by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/665
 * Update version of Jinja by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/667
 * Clean up sys-param code that reads parameters by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/668
 
