@@ -1,5 +1,27 @@
 # Change Log
 
+## Version 0.8.0
+
+### Exciting New Features 🎉
+* Add default cop values for 5G district heat pump efficiencies by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/640
+* Support international weather locations by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/654
+* Support multiple GHEs in a single district by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/644
+* Adds method to process modelica results by @tanushree04 in https://github.com/urbanopt/geojson-modelica-translator/pull/646
+* Simplify sys params to closer match reality by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/659
+* Templates and tests for horizontal piping modeling by @JingWang-CUB in https://github.com/urbanopt/geojson-modelica-translator/pull/627
+* Support single building DES templates by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/670
+
+### Other Changes
+* Improve cli typing & validation by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/662
+* Add detail to Docker setup docs for Windows users by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/643
+* Use the correct ETS heat pump COP by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/642
+* Use feature ids in load names instead of simple_uuid by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/652
+* Remove alfalfa from contest by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/665
+* Update version of Jinja by @nllong in https://github.com/urbanopt/geojson-modelica-translator/pull/667
+* Clean up sys-param code that reads parameters by @vtnate in https://github.com/urbanopt/geojson-modelica-translator/pull/668
+
+**Full Changelog**: https://github.com/urbanopt/geojson-modelica-translator/compare/v0.7.0...v0.8.0
+
 ## Version 0.7.0
 
 ### Exciting New Features 🎉
