@@ -59,5 +59,5 @@ The building loads can be defined multiple ways depending on the fidelity of the
 1. Update version in pyproject.toml
 2. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature
 3. After tests pass, merge branch into develop
-4. From command line, merge develop into main `git checkout main; git pull; git merge --ff-only origin develop; git push`
-5. In GitHub tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
+4. From command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
+5. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
