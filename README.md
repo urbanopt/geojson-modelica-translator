@@ -55,9 +55,9 @@ The building loads can be defined multiple ways depending on the fidelity of the
 
 ## Release Instructions
 
-1. Create a branch named `prep-0.x.y Release`
+1. Create a branch named `Release 0.x.`
+1. Update version in pyproject.toml
 2. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature
 3. After tests pass, merge branch into develop
-4. Create new PR from develop into main named `Release 0.x.y`
-5. Using GitHub squash-merge into main
-6. From local repo, immediately merge main into develop (as a merge commit) and push. This can only be done with users that have bypass privileges on GitHub.
+4. From command line, merge develop into main `git checkout main; git pull; git merge --ff-only origin develop; git push`
+5. In GitHub tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
