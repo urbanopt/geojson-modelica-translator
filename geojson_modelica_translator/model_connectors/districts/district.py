@@ -107,10 +107,20 @@ class District:
 
         if self.gj:
             # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
-            # TODO: only check for total_length if type==ThermalConnector
-            # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-            # TODO: make sure the list of lengths is starting from the outlet of the ghe
-            list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
+            # TODO: make sure the list of lengths is starting from the feature marked as the start of the loop
+            feature_properties = self.gj.get_feature("$.features.[*].properties")
+            dict_of_pipe_lengths = {
+                feature_prop.get("startFeatureId"): feature_prop["total_length"]
+                for feature_prop in feature_properties
+                if feature_prop["type"] == "ThermalConnector"
+            }
+            # list_of_pipe_lengths = [feature_prop["total_length"] for feature_prop in feature_properties if feature_prop["type"] == "ThermalConnector"]
+            # raise SystemExit(f"dict_of_pipe_lengths={dict_of_pipe_lengths}")
+            for prop_dict in feature_properties:
+                if (prop_dict["type"] == "ThermalJunction") and prop_dict["is_ghe_start_loop"] == True:
+                    start_feature_id = prop_dict.get("DSId") or prop_dict.get("buildingId")
+            # start_index = list_of_pipe_lengths.index(start_feature_id)
+            # ordered_pipe_list = list_of_pipe_lengths[start_index:] + list_of_pipe_lengths[:start_index]
             for i in range(len(list_of_pipe_lengths)):
                 list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
             common_template_params["globals"]["lDis"] = (
