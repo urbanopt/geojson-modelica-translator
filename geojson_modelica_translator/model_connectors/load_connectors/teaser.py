@@ -265,21 +265,17 @@ class Teaser(LoadBase):
                 ],
             )
 
-            fraction_latent_person = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.fraction_latent_person"
-            )
+            fraction_latent_person = (
+                self.system_parameters.get_param("buildings.load_model_parameters.rc.fraction_latent_person") or 1.25
+            )  # Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.
 
-            use_moisture_balance = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.use_moisture_balance"
-            )
-            if use_moisture_balance is None:
-                use_moisture_balance = "false"
+            use_moisture_balance = (
+                self.system_parameters.get_param("buildings.load_model_parameters.rc.use_moisture_balance") or "false"
+            )  # If true, input connector QLat_flow is enabled and room air computes moisture balance.
 
-            # TODO: Determine why we are looking for use_moisture_balance & nPorts in the sys-param file.
+            # TODO: Determine why we are looking for these values in the sys-param file.
             # Is this just an allowance for future flexibility?
-            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts")
-            if n_ports is None:
-                n_ports = 1
+            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts") or 1
 
             # create a new parameter for fraction latent person
             mofile.add_parameter(
