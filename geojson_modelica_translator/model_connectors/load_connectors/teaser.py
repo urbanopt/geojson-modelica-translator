@@ -266,14 +266,20 @@ class Teaser(LoadBase):
             )
 
             fraction_latent_person = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.fraction_latent_person", default=1.25
+                "buildings.load_model_parameters.rc.fraction_latent_person"
             )
 
             use_moisture_balance = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.use_moisture_balance", default="false"
+                "buildings.load_model_parameters.rc.use_moisture_balance"
             )
+            if use_moisture_balance is None:
+                use_moisture_balance = "false"
 
-            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts", default=0)
+            # TODO: Determine why we are looking for use_moisture_balance & nPorts in the sys-param file.
+            # Is this just an allowance for future flexibility?
+            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts")
+            if n_ports is None:
+                n_ports = 1
 
             # create a new parameter for fraction latent person
             mofile.add_parameter(
@@ -542,7 +548,6 @@ class Teaser(LoadBase):
                         self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
                     )
                 ),
-                # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
                 "has_liquid_heating": "true"
                 if self.system_parameters.get_param_by_id(
