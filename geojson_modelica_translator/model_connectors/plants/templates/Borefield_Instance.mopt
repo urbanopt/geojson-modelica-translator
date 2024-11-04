@@ -6,7 +6,7 @@
     m_flow_nominal=datDes.mSto_flow_nominal)
     "Bore field pump"
   {% raw %}annotation (Placement(transformation(extent={{10,10},{-10,-10}},rotation=180,origin={-30,50})));
-{% endraw %}  
+{% endraw %}
   Buildings.DHC.Networks.Connections.Connection1Pipe_R_{{ model.id }} conSto(
     redeclare final package Medium = {{ globals.medium_w }},
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
@@ -16,7 +16,7 @@
     dhDis=dhSto_{{ model.id }})
     "Connection to the bore field (pressure drop lumped in plant and network model)"
   {% raw %}annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-18,10})));
-{% endraw %}  
+{% endraw %}
   Buildings.DHC.Networks.Controls.AgentPump1Pipe conBor_{{ model.id }}(
     yPumMin=0,
     dToff=0.45,
@@ -31,7 +31,7 @@
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter_{{ model.id }} gai1(k=datDes.mSto_flow_nominal)
     "Scale with nominal mass flow rate"
   {% raw %}annotation (Placement(transformation(extent={{-30,80},{-10,100}})));
-{% endraw %}  
+{% endraw %}
   {{ model.modelica_type }} {{ model.id }}
   {% raw %}annotation (Placement(transformation(extent={{-10,0},{10,20}})));
 {% endraw %}
