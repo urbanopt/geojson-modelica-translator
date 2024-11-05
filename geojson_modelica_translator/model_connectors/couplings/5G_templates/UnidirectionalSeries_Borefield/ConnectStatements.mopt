@@ -52,6 +52,7 @@ connect(conBor_{{ coupling.plant.id }}.y, gai1_{{ coupling.plant.id }}.u)
 {% raw %}annotation (Line(points={{34,-1},{34,-30},{-78,-30},{-78,82},{-61.5385,82}}, color={0,0,127}));
 {% endraw %}connect(TDisRet_{{ coupling.id }}.T, conBor_{{ coupling.plant.id }}.TRetDis)
 {% raw %}annotation (Line(points={{89,-30},{-78,-30},{-78,85},{-61.5385,85}}, color={0,0,127}));
+{% endraw %}
 {% for group_num in range(loop_order.number_of_loops) %}
   {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
     {% if group_num == 0 %}
