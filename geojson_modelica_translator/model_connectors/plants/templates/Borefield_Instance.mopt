@@ -7,7 +7,7 @@
     "Bore field pump"
   {% raw %}annotation (Placement(transformation(extent={{10,10},{-10,-10}},rotation=180,origin={-30,50})));
 {% endraw %}
-  Buildings.DHC.Networks.Connections.Connection1Pipe_R_{{ model.id }} conSto(
+  Buildings.DHC.Networks.Connections.Connection1Pipe_R conSto_{{ model.id }}(
     redeclare final package Medium = {{ globals.medium_w }},
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
     final mCon_flow_nominal=datDes.mSto_flow_nominal,
@@ -28,7 +28,7 @@
     uHighCoo=0.4) "Borefield GHE pump controller"
   {% raw %}annotation (Placement(transformation(extent={{-60,80},{-40,100}})));
 {% endraw %}
-  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter_{{ model.id }} gai1(k=datDes.mSto_flow_nominal)
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai1_{{ model.id }}(k=datDes.mSto_flow_nominal)
     "Scale with nominal mass flow rate"
   {% raw %}annotation (Placement(transformation(extent={{-30,80},{-10,100}})));
 {% endraw %}
