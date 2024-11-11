@@ -3,8 +3,7 @@ model Connection1PipePlugFlow_v
   "Model for connecting an agent to the DHC system"
   extends Buildings.DHC.Networks.BaseClasses.PartialConnection1Pipe(
     tau=5*60,
-    redeclare replaceable model Model_pipDis =
-        Buildings.Fluid.FixedResistances.PlugFlowPipe (
+    redeclare replaceable model Model_pipDis=Buildings.Fluid.FixedResistances.PlugFlowPipe(
       final length=lDis,
       final dIns=dIns,
       final kIns=kIns,
@@ -15,9 +14,7 @@ model Connection1PipePlugFlow_v
       cPip=cPip,
       rhoPip=rhoPip,
       thickness=thickness),
-    redeclare replaceable model Model_pipCon =
-        Buildings.Fluid.FixedResistances.LosslessPipe);
-
+    redeclare replaceable model Model_pipCon=Buildings.Fluid.FixedResistances.LosslessPipe);
   parameter Modelica.Units.SI.Length dIns
     "Thickness of pipe insulation, used to compute R"
     annotation (Dialog(group="Pipe"));
@@ -36,16 +33,17 @@ model Connection1PipePlugFlow_v
     "Specific heat of pipe wall material. 2300 for PE, 500 for steel";
   parameter Modelica.Units.SI.Density rhoPip=930
     "Density of pipe wall material. 930 for PE, 8000 for steel";
-  parameter Modelica.Units.SI.Length thickness=0.0035 "Pipe wall thickness";
+  parameter Modelica.Units.SI.Length thickness=0.0035
+    "Pipe wall thickness";
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortDis
-    "Heat transfer to and from the distribution pipe" annotation (Placement(
-        transformation(extent={{-110,70},{-90,90}}), iconTransformation(extent={{-60,16},
-            {-40,36}})));
-
+    "Heat transfer to and from the distribution pipe"
+    annotation (Placement(transformation(extent={{-110,70},{-90,90}}),iconTransformation(extent={{-60,16},{-40,36}})));
 equation
-  connect(pipDis.heatPort, heatPortDis)
+  connect(pipDis.heatPort,heatPortDis)
     annotation (Line(points={{-70,-30},{-70,80},{-100,80}},color={191,0,0}));
-  annotation (Documentation(revisions="<html>
+  annotation (
+    Documentation(
+      revisions="<html>
 <ul>
 <li>
 March 15, 2024, by David Blum:<br/>
@@ -58,7 +56,8 @@ December 10, 2023, by Ettore Zanetti:<br/>
 First implementation.
 </li>
 </ul>
-</html>", info="<html>
+</html>",
+      info="<html>
 <p>
 This model represents the supply and return lines to connect an
 agent (e.g. an energy transfer station) to a one-pipe main distribution

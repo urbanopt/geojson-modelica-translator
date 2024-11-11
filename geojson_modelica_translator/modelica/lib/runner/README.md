@@ -30,7 +30,6 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 | GTM Runner Version | OM Version | MSL Version | MBL Version |
 | ------------------ | ---------- | ----------- | ----------- |
 | 3.0.0              | 1.24.0     | 4.0.0       | 11.0.0      |
-| 2.1.0              | 1.24.0     | 4.0.0       | 10.0.0      |
 | 2.0.1              | 1.22.1     | 4.0.0       | 10.0.0      |
 | 2.0.0              | 1.22.1     | 4.0.0       | 10.0.0      |
 | 1.22.1             | 1.22.1     | 4.0.0       | 9.1.1       |
@@ -42,8 +41,8 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 Releasing is only available to individuals with write access to the NREL org. Unfortunately, the NREL org is still
 under a free plan resulting in a maximum of 3 users for the entire org, which have already been allocated.
 
-Building for release is a bit different than development since you will need to handle multiple platforms (only supporting
-ARM64 and AMD64 as openmodelica does not support 32-bit [only armhf]). See
+Building for release is a bit different than development since you will need to handle multiple platforms (that is adding support for armhf to
+support OpenModelica as well as AMD64). See
 [docker's multi-platform images documentation](https://docs.docker.com/build/building/multi-platform/) on how to configure.
 
 ```bash
