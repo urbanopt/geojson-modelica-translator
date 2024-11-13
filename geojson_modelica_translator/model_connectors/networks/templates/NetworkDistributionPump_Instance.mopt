@@ -1,11 +1,7 @@
   // ambient loop pump
-  Buildings.Fluid.Movers.FlowControlled_m_flow pumDis(
+  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumDis(
     redeclare final package Medium = {{ globals.medium_w }},
     allowFlowReversal=true,
-    redeclare Buildings.Fluid.Movers.Data.Generic per,
-    inputType=Buildings.Fluid.Types.InputType.Continuous,
-    use_inputFilter=true,
-    riseTime=20,
     m_flow_nominal=datDes.mPumDis_flow_nominal,
     dp_nominal={{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_design_head }})
     "Distribution pump"

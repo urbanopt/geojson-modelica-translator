@@ -32,7 +32,7 @@ class DistrictSystemTest(TestCaseBase):
         self.gj = UrbanOptGeoJson(geojson_filename)
 
         # load system parameter data
-        sys_param_filename = Path(self.data_dir) / "system_params_ghe_3.json"
+        sys_param_filename = Path(self.data_dir) / "system_params_ghe_2.json"
         sys_params = SystemParameters(sys_param_filename)
 
         # read the loop order and create building groups
