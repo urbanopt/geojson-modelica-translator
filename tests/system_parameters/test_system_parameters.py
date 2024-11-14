@@ -192,6 +192,50 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("not.a.real.path")
         assert value is None
 
+    def test_get_param_with_two(self):
+        data = {
+            "weather": "path/to/weatherfile.mos",
+            "buildings": [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "Indirect Heating and Cooling",
+                    "ets_indirect_parameters": {
+                        "heat_flow_nominal": 8000,
+                    },
+                    "load_model": "rc",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24,
+                        }
+                    },
+                },
+                {
+                    "geojson_id": "qwer",
+                    "ets_model": "Fifth Gen Heat Pump",
+                    "ets_indirect_parameters": {
+                        "heat_flow_nominal": 10000,
+                    },
+                    "load_model": "rc",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24,
+                        }
+                    },
+                },
+            ],
+        }
+        sp = SystemParameters.loadd(data)
+        value = sp.get_param("$.buildings.[*].ets_indirect_parameters.heat_flow_nominal")
+        assert value == [8000, 10000]
+
     def test_get_param_with_building_id(self):
         filename = self.data_dir / "system_params_1.json"
         sdp = SystemParameters(filename)
