@@ -2211,12 +2211,13 @@ pytest = ">=7.0.0,<9.0.0"
 
 [[package]]
 name = "teaser"
-version = "0.7.5"
+version = "1.0.1"
 description = "Tool for Energy Analysis and Simulation for Efficient Retrofit"
 optional = false
 python-versions = "*"
 files = [
-    {file = "teaser-0.7.5.tar.gz", hash = "sha256:0fa848418628431922a3dec4d876f457445cb0b479eda2cf1f306e45596ed0e3"},
+    {file = "teaser-1.0.1-py3-none-any.whl", hash = "sha256:74938e8d694590cacd2987f8594af0a12daa260b1333e667fae93bab9f0834f0"},
+    {file = "teaser-1.0.1.tar.gz", hash = "sha256:0e2bca2461e8d79cf8951527706d1edf132cb1fe61cd431f90bf7ddcbe6a474e"},
 ]
 
 [package.dependencies]
@@ -2224,6 +2225,9 @@ mako = "*"
 numpy = "*"
 pandas = "*"
 pytest = "*"
+
+[package.extras]
+report = ["plotly"]
 
 [[package]]
 name = "toml"

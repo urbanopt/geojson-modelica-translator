@@ -62,7 +62,6 @@ copyright = u"2019,2023 - Alliance for Sustainable Energy, LLC"
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-# TODO: grab version from pyproject.toml
 poetry_file = toml.load("../pyproject.toml")
 
 # The short X.Y version.

@@ -124,12 +124,12 @@ class Borefield(PlantBase):
 
         # convert the values to match Modelica gfunctions
         for i in range(len(gfunction)):
-            gfunction[gfunction.columns[0]].iloc[i] = (
-                math.exp(gfunction[gfunction.columns[0]].iloc[i])
+            gfunction.loc[i, gfunction.columns[0]] = (
+                math.exp(gfunction.loc[i, gfunction.columns[0]])
                 * template_data["configuration"]["borehole_height"] ** 2
                 / (9 * template_data["soil"]["conductivity"] / template_data["soil"]["volumetric_heat_capacity"])
             )
-            gfunction[gfunction.columns[1]].iloc[i] = gfunction[gfunction.columns[1]].iloc[i] / (
+            gfunction.loc[i, gfunction.columns[1]] = gfunction.loc[i, gfunction.columns[1]] / (
                 template_data["configuration"]["number_of_boreholes"]
                 * 2
                 * math.pi
