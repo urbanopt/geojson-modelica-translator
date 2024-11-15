@@ -39,18 +39,18 @@ class Teaser(LoadBase):
         mapping = {
             # Single Family is not configured right now.
             "Single-Family": "SingleFamilyDwelling",
-            "Office": "office",
-            "Laboratory": "institute8",
-            "Education": "institute",
-            "Inpatient health care": "institute8",
-            "Outpatient health care": "institute4",
-            "Nursing": "institute4",
-            "Service": "institute4",
-            "Retail other than mall": "office",
-            "Strip shopping mall": "office",
-            "Enclosed mall": "office",
-            "Food sales": "institute4",
-            "Food service": "institute4",
+            "Office": "bmvbs_office",
+            "Laboratory": "bmvbs_institute8",
+            "Education": "bmvbs_institute",
+            "Inpatient health care": "bmvbs_institute8",
+            "Outpatient health care": "bmvbs_institute4",
+            "Nursing": "bmvbs_institute4",
+            "Service": "bmvbs_institute4",
+            "Retail other than mall": "bmvbs_office",
+            "Strip shopping mall": "bmvbs_office",
+            "Enclosed mall": "bmvbs_office",
+            "Food sales": "bmvbs_institute4",
+            "Food service": "bmvbs_institute4",
         }
 
         # Other types to map!
@@ -73,7 +73,7 @@ class Teaser(LoadBase):
             raise Exception(f"Building type of {building_type} not defined in GeoJSON to TEASER mappings")
 
     def to_modelica(self, scaffold, keep_original_models=False):
-        """Save the TEASER representation of a sinlge building to the filesystem. The path will
+        """Save the TEASER representation of a single building to the filesystem. The path will
         be scaffold.loads_path.files_dir.
 
         :param scaffold: Scaffold object, contains all the paths of the project
@@ -82,10 +82,9 @@ class Teaser(LoadBase):
         # Teaser changes the current dir, so make sure to reset it back to where we started
         curdir = os.getcwd()
         try:
-            prj = Project(load_data=True)
+            prj = Project()
             prj.add_non_residential(
-                method="bmvbs",
-                usage=self.lookup_building_type(self.building["building_type"]),
+                geometry_data=self.lookup_building_type(self.building["building_type"]),
                 name=self.building_name,
                 year_of_construction=self.building["year_built"],
                 number_of_floors=self.building["num_stories"],
@@ -94,7 +93,7 @@ class Teaser(LoadBase):
                 office_layout=1,
                 window_layout=1,
                 with_ahu=False,
-                construction_type="heavy",
+                construction_data="iwu_heavy",
             )
 
             prj.used_library_calc = "IBPSA"
