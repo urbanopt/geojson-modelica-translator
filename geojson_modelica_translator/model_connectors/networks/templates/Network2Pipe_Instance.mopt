@@ -28,7 +28,9 @@
     iConDpSen=nBui_{{ model.id }},
     final mDis_flow_nominal=mDis_flow_nominal_{{ model.id }},
     final mCon_flow_nominal=mCon_flow_nominal_{{ model.id }},
+    final mEnd_flow_nominal=mDis_flow_nominal_{{ model.id }},
     final allowFlowReversal=true,
-    dpDis_nominal=dpDis_nominal_{{ model.id }})
+    lDis=fill(100, nBui_{{ model.id }}),
+    lEnd=100)
     "Distribution network."
     annotation (Placement({{ diagram.transformation.two_pipe.network }}));
