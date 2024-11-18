@@ -82,7 +82,7 @@ class CSVModelica:
 
         # Dymola wants time to start at zero.
         # If time doesn't start at zero, copy the first line and set time column to zero.
-        if self.timeseries_output.loc[0][0] != 0:
+        if self.timeseries_output.iloc[0, 0] != 0:
             self.timeseries_timestep = self.timeseries_output.loc[[0], :]
             if "SecondsFromStart" in self.timeseries_output.columns:
                 self.timeseries_timestep["SecondsFromStart"] = 0

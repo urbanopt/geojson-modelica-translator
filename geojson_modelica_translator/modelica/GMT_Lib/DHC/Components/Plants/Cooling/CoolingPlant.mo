@@ -1,12 +1,12 @@
 model CoolingPlant
   "This example is to validate template Central Cooling Plant component model."
 
-  extends Buildings.Experimental.DHC.CentralPlants.Cooling.Examples.Plant(
+  extends Buildings.DHC.CentralPlants.Cooling.Examples.Plant(
     redeclare Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes perChi(
       mEva_flow_nominal = mCHW_flow_nominal,
       mCon_flow_nominal = mCW_flow_nominal,
       QEva_flow_nominal = QChi_nominal),
-    redeclare Buildings.Experimental.DHC.CentralPlants.Cooling.Plant pla,
+    redeclare Buildings.DHC.CentralPlants.Cooling.Plant pla,
     dTApp = 3,
     mCHW_flow_nominal = 18.3,
     dpCHW_nominal = 44.8 * 1000,

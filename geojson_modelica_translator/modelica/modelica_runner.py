@@ -150,7 +150,7 @@ class ModelicaRunner:
         os.chdir(run_path)
         stdout_log = open("stdout.log", "w")  # noqa: SIM115
         model_name = run_path.parts[-1]
-        image_name = "nrel/gmt-om-runner:v2.0.1"
+        image_name = "nrel/gmt-om-runner:3.0.0"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
         try:
             # create the command to call the open modelica compiler inside the docker image
@@ -436,6 +436,7 @@ class ModelicaRunner:
             f"{model_name.replace('.', '_')}_FMU.libs",
         ]
 
+        # keep these files if debug is passed
         conditional_remove_files = [
             "compile_fmu.mos",
             "simulate.mos",
@@ -446,10 +447,13 @@ class ModelicaRunner:
         logger.debug("Removing temporary files")
 
         if not kwargs.get("debug", False):
-            logger.debug("...and removing intermediate files")
+            logger.debug("...and removing scripts to run the simulation")
             files_to_remove.extend(conditional_remove_files)
 
         for f in files_to_remove:
+            logger.debug(f"Removing {f}")
+            if (path / f).is_dir():
+                continue
             (path / f).unlink(missing_ok=True)
 
         # The other files below will always be removed, debug or not

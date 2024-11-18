@@ -18,7 +18,7 @@ partial model PartialSeries "Partial model for series network"
     "Number of buildings connected to DHC system"
     annotation (Evaluate=true);
   inner parameter
-    Buildings.Experimental.DHC.Examples.Combined.BaseClasses.DesignDataSeries
+    Buildings.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(final mCon_flow_nominal=bui.ets.mSerWat_flow_nominal) "Design data"
     annotation (Placement(transformation(extent={{-340,220},{-320,240}})));
   parameter Integer nBor = 300
@@ -37,7 +37,7 @@ partial model PartialSeries "Partial model for series network"
       10),floor((i - 1)/10)} for i in 1:nBor}
     "Cartesian coordinates of the boreholes in meters";
   // COMPONENTS
-  Buildings.Experimental.DHC.Plants.Reservoir.BoreField
+  Buildings.DHC.Examples.Combined.BaseClasses.Borefield
     borFie(redeclare final package Medium = Medium, borFieDat(conDat=
           Buildings.Fluid.Geothermal.Borefields.Data.Configuration.Example(
           borCon=Buildings.Fluid.Geothermal.Borefields.Types.BoreholeConfiguration.DoubleUTubeParallel,
@@ -55,7 +55,7 @@ partial model PartialSeries "Partial model for series network"
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-130,-80})));
-  Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumDis(
+  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumDis(
     redeclare final package Medium = Medium,
     final m_flow_nominal=datDes.mPumDis_flow_nominal,
     final allowFlowReversal=allowFlowReversalSer,
@@ -73,7 +73,7 @@ partial model PartialSeries "Partial model for series network"
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={112,-20})));
-  Buildings.Experimental.DHC.EnergyTransferStations.BaseClasses.Pump_m_flow pumSto(
+  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumSto(
     redeclare final package Medium = Medium,
     m_flow_nominal=datDes.mSto_flow_nominal)
     "Bore field pump"
@@ -81,37 +81,33 @@ partial model PartialSeries "Partial model for series network"
       extent={{10,10},{-10,-10}},
       rotation=180,
       origin={-180,-80})));
-  Buildings.Experimental.DHC.Networks.Combined.BaseClasses.ConnectionSeriesStandard
+  Buildings.DHC.Networks.Connections.Connection1Pipe_R
     conPla(
     redeclare final package Medium = Medium,
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
     final mCon_flow_nominal=datDes.mPla_flow_nominal,
     lDis=0,
-    lCon=0,
     final dhDis=0.2,
-    final dhCon=0.2,
     final allowFlowReversal=allowFlowReversalSer)
     "Connection to the plant (pressure drop lumped in plant and network model)"
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-80,-10})));
-  Buildings.Experimental.DHC.Networks.Combined.BaseClasses.ConnectionSeriesStandard
+  Buildings.DHC.Networks.Connections.Connection1Pipe_R
     conSto(
     redeclare final package Medium = Medium,
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
     final mCon_flow_nominal=datDes.mSto_flow_nominal,
     lDis=0,
-    lCon=0,
     final dhDis=0.2,
-    final dhCon=0.2,
     final allowFlowReversal=allowFlowReversalSer)
     "Connection to the bore field (pressure drop lumped in plant and network model)"
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-80,-90})));
-  Buildings.Experimental.DHC.Plants.Heating.SewageHeatRecovery
+  Buildings.DHC.Plants.Heating.SewageHeatRecovery
     pla(
     redeclare final package Medium = Medium,
     final mSew_flow_nominal=datDes.mPla_flow_nominal,
@@ -120,7 +116,7 @@ partial model PartialSeries "Partial model for series network"
     final dpDis_nominal=datDes.dpPla_nominal,
     final epsHex=datDes.epsPla) "Sewage heat recovery plant"
     annotation (Placement(transformation(extent={{-160,-10},{-140,10}})));
-  Buildings.Experimental.DHC.Networks.Combined.UnidirectionalSeries
+  Buildings.DHC.Networks.Distribution1Pipe_R
     dis(
     redeclare final package Medium = Medium,
     final nCon=nBui,
@@ -129,7 +125,6 @@ partial model PartialSeries "Partial model for series network"
     final mCon_flow_nominal=datDes.mCon_flow_nominal,
     final dp_length_nominal=datDes.dp_length_nominal,
     final lDis=datDes.lDis,
-    final lCon=datDes.lCon,
     final lEnd=datDes.lEnd,
     final allowFlowReversal=allowFlowReversalSer) "Distribution network"
     annotation (Placement(transformation(extent={{-20,130},{20,150}})));
@@ -158,9 +153,9 @@ partial model PartialSeries "Partial model for series network"
         rotation=90,
         origin={-80,-40})));
   replaceable
-    Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS
+    Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS
     bui[nBui] constrainedby
-    Buildings.Experimental.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
+    Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     bui(each final facMul=facMul),
     redeclare each final package MediumBui = Medium,
     redeclare each final package MediumSer = Medium,
@@ -214,7 +209,7 @@ partial model PartialSeries "Partial model for series network"
     annotation (Placement(transformation(extent={{220,150},{240,170}})));
   Buildings.Controls.OBC.CDL.Reals.MultiSum ETot(nin=2) "Total electric energy"
     annotation (Placement(transformation(extent={{320,150},{340,170}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.ConstraintViolation conVio(
+  Buildings.DHC.Loads.BaseClasses.ConstraintViolation conVio(
     final uMin=datDes.TLooMin,
     final uMax=datDes.TLooMax,
     final nu=3+nBui)
