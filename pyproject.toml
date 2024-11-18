@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.8.0-rc1"
-description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
+version = "0.8.0"
+description = "Package for converting GeoJSON to Modelica models for urban scale analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
 
@@ -23,7 +23,7 @@ classifiers = [
 ]
 packages = [
     { include = "management" },
-    { include = "geojson_modelica_translator"}
+    { include = "geojson_modelica_translator" },
 ]
 
 [tool.poetry.dependencies]
@@ -36,13 +36,13 @@ geojson = "^3.1"
 jinja2 = "^3.1.2"
 jsonpath-ng = "~1.6"
 jsonschema = "~4.20"
-# modelica-builder = "^0.5.1"
+modelica-builder = "^0.6.0"
 # modelica-builder = { path = "../modelica-builder", develop = true }
-modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "python-3.13"}
+# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 pandas = "~2"
 requests = "^2.28"
-teaser = "0.7.5"
-#teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
+teaser = "1.0.1"
+# teaser = { git = "https://github.com/RWTH-EBC/TEASER.git", branch = "development" }
 
 myst-parser = "^4.0.0"
 [tool.poetry.dev-dependencies]

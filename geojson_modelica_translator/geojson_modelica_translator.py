@@ -126,8 +126,7 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
 class ModelicaPackage:
     """Represents a modelica package which can be simulated"""
 
-    def __init__(self, file_to_run, project_path, project_name):
-        self._file_to_run = file_to_run
+    def __init__(self, project_path, project_name):
         self._project_path = project_path
         self._project_name = project_name
 
@@ -137,9 +136,16 @@ class ModelicaPackage:
         :return: tuple(bool, pathlib.Path), True or False depending on simulation success
             followed by the path to the results directory
         """
+        _log.debug(f"Model name: {self._project_name}.Districts.DistrictEnergySystem")
+        _log.debug(f"file to load: {self._project_path / self._project_name / 'package.mo'}")
+        _log.debug(f"run path: {self._project_path / self._project_name}")
+
         modelica_runner = ModelicaRunner()
         return modelica_runner.run_in_docker(
-            self._file_to_run, run_path=self._project_path, project_name=self._project_name
+            action="compile_and_run",
+            model_name=f"{self._project_name}.Districts.DistrictEnergySystem",
+            file_to_load=self._project_path / self._project_name / "package.mo",
+            run_path=self._project_path / self._project_name,
         )
 
 
@@ -167,7 +173,7 @@ class GeoJsonModelicaTranslator:
 
         self._system_parameters = SystemParameters(sys_params_filepath)
 
-        geojson_ids = self._system_parameters.get_default("$.buildings.[*].geojson_id", [])
+        geojson_ids = self._system_parameters.get_param("$.buildings.[*].geojson_id")
         self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)
 
         # Use different couplings for each district system type
@@ -194,4 +200,4 @@ class GeoJsonModelicaTranslator:
         """
         self._district.to_modelica()
 
-        return ModelicaPackage(self._district.district_model_filepath, self._root_dir, self._project_name)
+        return ModelicaPackage(self._root_dir, self._project_name)

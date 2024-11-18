@@ -6,6 +6,7 @@ from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
+from geojson_modelica_translator.utils import mbl_version
 
 
 class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
@@ -33,14 +34,24 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
         scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations"])
 
         # create the root package
-        package = PackageParser.new_from_template(scaffold.project_path, project_name, order=[])
+        package = PackageParser.new_from_template(
+            scaffold.project_path,
+            project_name,
+            order=[],
+            mbl_version=mbl_version(),
+        )
         package.add_model("Districts")
 
         # create the district package with the template_data from above
         files_to_copy = []
 
         # 1: grab all of the time series files and place them in the proper location
-        for building in self.system_parameters.get_param("$.buildings[?load_model=time_series]"):
+        # If this is a dict, then there is only one building
+        time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
+        if isinstance(time_series, dict):
+            time_series = [time_series]
+
+        for building in time_series:
             building_load_file = Path(building["load_model_parameters"]["time_series"]["filepath"])
             files_to_copy.append(
                 {

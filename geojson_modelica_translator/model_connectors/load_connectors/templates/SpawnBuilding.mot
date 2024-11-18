@@ -1,7 +1,7 @@
 within {{project_name}}.Loads.{{model_name}};
 model building
   "n-zone EnergyPlus building model based on URBANopt GeoJSON export, with distribution pumps"
-  extends Buildings.Experimental.DHC.Loads.BaseClasses.PartialBuilding(
+  extends Buildings.DHC.Loads.BaseClasses.PartialBuilding(
     redeclare package Medium=Buildings.Media.Water,
     final have_eleHea={{ data['nominal_values']['has_electric_heating'] }},
     final have_eleCoo={{ data['nominal_values']['has_electric_cooling'] }},
@@ -94,7 +94,7 @@ model building
   Buildings.Controls.OBC.CDL.Reals.MultiSum mulSum3(
     nin=2) if have_pum
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
+  Buildings.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
     each T_aChiWat_nominal=T_aChiWat_nominal,
     each T_bChiWat_nominal=T_bChiWat_nominal,
     redeclare each final package Medium1=MediumW,
@@ -112,7 +112,7 @@ model building
     final mLoaCoo_flow_nominal=mLoaCoo_flow_nominal)
     "Terminal unit"
     annotation (Placement(transformation(extent={{-140,-2},{-120,20}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
+  Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     allowFlowReversal=true,
     m_flow_nominal=sum(
@@ -123,12 +123,12 @@ model building
     nPorts_b1=nZon)
     "Heating water distribution system"
     annotation (Placement(transformation(extent={{-236,-188},{-216,-168}})));
-  Buildings.Experimental.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
+  Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     allowFlowReversal=true,
     m_flow_nominal=sum(
       terUni.mChiWat_flow_nominal .* terUni.facMulZon),
-    typDis=Buildings.Experimental.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
+    typDis=Buildings.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     dp_nominal=100000,
     have_pum=have_pum,
     nPorts_a1=nZon,
@@ -212,8 +212,8 @@ model building
  It was generated from translating a GeoJSON model specified within URBANopt UI.
  The heating and cooling loads are computed with a four-pipe
  fan coil unit model derived from
- <a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit\">
- Buildings.Experimental.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
+ <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit\">
+ Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
  and connected to the room model by means of fluid ports.
 </p>
 </html>",
