@@ -3,7 +3,8 @@ within {{ project_name }}.Loads.{{ model_name }};
   "Model of a building with an internal ETS. Building loads provided as time series"
   extends Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
-    {% endraw %}redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
+    {% endraw %}COPHeaWat_nominal={{data['cop_heating']}},
+    redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
       {% raw %}have_hotWat=true,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
