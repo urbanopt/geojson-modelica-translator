@@ -29,7 +29,7 @@ packages = [
 [tool.poetry.dependencies]
 # https://python-poetry.org/docs/dependency-specification/
 # Urbanopt SDK requires Python 3.10 as of UOv0.9.0
-python = ">=3.10, <3.13"
+python = ">=3.10, <3.14"
 BuildingsPy = "4.0.0"
 click = "^8.1"
 geojson = "^3.1"
@@ -38,7 +38,7 @@ jsonpath-ng = "~1.6"
 jsonschema = "~4.20"
 modelica-builder = "^0.6.0"
 # modelica-builder = { path = "../modelica-builder", develop = true }
-# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "prep-v0.6.0"}
+# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 pandas = "~2"
 requests = "^2.28"
 teaser = "1.0.1"
@@ -47,8 +47,7 @@ teaser = "1.0.1"
 myst-parser = "^4.0.0"
 [tool.poetry.dev-dependencies]
 coveralls = "~3.3"
-# lock the rpds-py to 0.16.2 until we can update due to issue with Python 3.12.x
-rpds-py = "0.16.2"
+rpds-py = "^0.20.0"
 mypy = "~1.8"
 pre-commit = "~3.6"
 pytest = "~7.4"
