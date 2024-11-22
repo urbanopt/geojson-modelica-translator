@@ -107,6 +107,8 @@ class District:
 
             # This indent level requires the District to include a GHE, because the only way we get a loop_order
             # is by running ThermalNetwork for sizing.
+            # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
+            # or: Ensure TN is used for all networks, so loop order is generated that way.
             if self.gj:
                 # get horizontal pipe lengths from geojson, starting from the beginning of the loop
                 feature_properties = self.gj.get_feature("$.features.[*].properties")
@@ -132,6 +134,8 @@ class District:
                     str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
                 )
                 common_template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
+            else:
+                raise SystemExit("No geojson file provided, unable to determine thermal network loop order")
 
         # render each coupling
         load_num = 1
