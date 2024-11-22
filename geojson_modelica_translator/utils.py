@@ -34,9 +34,9 @@ def convert_ft_to_m(f):
     """Converts a length in foot to meter
 
     :param f: float, length in ft
-    :return: float, length in meter
+    :return: float, length in meters, to 3 decimal places
     """
-    return 0.3048 * f
+    return round(0.3048 * f, 3)
 
 
 def linecount(filename: Path) -> int:
