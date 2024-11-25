@@ -5,9 +5,9 @@
     "name": "New Project",
     "surface_elevation": null,
     "import_surrounding_buildings_as_shading": null,
-    "weather_filename": "DEU_Stuttgart.107380_IWEC.epw",
+    "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
     "tariff_filename": null,
-    "climate_zone": "4A",
+    "climate_zone": "6A",
     "cec_climate_zone": null,
     "begin_date": "2017-01-01T07:00:00.000Z",
     "end_date": "2017-12-31T07:00:00.000Z",
@@ -34,13 +34,13 @@
         "begin_date": "2017-01-01T07:00:00.000Z",
         "end_date": "2017-12-31T07:00:00.000Z",
         "cec_climate_zone": null,
-        "climate_zone": "4A",
+        "climate_zone": "6A",
         "default_template": "90.1-2013",
         "import_surrounding_buildings_as_shading": null,
         "surface_elevation": null,
         "tariff_filename": null,
         "timesteps_per_hour": 1,
-        "weather_filename": "DEU_Stuttgart.107380_IWEC.epw",
+        "weather_filename": "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw",
         "only_lv_customers": null,
         "underground_cables_ratio": null,
         "max_number_of_lv_nodes_per_building": null
@@ -806,62 +806,54 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "d038f83c-0232-4058-9116-fed1520085f7",
+        "id": "e3a9db66-9844-478d-a54c-d5f78c773dba",
         "type": "ThermalJunction",
-        "buildingId": "9",
-        "junction_type": "DES",
-        "connection_type": "Series"
+        "buildingId": "2"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.8508362775573,
-          42.8160067861328
+          -78.8500120420453,
+          42.81812185529547
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "92603808-dd2e-48d8-93b6-55afd352ac9d",
+        "id": "fff6e9c3-aecd-4318-b54b-581d91fe8d0e",
         "type": "ThermalJunction",
-        "buildingId": "8",
-        "junction_type": "DES",
-        "connection_type": "Series"
+        "buildingId": "5"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.8507825762069,
-          42.8158813178064
+          -78.848183885198,
+          42.81387600103779
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "9b07a783-e0d9-4ab6-a820-148c61014cb5",
         "type": "ThermalConnector",
-        "startJunctionId": "d038f83c-0232-4058-9116-fed1520085f7",
-        "endJunctionId": "92603808-dd2e-48d8-93b6-55afd352ac9d",
-        "startFeatureId": "9",
-        "endFeatureId": "8",
-        "total_length": 48,
-        "connector_type": "OnePipe",
-        "fluid_temperature_type": "Ambient",
-        "flow_direction": "Supply",
-        "junction_type": "DES"
+        "id": "fd6da451-05be-4ad1-b1f5-a482f0bc6e04",
+        "startJunctionId": "e3a9db66-9844-478d-a54c-d5f78c773dba",
+        "endJunctionId": "fff6e9c3-aecd-4318-b54b-581d91fe8d0e",
+        "startFeatureId": "2",
+        "endFeatureId": "5",
+        "total_length": 1624
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
           [
-            -78.8508362775573,
-            42.8160067861328
+            -78.8500120420453,
+            42.81812185529547
           ],
           [
-            -78.8507825762069,
-            42.8158813178064
+            -78.848183885198,
+            42.81387600103779
           ]
         ]
       }
@@ -869,62 +861,54 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "7803cfb8-3e1e-497e-b8e5-628dbd9cc6ba",
+        "id": "dcca8d87-5609-432b-90f1-7015aaf0aebf",
         "type": "ThermalJunction",
-        "buildingId": "8",
-        "junction_type": "DES",
-        "connection_type": "Series"
+        "buildingId": "5"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.8506120739271,
-          42.8155101748259
+          -78.8485788387214,
+          42.8137807688883
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "43f1cb29-0b84-47ec-afff-4f982dc794ab",
+        "id": "8eb3c9fc-9c0a-4bfd-a9f4-df7c8f971ef6",
         "type": "ThermalJunction",
-        "DSId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
-        "junction_type": "DES",
-        "connection_type": "Series"
+        "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.8516590374685,
-          42.8152702388336
+          -78.85154987199661,
+          42.81503520368131
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "cef57522-03e4-44ae-816e-ac54a554fd07",
         "type": "ThermalConnector",
-        "startJunctionId": "7803cfb8-3e1e-497e-b8e5-628dbd9cc6ba",
-        "endJunctionId": "43f1cb29-0b84-47ec-afff-4f982dc794ab",
-        "startFeatureId": "8",
-        "endFeatureId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
-        "total_length": 294,
-        "connector_type": "OnePipe",
-        "fluid_temperature_type": "Ambient",
-        "flow_direction": "Supply",
-        "junction_type": "DES"
+        "id": "9805b110-4a93-4aac-b5fe-a06d403bc826",
+        "startJunctionId": "dcca8d87-5609-432b-90f1-7015aaf0aebf",
+        "endJunctionId": "8eb3c9fc-9c0a-4bfd-a9f4-df7c8f971ef6",
+        "startFeatureId": "5",
+        "endFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+        "total_length": 917
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
           [
-            -78.8506120739271,
-            42.8155101748259
+            -78.8485788387214,
+            42.8137807688883
           ],
           [
-            -78.8516590374685,
-            42.8152702388336
+            -78.85154987199661,
+            42.81503520368131
           ]
         ]
       }
@@ -932,34 +916,30 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "bcc2cbda-8278-453a-a3ab-db565de83d56",
+        "id": "e3a27a3f-28f8-4065-87e0-3d7189b9fb2a",
         "type": "ThermalJunction",
-        "buildingId": "9",
-        "junction_type": "DES",
-        "connection_type": "Series"
+        "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.8510658329957,
-          42.8165162224585
+          -78.85181283851202,
+          42.81560137362911
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "7ac39fb9-8a88-464e-aea5-c074a2b13df5",
+        "id": "4efdfb4a-a715-4eaa-8463-3bbc9d74c340",
         "type": "ThermalJunction",
-        "DSId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
-        "junction_type": "DES",
-        "connection_type": "Series"
+        "buildingId": "2"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -78.852043400832,
-          42.8155437504146
+          -78.85038975191081,
+          42.81803226424341
         ]
       }
     },
@@ -967,27 +947,23 @@
       "type": "Feature",
       "properties": {
         "type": "ThermalConnector",
-        "id": "84c33637-74a1-4721-b37a-2e286cc30b73",
-        "startJunctionId": "bcc2cbda-8278-453a-a3ab-db565de83d56",
-        "endJunctionId": "7ac39fb9-8a88-464e-aea5-c074a2b13df5",
-        "startFeatureId": "9",
-        "endFeatureId": "15a25e2f-c425-46e9-8036-b1d0d09127e2",
-        "total_length": 441,
-        "connector_type": "OnePipe",
-        "fluid_temperature_type": "Ambient",
-        "flow_direction": "Supply",
-        "junction_type": "DES"
+        "id": "08f73e68-b07a-4732-a5b2-d5cec1c099a5",
+        "startJunctionId": "e3a27a3f-28f8-4065-87e0-3d7189b9fb2a",
+        "endJunctionId": "4efdfb4a-a715-4eaa-8463-3bbc9d74c340",
+        "startFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+        "endFeatureId": "2",
+        "total_length": 965
       },
       "geometry": {
         "type": "LineString",
         "coordinates": [
           [
-            -78.8510658329957,
-            42.8165162224585
+            -78.85181283851202,
+            42.81560137362911
           ],
           [
-            -78.852043400832,
-            42.8155437504146
+            -78.85038975191081,
+            42.81803226424341
           ]
         ]
       }
