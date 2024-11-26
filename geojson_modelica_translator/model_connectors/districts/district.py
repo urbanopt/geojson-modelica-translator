@@ -37,9 +37,9 @@ class District:
 
     def __init__(self, root_dir, project_name, system_parameters, coupling_graph, geojson_file=None):
         self._scaffold = Scaffold(root_dir, project_name)
-        self.system_parameters = system_parameters
-        self.gj = geojson_file
-        self._coupling_graph = coupling_graph
+        self.system_parameters = system_parameters  # SystemParameters object
+        self.gj = geojson_file  # UrbanOptGeoJson object
+        self._coupling_graph = coupling_graph  # CouplingGraph object
         self.district_model_filepath = None
         # Modelica can't handle spaces in project name or path
         if (len(str(root_dir).split()) > 1) or (len(str(project_name).split()) > 1):
@@ -105,18 +105,37 @@ class District:
                 "data": loop_order,
             }
 
-        if self.gj:
-            # get horizontal pipe lengths from geojson, starting from the outlet of the (first) ghe
-            # TODO: only check for total_length if type==ThermalConnector
-            # I thought this was the right syntax, but not quite: .properties[?type=ThermalConnector].total_length
-            # TODO: make sure the list of lengths is starting from the outlet of the ghe
-            list_of_pipe_lengths = self.gj.get_feature("$.features.[*].properties.total_length")
-            for i in range(len(list_of_pipe_lengths)):
-                list_of_pipe_lengths[i] = convert_ft_to_m(list_of_pipe_lengths[i])
-            common_template_params["globals"]["lDis"] = (
-                str(list_of_pipe_lengths[:-1]).replace("[", "{").replace("]", "}")
-            )
-            common_template_params["globals"]["lEnd"] = list_of_pipe_lengths[-1]
+            # This indent level requires the District to include a GHE, because the only way we get a loop_order
+            # is by running ThermalNetwork for sizing.
+            # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
+            # or: Ensure TN is used for all networks, so loop order is generated that way.
+            if self.gj:
+                # get horizontal pipe lengths from geojson, starting from the beginning of the loop
+                feature_properties = self.gj.get_feature("$.features.[*].properties")
+                dict_of_pipe_lengths = {
+                    feature_prop.get("startFeatureId"): feature_prop["total_length"]
+                    for feature_prop in feature_properties
+                    if feature_prop["type"] == "ThermalConnector"
+                }
+                ordered_feature_list = []
+                ordered_pipe_list = []
+                for loop in loop_order:
+                    ordered_feature_list.extend(loop["list_bldg_ids_in_group"])
+                    ordered_feature_list.extend(loop["list_ghe_ids_in_group"])
+
+                for feature in ordered_feature_list:
+                    for dict_feature, pipe_length in dict_of_pipe_lengths.items():
+                        if dict_feature == feature:
+                            ordered_pipe_list.append(pipe_length)
+
+                for i in range(len(ordered_pipe_list)):
+                    ordered_pipe_list[i] = convert_ft_to_m(ordered_pipe_list[i])
+                common_template_params["globals"]["lDis"] = (
+                    str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
+                )
+                common_template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
+            else:
+                raise SystemExit("No geojson file provided, unable to determine thermal network loop order")
 
         # render each coupling
         load_num = 1

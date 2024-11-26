@@ -153,7 +153,7 @@
       "properties": {
         "id": "06dd2fa1-d276-4a99-8519-d4d50a4a8ddd",
         "type": "ThermalJunction",
-        "DSId": "39fce05d-6b08-430d-9813-223ac4cb6fef",
+        "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
         "junction_type": "DES",
         "connection_type": "Series"
       },
@@ -173,7 +173,7 @@
         "startJunctionId": "b5999589-588f-4e27-a60e-71bdcc8f9c94",
         "endJunctionId": "06dd2fa1-d276-4a99-8519-d4d50a4a8ddd",
         "startFeatureId": "5a6b99ec37f4de7f94020090",
-        "endFeatureId": "39fce05d-6b08-430d-9813-223ac4cb6fef",
+        "endFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
         "total_length": 44,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
@@ -198,7 +198,7 @@
       "properties": {
         "id": "95c1831f-3ae6-480e-910e-6d3c440b035c",
         "type": "ThermalJunction",
-        "DSId": "39fce05d-6b08-430d-9813-223ac4cb6fef",
+        "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
         "is_ghe_start_loop": true,
         "junction_type": "DES",
         "connection_type": "Series"
@@ -216,7 +216,7 @@
       "properties": {
         "id": "68a041f4-0f1a-456d-923d-9fdeb247e697",
         "type": "ThermalJunction",
-        "buildingId": "6a9a4b9d-08b0-4634-8dfc-0b2a5c6b7fd7",
+        "buildingId": "abcdefghijklmnopqrstuvwx",
         "junction_type": "DES",
         "connection_type": "Series"
       },
@@ -235,8 +235,8 @@
         "id": "6898f4d5-b8ce-4bcb-b204-0d5719d800fb",
         "startJunctionId": "95c1831f-3ae6-480e-910e-6d3c440b035c",
         "endJunctionId": "68a041f4-0f1a-456d-923d-9fdeb247e697",
-        "startFeatureId": "39fce05d-6b08-430d-9813-223ac4cb6fef",
-        "endFeatureId": "6a9a4b9d-08b0-4634-8dfc-0b2a5c6b7fd7",
+        "startFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+        "endFeatureId": "abcdefghijklmnopqrstuvwx",
         "total_length": 39,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
@@ -261,7 +261,7 @@
       "properties": {
         "id": "12fd2a2f-45b5-45d8-acea-4a58e32fb3a4",
         "type": "ThermalJunction",
-        "buildingId": "6a9a4b9d-08b0-4634-8dfc-0b2a5c6b7fd7",
+        "buildingId": "abcdefghijklmnopqrstuvwx",
         "junction_type": "DES",
         "connection_type": "Series"
       },
@@ -297,7 +297,7 @@
         "id": "94b2a31c-8476-47c9-bed7-302004eba55f",
         "startJunctionId": "12fd2a2f-45b5-45d8-acea-4a58e32fb3a4",
         "endJunctionId": "5edaff69-dfe8-485a-b656-cf850f63264c",
-        "startFeatureId": "6a9a4b9d-08b0-4634-8dfc-0b2a5c6b7fd7",
+        "startFeatureId": "abcdefghijklmnopqrstuvwx",
         "endFeatureId": "5a6b99ec37f4de7f94020090",
         "total_length": 62,
         "connector_type": "OnePipe",
