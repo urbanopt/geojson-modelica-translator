@@ -23,7 +23,7 @@ classifiers = [
 ]
 packages = [
     { include = "management" },
-    { include = "geojson_modelica_translator"}
+    { include = "geojson_modelica_translator" },
 ]
 
 [tool.poetry.dependencies]
@@ -67,7 +67,6 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 uo_des = 'management.uo_des:cli'
 format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
-update_schemas = 'management.update_schemas:update_schemas'
 check_sys_params = 'management.check_sys_params:check_sys_params'
 
 [tool.pytest.ini_options]
