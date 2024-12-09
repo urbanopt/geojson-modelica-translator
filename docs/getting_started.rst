@@ -24,7 +24,7 @@ Therefore, this Getting Started guide is broken up into three major setup steps.
 GMT Installation
 ----------------
 
-You must have PIP and Python 3.9 or later installed (run :code:`python --version` to see what version you're using). After installing Python and PIP run the following in a terminal:
+You must have PIP and Python 3.10 or later installed (run :code:`python --version` to see what version you're using). After installing Python and PIP run the following in a terminal:
 
 .. code-block:: bash
 

@@ -45,7 +45,7 @@ Each block type can "connect" (note this "connect" does not refer to Modelica's 
 
 Each block type has a corresponding directory inside of :code:`geojson_modelica_translator/model_connectors`, which contains its different model types (e.g. for Loads it contains the Time Series model and others).
 
-Because models are different, even within a block type (e.g. different properties and maybe even ports), the GMT uses the concept of couplings for connecting models. Couplings define how two *specific* models connect in modelica.
+Because models are different, even within a block type (e.g., different properties and maybe even ports), the GMT uses the concept of couplings for connecting models. Couplings define how two *specific* models connect in modelica.
 For example, a coupling could define how the time series load actually connects to the heating indirect ETS.
 
     -- As an aside, if the GMT reached a point where all models within a block type implemented the same interface then couplings would not be necessary.
@@ -98,22 +98,6 @@ To run pre-commit against the files without calling git commit, then run the fol
 .. code-block:: bash
 
     pre-commit run --all-files
-
-Managed Tasks
-*************
-
-Updating Schemas
-^^^^^^^^^^^^^^^^
-
-There is managed task to automatically pull updated GeoJSON schemas from the :code:`urbanopt-geojson-gem` GitHub
-project. A developer can run this command by calling
-
-.. code-block:: bash
-
-    poetry run update_schemas
-
-The developer should run the test suite after updating the schemas to ensure that nothing appears to have broken. Note that the tests do not cover all of the properties and should not be used as proof that everything works with the updated schemas.
-
 
 Adding New Models
 -----------------
