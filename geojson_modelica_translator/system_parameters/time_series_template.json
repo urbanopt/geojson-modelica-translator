@@ -187,7 +187,7 @@
         ]
       },
       "central_pump_parameters": {
-        "pump_design_head": 60000,
+        "pump_design_head": 200000,
         "pump_flow_rate": 0.01
       }
     }

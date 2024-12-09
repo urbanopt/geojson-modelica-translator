@@ -22,8 +22,8 @@ class CLIIntegrationTest(TestCase):
         self.output_dir.mkdir(exist_ok=True)
         self.scenario_file_path = self.data_dir / "sdk_project_scraps" / "baseline_scenario.csv"
         self.feature_file_path = self.data_dir / "sdk_project_scraps" / "example_project.json"
-        self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "example_project_combine_GHE.json"
-        self.feature_file_path_germany = self.data_dir / "sdk_project_scraps" / "example_project_germany_ghe.json"
+        self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "exportGeo_combine_GHE.json"
+        self.feature_file_path_germany = self.data_dir / "sdk_project_scraps" / "exportGeo_germany_ghe.json"
         self.sys_param_path = (
             self.data_dir / "sdk_project_scraps" / "run" / "baseline_scenario" / "system_parameter.json"
         )
