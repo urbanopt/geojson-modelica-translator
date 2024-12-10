@@ -27,7 +27,10 @@ BASELINE_TIME_SERIES = "baseline_time_series.mos"
 BASELINE_WEATHER_FILE = "baseline_weather.mos"
 
 SYS_PARAMS_SCHEMA_PATH = (
-    Path(__file__).parent.parent / "geojson_modelica_translator" / "system_parameters" / "schema.json"
+    Path(__file__).parent.parent
+    / "geojson_modelica_translator"
+    / "system_parameters"
+    / "system_parameter_properties.json"
 )
 
 
