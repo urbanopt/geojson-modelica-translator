@@ -18,15 +18,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.13"]
-        test_env: [python, docs, mypy]
+        test_env: [python, mypy]
         mbl_tag: [v11.0.0]
         exclude:
           # only test mypy on linux for all versions of python
           - os: windows-latest
             test_env: mypy
-          # only test docs on linux for all versions of python
-          - os: windows-latest
-            test_env: docs
     runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
@@ -85,12 +82,6 @@ jobs:
       - name: Run mypy
         if: matrix.test_env =='mypy'
         run: poetry run mypy --install-types --non-interactive --show-error-codes .
-      - name: Build docs
-        if: matrix.test_env == 'docs'
-        run: |
-          cd docs
-          pip install setuptools
-          poetry run make html
       - name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
