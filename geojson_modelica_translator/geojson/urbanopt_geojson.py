@@ -40,7 +40,7 @@ class UrbanOptGeoJson:
     URBANopt GeoJSON files.
     """
 
-    def __init__(self, filename, building_ids=None):
+    def __init__(self, filename, building_ids=None, skip_validation=False):
         """Initialize the UrbanOptGeoJson object by reading the GeoJSON file
 
         :param filename: str, path to the GeoJSON file to parse
@@ -66,7 +66,8 @@ class UrbanOptGeoJson:
                     # Buildings defined by an osm don't have all keys in geojson, therefore will always fail validation
                     if "detailed_model_filename" not in feature["properties"]:
                         errors = self.schemas.validate("building", building.feature.properties)
-                    if errors:
+
+                    if errors and not skip_validation:
                         building_errors[building.id] = errors
                     else:
                         self.buildings.append(building)

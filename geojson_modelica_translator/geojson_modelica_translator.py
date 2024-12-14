@@ -158,6 +158,7 @@ class GeoJsonModelicaTranslator:
         sys_params_filepath,
         root_dir,
         project_name,
+        **kwargs,
     ):
         """Create an instance of this class
 
@@ -165,16 +166,19 @@ class GeoJsonModelicaTranslator:
         :param sys_params_filepath: str, path to system parameters file
         :param root_dir: str, where to create the package
         :project_name: str, name of the package
+        :kwargs: additional keyword arguments
+            :skip_validation: bool, optional, skip validation of the GeoJSON file
         """
         if not Path(geojson_filepath).exists():
             raise FileNotFoundError(f"GeoJSON file path does not exist: {geojson_filepath}")
         if not Path(sys_params_filepath).exists():
             raise FileNotFoundError(f"System parameters file path does not exist: {sys_params_filepath}")
 
+        skip_validation = kwargs.get("skip_validation", False)
         self._system_parameters = SystemParameters(sys_params_filepath)
 
         geojson_ids = self._system_parameters.get_param("$.buildings.[*].geojson_id")
-        self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids)
+        self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids, skip_validation=skip_validation)
 
         # Use different couplings for each district system type
         # The first key of district_system is always the district system type
