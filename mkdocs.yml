@@ -24,7 +24,7 @@ plugins:
             docstring_style: sphinx
 
 nav:
-  - Overview: overview.md
+  - Overview: index.md
   - Getting Started: getting_started.md
   - Input File Documentation: input_file_documentation.md
   - Developer Resources: developer_resources.md
