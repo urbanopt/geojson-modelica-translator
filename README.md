@@ -59,12 +59,12 @@ The building loads can be defined multiple ways depending on the fidelity of the
 
 1. Create a branch named `Release 0.x.`
 1. Update version in pyproject.toml
-2. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature, using `develop` as the target
-3. After tests pass, merge branch into develop
-4. From local command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
-5. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
+1. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature, using `develop` as the target
+1. After tests pass, merge branch into develop
+1. From local command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
+1. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
 
-### Build and release the documentation:
+### Build and release the documentation
 
 During development we can [serve docs locally](https://squidfunk.github.io/mkdocs-material/creating-your-site/#previewing-as-you-write) and view updates as they are made.
 

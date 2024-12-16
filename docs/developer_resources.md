@@ -8,7 +8,6 @@ Tests are run with pytest, e.g.
     poetry run pytest
 ```
 
-
 ## Snapshot Testing
 
 Some tests use [syrupy](https://github.com/tophat/syrupy) to compare generated modelica models to saved "snapshots" of the models (saved as .ambr files).
@@ -18,7 +17,6 @@ Snapshots should only be updated if we have changed how a model is generated, an
 ```bash
     poetry run pytest --snapshot-update
 ```
-
 
 ## Design Overview
 
@@ -46,13 +44,13 @@ Follow the instructions below in order to configure your local environment:
 - Get the Modelica Buildings Library. See the documentation at [MBL Installation](getting_started.md#mbl-installation)
 
 - Clone [the GMT repo](https://github.com/urbanopt/geojson-modelica-translator) into a working directory
-    - (optional/as-needed) Add Python 3 to the environment variables
-    - As general guidance, we recommend using virtual environments to avoid dependencies colliding between your Python projects. [venv](https://docs.python.org/3/library/venv.html) is the Python native solution that will work everywhere, though other options may be more user-friendly:
-        - [pyenv](https://github.com/pyenv/pyenv) and [the virtualenv plugin](https://github.com/pyenv/pyenv-virtualenv) work together nicely for Linux/Mac machines
-        - [virtualenv](https://virtualenv.pypa.io/en/latest/)
-        - [miniconda](https://docs.conda.io/projects/miniconda/en/latest/)
+  - (optional/as-needed) Add Python 3 to the environment variables
+  - As general guidance, we recommend using virtual environments to avoid dependencies colliding between your Python projects. [venv](https://docs.python.org/3/library/venv.html) is the Python native solution that will work everywhere, though other options may be more user-friendly:
+    - [pyenv](https://github.com/pyenv/pyenv) and [the virtualenv plugin](https://github.com/pyenv/pyenv-virtualenv) work together nicely for Linux/Mac machines
+    - [virtualenv](https://virtualenv.pypa.io/en/latest/)
+    - [miniconda](https://docs.conda.io/projects/miniconda/en/latest/)
 - For developers, dependency management is through [Poetry](https://python-poetry.org/docs/). Poetry can be acquired by running `pip install poetry`.
-    - If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.
+  - If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.
 - Move to the GMT root directory and run `poetry install` to install the dependencies.
 - Verify that everything is installed correctly by running `poetry run pytest -m 'not compilation and not simulation and not dymola'`. This will run all the unit and integration tests.
 - Follow the instructions below to install pre-commit.
@@ -182,7 +180,7 @@ The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)
 4. From local command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
 5. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
 
-### Build and release the documentation:
+### Build and release the documentation
 
 During development we can [serve docs locally](https://squidfunk.github.io/mkdocs-material/creating-your-site/#previewing-as-you-write) and view updates as they are made.
 

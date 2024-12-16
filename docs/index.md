@@ -6,7 +6,6 @@ The project is motivated by the need to easily evaluate district energy systems.
 
 ![Generations of district thermal systems, over time and efficiency](images/des-generations.png)
 
-
 ## Architecture Overview
 
 The GMT is designed to enable "easy" swapping between building loads, district systems, and network topologies. Some of these functionalities are more developed than others, for instance swapping between building loads is currently fleshed out; however, swapping between a fourth generation and a fifth generation system has yet to be fully implemented.

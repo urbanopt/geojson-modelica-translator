@@ -2,7 +2,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 from pathlib import Path
-from typing import Any, List, Tuple, Union
+from typing import Any, Union
 
 
 # TODO: This needs to be removed. It is not used anywhere in the codebase.
@@ -155,7 +155,7 @@ class InputParser:
         """
         self.within = new_string
 
-    def find_model_object(self, obj_name: str) -> Tuple[Union[int, None], Union[str, None]]:
+    def find_model_object(self, obj_name: str) -> tuple[Union[int, None], Union[str, None]]:
         """Find a model object in the list of parsed objects
 
         Args:
@@ -191,7 +191,7 @@ class InputParser:
         if index is not None:
             self.model["objects"][index] = self.model["objects"][index].replace(old_string, new_string)
 
-    def add_model_object(self, model_name: str, model_instance: str, data: List[str]) -> None:
+    def add_model_object(self, model_name: str, model_instance: str, data: list[str]) -> None:
         """Add a new model object to the model
 
         Args:
@@ -231,7 +231,7 @@ class InputParser:
         """
         self.connections.append(f"  connect({a}, {b})\n    {annotation};\n")
 
-    def find_connect(self, port_a: str, port_b: str) -> Tuple[Union[int, None], Union[str, None]]:
+    def find_connect(self, port_a: str, port_b: str) -> tuple[Union[int, None], Union[str, None]]:
         """Find an existing connection that has port_a and/or port_b. If there are more than one, then it will only
         return the first.
 
