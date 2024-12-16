@@ -32,7 +32,7 @@ Each block type has a corresponding directory inside of `geojson_modelica_transl
 Because models are different, even within a block type (e.g., different properties and maybe even ports), the GMT uses the concept of couplings for attaching models. Couplings define how two *specific* models attach in modelica.
 For example, a coupling could define how the time series load actually attaches to the heating indirect ETS.
 
-    As an aside, if the GMT reached a point where all models within a block type implemented the same interface then couplings would not be necessary.
+As an aside, if the GMT reached a point where all models within a block type implemented the same interface then couplings would not be necessary.
 
 ## Getting Started as a Developer
 
@@ -86,9 +86,9 @@ To add a new model you have to do the following:
 
 1. Define the model's python class: First, create a new python file and class under its respective directory in model_connectors. Follow the patterns of existing classes.
 
-2. Create coupling files: For every model that can be linked to, create a <ModelA>_<ModelB> directory in the couplings directory. The two files ComponentDefinitions.mopt and ConnectStatements.mopt must exist in this directory. See more information on the content of the coupling files below in the *Couplings* sections.
+2. Create coupling files: For every model that can be linked to, create a `<ModelA>_<ModelB>` directory in the couplings directory. The two files ComponentDefinitions.mopt and ConnectStatements.mopt must exist in this directory. See more information on the content of the coupling files below in the *Couplings* sections.
 
-3. Create the instance file: In the templates directory, you must define <ModelName>_Instance.mopt which is the template that instantiates the system in the district model.
+3. Create the instance file: In the templates directory, you must define `<ModelName>_Instance.mopt` which is the template that instantiates the system in the district model.
 
 See the notes below for more information.
 
@@ -100,7 +100,7 @@ Each coupling is unique in its requirements:
 - What additional components are necessary, for example there might be some sensor between system A and B, or maybe B requires a pump when A is a specific model type
 - What ports are connected, for example connecting ports of model A and model B
 
-Thus each coupling must define two template files, ComponentDefinitions.mopt and ConnectStatements.mopt, respectively. These files must be placed in the directory `couplings/templates/<model A>_<model B>/`.
+Thus each coupling must define two template files, `ComponentDefinitions.mopt` and `ConnectStatements.mopt`, respectively. These files must be placed in the directory `couplings/templates/<model A>_<model B>/`.
 In general, the **order of the names** should **follow the order of system types** if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant).
 
 ### District system
@@ -128,7 +128,7 @@ Each model generates one or more Modelica files to define its model. The templat
 
 ### Coupling Component Definitions
 
-This is the template which defines new components/variables necessary for a coupling. More specifically, these are the partial template files at model_connectors/couplings/templates/<coupling name>/ComponentDefinitions.mopt. These templates have access to:
+This is the template which defines new components/variables necessary for a coupling. More specifically, these are the partial template files at `model_connectors/couplings/templates/<coupling name>/ComponentDefinitions.mopt`. These templates have access to:
 
 - `globals`: global variables (those defined in the district.py, such as medium_w = MediumW)
 - `coupling`: contains the coupling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append `coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing `parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal` you should do `parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
@@ -139,7 +139,7 @@ This is the template which defines new components/variables necessary for a coup
 
 ### Coupling Connect Statements
 
-This is the template which defines connect statements to be inserted into the equation section. More specifically, these are the partial template files at model_connectors/couplings/templates/<coupling name>/ConnectStatements.mopt. These templates have access to:
+This is the template which defines connect statements to be inserted into the equation section. More specifically, these are the partial template files at `model_connectors/couplings/templates/<coupling name>/ConnectStatements.mopt`. These templates have access to:
 
 - `globals`: same as Coupling Component Definitions context
 - `coupling`: same as Coupling Component Definitions context. Just like with the component definitions template, you should use the coupling.id to avoid variable name collisions.
@@ -162,7 +162,7 @@ The Simulation Mapper Class can operate at multiple levels:
 
 1. The GeoJSON level -- input: geojson, output: geojson+
 2. The Load Model Attachment -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
-3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different paramters to calculate the loads.
+3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different parameters to calculate the loads.
 
 In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a
 simulation mapper class from existing at that level.
@@ -174,11 +174,11 @@ The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)
 ## Release Instructions
 
 1. Create a branch named `Release 0.x.`
-1. Update version in pyproject.toml
-2. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature, using `develop` as the target
-3. After tests pass, merge branch into develop
-4. From local command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
-5. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
+1. Update version in `pyproject.toml`
+1. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature, using `develop` as the target
+1. After tests pass, merge branch into develop
+1. From local command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
+1. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
 
 ### Build and release the documentation
 

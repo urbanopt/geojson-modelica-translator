@@ -11,8 +11,8 @@ Presently only the building_properties.json of URBANopt's GeoJSON schemas is lev
 
 ### Building Properties
 
-The building properties for the geojson file can be found in the `Schema` section of this documenation
+The building properties for the geojson file can be found in the `Schema` section of this documentation
 
 ## System Parameters Schema
 
-The system parameter properties can be found in the `Schema` section of this documenation
+The system parameter properties can be found in the `Schema` section of this documentation
