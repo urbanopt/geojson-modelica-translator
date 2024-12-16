@@ -23,11 +23,11 @@ poetry run pytest --snapshot-update
 The GMT is designed to create an arbitrary number of user-configured models attached to other user-configured models to represent a district energy system.
 GMT has "building blocks" that it uses to define and attach models, which currently include: Energy Transfer Stations (ETSs), Loads, Networks, and Plants.
 
-Each block type is a collection of models, e.g. the Loads includes time series and spawn models. A model in GMT refers to an abstracted Modelica model. It generates Modelica code (the Modelica model) and is used to define attachments to other models.
+Each block type is a collection of models, e.g., the Loads includes time series and spawn models. A model in GMT refers to an abstracted Modelica model. It generates Modelica code (the Modelica model) and is used to define attachments to other models.
 
-Each block type can attach to other specific block types. For example, you can attach a load to an ETS, but you cannot attach a load to a network. However, some models (i.e. 5G) have an ETS embedded in them.
+Each block type can attach to other specific block types. For example, you can attach a load to an ETS, but you cannot attach a load to a network. However, some models (i.e., 5G) have an ETS embedded in them.
 
-Each block type has a corresponding directory inside of `geojson_modelica_translator/model_connectors`, which contains its different model types (e.g. for Loads it contains the Time Series model and others).
+Each block type has a corresponding directory inside of `geojson_modelica_translator/model_connectors`, which contains its different model types (e.g., for Loads it contains the Time Series model and others).
 
 Because models are different, even within a block type (e.g., different properties and maybe even ports), the GMT uses the concept of couplings for attaching models. Couplings define how two *specific* models attach in modelica.
 For example, a coupling could define how the time series load actually attaches to the heating indirect ETS.
@@ -94,14 +94,14 @@ See the notes below for more information.
 
 ### Couplings
 
-A coupling defines the Modelica code necessary for interfacing two specific models, e.g. a time series load and heating indirect ETS.
+A coupling defines the Modelica code necessary for interfacing two specific models, e.g., a time series load and heating indirect ETS.
 Each coupling is unique in its requirements:
 
 - What additional components are necessary, for example there might be some sensor between system A and B, or maybe B requires a pump when A is a specific model type
 - What ports are connected, for example connecting ports of model A and model B
 
 Thus each coupling must define two template files, `ComponentDefinitions.mopt` and `ConnectStatements.mopt`, respectively. These files must be placed in the directory `couplings/templates/<model A>_<model B>/`.
-In general, the **order of the names** should **follow the order of system types** if you laid out the district system starting with loads on the far left and plants on the far right (e.g. load before ETS, ETS before network, network before plant).
+In general, the **order of the names** should **follow the order of system types** if you laid out the district system starting with loads on the far left and plants on the far right (e.g., load before ETS, ETS before network, network before plant).
 
 ### District system
 
@@ -131,7 +131,7 @@ Each model generates one or more Modelica files to define its model. The templat
 This is the template which defines new components/variables necessary for a coupling. More specifically, these are the partial template files at `model_connectors/couplings/templates/<coupling name>/ComponentDefinitions.mopt`. These templates have access to:
 
 - `globals`: global variables (those defined in the district.py, such as medium_w = MediumW)
-- `coupling`: contains the coupling id, as well as references to the coupled models under their respective types (e.g. coupling.load.id or coupling.network.id). You should append `coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing `parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal` you should do `parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
+- `coupling`: contains the coupling id, as well as references to the coupled models under their respective types (e.g., coupling.load.id or coupling.network.id). You should append `coupling.id` to any variable identifiers to prevent name collisions. For example, instead of just writing `parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal` you should do `parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ coupling.id }}` as well as any place where you would reference that variable.
 - `graph`: an instance of the CouplingGraph class, where all couplings are located. It can provide useful methods for accessing couplings throughout the entire system. Refer to the python class to see what it can do.
 - `sys_params`: an object containing data from the system parameters file
   - `district_system`: contains the data from the district_system portion of the system parameters file
@@ -164,7 +164,7 @@ The Simulation Mapper Class can operate at multiple levels:
 2. The Load Model Attachment -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)
 3. The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different parameters to calculate the loads.
 
-In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g. TEASER) which prevents a
+In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g., TEASER) which prevents a
 simulation mapper class from existing at that level.
 
 ## Running Simulations
