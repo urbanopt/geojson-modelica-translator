@@ -29,7 +29,7 @@ nav:
   - Input File Documentation: input_file_documentation.md
   - Developer Resources: developer_resources.md
   - Contributors: authors.md
-  - Changelog: changelog.md
+  - Change Log: changelog.md
   - License: license.md
 # Add these dirs/files to live updating during development (in addition to docs & this file)
 # https://www.mkdocs.org/user-guide/configuration/#watch

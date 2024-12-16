@@ -23,20 +23,20 @@ Therefore, this Getting Started guide is broken up into three major setup steps.
 You must have PIP and Python 3.10 or later installed (run `python --version` to see what version you're using). After installing Python and PIP run the following in a terminal:
 
 ```bash
-    pip install geojson-modelica-translator
+pip install geojson-modelica-translator
 ```
 
 After installation of the GMT, a new command line interface (called the URBANopt District Energy Systems [UO DES] CLI) can be used to run various commands. Without needing to install the [MBL](https://simulationresearch.lbl.gov/modelica/index.html) the user can use the CLI to build the system parameters file from the results of the URBANopt SDK. For more information run the following:
 
 ```bash
-    uo_des -h
-    uo_des build-sys-param -h
+uo_des -h
+uo_des build-sys-param -h
 ```
 
 The command below is only an example; however, it will run if the repository is checked out and run in the following path: `./tests/management/data/sdk_project_scraps`
 
 ```bash
-    uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
+uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 ```
 
 ## MBL Installation
@@ -52,13 +52,13 @@ The Modelica Buildings Library contains many models that are needed to assemble 
 Once the MBL is installed, then the CLI can be used to create the model with the following command:
 
 ```bash
-    uo_des create-model -h
+uo_des create-model -h
 ```
 
 The command below is only an example; however, it will run if the repository is checked out and run in the following path: `./tests/management/data/sdk_project_scraps`
 
 ```bash
-    uo_des create-model sys_param.json example_project.json model_from_sdk
+uo_des create-model sys_param.json example_project.json model_from_sdk
 ```
 
 The resulting Modelica package will be created and can be opened in a Modelica editor. Open the `package.mo` file in the root directory of the generated package. You will also need to
@@ -83,11 +83,11 @@ After Docker is installed and configured, you can use the CLI to run the model u
 command:
 
 ```bash
-    uo_des run-model -h
+uo_des run-model -h
 ```
 
 The command below is only an example; however, it will run if the repository is checked out and run in the following path: `./tests/management/data/sdk_project_scraps`
 
 ```bash
-    uo_des run-model model_from_sdk
+uo_des run-model model_from_sdk
 ```

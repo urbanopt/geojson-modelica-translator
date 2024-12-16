@@ -2,10 +2,10 @@
 
 ## Tests
 
-Tests are run with pytest, e.g.
+Tests are run with pytest, e.g.,
 
 ```bash
-    poetry run pytest
+poetry run pytest
 ```
 
 ## Snapshot Testing
@@ -15,7 +15,7 @@ Some tests use [syrupy](https://github.com/tophat/syrupy) to compare generated m
 Snapshots should only be updated if we have changed how a model is generated, and we *know* the new version of the model is the correct version. To update all snapshots, you can run the following and commit the new snapshot files.
 
 ```bash
-    poetry run pytest --snapshot-update
+poetry run pytest --snapshot-update
 ```
 
 ## Design Overview
@@ -57,7 +57,7 @@ Follow the instructions below in order to configure your local environment:
 - To confirm that models will build and simulate, you can run
 
 ```bash
-    poetry run pytest -m 'not dymola' --cov-report term-missing --cov .
+poetry run pytest -m 'not dymola' --cov-report term-missing --cov .
 ```
 
 The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
@@ -71,13 +71,13 @@ To enable pre-commit for your local development process, run the following from 
 GMT:
 
 ```bash
-    pre-commit install
+pre-commit install
 ```
 
 To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing. CI will fail if pre-commit hasn't been run locally.
 
 ```bash
-    pre-commit run --all-files
+pre-commit run --all-files
 ```
 
 ## Adding New Models
@@ -86,9 +86,9 @@ To add a new model you have to do the following:
 
 1. Define the model's python class: First, create a new python file and class under its respective directory in model_connectors. Follow the patterns of existing classes.
 
-2. Create coupling files: For every model that can be linked to, create a `<ModelA>_<ModelB>` directory in the couplings directory. The two files ComponentDefinitions.mopt and ConnectStatements.mopt must exist in this directory. See more information on the content of the coupling files below in the *Couplings* sections.
+1. Create coupling files: For every model that can be linked to, create a `<ModelA>_<ModelB>` directory in the couplings directory. The two files ComponentDefinitions.mopt and ConnectStatements.mopt must exist in this directory. See more information on the content of the coupling files below in the *Couplings* sections.
 
-3. Create the instance file: In the templates directory, you must define `<ModelName>_Instance.mopt` which is the template that instantiates the system in the district model.
+1. Create the instance file: In the templates directory, you must define `<ModelName>_Instance.mopt` which is the template that instantiates the system in the district model.
 
 See the notes below for more information.
 
