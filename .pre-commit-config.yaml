@@ -44,7 +44,7 @@ repos:
         pass_filenames: false
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+    rev: v0.8.3
     hooks:
       # Run the linter
       - id: ruff
@@ -52,3 +52,14 @@ repos:
         args: [--fix, --exit-non-zero-on-fix, --output-format=full, --unsafe-fixes]
       # Run the formatter
       - id: ruff-format
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        name: markdownlint
+        entry: markdownlint --fix
+        language: node
+        types: [markdown]
+        args: [
+          "--config", ".markdownlint.json"
+        ]

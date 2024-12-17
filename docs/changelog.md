@@ -1,3 +1,1 @@
-# Changelog
-
 {!CHANGELOG.md!}
