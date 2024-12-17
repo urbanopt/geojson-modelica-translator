@@ -1,5 +1,20 @@
 # Change Log
 
+## Version 0.9.0
+
+### Exciting New Features 🎉
+
+* Support Python 3.13 by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/676>
+
+### Other Changes
+
+* Putting GHEs downstream of the buildings by @JingWang-CUB in <https://github.com/urbanopt/geojson-modelica-translator/pull/677>
+* Order horizontal piping correctly between buildings by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/679>
+* Allow skipping GeoJSON validation by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/681>
+* Switch to MkDocs by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/664>
+
+**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.8.0...v0.9.0>
+
 ## Version 0.8.0
 
 ### Exciting New Features 🎉
