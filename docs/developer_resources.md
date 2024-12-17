@@ -189,4 +189,4 @@ During development we can [serve docs locally](https://squidfunk.github.io/mkdoc
    1. Point browser to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 - To deploy, push a commit in the `docs` folder to the `main` branch
-- Wait a few minutes, then verify the new documentation on the [docs website](https://nrel.github.io/geojson-modelica-translator/)
+- Wait a few minutes, then verify the new documentation on the [docs website](https://docs.urbanopt.net/geojson-modelica-translator/)
