@@ -39,7 +39,7 @@ class SystemParameters:
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        schema = Path(__file__).parent / "schema.json"
+        schema = Path(__file__).parent / "system_parameter_properties.json"
         self.schema = json.loads(schema.read_text())
         self.param_template = {}
         self.filename = filename

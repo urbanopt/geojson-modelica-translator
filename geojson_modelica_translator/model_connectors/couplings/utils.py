@@ -37,7 +37,7 @@ def parse_diagram_command(str_cmd):
 
 def parse_diagram_commands(template_contents):
     """Returns a list of diagram commands parsed from the template modelica contents
-    i.e. it will find any instances of {{ diagram.<cmd>.* }} in the template
+    i.e., it will find any instances of {{ diagram.<cmd>.* }} in the template
 
     :param template_contents: str, modelica template code
     :return: list[DiagramCommand]

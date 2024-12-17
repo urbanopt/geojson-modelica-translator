@@ -60,7 +60,7 @@ First implementation.
       info="<html>
 <p>
 This model represents the supply and return lines to connect an
-agent (e.g. an energy transfer station) to a one-pipe main distribution
+agent (e.g., an energy transfer station) to a one-pipe main distribution
 system.  A plug flow pipe model <a href=\"modelica://Buildings.Fluid.FixedResistances.PlugFlowPipe\">
 Buildings.Fluid.FixedResistances.PlugFlowPipe</a> that includes pressure drop, heat transfer, and transport
 delays is used in the main distribution line,

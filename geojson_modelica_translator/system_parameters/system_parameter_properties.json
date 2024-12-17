@@ -1447,7 +1447,7 @@
           "default": 0.0334
         },
         "shank_spacing": {
-          "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e. not referenced from each pipes respective centerline), in meters.",
+          "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e., not referenced from each pipes respective centerline), in meters.",
           "type": "number",
           "minimum": 0,
           "default": 0.0277

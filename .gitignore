@@ -76,6 +76,9 @@ instance/
 docs/_build/
 docs/_autosummary/
 
+# MkDocs documentation
+/site
+
 # PyBuilder
 target/
 
