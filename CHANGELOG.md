@@ -4,6 +4,7 @@
 
 ### Exciting New Features 🎉
 
+* Upgrade OpenModelica & MBL by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/641>
 * Support Python 3.13 by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/676>
 
 ### Other Changes
