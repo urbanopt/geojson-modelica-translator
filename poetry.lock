@@ -1681,7 +1681,7 @@ xmp = ["defusedxml"]
 [[package]]
 name = "platformdirs"
 version = "4.3.6"
-description = "A small Python package for determining appropriate platform-specific dirs, e.g., a `user data dir`."
+description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
 optional = false
 python-versions = ">=3.8"
 files = [
