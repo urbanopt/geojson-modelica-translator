@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 0.9.1
+
+* Fix incorrect link to documentation site by @vtnate
+
 ## Version 0.9.0
 
 ### Exciting New Features 🎉
