@@ -1,0 +1,1173 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../license/">
+      
+      
+        <link rel="next" href="../district_system_properties/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>system_parameter_properties - Geojson to Modelica Translator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#json-schema" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Geojson to Modelica Translator" class="md-header__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Geojson to Modelica Translator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              system_parameter_properties
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Geojson to Modelica Translator" class="md-nav__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Geojson to Modelica Translator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../input_file_documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Input File Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer_resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../authors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Change Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Schema
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Schema
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    system_parameter_properties
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    system_parameter_properties
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      -
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      -
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../district_system_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    district_system_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrical_connector_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    electrical_connector_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thermal_junction_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    thermal_junction_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../site_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    site_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thermal_connector_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    thermal_connector_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrical_junction_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    electrical_junction_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../building_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    building_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../region_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    region_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      -
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      -
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="json-schema">JSON Schema</h1>
+<h2 id="definitions">Definitions</h2>
+<ul>
+<li><a id="definitions/system_design_parameter_def"></a><strong><code>system_design_parameter_def</code></strong> <em>(object)</em>: Definition of System Design Parameters. (Version 0.1). Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT. Cannot contain additional properties.</li>
+<li><strong><code>buildings</code></strong> <em>(array)</em>: Parameters for individual buildings.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/building_def">#/definitions/building_def</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>connectors</code></strong>: Refer to <em><a href="#definitions/connector_def">#/definitions/connector_def</a></em>.</li>
+<li><strong><code>district_system</code></strong> <em>(object)</em>: Parameters associated with district systems.<ul>
+<li><strong>One of</strong></li>
+<li>: Refer to <em><a href="#definitions/fourth_generation_def">#/definitions/fourth_generation_def</a></em>.</li>
+<li>: Refer to <em><a href="#definitions/fifth_generation_def">#/definitions/fifth_generation_def</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>weather</code></strong> <em>(string, required)</em>: Path, relative or absolute, to a weather file for the district in Modelica format (MOS).</li>
+<li><strong><code>topology</code></strong> <em>(object)</em>: [unused] Parameters associated with district topologies. Cannot contain additional properties.<ul>
+<li><strong><code>topology_parameters</code></strong>: Description of topology style. Refer to <em><a href="#definitions/topology_def">#/definitions/topology_def</a></em>.</li>
+<li><strong><code>topology_optimization</code></strong> <em>(boolean)</em>: Perform topology optimization?</li>
+<li><strong><code>cost_function</code></strong>: Cost function to use in topology optimization. Refer to <em><a href="#definitions/cost_function_definition">#/definitions/cost_function_definition</a></em>.</li>
+<li><strong><code>optimization_approach</code></strong>: Approach to use for topology optimization. Refer to <em><a href="#definitions/optimization_definition">#/definitions/optimization_definition</a></em>.</li>
+<li><strong><code>time_period</code></strong> <em>(integer)</em>: Time horizon for topology optimization.This parameter is used only if LCC is used as the cost function.</li>
+<li><strong><code>discount_rate</code></strong> <em>(integer)</em>: Discount rate for topology optimization. This parameter is used only if LCC is used as the cost function.</li>
+<li><strong><code>convergence_criteria</code></strong> <em>(integer)</em>: Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.</li>
+</ul>
+</li>
+<li><strong><code>electrical_grid</code></strong>: Refer to <em><a href="#definitions/electrical_grid_parameters">#/definitions/electrical_grid_parameters</a></em>.</li>
+<li><strong><code>photovoltaic_panels</code></strong> <em>(array)</em>: Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/pv_parameters">#/definitions/pv_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>wind_turbines</code></strong> <em>(array)</em>: Wind turbines associated with the district - from scenario optimization.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/wind_turbine_parameters">#/definitions/wind_turbine_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>combined_heat_and_power_systems</code></strong> <em>(array)</em>: Combined heat and power (CHP) systems associated with the district - from scenario optimization.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/combined_heat_and_power_parameters">#/definitions/combined_heat_and_power_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>capacitor_banks</code></strong> <em>(array)</em>: Capacitor banks associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/capacitor_bank_parameters">#/definitions/capacitor_bank_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>substations</code></strong> <em>(array)</em>: Substations associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/substation_parameters">#/definitions/substation_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>transformers</code></strong> <em>(array)</em>: Transformers associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/transformer_parameters">#/definitions/transformer_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>power_converters</code></strong> <em>(array)</em>: Power converters associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/power_converter_parameters">#/definitions/power_converter_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>distribution_lines</code></strong> <em>(array)</em>: Distribution lines associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/distribution_line_parameters">#/definitions/distribution_line_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>ac_inductive_loads</code></strong> <em>(array)</em>: AC inductive loads associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/ac_inductive_load_parameters">#/definitions/ac_inductive_load_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>dc_loads</code></strong> <em>(array)</em>: DC loads associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/dc_load_parameters">#/definitions/dc_load_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>battery_banks</code></strong> <em>(array)</em>: Battery banks associated with the district.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/battery_bank_parameters">#/definitions/battery_bank_parameters</a></em>.</li>
+</ul>
+</li>
+<li><a id="definitions/topology_def"></a><strong><code>topology_def</code></strong> <em>(object)</em>: [unused] Parameters associated with district topologies. Cannot contain additional properties.</li>
+<li><strong><code>configuration</code></strong> <em>(string)</em>: Must be one of: <code>["Radial", "Ring", "Mesh", "Out and Back"]</code>.</li>
+<li><a id="definitions/cost_function_definition"></a><strong><code>cost_function_definition</code></strong> <em>(object)</em>: [unused] Possible cost functions for the topology optimization problem. Cannot contain additional properties.</li>
+<li><strong><code>cost_function</code></strong> <em>(string)</em>: Must be one of: <code>["Energy", "Life Cycle Cost", "Carbon Emissions"]</code>.</li>
+<li><a id="definitions/optimization_definition"></a><strong><code>optimization_definition</code></strong> <em>(object)</em>: [unused] Optimization approach for the topology optimization problem. Cannot contain additional properties.</li>
+<li><strong><code>optimization_approach</code></strong> <em>(string)</em>: Must be one of: <code>["Black box", "Gradient-based"]</code>.</li>
+<li><a id="definitions/building_def"></a><strong><code>building_def</code></strong> <em>(object)</em>: Specific parameters for each building.</li>
+<li><strong>One of</strong><h2 id="-">-</h2>
+</li>
+<li><strong><code>geojson_id</code></strong> <em>(string, required)</em>: The GeoJSON ID as defined in the GeoJSON file.</li>
+<li><strong><code>load_model</code></strong> <em>(string, required)</em>: Type of load model to use for the building. Must be one of: <code>["rc", "time_series", "time_series_massflow_temperature", "spawn"]</code>.</li>
+<li><strong><code>load_model_parameters</code></strong> <em>(object, required)</em>: Cannot contain additional properties.<ul>
+<li><strong>Any of</strong></li>
+<li></li>
+<li></li>
+<li></li>
+<li><strong><code>spawn</code></strong>: Refer to <em><a href="#definitions/spawn_model_parameters">#/definitions/spawn_model_parameters</a></em>.</li>
+<li><strong><code>rc</code></strong>: Refer to <em><a href="#definitions/rc_model_parameters">#/definitions/rc_model_parameters</a></em>.</li>
+<li><strong><code>time_series</code></strong>: Refer to <em><a href="#definitions/time_series_model_parameters">#/definitions/time_series_model_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>ets_model</code></strong> <em>(string, required)</em>: Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops. Must be one of: <code>["Indirect Heating and Cooling", "Fifth Gen Heat Pump"]</code>.</li>
+<li><strong><code>ets_model_parameters</code></strong> <em>(object)</em>: Cannot contain additional properties.<ul>
+<li><strong>One of</strong></li>
+<li>: Refer to <em><a href="#definitions/ets_indirect_parameters">#/definitions/ets_indirect_parameters</a></em>.</li>
+<li>: Refer to <em><a href="#definitions/fifth_gen_ets_parameters">#/definitions/fifth_gen_ets_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>photovoltaic_panels</code></strong> <em>(array)</em>: Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/pv_parameters">#/definitions/pv_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>diesel_generators</code></strong> <em>(array)</em>: Diesel generators associated with the building.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/diesel_generator_parameters">#/definitions/diesel_generator_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>battery_banks</code></strong> <em>(array)</em>: Battery banks associated with the building.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/battery_bank_parameters">#/definitions/battery_bank_parameters</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>electric_load</code></strong>: microgrid-related load fields.<ul>
+<li><strong><code>nominal_voltage</code></strong> <em>(number)</em>: Nominal load voltage (V).</li>
+<li><strong><code>max_power</code></strong> <em>(number)</em>: Maximum load power (kW).</li>
+<li><strong><code>max_reactive_power</code></strong> <em>(number)</em>: Maximum reactive power (kvar).</li>
+</ul>
+</li>
+<li><a id="definitions/connector_def"></a><strong><code>connector_def</code></strong> <em>(object)</em>: [unused] Parameters associated with the connectors in a district system. Cannot contain additional properties.</li>
+<li><strong><code>pipe_diameter</code></strong> <em>(number)</em>: [unused] Pipe diameter. (m).</li>
+<li><strong><code>pipe_insulation_rvalue</code></strong> <em>(number)</em>: [unused] Pipe insulation R-Value. (m2-K/W).</li>
+<li><strong><code>pipe_location</code></strong> <em>(string)</em>: [unused] Location of the pipe. Must be one of: <code>["Tunnel", "Buried"]</code>.</li>
+<li><strong><code>pipe_material</code></strong> <em>(string)</em>: [unused] Pipe material (to be used for determining surface roughness) . Must be one of: <code>["Plastic", "Steel"]</code>.</li>
+<li><a id="definitions/district_system_def"></a><strong><code>district_system_def</code></strong> <em>(object)</em>: Parameters associated with the district system. Cannot contain additional properties.</li>
+<li><strong><code>return_configuration</code></strong> <em>(string)</em>: [unused] Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return. Must be one of: <code>["Direct Return", "Reverse Return"]</code>.</li>
+<li><strong><code>connection_configuration</code></strong> <em>(string)</em>: [unused] Type of connection of buildings to the loop. Must be one of: <code>["Series", "Parallel"]</code>.</li>
+<li><strong><code>central_cooling_plant_parameters</code></strong>: Refer to <em><a href="#definitions/central_cooling_plant_parameters">#/definitions/central_cooling_plant_parameters</a></em>.</li>
+<li><strong><code>central_heating_plant_parameters</code></strong>: Refer to <em><a href="#definitions/central_heating_plant_parameters">#/definitions/central_heating_plant_parameters</a></em>.</li>
+<li><strong><code>combined_heat_and_power_parameters</code></strong>: Refer to <em><a href="#definitions/combined_heat_and_power_parameters">#/definitions/combined_heat_and_power_parameters</a></em>.</li>
+<li><a id="definitions/ets_indirect_parameters"></a><strong><code>ets_indirect_parameters</code></strong> <em>(object)</em>: The parameters associated with the indirect energy transfer station.</li>
+<li><strong><code>heat_flow_nominal</code></strong> <em>(number, required)</em>: Nominal heat flow rate. (W). Default: <code>10000</code>.</li>
+<li><strong><code>heat_exchanger_efficiency</code></strong> <em>(number, required)</em>: Heat exchanger efficiency. (fraction). Default: <code>0.8</code>.</li>
+<li><strong><code>heat_exchanger_primary_pressure_drop</code></strong> <em>(number, required)</em>: Heat exchanger primary side pressure drop. (Pa). Default: <code>500</code>.</li>
+<li><strong><code>heat_exchanger_secondary_pressure_drop</code></strong> <em>(number, required)</em>: Heat exchanger secondary side pressure drop. (Pa). Default: <code>500</code>.</li>
+<li><strong><code>nominal_mass_flow_building</code></strong> <em>(number, required)</em>: Building water nominal flow rate. (kg/s). Default: <code>10</code>.</li>
+<li><strong><code>nominal_mass_flow_district</code></strong> <em>(number, required)</em>: District water nominal flow rate. (kg/s). Default: <code>10</code>.</li>
+<li><strong><code>valve_pressure_drop</code></strong> <em>(number, required)</em>: Valve pressure drop. (Pa). Default: <code>6000</code>.</li>
+<li><strong><code>cooling_supply_water_temperature_building</code></strong> <em>(number, required)</em>: Chilled water supply temperature building side. (C). Default: <code>7</code>.</li>
+<li><strong><code>heating_supply_water_temperature_building</code></strong> <em>(number, required)</em>: Heating water supply temperature building side. (C). Default: <code>50</code>.</li>
+<li><strong><code>delta_temp_hw_district</code></strong> <em>(number, required)</em>: Heating water temperature difference on on the district side. (deltaC). Default: <code>20</code>.</li>
+<li><strong><code>delta_temp_hw_building</code></strong> <em>(number, required)</em>: Design temperature differential on the building side. (deltaC). Default: <code>15</code>.</li>
+<li><strong><code>delta_temp_chw_building</code></strong> <em>(number, required)</em>: Chilled water temperature difference on the building side. (deltaC). Default: <code>5</code>.</li>
+<li><strong><code>delta_temp_chw_district</code></strong> <em>(number, required)</em>: Design temperature differential on the district side. (deltaC). Default: <code>8</code>.</li>
+<li><strong><code>cooling_controller_y_max</code></strong> <em>(number, required)</em>: Controller upper limit. Default: <code>1</code>.</li>
+<li><strong><code>cooling_controller_y_min</code></strong> <em>(number, required)</em>: Controller lower limit. Default: <code>0</code>.</li>
+<li><strong><code>heating_controller_y_max</code></strong> <em>(number, required)</em>: Controller upper limit. Default: <code>1</code>.</li>
+<li><strong><code>heating_controller_y_min</code></strong> <em>(number, required)</em>: Controller lower limit. Default: <code>0</code>.</li>
+<li><a id="definitions/spawn_model_parameters"></a><strong><code>spawn_model_parameters</code></strong> <em>(object)</em>: Parameters associated with spawn models. Cannot contain additional properties.</li>
+<li><strong><code>temp_setpoint_cooling</code></strong> <em>(number, required)</em>: Cooling setpoint air temperature. (C). Default: <code>24</code>.</li>
+<li><strong><code>temp_setpoint_heating</code></strong> <em>(number, required)</em>: Heating setpoint air temperature. (C). Default: <code>20</code>.</li>
+<li><strong><code>temp_hw_supply</code></strong> <em>(number, required)</em>: Heating water supply temperature. (C). Default: <code>40</code>.</li>
+<li><strong><code>temp_hw_return</code></strong> <em>(number, required)</em>: Heating water return temperature. (C). Default: <code>35</code>.</li>
+<li><strong><code>temp_chw_supply</code></strong> <em>(number, required)</em>: Chilled water supply temperature. (C). Default: <code>7</code>.</li>
+<li><strong><code>temp_chw_return</code></strong> <em>(number, required)</em>: Chilled water return temperature. (C). Default: <code>12</code>.</li>
+<li><strong><code>has_liquid_heating</code></strong> <em>(boolean)</em>: Whether the building has liquid heating. Default: <code>true</code>.</li>
+<li><strong><code>has_liquid_cooling</code></strong> <em>(boolean)</em>: Whether the building has liquid cooling. Default: <code>true</code>.</li>
+<li><strong><code>has_electric_heating</code></strong> <em>(boolean)</em>: Whether the building has electric heating. Default: <code>false</code>.</li>
+<li><strong><code>has_electric_cooling</code></strong> <em>(boolean)</em>: Whether the building has electric cooling. Default: <code>false</code>.</li>
+<li><strong><code>idf_filename</code></strong> <em>(string, required)</em>: Absolute path or relative path from location where file instance is saved.</li>
+<li><strong><code>thermal_zone_names</code></strong> <em>(array, required)</em>: List of thermal zones in the Spawn / EnergyPlus model.<ul>
+<li><strong>Items</strong> <em>(string)</em></li>
+</ul>
+</li>
+<li><strong><code>zone_nom_htg_loads</code></strong> <em>(array, required)</em>: Array of zone nominal heating loads (values should be &gt;0) .<ul>
+<li><strong>Items</strong> <em>(number)</em></li>
+</ul>
+</li>
+<li><strong><code>zone_nom_clg_loads</code></strong> <em>(array, required)</em>: Array of zone nominal cooling loads (values should be &lt;0).<ul>
+<li><strong>Items</strong> <em>(number)</em></li>
+</ul>
+</li>
+<li><a id="definitions/rc_model_parameters"></a><strong><code>rc_model_parameters</code></strong> <em>(object)</em>: Parameters associated with RC models. Cannot contain additional properties.</li>
+<li><strong><code>temp_setpoint_cooling</code></strong> <em>(number, required)</em>: Cooling setpoint air temperature. (C). Default: <code>24</code>.</li>
+<li><strong><code>temp_setpoint_heating</code></strong> <em>(number, required)</em>: Heating setpoint air temperature. (C). Default: <code>20</code>.</li>
+<li><strong><code>temp_hw_supply</code></strong> <em>(number, required)</em>: Heating water supply temperature. (C). Default: <code>40</code>.</li>
+<li><strong><code>temp_hw_return</code></strong> <em>(number)</em>: Heating water return temperature. (C). Default: <code>35</code>.</li>
+<li><strong><code>temp_chw_supply</code></strong> <em>(number)</em>: Chilled water supply temperature. (C). Default: <code>7</code>.</li>
+<li><strong><code>temp_chw_return</code></strong> <em>(number)</em>: Chilled water return temperature. (C). Default: <code>12</code>.</li>
+<li><strong><code>has_liquid_heating</code></strong> <em>(boolean)</em>: Whether the building has liquid heating. Default: <code>true</code>.</li>
+<li><strong><code>has_liquid_cooling</code></strong> <em>(boolean)</em>: Whether the building has liquid cooling. Default: <code>true</code>.</li>
+<li><strong><code>has_electric_heating</code></strong> <em>(boolean)</em>: Whether the building has electric heating. Default: <code>false</code>.</li>
+<li><strong><code>has_electric_cooling</code></strong> <em>(boolean)</em>: Whether the building has electric cooling. Default: <code>false</code>.</li>
+<li><strong><code>order</code></strong> <em>(integer)</em>: Must be one of: <code>[1, 2, 3, 4]</code>. Default: <code>2</code>.</li>
+<li><strong><code>fraction_latent_person</code></strong> <em>(number, required)</em>: Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office). Default: <code>1.25</code>.</li>
+<li><a id="definitions/time_series_model_parameters"></a><strong><code>time_series_model_parameters</code></strong> <em>(object)</em>: Parameters associated with time series models. Cannot contain additional properties.</li>
+<li><strong><code>temp_setpoint_cooling</code></strong> <em>(number, required)</em>: Cooling setpoint air temperature. (C). Default: <code>24</code>.</li>
+<li><strong><code>temp_setpoint_heating</code></strong> <em>(number, required)</em>: Heating setpoint air temperature. (C). Default: <code>20</code>.</li>
+<li><strong><code>temp_hw_supply</code></strong> <em>(number, required)</em>: Heating water supply temperature. (C). Default: <code>40</code>.</li>
+<li><strong><code>temp_hw_return</code></strong> <em>(number)</em>: Heating water return temperature. (C). Default: <code>35</code>.</li>
+<li><strong><code>temp_chw_supply</code></strong> <em>(number)</em>: Chilled water supply temperature. (C). Default: <code>7</code>.</li>
+<li><strong><code>temp_chw_return</code></strong> <em>(number)</em>: Chilled water return temperature. (C). Default: <code>12</code>.</li>
+<li><strong><code>has_liquid_heating</code></strong> <em>(boolean)</em>: Whether the building has liquid heating. Default: <code>true</code>.</li>
+<li><strong><code>has_liquid_cooling</code></strong> <em>(boolean)</em>: Whether the building has liquid cooling. Default: <code>true</code>.</li>
+<li><strong><code>has_electric_heating</code></strong> <em>(boolean)</em>: Whether the building has electric heating. Default: <code>false</code>.</li>
+<li><strong><code>has_electric_cooling</code></strong> <em>(boolean)</em>: Whether the building has electric cooling. Default: <code>false</code>.</li>
+<li><strong><code>max_electrical_load</code></strong> <em>(number)</em>: Maximum electrical load from OpenStudio building simulation. (W). Default: <code>0</code>.</li>
+<li><strong><code>filepath</code></strong> <em>(string, required)</em></li>
+<li><strong><code>delta_temp_air_cooling</code></strong> <em>(number, required)</em>: Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC). Default: <code>10</code>.</li>
+<li><strong><code>delta_temp_air_heating</code></strong> <em>(number, required)</em>: Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC). Default: <code>18</code>.</li>
+<li><a id="definitions/central_cooling_plant_parameters"></a><strong><code>central_cooling_plant_parameters</code></strong> <em>(object)</em>: Central cooling plant with maximum number of two chillers. Parameters associated with the model.</li>
+<li><strong><code>cooling_tower_fan_power_nominal</code></strong> <em>(number)</em>: Cooling tower fan power (W). Default: <code>5000</code>.</li>
+<li><strong><code>heat_flow_nominal</code></strong> <em>(number)</em>: Nominal district cooling load. (W). Default: <code>8000</code>.</li>
+<li><strong><code>mass_chw_flow_nominal</code></strong> <em>(number)</em>: Nominal chilled water mass flow rate. (kg/s). Default: <code>10</code>.</li>
+<li><strong><code>chiller_water_flow_minimum</code></strong> <em>(number)</em>:  Chiller minimum  water mass flow rate. (kg/s). Default: <code>10</code>.</li>
+<li><strong><code>mass_cw_flow_nominal</code></strong> <em>(number)</em>: Nominal condenser water mass flow rate. (kg/s). Default: <code>10</code>.</li>
+<li><strong><code>chw_pump_head</code></strong> <em>(number)</em>: Chilled water pump head (Pa). Default: <code>300000</code>.</li>
+<li><strong><code>cw_pump_head</code></strong> <em>(number)</em>: Cooling water pump head (Pa). Default: <code>200000</code>.</li>
+<li><strong><code>pressure_drop_chw_nominal</code></strong> <em>(number)</em>: Nominal chilled water (evaporator) side pressure drop. (Pa). Default: <code>55000</code>.</li>
+<li><strong><code>pressure_drop_cw_nominal</code></strong> <em>(number)</em>: Nominal cooling water (condenser) side pressure drop. (Pa). Default: <code>80000</code>.</li>
+<li><strong><code>pressure_drop_setpoint</code></strong> <em>(number)</em>: The chilled water circuit pressure drop setpoint. (Pa). Default: <code>50000</code>.</li>
+<li><strong><code>temp_setpoint_chw</code></strong> <em>(number, required)</em>: District circuit chilled water temperature setpoint. (C). Default: <code>5</code>.</li>
+<li><strong><code>pressure_drop_chw_valve_nominal</code></strong> <em>(number)</em>: Chiller isolation valve pressure drop. (Pa). Default: <code>6000</code>.</li>
+<li><strong><code>pressure_drop_cw_pum_nominal</code></strong> <em>(number)</em>: Cooling tower isolation valve pressure drop. (Pa). Default: <code>6000</code>.</li>
+<li><strong><code>temp_air_wb_nominal</code></strong> <em>(number)</em>: Design air wet-bulb temperature. (C). Default: <code>25</code>.</li>
+<li><strong><code>temp_cw_in_nominal</code></strong> <em>(number)</em>: Nominal cooling water inlet temperature. (C). Default: <code>35</code>.</li>
+<li><strong><code>cooling_tower_water_temperature_difference_nominal</code></strong> <em>(number)</em>: Nominal water temperature difference of the tower. (C). Default: <code>7</code>.</li>
+<li><strong><code>delta_temp_approach</code></strong> <em>(number)</em>: Approach temperature difference. (deltaC). Default: <code>3</code>.</li>
+<li><strong><code>ratio_water_air_nominal</code></strong> <em>(number)</em>: To be defined. Default: <code>0.625</code>.</li>
+<li><a id="definitions/central_heating_plant_parameters"></a><strong><code>central_heating_plant_parameters</code></strong> <em>(object)</em>: Central heating plant with maximum number of two boilers. Parameters associated with the model.</li>
+<li><strong><code>heat_flow_nominal</code></strong> <em>(number)</em>: Nominal district heating load. (W). Default: <code>8000</code>.</li>
+<li><strong><code>mass_hhw_flow_nominal</code></strong> <em>(number)</em>: Nominal heating water mass flow rate. (kg/s). Default: <code>1</code>.</li>
+<li><strong><code>boiler_water_flow_minimum</code></strong> <em>(number)</em>: [unused] Boiler minimum  water mass flow rate. (kg/s). Default: <code>0.1</code>.</li>
+<li><strong><code>pressure_drop_hhw_nominal</code></strong> <em>(number)</em>: [unused] Nominal heating water (boiler side) pressure drop. (Pa). Default: <code>55000</code>.</li>
+<li><strong><code>temp_setpoint_hhw</code></strong> <em>(number, required)</em>: District circuit heating water temperature setpoint. (C). Default: <code>55</code>.</li>
+<li><strong><code>pressure_drop_hhw_valve_nominal</code></strong> <em>(number)</em>: Boiler isolation valve pressure drop. (Pa). Default: <code>6000</code>.</li>
+<li><strong><code>chp_installed</code></strong> <em>(boolean)</em>: True if heating plant is a Combined Heat and Power plant.</li>
+<li><strong><code>chp_thermal_following</code></strong> <em>(boolean)</em>: True if CHP is thermal_following (prioritized thermal heat over electricity).</li>
+<li><a id="definitions/combined_heat_and_power_parameters"></a><strong><code>combined_heat_and_power_parameters</code></strong> <em>(object)</em>: Combined heat and power (CHP) parameters used by the microgrid model.</li>
+<li><strong><code>fuel_type</code></strong> <em>(string)</em>: Type of fuel used. Must be one of: <code>["Gas", "Oil"]</code>.</li>
+<li><strong><code>number_of_machines</code></strong> <em>(integer)</em>: Number of machines.</li>
+<li><strong><code>single_electricity_generation_capacity</code></strong> <em>(number)</em>: Single machine electricity generation capacity (kW).</li>
+<li><strong><code>performance_data_path</code></strong> <em>(string)</em>: Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP.</li>
+<li><a id="definitions/ghe_parameters"></a><strong><code>ghe_parameters</code></strong> <em>(object)</em>: Parameters associated with Ground Heat Exchangers.</li>
+<li><strong><code>version</code></strong> <em>(string)</em>: Version of GHE Designer.</li>
+<li><strong><code>ghe_dir</code></strong> <em>(string)</em>: Results directory for GHE Designer. Absolute path, or relative to the sys-param file.</li>
+<li><strong><code>ghe_specific_params</code></strong> <em>(array, required)</em>: Specific properties for each Ground Heat Exchanger.<ul>
+<li><strong>Items</strong>: Refer to <em><a href="#definitions/ghe_specific_params_def">#/definitions/ghe_specific_params_def</a></em>.</li>
+</ul>
+</li>
+<li><strong><code>pipe</code></strong>: Refer to <em><a href="#definitions/pipe_def">#/definitions/pipe_def</a></em>.</li>
+<li><strong><code>fluid</code></strong>: Refer to <em><a href="#definitions/fluid_def">#/definitions/fluid_def</a></em>.</li>
+<li><strong><code>grout</code></strong>: Refer to <em><a href="#definitions/grout_def">#/definitions/grout_def</a></em>.</li>
+<li><strong><code>simulation</code></strong>: Refer to <em><a href="#definitions/simulation_def">#/definitions/simulation_def</a></em>.</li>
+<li><strong><code>geometric_constraints</code></strong>: Refer to <em><a href="#definitions/geometric_constraints_def">#/definitions/geometric_constraints_def</a></em>.</li>
+<li><strong><code>design</code></strong>: Refer to <em><a href="#definitions/design_def">#/definitions/design_def</a></em>.</li>
+<li><a id="definitions/horizontal_piping_parameters"></a><strong><code>horizontal_piping_parameters</code></strong> <em>(object)</em></li>
+<li><strong><code>hydraulic_diameter</code></strong> <em>(number)</em>: Hydraulic diameter of the distribution pipe.</li>
+<li><strong><code>insulation_thickness</code></strong> <em>(number)</em>: Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.</li>
+<li><strong><code>insulation_conductivity</code></strong> <em>(number)</em>: Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.</li>
+<li><strong><code>diameter_ratio</code></strong> <em>(number)</em>: The ratio of pipe outer diameter to pipe wall thickness.</li>
+<li><strong><code>roughness</code></strong> <em>(number)</em>: Average height of pipe material surface asperities.</li>
+<li><strong><code>rho_cp</code></strong> <em>(number)</em>: Volumetric heat capacity of the pipe wall material.</li>
+<li><strong><code>number_of_segments</code></strong> <em>(integer)</em>: Number of axial pipe segments, used to discretize pipe models.</li>
+<li><strong><code>buried_depth</code></strong> <em>(number)</em>: Pipes buried depth.</li>
+<li><a id="definitions/diesel_generator_parameters"></a><strong><code>diesel_generator_parameters</code></strong> <em>(object)</em>: Diesel generator parameters used by the microgrid model.</li>
+<li><strong><code>nominal_power_generation</code></strong> <em>(number)</em>: Nominal power generation (W).</li>
+<li><strong><code>source_phase_shift</code></strong> <em>(number)</em>: Phase shift angle of source (degrees).</li>
+<li><a id="definitions/electrical_grid_parameters"></a><strong><code>electrical_grid_parameters</code></strong> <em>(object)</em>: Electrical grid parameters used by the microgrid model.</li>
+<li><strong><code>frequency</code></strong> <em>(number)</em>: Frequency (Hz). Default: <code>60</code>.</li>
+<li><strong><code>source_rms_voltage</code></strong> <em>(number)</em>: Root mean square (RMS) voltage of source (V).</li>
+<li><strong><code>source_phase_shift</code></strong> <em>(number)</em>: Phase shift angle of source (degrees).</li>
+<li><a id="definitions/pv_parameters"></a><strong><code>pv_parameters</code></strong> <em>(object)</em>: Photovoltaic panel parameters used by the microgrid model.</li>
+<li><strong><code>net_surface_area</code></strong> <em>(number, required)</em>: Net PV Surface Area (m2).</li>
+<li><strong><code>surface_tilt</code></strong> <em>(number, required)</em>: PV Surface Tilt (degrees).</li>
+<li><strong><code>surface_azimuth</code></strong> <em>(number, required)</em>: PV Surface Azimuth (degrees).</li>
+<li><strong><code>latitude</code></strong> <em>(number, required)</em>: Latitude.</li>
+<li><strong><code>nominal_voltage</code></strong> <em>(number, required)</em>: Nominal System Voltage (V). Default: <code>480</code>.</li>
+<li><a id="definitions/wind_turbine_parameters"></a><strong><code>wind_turbine_parameters</code></strong> <em>(object)</em>: Wind turbine parameters used by the microgrid model.</li>
+<li><strong><code>scaling_factor</code></strong> <em>(number)</em>: Scaling Factor.</li>
+<li><strong><code>height_over_ground</code></strong> <em>(number)</em>: Height over ground (m).</li>
+<li><strong><code>power_curve</code></strong> <em>(array)</em>: Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).</li>
+<li><strong><code>rated_power</code></strong> <em>(number)</em>: Wind turbine size (kW).</li>
+<li><strong><code>annual_energy_produced</code></strong> <em>(number)</em>: Average yearly energy produced (kWh).</li>
+<li><strong><code>nominal_voltage</code></strong> <em>(number)</em>: Nominal System Voltage (V). Default: <code>480</code>.</li>
+<li><a id="definitions/capacitor_bank_parameters"></a><strong><code>capacitor_bank_parameters</code></strong> <em>(object)</em>: Capacitor bank parameters used by the microgrid model.</li>
+<li><strong><code>nominal_capacity</code></strong> <em>(number, required)</em>: Nominal Capacity (var).</li>
+<li><a id="definitions/substation_parameters"></a><strong><code>substation_parameters</code></strong> <em>(object)</em>: Substation parameters used by the microgrid model.</li>
+<li><strong><code>RMS_voltage_high_side</code></strong> <em>(number)</em>: RMS voltage on high side (V).</li>
+<li><strong><code>RMS_voltage_low_side</code></strong> <em>(number)</em>: RMS voltage on low side (V).</li>
+<li><a id="definitions/transformer_parameters"></a><strong><code>transformer_parameters</code></strong> <em>(object)</em>: Transformer parameters used by the microgrid model.</li>
+<li><strong><code>id</code></strong> <em>(string)</em>: The transformer ID as defined in the scenario report.</li>
+<li><strong><code>nominal_capacity</code></strong> <em>(number)</em>: Nominal Capacity (kVA).</li>
+<li><strong><code>reactance_resistance_ratio</code></strong> <em>(number)</em>: Ratio between reactance and resistance.</li>
+<li><a id="definitions/power_converter_parameters"></a><strong><code>power_converter_parameters</code></strong> <em>(object)</em>: Power converter parameters used by the microgrid model.</li>
+<li><strong><code>converter type</code></strong> <em>(string)</em>: Power converter type.</li>
+<li><strong><code>RMS_voltage_ratio</code></strong> <em>(number)</em>: Ratio of RMS voltage on low side/high side.</li>
+<li><strong><code>converter_efficiency</code></strong> <em>(number)</em>: Converter Efficiency (%).</li>
+<li><strong><code>nominal_capacity</code></strong> <em>(number)</em>: Nominal Capacity (kVA).</li>
+<li><a id="definitions/distribution_line_parameters"></a><strong><code>distribution_line_parameters</code></strong> <em>(object)</em>: Distribution lines parameters used by the microgrid model.</li>
+<li><strong><code>line_length</code></strong> <em>(number)</em>: Length of distribution lines (m).</li>
+<li><strong><code>maximum_ampacity</code></strong> <em>(number)</em>: Maximum power of the lines. this is defined in Amps.</li>
+<li><strong><code>nominal_voltage</code></strong> <em>(number)</em>: Nominal voltage of the lines (V). Default: <code>480</code>.</li>
+<li><strong><code>commercial_line_type</code></strong> <em>(array)</em>: Commercial line type given by the type of each wire making up the line.</li>
+<li><a id="definitions/ac_inductive_load_parameters"></a><strong><code>ac_inductive_load_parameters</code></strong> <em>(object)</em>: AC inductive load parameters used by the microgrid model.</li>
+<li><strong><code>nominal_voltage</code></strong> <em>(number)</em>: Nominal voltage (V).</li>
+<li><strong><code>nominal_power_consumption</code></strong> <em>(string)</em>: Nominal Power Consumption type. Must be one of: <code>["constant", "variable load"]</code>.</li>
+<li><a id="definitions/dc_load_parameters"></a><strong><code>dc_load_parameters</code></strong> <em>(object)</em>: DC load parameters used by the microgrid model.</li>
+<li><strong><code>nominal_voltage</code></strong> <em>(number)</em>: Nominal voltage (V).</li>
+<li><strong><code>nominal_power_consumption</code></strong> <em>(string)</em>: Nominal Power Consumption type. Must be one of: <code>["constant", "variable load"]</code>.</li>
+<li><a id="definitions/battery_bank_parameters"></a><strong><code>battery_bank_parameters</code></strong> <em>(object)</em>: Battery bank associated with the district.</li>
+<li><strong><code>capacity</code></strong> <em>(number)</em>: Maximum available charge (MWh).</li>
+<li><strong><code>nominal_voltage</code></strong> <em>(number)</em>: Nominal voltage (V).</li>
+<li><a id="definitions/fourth_generation_def"></a><strong><code>fourth_generation_def</code></strong></li>
+<li><strong><code>fourth_generation</code></strong>: Refer to <em><a href="#definitions/fourth_generation">#/definitions/fourth_generation</a></em>.</li>
+<li><a id="definitions/fifth_generation_def"></a><strong><code>fifth_generation_def</code></strong></li>
+<li><strong><code>fifth_generation</code></strong>: Refer to <em><a href="#definitions/fifth_generation">#/definitions/fifth_generation</a></em>.</li>
+<li><a id="definitions/fifth_gen_ets_parameters"></a><strong><code>fifth_gen_ets_parameters</code></strong></li>
+<li><strong><code>supply_water_temperature_building</code></strong> <em>(number, required)</em>: Water supply temperature building side. (C). Default: <code>15</code>.</li>
+<li><strong><code>chilled_water_supply_temp</code></strong> <em>(number, required)</em>: Chilled water supply temperature. (C). Default: <code>5</code>.</li>
+<li><strong><code>hot_water_supply_temp</code></strong> <em>(number, required)</em>: Heating water supply temperature. (C). Default: <code>50</code>.</li>
+<li><strong><code>cop_heat_pump_heating</code></strong> <em>(number, required)</em>: COP of heat pump for heating water production. Default: <code>2.5</code>.</li>
+<li><strong><code>cop_heat_pump_cooling</code></strong> <em>(number, required)</em>: COP of heat pump for cooling water production. Default: <code>3.5</code>.</li>
+<li><strong><code>ets_pump_flow_rate</code></strong> <em>(number, required)</em>: Design volume flow rate of the ETS pump. (m3/s). Default: <code>0.0005</code>.</li>
+<li><strong><code>ets_pump_head</code></strong> <em>(number, required)</em>: Design head pressure of the ETS pump. (Pa). Default: <code>10000</code>.</li>
+<li><strong><code>fan_design_flow_rate</code></strong> <em>(number, required)</em>: Design volume flow rate of the load-side fan. (m3/s). Default: <code>0.25</code>.</li>
+<li><strong><code>fan_design_head</code></strong> <em>(number, required)</em>: Design head pressure of the load-side fan. (Pa). Default: <code>150</code>.</li>
+<li><a id="definitions/soil_def"></a><strong><code>soil_def</code></strong> <em>(object)</em>: Soil properties for Ground Heat Exchanger sizing.</li>
+<li><strong><code>conductivity</code></strong> <em>(number, required)</em>: The conductivity of the soil, in units of W/m-K. Default: <code>2</code>.</li>
+<li><strong><code>rho_cp</code></strong> <em>(number, required)</em>: The volumetric heat capacity of the soil, in units of J/m^3-K. Default: <code>2600000</code>.</li>
+<li><strong><code>undisturbed_temp</code></strong> <em>(number, required)</em>: The undisturbed average soil temperature, in units of degrees Celsius. Default: <code>15</code>.</li>
+<li><a id="definitions/ghe_specific_params_def"></a><strong><code>ghe_specific_params_def</code></strong> <em>(object)</em>: The properties associated with each Ground Heat Exchanger instance.</li>
+<li><strong><code>ghe_id</code></strong> <em>(string, required)</em>: Feature ID of GHE from GeoJSON Feature File.</li>
+<li><strong><code>borehole</code></strong> <em>(object, required)</em>: Borehole properties for Ground Heat Exchanger sizing. Can contain additional properties.<ul>
+<li><strong><code>buried_depth</code></strong> <em>(number, required)</em>: The depth below the ground surface to the top of the borehole, in meters. Default: <code>1.2</code>.</li>
+<li><strong><code>diameter</code></strong> <em>(number, required)</em>: The diameter of the borehole, in meters. Default: <code>0.15</code>.</li>
+<li><strong><code>number_of_boreholes</code></strong> <em>(number)</em>: Number of boreholes on the site, determined from Thermal Network sizing.</li>
+<li><strong><code>length_of_boreholes</code></strong> <em>(number)</em>: The length of the borehole (in meters), determined from Thermal Network sizing.</li>
+</ul>
+</li>
+<li><strong><code>ghe_geometric_params</code></strong> <em>(object, required)</em>: The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.<ul>
+<li><strong><code>length_of_ghe</code></strong> <em>(number, required)</em>: Horizontal surface length allowed for the ground heat exchanger, in meters.</li>
+<li><strong><code>width_of_ghe</code></strong> <em>(number, required)</em>: Horizontal surface width allowed for the ground heat exchanger, in meters.</li>
+</ul>
+</li>
+<li><a id="definitions/pipe_def"></a><strong><code>pipe_def</code></strong> <em>(object)</em>: Pipe properties for Ground Heat Exchanger sizing.</li>
+<li><strong><code>inner_diameter</code></strong> <em>(number, required)</em>: The diameter of the inner pipe surface, in meters. Default: <code>0.0269</code>.</li>
+<li><strong><code>outer_diameter</code></strong> <em>(number, required)</em>: The diameter of the outer pipe surface, in meters. Minimum: <code>0</code>. Default: <code>0.0334</code>.</li>
+<li><strong><code>shank_spacing</code></strong> <em>(number, required)</em>: The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e., not referenced from each pipes respective centerline), in meters. Minimum: <code>0</code>. Default: <code>0.0277</code>.</li>
+<li><strong><code>roughness</code></strong> <em>(number, required)</em>: The surface roughness of the pipe, in meters. Minimum: <code>0</code>. Default: <code>1e-06</code>.</li>
+<li><strong><code>conductivity</code></strong> <em>(number, required)</em>: The conductivity of the pipe material, in W/m-K. Minimum: <code>0</code>. Default: <code>0.4</code>.</li>
+<li><strong><code>rho_cp</code></strong> <em>(number, required)</em>: The volumetric heat capacity of the pipe material, in J/m^3-K. Minimum: <code>0</code>. Default: <code>1542000</code>.</li>
+<li><strong><code>arrangement</code></strong> <em>(string, required)</em>: Arrangement of the pipes. Must be one of: <code>["singleutube", "coaxial", "doubleutube"]</code>. Default: <code>"singleutube"</code>.</li>
+<li><a id="definitions/fluid_def"></a><strong><code>fluid_def</code></strong> <em>(object)</em>: Fluid properties for Ground Heat Exchanger sizing.</li>
+<li><strong><code>fluid_name</code></strong> <em>(string, required)</em>: Circulating fluid parameters for ground heat exchanger sizing. Must be one of: <code>["Water", "EthylAlcohol", "EthyleneGlycol", "MethylAlcohol", "PropyleneGlycol"]</code>. Default: <code>"Water"</code>.</li>
+<li><strong><code>concentration_percent</code></strong> <em>(number, required)</em>: The concentration of circulation fluid in percent, from 0-60. Minimum: <code>0</code>. Maximum: <code>60</code>. Default: <code>0</code>.</li>
+<li><strong><code>temperature</code></strong> <em>(number, required)</em>: Average design fluid temperature at peak conditions, in C. Default: <code>20</code>.</li>
+<li><a id="definitions/grout_def"></a><strong><code>grout_def</code></strong> <em>(object)</em>: Grout properties used for ground heat exchanger sizing.</li>
+<li><strong><code>conductivity</code></strong> <em>(number, required)</em>: Grout thermal conductivity, in W/m-K. Minimum: <code>0</code>. Default: <code>2</code>.</li>
+<li><strong><code>rho_cp</code></strong> <em>(number, required)</em>: Grout volumetric heat capacity, in J/m^3-K. Minimum: <code>0</code>. Default: <code>4408000</code>.</li>
+<li><a id="definitions/simulation_def"></a><strong><code>simulation_def</code></strong> <em>(object)</em>: Simulation parameters use for ground heat exchanger sizing.</li>
+<li><strong><code>num_months</code></strong> <em>(integer, required)</em>: Length of ground heat exchanger sizing period, in months. Minimum: <code>0</code>. Default: <code>240</code>.</li>
+<li><a id="definitions/geometric_constraints_def"></a><strong><code>geometric_constraints_def</code></strong> <em>(object)</em>: Geometric constraints for GHE and boreholes.</li>
+<li><strong><code>b_min</code></strong> <em>(number, required)</em>: Minimum borehole-to-borehole spacing, in meters. Default: <code>3</code>.</li>
+<li><strong><code>b_max</code></strong> <em>(number, required)</em>: Maximum borehole-to-borehole spacing, in meters. Default: <code>10</code>.</li>
+<li><strong><code>max_height</code></strong> <em>(number, required)</em>: Maximum height, or depth, of each borehole heat exchanger, in meters. Default: <code>200</code>.</li>
+<li><strong><code>min_height</code></strong> <em>(number, required)</em>: Minimum height, or depth, of each borehole heat exchanger, in meters. Default: <code>100</code>.</li>
+<li><strong><code>method</code></strong> <em>(string, required)</em>: GHE sizing method. Must be one of: <code>["nearsquare", "rectangle"]</code>. Default: <code>"rectangle"</code>.</li>
+<li><a id="definitions/design_def"></a><strong><code>design_def</code></strong> <em>(object)</em>: Design parameters used for GHE sizing.</li>
+<li><strong><code>method</code></strong> <em>(string, required)</em>: Building load distribution method for Ground Heat Exchanger sizing. Must be one of: <code>["AREAPROPORTIONAL", "UPSTREAM"]</code>. Default: <code>"AREAPROPORTIONAL"</code>.</li>
+<li><strong><code>flow_rate</code></strong> <em>(number, required)</em>: Nominal design mass flow rate, in l/s. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger. Minimum: <code>0</code>. Default: <code>0.3</code>.</li>
+<li><strong><code>flow_type</code></strong> <em>(string, required)</em>: Flow type for ground heat exchanger sizing. Must be one of: <code>["borehole", "system"]</code>. Default: <code>"borehole"</code>.</li>
+<li><strong><code>max_eft</code></strong> <em>(number, required)</em>: Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius. Default: <code>35</code>.</li>
+<li><strong><code>min_eft</code></strong> <em>(number, required)</em>: Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius. Default: <code>5</code>.</li>
+<li><a id="definitions/central_pump_parameters"></a><strong><code>central_pump_parameters</code></strong> <em>(object)</em>: Parameters for central pump.</li>
+<li><strong><code>pump_design_head</code></strong> <em>(number, required)</em>: Measured in Pa.</li>
+<li><strong><code>pump_flow_rate</code></strong> <em>(number, required)</em>: Design volume flow rate of the ambient loop pump. (m3/s). Default: <code>0.01</code>.</li>
+<li><a id="definitions/fifth_generation"></a><strong><code>fifth_generation</code></strong> <em>(object)</em>: Fifth generation district parameters, for an ambient loop system.</li>
+<li><strong><code>soil</code></strong>: Refer to <em><a href="#definitions/soil_def">#/definitions/soil_def</a></em>.</li>
+<li><strong><code>ghe_parameters</code></strong>: Refer to <em><a href="#definitions/ghe_parameters">#/definitions/ghe_parameters</a></em>.</li>
+<li><strong><code>connected_buildings</code></strong><ul>
+<li><strong>Items</strong>:<ul>
+<li></li>
+<li><strong><code>building_id</code></strong>: This is the geojson_id that is defined in the building object.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>central_pump_parameters</code></strong>: Refer to <em><a href="#definitions/central_pump_parameters">#/definitions/central_pump_parameters</a></em>.</li>
+<li><strong><code>horizontal_piping_parameters</code></strong>: Refer to <em><a href="#definitions/horizontal_piping_parameters">#/definitions/horizontal_piping_parameters</a></em>.</li>
+<li><a id="definitions/fourth_generation"></a><strong><code>fourth_generation</code></strong> <em>(object)</em>: Fourth generation district parameters, for a central loop system.</li>
+<li><strong>Any of</strong><h2 id="-_1">-</h2>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><strong><code>central_cooling_plant_parameters</code></strong>: Refer to <em><a href="#definitions/central_cooling_plant_parameters">#/definitions/central_cooling_plant_parameters</a></em>.</li>
+<li><strong><code>central_heating_plant_parameters</code></strong>: Refer to <em><a href="#definitions/central_heating_plant_parameters">#/definitions/central_heating_plant_parameters</a></em>.</li>
+<li><strong><code>combined_heat_and_power_parameters</code></strong>: Refer to <em><a href="#definitions/combined_heat_and_power_parameters">#/definitions/combined_heat_and_power_parameters</a></em>.</li>
+<li><strong><code>connected_buildings</code></strong><ul>
+<li><strong>Items</strong>:<ul>
+<li></li>
+<li><strong><code>building_id</code></strong>: This is the geojson_id that is defined in the building object.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

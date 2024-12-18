@@ -1,0 +1,336 @@
+# JSON Schema
+
+## Definitions
+
+- <a id="definitions/system_design_parameter_def"></a>**`system_design_parameter_def`** *(object)*: Definition of System Design Parameters. (Version 0.1). Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT. Cannot contain additional properties.
+  - **`buildings`** *(array)*: Parameters for individual buildings.
+    - **Items**: Refer to *[#/definitions/building_def](#definitions/building_def)*.
+  - **`connectors`**: Refer to *[#/definitions/connector_def](#definitions/connector_def)*.
+  - **`district_system`** *(object)*: Parameters associated with district systems.
+    - **One of**
+      - : Refer to *[#/definitions/fourth_generation_def](#definitions/fourth_generation_def)*.
+      - : Refer to *[#/definitions/fifth_generation_def](#definitions/fifth_generation_def)*.
+  - **`weather`** *(string, required)*: Path, relative or absolute, to a weather file for the district in Modelica format (MOS).
+  - **`topology`** *(object)*: [unused] Parameters associated with district topologies. Cannot contain additional properties.
+    - **`topology_parameters`**: Description of topology style. Refer to *[#/definitions/topology_def](#definitions/topology_def)*.
+    - **`topology_optimization`** *(boolean)*: Perform topology optimization?
+    - **`cost_function`**: Cost function to use in topology optimization. Refer to *[#/definitions/cost_function_definition](#definitions/cost_function_definition)*.
+    - **`optimization_approach`**: Approach to use for topology optimization. Refer to *[#/definitions/optimization_definition](#definitions/optimization_definition)*.
+    - **`time_period`** *(integer)*: Time horizon for topology optimization.This parameter is used only if LCC is used as the cost function.
+    - **`discount_rate`** *(integer)*: Discount rate for topology optimization. This parameter is used only if LCC is used as the cost function.
+    - **`convergence_criteria`** *(integer)*: Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.
+  - **`electrical_grid`**: Refer to *[#/definitions/electrical_grid_parameters](#definitions/electrical_grid_parameters)*.
+  - **`photovoltaic_panels`** *(array)*: Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization.
+    - **Items**: Refer to *[#/definitions/pv_parameters](#definitions/pv_parameters)*.
+  - **`wind_turbines`** *(array)*: Wind turbines associated with the district - from scenario optimization.
+    - **Items**: Refer to *[#/definitions/wind_turbine_parameters](#definitions/wind_turbine_parameters)*.
+  - **`combined_heat_and_power_systems`** *(array)*: Combined heat and power (CHP) systems associated with the district - from scenario optimization.
+    - **Items**: Refer to *[#/definitions/combined_heat_and_power_parameters](#definitions/combined_heat_and_power_parameters)*.
+  - **`capacitor_banks`** *(array)*: Capacitor banks associated with the district.
+    - **Items**: Refer to *[#/definitions/capacitor_bank_parameters](#definitions/capacitor_bank_parameters)*.
+  - **`substations`** *(array)*: Substations associated with the district.
+    - **Items**: Refer to *[#/definitions/substation_parameters](#definitions/substation_parameters)*.
+  - **`transformers`** *(array)*: Transformers associated with the district.
+    - **Items**: Refer to *[#/definitions/transformer_parameters](#definitions/transformer_parameters)*.
+  - **`power_converters`** *(array)*: Power converters associated with the district.
+    - **Items**: Refer to *[#/definitions/power_converter_parameters](#definitions/power_converter_parameters)*.
+  - **`distribution_lines`** *(array)*: Distribution lines associated with the district.
+    - **Items**: Refer to *[#/definitions/distribution_line_parameters](#definitions/distribution_line_parameters)*.
+  - **`ac_inductive_loads`** *(array)*: AC inductive loads associated with the district.
+    - **Items**: Refer to *[#/definitions/ac_inductive_load_parameters](#definitions/ac_inductive_load_parameters)*.
+  - **`dc_loads`** *(array)*: DC loads associated with the district.
+    - **Items**: Refer to *[#/definitions/dc_load_parameters](#definitions/dc_load_parameters)*.
+  - **`battery_banks`** *(array)*: Battery banks associated with the district.
+    - **Items**: Refer to *[#/definitions/battery_bank_parameters](#definitions/battery_bank_parameters)*.
+- <a id="definitions/topology_def"></a>**`topology_def`** *(object)*: [unused] Parameters associated with district topologies. Cannot contain additional properties.
+  - **`configuration`** *(string)*: Must be one of: `["Radial", "Ring", "Mesh", "Out and Back"]`.
+- <a id="definitions/cost_function_definition"></a>**`cost_function_definition`** *(object)*: [unused] Possible cost functions for the topology optimization problem. Cannot contain additional properties.
+  - **`cost_function`** *(string)*: Must be one of: `["Energy", "Life Cycle Cost", "Carbon Emissions"]`.
+- <a id="definitions/optimization_definition"></a>**`optimization_definition`** *(object)*: [unused] Optimization approach for the topology optimization problem. Cannot contain additional properties.
+  - **`optimization_approach`** *(string)*: Must be one of: `["Black box", "Gradient-based"]`.
+- <a id="definitions/building_def"></a>**`building_def`** *(object)*: Specific parameters for each building.
+  - **One of**
+    - 
+    - 
+  - **`geojson_id`** *(string, required)*: The GeoJSON ID as defined in the GeoJSON file.
+  - **`load_model`** *(string, required)*: Type of load model to use for the building. Must be one of: `["rc", "time_series", "time_series_massflow_temperature", "spawn"]`.
+  - **`load_model_parameters`** *(object, required)*: Cannot contain additional properties.
+    - **Any of**
+      - 
+      - 
+      - 
+    - **`spawn`**: Refer to *[#/definitions/spawn_model_parameters](#definitions/spawn_model_parameters)*.
+    - **`rc`**: Refer to *[#/definitions/rc_model_parameters](#definitions/rc_model_parameters)*.
+    - **`time_series`**: Refer to *[#/definitions/time_series_model_parameters](#definitions/time_series_model_parameters)*.
+  - **`ets_model`** *(string, required)*: Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops. Must be one of: `["Indirect Heating and Cooling", "Fifth Gen Heat Pump"]`.
+  - **`ets_model_parameters`** *(object)*: Cannot contain additional properties.
+    - **One of**
+      - : Refer to *[#/definitions/ets_indirect_parameters](#definitions/ets_indirect_parameters)*.
+      - : Refer to *[#/definitions/fifth_gen_ets_parameters](#definitions/fifth_gen_ets_parameters)*.
+  - **`photovoltaic_panels`** *(array)*: Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization.
+    - **Items**: Refer to *[#/definitions/pv_parameters](#definitions/pv_parameters)*.
+  - **`diesel_generators`** *(array)*: Diesel generators associated with the building.
+    - **Items**: Refer to *[#/definitions/diesel_generator_parameters](#definitions/diesel_generator_parameters)*.
+  - **`battery_banks`** *(array)*: Battery banks associated with the building.
+    - **Items**: Refer to *[#/definitions/battery_bank_parameters](#definitions/battery_bank_parameters)*.
+  - **`electric_load`**: microgrid-related load fields.
+    - **`nominal_voltage`** *(number)*: Nominal load voltage (V).
+    - **`max_power`** *(number)*: Maximum load power (kW).
+    - **`max_reactive_power`** *(number)*: Maximum reactive power (kvar).
+- <a id="definitions/connector_def"></a>**`connector_def`** *(object)*: [unused] Parameters associated with the connectors in a district system. Cannot contain additional properties.
+  - **`pipe_diameter`** *(number)*: [unused] Pipe diameter. (m).
+  - **`pipe_insulation_rvalue`** *(number)*: [unused] Pipe insulation R-Value. (m2-K/W).
+  - **`pipe_location`** *(string)*: [unused] Location of the pipe. Must be one of: `["Tunnel", "Buried"]`.
+  - **`pipe_material`** *(string)*: [unused] Pipe material (to be used for determining surface roughness) . Must be one of: `["Plastic", "Steel"]`.
+- <a id="definitions/district_system_def"></a>**`district_system_def`** *(object)*: Parameters associated with the district system. Cannot contain additional properties.
+  - **`return_configuration`** *(string)*: [unused] Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return. Must be one of: `["Direct Return", "Reverse Return"]`.
+  - **`connection_configuration`** *(string)*: [unused] Type of connection of buildings to the loop. Must be one of: `["Series", "Parallel"]`.
+  - **`central_cooling_plant_parameters`**: Refer to *[#/definitions/central_cooling_plant_parameters](#definitions/central_cooling_plant_parameters)*.
+  - **`central_heating_plant_parameters`**: Refer to *[#/definitions/central_heating_plant_parameters](#definitions/central_heating_plant_parameters)*.
+  - **`combined_heat_and_power_parameters`**: Refer to *[#/definitions/combined_heat_and_power_parameters](#definitions/combined_heat_and_power_parameters)*.
+- <a id="definitions/ets_indirect_parameters"></a>**`ets_indirect_parameters`** *(object)*: The parameters associated with the indirect energy transfer station.
+  - **`heat_flow_nominal`** *(number, required)*: Nominal heat flow rate. (W). Default: `10000`.
+  - **`heat_exchanger_efficiency`** *(number, required)*: Heat exchanger efficiency. (fraction). Default: `0.8`.
+  - **`heat_exchanger_primary_pressure_drop`** *(number, required)*: Heat exchanger primary side pressure drop. (Pa). Default: `500`.
+  - **`heat_exchanger_secondary_pressure_drop`** *(number, required)*: Heat exchanger secondary side pressure drop. (Pa). Default: `500`.
+  - **`nominal_mass_flow_building`** *(number, required)*: Building water nominal flow rate. (kg/s). Default: `10`.
+  - **`nominal_mass_flow_district`** *(number, required)*: District water nominal flow rate. (kg/s). Default: `10`.
+  - **`valve_pressure_drop`** *(number, required)*: Valve pressure drop. (Pa). Default: `6000`.
+  - **`cooling_supply_water_temperature_building`** *(number, required)*: Chilled water supply temperature building side. (C). Default: `7`.
+  - **`heating_supply_water_temperature_building`** *(number, required)*: Heating water supply temperature building side. (C). Default: `50`.
+  - **`delta_temp_hw_district`** *(number, required)*: Heating water temperature difference on on the district side. (deltaC). Default: `20`.
+  - **`delta_temp_hw_building`** *(number, required)*: Design temperature differential on the building side. (deltaC). Default: `15`.
+  - **`delta_temp_chw_building`** *(number, required)*: Chilled water temperature difference on the building side. (deltaC). Default: `5`.
+  - **`delta_temp_chw_district`** *(number, required)*: Design temperature differential on the district side. (deltaC). Default: `8`.
+  - **`cooling_controller_y_max`** *(number, required)*: Controller upper limit. Default: `1`.
+  - **`cooling_controller_y_min`** *(number, required)*: Controller lower limit. Default: `0`.
+  - **`heating_controller_y_max`** *(number, required)*: Controller upper limit. Default: `1`.
+  - **`heating_controller_y_min`** *(number, required)*: Controller lower limit. Default: `0`.
+- <a id="definitions/spawn_model_parameters"></a>**`spawn_model_parameters`** *(object)*: Parameters associated with spawn models. Cannot contain additional properties.
+  - **`temp_setpoint_cooling`** *(number, required)*: Cooling setpoint air temperature. (C). Default: `24`.
+  - **`temp_setpoint_heating`** *(number, required)*: Heating setpoint air temperature. (C). Default: `20`.
+  - **`temp_hw_supply`** *(number, required)*: Heating water supply temperature. (C). Default: `40`.
+  - **`temp_hw_return`** *(number, required)*: Heating water return temperature. (C). Default: `35`.
+  - **`temp_chw_supply`** *(number, required)*: Chilled water supply temperature. (C). Default: `7`.
+  - **`temp_chw_return`** *(number, required)*: Chilled water return temperature. (C). Default: `12`.
+  - **`has_liquid_heating`** *(boolean)*: Whether the building has liquid heating. Default: `true`.
+  - **`has_liquid_cooling`** *(boolean)*: Whether the building has liquid cooling. Default: `true`.
+  - **`has_electric_heating`** *(boolean)*: Whether the building has electric heating. Default: `false`.
+  - **`has_electric_cooling`** *(boolean)*: Whether the building has electric cooling. Default: `false`.
+  - **`idf_filename`** *(string, required)*: Absolute path or relative path from location where file instance is saved.
+  - **`thermal_zone_names`** *(array, required)*: List of thermal zones in the Spawn / EnergyPlus model.
+    - **Items** *(string)*
+  - **`zone_nom_htg_loads`** *(array, required)*: Array of zone nominal heating loads (values should be >0) .
+    - **Items** *(number)*
+  - **`zone_nom_clg_loads`** *(array, required)*: Array of zone nominal cooling loads (values should be <0).
+    - **Items** *(number)*
+- <a id="definitions/rc_model_parameters"></a>**`rc_model_parameters`** *(object)*: Parameters associated with RC models. Cannot contain additional properties.
+  - **`temp_setpoint_cooling`** *(number, required)*: Cooling setpoint air temperature. (C). Default: `24`.
+  - **`temp_setpoint_heating`** *(number, required)*: Heating setpoint air temperature. (C). Default: `20`.
+  - **`temp_hw_supply`** *(number, required)*: Heating water supply temperature. (C). Default: `40`.
+  - **`temp_hw_return`** *(number)*: Heating water return temperature. (C). Default: `35`.
+  - **`temp_chw_supply`** *(number)*: Chilled water supply temperature. (C). Default: `7`.
+  - **`temp_chw_return`** *(number)*: Chilled water return temperature. (C). Default: `12`.
+  - **`has_liquid_heating`** *(boolean)*: Whether the building has liquid heating. Default: `true`.
+  - **`has_liquid_cooling`** *(boolean)*: Whether the building has liquid cooling. Default: `true`.
+  - **`has_electric_heating`** *(boolean)*: Whether the building has electric heating. Default: `false`.
+  - **`has_electric_cooling`** *(boolean)*: Whether the building has electric cooling. Default: `false`.
+  - **`order`** *(integer)*: Must be one of: `[1, 2, 3, 4]`. Default: `2`.
+  - **`fraction_latent_person`** *(number, required)*: Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office). Default: `1.25`.
+- <a id="definitions/time_series_model_parameters"></a>**`time_series_model_parameters`** *(object)*: Parameters associated with time series models. Cannot contain additional properties.
+  - **`temp_setpoint_cooling`** *(number, required)*: Cooling setpoint air temperature. (C). Default: `24`.
+  - **`temp_setpoint_heating`** *(number, required)*: Heating setpoint air temperature. (C). Default: `20`.
+  - **`temp_hw_supply`** *(number, required)*: Heating water supply temperature. (C). Default: `40`.
+  - **`temp_hw_return`** *(number)*: Heating water return temperature. (C). Default: `35`.
+  - **`temp_chw_supply`** *(number)*: Chilled water supply temperature. (C). Default: `7`.
+  - **`temp_chw_return`** *(number)*: Chilled water return temperature. (C). Default: `12`.
+  - **`has_liquid_heating`** *(boolean)*: Whether the building has liquid heating. Default: `true`.
+  - **`has_liquid_cooling`** *(boolean)*: Whether the building has liquid cooling. Default: `true`.
+  - **`has_electric_heating`** *(boolean)*: Whether the building has electric heating. Default: `false`.
+  - **`has_electric_cooling`** *(boolean)*: Whether the building has electric cooling. Default: `false`.
+  - **`max_electrical_load`** *(number)*: Maximum electrical load from OpenStudio building simulation. (W). Default: `0`.
+  - **`filepath`** *(string, required)*
+  - **`delta_temp_air_cooling`** *(number, required)*: Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC). Default: `10`.
+  - **`delta_temp_air_heating`** *(number, required)*: Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC). Default: `18`.
+- <a id="definitions/central_cooling_plant_parameters"></a>**`central_cooling_plant_parameters`** *(object)*: Central cooling plant with maximum number of two chillers. Parameters associated with the model.
+  - **`cooling_tower_fan_power_nominal`** *(number)*: Cooling tower fan power (W). Default: `5000`.
+  - **`heat_flow_nominal`** *(number)*: Nominal district cooling load. (W). Default: `8000`.
+  - **`mass_chw_flow_nominal`** *(number)*: Nominal chilled water mass flow rate. (kg/s). Default: `10`.
+  - **`chiller_water_flow_minimum`** *(number)*:  Chiller minimum  water mass flow rate. (kg/s). Default: `10`.
+  - **`mass_cw_flow_nominal`** *(number)*: Nominal condenser water mass flow rate. (kg/s). Default: `10`.
+  - **`chw_pump_head`** *(number)*: Chilled water pump head (Pa). Default: `300000`.
+  - **`cw_pump_head`** *(number)*: Cooling water pump head (Pa). Default: `200000`.
+  - **`pressure_drop_chw_nominal`** *(number)*: Nominal chilled water (evaporator) side pressure drop. (Pa). Default: `55000`.
+  - **`pressure_drop_cw_nominal`** *(number)*: Nominal cooling water (condenser) side pressure drop. (Pa). Default: `80000`.
+  - **`pressure_drop_setpoint`** *(number)*: The chilled water circuit pressure drop setpoint. (Pa). Default: `50000`.
+  - **`temp_setpoint_chw`** *(number, required)*: District circuit chilled water temperature setpoint. (C). Default: `5`.
+  - **`pressure_drop_chw_valve_nominal`** *(number)*: Chiller isolation valve pressure drop. (Pa). Default: `6000`.
+  - **`pressure_drop_cw_pum_nominal`** *(number)*: Cooling tower isolation valve pressure drop. (Pa). Default: `6000`.
+  - **`temp_air_wb_nominal`** *(number)*: Design air wet-bulb temperature. (C). Default: `25`.
+  - **`temp_cw_in_nominal`** *(number)*: Nominal cooling water inlet temperature. (C). Default: `35`.
+  - **`cooling_tower_water_temperature_difference_nominal`** *(number)*: Nominal water temperature difference of the tower. (C). Default: `7`.
+  - **`delta_temp_approach`** *(number)*: Approach temperature difference. (deltaC). Default: `3`.
+  - **`ratio_water_air_nominal`** *(number)*: To be defined. Default: `0.625`.
+- <a id="definitions/central_heating_plant_parameters"></a>**`central_heating_plant_parameters`** *(object)*: Central heating plant with maximum number of two boilers. Parameters associated with the model.
+  - **`heat_flow_nominal`** *(number)*: Nominal district heating load. (W). Default: `8000`.
+  - **`mass_hhw_flow_nominal`** *(number)*: Nominal heating water mass flow rate. (kg/s). Default: `1`.
+  - **`boiler_water_flow_minimum`** *(number)*: [unused] Boiler minimum  water mass flow rate. (kg/s). Default: `0.1`.
+  - **`pressure_drop_hhw_nominal`** *(number)*: [unused] Nominal heating water (boiler side) pressure drop. (Pa). Default: `55000`.
+  - **`temp_setpoint_hhw`** *(number, required)*: District circuit heating water temperature setpoint. (C). Default: `55`.
+  - **`pressure_drop_hhw_valve_nominal`** *(number)*: Boiler isolation valve pressure drop. (Pa). Default: `6000`.
+  - **`chp_installed`** *(boolean)*: True if heating plant is a Combined Heat and Power plant.
+  - **`chp_thermal_following`** *(boolean)*: True if CHP is thermal_following (prioritized thermal heat over electricity).
+- <a id="definitions/combined_heat_and_power_parameters"></a>**`combined_heat_and_power_parameters`** *(object)*: Combined heat and power (CHP) parameters used by the microgrid model.
+  - **`fuel_type`** *(string)*: Type of fuel used. Must be one of: `["Gas", "Oil"]`.
+  - **`number_of_machines`** *(integer)*: Number of machines.
+  - **`single_electricity_generation_capacity`** *(number)*: Single machine electricity generation capacity (kW).
+  - **`performance_data_path`** *(string)*: Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP.
+- <a id="definitions/ghe_parameters"></a>**`ghe_parameters`** *(object)*: Parameters associated with Ground Heat Exchangers.
+  - **`version`** *(string)*: Version of GHE Designer.
+  - **`ghe_dir`** *(string)*: Results directory for GHE Designer. Absolute path, or relative to the sys-param file.
+  - **`ghe_specific_params`** *(array, required)*: Specific properties for each Ground Heat Exchanger.
+    - **Items**: Refer to *[#/definitions/ghe_specific_params_def](#definitions/ghe_specific_params_def)*.
+  - **`pipe`**: Refer to *[#/definitions/pipe_def](#definitions/pipe_def)*.
+  - **`fluid`**: Refer to *[#/definitions/fluid_def](#definitions/fluid_def)*.
+  - **`grout`**: Refer to *[#/definitions/grout_def](#definitions/grout_def)*.
+  - **`simulation`**: Refer to *[#/definitions/simulation_def](#definitions/simulation_def)*.
+  - **`geometric_constraints`**: Refer to *[#/definitions/geometric_constraints_def](#definitions/geometric_constraints_def)*.
+  - **`design`**: Refer to *[#/definitions/design_def](#definitions/design_def)*.
+- <a id="definitions/horizontal_piping_parameters"></a>**`horizontal_piping_parameters`** *(object)*
+  - **`hydraulic_diameter`** *(number)*: Hydraulic diameter of the distribution pipe.
+  - **`insulation_thickness`** *(number)*: Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.
+  - **`insulation_conductivity`** *(number)*: Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.
+  - **`diameter_ratio`** *(number)*: The ratio of pipe outer diameter to pipe wall thickness.
+  - **`roughness`** *(number)*: Average height of pipe material surface asperities.
+  - **`rho_cp`** *(number)*: Volumetric heat capacity of the pipe wall material.
+  - **`number_of_segments`** *(integer)*: Number of axial pipe segments, used to discretize pipe models.
+  - **`buried_depth`** *(number)*: Pipes buried depth.
+- <a id="definitions/diesel_generator_parameters"></a>**`diesel_generator_parameters`** *(object)*: Diesel generator parameters used by the microgrid model.
+  - **`nominal_power_generation`** *(number)*: Nominal power generation (W).
+  - **`source_phase_shift`** *(number)*: Phase shift angle of source (degrees).
+- <a id="definitions/electrical_grid_parameters"></a>**`electrical_grid_parameters`** *(object)*: Electrical grid parameters used by the microgrid model.
+  - **`frequency`** *(number)*: Frequency (Hz). Default: `60`.
+  - **`source_rms_voltage`** *(number)*: Root mean square (RMS) voltage of source (V).
+  - **`source_phase_shift`** *(number)*: Phase shift angle of source (degrees).
+- <a id="definitions/pv_parameters"></a>**`pv_parameters`** *(object)*: Photovoltaic panel parameters used by the microgrid model.
+  - **`net_surface_area`** *(number, required)*: Net PV Surface Area (m2).
+  - **`surface_tilt`** *(number, required)*: PV Surface Tilt (degrees).
+  - **`surface_azimuth`** *(number, required)*: PV Surface Azimuth (degrees).
+  - **`latitude`** *(number, required)*: Latitude.
+  - **`nominal_voltage`** *(number, required)*: Nominal System Voltage (V). Default: `480`.
+- <a id="definitions/wind_turbine_parameters"></a>**`wind_turbine_parameters`** *(object)*: Wind turbine parameters used by the microgrid model.
+  - **`scaling_factor`** *(number)*: Scaling Factor.
+  - **`height_over_ground`** *(number)*: Height over ground (m).
+  - **`power_curve`** *(array)*: Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).
+  - **`rated_power`** *(number)*: Wind turbine size (kW).
+  - **`annual_energy_produced`** *(number)*: Average yearly energy produced (kWh).
+  - **`nominal_voltage`** *(number)*: Nominal System Voltage (V). Default: `480`.
+- <a id="definitions/capacitor_bank_parameters"></a>**`capacitor_bank_parameters`** *(object)*: Capacitor bank parameters used by the microgrid model.
+  - **`nominal_capacity`** *(number, required)*: Nominal Capacity (var).
+- <a id="definitions/substation_parameters"></a>**`substation_parameters`** *(object)*: Substation parameters used by the microgrid model.
+  - **`RMS_voltage_high_side`** *(number)*: RMS voltage on high side (V).
+  - **`RMS_voltage_low_side`** *(number)*: RMS voltage on low side (V).
+- <a id="definitions/transformer_parameters"></a>**`transformer_parameters`** *(object)*: Transformer parameters used by the microgrid model.
+  - **`id`** *(string)*: The transformer ID as defined in the scenario report.
+  - **`nominal_capacity`** *(number)*: Nominal Capacity (kVA).
+  - **`reactance_resistance_ratio`** *(number)*: Ratio between reactance and resistance.
+- <a id="definitions/power_converter_parameters"></a>**`power_converter_parameters`** *(object)*: Power converter parameters used by the microgrid model.
+  - **`converter type`** *(string)*: Power converter type.
+  - **`RMS_voltage_ratio`** *(number)*: Ratio of RMS voltage on low side/high side.
+  - **`converter_efficiency`** *(number)*: Converter Efficiency (%).
+  - **`nominal_capacity`** *(number)*: Nominal Capacity (kVA).
+- <a id="definitions/distribution_line_parameters"></a>**`distribution_line_parameters`** *(object)*: Distribution lines parameters used by the microgrid model.
+  - **`line_length`** *(number)*: Length of distribution lines (m).
+  - **`maximum_ampacity`** *(number)*: Maximum power of the lines. this is defined in Amps.
+  - **`nominal_voltage`** *(number)*: Nominal voltage of the lines (V). Default: `480`.
+  - **`commercial_line_type`** *(array)*: Commercial line type given by the type of each wire making up the line.
+- <a id="definitions/ac_inductive_load_parameters"></a>**`ac_inductive_load_parameters`** *(object)*: AC inductive load parameters used by the microgrid model.
+  - **`nominal_voltage`** *(number)*: Nominal voltage (V).
+  - **`nominal_power_consumption`** *(string)*: Nominal Power Consumption type. Must be one of: `["constant", "variable load"]`.
+- <a id="definitions/dc_load_parameters"></a>**`dc_load_parameters`** *(object)*: DC load parameters used by the microgrid model.
+  - **`nominal_voltage`** *(number)*: Nominal voltage (V).
+  - **`nominal_power_consumption`** *(string)*: Nominal Power Consumption type. Must be one of: `["constant", "variable load"]`.
+- <a id="definitions/battery_bank_parameters"></a>**`battery_bank_parameters`** *(object)*: Battery bank associated with the district.
+  - **`capacity`** *(number)*: Maximum available charge (MWh).
+  - **`nominal_voltage`** *(number)*: Nominal voltage (V).
+- <a id="definitions/fourth_generation_def"></a>**`fourth_generation_def`**
+  - **`fourth_generation`**: Refer to *[#/definitions/fourth_generation](#definitions/fourth_generation)*.
+- <a id="definitions/fifth_generation_def"></a>**`fifth_generation_def`**
+  - **`fifth_generation`**: Refer to *[#/definitions/fifth_generation](#definitions/fifth_generation)*.
+- <a id="definitions/fifth_gen_ets_parameters"></a>**`fifth_gen_ets_parameters`**
+  - **`supply_water_temperature_building`** *(number, required)*: Water supply temperature building side. (C). Default: `15`.
+  - **`chilled_water_supply_temp`** *(number, required)*: Chilled water supply temperature. (C). Default: `5`.
+  - **`hot_water_supply_temp`** *(number, required)*: Heating water supply temperature. (C). Default: `50`.
+  - **`cop_heat_pump_heating`** *(number, required)*: COP of heat pump for heating water production. Default: `2.5`.
+  - **`cop_heat_pump_cooling`** *(number, required)*: COP of heat pump for cooling water production. Default: `3.5`.
+  - **`ets_pump_flow_rate`** *(number, required)*: Design volume flow rate of the ETS pump. (m3/s). Default: `0.0005`.
+  - **`ets_pump_head`** *(number, required)*: Design head pressure of the ETS pump. (Pa). Default: `10000`.
+  - **`fan_design_flow_rate`** *(number, required)*: Design volume flow rate of the load-side fan. (m3/s). Default: `0.25`.
+  - **`fan_design_head`** *(number, required)*: Design head pressure of the load-side fan. (Pa). Default: `150`.
+- <a id="definitions/soil_def"></a>**`soil_def`** *(object)*: Soil properties for Ground Heat Exchanger sizing.
+  - **`conductivity`** *(number, required)*: The conductivity of the soil, in units of W/m-K. Default: `2`.
+  - **`rho_cp`** *(number, required)*: The volumetric heat capacity of the soil, in units of J/m^3-K. Default: `2600000`.
+  - **`undisturbed_temp`** *(number, required)*: The undisturbed average soil temperature, in units of degrees Celsius. Default: `15`.
+- <a id="definitions/ghe_specific_params_def"></a>**`ghe_specific_params_def`** *(object)*: The properties associated with each Ground Heat Exchanger instance.
+  - **`ghe_id`** *(string, required)*: Feature ID of GHE from GeoJSON Feature File.
+  - **`borehole`** *(object, required)*: Borehole properties for Ground Heat Exchanger sizing. Can contain additional properties.
+    - **`buried_depth`** *(number, required)*: The depth below the ground surface to the top of the borehole, in meters. Default: `1.2`.
+    - **`diameter`** *(number, required)*: The diameter of the borehole, in meters. Default: `0.15`.
+    - **`number_of_boreholes`** *(number)*: Number of boreholes on the site, determined from Thermal Network sizing.
+    - **`length_of_boreholes`** *(number)*: The length of the borehole (in meters), determined from Thermal Network sizing.
+  - **`ghe_geometric_params`** *(object, required)*: The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.
+    - **`length_of_ghe`** *(number, required)*: Horizontal surface length allowed for the ground heat exchanger, in meters.
+    - **`width_of_ghe`** *(number, required)*: Horizontal surface width allowed for the ground heat exchanger, in meters.
+- <a id="definitions/pipe_def"></a>**`pipe_def`** *(object)*: Pipe properties for Ground Heat Exchanger sizing.
+  - **`inner_diameter`** *(number, required)*: The diameter of the inner pipe surface, in meters. Default: `0.0269`.
+  - **`outer_diameter`** *(number, required)*: The diameter of the outer pipe surface, in meters. Minimum: `0`. Default: `0.0334`.
+  - **`shank_spacing`** *(number, required)*: The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e., not referenced from each pipes respective centerline), in meters. Minimum: `0`. Default: `0.0277`.
+  - **`roughness`** *(number, required)*: The surface roughness of the pipe, in meters. Minimum: `0`. Default: `1e-06`.
+  - **`conductivity`** *(number, required)*: The conductivity of the pipe material, in W/m-K. Minimum: `0`. Default: `0.4`.
+  - **`rho_cp`** *(number, required)*: The volumetric heat capacity of the pipe material, in J/m^3-K. Minimum: `0`. Default: `1542000`.
+  - **`arrangement`** *(string, required)*: Arrangement of the pipes. Must be one of: `["singleutube", "coaxial", "doubleutube"]`. Default: `"singleutube"`.
+- <a id="definitions/fluid_def"></a>**`fluid_def`** *(object)*: Fluid properties for Ground Heat Exchanger sizing.
+  - **`fluid_name`** *(string, required)*: Circulating fluid parameters for ground heat exchanger sizing. Must be one of: `["Water", "EthylAlcohol", "EthyleneGlycol", "MethylAlcohol", "PropyleneGlycol"]`. Default: `"Water"`.
+  - **`concentration_percent`** *(number, required)*: The concentration of circulation fluid in percent, from 0-60. Minimum: `0`. Maximum: `60`. Default: `0`.
+  - **`temperature`** *(number, required)*: Average design fluid temperature at peak conditions, in C. Default: `20`.
+- <a id="definitions/grout_def"></a>**`grout_def`** *(object)*: Grout properties used for ground heat exchanger sizing.
+  - **`conductivity`** *(number, required)*: Grout thermal conductivity, in W/m-K. Minimum: `0`. Default: `2`.
+  - **`rho_cp`** *(number, required)*: Grout volumetric heat capacity, in J/m^3-K. Minimum: `0`. Default: `4408000`.
+- <a id="definitions/simulation_def"></a>**`simulation_def`** *(object)*: Simulation parameters use for ground heat exchanger sizing.
+  - **`num_months`** *(integer, required)*: Length of ground heat exchanger sizing period, in months. Minimum: `0`. Default: `240`.
+- <a id="definitions/geometric_constraints_def"></a>**`geometric_constraints_def`** *(object)*: Geometric constraints for GHE and boreholes.
+  - **`b_min`** *(number, required)*: Minimum borehole-to-borehole spacing, in meters. Default: `3`.
+  - **`b_max`** *(number, required)*: Maximum borehole-to-borehole spacing, in meters. Default: `10`.
+  - **`max_height`** *(number, required)*: Maximum height, or depth, of each borehole heat exchanger, in meters. Default: `200`.
+  - **`min_height`** *(number, required)*: Minimum height, or depth, of each borehole heat exchanger, in meters. Default: `100`.
+  - **`method`** *(string, required)*: GHE sizing method. Must be one of: `["nearsquare", "rectangle"]`. Default: `"rectangle"`.
+- <a id="definitions/design_def"></a>**`design_def`** *(object)*: Design parameters used for GHE sizing.
+  - **`method`** *(string, required)*: Building load distribution method for Ground Heat Exchanger sizing. Must be one of: `["AREAPROPORTIONAL", "UPSTREAM"]`. Default: `"AREAPROPORTIONAL"`.
+  - **`flow_rate`** *(number, required)*: Nominal design mass flow rate, in l/s. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger. Minimum: `0`. Default: `0.3`.
+  - **`flow_type`** *(string, required)*: Flow type for ground heat exchanger sizing. Must be one of: `["borehole", "system"]`. Default: `"borehole"`.
+  - **`max_eft`** *(number, required)*: Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius. Default: `35`.
+  - **`min_eft`** *(number, required)*: Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius. Default: `5`.
+- <a id="definitions/central_pump_parameters"></a>**`central_pump_parameters`** *(object)*: Parameters for central pump.
+  - **`pump_design_head`** *(number, required)*: Measured in Pa.
+  - **`pump_flow_rate`** *(number, required)*: Design volume flow rate of the ambient loop pump. (m3/s). Default: `0.01`.
+- <a id="definitions/fifth_generation"></a>**`fifth_generation`** *(object)*: Fifth generation district parameters, for an ambient loop system.
+  - **`soil`**: Refer to *[#/definitions/soil_def](#definitions/soil_def)*.
+  - **`ghe_parameters`**: Refer to *[#/definitions/ghe_parameters](#definitions/ghe_parameters)*.
+  - **`connected_buildings`**
+    - **Items**:
+        - 
+          - **`building_id`**: This is the geojson_id that is defined in the building object.
+  - **`central_pump_parameters`**: Refer to *[#/definitions/central_pump_parameters](#definitions/central_pump_parameters)*.
+  - **`horizontal_piping_parameters`**: Refer to *[#/definitions/horizontal_piping_parameters](#definitions/horizontal_piping_parameters)*.
+- <a id="definitions/fourth_generation"></a>**`fourth_generation`** *(object)*: Fourth generation district parameters, for a central loop system.
+  - **Any of**
+    - 
+    - 
+    - 
+  - **`central_cooling_plant_parameters`**: Refer to *[#/definitions/central_cooling_plant_parameters](#definitions/central_cooling_plant_parameters)*.
+  - **`central_heating_plant_parameters`**: Refer to *[#/definitions/central_heating_plant_parameters](#definitions/central_heating_plant_parameters)*.
+  - **`combined_heat_and_power_parameters`**: Refer to *[#/definitions/combined_heat_and_power_parameters](#definitions/combined_heat_and_power_parameters)*.
+  - **`connected_buildings`**
+    - **Items**:
+        - 
+          - **`building_id`**: This is the geojson_id that is defined in the building object.

@@ -1,0 +1,25 @@
+# URBANopt District System
+
+*Schema for an URBANopt District System object*
+
+## Properties
+
+- **`id`** *(string)*: Unique id used to refer to this feature within this dataset.
+- **`project_id`** *(string)*: Project which this feature belongs to.
+- **`type`** *(string, required)*: Type of feature. Must be one of: `["District System"]`.
+- **`source_name`** *(string)*: Name of the original data source.
+- **`source_id`** *(string)*: Id of the feature in original data source.
+- **`name`** *(string)*: Feature name.
+- **`legal_name`** *(string)*: Legal name used to identify this feature.
+- **`address`** *(string)*: Street address.
+- **`district_system_type`**: Refer to *[#/definitions/districtSystemType](#definitions/districtSystemType)*.
+- **`detailed_model_filename`** *(string)*: Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.
+- **`weather_filename`** *(string)*: Name of EPW weather file for this district system. Defaults to site's weather_filename.
+- **`tariff_filename`** *(string)*: Name of the tariff file for this district system. Defaults to site's tariff_filename.
+- **`equipment`** *(array)*: List of equipment in this plant.
+  - **Items** *(string)*: Refer to *[#/definitions/equipmentType](#definitions/equipmentType)*.
+- **`user_data`**: Arbitrary user data.
+## Definitions
+
+- <a id="definitions/districtSystemType"></a>**`districtSystemType`** *(string)*: Type of district system. Must be one of: `["Central Chilled Water", "Central Hot Water", "Central Hot and Chilled Water", "Central Ambient Water", "Central Hot and Cold Water", "Community Photovoltaic", "Transformer", "Transformer with Storage", "Capacitor", "Electrical Substation"]`.
+- <a id="definitions/equipmentType"></a>**`equipmentType`** *(string)*: Type of equipment, listed in order of load served. Must be one of: `["Air-Cooled Chiller--Cold Water", "Air-Cooled Chiller--Ambient Water", "Water-Cooled Chiller--Cold Water", "Water-Cooled Chiller---Ambient Water", "Capacitor--150KVAR", "Capacitor--450KVAR", "Cooling Tower--Heat Rejection from Chiller, Cold Water", "Cooling Tower--Heat Rejection from Chiller, Ambient Water", "Cooling Tower--Direct--Chilled Water", "Cooling Tower--Direct--Ambient Water", "Boiler--Hot Water", "Boiler--Ambient Water", "Boiler--Combined Heat and Power--Hot Water", "Boiler--Combined Heat and Power--Ambient Water", "Water to Water Heat Pump--Ambient Water", "Water to Water Heat Pump--Cold Water", "Water to Water Heat Pump--Hot Water", "Air to Water Heat Pump--Ambient Water", "Air to Water Heat Pump--Cold Water", "Air to Water Heat Pump--Hot Water", "Ground Source Heat Pump--Ambient Water", "Ground Source Heat Pump--Cold Water", "Ground Source Heat Pump--Hot Water", "Solar Thermal Array--Ambient Water", "Solar Thermal Array--Hot Water", "Storage--Hot Water", "Storage--Cold Water", "Storage--Ambient Water", "Transformer--25KVA CT", "Transformer--50KVA CT", "Transformer--75KVA CT", "Transformer--25KVA PM", "Transformer--50KVA PM", "Transformer--75KVA PM", "Transformer--100KVA PM", "Transformer--150KVA PM", "Transformer--300KVA PM", "Waste Heat Source--Hot Water", "Waste Heat Source--Ambient Water"]`.

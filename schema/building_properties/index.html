@@ -1,0 +1,829 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../electrical_junction_properties/">
+      
+      
+        <link rel="next" href="../region_properties/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>building_properties - Geojson to Modelica Translator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#urbanopt-building" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Geojson to Modelica Translator" class="md-header__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Geojson to Modelica Translator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              building_properties
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Geojson to Modelica Translator" class="md-nav__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Geojson to Modelica Translator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../input_file_documentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Input File Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer_resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../authors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Change Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Schema
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Schema
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system_parameter_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    system_parameter_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../district_system_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    district_system_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrical_connector_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    electrical_connector_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thermal_junction_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    thermal_junction_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../site_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    site_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thermal_connector_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    thermal_connector_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrical_junction_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    electrical_junction_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    building_properties
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    building_properties
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../region_properties/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    region_properties
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="urbanopt-building">URBANopt Building</h1>
+<p><em>Schema for an URBANopt Building object. Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT.</em></p>
+<h2 id="properties">Properties</h2>
+<ul>
+<li><strong><code>id</code></strong> <em>(string)</em>: Unique id used to refer to this feature within this dataset.</li>
+<li><strong><code>project_id</code></strong> <em>(string)</em>: [unused] Project which this feature belongs to.</li>
+<li><strong><code>type</code></strong> <em>(string)</em>: Type of feature. Must be one of: <code>["Building"]</code>.</li>
+<li><strong><code>source_name</code></strong> <em>(string)</em>: [unused] Name of the original data source.</li>
+<li><strong><code>source_id</code></strong> <em>(string)</em>: [unused] Id of the feature in original data source.</li>
+<li><strong><code>name</code></strong> <em>(string)</em>: [unused] Feature name.</li>
+<li><strong><code>legal_name</code></strong> <em>(string)</em>: [unused] Legal name used to identify this feature.</li>
+<li><strong><code>address</code></strong> <em>(string)</em>: [unused] Street address.</li>
+<li><strong><code>building_status</code></strong> <em>(string)</em>: [unused] Building status. Must be one of: <code>["Proposed", "Existing"]</code>.</li>
+<li><strong><code>detailed_model_filename</code></strong> <em>(string)</em>: [unused] Name of a detailed model which can be loaded from disk as a seed model or complete model. Mapper class decides which measures to disable if this is present.</li>
+<li><strong><code>weather_filename</code></strong> <em>(string)</em>: [unused] Name of EPW weather file for this building.  Defaults to site's weather_filename.</li>
+<li><strong><code>tariff_filename</code></strong> <em>(string)</em>: [unused] Name of the tariff file for this building.  Defaults to site's tariff_filename.</li>
+<li><strong><code>surface_elevation</code></strong> <em>(number)</em>: [unused] The surface elevation (above NAVD88 datum) of the building (ft).  This is the elevation of the ground at the building location, any below ground stories will be lower than this. Defaults to site's surface_elevation.</li>
+<li><strong><code>timesteps_per_hour</code></strong> <em>(integer)</em>: [unused] Number of timesteps per hour for energy simulations. Defaults to site's timesteps_per_hour. Minimum: <code>1</code>. Maximum: <code>60</code>.</li>
+<li><strong><code>begin_date</code></strong> <em>(string)</em>: [unused] Date to begin simulation, format YYYY-MM-DD. Defaults to site's begin_date.</li>
+<li><strong><code>end_date</code></strong> <em>(string)</em>: [unused] Date to end simulation, format YYYY-MM-DD. Defaults to site's end_date.</li>
+<li><strong><code>climate_zone</code></strong> <em>(string)</em>: [unused] ASHRAE 169 climate zone. Defaults to site's climate_zone.</li>
+<li><strong><code>cec_climate_zone</code></strong> <em>(string)</em>: [unused] CEC Title24 climate zone. Defaults to site's cec_climate_zone.</li>
+<li><strong><code>floor_area</code></strong> <em>(number)</em>: Usable floor area (ft^2). Required for residential buildings, this represents conditioned floor area.</li>
+<li><strong><code>number_of_stories</code></strong> <em>(integer)</em>: The maximum number of building stories, sum of number of above and below ground stories.</li>
+<li><strong><code>number_of_stories_above_ground</code></strong> <em>(integer)</em>: The number of building stories above ground. Defaults to number_of_stories. Required for residential buildings.</li>
+<li><strong><code>maximum_roof_height</code></strong> <em>(number)</em>: [unused] Maximum height of the roof relative to surface elevation (ft).</li>
+<li><strong><code>roof_type</code></strong> <em>(string)</em>: [unused] The type of roof. Defaults to flat. Must be one of: <code>["Flat", "Gable", "Hip"]</code>.</li>
+<li><strong><code>foundation_type</code></strong>: Refer to <em><a href="#definitions/foundationType">#/definitions/foundationType</a></em>.</li>
+<li><strong><code>attic_type</code></strong>: Refer to <em><a href="#definitions/atticType">#/definitions/atticType</a></em>.</li>
+<li><strong><code>footprint_area</code></strong> <em>(number)</em>: [unused] Area of the footprint (ft^2).  Calculated on export.</li>
+<li><strong><code>footprint_perimeter</code></strong> <em>(number)</em>: [unused] Perimeter of the footprint (ft). Calculated on export.</li>
+<li><strong><code>year_built</code></strong> <em>(integer)</em>: The year construction of the building was completed. Can be in the future to indicate future build out. Defaults to current year.</li>
+<li><strong><code>template</code></strong>: Refer to <em><a href="#definitions/templateType">#/definitions/templateType</a></em>.</li>
+<li><strong><code>building_type</code></strong>: Refer to <em><a href="#definitions/buildingType">#/definitions/buildingType</a></em>.</li>
+<li><strong><code>system_type</code></strong>: Refer to <em><a href="#definitions/systemType">#/definitions/systemType</a></em>.</li>
+<li><strong><code>heating_system_fuel_type</code></strong>: Refer to <em><a href="#definitions/heatingSystemFuelType">#/definitions/heatingSystemFuelType</a></em>.</li>
+<li><strong><code>weekday_start_time</code></strong> <em>(string)</em>: [unused] Weekday operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</li>
+<li><strong><code>weekday_duration</code></strong> <em>(string)</em>: [unused] Length of weekend operating hours in 08:30 format, up to 24:00.</li>
+<li><strong><code>weekend_start_time</code></strong> <em>(string)</em>: [unused] Weekend operating hours start time in 08:30 format, using 24-hr clock. Leave blank to use default.</li>
+<li><strong><code>weekend_duration</code></strong> <em>(string)</em>: [unused] Length of weekend operating hours in 08:30 format, up to 24:00.</li>
+<li><strong><code>mixed_type_1</code></strong>: Refer to <em><a href="#definitions/buildingType">#/definitions/buildingType</a></em>.</li>
+<li><strong><code>mixed_type_1_percentage</code></strong> <em>(number)</em>: [unused] Percentage of 1st mixed building space type. Only used when building_type is Mixed use. Minimum: <code>0</code>. Maximum: <code>100</code>.</li>
+<li><strong><code>mixed_type_2</code></strong>: Refer to <em><a href="#definitions/buildingType">#/definitions/buildingType</a></em>.</li>
+<li><strong><code>mixed_type_2_percentage</code></strong> <em>(number)</em>: [unused] Percentage of 2nd mixed building space type. Only used when building_type is Mixed use. Minimum: <code>0</code>. Maximum: <code>100</code>.</li>
+<li><strong><code>mixed_type_3</code></strong>: Refer to <em><a href="#definitions/buildingType">#/definitions/buildingType</a></em>.</li>
+<li><strong><code>mixed_type_3_percentage</code></strong> <em>(number)</em>: [unused] Percentage of 3rd mixed building space type. Only used when building_type is Mixed use. Minimum: <code>0</code>. Maximum: <code>100</code>.</li>
+<li><strong><code>mixed_type_4</code></strong>: Refer to <em><a href="#definitions/buildingType">#/definitions/buildingType</a></em>.</li>
+<li><strong><code>mixed_type_4_percentage</code></strong> <em>(number)</em>: [unused] Percentage of 4th mixed building space type. Only used when building_type is Mixed use. Minimum: <code>0</code>. Maximum: <code>100</code>.</li>
+<li><strong><code>number_of_residential_units</code></strong> <em>(integer)</em>: [unused] Total number of residential units in the building. Required for single-family attached and multifamily residential buildings.</li>
+<li><strong><code>number_of_bedrooms</code></strong> <em>(integer)</em>: [unused] Total number of bedrooms in the building. Required for residential buildings. Must be divisible by the number of residential units.</li>
+<li><strong><code>exterior_lighting_zone</code></strong> <em>(string)</em>: [unused] Choice of exterior lighting zone. Must be one of: <code>["0 - Undeveloped Areas Parks", "1 - Developed Areas Parks", "2 - Neighborhood", "3 - All Other Areas", "4 - High Activity"]</code>.</li>
+<li><strong><code>onsite_parking_fraction</code></strong> <em>(number)</em>: [unused] Fraction of building parking to include in this model.  Choose 1 to include exterior lights for parking in this building model.  Choose 0 if parking is modeled separately. Minimum: <code>0</code>. Maximum: <code>1</code>.</li>
+<li><strong><code>power_factor</code></strong> <em>(number)</em>: [unused] Ratio of the real power used by building to the apparent power seen by grid. Minimum: <code>0</code>.</li>
+<li><strong><code>user_data</code></strong>: [unused] Arbitrary user data.</li>
+<li><strong><code>ev_charging</code></strong> <em>(boolean)</em>: [unused] Should be set to true if EV charging is associated with the building.</li>
+<li><strong><code>ev_charging_station_type</code></strong> <em>(string)</em>: [unused] Indicates whether EV charging associated with the building is for Typical Home, Public or Work charging station. Must be one of: <code>["Typical Home", "Typical Public", "Typical Work"]</code>.</li>
+<li><strong><code>delay_type</code></strong> <em>(string)</em>: [unused] Adds workplace charging flexibility for different scenarios. Min delay scenario indicates EV charging immediately upon arriving to work, Max delay indicates not charging until necessary thereby shifting EV charging load to later in the day and Min power indicates charging EVs at a minimum rate over the parking event. Must be one of: <code>["Min Delay", "Max Delay", "Min Power"]</code>.</li>
+<li><strong><code>ev_charging_behavior</code></strong> <em>(string)</em>: [unused] Describes scenarios for EV charging behavior, Business as Usual implies home dominant charging behavior, Free Workplace Charging at Project Site implies peak power draw from EV charging during morning hours due to EV charging at workplaces and Free Workplace Charging Across Metro Area scenario reduces Home EV charging relative to Free Workplace Charging at Project Site for residents who work elsewhere and can charge their vehicles for free at those workplaces. Must be one of: <code>["Business as Usual", "Free Workplace Charging at Project Site", "Free Workplace Charging Across Metro Area"]</code>.</li>
+<li><strong><code>ev_percent</code></strong> <em>(number)</em>: Denotes the % of vehicles parked at the building that are EVs.</li>
+<li><strong><code>ev_curtailment_frac</code></strong> <em>(number)</em>: [unused] Fraction between 0 and 1 that denotes curtailment of EV charging load to better align EV charging with expected energy production from a solar PV system.</li>
+</ul>
+<h2 id="definitions">Definitions</h2>
+<ul>
+<li><a id="definitions/buildingType"></a><strong><code>buildingType</code></strong> <em>(string)</em>: [unused] Primary building space type. Must be one of: <code>["Single-Family Detached", "Single-Family Attached", "Multifamily", "Single-Family", "Multifamily (2 to 4 units)", "Multifamily (5 or more units)", "Vacant", "Office", "Laboratory", "Nonrefrigerated warehouse", "Food sales", "Public order and safety", "Outpatient health care", "Refrigerated warehouse", "Religious worship", "Public assembly", "Education", "Food service", "Inpatient health care", "Nursing", "Lodging", "Strip shopping mall", "Enclosed mall", "Retail other than mall", "Service", "Mixed use", "Uncovered Parking", "Covered Parking", "null"]</code>.</li>
+<li><a id="definitions/systemType"></a><strong><code>systemType</code></strong> <em>(string)</em>: [unused] Building HVAC system type. Must be one of: <code>["PTAC with baseboard electric", "PTAC with baseboard gas boiler", "PTAC with baseboard district hot water", "PTAC with gas unit heaters", "PTAC with electric coil", "PTAC with gas coil", "PTAC with gas boiler", "PTAC with no heat", "PTAC with district hot water", "PTAC with central air source heat pump", "PTHP", "PSZ-AC with gas coil", "PSZ-AC with baseboard electric", "PSZ-AC with no heat", "PSZ-AC with district hot water", "PSZ-AC with central air source heat pump", "PSZ-HP", "Fan coil district chilled water with no heat", "Fan coil district chilled water with boiler", "Fan coil district chilled water with central air source heat pump", "Fan coil district chilled water with gas unit heaters", "Fan coil district chilled water with baseboard electric", "Fan coil district chilled water with district hot water", "Fan coil chiller with district hot water", "Fan coil air-cooled chiller with district hot water", "Fan coil chiller with boiler", "Fan coil air-cooled chiller with boiler", "Fan coil chiller with central air source heat pump", "Fan coil air-cooled chiller with central air source heat pump", "Fan coil chiller with no heat", "DOAS with fan coil district chilled water with no heat", "DOAS with fan coil district chilled water and boiler", "DOAS with fan coil district chilled water with central air source heat pump", "DOAS with fan coil district chilled water with gas unit heaters", "DOAS with fan coil district chilled water with baseboard electric", "DOAS with fan coil district chilled water with district hot water", "DOAS with fan coil chiller with district hot water", "DOAS with fan coil air-cooled chiller with district hot water", "DOAS with fan coil air-cooled chiller with boiler", "DOAS with fan coil chiller with central air source heat pump", "DOAS with fan coil air-cooled chiller with central air source heat pump", "DOAS with fan coil chiller with no heat", "DOAS with VRF", "VRF", "DOAS with water source heat pumps with ground source heat pump", "Forced air furnace", "Baseboard district hot water", "Baseboard electric", "Baseboard gas boiler", "Baseboard central air source heat pump", "Window AC with no heat", "Window AC with forced air furnace", "Window AC with baseboard district hot water", "Window AC with baseboard electric", "Window AC with unit heaters", "Window AC with baseboard gas boiler", "Window AC with baseboard central air source heat pump", "Direct evap coolers with baseboard district hot water", "Direct evap coolers with baseboard electric", "Direct evap coolers with baseboard gas boiler", "Direct evap coolers with baseboard central air source heat pump", "Direct evap coolers with no heat", "Direct evap coolers with gas unit heaters", "Direct evap coolers with forced air furnace", "Gas unit heaters", "VAV chiller with gas boiler reheat", "VAV chiller with gas coil reheat", "VAV chiller with central air source heat pump reheat", "VAV chiller with PFP boxes", "VAV air-cooled chiller with gas boiler reheat", "VAV air-cooled chiller with central air source heat pump reheat", "VAV air-cooled chiller with district hot water reheat", "VAV air-cooled chiller with gas coil reheat", "VAV air-cooled chiller with no reheat with gas unit heaters", "VAV district chilled water with gas boiler reheat", "VAV district chilled water with central air source heat pump reheat", "VAV district chilled water with no reheat with zone heat pump", "VAV chiller with no reheat with baseboard electric", "VAV air-cooled chiller with no reheat with zone heat pump", "VAV district chilled water with district hot water reheat", "VAV district chilled water with gas coil reheat", "PVAV with gas heat with electric reheat", "PVAV with central air source heat pump reheat", "PVAV with PFP boxes", "Residential - electric resistance and no cooling", "Residential - electric resistance and central air conditioner", "Residential - electric resistance and room air conditioner", "Residential - electric resistance and evaporative cooler", "Residential - furnace and no cooling", "Residential - furnace and central air conditioner", "Residential - furnace and room air conditioner", "Residential - furnace and evaporative cooler", "Residential - boiler and no cooling", "Residential - boiler and central air conditioner", "Residential - boiler and room air conditioner", "Residential - boiler and evaporative cooler", "Residential - air-to-air heat pump", "Residential - mini-split heat pump", "Residential - ground-to-air heat pump"]</code>.</li>
+<li><a id="definitions/heatingSystemFuelType"></a><strong><code>heatingSystemFuelType</code></strong> <em>(string)</em>: [unused] The fuel type of the heating system. This does not apply for certain system types (e.g., electric resistance or heat pumps). Must be one of: <code>["electricity", "natural gas", "fuel oil", "propane", "wood"]</code>.</li>
+<li><a id="definitions/templateType"></a><strong><code>templateType</code></strong> <em>(string)</em>: [unused] Standard template applied to building. Default to site's default_template. Must be one of: <code>["DOE Ref Pre-1980", "DOE Ref 1980-2004", "90.1-2004", "90.1-2007", "90.1-2010", "90.1-2013", "NREL ZNE Ready 2017", "DEER Pre-1975", "DEER 1985", "DEER 1996", "DEER 2003", "DEER 2007", "DEER 2011", "DEER 2014", "DEER 2015", "DEER 2017", "DEER 2020", "DEER 2025", "DEER 2030", "DEER 2035", "DEER 2040", "DEER 2045", "DEER 2050", "DEER 2055", "DEER 2060", "DEER 2065", "DEER 2070", "DEER 2075", "Residential IECC 2006 - Customizable Template Sep 2020", "Residential IECC 2009 - Customizable Template Sep 2020", "Residential IECC 2012 - Customizable Template Sep 2020", "Residential IECC 2015 - Customizable Template Sep 2020", "Residential IECC 2018 - Customizable Template Sep 2020"]</code>.</li>
+<li><a id="definitions/foundationType"></a><strong><code>foundationType</code></strong> <em>(string)</em>: [unused] The foundation type of the building. Required for residential buildings. Must be one of: <code>["slab", "crawlspace - vented", "crawlspace - unvented", "basement - unconditioned", "basement - conditioned", "ambient"]</code>.</li>
+<li><a id="definitions/atticType"></a><strong><code>atticType</code></strong> <em>(string)</em>: [unused] The attic type of the building. Required for single-family residential buildings. Must be one of: <code>["attic - vented", "attic - unvented", "attic - conditioned", "flat roof"]</code>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
