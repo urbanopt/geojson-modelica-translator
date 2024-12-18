@@ -3,6 +3,7 @@
 ## Version 0.9.1
 
 * Fix incorrect link to documentation site by @vtnate
+* Use pre-made GHA workflow to publish docs by @vtnate
 
 ## Version 0.9.0
 
