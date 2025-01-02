@@ -125,32 +125,19 @@ class LoadBase(ModelBase):
                                 f"\nMissing property {ke} for building {self.building_id} in geojson feature file"
                             )
 
-                        try:
-                            building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties["floor_area"])
-                        except KeyError:
-                            building_floor_area_m2 = 0
+                        building_floor_area_m2 = self.ft2_to_m2(
+                            urbanopt_building.feature.properties.get("floor_area", 0)
+                        )
 
-                        try:
-                            number_stories_above_ground = urbanopt_building.feature.properties[
-                                "number_of_stories_above_ground"
-                            ]
-                        except KeyError:
-                            number_stories_above_ground = number_stories
-                            print(
-                                f"\nAssuming all building levels are above ground for building_id: {self.building_id}"
-                            )
+                        number_stories_above_ground = urbanopt_building.feature.properties.get(
+                            "number_of_stories_above_ground", number_stories
+                        )
 
-                        try:
-                            floor_height = urbanopt_building.feature.properties["floor_height"]
-                        except KeyError:
-                            floor_height = 3  # Default height in meters from sdk
-                            print(
-                                f"No floor_height found in geojson feature file for building {self.building_id}. "
-                                f"Using default value of {floor_height}."
-                            )
+                        floor_height = urbanopt_building.feature.properties.get("floor_height", 3)
 
-                        # UO SDK defaults to current year, however TEASER only supports up to Year 2015
-                        # https://github.com/urbanopt/TEASER/blob/master/teaser/data/input/inputdata/TypeBuildingElements.json#L818
+                        # UO SDK defaults to current year.
+                        # TEASER supports buildings built after 2015 since v1.0.1 (https://github.com/RWTH-EBC/TEASER/releases)
+                        # TODO: Consider a different default year now that TEASER supports buildings built after 2015
                         try:
                             year_built = urbanopt_building.feature.properties["year_built"]
                             if urbanopt_building.feature.properties["year_built"] > 2015:
@@ -177,8 +164,6 @@ class LoadBase(ModelBase):
                                 f"Geojson feature file is missing data for building {self.building_id}. "
                                 "This may be caused by referencing a detailed osm in the feature file."
                             )
-                    else:
-                        continue
 
         else:
             raise SystemExit(f"Mapper {mapper} has been used")
