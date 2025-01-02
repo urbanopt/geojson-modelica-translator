@@ -1,10 +1,13 @@
 # :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import logging
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
 from geojson_modelica_translator.utils import convert_c_to_k
+
+logger = logging.getLogger(__name__)
 
 
 class LoadBase(ModelBase):
@@ -144,7 +147,7 @@ class LoadBase(ModelBase):
                                 year_built = 2015
                         except KeyError:
                             year_built = 2015
-                            print(
+                            logger.debug(
                                 f"No year_built found in geojson feature file for building {self.building_id}. "
                                 f"Using default value of {year_built}."
                             )
@@ -160,7 +163,7 @@ class LoadBase(ModelBase):
                                 "year_built": year_built,
                             }
                         except UnboundLocalError:
-                            print(
+                            logger.warning(
                                 f"Geojson feature file is missing data for building {self.building_id}. "
                                 "This may be caused by referencing a detailed osm in the feature file."
                             )
