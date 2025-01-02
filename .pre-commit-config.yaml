@@ -63,3 +63,7 @@ repos:
         args: [
           "--config", ".markdownlint.json"
         ]
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.29.1
+    hooks:
+      - id: typos
