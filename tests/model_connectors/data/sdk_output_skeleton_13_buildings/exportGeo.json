@@ -834,8 +834,7 @@
         "type": "ThermalJunction",
         "buildingId": "10",
         "junction_type": "DES",
-        "connection_type": "Series",
-        "is_ghe_start_loop": true
+        "connection_type": "Series"
       },
       "geometry": {
         "type": "Point",

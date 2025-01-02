@@ -199,7 +199,6 @@
         "id": "95c1831f-3ae6-480e-910e-6d3c440b035c",
         "type": "ThermalJunction",
         "DSId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-        "is_ghe_start_loop": true,
         "junction_type": "DES",
         "connection_type": "Series"
       },
