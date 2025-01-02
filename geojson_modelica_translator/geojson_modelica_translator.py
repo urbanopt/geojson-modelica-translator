@@ -87,21 +87,23 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
                             time_series_load = TimeSeries(sys_params, geojson_load)
                             # couple each time series load to distribution
                             all_couplings.append(
-                                Coupling(time_series_load, distribution, district_type="fifth_generation")
+                                Coupling(time_series_load, distribution, district_type=sys_param_district_type)
                             )
                             all_couplings.append(
-                                Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
+                                Coupling(time_series_load, ambient_water_stub, district_type=sys_param_district_type)
                             )
                             all_couplings.append(
-                                Coupling(time_series_load, design_data, district_type="fifth_generation")
+                                Coupling(time_series_load, design_data, district_type=sys_param_district_type)
                             )
                 # couple each borefield and distribution
-                all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
+                all_couplings.append(Coupling(distribution, borefield, district_type=sys_param_district_type))
                 # couple distribution and ground coupling
-                all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
+                all_couplings.append(Coupling(distribution, ground_coupling, district_type=sys_param_district_type))
                 # empty couple between borefield and ground
-                all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
-            all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
+                all_couplings.append(Coupling(ground_coupling, borefield, district_type=sys_param_district_type))
+            all_couplings.append(
+                Coupling(ambient_water_stub, ambient_water_stub, district_type=sys_param_district_type)
+            )
         else:
             pass  # Create waste heat components & couplings
 
