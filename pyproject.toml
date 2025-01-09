@@ -41,7 +41,7 @@ modelica-builder = "~=0.6.0"
 # modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 pandas = "~2"
 requests = "~=2.28"
-teaser = "1.0.1"
+teaser = "1.1.0"
 # teaser = { git = "https://github.com/RWTH-EBC/TEASER.git", branch = "development" }
 # myst-parser = "^4.0.0"
 
