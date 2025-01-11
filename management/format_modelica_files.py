@@ -4,33 +4,19 @@
 import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 from tempfile import mkstemp
 
 import click
 
+project_root = os.path.dirname(os.path.abspath(__file__))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
+
 SKIP_FILES = ["DistrictEnergySystem.mot", "DistrictEnergySystem5G.mot"]
 TEMPLATE_FILES = Path("geojson_modelica_translator/model_connectors").glob("**/templates/*")
-
-
-@click.command()
-@click.argument("mofile", required=False)
-def fmt_modelica_files(mofile):
-    if mofile is not None:
-        files = [mofile]
-    else:
-        files = TEMPLATE_FILES
-
-    for filepath in files:
-        if os.path.basename(filepath) in SKIP_FILES:
-            continue
-        try:
-            if filepath.suffix == ".mot":
-                preprocess_and_format(str(filepath))
-            elif filepath.suffix == ".mo":
-                apply_formatter(str(filepath))
-        except FormattingError as e:
-            click.echo(f"Error processing file {filepath}:\n    {e}", err=True)
 
 
 class FormattingError(Exception):
@@ -97,7 +83,7 @@ def sub_generic(text, sub_map):
     matches = reversed([m.span() for m in GENERIC_CONTROL_REGEX.finditer(text)])
     for span in matches:
         sub_id = sub_map.add_sub(text[span[0] : span[1]])
-        text = f"{text[:span[0]]}/*{sub_id}*/{text[span[1]:]}"
+        text = f"{text[: span[0]]}/*{sub_id}*/{text[span[1] :]}"
 
     return text
 
@@ -115,7 +101,7 @@ def sub_expression(text, sub_map):
     matches = reversed([m.span() for m in EXPRESSION_REGEX.finditer(text)])
     for span in matches:
         sub_id = sub_map.add_sub(text[span[0] : span[1]])
-        text = f"{text[:span[0]]}{sub_id}{text[span[1]:]}"
+        text = f"{text[: span[0]]}{sub_id}{text[span[1] :]}"
 
     return text
 
@@ -201,3 +187,35 @@ def preprocess_and_format(filename, outfilename=None):
             f.write(formatted_result)
     finally:
         os.remove(tmp_filepath)
+
+
+@click.command()
+@click.argument("mofile", required=False)
+@click.argument("debug", required=False)
+def format_modelica_files(mofile=None, debug=False):
+    if mofile is not None:
+        files = [mofile]
+    else:
+        files = TEMPLATE_FILES
+
+    for filepath in files:
+        if os.path.basename(filepath) in SKIP_FILES:
+            continue
+        try:
+            print(f"Formatting mo/mot file: {filepath}")
+            # Can't format mopt yet.
+            if filepath.suffix == ".mot":
+                if debug:
+                    print(f"Formatting mot file: {filepath}")
+                preprocess_and_format(str(filepath))
+            elif filepath.suffix == ".mo":
+                if debug:
+                    print(f"Formatting mo file: {filepath}")
+                apply_formatter(str(filepath))
+        except FormattingError as e:
+            click.echo(f"Error processing file {filepath}:\n    {e}", err=True)
+
+
+if __name__ == "__main__":
+    """Method to call this python script manually to format files"""
+    format_modelica_files(mofile=None, debug=True)

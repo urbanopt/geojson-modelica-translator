@@ -298,7 +298,7 @@ class SystemParameters:
                     f"Returned non 200 status code trying to download weather file: {weatherfile_data.status_code}"
                 )
         except requests.exceptions.RequestException as e:
-            raise requests.exceptions.RequestException(f"Could not download weather file: {weatherfile_url}" f"\n{e}")
+            raise requests.exceptions.RequestException(f"Could not download weather file: {weatherfile_url}\n{e}")
 
         if not outputname.exists():
             raise FileNotFoundError(f"Could not find or download weather file for {p_download!s}")

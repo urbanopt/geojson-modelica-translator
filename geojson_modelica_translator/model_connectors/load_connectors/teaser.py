@@ -288,8 +288,7 @@ class Teaser(LoadBase):
                 "Boolean",
                 "use_moisture_balance",
                 assigned_value=use_moisture_balance,
-                string_comment="If true, input connector QLat_flow is enabled and room air computes"
-                " moisture balance.",
+                string_comment="If true, input connector QLat_flow is enabled and room air computes moisture balance.",
             )
             # create a integer parameter to evaluate number of connected ports.
             mofile.add_parameter(
@@ -476,7 +475,7 @@ class Teaser(LoadBase):
 
             # Save as the new filename (without building ID)
             new_filename = os.path.join(
-                scaffold.loads_path.files_dir, f'{self.building_name}/{os.path.basename(f).split("_")[1]}'
+                scaffold.loads_path.files_dir, f"{self.building_name}/{os.path.basename(f).split('_')[1]}"
             )
             mofile.save_as(new_filename)
             os.remove(f)

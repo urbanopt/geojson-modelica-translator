@@ -41,15 +41,15 @@ class ResultsTest(TestCaseBase):
 
         assert "Datetime" in csv_data.columns, "The 'Datetime' column is missing from the CSV file."
 
-        assert (
-            "heating_electric_power_d55aa383" in csv_data.columns
-        ), "The heating_electric_power column is missing from the CSV file."
+        assert "heating_electric_power_d55aa383" in csv_data.columns, (
+            "The heating_electric_power column is missing from the CSV file."
+        )
 
         assert "pump_power_3da62a1d" in csv_data.columns, "The pump_power column is missing from the CSV file."
 
-        assert (
-            "electrical_power_consumed" in csv_data.columns
-        ), "The electrical_power_consumed column is missing from the CSV file."
+        assert "electrical_power_consumed" in csv_data.columns, (
+            "The electrical_power_consumed column is missing from the CSV file."
+        )
 
     def test_result_multiple_ghp(self):
         # Construct the path to the Modelica project directory
@@ -83,9 +83,9 @@ class ResultsTest(TestCaseBase):
 
         assert heating_electric_power, "No columns with 'heating_electric_power' found in the CSV file."
 
-        assert (
-            len(heating_electric_power) == 13
-        ), f"Expected 13 columns with 'heating_electric_power_' but found {len(heating_electric_power)}."
+        assert len(heating_electric_power) == 13, (
+            f"Expected 13 columns with 'heating_electric_power_' but found {len(heating_electric_power)}."
+        )
 
         pump_power = [col for col in csv_data_multiple.columns if "pump_power_" in col]
 
@@ -94,6 +94,6 @@ class ResultsTest(TestCaseBase):
 
         assert len(pump_power) == 26, f"Expected 26 columns with 'pump_power' but found {len(pump_power)}."
 
-        assert (
-            "electrical_power_consumed" in csv_data_multiple.columns
-        ), "The electrical_power_consumed column is missing from the CSV file."
+        assert "electrical_power_consumed" in csv_data_multiple.columns, (
+            "The electrical_power_consumed column is missing from the CSV file."
+        )
