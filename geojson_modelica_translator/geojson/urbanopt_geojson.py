@@ -26,6 +26,8 @@ class UrbanOptGeoJson:
         :param building_ids: list[str | int] | None, optional, list of GeoJSON building
             IDs to parse from the file. If None or an empty list, parse all buildings.
         """
+
+        self._filename = Path(filename).resolve()
         if not Path(filename).exists():
             raise GeoJsonValidationError(f"URBANopt GeoJSON file does not exist: {filename}")
 
@@ -102,6 +104,7 @@ class UrbanOptGeoJson:
         # otherwise return the list of values
         return results
 
+    # TODO: test the following methods
     def get_building_paths(self, scenario_name: str) -> list[Path]:
         """Return a list of Path objects for the building GeoJSON files"""
         result = []
@@ -214,18 +217,20 @@ class UrbanOptGeoJson:
             ):
                 feature["properties"][property_name] = property_value
 
-    def get_property_on_building_id(self, building_id: str, property_name: str) -> str:
+    def get_property_on_building_id(self, building_id: str, property_name: str) -> str | None:
         """Get a property on a building_id"""
         for feature in self.data["features"]:
             if feature["properties"]["type"] == "Building" and feature["properties"]["id"] == building_id:
                 return feature["properties"].get(property_name, None)
+        return None
 
-    def get_site_lat_lon(self) -> tuple:
+    def get_site_lat_lon(self) -> tuple | None:
         """Return the site's latitude and longitude"""
         for feature in self.data["features"]:
             if feature["properties"]["name"] == "Site Origin":
                 # reverse the order of the coordinates
                 return feature["geometry"]["coordinates"][::-1]
+        return None
 
     def save(self) -> None:
         """Save the GeoJSON file"""
