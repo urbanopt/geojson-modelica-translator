@@ -62,7 +62,7 @@ class ModelBase:
                 }
             # Get access to loop order output from ThermalNetwork package.
             if "fifth_generation" in district_params and "ghe_parameters" in district_params["fifth_generation"]:
-                self.loop_order: list = load_loop_order(self.system_parameters.filename)
+                self.loop_order = load_loop_order(self.system_parameters.filename)
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """Converts square feet to square meters

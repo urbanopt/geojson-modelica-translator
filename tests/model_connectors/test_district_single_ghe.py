@@ -36,7 +36,7 @@ class DistrictSystemTest(TestCaseBase):
         sys_params = SystemParameters(sys_param_filename)
 
         # read the loop order and create building groups
-        loop_order: list = load_loop_order(sys_param_filename)
+        loop_order = load_loop_order(sys_param_filename)
 
         # create ambient water loop stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
