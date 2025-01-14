@@ -60,7 +60,7 @@ mkdocs-schema-reader = "~=0.11.1"
 mkdocstrings-python = "~=1.12"
 
 [build-system]
-requires = ["poetry-core>=2.0.0"]
+requires = ["poetry-core>=2.0.1"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
