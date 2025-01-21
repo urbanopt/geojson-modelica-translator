@@ -238,8 +238,11 @@ class UrbanOptGeoJson:
                 return feature["properties"].get(property_name, None)
         return None
 
-    def get_site_lat_lon(self) -> tuple | None:
-        """Return the site's latitude and longitude"""
+    def get_site_lat_lon(self) -> list | None:
+        """Return the site's latitude and longitude
+
+        Rounds to 6 decimal places, if the geojson file has more than 6 decimal places.
+        Returns None if the site origin is not found."""
         for feature in self.data["features"]:
             if feature["properties"]["name"] == "Site Origin":
                 # reverse the order of the coordinates
