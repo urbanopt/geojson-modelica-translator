@@ -100,4 +100,49 @@ class GeoJSONTest(TestCase):
         json = UrbanOptGeoJson(filename)
         buildings = json.get_buildings(ids=None)
         assert len(buildings) == 3
-        assert buildings[3]["properties"]["floor_area"] == 34448
+        assert buildings[2]["properties"]["floor_area"] == 34448
+
+    def test_get_building_properties_by_id(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        building_properties = json.get_building_properties_by_id("5a72287837f4de77124f946a")
+        assert building_properties["floor_area"] == 24567
+
+    def test_get_meters_for_building(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        with pytest.raises(KeyError, match="No meters found"):
+            json.get_meters_for_building("5a72287837f4de77124f946a")
+
+    def test_get_meter_readings_for_building(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        with pytest.raises(KeyError, match="No meter readings found"):
+            json.get_meter_readings_for_building(building_id="5a72287837f4de77124f946a", meter_type="Electricity")
+
+    def test_get_monthly_readings(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        with pytest.raises(KeyError, match="No monthly readings found"):
+            json.get_monthly_readings(building_id="5a72287837f4de77124f946a")
+
+    def test_set_property_on_building_id(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        building_id = "5a72287837f4de77124f946a"
+        property_name = "floor_area"
+        property_value = 12345
+        json.set_property_on_building_id(building_id, property_name, property_value)
+        assert json.get_building_properties_by_id(building_id)[property_name] == property_value
+
+    def test_get_property_by_building_id(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        building_id = "5a72287837f4de77124f946a"
+        property_name = "building_type"
+        assert json.get_property_by_building_id(building_id, property_name) == "Retail other than mall"
+
+    def test_get_site_lat_lon(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        assert json.get_site_lat_lon() is None
