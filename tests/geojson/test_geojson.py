@@ -142,7 +142,18 @@ class GeoJSONTest(TestCase):
         property_name = "building_type"
         assert json.get_property_by_building_id(building_id, property_name) == "Retail other than mall"
 
-    def test_get_site_lat_lon(self):
+    def test_get_site_lat_lon_none(self):
         filename = self.data_dir / "geojson_1.json"
         json = UrbanOptGeoJson(filename)
         assert json.get_site_lat_lon() is None
+
+    def test_get_site_lat_lon(self):
+        filename = (
+            self.data_dir.parent.parent
+            / "model_connectors"
+            / "data"
+            / "sdk_output_skeleton_13_buildings"
+            / "exportGeo.json"
+        )
+        json = UrbanOptGeoJson(filename)
+        assert json.get_site_lat_lon() == [42.816772, -78.849485]
