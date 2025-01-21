@@ -185,6 +185,8 @@ class UrbanOptGeoJson:
                 for meter in feature["properties"].get("meters", []):
                     result.append(meter["type"])
 
+        if not result:
+            raise KeyError(f"No meters found for building {building_id}")
         return result
 
     def get_meter_readings_for_building(self, building_id: str, meter_type: str) -> list:
@@ -196,21 +198,31 @@ class UrbanOptGeoJson:
                     if meter["type"] == meter_type:
                         result = meter["readings"]
 
+        if not result:
+            raise KeyError(f"No meter readings found for building {building_id}")
         return result
 
-    def get_monthly_readings(self, building_id: str, meter_type: str) -> list:
+    def get_monthly_readings(self, building_id: str, meter_type: str = "Electricity") -> list:
         """Return a list of monthly electricity consumption for the building_id"""
         result = []
         for feature in self.data["features"]:
-            if feature["properties"]["type"] == "Building" and feature["properties"]["id"] == building_id:
-                result = feature["properties"]["monthly_electricity"]
+            if (
+                feature["properties"]["type"] == "Building"
+                and feature["properties"]["id"] == building_id
+                and meter_type == "Electricity"
+            ):
+                result = feature["properties"].get("monthly_electricity")
 
+        if not result:
+            raise KeyError(f"No monthly readings found for building {building_id}")
         return result
 
     def set_property_on_building_id(
         self, building_id: str, property_name: str, property_value: str, overwrite=True
     ) -> None:
-        """Set a property on a building_id"""
+        """Set a property on a building_id.
+
+        Note this method does not change the GeoJSON file, it only changes the in-memory data."""
         for feature in self.data["features"]:
             if (
                 feature["properties"]["type"] == "Building"
@@ -219,7 +231,7 @@ class UrbanOptGeoJson:
             ):
                 feature["properties"][property_name] = property_value
 
-    def get_property_on_building_id(self, building_id: str, property_name: str) -> str | None:
+    def get_property_by_building_id(self, building_id: str, property_name: str) -> str | None:
         """Get a property on a building_id"""
         for feature in self.data["features"]:
             if feature["properties"]["type"] == "Building" and feature["properties"]["id"] == building_id:
@@ -232,6 +244,7 @@ class UrbanOptGeoJson:
             if feature["properties"]["name"] == "Site Origin":
                 # reverse the order of the coordinates
                 return feature["geometry"]["coordinates"][::-1]
+        _log.warning("Site Origin not found in GeoJSON file")
         return None
 
     def save(self) -> None:
