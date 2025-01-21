@@ -43,7 +43,7 @@ class UrbanOptGeoJson:
             if feature["properties"]["type"] == "Building":
                 building = UrbanOptLoad(feature)
                 if not building_ids or building.id in building_ids:
-                    # Ignore validation failures for features with 'detailed_model_filename' in the properties
+                    # Do not attempt validation for features with 'detailed_model_filename' in the properties
                     # Buildings defined by an osm don't have all keys in geojson, therefore will always fail validation
                     if "detailed_model_filename" not in feature["properties"]:
                         errors = self.schemas.validate("building", building.feature.properties)
@@ -78,6 +78,8 @@ class UrbanOptGeoJson:
         for feature in self.data.features:
             if feature["properties"]["id"] == str(feature_id):
                 return feature
+        if feature_id not in self.data.features:
+            raise KeyError(f"No matches found for id {feature_id}")
 
     def get_feature(self, jsonpath):
         """Return the parameter(s) from a jsonpath.
@@ -99,7 +101,7 @@ class UrbanOptGeoJson:
             # If only one value, then return that value and not a list of values
             results = results[0]
         elif len(results) == 0:
-            return print(f"No matches found for jsonpath {jsonpath}")
+            raise KeyError(f"No matches found for jsonpath {jsonpath}")
 
         # otherwise return the list of values
         return results
