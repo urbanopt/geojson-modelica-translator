@@ -36,3 +36,68 @@ class GeoJSONTest(TestCase):
         filename = self.data_dir / "geojson_1_invalid.json"
         with pytest.raises(GeoJsonValidationError, match="is not valid under any of the given schemas"):
             UrbanOptGeoJson(filename)
+
+    def test_get_all_features(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        feature_properties = json.get_feature("$.features.[*].properties")
+        assert len(feature_properties) == 4
+        # Check that the first feature has the expected properties
+        assert feature_properties[0]["floor_height"] == 9
+
+    def test_get_feature(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        feature = json.get_feature("$.features[1]")
+        assert feature["properties"]["floor_height"] == 3
+
+    def test_get_feature_invalid(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        with pytest.raises(KeyError, match="No matches found"):
+            json.get_feature("$.features[4]")
+
+    def test_get_feature_by_id(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        feature = json.get_feature_by_id("5a7229e737f4de77124f946d")
+        assert feature["properties"]["footprint_area"] == 8612
+
+    def test_get_feature_by_id_invalid(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        with pytest.raises(KeyError, match="No matches found"):
+            json.get_feature_by_id("non-existent-id")
+
+    def test_get_feature_by_id_missing(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        with pytest.raises(SystemExit):
+            json.get_feature_by_id()
+
+    def test_get_building_paths(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        building_paths = json.get_building_paths(scenario_name="baseline_test")
+        assert len(building_paths) == 3
+        # Check that the building paths end with the dir of the building_id
+        assert building_paths[0].stem == "5a6b99ec37f4de7f94020090"
+        assert building_paths[1].stem == "5a72287837f4de77124f946a"
+        assert building_paths[2].stem == "5a7229e737f4de77124f946d"
+        # Check that the correct error is raised if the path doesn't exist
+        with pytest.raises(FileNotFoundError, match="File not found"):
+            json.get_building_paths(scenario_name="baseline")
+
+    def test_get_building_ids(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        building_names = json.get_building_names()
+        assert len(building_names) == 3
+        assert building_names[0] == "Medium Office"
+
+    def test_get_buildings(self):
+        filename = self.data_dir / "geojson_1.json"
+        json = UrbanOptGeoJson(filename)
+        buildings = json.get_buildings(ids=None)
+        assert len(buildings) == 3
+        assert buildings[3]["properties"]["floor_area"] == 34448
