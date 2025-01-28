@@ -149,7 +149,7 @@ equation
     Documentation(
       info="<html>
 <p>
-the model represents variable speed parrallel pumps controller.
+the model represents variable speed parallel pumps controller.
 </p>
 </html>",
       revisions="<html>

@@ -4,7 +4,7 @@ model ChillerStage
   parameter Modelica.Units.SI.Time tWai
     "Waiting time";
   parameter Modelica.Units.SI.Power QEva_nominal
-    "Nominal cooling capaciaty (negative means cooling)";
+    "Nominal cooling capacity (negative means cooling)";
   parameter Modelica.Units.SI.Power criPoiLoa=0.55*QEva_nominal
     "Critical point of cooling load for switching one chiller on or off";
   parameter Modelica.Units.SI.Power dQ=0.25*QEva_nominal

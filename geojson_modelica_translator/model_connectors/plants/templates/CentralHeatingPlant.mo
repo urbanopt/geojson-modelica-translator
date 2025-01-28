@@ -297,7 +297,7 @@ equation
     Documentation(
       info="<html>
    <p>
-   This model presents a heating water central plant for the distrcit systems application.
+   This model presents a heating water central plant for the district systems application.
    </p>
    </html>",
       revisions="<html>
