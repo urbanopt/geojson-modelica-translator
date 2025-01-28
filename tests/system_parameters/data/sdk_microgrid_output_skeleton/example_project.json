@@ -557,7 +557,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "673b1313-10f8-40fd-bac9-083c187fe932",
         "endJunctionId": "6398a8fa-be81-4773-a837-6cb0c35ad1a4",
-        "total_length": 2125,
+        "total_length": 690,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -602,7 +602,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "6398a8fa-be81-4773-a837-6cb0c35ad1a4",
         "endJunctionId": "38c748dc-7e65-4798-9c57-7a5ad07a8830",
-        "total_length": 1344,
+        "total_length": 400,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -647,7 +647,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "6398a8fa-be81-4773-a837-6cb0c35ad1a4",
         "endJunctionId": "4deadac5-3035-4051-91fd-f5910c93cd75",
-        "total_length": 390,
+        "total_length": 120,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -692,7 +692,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "4deadac5-3035-4051-91fd-f5910c93cd75",
         "endJunctionId": "7bba9925-4f7c-4f0d-9b94-d0b8298962ea",
-        "total_length": 1992,
+        "total_length": 689,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -737,7 +737,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "38c748dc-7e65-4798-9c57-7a5ad07a8830",
         "endJunctionId": "df21bd3d-f2a5-40df-a41b-54c8d73829a5",
-        "total_length": 632,
+        "total_length": 200,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -782,7 +782,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "df21bd3d-f2a5-40df-a41b-54c8d73829a5",
         "endJunctionId": "2796b96e-5bc0-4890-9bb0-bcf7b5baf9c7",
-        "total_length": 1216,
+        "total_length": 388,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -831,7 +831,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "2796b96e-5bc0-4890-9bb0-bcf7b5baf9c7",
         "endJunctionId": "258aad84-ed22-48ee-995a-4c5869ae9274",
-        "total_length": 647,
+        "total_length": 208,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -877,7 +877,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "4deadac5-3035-4051-91fd-f5910c93cd75",
         "endJunctionId": "9dae1cd8-ddca-4bdd-8324-61b771b77225",
-        "total_length": 92,
+        "total_length": 29,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -923,7 +923,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "df21bd3d-f2a5-40df-a41b-54c8d73829a5",
         "endJunctionId": "3ad29eb4-60b2-4050-a87c-dcd858184622",
-        "total_length": 80,
+        "total_length": 27,
         "connector_type": "Wire",
         "wires": [
           "OH AL 2/0 A",
@@ -1014,7 +1014,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "b1003fd0-cd27-4de5-9851-f14382846fc4",
         "endJunctionId": "44963046-644a-4c03-b81c-f65d80475015",
-        "total_length": 183,
+        "total_length": 58,
         "wires": [
           "UG TPLX 1/0 A",
           "UG TPLX 1/0 B",
@@ -1059,7 +1059,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "b1003fd0-cd27-4de5-9851-f14382846fc4",
         "endJunctionId": "53c917d8-b04d-4110-bdd9-cbf044e6a1fa",
-        "total_length": 707,
+        "total_length": 245,
         "wires": [
           "UG TPLX 1/0 A",
           "UG TPLX 1/0 B",
@@ -1119,7 +1119,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "3a0599b8-84a9-488a-ab8d-dc62b244ee8c",
         "endJunctionId": "38a42375-ff02-497e-90ef-c5d9eb78850e",
-        "total_length": 307,
+        "total_length": 100,
         "wires": [
           "UG TPLX 1/0 A",
           "UG TPLX 1/0 B",
@@ -1164,7 +1164,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "3a0599b8-84a9-488a-ab8d-dc62b244ee8c",
         "endJunctionId": "753b77b9-b88b-443f-9c3b-3cd977bb3558",
-        "total_length": 255,
+        "total_length": 81,
         "wires": [
           "UG TPLX 1/0 A",
           "UG TPLX 1/0 B",
@@ -1224,7 +1224,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "14080f48-4e0d-4ca6-9ed2-7db253f920f4",
         "endJunctionId": "9d037967-7ac1-4296-8f87-2d4a842d7a87",
-        "total_length": 591,
+        "total_length": 191,
         "wires": [
           "OH TPLX 2/0 S1",
           "OH TPLX 2/0 S2",
@@ -1269,7 +1269,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "14080f48-4e0d-4ca6-9ed2-7db253f920f4",
         "endJunctionId": "e4bcf9d6-e0b7-421c-91d4-554d06c69364",
-        "total_length": 261,
+        "total_length": 85,
         "wires": [
           "OH TPLX 2/0 S2",
           "OH TPLX 2/0 N",
@@ -1314,7 +1314,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "b4d75954-0bde-4707-875a-c2fabffec277",
         "endJunctionId": "40867501-5a41-4626-a9d4-be5444a5b575",
-        "total_length": 436,
+        "total_length": 142,
         "wires": [
           "UG TPLX 2/0 C",
           "UG TPLX 2/0 B",
@@ -1359,7 +1359,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "b4d75954-0bde-4707-875a-c2fabffec277",
         "endJunctionId": "18fe5a25-2547-4c32-a225-8bd455e93c9b",
-        "total_length": 162,
+        "total_length": 50,
         "wires": [
           "UG TPLX 2/0 A",
           "UG TPLX 2/0 B",
@@ -1404,7 +1404,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "ed866262-f11e-4ea7-b5f9-eecfea8ecbaf",
         "endJunctionId": "67b07fac-6666-4954-98b8-3e08b0896646",
-        "total_length": 228,
+        "total_length": 71,
         "wires": [
           "OH TPLX 2/0 N",
           "OH TPLX 2/0 S2",
@@ -1449,7 +1449,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "ed866262-f11e-4ea7-b5f9-eecfea8ecbaf",
         "endJunctionId": "14072af7-3121-4e3d-b85f-c79868702ec9",
-        "total_length": 365,
+        "total_length": 117,
         "wires": [
           "OH TPLX 2/0 S2",
           "OH TPLX 2/0 S1",
@@ -1494,7 +1494,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "ed866262-f11e-4ea7-b5f9-eecfea8ecbaf",
         "endJunctionId": "db52eea7-f395-4fb1-999d-47c82333a4a7",
-        "total_length": 521,
+        "total_length": 168,
         "wires": [
           "OH TPLX 2/0 S1",
           "OH TPLX 2/0 S2",
@@ -1539,7 +1539,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "ed866262-f11e-4ea7-b5f9-eecfea8ecbaf",
         "endJunctionId": "be6e5e58-e73e-4172-a939-250c6a7a3c2c",
-        "total_length": 318,
+        "total_length": 101,
         "wires": [
           "OH TPLX 2/0 S1",
           "OH TPLX 2/0 S2",
@@ -1584,7 +1584,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "ed866262-f11e-4ea7-b5f9-eecfea8ecbaf",
         "endJunctionId": "3d1aa47d-69dd-4200-ab34-9b6244ad82d7",
-        "total_length": 590,
+        "total_length": 192,
         "wires": [
           "OH TPLX 2/0 S1",
           "OH TPLX 2/0 S2",
@@ -1629,7 +1629,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "7bba9925-4f7c-4f0d-9b94-d0b8298962ea",
         "endJunctionId": "194f2b59-5877-4485-85b9-bd0ac6f75e25",
-        "total_length": 128,
+        "total_length": 41,
         "name": "p12",
         "connector_type": "Wire",
         "wires": [
@@ -1675,7 +1675,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "258aad84-ed22-48ee-995a-4c5869ae9274",
         "endJunctionId": "b9ac3056-629d-40cc-b520-cfe15eb7296c",
-        "total_length": 229,
+        "total_length": 76,
         "wires": [
           "OH AL 1/0 A",
           "OH AL 1/0 B",
@@ -1721,7 +1721,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "2796b96e-5bc0-4890-9bb0-bcf7b5baf9c7",
         "endJunctionId": "c8181999-1d82-4f4f-b0d7-7affddf06378",
-        "total_length": 121,
+        "total_length": 37,
         "wires": [
           "OH AL 2/0 A",
           "OH AL 2/0 B",
@@ -1763,7 +1763,7 @@
       "properties": {
         "type": "Road",
         "id": "26956ab1-6006-410f-8761-8c5336af7478",
-        "total_length": 3155
+        "total_length": 1000
       }
     },
     {
@@ -1784,7 +1784,7 @@
       "properties": {
         "type": "Road",
         "id": "a23de270-6f78-4b8c-a94f-c33066027738",
-        "total_length": 1292
+        "total_length": 400
       }
     },
     {
@@ -1805,7 +1805,7 @@
       "properties": {
         "type": "Road",
         "id": "edb9ec8c-1c0d-4127-bbb5-74c4694c5dfc",
-        "total_length": 3197
+        "total_length": 1001
       }
     },
     {
@@ -1826,7 +1826,7 @@
       "properties": {
         "type": "Road",
         "id": "79f54743-f060-4b70-b111-00fa146c9ed1",
-        "total_length": 1360
+        "total_length": 127
       }
     },
     {
@@ -1847,7 +1847,7 @@
       "properties": {
         "type": "Road",
         "id": "46d5a837-c737-4ccc-bcd6-9ed019a559e5",
-        "total_length": 3168
+        "total_length": 1045
       }
     },
     {
@@ -1868,7 +1868,7 @@
       "properties": {
         "type": "Road",
         "id": "bb98d362-6e28-4968-9ca5-67f1c3232f10",
-        "total_length": 1406
+        "total_length": 420
       }
     },
     {
@@ -1889,7 +1889,7 @@
       "properties": {
         "type": "Road",
         "id": "97b60c2e-f4d8-4375-9636-fb3622f4d746",
-        "total_length": 707
+        "total_length": 210
       }
     },
     {
@@ -1910,7 +1910,7 @@
       "properties": {
         "type": "Road",
         "id": "316f45e4-c14a-44ee-b92f-b5521aa1a86b",
-        "total_length": 548
+        "total_length": 170
       }
     }
   ]

@@ -842,7 +842,7 @@
         "endJunctionId": "394db500-2448-485f-97e3-4636cc47f195",
         "startFeatureId": "5",
         "endFeatureId": "2",
-        "total_length": 1624,
+        "total_length": 500,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
         "flow_direction": "Supply"
@@ -900,7 +900,7 @@
         "endJunctionId": "66a8b55f-02b0-489a-9fcb-ada0d0ca28a5",
         "startFeatureId": "2",
         "endFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-        "total_length": 999,
+        "total_length": 325,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
         "flow_direction": "Supply"
@@ -958,7 +958,7 @@
         "endJunctionId": "34e67115-6fde-43bc-9f18-b9022bdd7478",
         "startFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
         "endFeatureId": "5",
-        "total_length": 945,
+        "total_length": 308,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
         "flow_direction": "Supply"
