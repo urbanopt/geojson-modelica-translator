@@ -30,15 +30,6 @@ def convert_c_to_k(c):
     return c + 273.15
 
 
-def convert_ft_to_m(f):
-    """Converts a length in foot to meter
-
-    :param f: float, length in ft
-    :return: float, length in meters, to 3 decimal places
-    """
-    return round(0.3048 * f, 3)
-
-
 def linecount(filename: Path) -> int:
     """Counts the number of lines in a file
     Probably not the most efficient way to do this, but it works
