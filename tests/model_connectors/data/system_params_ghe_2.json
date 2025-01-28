@@ -73,11 +73,11 @@
   "district_system": {
     "fifth_generation": {
       "central_pump_parameters": {
-        "pump_design_head": 300000,
-        "pump_flow_rate": 0.01
+        "pump_design_head": 80000,
+        "pump_flow_rate": 0.024
       },
       "horizontal_piping_parameters": {
-        "hydraulic_diameter": 0.089,
+        "hydraulic_diameter": 0.138,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
         "diameter_ratio": 11,
