@@ -13,7 +13,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import convert_ft_to_m, mbl_version
+from geojson_modelica_translator.utils import mbl_version
 
 logger = logging.getLogger(__name__)
 
@@ -128,8 +128,6 @@ class District:
                         if dict_feature == feature:
                             ordered_pipe_list.append(pipe_length)
 
-                for i in range(len(ordered_pipe_list)):
-                    ordered_pipe_list[i] = convert_ft_to_m(ordered_pipe_list[i])
                 common_template_params["globals"]["lDis"] = (
                     str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
                 )
