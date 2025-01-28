@@ -36,14 +36,14 @@
       "$ref": "#/definitions/ThermalConnectorType"
     },
     "lengths": {
-      "description": "Length of each segment in ft, generated on export.",
+      "description": "Length of each segment in meters, generated on export.",
       "type": "array",
       "items": {
         "type": "number"
       }
     },
     "total_length": {
-      "description": "Total length of the connector in ft, generated on export.",
+      "description": "Total length of the connector in meters, generated on export.",
       "type": "number"
     },
     "start_junction_id": {

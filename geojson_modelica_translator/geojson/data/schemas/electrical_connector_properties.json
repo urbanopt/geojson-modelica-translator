@@ -36,14 +36,14 @@
       "$ref": "#/definitions/ElectricalLineType"
     },
     "lengths": {
-      "description": "Length (ft) of each segment, generated on export.",
+      "description": "Length (meters) of each segment, generated on export.",
       "type": "array",
       "items": {
         "type": "number"
       }
     },
     "total_length": {
-      "description": "Total length (ft) of the line, generated on export.",
+      "description": "Total length (meters) of the line, generated on export.",
       "type": "number"
     },
     "startJunctionId": {
