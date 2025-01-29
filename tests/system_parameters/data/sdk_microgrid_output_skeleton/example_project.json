@@ -1584,7 +1584,7 @@
         "type": "ElectricalConnector",
         "startJunctionId": "ed866262-f11e-4ea7-b5f9-eecfea8ecbaf",
         "endJunctionId": "3d1aa47d-69dd-4200-ab34-9b6244ad82d7",
-        "total_length": 192,
+        "total_length": 590,
         "wires": [
           "OH TPLX 2/0 S1",
           "OH TPLX 2/0 S2",
