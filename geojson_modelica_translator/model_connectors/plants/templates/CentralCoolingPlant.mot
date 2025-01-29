@@ -343,7 +343,7 @@ equation
     __Dymola_experimentSetupOutput,
     Documentation(
       info="<html>
-<p>The schematic drawing of the Lejeune plant is shown as folowing.</p>
+<p>The schematic drawing of the Lejeune plant is shown as following.</p>
 <p><img src=\"Resources/Images/lejeunePlant/lejeune_schematic_drawing.jpg\" alt=\"image\"/> </p>
 <p>In addition, the parameters are listed as below.</p>
 <p>The parameters for the chiller plant.</p>

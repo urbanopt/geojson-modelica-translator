@@ -1,5 +1,8 @@
 {
   "type": "FeatureCollection",
+  "project": {
+    "default_template": "90.1-2013"
+  },
   "features": [
     {
       "type": "Feature",
@@ -174,7 +177,7 @@
         "endJunctionId": "06dd2fa1-d276-4a99-8519-d4d50a4a8ddd",
         "startFeatureId": "5a6b99ec37f4de7f94020090",
         "endFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-        "total_length": 44,
+        "total_length": 14,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
         "flow_direction": "Supply"
@@ -236,7 +239,7 @@
         "endJunctionId": "68a041f4-0f1a-456d-923d-9fdeb247e697",
         "startFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
         "endFeatureId": "abcdefghijklmnopqrstuvwx",
-        "total_length": 39,
+        "total_length": 12,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
         "flow_direction": "Supply"
@@ -298,7 +301,7 @@
         "endJunctionId": "5edaff69-dfe8-485a-b656-cf850f63264c",
         "startFeatureId": "abcdefghijklmnopqrstuvwx",
         "endFeatureId": "5a6b99ec37f4de7f94020090",
-        "total_length": 62,
+        "total_length": 19,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
         "flow_direction": "Supply"

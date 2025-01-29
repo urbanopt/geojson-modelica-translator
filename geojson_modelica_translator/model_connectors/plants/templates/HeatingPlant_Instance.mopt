@@ -4,7 +4,7 @@
   parameter Modelica.Units.SI.MassFlowRate mBoi_flow_nominal_{{ model.id }}=QBoi_nominal_{{ model.id }}/(4200*{{ model.id }}.delT_nominal)
     "Nominal heating water mass flow rate";
   parameter Modelica.Units.SI.Power QBoi_nominal_{{ model.id }}=Q_flow_nominal_{{ model.id }}/{{ model.id }}.numBoi
-    "Nominal heating capaciaty";
+    "Nominal heating capacity";
   parameter Modelica.Units.SI.HeatFlowRate Q_flow_nominal_{{ model.id }}=1000000*2
     "Heating load";
   parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mBoi_flow_nominal_{{ model.id }}
