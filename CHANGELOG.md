@@ -1,9 +1,23 @@
 # Change Log
 
+## Version 0.9.2
+
+### Exciting New Features 🎉
+
+* Change thermal connectors to be measured in meters by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/697>
+
+### Other Changes
+
+* Clean up matching district generation types by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/690>
+* Handle all-caps soil-temp stations, like Frankfurt by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/689>
+* Remove `is_ghe_start_loop` from test geojson files by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/688>
+
+**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.9.1...v0.9.2>
+
 ## Version 0.9.1
 
-* Fix incorrect link to documentation site by @vtnate
-* Use pre-made GHA workflow to publish docs by @vtnate
+* Fix incorrect link to documentation site by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/684>
+* Use pre-made GHA workflow to publish docs by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/685>
 
 ## Version 0.9.0
 
