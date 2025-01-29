@@ -2,8 +2,8 @@
 
 ## Version 0.9.1
 
-* Fix incorrect link to documentation site by @vtnate
-* Use pre-made GHA workflow to publish docs by @vtnate
+* Fix incorrect link to documentation site by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/684>
+* Use pre-made GHA workflow to publish docs by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/685>
 
 ## Version 0.9.0
 
