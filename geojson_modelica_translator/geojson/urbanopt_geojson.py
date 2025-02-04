@@ -186,7 +186,8 @@ class UrbanOptGeoJson:
                     result.append(meter["type"])
 
         if not result:
-            raise KeyError(f"No meters found for building {building_id}")
+            _log.debug(f"No meters found for building {building_id}")
+
         return result
 
     def get_meter_readings_for_building(self, building_id: str, meter_type: str) -> list:
@@ -197,9 +198,9 @@ class UrbanOptGeoJson:
                 for meter in feature["properties"].get("meters", []):
                     if meter["type"] == meter_type:
                         result = meter["readings"]
-
         if not result:
-            raise KeyError(f"No meter readings found for building {building_id}")
+            _log.debug(f"No meter readings found for building {building_id}")
+
         return result
 
     def get_monthly_readings(self, building_id: str, meter_type: str = "Electricity") -> list:
@@ -214,7 +215,8 @@ class UrbanOptGeoJson:
                 result = feature["properties"].get("monthly_electricity")
 
         if not result:
-            raise KeyError(f"No monthly readings found for building {building_id}")
+            _log.debug(f"No monthly readings found for building {building_id}")
+
         return result
 
     def set_property_on_building_id(
