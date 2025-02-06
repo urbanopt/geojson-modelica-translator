@@ -1007,6 +1007,11 @@
           "description": "The ratio of pipe outer diameter to pipe wall thickness",
           "type": "number"
         },
+        "pressure_drop_per_meter": {
+          "description": "Pressure drop per meter of pipe at nominal flow rate (Pascals)",
+          "type": "integer",
+          "minimum": 0
+        },
         "roughness": {
           "description": "Average height of pipe material surface asperities",
           "type": "number"
