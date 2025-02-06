@@ -1,22 +1,22 @@
-within {{ data['project_name'] }}.Districts;
+within {{ data["project_name"] }}.Districts;
 model district
   "Series connection with variable district water mass flow rate"
   extends
     PartialSeries(redeclare
       Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
       bui[nBui](final filNam=filNam), datDes(
-      nBui={{ data['building_load_files'] | count }},
-      mPumDis_flow_nominal={{ data['max_flow_rate'] }},
-      mPla_flow_nominal={{ data['max_flow_rate'] }},
-      mSto_flow_nominal={{ data['max_flow_rate'] / 10 }},
-      dp_length_nominal=250,
+      nBui={{ data["building_load_files"] | count }},
+      mPumDis_flow_nominal={{ data["max_flow_rate"] }},
+      mPla_flow_nominal={{ data["max_flow_rate"] }},
+      mSto_flow_nominal={{ data["max_flow_rate"] / 10 }},
+      dp_length_nominal={{ data["pressure_drop_per_meter"] }},
       epsPla=0.935,
       {{ data['lDis'] }},
       {{ data['lCon'] }}
       )
       );
   parameter String filNam[nBui]={
-    {% for building in data['building_load_files'] %}
+    {% for building in data["building_load_files"] %}
     "{{ building }}"{% if not loop.last %},{% endif %}
     {% endfor %}{% raw %}}
     "Library paths of the files with thermal loads as time series";
