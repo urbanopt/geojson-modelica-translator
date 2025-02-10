@@ -3,7 +3,7 @@ exclude: |
     ^docs/conf.py|
     ^tests/modelica/|
     ^modelica_builder/modelica_parser/|
-    ^docs/license.rst
+    ^docs/license.md
   )
 
 repos:
