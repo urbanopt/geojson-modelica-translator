@@ -52,6 +52,7 @@ class Scaffold:
                 Choose from Loads, Substations, Plants, Districts, Networks. Defaults to [].
         """
         # initialize all of path objects
+        self.controls_path = None
         self.loads_path = None
         self.substations_path = None
         self.plants_path = None
@@ -59,6 +60,9 @@ class Scaffold:
         self.networks_path = None
 
         # leverage the ModelicaPath function
+        if "Controls" not in ignore_paths:
+            self.controllers_path = ModelicaPath("Controls", root_dir=self.project_path, overwrite=self.overwrite)
+
         if "Loads" not in ignore_paths:
             self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
 
