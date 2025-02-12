@@ -70,6 +70,10 @@
   ],
   "district_system": {
     "fifth_generation": {
+      "waste_heat_parameters": {
+        "rate_schedule_path": "./WasteHeatSchedule.mos",
+        "temperature_schedule_path": "./TWasHeaWatSchedule.mos"
+      },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
         "insulation_thickness": 0.2,
