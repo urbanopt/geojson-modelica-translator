@@ -1008,7 +1008,7 @@
           "type": "number"
         },
         "pressure_drop_per_meter": {
-          "description": "Pressure drop per meter of pipe at nominal flow rate (Pascals)",
+          "description": "Pressure drop per meter of pipe at nominal flow rate (Pascals/meter)",
           "type": "integer",
           "minimum": 0
         },
