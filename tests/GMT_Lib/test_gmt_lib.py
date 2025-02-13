@@ -596,7 +596,6 @@ def test_simulate_transformer():
     assert success is True
 
 
-@pytest.mark.skip(reason="This functionality is entirely captured by test_simulate_steam_example")
 def test_build_steam_example():
     # -- Setup
     package_output_dir = PARENT_DIR / "output" / "SteamExample"
