@@ -95,7 +95,7 @@ class SystemParametersTest(unittest.TestCase):
             SystemParameters.loadd(incomplete_teaser_params)
 
         sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
-        assert "'None' is not one of ['Indirect Heating and Cooling', 'Fifth Gen Heat Pump']" in sp.validate()
+        assert "'None' is not one of ['Steam', 'Indirect Heating and Cooling', 'Fifth Gen Heat Pump']" in sp.validate()
         assert "'fraction_latent_person' is a required property" in sp.validate()
         assert "'temp_hw_supply' is a required property" in sp.validate()
         assert "'temp_setpoint_cooling' is a required property" in sp.validate()
