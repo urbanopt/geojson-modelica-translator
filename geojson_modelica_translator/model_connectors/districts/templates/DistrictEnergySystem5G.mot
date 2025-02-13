@@ -17,7 +17,8 @@ model DistrictEnergySystem
     nBui=1,
     mPumDis_flow_nominal=95,
     mPipDis_flow_nominal=95,
-    dp_length_nominal=250,
+    // The keys for District params are read directly from the dict in district.py, such as models, couplings, or pressure_drop_per_meter
+    dp_length_nominal={{ pressure_drop_per_meter }},
     epsPla=0.935,
     final mCon_flow_nominal={18})
     "Design data";
