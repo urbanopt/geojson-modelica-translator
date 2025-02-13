@@ -64,7 +64,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip(reason="District steam systems have not been implemented yet.")
     def test_simulate_steam_system(self):
         self.run_and_assert_in_docker(
