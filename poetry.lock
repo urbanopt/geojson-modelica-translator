@@ -390,27 +390,6 @@ tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.1
 toml = ["tomli"]
 
 [[package]]
-name = "coveralls"
-version = "3.3.1"
-description = "Show coverage stats online via coveralls.io"
-optional = false
-python-versions = ">= 3.5"
-groups = ["dev"]
-markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
-files = [
-    {file = "coveralls-3.3.1-py2.py3-none-any.whl", hash = "sha256:f42015f31d386b351d4226389b387ae173207058832fbf5c8ec4b40e27b16026"},
-    {file = "coveralls-3.3.1.tar.gz", hash = "sha256:b32a8bb5d2df585207c119d6c01567b81fba690c9c10a753bfe27a335bfc43ea"},
-]
-
-[package.dependencies]
-coverage = ">=4.1,<6.0.dev0 || >6.1,<6.1.1 || >6.1.1,<7.0"
-docopt = ">=0.6.1"
-requests = ">=1.0.0"
-
-[package.extras]
-yaml = ["PyYAML (>=3.10)"]
-
-[[package]]
 name = "cycler"
 version = "0.12.1"
 description = "Composable style cycles"
@@ -438,18 +417,6 @@ markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = [
     {file = "distlib-0.3.9-py2.py3-none-any.whl", hash = "sha256:47f8c22fd27c27e25a65601af709b38e4f0a45ea4fc2e710f65755fa8caaaf87"},
     {file = "distlib-0.3.9.tar.gz", hash = "sha256:a60f20dea646b8a33f3e7772f74dc0b2d0772d2837ee1342a00645c81edf9403"},
-]
-
-[[package]]
-name = "docopt"
-version = "0.6.2"
-description = "Pythonic argument parser, that will make you smile"
-optional = false
-python-versions = "*"
-groups = ["dev"]
-markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
-files = [
-    {file = "docopt-0.6.2.tar.gz", hash = "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"},
 ]
 
 [[package]]
@@ -2602,4 +2569,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <3.14"
-content-hash = "5ac7dbafe842b0b52173e9373b7e3aa554f9b1143397cef3d49e2aa3652b8d23"
+content-hash = "96db274887ebf83efa529e4ef21150fe1bd21f02285e972ab6aa6371bde45366"

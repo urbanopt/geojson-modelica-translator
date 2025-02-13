@@ -46,7 +46,6 @@ teaser = "1.1.0"
 # myst-parser = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
-coveralls = "~=3.3"
 rpds-py = "^0.22.0"
 mypy = "~=1.14"
 pre-commit = "~=4.0"
