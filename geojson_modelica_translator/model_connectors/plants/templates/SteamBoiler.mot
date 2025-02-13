@@ -1,0 +1,59 @@
+within {{ project_name }}.Plants;
+model SteamBoiler
+  //   "Single steam boiler model for GMT level 1 testing in district heating application"
+  // Central heating plant
+  parameter Real boiler_efficiency[:]={{ data["nominal_values"]["boiler_efficiency"] }}
+    "Coefficients for boiler efficiency curve";
+  // Steam properties
+  parameter Modelica.Units.SI.AbsolutePressure pSat_GMT={{data["Saturatation pressure"]}}
+    "Saturation pressure, high pressure";
+  parameter Modelica.Units.SI.AbsolutePressure pLow_GMT={{data["Reduced pressure"]}}
+    "Reduced pressure, after PRV";
+  parameter Modelica.Units.SI.Temperature TSat_GMT=MediumSte.saturationTemperature(
+    pSat_GMT)
+    "Saturation temperature, at high pressure";
+  // Building
+  parameter Integer N_GMT={{data["number_of_loads"]}}
+    "Number of buildings";
+  // Distribution Network
+  parameter Modelica.Units.SI.PressureDifference dp_nominal_GMT={{data["condensate_pressure_drop_nominal"]}}
+    "Pressure drop of distribution at nominal mass flow rate";
+  extends Buildings.Experimental.DHC.Examples.Steam.SingleBoiler(
+    // Central heating plant
+    pla(
+      boi(
+        a=boiler_efficiency
+          "Boiler efficiency")),
+    pSat=pSat_GMT,
+    pLow=pLow_GMT,
+    TSat=TSat_GMT,
+    QBui_flow_nominal=QBui_flow_nominal_GMT,
+    N=N_GMT,
+    dp_nominal=dp_nominal_GMT);
+  annotation (
+    Icon(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+      <p>This model validates the steam boiler in district heating system template model implemented in
+<a href=\"Buildings.Experimental.DHC.Examples.Steam.SingleBoiler.mo\">
+Buildings.Experimental.DHC.Examples.Steam.SingleBoiler.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+
+February 01, 2024 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end SteamBoiler;

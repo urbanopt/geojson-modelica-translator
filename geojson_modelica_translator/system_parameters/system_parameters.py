@@ -799,10 +799,12 @@ class SystemParameters:
         # Make sys_param template entries for each feature_id
         building_list = []
         for building in building_ids:
-            if "4G" in district_type:
+            if "steam" in district_type:
                 building_params = deepcopy(self.param_template["buildings"][0])
-            elif "5G" in district_type:
+            if "4G" in district_type:
                 building_params = deepcopy(self.param_template["buildings"][1])
+            elif "5G" in district_type:
+                building_params = deepcopy(self.param_template["buildings"][2])
             building_params["geojson_id"] = str(building)
             building_list.append(building_params)
 
@@ -995,12 +997,19 @@ class SystemParameters:
             elif district_type == "5G":
                 # Process waste-heat inputs
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
-            # remove fourth generation district system type
+            # remove other district system types
+            del self.param_template["district_system"]["first_generation"]
             del self.param_template["district_system"]["fourth_generation"]
-        elif district_type in ["4G", "steam"]:
+        elif district_type in ["4G"]:
             # remove fifth generation district system type if it exists in template and ghe is not true
             with suppress(KeyError):
                 del self.param_template["district_system"]["fifth_generation"]
+                del self.param_template["district_system"]["first_generation"]
+        elif district_type in ["steam"]:
+            # TODO: process steam inputs
+            # remove other district system types
+            del self.param_template["district_system"]["fourth_generation"]
+            del self.param_template["district_system"]["fifth_generation"]
 
         # save the file to disk
         self.save()
