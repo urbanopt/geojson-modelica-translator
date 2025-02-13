@@ -266,9 +266,10 @@
           ]
         },
         "ets_model": {
-          "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
+          "description": "Energy transfer station model. One side is connected to the district loop and the other side is connected to the building loops.",
           "type": "string",
           "enum": [
+            "Steam",
             "Indirect Heating and Cooling",
             "Fifth Gen Heat Pump"
           ]
@@ -282,6 +283,9 @@
             },
             {
               "$ref": "#/definitions/fifth_gen_ets_parameters"
+            },
+            {
+              "$ref": "#/definitions/steam_ets_parameters"
             }
           ]
         },
@@ -333,6 +337,11 @@
         {
           "required": [
             "fifth_gen_ets_parameters"
+          ]
+        },
+        {
+          "required": [
+            "steam_ets_parameters"
           ]
         }
       ],
@@ -405,6 +414,17 @@
         }
       },
       "additionalProperties": false
+    },
+    "steam_ets_parameters": {
+      "description": "The parameters associated with the steam energy transfer station.",
+      "type": "object",
+      "properties": {
+        "heat_flow_nominal": {
+          "description": "Nominal heat flow rate. (W)",
+          "type": "number",
+          "default": 10000
+        }
+      }
     },
     "ets_indirect_parameters": {
       "description": "The parameters associated with the indirect energy transfer station.",
