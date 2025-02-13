@@ -1,0 +1,1864 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/system_design_parameter_def",
+  "definitions": {
+    "system_design_parameter_def": {
+      "title": "System Design Parameter Schema",
+      "description": "Definition of System Design Parameters. (Version 0.1). Fields prefaced with [unused] in the description are placeholders (or informational) and are not actually connected in the GMT.",
+      "type": "object",
+      "properties": {
+        "buildings": {
+          "description": "Parameters for individual buildings.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/building_def"
+          }
+        },
+        "connectors": {
+          "$ref": "#/definitions/connector_def"
+        },
+        "district_system": {
+          "description": "Parameters associated with district systems.",
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/first_generation_def"
+            },
+            {
+              "$ref": "#/definitions/fourth_generation_def"
+            },
+            {
+              "$ref": "#/definitions/fifth_generation_def"
+            }
+          ]
+        },
+        "weather": {
+          "description": "Path, relative or absolute, to a weather file for the district in Modelica format (MOS).",
+          "type": "string"
+        },
+        "topology": {
+          "title": "defaults",
+          "description": "[unused] Parameters associated with district topologies.",
+          "type": "object",
+          "properties": {
+            "topology_parameters": {
+              "description": "Description of topology style",
+              "$ref": "#/definitions/topology_def"
+            },
+            "topology_optimization": {
+              "description": "Perform topology optimization?",
+              "type": "boolean"
+            },
+            "cost_function": {
+              "description": "Cost function to use in topology optimization",
+              "$ref": "#/definitions/cost_function_definition"
+            },
+            "optimization_approach": {
+              "description": "Approach to use for topology optimization",
+              "$ref": "#/definitions/optimization_definition"
+            },
+            "time_period": {
+              "description": "Time horizon for topology optimization.This parameter is used only if LCC is used as the cost function.",
+              "type": "integer"
+            },
+            "discount_rate": {
+              "description": "Discount rate for topology optimization. This parameter is used only if LCC is used as the cost function.",
+              "type": "integer"
+            },
+            "convergence_criteria": {
+              "description": "Convergence criteria used to indicate to the optimization algorithm when to stop. This could represent a number of iterations.",
+              "type": "integer"
+            }
+          },
+          "dependencies": {
+            "topology_optimization": [
+              "cost_function",
+              "optimization_approach",
+              "time_period",
+              "discount_rate",
+              "convergence_criteria"
+            ]
+          },
+          "additionalProperties": false
+        },
+        "electrical_grid": {
+          "$ref": "#/definitions/electrical_grid_parameters"
+        },
+        "photovoltaic_panels": {
+          "description": "Photovoltaic systems (rooftop or ground mount) associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pv_parameters"
+          }
+        },
+        "wind_turbines": {
+          "description": "Wind turbines associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/wind_turbine_parameters"
+          }
+        },
+        "combined_heat_and_power_systems": {
+          "description": "Combined heat and power (CHP) systems associated with the district - from scenario optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/combined_heat_and_power_parameters"
+          }
+        },
+        "capacitor_banks": {
+          "description": "Capacitor banks associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/capacitor_bank_parameters"
+          }
+        },
+        "substations": {
+          "description": "Substations associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/substation_parameters"
+          }
+        },
+        "transformers": {
+          "description": "Transformers associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/transformer_parameters"
+          }
+        },
+        "power_converters": {
+          "description": "Power converters associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/power_converter_parameters"
+          }
+        },
+        "distribution_lines": {
+          "description": "Distribution lines associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/distribution_line_parameters"
+          }
+        },
+        "ac_inductive_loads": {
+          "description": "AC inductive loads associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ac_inductive_load_parameters"
+          }
+        },
+        "dc_loads": {
+          "description": "DC loads associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dc_load_parameters"
+          }
+        },
+        "battery_banks": {
+          "description": "Battery banks associated with the district",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/battery_bank_parameters"
+          }
+        }
+      },
+      "required": [
+        "weather"
+      ],
+      "additionalProperties": false
+    },
+    "topology_def": {
+      "title": "defaults",
+      "description": "[unused] Parameters associated with district topologies.",
+      "type": "object",
+      "properties": {
+        "configuration": {
+          "type": "string",
+          "enum": [
+            "Radial",
+            "Ring",
+            "Mesh",
+            "Out and Back"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "cost_function_definition": {
+      "title": "defaults",
+      "description": "[unused] Possible cost functions for the topology optimization problem",
+      "type": "object",
+      "properties": {
+        "cost_function": {
+          "type": "string",
+          "enum": [
+            "Energy",
+            "Life Cycle Cost",
+            "Carbon Emissions"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "optimization_definition": {
+      "title": "defaults",
+      "description": "[unused] Optimization approach for the topology optimization problem",
+      "type": "object",
+      "properties": {
+        "optimization_approach": {
+          "type": "string",
+          "enum": [
+            "Black box",
+            "Gradient-based"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "building_def": {
+      "description": "Specific parameters for each building.",
+      "type": "object",
+      "properties": {
+        "geojson_id": {
+          "description": "The GeoJSON ID as defined in the GeoJSON file.",
+          "type": "string"
+        },
+        "load_model": {
+          "description": "Type of load model to use for the building.",
+          "type": "string",
+          "enum": [
+            "rc",
+            "time_series",
+            "time_series_massflow_temperature",
+            "spawn"
+          ]
+        },
+        "load_model_parameters": {
+          "type": "object",
+          "properties": {
+            "spawn": {
+              "$ref": "#/definitions/spawn_model_parameters"
+            },
+            "rc": {
+              "$ref": "#/definitions/rc_model_parameters"
+            },
+            "time_series": {
+              "$ref": "#/definitions/time_series_model_parameters"
+            }
+          },
+          "additionalProperties": false,
+          "anyOf": [
+            {
+              "required": [
+                "spawn"
+              ]
+            },
+            {
+              "required": [
+                "rc"
+              ]
+            },
+            {
+              "required": [
+                "time_series"
+              ]
+            }
+          ]
+        },
+        "ets_model": {
+          "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
+          "type": "string",
+          "enum": [
+            "Indirect Heating and Cooling",
+            "Fifth Gen Heat Pump"
+          ]
+        },
+        "ets_model_parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "$ref": "#/definitions/ets_indirect_parameters"
+            },
+            {
+              "$ref": "#/definitions/fifth_gen_ets_parameters"
+            }
+          ]
+        },
+        "photovoltaic_panels": {
+          "description": "Photovoltaic systems (rooftop or ground mount) associated with the building - from feature optimization",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pv_parameters"
+          }
+        },
+        "diesel_generators": {
+          "description": "Diesel generators associated with the building",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/diesel_generator_parameters"
+          }
+        },
+        "battery_banks": {
+          "description": "Battery banks associated with the building",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/battery_bank_parameters"
+          }
+        },
+        "electric_load": {
+          "description": "microgrid-related load fields",
+          "properties": {
+            "nominal_voltage": {
+              "description": "Nominal load voltage (V)",
+              "type": "number"
+            },
+            "max_power": {
+              "description": "Maximum load power (kW)",
+              "type": "number"
+            },
+            "max_reactive_power": {
+              "description": "Maximum reactive power (kvar)",
+              "type": "number"
+            }
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "ets_indirect_parameters"
+          ]
+        },
+        {
+          "required": [
+            "fifth_gen_ets_parameters"
+          ]
+        }
+      ],
+      "required": [
+        "geojson_id",
+        "ets_model",
+        "load_model",
+        "load_model_parameters"
+      ]
+    },
+    "connector_def": {
+      "description": "[unused] Parameters associated with the connectors in a district system.",
+      "type": "object",
+      "properties": {
+        "pipe_diameter": {
+          "description": "[unused] Pipe diameter. (m)",
+          "type": "number"
+        },
+        "pipe_insulation_rvalue": {
+          "description": "[unused] Pipe insulation R-Value. (m2-K/W)",
+          "type": "number"
+        },
+        "pipe_location": {
+          "description": "[unused] Location of the pipe.",
+          "type": "string",
+          "enum": [
+            "Tunnel",
+            "Buried"
+          ]
+        },
+        "pipe_material": {
+          "description": "[unused] Pipe material (to be used for determining surface roughness) ",
+          "type": "string",
+          "enum": [
+            "Plastic",
+            "Steel"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "district_system_def": {
+      "description": "Parameters associated with the district system.",
+      "type": "object",
+      "properties": {
+        "return_configuration": {
+          "description": "[unused] Type of return configuration for the overall district system. MW - not really needed. Just use pipes with supply/return.",
+          "type": "string",
+          "enum": [
+            "Direct Return",
+            "Reverse Return"
+          ]
+        },
+        "connection_configuration": {
+          "description": "[unused] Type of connection of buildings to the loop",
+          "type": "string",
+          "enum": [
+            "Series",
+            "Parallel"
+          ]
+        },
+        "central_cooling_plant_parameters": {
+          "$ref": "#/definitions/central_cooling_plant_parameters"
+        },
+        "central_heating_plant_parameters": {
+          "$ref": "#/definitions/central_heating_plant_parameters"
+        },
+        "combined_heat_and_power_parameters": {
+          "$ref": "#/definitions/combined_heat_and_power_parameters"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ets_indirect_parameters": {
+      "description": "The parameters associated with the indirect energy transfer station.",
+      "type": "object",
+      "properties": {
+        "heat_flow_nominal": {
+          "description": "Nominal heat flow rate. (W)",
+          "type": "number",
+          "default": 10000
+        },
+        "heat_exchanger_efficiency": {
+          "description": "Heat exchanger efficiency. (fraction)",
+          "type": "number",
+          "default": 0.8
+        },
+        "heat_exchanger_primary_pressure_drop": {
+          "description": "Heat exchanger primary side pressure drop. (Pa)",
+          "type": "number",
+          "default": 500
+        },
+        "heat_exchanger_secondary_pressure_drop": {
+          "description": "Heat exchanger secondary side pressure drop. (Pa)",
+          "type": "number",
+          "default": 500
+        },
+        "nominal_mass_flow_building": {
+          "description": "Building water nominal flow rate. (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "nominal_mass_flow_district": {
+          "description": "District water nominal flow rate. (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "valve_pressure_drop": {
+          "description": "Valve pressure drop. (Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "cooling_supply_water_temperature_building": {
+          "description": "Chilled water supply temperature building side. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "heating_supply_water_temperature_building": {
+          "description": "Heating water supply temperature building side. (C)",
+          "type": "number",
+          "default": 50
+        },
+        "delta_temp_hw_district": {
+          "description": "Heating water temperature difference on on the district side. (deltaC)",
+          "type": "number",
+          "default": 20
+        },
+        "delta_temp_hw_building": {
+          "description": "Design temperature differential on the building side. (deltaC)",
+          "type": "number",
+          "default": 15
+        },
+        "delta_temp_chw_building": {
+          "description": "Chilled water temperature difference on the building side. (deltaC)",
+          "type": "number",
+          "default": 5
+        },
+        "delta_temp_chw_district": {
+          "description": "Design temperature differential on the district side. (deltaC)",
+          "type": "number",
+          "default": 8
+        },
+        "cooling_controller_y_max": {
+          "description": "Controller upper limit",
+          "type": "number",
+          "default": 1
+        },
+        "cooling_controller_y_min": {
+          "description": "Controller lower limit",
+          "type": "number",
+          "default": 0
+        },
+        "heating_controller_y_max": {
+          "description": "Controller upper limit",
+          "type": "number",
+          "default": 1
+        },
+        "heating_controller_y_min": {
+          "description": "Controller lower limit",
+          "type": "number",
+          "default": 0
+        }
+      },
+      "required": [
+        "heat_flow_nominal",
+        "heat_exchanger_efficiency",
+        "heat_exchanger_primary_pressure_drop",
+        "heat_exchanger_secondary_pressure_drop",
+        "nominal_mass_flow_building",
+        "nominal_mass_flow_district",
+        "valve_pressure_drop",
+        "cooling_supply_water_temperature_building",
+        "heating_supply_water_temperature_building",
+        "delta_temp_hw_district",
+        "delta_temp_hw_building",
+        "delta_temp_chw_building",
+        "delta_temp_chw_district",
+        "cooling_controller_y_max",
+        "cooling_controller_y_min",
+        "heating_controller_y_max",
+        "heating_controller_y_min"
+      ]
+    },
+    "spawn_model_parameters": {
+      "description": "Parameters associated with spawn models.",
+      "type": "object",
+      "properties": {
+        "temp_setpoint_cooling": {
+          "description": "Cooling setpoint air temperature. (C)",
+          "type": "number",
+          "default": 24
+        },
+        "temp_setpoint_heating": {
+          "description": "Heating setpoint air temperature. (C)",
+          "type": "number",
+          "default": 20
+        },
+        "temp_hw_supply": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 40
+        },
+        "temp_hw_return": {
+          "description": "Heating water return temperature. (C)",
+          "type": "number",
+          "default": 35
+        },
+        "temp_chw_supply": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "temp_chw_return": {
+          "description": "Chilled water return temperature. (C)",
+          "type": "number",
+          "default": 12
+        },
+        "has_liquid_heating": {
+          "description": "Whether the building has liquid heating.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_liquid_cooling": {
+          "description": "Whether the building has liquid cooling.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_electric_heating": {
+          "description": "Whether the building has electric heating.",
+          "type": "boolean",
+          "default": false
+        },
+        "has_electric_cooling": {
+          "description": "Whether the building has electric cooling.",
+          "type": "boolean",
+          "default": false
+        },
+        "idf_filename": {
+          "description": "Absolute path or relative path from location where file instance is saved.",
+          "type": "string"
+        },
+        "thermal_zone_names": {
+          "description": "List of thermal zones in the Spawn / EnergyPlus model.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "zone_nom_htg_loads": {
+          "description": "Array of zone nominal heating loads (values should be >0) ",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "zone_nom_clg_loads": {
+          "description": "Array of zone nominal cooling loads (values should be <0)",
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "temp_setpoint_cooling",
+        "temp_setpoint_heating",
+        "temp_hw_supply",
+        "temp_hw_return",
+        "temp_chw_supply",
+        "temp_chw_return",
+        "idf_filename",
+        "thermal_zone_names",
+        "zone_nom_htg_loads",
+        "zone_nom_clg_loads"
+      ],
+      "additionalProperties": false
+    },
+    "rc_model_parameters": {
+      "description": "Parameters associated with RC models.",
+      "type": "object",
+      "properties": {
+        "temp_setpoint_cooling": {
+          "description": "Cooling setpoint air temperature. (C)",
+          "type": "number",
+          "default": 24
+        },
+        "temp_setpoint_heating": {
+          "description": "Heating setpoint air temperature. (C)",
+          "type": "number",
+          "default": 20
+        },
+        "temp_hw_supply": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 40
+        },
+        "temp_hw_return": {
+          "description": "Heating water return temperature. (C)",
+          "type": "number",
+          "default": 35
+        },
+        "temp_chw_supply": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "temp_chw_return": {
+          "description": "Chilled water return temperature. (C)",
+          "type": "number",
+          "default": 12
+        },
+        "has_liquid_heating": {
+          "description": "Whether the building has liquid heating.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_liquid_cooling": {
+          "description": "Whether the building has liquid cooling.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_electric_heating": {
+          "description": "Whether the building has electric heating.",
+          "type": "boolean",
+          "default": false
+        },
+        "has_electric_cooling": {
+          "description": "Whether the building has electric cooling.",
+          "type": "boolean",
+          "default": false
+        },
+        "order": {
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "default": 2
+        },
+        "fraction_latent_person": {
+          "description": "Fraction latent of sensible persons load (e.g., 0.8 = home, 1.25 = office).",
+          "type": "number",
+          "default": 1.25
+        }
+      },
+      "required": [
+        "temp_setpoint_cooling",
+        "temp_setpoint_heating",
+        "temp_hw_supply",
+        "fraction_latent_person"
+      ],
+      "additionalProperties": false
+    },
+    "time_series_model_parameters": {
+      "description": "Parameters associated with time series models.",
+      "type": "object",
+      "properties": {
+        "temp_setpoint_cooling": {
+          "description": "Cooling setpoint air temperature. (C)",
+          "type": "number",
+          "default": 24
+        },
+        "temp_setpoint_heating": {
+          "description": "Heating setpoint air temperature. (C)",
+          "type": "number",
+          "default": 20
+        },
+        "temp_hw_supply": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 40
+        },
+        "temp_hw_return": {
+          "description": "Heating water return temperature. (C)",
+          "type": "number",
+          "default": 35
+        },
+        "temp_chw_supply": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "temp_chw_return": {
+          "description": "Chilled water return temperature. (C)",
+          "type": "number",
+          "default": 12
+        },
+        "has_liquid_heating": {
+          "description": "Whether the building has liquid heating.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_liquid_cooling": {
+          "description": "Whether the building has liquid cooling.",
+          "type": "boolean",
+          "default": true
+        },
+        "has_electric_heating": {
+          "description": "Whether the building has electric heating.",
+          "type": "boolean",
+          "default": false
+        },
+        "has_electric_cooling": {
+          "description": "Whether the building has electric cooling.",
+          "type": "boolean",
+          "default": false
+        },
+        "max_electrical_load": {
+          "description": "Maximum electrical load from OpenStudio building simulation. (W)",
+          "type": "number",
+          "default": 0
+        },
+        "filepath": {
+          "type": "string"
+        },
+        "delta_temp_air_cooling": {
+          "description": "Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC)",
+          "type": "number",
+          "default": 10
+        },
+        "delta_temp_air_heating": {
+          "description": "Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC)",
+          "type": "number",
+          "default": 18
+        }
+      },
+      "required": [
+        "temp_setpoint_cooling",
+        "temp_setpoint_heating",
+        "temp_hw_supply",
+        "filepath",
+        "delta_temp_air_cooling",
+        "delta_temp_air_heating"
+      ],
+      "additionalProperties": false
+    },
+    "central_cooling_plant_parameters": {
+      "description": "Central cooling plant with maximum number of two chillers. Parameters associated with the model",
+      "type": "object",
+      "properties": {
+        "cooling_tower_fan_power_nominal": {
+          "description": "Cooling tower fan power (W)",
+          "type": "number",
+          "default": 5000
+        },
+        "heat_flow_nominal": {
+          "description": "Nominal district cooling load. (W)",
+          "type": "number",
+          "default": 8000
+        },
+        "mass_chw_flow_nominal": {
+          "description": "Nominal chilled water mass flow rate. (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "chiller_water_flow_minimum": {
+          "description": " Chiller minimum  water mass flow rate. (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "mass_cw_flow_nominal": {
+          "description": "Nominal condenser water mass flow rate. (kg/s)",
+          "type": "number",
+          "default": 10
+        },
+        "chw_pump_head": {
+          "description": "Chilled water pump head (Pa)",
+          "type": "number",
+          "default": 300000
+        },
+        "cw_pump_head": {
+          "description": "Cooling water pump head (Pa)",
+          "type": "number",
+          "default": 200000
+        },
+        "pressure_drop_chw_nominal": {
+          "description": "Nominal chilled water (evaporator) side pressure drop. (Pa)",
+          "type": "number",
+          "default": 55000
+        },
+        "pressure_drop_cw_nominal": {
+          "description": "Nominal cooling water (condenser) side pressure drop. (Pa)",
+          "type": "number",
+          "default": 80000
+        },
+        "pressure_drop_setpoint": {
+          "description": "The chilled water circuit pressure drop setpoint. (Pa)",
+          "type": "number",
+          "default": 50000
+        },
+        "temp_setpoint_chw": {
+          "description": "District circuit chilled water temperature setpoint. (C)",
+          "type": "number",
+          "default": 5
+        },
+        "pressure_drop_chw_valve_nominal": {
+          "description": "Chiller isolation valve pressure drop. (Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "pressure_drop_cw_pum_nominal": {
+          "description": "Cooling tower isolation valve pressure drop. (Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "temp_air_wb_nominal": {
+          "description": "Design air wet-bulb temperature. (C)",
+          "type": "number",
+          "default": 25
+        },
+        "temp_cw_in_nominal": {
+          "description": "Nominal cooling water inlet temperature. (C)",
+          "type": "number",
+          "default": 35
+        },
+        "cooling_tower_water_temperature_difference_nominal": {
+          "description": "Nominal water temperature difference of the tower. (C)",
+          "type": "number",
+          "default": 7
+        },
+        "delta_temp_approach": {
+          "description": "Approach temperature difference. (deltaC)",
+          "type": "number",
+          "default": 3
+        },
+        "ratio_water_air_nominal": {
+          "description": "To be defined",
+          "type": "number",
+          "default": 0.625
+        }
+      },
+      "required": [
+        "temp_setpoint_chw"
+      ]
+    },
+    "central_heating_plant_parameters": {
+      "description": "Central heating plant with maximum number of two boilers. Parameters associated with the model.",
+      "type": "object",
+      "properties": {
+        "heat_flow_nominal": {
+          "description": "Nominal district heating load. (W)",
+          "type": "number",
+          "default": 8000
+        },
+        "mass_hhw_flow_nominal": {
+          "description": "Nominal heating water mass flow rate. (kg/s)",
+          "type": "number",
+          "default": 1
+        },
+        "boiler_water_flow_minimum": {
+          "description": "[unused] Boiler minimum  water mass flow rate. (kg/s)",
+          "type": "number",
+          "default": 0.1
+        },
+        "pressure_drop_hhw_nominal": {
+          "description": "[unused] Nominal heating water (boiler side) pressure drop. (Pa)",
+          "type": "number",
+          "default": 55000
+        },
+        "temp_setpoint_hhw": {
+          "description": "District circuit heating water temperature setpoint. (C)",
+          "type": "number",
+          "default": 55
+        },
+        "pressure_drop_hhw_valve_nominal": {
+          "description": "Boiler isolation valve pressure drop. (Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "chp_installed": {
+          "description": "True if heating plant is a Combined Heat and Power plant",
+          "type": "boolean"
+        },
+        "chp_thermal_following": {
+          "description": "True if CHP is thermal_following (prioritized thermal heat over electricity)",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "temp_setpoint_hhw"
+      ]
+    },
+    "combined_heat_and_power_parameters": {
+      "description": "Combined heat and power (CHP) parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "fuel_type": {
+          "description": "Type of fuel used",
+          "type": "string",
+          "enum": [
+            "Gas",
+            "Oil"
+          ]
+        },
+        "number_of_machines": {
+          "description": "Number of machines",
+          "type": "integer"
+        },
+        "single_electricity_generation_capacity": {
+          "description": "Single machine electricity generation capacity (kW)",
+          "type": "number"
+        },
+        "performance_data_path": {
+          "description": "Relative path from location where file instance is saved to the .mo file which records the performance curve of a CHP",
+          "type": "string"
+        }
+      }
+    },
+    "central_steam_plant_parameters": {
+      "description": "Central steam heating plant.",
+      "type": "object",
+      "properties": {
+        "boiler_efficiency": {
+          "description": "Boiler efficiency (fraction)",
+          "type": "number",
+          "default": 0.7
+        },
+        "steam_pressure_setpoint": {
+          "description": "The saturation pressure, high pressure setpoint. (Pa)",
+          "type": "number",
+          "default": 500000
+        },
+        "reduced_pressure_setpoint": {
+          "description": "The reduced pressure, after the PRV. (Pa)",
+          "type": "number",
+          "default": 200000
+        },
+        "condensate_pressure_drop_nominal": {
+          "description": "Nominal pressure drop along the condensate return pipe. (Pa)",
+          "type": "number",
+          "default": 6000
+        }
+      }
+    },
+    "ghe_parameters": {
+      "description": "Parameters associated with Ground Heat Exchangers.",
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "Version of GHE Designer",
+          "type": "string"
+        },
+        "ghe_dir": {
+          "description": "Results directory for GHE Designer. Absolute path, or relative to the sys-param file.",
+          "type": "string"
+        },
+        "ghe_specific_params": {
+          "description": "Specific properties for each Ground Heat Exchanger",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ghe_specific_params_def"
+          }
+        },
+        "pipe": {
+          "$ref": "#/definitions/pipe_def"
+        },
+        "fluid": {
+          "$ref": "#/definitions/fluid_def"
+        },
+        "grout": {
+          "$ref": "#/definitions/grout_def"
+        },
+        "simulation": {
+          "$ref": "#/definitions/simulation_def"
+        },
+        "geometric_constraints": {
+          "$ref": "#/definitions/geometric_constraints_def"
+        },
+        "design": {
+          "$ref": "#/definitions/design_def"
+        }
+      },
+      "required": [
+        "ghe_specific_params",
+        "pipe",
+        "fluid",
+        "grout",
+        "simulation",
+        "geometric_constraints",
+        "design"
+      ]
+    },
+    "horizontal_piping_parameters": {
+      "type": "object",
+      "properties": {
+        "hydraulic_diameter": {
+          "description": "Hydraulic diameter of the distribution pipe",
+          "type": "number"
+        },
+        "insulation_thickness": {
+          "description": "Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
+          "type": "number"
+        },
+        "insulation_conductivity": {
+          "description": "Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
+          "type": "number"
+        },
+        "diameter_ratio": {
+          "description": "The ratio of pipe outer diameter to pipe wall thickness",
+          "type": "number"
+        },
+        "roughness": {
+          "description": "Average height of pipe material surface asperities",
+          "type": "number"
+        },
+        "rho_cp": {
+          "description": "Volumetric heat capacity of the pipe wall material",
+          "type": "number"
+        },
+        "number_of_segments": {
+          "description": "Number of axial pipe segments, used to discretize pipe models",
+          "type": "integer"
+        },
+        "buried_depth": {
+          "description": "Pipes buried depth",
+          "type": "number"
+        }
+      }
+    },
+    "diesel_generator_parameters": {
+      "description": "Diesel generator parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "nominal_power_generation": {
+          "description": "Nominal power generation (W)",
+          "type": "number"
+        },
+        "source_phase_shift": {
+          "description": "Phase shift angle of source (degrees)",
+          "type": "number"
+        }
+      }
+    },
+    "electrical_grid_parameters": {
+      "description": "Electrical grid parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "frequency": {
+          "description": "Frequency (Hz)",
+          "type": "number",
+          "default": 60
+        },
+        "source_rms_voltage": {
+          "description": "Root mean square (RMS) voltage of source (V)",
+          "type": "number"
+        },
+        "source_phase_shift": {
+          "description": "Phase shift angle of source (degrees)",
+          "type": "number"
+        }
+      }
+    },
+    "pv_parameters": {
+      "description": "Photovoltaic panel parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "net_surface_area": {
+          "description": "Net PV Surface Area (m2)",
+          "type": "number"
+        },
+        "surface_tilt": {
+          "description": "PV Surface Tilt (degrees)",
+          "type": "number"
+        },
+        "surface_azimuth": {
+          "description": "PV Surface Azimuth (degrees)",
+          "type": "number"
+        },
+        "latitude": {
+          "description": "Latitude",
+          "type": "number"
+        },
+        "nominal_voltage": {
+          "description": "Nominal System Voltage (V)",
+          "type": "number",
+          "default": 480
+        }
+      },
+      "required": [
+        "net_surface_area",
+        "surface_tilt",
+        "surface_azimuth",
+        "latitude",
+        "nominal_voltage"
+      ]
+    },
+    "wind_turbine_parameters": {
+      "description": "Wind turbine parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "scaling_factor": {
+          "description": "Scaling Factor",
+          "type": "number"
+        },
+        "height_over_ground": {
+          "description": "Height over ground (m)",
+          "type": "number"
+        },
+        "power_curve": {
+          "description": "Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).",
+          "type": "array"
+        },
+        "rated_power": {
+          "description": "Wind turbine size (kW)",
+          "type": "number"
+        },
+        "annual_energy_produced": {
+          "description": "Average yearly energy produced (kWh)",
+          "type": "number"
+        },
+        "nominal_voltage": {
+          "description": "Nominal System Voltage (V)",
+          "type": "number",
+          "default": 480
+        }
+      }
+    },
+    "capacitor_bank_parameters": {
+      "description": "Capacitor bank parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "nominal_capacity": {
+          "description": "Nominal Capacity (var)",
+          "type": "number"
+        }
+      },
+      "required": [
+        "nominal_capacity"
+      ]
+    },
+    "substation_parameters": {
+      "description": "Substation parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "RMS_voltage_high_side": {
+          "description": "RMS voltage on high side (V)",
+          "type": "number"
+        },
+        "RMS_voltage_low_side": {
+          "description": "RMS voltage on low side (V)",
+          "type": "number"
+        }
+      }
+    },
+    "transformer_parameters": {
+      "description": "Transformer parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The transformer ID as defined in the scenario report.",
+          "type": "string"
+        },
+        "nominal_capacity": {
+          "description": "Nominal Capacity (kVA)",
+          "type": "number"
+        },
+        "reactance_resistance_ratio": {
+          "description": "Ratio between reactance and resistance",
+          "type": "number"
+        }
+      }
+    },
+    "power_converter_parameters": {
+      "description": "Power converter parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "converter type": {
+          "description": "Power converter type",
+          "type": "string"
+        },
+        "RMS_voltage_ratio": {
+          "description": "Ratio of RMS voltage on low side/high side",
+          "type": "number"
+        },
+        "converter_efficiency": {
+          "description": "Converter Efficiency (%)",
+          "type": "number"
+        },
+        "nominal_capacity": {
+          "description": "Nominal Capacity (kVA)",
+          "type": "number"
+        }
+      }
+    },
+    "distribution_line_parameters": {
+      "description": "Distribution lines parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "line_length": {
+          "description": "Length of distribution lines (m)",
+          "type": "number"
+        },
+        "maximum_ampacity": {
+          "description": "Maximum power of the lines. this is defined in Amps",
+          "type": "number"
+        },
+        "nominal_voltage": {
+          "description": "Nominal voltage of the lines (V)",
+          "type": "number",
+          "default": 480
+        },
+        "commercial_line_type": {
+          "description": "Commercial line type given by the type of each wire making up the line",
+          "type": "array"
+        }
+      }
+    },
+    "ac_inductive_load_parameters": {
+      "description": "AC inductive load parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "nominal_voltage": {
+          "description": "Nominal voltage (V)",
+          "type": "number"
+        },
+        "nominal_power_consumption": {
+          "description": "Nominal Power Consumption type",
+          "type": "string",
+          "enum": [
+            "constant",
+            "variable load"
+          ]
+        }
+      }
+    },
+    "dc_load_parameters": {
+      "description": "DC load parameters used by the microgrid model.",
+      "type": "object",
+      "properties": {
+        "nominal_voltage": {
+          "description": "Nominal voltage (V)",
+          "type": "number"
+        },
+        "nominal_power_consumption": {
+          "description": "Nominal Power Consumption type",
+          "type": "string",
+          "enum": [
+            "constant",
+            "variable load"
+          ]
+        }
+      }
+    },
+    "battery_bank_parameters": {
+      "description": "Battery bank associated with the district",
+      "type": "object",
+      "properties": {
+        "capacity": {
+          "description": "Maximum available charge (MWh)",
+          "type": "number"
+        },
+        "nominal_voltage": {
+          "description": "Nominal voltage (V)",
+          "type": "number"
+        }
+      }
+    },
+    "first_generation_def": {
+      "properties": {
+        "first_generation": {
+          "properties": {
+            "central_steam_plant_parameters": {
+              "$ref": "#/definitions/central_steam_plant_parameters"
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "first_generation"
+      ]
+    },
+    "fourth_generation_def": {
+      "properties": {
+        "fourth_generation": {
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "fourth_generation"
+      ]
+    },
+    "fifth_generation_def": {
+      "properties": {
+        "fifth_generation": {
+          "properties": {
+            "ghe_parameters": {
+              "$ref": "#/definitions/ghe_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            },
+            "horizontal_piping_parameters": {
+              "$ref": "#/definitions/horizontal_piping_parameters"
+            }
+          }
+        }
+      },
+      "required": [
+        "fifth_generation"
+      ]
+    },
+    "fifth_gen_ets_parameters": {
+      "properties": {
+        "supply_water_temperature_building": {
+          "description": "Water supply temperature building side. (C)",
+          "type": "number",
+          "default": 15
+        },
+        "chilled_water_supply_temp": {
+          "description": "Chilled water supply temperature. (C)",
+          "type": "number",
+          "default": 5
+        },
+        "hot_water_supply_temp": {
+          "description": "Heating water supply temperature. (C)",
+          "type": "number",
+          "default": 50
+        },
+        "cop_heat_pump_heating": {
+          "description": "COP of heat pump for heating water production.",
+          "type": "number",
+          "default": 2.5
+        },
+        "cop_heat_pump_cooling": {
+          "description": "COP of heat pump for cooling water production.",
+          "type": "number",
+          "default": 3.5
+        },
+        "ets_pump_flow_rate": {
+          "description": "Design volume flow rate of the ETS pump. (m3/s)",
+          "type": "number",
+          "default": 0.0005
+        },
+        "ets_pump_head": {
+          "description": "Design head pressure of the ETS pump. (Pa)",
+          "type": "number",
+          "default": 10000
+        },
+        "fan_design_flow_rate": {
+          "description": "Design volume flow rate of the load-side fan. (m3/s)",
+          "type": "number",
+          "default": 0.25
+        },
+        "fan_design_head": {
+          "description": "Design head pressure of the load-side fan. (Pa)",
+          "type": "number",
+          "default": 150
+        }
+      },
+      "required": [
+        "supply_water_temperature_building",
+        "chilled_water_supply_temp",
+        "hot_water_supply_temp",
+        "cop_heat_pump_heating",
+        "cop_heat_pump_cooling",
+        "ets_pump_flow_rate",
+        "ets_pump_head",
+        "fan_design_flow_rate",
+        "fan_design_head"
+      ]
+    },
+    "soil_def": {
+      "description": "Soil properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "conductivity": {
+          "description": "The conductivity of the soil, in units of W/m-K.",
+          "type": "number",
+          "default": 2
+        },
+        "rho_cp": {
+          "description": "The volumetric heat capacity of the soil, in units of J/m^3-K",
+          "type": "number",
+          "default": 2600000
+        },
+        "undisturbed_temp": {
+          "description": "The undisturbed average soil temperature, in units of degrees Celsius.",
+          "type": "number",
+          "default": 15
+        }
+      },
+      "required": [
+        "conductivity",
+        "rho_cp",
+        "undisturbed_temp"
+      ]
+    },
+    "ghe_specific_params_def": {
+      "description": "The properties associated with each Ground Heat Exchanger instance",
+      "type": "object",
+      "properties": {
+        "ghe_id": {
+          "description": "Feature ID of GHE from GeoJSON Feature File.",
+          "type": "string"
+        },
+        "borehole": {
+          "description": "Borehole properties for Ground Heat Exchanger sizing.",
+          "type": "object",
+          "properties": {
+            "buried_depth": {
+              "description": "The depth below the ground surface to the top of the borehole, in meters.",
+              "type": "number",
+              "default": 1.2
+            },
+            "diameter": {
+              "description": "The diameter of the borehole, in meters.",
+              "type": "number",
+              "default": 0.15
+            },
+            "number_of_boreholes": {
+              "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+              "type": "number"
+            },
+            "length_of_boreholes": {
+              "description": "The length of the borehole (in meters), determined from Thermal Network sizing.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "buried_depth",
+            "diameter"
+          ],
+          "additionalProperties": true
+        },
+        "ghe_geometric_params": {
+          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
+          "type": "object",
+          "properties": {
+            "length_of_ghe": {
+              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            },
+            "width_of_ghe": {
+              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            }
+          },
+          "required": [
+            "length_of_ghe",
+            "width_of_ghe"
+          ]
+        }
+      },
+      "required": [
+        "ghe_id",
+        "ghe_geometric_params",
+        "borehole"
+      ]
+    },
+    "pipe_def": {
+      "description": "Pipe properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "inner_diameter": {
+          "description": "The diameter of the inner pipe surface, in meters.",
+          "type": "number",
+          "default": 0.0269
+        },
+        "outer_diameter": {
+          "description": "The diameter of the outer pipe surface, in meters.",
+          "type": "number",
+          "minimum": 0,
+          "default": 0.0334
+        },
+        "shank_spacing": {
+          "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e., not referenced from each pipes respective centerline), in meters.",
+          "type": "number",
+          "minimum": 0,
+          "default": 0.0277
+        },
+        "roughness": {
+          "description": "The surface roughness of the pipe, in meters.",
+          "type": "number",
+          "minimum": 0,
+          "default": 1e-06
+        },
+        "conductivity": {
+          "description": "The conductivity of the pipe material, in W/m-K.",
+          "type": "number",
+          "minimum": 0,
+          "default": 0.4
+        },
+        "rho_cp": {
+          "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
+          "type": "number",
+          "minimum": 0,
+          "default": 1542000
+        },
+        "arrangement": {
+          "description": "Arrangement of the pipes.",
+          "type": "string",
+          "enum": [
+            "singleutube",
+            "coaxial",
+            "doubleutube"
+          ],
+          "default": "singleutube"
+        }
+      },
+      "required": [
+        "inner_diameter",
+        "outer_diameter",
+        "shank_spacing",
+        "roughness",
+        "conductivity",
+        "rho_cp",
+        "arrangement"
+      ]
+    },
+    "fluid_def": {
+      "description": "Fluid properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "fluid_name": {
+          "description": "Circulating fluid parameters for ground heat exchanger sizing.",
+          "type": "string",
+          "enum": [
+            "Water",
+            "EthylAlcohol",
+            "EthyleneGlycol",
+            "MethylAlcohol",
+            "PropyleneGlycol"
+          ],
+          "default": "Water"
+        },
+        "concentration_percent": {
+          "description": "The concentration of circulation fluid in percent, from 0-60.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 60,
+          "default": 0
+        },
+        "temperature": {
+          "description": "Average design fluid temperature at peak conditions, in C.",
+          "type": "number",
+          "default": 20
+        }
+      },
+      "required": [
+        "fluid_name",
+        "concentration_percent",
+        "temperature"
+      ]
+    },
+    "grout_def": {
+      "description": "Grout properties used for ground heat exchanger sizing.",
+      "type": "object",
+      "properties": {
+        "conductivity": {
+          "description": "Grout thermal conductivity, in W/m-K.",
+          "type": "number",
+          "minimum": 0,
+          "default": 2
+        },
+        "rho_cp": {
+          "description": "Grout volumetric heat capacity, in J/m^3-K.",
+          "type": "number",
+          "minimum": 0,
+          "default": 4408000
+        }
+      },
+      "required": [
+        "conductivity",
+        "rho_cp"
+      ]
+    },
+    "simulation_def": {
+      "description": "Simulation parameters use for ground heat exchanger sizing.",
+      "type": "object",
+      "properties": {
+        "num_months": {
+          "description": "Length of ground heat exchanger sizing period, in months.",
+          "type": "integer",
+          "minimum": 0,
+          "default": 240
+        }
+      },
+      "required": [
+        "num_months"
+      ]
+    },
+    "geometric_constraints_def": {
+      "description": "Geometric constraints for GHE and boreholes.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing, in meters.",
+          "type": "number",
+          "default": 3
+        },
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing, in meters.",
+          "type": "number",
+          "default": 10
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger, in meters.",
+          "type": "number",
+          "default": 200
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger, in meters.",
+          "type": "number",
+          "default": 100
+        },
+        "method": {
+          "description": "GHE sizing method",
+          "type": "string",
+          "enum": [
+            "nearsquare",
+            "rectangle"
+          ],
+          "default": "rectangle"
+        }
+      },
+      "required": [
+        "b_min",
+        "b_max",
+        "max_height",
+        "min_height",
+        "method"
+      ]
+    },
+    "design_def": {
+      "description": "Design parameters used for GHE sizing.",
+      "type": "object",
+      "properties": {
+        "method": {
+          "description": "Building load distribution method for Ground Heat Exchanger sizing",
+          "type": "string",
+          "enum": [
+            "AREAPROPORTIONAL",
+            "UPSTREAM"
+          ],
+          "default": "AREAPROPORTIONAL"
+        },
+        "flow_rate": {
+          "description": "Nominal design mass flow rate, in l/s. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 0.3
+        },
+        "flow_type": {
+          "description": "Flow type for ground heat exchanger sizing",
+          "type": "string",
+          "enum": [
+            "borehole",
+            "system"
+          ],
+          "default": "borehole"
+        },
+        "max_eft": {
+          "description": "Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
+          "type": "number",
+          "default": 35
+        },
+        "min_eft": {
+          "description": "Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
+          "type": "number",
+          "default": 5
+        }
+      },
+      "required": [
+        "method",
+        "flow_rate",
+        "flow_type",
+        "max_eft",
+        "min_eft"
+      ]
+    },
+    "central_pump_parameters": {
+      "description": "Parameters for central pump",
+      "type": "object",
+      "properties": {
+        "pump_design_head": {
+          "description": "Measured in Pa.",
+          "type": "number"
+        },
+        "pump_flow_rate": {
+          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+          "type": "number",
+          "default": 0.01
+        }
+      },
+      "required": [
+        "pump_design_head",
+        "pump_flow_rate"
+      ]
+    },
+    "fifth_generation": {
+      "description": "Fifth generation district parameters, for an ambient loop system.",
+      "type": "object",
+      "properties": {
+        "soil": {
+          "$ref": "#/definitions/soil_def"
+        },
+        "ghe_parameters": {
+          "$ref": "#/definitions/ghe_parameters"
+        },
+        "connected_buildings": {
+          "items": [
+            {
+              "properties": {
+                "building_id": {
+                  "description": "This is the geojson_id that is defined in the building object."
+                }
+              }
+            }
+          ]
+        },
+        "central_pump_parameters": {
+          "$ref": "#/definitions/central_pump_parameters"
+        },
+        "horizontal_piping_parameters": {
+          "$ref": "#/definitions/horizontal_piping_parameters"
+        }
+      },
+      "required": [
+        "soil",
+        "horizontal_piping_parameters",
+        "central_pump_parameters"
+      ]
+    },
+    "fourth_generation": {
+      "description": "Fourth generation district parameters, for a central loop system.",
+      "type": "object",
+      "properties": {
+        "central_cooling_plant_parameters": {
+          "$ref": "#/definitions/central_cooling_plant_parameters"
+        },
+        "central_heating_plant_parameters": {
+          "$ref": "#/definitions/central_heating_plant_parameters"
+        },
+        "combined_heat_and_power_parameters": {
+          "$ref": "#/definitions/combined_heat_and_power_parameters"
+        },
+        "connected_buildings": {
+          "items": [
+            {
+              "properties": {
+                "building_id": {
+                  "description": "This is the geojson_id that is defined in the building object."
+                }
+              }
+            }
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "central_cooling_plant_parameters"
+          ]
+        },
+        {
+          "required": [
+            "central_heating_plant_parameters"
+          ]
+        },
+        {
+          "required": [
+            "combined_heat_and_power_parameters"
+          ]
+        }
+      ]
+    }
+  }
+}

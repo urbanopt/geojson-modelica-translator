@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.7.0"
-description = "Package for converting GeoJSON to Modelica models for Urban Scale Analyses."
+version = "0.9.2"
+description = "Package for converting GeoJSON to Modelica models for urban scale analyses."
 authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
 license = "BSD-4-Clause"
 
@@ -17,89 +17,56 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 packages = [
     { include = "management" },
-    { include = "geojson_modelica_translator"}
+    { include = "geojson_modelica_translator" },
 ]
 
 [tool.poetry.dependencies]
-# https://python-poetry.org/docs/dependency-specification/
-# Urbanopt SDK requires Python 3.10 as of UOv0.9.0
-python = ">=3.9, <3.13"
-BuildingsPy = "4.0.0"
-click = "^8.1"
-geojson = "^3.1"
-jinja2 = "3.1.2"
-jsonpath-ng = "~1.6"
-jsonschema = "~4.20"
-modelica-builder = "^0.5.1"
+# https://python-poetry.org/docs/dependency-specification/#version-constraints
+python = ">=3.10, <3.14"
+BuildingsPy = "~=5.1"
+click = "~=8.1"
+geojson = "~=3.1"
+jinja2 = "~=3.1"
+jsonpath-ng = "~=1.6"
+jsonschema = "~=4.20"
+modelica-builder = "~=0.6.0"
 # modelica-builder = { path = "../modelica-builder", develop = true }
-# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "mblv10"}
+# modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 pandas = "~2"
-requests = "^2.28"
-teaser = "0.7.5"
-#teaser = { git = "https://github.com/urbanopt/TEASER.git", branch = "development"}
+requests = "~=2.28"
+teaser = "1.1.0"
+# teaser = { git = "https://github.com/RWTH-EBC/TEASER.git", branch = "development" }
+# myst-parser = "^4.0.0"
 
-[tool.poetry.dev-dependencies]
-coveralls = "~3.3"
-# lock the rpds-py to 0.16.2 until we can update due to issue with Python 3.12.x
-rpds-py = "0.16.2"
-m2r2 = "^0.3.3.post2"
-mypy = "~1.8"
-pre-commit = "~3.6"
-pytest = "~7.4"
-pytest-cov = "~4.1"
-# don't update sphinx right now
-sphinx = "~7.2"
-sphinx_rtd_theme = "~2.0"
-sphinx-jsonschema = "~1.19"
-syrupy = "~4.6"
-toml = "~0.10"
+[tool.poetry.group.dev.dependencies]
+coveralls = "~=3.3"
+rpds-py = "^0.22.0"
+mypy = "~=1.14"
+pre-commit = "~=4.0"
+pytest = "~=8.3"
+pytest-cov = "~=4.1"
+syrupy = "~=4.8"
+# documentation - these are used during development of docs, not deployment
+markdown-include = "~=0.8.1"
+mkdocs-material = "~=9.5"
+mkdocs-schema-reader = "~=0.11.1"
+mkdocstrings-python = "~=1.12"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.1"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 uo_des = 'management.uo_des:cli'
-format_modelica_files = 'management.format_modelica_files:fmt_modelica_files'
-update_schemas = 'management.update_schemas:update_schemas'
+format_modelica_files = "management.format_modelica_files:format_modelica_files"
 check_sys_params = 'management.check_sys_params:check_sys_params'
-
-# https://docs.astral.sh/ruff/tutorial/#configuration
-[tool.ruff]
-fix = true # automatically fix problems if possible
-line-length = 120
-
-# https://docs.astral.sh/ruff/linter/#rule-selection
-[tool.ruff.lint]
-extend-select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", "ISC", "ICN", "PT",
-"Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
-ignore = ["PLR0913", "PLR2004", "PLR0402", "COM812", "COM819", "SIM108", "ARG002", "ISC001", "S603", "S607", "S701"] # except for these specific errors
-
-[tool.ruff.lint.pylint]
-# system_parameters.py has many file lookups that necessitate nested statements & branches
-# Raise the allowed limits the least possible amount https://docs.astral.sh/ruff/settings/#pylint-max-branches
-max-statements = 58
-max-branches = 24
-
-# https://docs.astral.sh/ruff/formatter/#configuration
-[tool.ruff.format]
-# quote-style = "double"
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"] # assert statements are allowed in tests, and paths are safe
-"geojson_modelica_translator/model_connectors/load_connectors/teaser.py" = ["PLR0915"]
-# Lots of statements in the teaser post-processing. Don't think we can avoid it.
-"geojson_modelica_translator/model_connectors/districts/district.py" = ["PLR0915", "PLR0912"]
-# FIXME: The District.to_modelica method is large and probably should be broken into a few separate methods.
-"geojson_modelica_translator/model_connectors/couplings/diagram.py" = ["E501"]
-# Only needed for _parse_coupling_graph docstring
 
 [tool.pytest.ini_options]
 # There is a bug/issue with pytest and click where the test tries to write to the

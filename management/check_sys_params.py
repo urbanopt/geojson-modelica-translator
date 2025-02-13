@@ -27,7 +27,10 @@ BASELINE_TIME_SERIES = "baseline_time_series.mos"
 BASELINE_WEATHER_FILE = "baseline_weather.mos"
 
 SYS_PARAMS_SCHEMA_PATH = (
-    Path(__file__).parent.parent / "geojson_modelica_translator" / "system_parameters" / "schema.json"
+    Path(__file__).parent.parent
+    / "geojson_modelica_translator"
+    / "system_parameters"
+    / "system_parameter_properties.json"
 )
 
 
@@ -237,11 +240,11 @@ def check_sys_params(v, vv, output_file, log_file):
         for idx, param in enumerate(params):
             print(delimiter, file=output_file_handle)
             if param["skip"]:
-                print(f'{param["path"]} Skipped (duplicate)', file=output_file_handle)
+                print(f"{param['path']} Skipped (duplicate)", file=output_file_handle)
                 continue
 
             if param["type"] == "string":
-                print(f'{param["path"]} Skipped (string)', file=output_file_handle)
+                print(f"{param['path']} Skipped (string)", file=output_file_handle)
                 continue
 
             jsonpath = parse(param["path"])
@@ -266,7 +269,7 @@ def check_sys_params(v, vv, output_file, log_file):
                 test_sys_params_path = fp.name
                 create_package(test_package_path, baseline_geojson_path, test_sys_params_path)
 
-            print(f'{param["path"]}   Testing    Original: {original_value}; New: {value}', file=output_file_handle)
+            print(f"{param['path']}   Testing    Original: {original_value}; New: {value}", file=output_file_handle)
 
             # compare the package to baseline (find diffs)
             print_diffs(baseline_package_path, test_package_path, output_file_handle)

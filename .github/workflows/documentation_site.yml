@@ -1,0 +1,24 @@
+name: Documentation
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_DOMAIN: https://docs.urbanopt.net/geojson-modelica-translator/
+          CONFIG_FILE: mkdocs.yml
+          REQUIREMENTS: docs/docs_requirements.txt

@@ -44,7 +44,12 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         files_to_copy = []
 
         # 1: grab all of the time series files and place them in the proper location
-        for building in self.system_parameters.get_param("$.buildings[?load_model=time_series]"):
+        time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
+        # If this is a dict, then there is only one building
+        if isinstance(time_series, dict):
+            time_series = [time_series]
+
+        for building in time_series:
             building_load_file = Path(building["load_model_parameters"]["time_series"]["filepath"])
             files_to_copy.append(
                 {

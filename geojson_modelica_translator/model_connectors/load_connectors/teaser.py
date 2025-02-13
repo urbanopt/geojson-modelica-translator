@@ -14,7 +14,7 @@ from modelica_builder.package_parser import PackageParser
 from teaser.project import Project
 
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
-from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, copytree, simple_uuid
+from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, copytree
 
 
 class Teaser(LoadBase):
@@ -25,7 +25,7 @@ class Teaser(LoadBase):
 
     def __init__(self, system_parameters, geojson_load):
         super().__init__(system_parameters, geojson_load)
-        self.id = "TeaserLoad_" + simple_uuid()
+        self.id = f"TeaserLoad_{self.building_name}"
 
     def lookup_building_type(self, building_type):
         """Look up the building type from the Enumerations in the building_properties.json schema. TEASER
@@ -39,18 +39,18 @@ class Teaser(LoadBase):
         mapping = {
             # Single Family is not configured right now.
             "Single-Family": "SingleFamilyDwelling",
-            "Office": "office",
-            "Laboratory": "institute8",
-            "Education": "institute",
-            "Inpatient health care": "institute8",
-            "Outpatient health care": "institute4",
-            "Nursing": "institute4",
-            "Service": "institute4",
-            "Retail other than mall": "office",
-            "Strip shopping mall": "office",
-            "Enclosed mall": "office",
-            "Food sales": "institute4",
-            "Food service": "institute4",
+            "Office": "bmvbs_office",
+            "Laboratory": "bmvbs_institute8",
+            "Education": "bmvbs_institute",
+            "Inpatient health care": "bmvbs_institute8",
+            "Outpatient health care": "bmvbs_institute4",
+            "Nursing": "bmvbs_institute4",
+            "Service": "bmvbs_institute4",
+            "Retail other than mall": "bmvbs_office",
+            "Strip shopping mall": "bmvbs_office",
+            "Enclosed mall": "bmvbs_office",
+            "Food sales": "bmvbs_institute4",
+            "Food service": "bmvbs_institute4",
         }
 
         # Other types to map!
@@ -73,7 +73,7 @@ class Teaser(LoadBase):
             raise Exception(f"Building type of {building_type} not defined in GeoJSON to TEASER mappings")
 
     def to_modelica(self, scaffold, keep_original_models=False):
-        """Save the TEASER representation of a sinlge building to the filesystem. The path will
+        """Save the TEASER representation of a single building to the filesystem. The path will
         be scaffold.loads_path.files_dir.
 
         :param scaffold: Scaffold object, contains all the paths of the project
@@ -82,10 +82,9 @@ class Teaser(LoadBase):
         # Teaser changes the current dir, so make sure to reset it back to where we started
         curdir = os.getcwd()
         try:
-            prj = Project(load_data=True)
+            prj = Project()
             prj.add_non_residential(
-                method="bmvbs",
-                usage=self.lookup_building_type(self.building["building_type"]),
+                geometry_data=self.lookup_building_type(self.building["building_type"]),
                 name=self.building_name,
                 year_of_construction=self.building["year_built"],
                 number_of_floors=self.building["num_stories"],
@@ -94,7 +93,7 @@ class Teaser(LoadBase):
                 office_layout=1,
                 window_layout=1,
                 with_ahu=False,
-                construction_type="heavy",
+                construction_data="iwu_heavy",
             )
 
             prj.used_library_calc = "IBPSA"
@@ -265,15 +264,17 @@ class Teaser(LoadBase):
                 ],
             )
 
-            fraction_latent_person = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.fraction_latent_person", default=1.25
-            )
+            fraction_latent_person = (
+                self.system_parameters.get_param("buildings.load_model_parameters.rc.fraction_latent_person") or 1.25
+            )  # Fraction latent of sensible persons load = 0.8 for home, 1.25 for office.
 
-            use_moisture_balance = self.system_parameters.get_param(
-                "buildings.load_model_parameters.rc.use_moisture_balance", default="false"
-            )
+            use_moisture_balance = (
+                self.system_parameters.get_param("buildings.load_model_parameters.rc.use_moisture_balance") or "false"
+            )  # If true, input connector QLat_flow is enabled and room air computes moisture balance.
 
-            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts", default=0)
+            # TODO: Determine why we are looking for these values in the sys-param file.
+            # Is this just an allowance for future flexibility?
+            n_ports = self.system_parameters.get_param("buildings.load_model_parameters.rc.nPorts") or 1
 
             # create a new parameter for fraction latent person
             mofile.add_parameter(
@@ -287,8 +288,7 @@ class Teaser(LoadBase):
                 "Boolean",
                 "use_moisture_balance",
                 assigned_value=use_moisture_balance,
-                string_comment="If true, input connector QLat_flow is enabled and room air computes"
-                " moisture balance.",
+                string_comment="If true, input connector QLat_flow is enabled and room air computes moisture balance.",
             )
             # create a integer parameter to evaluate number of connected ports.
             mofile.add_parameter(
@@ -475,7 +475,7 @@ class Teaser(LoadBase):
 
             # Save as the new filename (without building ID)
             new_filename = os.path.join(
-                scaffold.loads_path.files_dir, f'{self.building_name}/{os.path.basename(f).split("_")[1]}'
+                scaffold.loads_path.files_dir, f"{self.building_name}/{os.path.basename(f).split('_')[1]}"
             )
             mofile.save_as(new_filename)
             os.remove(f)
@@ -542,7 +542,6 @@ class Teaser(LoadBase):
                         self.building_id, "load_model_parameters.rc.temp_setpoint_cooling"
                     )
                 ),
-                # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
                 "has_liquid_heating": "true"
                 if self.system_parameters.get_param_by_id(

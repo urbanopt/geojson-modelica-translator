@@ -39,7 +39,7 @@ class SystemParameters:
         :param filename: string, (optional) path to file to load
         """
         # load the schema for validation
-        schema = Path(__file__).parent / "schema.json"
+        schema = Path(__file__).parent / "system_parameter_properties.json"
         self.schema = json.loads(schema.read_text())
         self.param_template = {}
         self.filename = filename
@@ -90,62 +90,34 @@ class SystemParameters:
                 new_path = Path(filepath) / match.value
                 parse(str(match.full_path)).update(self.param_template, new_path.as_posix())
 
-    # def resolve_defaults(self):
-    #     """This method will expand the default data blocks into all the subsequent custom sections. If the value is
-    #     specificed in the custom block then that will be used, otherwise the default value will be replaced"""
-    #     pass
-
-    def get_default(self, jsonpath, default=None):
-        """Return either the default in the system parameter file, or the specified default.
-
-        :param jsonpath: string, raw jsonpath to what parameter was being requested
-        :param default: variant, default value
-        :return: value
-        """
-        schema_default = self.get_param(jsonpath, impute_default=False)
-        return schema_default or default
-
-    def get_param(self, jsonpath, data=None, default=None, impute_default=True):
-        """Return the parameter(s) from a jsonpath. If the default is not specified, then will attempt to read the
-        default from the "default" section of the file. If there is no default there, then it will use the value
-        specified as the argument. It is not recommended to use the argument default as those values will not be
-        configurable. Argument-based defaults should be used sparingly.
+    def get_param(self, jsonpath, data=None):
+        """Return the parameter(s) from a jsonpath.
 
         :param path: string, period delimited path of the data to retrieve
         :param data: dict, (optional) the data to parse
-        :param default: variant, (optional) value to return if can't find the result
         :return: variant, the value from the data
         """
         if jsonpath is None or jsonpath == "":
             return None
 
-        # If this is the first entry into the method, then set the data to the
         data = data or self.param_template
         matches = parse(jsonpath).find(data)
 
-        default_value = default
-        if impute_default:
-            default_value = self.get_default(jsonpath, default)
-
         results = []
-        for index, match in enumerate(matches):
-            # print(f"Index {index} to update match {match.path} | {match.value} | {match.context}")
-            if match.value is None:
-                results.append(default_value)
-            else:
-                results.append(match.value)
+        for match in matches:
+            results.append(match.value)
 
         if len(results) == 1:
-            # If only one value, then return that value and not a list of values
+            # If only one value, then return that value and not a list of values.
             results = results[0]
         elif len(results) == 0:
-            return default_value
+            return None
 
         # otherwise return the list of values
         return results
 
     def get_param_by_id(self, param_id, jsonpath):
-        """Return a parameter for a specific id. This is similar to get_param but allows the user
+        """Return a parameter for a specific id. This wrapper to get_param allows the user
         to constrain the data based on the id.
 
         :param param_id: string, id of the object to look up in the system parameters file
@@ -156,13 +128,15 @@ class SystemParameters:
         # TODO: check that ids are unique in the system parameters file, i.e., a building_id doesn't match a ghe_id
         for b in self.param_template.get("buildings", []):
             if b.get("geojson_id") == param_id:
+                # logger.debug(f"Found building with id {param_id}")
                 return self.get_param(jsonpath, data=b)
         with suppress(KeyError):
             # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
             # Don't crash or quit, just keep a stiff upper lip and carry on.
-            district = self.param_template.get("district_system")
+            district = self.param_template.get("district_system", {})
             for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
                 if ghe.get("ghe_id") == param_id:
+                    # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
         if param_id is None:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
@@ -207,12 +181,111 @@ class SystemParameters:
                 "Malformed location, needs underscores of location "
                 "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
             )
-
         # download file from energyplus website
-        weatherfile_url = (
-            "https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/"
-            f"{weatherfile_country}/{weatherfile_state}/{p_download.stem}/{p_download.name}"
-        )
+        if weatherfile_country in ["DZA", "EGY", "ETH", "GHA", "KEN", "LBY", "MAR", "MDG", "SEN", "TUN", "ZAF", "ZWE"]:
+            weatherfile_url = (
+                "https://energyplus-weather.s3.amazonaws.com/africa_wmo_region_1/"
+                f"{weatherfile_country}/{p_download.stem}/{p_download.name}"
+            )
+        elif weatherfile_country in [
+            "ARE",
+            "BGD",
+            "CHN",
+            "IND",
+            "JPN",
+            "KAZ",
+            "KOR",
+            "KWT",
+            "LKA",
+            "MAC",
+            "MDC",
+            "MNG",
+            "NPL",
+            "PAK",
+            "PRK",
+            "RUS",
+            "SAU",
+            "THA",
+            "TWN",
+            "UZB",
+            "VNM",
+        ]:
+            weatherfile_url = (
+                "https://energyplus-weather.s3.amazonaws.com/asia_wmo_region_2/"
+                f"{weatherfile_country}/{p_download.stem}/{p_download.name}"
+            )
+        elif weatherfile_country in ["ARG", "BOL", "BRA", "CHL", "COL", "ECU", "PER", "PRY", "URY", "VEN"]:
+            weatherfile_url = (
+                "https://energyplus-weather.s3.amazonaws.com/south_america_wmo_region_3/"
+                f"{weatherfile_country}/{p_download.stem}/{p_download.name}"
+            )
+        elif weatherfile_country in [
+            "BLZ",
+            "CAN",
+            "CUB",
+            "GTM",
+            "HND",
+            "MEX",
+            "MTQ",
+            "NIC",
+            "PRI",
+            "SLV",
+            "USA",
+            "VIR",
+        ]:
+            weatherfile_url = (
+                "https://energyplus-weather.s3.amazonaws.com/north_and_central_america_wmo_region_4/"
+                f"{weatherfile_country}/{weatherfile_state}/{p_download.stem}/{p_download.name}"
+            )
+        elif weatherfile_country in ["AUS", "BRN", "FJI", "GUM", "MHL", "MYS", "NZL", "PHL", "PLW", "SGP", "UMI"]:
+            weatherfile_url = (
+                "https://energyplus-weather.s3.amazonaws.com/southwest_pacific_wmo_region_5/"
+                f"{weatherfile_country}/{p_download.stem}/{p_download.name}"
+            )
+        elif weatherfile_country in [
+            "AUT",
+            "BEL",
+            "BGR",
+            "BIH",
+            "BLR",
+            "CHE",
+            "CYP",
+            "CZE",
+            "DEU",
+            "DNK",
+            "ESP",
+            "FIN",
+            "FRA",
+            "GBR",
+            "GRC",
+            "HRV",
+            "HUN",
+            "IRL",
+            "ISL",
+            "ISR",
+            "ITA",
+            "LTU",
+            "NLD",
+            "NOR",
+            "POL",
+            "PRT",
+            "ROU",
+            "RUS",
+            "SRB",
+            "SVK",
+            "SVN",
+            "SWE",
+            "SYR",
+            "TUR",
+            "UKR",
+        ]:
+            weatherfile_url = (
+                "https://energyplus-weather.s3.amazonaws.com/europe_wmo_region_6/"
+                f"{weatherfile_country}/{p_download.stem}/{p_download.name}"
+            )
+        else:
+            raise ValueError(f"Unsupported country: {weatherfile_country}")
+
         outputname = p_save / p_download.name
         logger.debug(f"Downloading weather file from {weatherfile_url}")
         try:
@@ -225,11 +298,7 @@ class SystemParameters:
                     f"Returned non 200 status code trying to download weather file: {weatherfile_data.status_code}"
                 )
         except requests.exceptions.RequestException as e:
-            raise requests.exceptions.RequestException(
-                f"Could not download weather file: {weatherfile_url}"
-                "\nAt this time we only support USA weather stations"
-                f"\n{e}"
-            )
+            raise requests.exceptions.RequestException(f"Could not download weather file: {weatherfile_url}\n{e}")
 
         if not outputname.exists():
             raise FileNotFoundError(f"Could not find or download weather file for {p_download!s}")
@@ -701,9 +770,6 @@ class SystemParameters:
         ghe_dir = scenario_dir / "ghe_dir"
         ghe_sys_param["ghe_dir"] = str(ghe_dir)
 
-        # remove fourth generation district system type
-        del self.param_template["district_system"]["fourth_generation"]
-
         return ghe_sys_param
 
     def retrieve_building_data_from_sdk(
@@ -840,7 +906,7 @@ class SystemParameters:
         :return None, file created and saved to user-specified location
         """
         self.sys_param_filename = sys_param_filename
-        self.rel_path = kwargs.get("relative_path", None)
+        self.rel_path = kwargs.get("relative_path")
         skip_weather_download = kwargs.get("skip_weather_download", False)
         modelica_load_filename = kwargs.get("modelica_load_filename", "modelica.mos")
 
@@ -923,10 +989,16 @@ class SystemParameters:
                 )
 
         # Update ground heat exchanger properties if true
-        if "5G_ghe" in district_type:
-            self.process_ghe_inputs(scenario_dir)
-        elif "4G" in district_type or "steam" in district_type:
-            # remove fifth generation district system type if it's not appropriate
+        if district_type in ["5G_ghe", "5G"]:
+            if district_type == "5G_ghe":
+                self.process_ghe_inputs(scenario_dir)
+            elif district_type == "5G":
+                # Process waste-heat inputs
+                del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
+            # remove fourth generation district system type
+            del self.param_template["district_system"]["fourth_generation"]
+        elif district_type in ["4G", "steam"]:
+            # remove fifth generation district system type if it exists in template and ghe is not true
             with suppress(KeyError):
                 del self.param_template["district_system"]["fifth_generation"]
 

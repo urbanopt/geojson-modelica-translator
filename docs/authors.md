@@ -1,0 +1,3 @@
+# AUTHORS
+
+{!AUTHORS.md!}

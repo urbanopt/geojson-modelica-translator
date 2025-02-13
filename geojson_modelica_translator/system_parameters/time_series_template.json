@@ -73,8 +73,6 @@
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
-        "pump_flow_rate": 0.01,
-        "pump_design_head": 150000,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -116,9 +114,6 @@
         "temp_setpoint_hhw": 54,
         "pressure_drop_hhw_valve_nominal": 6001,
         "chp_installed": false
-      },
-      "central_pump_parameters": {
-        "pump_design_head": 60000
       }
     },
     "fifth_generation": {
@@ -132,6 +127,11 @@
         "number_of_segments": 1,
         "buried_depth": 1.5
       },
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "tests/system_parameters/data",
@@ -143,11 +143,6 @@
         "grout": {
           "conductivity": 1.0,
           "rho_cp": 3901000
-        },
-        "soil": {
-          "conductivity": 2.0,
-          "rho_cp": 2343493,
-          "undisturbed_temp": 18.3
         },
         "pipe": {
           "inner_diameter": 0.0216,
@@ -192,7 +187,8 @@
         ]
       },
       "central_pump_parameters": {
-        "pump_design_head": 60000
+        "pump_design_head": 200000,
+        "pump_flow_rate": 0.01
       }
     }
   },

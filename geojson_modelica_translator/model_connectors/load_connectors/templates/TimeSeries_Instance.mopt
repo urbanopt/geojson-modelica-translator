@@ -10,7 +10,7 @@
     delTAirHea(displayUnit="degC")=20,
     k=0.1,
     Ti=120
-    ), ets(have_hotWat = true)
+    ), ets(have_hotWat = true, have_varFloEva=false)
     {% else %}
     allowFlowReversal = true,
     T_aHeaWat_nominal(displayUnit="K")=318.15,

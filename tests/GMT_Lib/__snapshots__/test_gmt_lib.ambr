@@ -3,12 +3,12 @@
   '''
   model CoolingPlant
     "Isolated central cooling plant template model."
-    extends Buildings.Experimental.DHC.Plants.Cooling.Examples.ElectricChillerParallel(
+    extends Buildings.DHC.Plants.Cooling.Examples.ElectricChillerParallel(
     redeclare Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_York_YT_1055kW_5_96COP_Vanes perChi(
       mEva_flow_nominal=mCHW_flow_nominal,
       mCon_flow_nominal=mCW_flow_nominal,
       QEva_flow_nominal=QChi_nominal),
-    redeclare Buildings.Experimental.DHC.Plants.Cooling.ElectricChillerParallel pla,
+    redeclare Buildings.DHC.Plants.Cooling.ElectricChillerParallel pla,
     dTApp=3,
     mCHW_flow_nominal=18.3,
     dpCHW_nominal=44800,

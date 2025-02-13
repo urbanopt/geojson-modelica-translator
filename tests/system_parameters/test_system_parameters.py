@@ -67,7 +67,7 @@ class SystemParametersTest(unittest.TestCase):
         sdp = SystemParameters(filename)
         assert sdp is not None
         assert len(sdp.validate()) == 0
-        assert [] == sdp.validate()
+        assert sdp.validate() == []
 
     def test_error_system_parameters_ghe(self):
         filename = self.data_dir / "system_params_ghe_invalid.json"
@@ -95,12 +95,13 @@ class SystemParametersTest(unittest.TestCase):
             SystemParameters.loadd(incomplete_teaser_params)
 
         sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
-        assert len(sp.validate()) == 6
+        assert "'None' is not one of ['Indirect Heating and Cooling', 'Fifth Gen Heat Pump']" in sp.validate()
         assert "'fraction_latent_person' is a required property" in sp.validate()
         assert "'temp_hw_supply' is a required property" in sp.validate()
         assert "'temp_setpoint_cooling' is a required property" in sp.validate()
         assert "'temp_setpoint_heating' is a required property" in sp.validate()
         assert "5 is not one of [1, 2, 3, 4]" in sp.validate()
+        assert len(sp.validate()) == 8
 
     def test_get_param(self):
         data = {
@@ -108,7 +109,26 @@ class SystemParametersTest(unittest.TestCase):
             "buildings": [
                 {
                     "geojson_id": "asdf",
-                    "ets_model": "None",
+                    "ets_model": "Indirect Heating and Cooling",
+                    "ets_indirect_parameters": {
+                        "heat_flow_nominal": 8000,
+                        "heat_exchanger_efficiency": 0.8,
+                        "nominal_mass_flow_district": 0.5,
+                        "nominal_mass_flow_building": 0.5,
+                        "valve_pressure_drop": 6000,
+                        "heat_exchanger_secondary_pressure_drop": 500,
+                        "heat_exchanger_primary_pressure_drop": 500,
+                        "cooling_supply_water_temperature_building": 7,
+                        "heating_supply_water_temperature_building": 50,
+                        "delta_temp_chw_building": 5,
+                        "delta_temp_chw_district": 8,
+                        "delta_temp_hw_building": 15,
+                        "delta_temp_hw_district": 20,
+                        "cooling_controller_y_max": 1,
+                        "cooling_controller_y_min": 0,
+                        "heating_controller_y_max": 1,
+                        "heating_controller_y_min": 0,
+                    },
                     "load_model": "rc",
                     "load_model_parameters": {
                         "rc": {
@@ -133,7 +153,26 @@ class SystemParametersTest(unittest.TestCase):
         assert value == [
             {
                 "geojson_id": "asdf",
-                "ets_model": "None",
+                "ets_model": "Indirect Heating and Cooling",
+                "ets_indirect_parameters": {
+                    "heat_flow_nominal": 8000,
+                    "heat_exchanger_efficiency": 0.8,
+                    "nominal_mass_flow_district": 0.5,
+                    "nominal_mass_flow_building": 0.5,
+                    "valve_pressure_drop": 6000,
+                    "heat_exchanger_secondary_pressure_drop": 500,
+                    "heat_exchanger_primary_pressure_drop": 500,
+                    "cooling_supply_water_temperature_building": 7,
+                    "heating_supply_water_temperature_building": 50,
+                    "delta_temp_chw_building": 5,
+                    "delta_temp_chw_district": 8,
+                    "delta_temp_hw_building": 15,
+                    "delta_temp_hw_district": 20,
+                    "cooling_controller_y_max": 1,
+                    "cooling_controller_y_min": 0,
+                    "heating_controller_y_max": 1,
+                    "heating_controller_y_min": 0,
+                },
                 "load_model": "rc",
                 "load_model_parameters": {
                     "rc": {
@@ -153,18 +192,62 @@ class SystemParametersTest(unittest.TestCase):
         value = sp.get_param("not.a.real.path")
         assert value is None
 
+    def test_get_param_with_two(self):
+        data = {
+            "weather": "path/to/weatherfile.mos",
+            "buildings": [
+                {
+                    "geojson_id": "asdf",
+                    "ets_model": "Indirect Heating and Cooling",
+                    "ets_indirect_parameters": {
+                        "heat_flow_nominal": 8000,
+                    },
+                    "load_model": "rc",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24,
+                        }
+                    },
+                },
+                {
+                    "geojson_id": "qwer",
+                    "ets_model": "Fifth Gen Heat Pump",
+                    "ets_indirect_parameters": {
+                        "heat_flow_nominal": 10000,
+                    },
+                    "load_model": "rc",
+                    "load_model_parameters": {
+                        "rc": {
+                            "order": 4,
+                            "fraction_latent_person": 1.25,
+                            "temp_hw_supply": 40,
+                            "temp_setpoint_heating": 40,
+                            "temp_setpoint_cooling": 24,
+                        }
+                    },
+                },
+            ],
+        }
+        sp = SystemParameters.loadd(data)
+        value = sp.get_param("$.buildings.[*].ets_indirect_parameters.heat_flow_nominal")
+        assert value == [8000, 10000]
+
     def test_get_param_with_building_id(self):
         filename = self.data_dir / "system_params_1.json"
         sdp = SystemParameters(filename)
         self.maxDiff = None
         value = sdp.get_param_by_id("abcd1234", "ets_model")
-        assert value == "None"
+        assert value == "Indirect Heating and Cooling"
 
         # grab the schema default
         value = sdp.get_param_by_id("defgh2345", "ets_model")
         assert value == "Indirect Heating and Cooling"
         value = sdp.get_param_by_id("defgh2345", "ets_indirect_parameters")
-        assert {
+        assert value == {
             "heat_flow_nominal": 8000,
             "heat_exchanger_efficiency": 0.8,
             "nominal_mass_flow_district": 0.5,
@@ -182,7 +265,7 @@ class SystemParametersTest(unittest.TestCase):
             "cooling_controller_y_min": 0,
             "heating_controller_y_max": 1,
             "heating_controller_y_min": 0,
-        } == value
+        }
 
     def test_get_param_with_ghe_id(self):
         # Setup
@@ -194,7 +277,7 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40033", "borehole")
 
         # Assert
-        assert {"buried_depth": 2.0, "diameter": 0.15} == value
+        assert value == {"buried_depth": 2.0, "diameter": 0.15}
 
         # Act
         second_ghe_borehole = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40034", "borehole")
@@ -350,14 +433,32 @@ class SystemParametersTest(unittest.TestCase):
             )
         assert f"No template found. {bogus_template_type} is not a valid template" in str(context.value)
 
-    def test_download_mos(self):
+    def test_download_usa_mos(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+
+        weather_filename = "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos"
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        assert (Path(self.weather_dir) / weather_filename).exists()
+
+    def test_download_usa_epw(self):
         sdp = SystemParameters()
         print(f"saving results to f{self.weather_dir}")
         weather_filename = "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.epw"
         sdp.download_weatherfile(weather_filename, self.weather_dir)
         assert (Path(self.weather_dir) / weather_filename).exists()
 
-        weather_filename = "USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos"
+    def test_download_german_epw(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+        weather_filename = "DEU_Stuttgart.107380_IWEC.epw"
+        sdp.download_weatherfile(weather_filename, self.weather_dir)
+        assert (Path(self.weather_dir) / weather_filename).exists()
+
+    def test_download_german_mos(self):
+        sdp = SystemParameters()
+        print(f"saving results to f{self.weather_dir}")
+        weather_filename = "DEU_Stuttgart.107380_IWEC.mos"
         sdp.download_weatherfile(weather_filename, self.weather_dir)
         assert (Path(self.weather_dir) / weather_filename).exists()
 

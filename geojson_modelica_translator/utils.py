@@ -30,15 +30,6 @@ def convert_c_to_k(c):
     return c + 273.15
 
 
-def convert_ft_to_m(f):
-    """Converts a length in foot to meter
-
-    :param f: float, length in ft
-    :return: float, length in meter
-    """
-    return 0.3048 * f
-
-
 def linecount(filename: Path) -> int:
     """Counts the number of lines in a file
     Probably not the most efficient way to do this, but it works
@@ -52,7 +43,7 @@ def mbl_version():
     """Returns the version of the Modelica Buildings Library (MBL) used by the
     geojson-modelica-translator.
     """
-    return "10.0.0"
+    return "11.0.0"
 
 
 class ModelicaPath:
@@ -81,7 +72,7 @@ class ModelicaPath:
     def clear_or_create_path(self, path):
         if os.path.exists(path):
             if not self.overwrite:
-                raise Exception("Directory already exists and overwrite is false for %s" % path)
+                raise Exception(f"Directory already exists and overwrite is false for {path}")
             else:
                 shutil.rmtree(path)
         os.makedirs(path, exist_ok=True)

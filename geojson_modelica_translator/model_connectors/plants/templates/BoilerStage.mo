@@ -4,7 +4,7 @@ model BoilerStage
   parameter Modelica.Units.SI.Time tWai
     "Waiting time";
   parameter Modelica.Units.SI.Power QBoi_nominal
-    "Nominal heating capaciaty";
+    "Nominal heating capacity";
   parameter Modelica.Units.SI.Power criPoiLoa=0.55*QBoi_nominal
     "Critical point of heating load for switching one boiler on or off";
   parameter Modelica.Units.SI.Power dQ=0.25*QBoi_nominal
@@ -91,16 +91,16 @@ model BoilerStage
   Modelica.Blocks.Interfaces.RealInput TDisSup(
     unit="K",
     displayUnit="degC")
-    "Heating water supply temperature( distrcit side)."
+    "Heating water supply temperature( district side)."
     annotation (Placement(transformation(extent={{-120,16},{-100,36}}),iconTransformation(extent={{-120,16},{-100,36}})));
   Modelica.Blocks.Interfaces.RealInput TDisRet(
     unit="K",
     displayUnit="degC")
-    "Heating water return temperature( distrcit side)."
+    "Heating water return temperature( district side)."
     annotation (Placement(transformation(extent={{-120,44},{-100,64}}),iconTransformation(extent={{-120,44},{-100,64}})));
   Modelica.Blocks.Interfaces.RealInput mHeaDis(
     unit="kg/s")
-    "Heating water mass flow rate distrcit side)."
+    "Heating water mass flow rate district side)."
     annotation (Placement(transformation(extent={{-120,76},{-100,96}}),iconTransformation(extent={{-120,76},{-100,96}})));
   Modelica.Blocks.Interfaces.BooleanInput on
     "On signal of the boilers"

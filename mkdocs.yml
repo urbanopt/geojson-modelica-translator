@@ -1,0 +1,37 @@
+# https://www.mkdocs.org/user-guide/configuration/
+# https://squidfunk.github.io/mkdocs-material/creating-your-site/#advanced-configuration
+
+site_name: Geojson to Modelica Translator
+repo_url: https://github.com/urbanopt/geojson-modelica-translator
+
+theme:
+  name: material
+
+markdown_extensions:
+  - markdown_include.include
+
+plugins:
+  - search
+  - schema_reader:
+      include:
+        - "geojson_modelica_translator/system_parameters/system_parameter_properties.json"
+        - "geojson_modelica_translator/geojson/data/schemas"
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            # https://mkdocstrings.github.io/griffe/reference/docstrings/
+            docstring_style: sphinx
+
+nav:
+  - Overview: index.md
+  - Getting Started: getting_started.md
+  - Input File Documentation: input_file_documentation.md
+  - Developer Resources: developer_resources.md
+  - Contributors: authors.md
+  - Change Log: changelog.md
+  - License: license.md
+# Add these dirs/files to live updating during development (in addition to docs & this file)
+# https://www.mkdocs.org/user-guide/configuration/#watch
+# watch:
+#   - ghedesigner/

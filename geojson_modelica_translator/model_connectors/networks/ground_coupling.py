@@ -24,8 +24,6 @@ class GroundCoupling(NetworkBase):
         self.ground_coupling_name = "GroundCoupling_" + simple_uuid()
 
         self.required_mo_files.append(os.path.join(self.template_dir, "UndisturbedSoilTemperature.mo"))
-        self.required_mo_files.append(os.path.join(self.template_dir, "UnidirectionalSeries.mo"))
-        self.required_mo_files.append(os.path.join(self.template_dir, "ConnectionSeriesAutosize.mo"))
 
     def to_modelica(self, scaffold):
         """
@@ -61,6 +59,10 @@ class GroundCoupling(NetworkBase):
             ),
             "weather": self.system_parameters.get_param("$.weather"),
             "num_buildings": len(self.system_parameters.get_param("$.buildings")),
+            "loop_order": {
+                "number_of_loops": len(self.loop_order),
+                "data": self.loop_order,
+            },
         }
 
         # process pipe wall thickness
@@ -83,16 +85,23 @@ class GroundCoupling(NetworkBase):
         coefs = pd.read_csv(Path(__file__).parent / "data" / "Soil_temp_coefficients.csv")
         matching_rows = coefs[coefs.apply(lambda row: row.astype(str).str.contains(station_name).any(), axis=1)]
         if len(matching_rows) == 0:
-            raise ValueError(
-                "No matching weather station has been found. Please check your weather file name format."
-                "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
-            )
-        else:
-            template_data["surface_temp"] = matching_rows["Ts,avg, C"].iloc[0] + 273.15
-            template_data["first_amplitude"] = matching_rows["Ts,amplitude,1, C"].iloc[0]
-            template_data["second_amplitude"] = matching_rows["Ts,amplitude,2, C"].iloc[0]
-            template_data["first_phase_lag"] = matching_rows["PL1"].iloc[0]
-            template_data["second_phase_lag"] = matching_rows["PL2"].iloc[0]
+            # Some of the stations in the coefs df are in all caps, so try that as well.
+            # Also try to match only the first word of the station name.
+            station_name = station_name.split()[0]
+            matching_rows = coefs[
+                coefs.apply(lambda row: row.astype(str).str.contains(station_name.upper()).any(), axis=1)
+            ]
+            # If still no match, raise an error
+            if len(matching_rows) == 0:
+                raise ValueError(
+                    "No matching weather station has been found. Please check your weather file name format."
+                    "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
+                )
+        template_data["surface_temp"] = matching_rows["Ts,avg, C"].iloc[0] + 273.15
+        template_data["first_amplitude"] = matching_rows["Ts,amplitude,1, C"].iloc[0]
+        template_data["second_amplitude"] = matching_rows["Ts,amplitude,2, C"].iloc[0]
+        template_data["first_phase_lag"] = matching_rows["PL1"].iloc[0]
+        template_data["second_phase_lag"] = matching_rows["PL2"].iloc[0]
 
         # create horizontal piping package paths
         b_modelica_path = ModelicaPath(self.ground_coupling_name, scaffold.networks_path.files_dir, True)

@@ -82,7 +82,7 @@ class CSVModelica:
 
         # Dymola wants time to start at zero.
         # If time doesn't start at zero, copy the first line and set time column to zero.
-        if self.timeseries_output.loc[0][0] != 0:
+        if self.timeseries_output.iloc[0, 0] != 0:
             self.timeseries_timestep = self.timeseries_output.loc[[0], :]
             if "SecondsFromStart" in self.timeseries_output.columns:
                 self.timeseries_timestep["SecondsFromStart"] = 0
@@ -146,7 +146,7 @@ class CSVModelica:
             line2 = f"{data_type} {output_modelica_file_name}({size[0]}, {size[1]})"
             line3 = "#Nominal heating water mass flow rate=" + str(self.nominal_heating_mass_flow_rate.loc[0, "#value"])
             line4 = "#Nominal chilled water mass flow rate=" + str(self.nominal_cooling_mass_flow_rate.loc[0, "#value"])
-            f.write(f"{line1}\n" f"{line2}\n" f"{line3}\n" f"{line4}\n")
+            f.write(f"{line1}\n{line2}\n{line3}\n{line4}\n")
             if "SecondsFromStart" in self.timeseries_output.columns:
                 self.timeseries_output.to_csv(f, header=True, index=False)
             else:

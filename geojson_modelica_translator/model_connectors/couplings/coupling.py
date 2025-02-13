@@ -28,10 +28,13 @@ class Coupling:
         self.district_type = district_type
         self._template_base_name = f"{model_a.model_name}_{model_b.model_name}"
 
-        if self.district_type == "5G":
-            self._template_dir = Path(__file__).parent / "5G_templates" / self._template_base_name
-        else:
-            self._template_dir = Path(__file__).parent / "templates" / self._template_base_name
+        match self.district_type:
+            case "fifth_generation":
+                self._template_dir = Path(__file__).parent / "5G_templates" / self._template_base_name
+            case "fourth_generation" | None:
+                self._template_dir = Path(__file__).parent / "templates" / self._template_base_name
+            case _:
+                raise Exception(f"Invalid district type: {self.district_type}")
         if not Path(self._template_dir).exists():
             raise Exception(f"Invalid coupling. Missing {self._template_dir} directory.")
 

@@ -81,7 +81,7 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
-    @pytest.mark.simulation()
+    @pytest.mark.simulation
     @pytest.mark.skip(reason="Takes forever to run. Teaser is a problem for another day.")
     def test_teaser_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
@@ -117,9 +117,11 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         (_, cool_m_flow_nominal) = mat_results.values(f"{load.id}.terUni[1].mLoaCoo_flow_nominal")
         cool_m_flow_nominal = cool_m_flow_nominal[0]
 
-        assert (
-            heat_m_flow <= pytest.approx(heat_m_flow_nominal, rel=m_flow_nominal_tolerance).all()
-        ), f"Heating mass flow rate must be less than nominal mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"  # noqa: E501
-        assert (
-            cool_m_flow <= pytest.approx(cool_m_flow_nominal, rel=m_flow_nominal_tolerance).all()
-        ), f"Cooling mass flow rate must be less than nominal mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"  # noqa: E501
+        assert heat_m_flow <= pytest.approx(heat_m_flow_nominal, rel=m_flow_nominal_tolerance).all(), (
+            "Heating mass flow rate must be less than nominal "
+            f"mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
+        )
+        assert cool_m_flow <= pytest.approx(cool_m_flow_nominal, rel=m_flow_nominal_tolerance).all(), (
+            "Cooling mass flow rate must be less than nominal "
+            f"mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
+        )

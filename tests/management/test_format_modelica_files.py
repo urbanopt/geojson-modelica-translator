@@ -33,6 +33,6 @@ class FormatModelicaFilesTest(unittest.TestCase):
             with open(file_) as orig, open(outfilepath) as new:
                 orig_stripped = re.sub(r"\s", "", orig.read())
                 new_stripped = re.sub(r"\s", "", new.read())
-                assert (
-                    orig_stripped == new_stripped
-                ), f"Original and formatted files for {file_} should have the same content"
+                assert orig_stripped == new_stripped, (
+                    f"Original and formatted files for {file_} should have the same content"
+                )

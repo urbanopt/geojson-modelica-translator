@@ -7,7 +7,7 @@
   parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}=46.2*1000
     "Nominal condenser water side pressure";
   parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
-    "Nominal cooling capaciaty (Negative means cooling)";
+    "Nominal cooling capacity (Negative means cooling)";
   parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
     "Minimum mass flow rate of single chiller";
   // control settings

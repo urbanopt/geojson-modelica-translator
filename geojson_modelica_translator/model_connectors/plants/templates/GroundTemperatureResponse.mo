@@ -18,7 +18,7 @@ model GroundTemperatureResponse
   parameter Integer nTimTot=76
     "Total length of g-function vector";
   Boolean writegFun
-    "True if g-function was succesfully written to file";
+    "True if g-function was successfully written to file";
   Modelica.Blocks.Interfaces.RealOutput delTBor(
     unit="K")
     "Temperature difference current borehole wall temperature minus initial borehole wall temperature"

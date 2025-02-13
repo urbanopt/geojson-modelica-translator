@@ -3,6 +3,8 @@
 
 from collections import defaultdict
 
+from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
+
 
 class CouplingGraph:
     """Manages coupling relationships"""
@@ -35,9 +37,9 @@ class CouplingGraph:
         #   ...
         # }
         self._grouped_couplings_by_model_id = {}
-        for model_id, couplings in self._couplings_by_model_id.items():
+        for model_id, couplings_list in self._couplings_by_model_id.items():
             grouped_couplings = defaultdict(list)
-            for coupling in couplings:
+            for coupling in couplings_list:
                 other_model = coupling.get_other_model(self._models_by_id[model_id])
                 coupling_type = f"{other_model.simple_gmt_type}_couplings"
                 grouped_couplings[coupling_type].append(coupling)
@@ -133,3 +135,35 @@ class CouplingGraph:
             if coupling.id == coupling_id:
                 return coupling
         raise Exception(f'No coupling found with id "{coupling_id}"')
+
+    def get_ghe_id(self, coupling_id):
+        """If there's a GHE model in the coupling, it returns the ghe_id of the model. Else
+        it returns None.
+
+        :return: ghe_id | None
+        """
+
+        coupling = self.get_coupling(coupling_id)
+        model_a, model_b = coupling._model_a, coupling._model_b
+
+        if coupling._get_model_superclass(model_a) is PlantBase and "Borefield" in model_a.model_name:
+            return model_a.ghe_id
+        elif coupling._get_model_superclass(model_b) is PlantBase and "Borefield" in model_b.model_name:
+            return model_b.ghe_id
+
+        return None
+
+    def get_other_model(self, coupling_id, model_id):
+        """Returns the other model in the coupling
+
+        :param model: Model
+        :return: Model
+        """
+        coupling = self.get_coupling(coupling_id)
+        if model_id == coupling._model_a.id:
+            return coupling._model_b
+        elif model_id == coupling._model_b.id:
+            return coupling._model_a
+        raise Exception(
+            f'Provided model, "{model_id}", is not part of coupling: ({coupling._model_a.id}, {coupling._model_b.id})'
+        )
