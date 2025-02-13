@@ -21,7 +21,10 @@
           "temp_chw_return": 12
         }
       },
-      "ets_model": "None"
+      "ets_model": "Steam",
+      "steam_ets_parameters": {
+        "heat_flow_nominal": 12000
+      }
     },
     {
       "geojson_id": "7",
@@ -43,7 +46,10 @@
           "temp_chw_return": 12
         }
       },
-      "ets_model": "None"
+      "ets_model": "Steam",
+      "steam_ets_parameters": {
+        "heat_flow_nominal": 12000
+      }
     },
     {
       "geojson_id": "8",
@@ -65,7 +71,10 @@
           "temp_chw_return": 12
         }
       },
-      "ets_model": "None"
+      "ets_model": "Steam",
+      "steam_ets_parameters": {
+        "heat_flow_nominal": 12000
+      }
     }
   ],
   "district_system": {
