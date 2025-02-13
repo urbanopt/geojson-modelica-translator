@@ -13,13 +13,11 @@ class Steam(SimpleGMTBase):
         super().__init__(self.system_parameters, self.template_dir)
 
     def build_from_template(self, output_dir: Path):
-        steam_params = self.system_parameters.get_param(
-            "$.district_system.first_generation.central_steam_plant_parameters"
-        )
+        all_params = self.system_parameters.get_param("$")
         # render template to final modelica file
         self.to_modelica(
             output_dir=output_dir,
             model_name="Steam",
-            param_data=steam_params,
+            param_data=all_params,
         )
         # If the sys-param file is missing an entry, it will show up as a jinja2.exceptions.UndefinedError

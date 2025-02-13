@@ -14,22 +14,22 @@ model Steam "Example model for a complete steam district heating system with a
       h_default=2738100)
     "Water medium";
 
-  parameter Modelica.Units.SI.AbsolutePressure pSat={{ data["steam_pressure_setpoint"] }}
+  parameter Modelica.Units.SI.AbsolutePressure pSat={{ data["district_system"]["first_generation"]["central_steam_plant_parameters"]["steam_pressure_setpoint"] }}
     "Saturation pressure, high pressure";
-  parameter Modelica.Units.SI.AbsolutePressure pLow={{ data["reduced_pressure_setpoint"] }}
+  parameter Modelica.Units.SI.AbsolutePressure pLow={{ data["district_system"]["first_generation"]["central_steam_plant_parameters"]["reduced_pressure_setpoint"] }}
     "Reduced pressure, after PRV";
   parameter Modelica.Units.SI.Temperature TSat=
      MediumSte.saturationTemperature(pSat)
      "Saturation temperature, at high pressure";
 
-  parameter Integer N = 3 "Number of buildings";
+  parameter Integer N = {{ data["buildings"] | length }} "Number of buildings";
   parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal=sum(bld.m_flow_nominal)*1.2
     "Nominal mass flow rate of entire district";
   parameter Modelica.Units.SI.HeatFlowRate QDis_flow_nominal=QBui_flow_nominal*N
     "Nominal heat flow rate of entire district";
   parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal=20000
     "Nominal heat flow rate of each building";
-  parameter Modelica.Units.SI.PressureDifference dpPip={{ data["condensate_pressure_drop_nominal"] }}
+  parameter Modelica.Units.SI.PressureDifference dpPip={{ data["district_system"]["first_generation"]["central_steam_plant_parameters"]["condensate_pressure_drop_nominal"] }}
     "Pressure drop in the condensate return pipe";
 
   parameter Buildings.Fluid.Movers.Data.Generic perPumFW(
@@ -40,7 +40,7 @@ model Steam "Example model for a complete steam district heating system with a
   parameter Modelica.Units.SI.PressureDifference dp_nominal=6000
     "Pressure drop of distribution at nominal mass flow rate";
 
-  Buildings.Experimental.DHC.Loads.Steam.BuildingTimeSeriesAtETS bld[N](
+  Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS bld[N](
     redeclare final package MediumSte = MediumSte,
     redeclare final package MediumWat = MediumWat,
     each have_prv=true,
@@ -57,7 +57,7 @@ model Steam "Example model for a complete steam district heating system with a
     each show_T=true)
     "Buildings"
     {% raw %}annotation (Placement(transformation(extent={{60,20},{40,40}})));
-  Buildings.Experimental.DHC.Networks.Steam.DistributionCondensatePipe dis(
+  Buildings.DHC.Networks.Steam.DistributionCondensatePipe dis(
     redeclare final package MediumSup = MediumSte,
     redeclare final package MediumRet = MediumWat,
     final dp_nominal=dp_nominal,
@@ -66,7 +66,7 @@ model Steam "Example model for a complete steam district heating system with a
     final mCon_flow_nominal=bld.m_flow_nominal)
     "Distribution network"
     annotation (Placement(transformation(extent={{0,-20},{40,0}})));
-  Buildings.Experimental.DHC.Plants.Steam.SingleBoiler pla(
+  Buildings.DHC.Plants.Steam.SingleBoiler pla(
     redeclare final package Medium = MediumWat,
     redeclare final package MediumHea_b = MediumSte,
     final m_flow_nominal=mDis_flow_nominal,
