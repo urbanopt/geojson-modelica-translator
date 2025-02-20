@@ -40,9 +40,7 @@ class Spawn(LoadBase):
         # grab the data from the system_parameter file for this building id
         # TODO: create method in system_parameter class to make this easier
 
-        idf_filename = self.system_parameters.get_param_by_id(
-            self.building_id, "load_model_parameters.spawn.idf_filename"
-        )
+        idf_filename = self.system_parameters.get_param_by_id(self.building_id, "load_model_parameters.spawn.idf_filename")
         thermal_zones = self.system_parameters.get_param_by_id(
             self.building_id,
             "load_model_parameters.spawn.thermal_zone_names",
@@ -143,14 +141,8 @@ class Spawn(LoadBase):
                 "has_electric_cooling": "true" if has_electric_cooling else "false",
             },
             # Reformatting lists for Modelica
-            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads))
-            .replace("[", "{")
-            .replace("]", "}")
-            .split("rray(", 1)[-1],
-            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads))
-            .replace("[", "{")
-            .replace("]", "}")
-            .split("rray(", 1)[-1],
+            "zone_nom_htg_loads": str(repr(zone_nom_htg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "zone_nom_clg_loads": str(repr(zone_nom_clg_loads)).replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
         }
         for tz in thermal_zones:
             # TODO: method for creating nice zone names for modelica

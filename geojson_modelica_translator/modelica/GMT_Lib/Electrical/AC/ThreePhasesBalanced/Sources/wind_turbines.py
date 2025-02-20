@@ -29,6 +29,4 @@ class WindTurbine(SimpleGMTBase):
             power_curve_string += "]"
             turbine_params["power_curve"] = power_curve_string
             # render template to final modelica file
-            self.to_modelica(
-                output_dir=output_dir, model_name="WindTurbine", param_data=turbine_params, iteration=index
-            )
+            self.to_modelica(output_dir=output_dir, model_name="WindTurbine", param_data=turbine_params, iteration=index)

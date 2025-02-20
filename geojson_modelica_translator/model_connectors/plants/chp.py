@@ -79,9 +79,7 @@ class HeatingPlantWithOptionalCHP(PlantBase):
                 data=template_data,
             )
 
-        self.copy_required_mo_files(
-            dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
-        )
+        self.copy_required_mo_files(dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants")
 
         package = PackageParser(scaffold.project_path)
         if "Plants" not in package.order:

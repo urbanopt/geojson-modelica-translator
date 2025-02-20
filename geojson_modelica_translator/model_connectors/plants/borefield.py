@@ -36,18 +36,14 @@ class Borefield(PlantBase):
 
         template_data = {
             "gfunction": {
-                "input_path": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_dir"
-                ),
+                "input_path": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_dir"),
                 "ghe_id": self.ghe_id,
             },
             "soil": {
                 "initial_ground_temperature": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.soil.undisturbed_temp"
                 ),
-                "conductivity": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.soil.conductivity"
-                ),
+                "conductivity": self.system_parameters.get_param("$.district_system.fifth_generation.soil.conductivity"),
                 "volumetric_heat_capacity": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.soil.rho_cp"
                 ),
@@ -70,14 +66,10 @@ class Borefield(PlantBase):
                 "flow_type": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
-                "borehole_height": self.system_parameters.get_param_by_id(
-                    self.ghe_id, "$.borehole.length_of_boreholes"
-                ),
+                "borehole_height": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.length_of_boreholes"),
                 "borehole_diameter": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.diameter"),
                 "borehole_buried_depth": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.buried_depth"),
-                "number_of_boreholes": self.system_parameters.get_param_by_id(
-                    self.ghe_id, "$.borehole.number_of_boreholes"
-                ),
+                "number_of_boreholes": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.number_of_boreholes"),
             },
             "tube": {
                 "outer_diameter": self.system_parameters.get_param(
@@ -205,9 +197,7 @@ class Borefield(PlantBase):
         )
 
         # generate Modelica package
-        self.copy_required_mo_files(
-            dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
-        )
+        self.copy_required_mo_files(dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants")
 
         # Borefield_ package
         subpackage_models = ["Borefield"]

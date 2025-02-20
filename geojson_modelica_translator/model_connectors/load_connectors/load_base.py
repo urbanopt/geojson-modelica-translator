@@ -128,9 +128,7 @@ class LoadBase(ModelBase):
                                 f"\nMissing property {ke} for building {self.building_id} in geojson feature file"
                             )
 
-                        building_floor_area_m2 = self.ft2_to_m2(
-                            urbanopt_building.feature.properties.get("floor_area", 0)
-                        )
+                        building_floor_area_m2 = self.ft2_to_m2(urbanopt_building.feature.properties.get("floor_area", 0))
 
                         number_stories_above_ground = urbanopt_building.feature.properties.get(
                             "number_of_stories_above_ground", number_stories

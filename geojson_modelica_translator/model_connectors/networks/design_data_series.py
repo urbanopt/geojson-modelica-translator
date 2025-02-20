@@ -51,9 +51,7 @@ class DesignDataSeries(NetworkBase):
         )
 
         # generate Modelica package
-        self.copy_required_mo_files(
-            dest_folder=scaffold.networks_path.files_dir, within=f"{scaffold.project_name}.Networks"
-        )
+        self.copy_required_mo_files(dest_folder=scaffold.networks_path.files_dir, within=f"{scaffold.project_name}.Networks")
 
         # DesignDataSeries package
         subpackage_models = ["DesignDataSeries"]

@@ -74,9 +74,7 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
             ground_coupling = GroundCoupling(sys_params)
             for loop in loop_order:
                 ghe_id = loop["list_ghe_ids_in_group"][0]
-                for ghe in sys_params.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"
-                ):
+                for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
                     if ghe_id == ghe["ghe_id"]:
                         borefield = Borefield(sys_params, ghe)
                 distribution = UnidirectionalSeries(sys_params)
@@ -101,9 +99,7 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
                 all_couplings.append(Coupling(distribution, ground_coupling, district_type=sys_param_district_type))
                 # empty couple between borefield and ground
                 all_couplings.append(Coupling(ground_coupling, borefield, district_type=sys_param_district_type))
-            all_couplings.append(
-                Coupling(ambient_water_stub, ambient_water_stub, district_type=sys_param_district_type)
-            )
+            all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type=sys_param_district_type))
         else:
             pass  # Create waste heat components & couplings
 

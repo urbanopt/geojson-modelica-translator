@@ -128,9 +128,7 @@ class District:
                         if dict_feature == feature:
                             ordered_pipe_list.append(pipe_length)
 
-                common_template_params["globals"]["lDis"] = (
-                    str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
-                )
+                common_template_params["globals"]["lDis"] = str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
                 common_template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
             else:
                 raise SystemExit("No geojson file provided, unable to determine thermal network loop order")

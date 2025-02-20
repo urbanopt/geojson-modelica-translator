@@ -32,9 +32,7 @@ class ModelBase:
 
         # initialize the templating framework (Jinja2)
         self.template_dir = template_dir
-        self.template_env = Environment(
-            loader=FileSystemLoader(searchpath=self.template_dir), undefined=StrictUndefined
-        )
+        self.template_env = Environment(loader=FileSystemLoader(searchpath=self.template_dir), undefined=StrictUndefined)
         self.template_env.filters.update(ALL_CUSTOM_FILTERS)
 
         self._template_instance = f"{self.model_name}_Instance.mopt"

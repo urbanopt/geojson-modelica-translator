@@ -28,7 +28,7 @@
 
 # class GmtLibDesTest(unittest.TestCase):
 #     @pytest.mark.simulation
-#     def test_5G_des_waste_heat_and_ghx(self):  # noqa: N802
+#     def test_5G_des_waste_heat_and_ghx(self):
 #         # -- Setup
 #         package_output_dir = PARENT_DIR / "output"
 #         package_name = "DES_5G"
@@ -63,7 +63,7 @@
 #         assert success is True
 
 #     @pytest.mark.dymola
-#     def test_5G_des_waste_heat_and_ghx_dymola(self):  # noqa: N802
+#     def test_5G_des_waste_heat_and_ghx_dymola(self):
 #         # -- Setup
 #         package_output_dir = PARENT_DIR / "output"
 #         package_name = "DES_5G_Dymola"
@@ -100,7 +100,7 @@
 #         assert success is True
 
 #     @pytest.mark.simulation
-#     def test_5G_des_waste_heat_and_ghx_variable(self):  # noqa: N802
+#     def test_5G_des_waste_heat_and_ghx_variable(self):
 #         # -- Setup
 #         package_output_dir = PARENT_DIR / "output"
 #         package_name = "DES_5G_Variable"
@@ -135,7 +135,7 @@
 #         assert success is True
 
 #     @pytest.mark.dymola
-#     def test_5G_des_waste_heat_and_ghx_variable_dymola(self):  # noqa: N802
+#     def test_5G_des_waste_heat_and_ghx_variable_dymola(self):
 #         # -- Setup
 #         package_output_dir = PARENT_DIR / "output"
 #         package_name = "DES_5G_Variable_Dymola"

@@ -219,9 +219,7 @@ class UrbanOptGeoJson:
 
         return result
 
-    def set_property_on_building_id(
-        self, building_id: str, property_name: str, property_value: str, overwrite=True
-    ) -> None:
+    def set_property_on_building_id(self, building_id: str, property_name: str, property_value: str, overwrite=True) -> None:
         """Set a property on a building_id.
 
         Note this method does not change the GeoJSON file, it only changes the in-memory data."""

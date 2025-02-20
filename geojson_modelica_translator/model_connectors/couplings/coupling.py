@@ -38,9 +38,7 @@ class Coupling:
         if not Path(self._template_dir).exists():
             raise Exception(f"Invalid coupling. Missing {self._template_dir} directory.")
 
-        self._template_env = Environment(
-            loader=FileSystemLoader(searchpath=self._template_dir), undefined=StrictUndefined
-        )
+        self._template_env = Environment(loader=FileSystemLoader(searchpath=self._template_dir), undefined=StrictUndefined)
         self._template_env.filters.update(ALL_CUSTOM_FILTERS)
 
         self._id = simple_uuid()
@@ -145,9 +143,7 @@ class Coupling:
         component_result, component_template_path = self._render_template(
             self._template_component_definitions, template_params
         )
-        connect_result, connect_template_path = self._render_template(
-            self._template_connect_statements, template_params
-        )
+        connect_result, connect_template_path = self._render_template(self._template_connect_statements, template_params)
 
         return {
             "component_definitions": component_result,

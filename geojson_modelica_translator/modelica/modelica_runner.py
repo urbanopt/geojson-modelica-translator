@@ -51,9 +51,7 @@ class ModelicaRunner:
         if file_to_load and not Path(file_to_load).exists():
             raise SystemExit(f"File not found to run {file_to_load}")
 
-    def _verify_run_path_for_docker(
-        self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]
-    ) -> Path:
+    def _verify_run_path_for_docker(self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]) -> Path:
         """If there is no run_path, then run it in the same directory as the
         file being run. This works fine for simple Modelica projects but typically
         the run_path needs to be a few levels higher in order to include other
@@ -177,9 +175,7 @@ class ModelicaRunner:
             # to inspect the container and test commands.
             # import time
             # time.sleep(10000)  # wait for the subprocess to start
-            logger.debug(
-                f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}"
-            )
+            logger.debug(f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}")
         except KeyboardInterrupt:
             # List all containers and their images
             docker_containers_cmd = ["docker", "ps", "--format", "{{.ID}} {{.Image}}"]
