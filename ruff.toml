@@ -1,6 +1,6 @@
 # https://docs.astral.sh/ruff/tutorial/#configuration
 fix = true # automatically fix problems if possible
-line-length = 125 # FIXME: go back to 120 once testing is complete
+line-length = 120
 
 # https://docs.astral.sh/ruff/linter/#rule-selection
 [lint]
