@@ -84,13 +84,6 @@ jobs:
       - name: Run mypy
         if: matrix.test_env =='mypy'
         run: poetry run mypy --install-types --non-interactive --show-error-codes .
-      - name: Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test_env == 'python' }}
-        run: |
-          poetry run coveralls
       - name: Job Failed
         if: ${{ failure() }}
         run: |
