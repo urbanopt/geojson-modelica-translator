@@ -666,7 +666,9 @@ class SystemParameters:
 
         # PV
         if reopt_data["distributed_generation"] and reopt_data["distributed_generation"]["solar_pv"]:
-            building["photovoltaic_panels"] = self.process_pv(reopt_data["distributed_generation"]["solar_pv"], latitude)
+            building["photovoltaic_panels"] = self.process_pv(
+                reopt_data["distributed_generation"]["solar_pv"], latitude
+            )
 
         return building
 
@@ -744,7 +746,9 @@ class SystemParameters:
                     length, width = self.calculate_dimensions(
                         feature["properties"]["footprint_area"], feature["properties"]["footprint_perimeter"]
                     )
-                    ghe_ids.append({"ghe_id": feature["properties"]["id"], "length_of_ghe": length, "width_of_ghe": width})
+                    ghe_ids.append(
+                        {"ghe_id": feature["properties"]["id"], "length_of_ghe": length, "width_of_ghe": width}
+                    )
 
         ghe_sys_param = self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
         # Make sys_param template entries for GHE specific properties
@@ -781,7 +785,9 @@ class SystemParameters:
                         if str(item).endswith("_export_time_series_modelica"):
                             measure_list.append(Path(item) / "building_loads.csv")  # used for mfrt
                         elif str(item).endswith("_export_modelica_loads"):
-                            measure_list.append(Path(item) / modelica_load_filename)  # space heating/cooling & water heating
+                            measure_list.append(
+                                Path(item) / modelica_load_filename
+                            )  # space heating/cooling & water heating
                             measure_list.append(Path(item) / "building_loads.csv")  # used for max electricity load
 
         # Get each building feature id from the SDK FeatureFile
@@ -818,7 +824,9 @@ class SystemParameters:
 
                     building["load_model_parameters"][model_type]["filepath"] = str(timeseries_load_file_path)
                 if "4G" in district_type:
-                    if (measure_file_path.suffix == ".csv") and ("_export_time_series_modelica" in str(measure_folder_name)):
+                    if (measure_file_path.suffix == ".csv") and (
+                        "_export_time_series_modelica" in str(measure_folder_name)
+                    ):
                         massflow_rate_df = pd.read_csv(measure_file_path)
                         try:
                             building_nominal_massflow_rate = round(
@@ -839,7 +847,9 @@ class SystemParameters:
                     try:
                         # only use the one column to make the df small
                         building_loads = pd.read_csv(measure_file_path, usecols=["ElectricityFacility"])
-                    except ValueError:  # hack to handle the case where there is no ElectricityFacility column in the csv
+                    except (
+                        ValueError
+                    ):  # hack to handle the case where there is no ElectricityFacility column in the csv
                         continue
                     max_electricity_load = int(building_loads["ElectricityFacility"].max())
                     building["load_model_parameters"][model_type]["max_electrical_load"] = max_electricity_load

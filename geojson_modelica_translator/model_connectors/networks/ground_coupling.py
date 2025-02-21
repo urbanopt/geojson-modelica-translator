@@ -88,7 +88,9 @@ class GroundCoupling(NetworkBase):
             # Some of the stations in the coefs df are in all caps, so try that as well.
             # Also try to match only the first word of the station name.
             station_name = station_name.split()[0]
-            matching_rows = coefs[coefs.apply(lambda row: row.astype(str).str.contains(station_name.upper()).any(), axis=1)]
+            matching_rows = coefs[
+                coefs.apply(lambda row: row.astype(str).str.contains(station_name.upper()).any(), axis=1)
+            ]
             # If still no match, raise an error
             if len(matching_rows) == 0:
                 raise ValueError(
@@ -116,7 +118,9 @@ class GroundCoupling(NetworkBase):
         )
 
         # generate Modelica package
-        self.copy_required_mo_files(dest_folder=scaffold.networks_path.files_dir, within=f"{scaffold.project_name}.Networks")
+        self.copy_required_mo_files(
+            dest_folder=scaffold.networks_path.files_dir, within=f"{scaffold.project_name}.Networks"
+        )
 
         # GroundCoupling_ package
         subpackage_models = ["GroundCoupling"]

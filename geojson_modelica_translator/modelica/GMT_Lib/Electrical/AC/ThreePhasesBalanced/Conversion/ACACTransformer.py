@@ -21,4 +21,6 @@ class ACACTransformer(SimpleGMTBase):
                 "model_name": f"Transformer{index}",
             }
             # render template to final modelica file
-            self.to_modelica(output_dir=output_dir, model_name="ACACTransformer", param_data=cap_params, iteration=index)
+            self.to_modelica(
+                output_dir=output_dir, model_name="ACACTransformer", param_data=cap_params, iteration=index
+            )

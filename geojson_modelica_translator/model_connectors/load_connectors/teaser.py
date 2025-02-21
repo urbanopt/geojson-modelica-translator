@@ -209,7 +209,9 @@ class Teaser(LoadBase):
             mofile.remove_component("Buildings.BoundaryConditions.WeatherData.ReaderTMY3", "weaDat")
 
             # Remove `lat` from diffuse & direct solar gains (removed from MBL in version 9)
-            mofile.remove_component_argument("Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTil", "lat")
+            mofile.remove_component_argument(
+                "Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTil", "lat"
+            )
             mofile.remove_component_argument(
                 "Buildings.BoundaryConditions.SolarIrradiation.DiffusePerez", "HDifTilRoof", "lat"
             )
@@ -235,7 +237,8 @@ class Teaser(LoadBase):
                 "port_a",
                 string_comment="Heat port for convective heat flow.",
                 annotations=[
-                    "Placement(transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},{10,110}}))"
+                    "Placement(transformation(extent={{-10,90},{10,110}}), "
+                    "iconTransformation(extent={{-10,90},{10,110}}))"
                 ],
             )
             # add heat port radiative heat flow.
@@ -244,7 +247,8 @@ class Teaser(LoadBase):
                 "port_b",
                 string_comment="Heat port for radiative heat flow.",
                 annotations=[
-                    "Placement(transformation(extent={{30,-110},{50,-90}}, iconTransformation(extent={{40,-112},{60,-92}})))"
+                    "Placement(transformation(extent={{30,-110},{50,-90}}, "
+                    "iconTransformation(extent={{40,-112},{60,-92}})))"
                 ],
             )
             # add fluid ports for the indoor air volume.
@@ -433,7 +437,9 @@ class Teaser(LoadBase):
                 mofile.add_connect(
                     f"{thermal_zone_name}.QLat_flow",
                     "perLatLoa.y",
-                    annotations=["Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})"],
+                    annotations=[
+                        "Line(points={{43,4},{40,4},{40,-28},{-40,-28},{-40,-50},{-59,-50}}, color={0, 0,127})"
+                    ],
                 )
 
                 mofile.add_connect(
@@ -499,8 +505,14 @@ class Teaser(LoadBase):
         nom_heat_flow = np.array([10000] * len(zone_list))
         building_template_data = {
             "thermal_zones": zone_list,
-            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
-            "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1].replace("[", "{").replace("]", "}").split("rray(", 1)[-1],
+            "nominal_heat_flow": str(repr(nom_heat_flow))[1:-1]
+            .replace("[", "{")
+            .replace("]", "}")
+            .split("rray(", 1)[-1],
+            "nominal_cool_flow": str(repr(nom_cool_flow))[1:-1]
+            .replace("[", "{")
+            .replace("]", "}")
+            .split("rray(", 1)[-1],
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "mos_weather": {
                 "mos_weather_filename": mos_weather_filename,

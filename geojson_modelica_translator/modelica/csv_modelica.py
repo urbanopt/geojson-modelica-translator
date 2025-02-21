@@ -88,7 +88,9 @@ class CSVModelica:
                 self.timeseries_timestep["SecondsFromStart"] = 0
             # Putting timeseries_timestep first in the concat puts the copied row at the top
             # reset_index() makes the index unique again, while keeping the duplicated row at the top
-            self.timeseries_output = pd.concat([self.timeseries_timestep, self.timeseries_output]).reset_index(drop=True)
+            self.timeseries_output = pd.concat([self.timeseries_timestep, self.timeseries_output]).reset_index(
+                drop=True
+            )
 
         # Extract the nominal flow rates from the file
         self.nominal_heating_mass_flow_rate = pd.DataFrame(

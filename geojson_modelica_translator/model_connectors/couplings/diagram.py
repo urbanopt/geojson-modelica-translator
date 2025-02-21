@@ -162,7 +162,9 @@ class Diagram:
                         #     (e.g., model a instance connecting to model b instance)
                         include_line = this_context_id == context_id or other_node.context_id in diagram_ids
                         if include_line:
-                            points = self._calculate_connector_line(diagram_node, component_port, other_node, other_port)
+                            points = self._calculate_connector_line(
+                                diagram_node, component_port, other_node, other_port
+                            )
                             formatted_points = [f"{{{x},{y}}}" for x, y in points]
                             line = line_template.substitute(points=",".join(formatted_points))
                             if component_port not in lines[component_name]:
@@ -184,7 +186,9 @@ class Diagram:
         :param port_b: str
         :return: list, list of x,y tuples
         """
-        grid_path = find_path_bfs(self._diagram_matrix, node_a.grid_row, node_a.grid_col, node_b.grid_row, node_b.grid_col)
+        grid_path = find_path_bfs(
+            self._diagram_matrix, node_a.grid_row, node_a.grid_col, node_b.grid_row, node_b.grid_col
+        )
 
         # convert grid path into a coordinate path for the diagram
         diagram_path = []

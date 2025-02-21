@@ -37,9 +37,7 @@ class CoolingPlant(PlantBase):
             # copy the weather file to resources for the Plant and
             # update the string that will be in the .mo file (weather_file_modelica_string)
             shutil.copy(str(weather_filepath), os.path.join(scaffold.plants_path.resources_dir, weather_filepath.name))
-            weather_file_modelica_string = (
-                f"modelica://{scaffold.project_name}/{scaffold.plants_path.resources_relative_dir}/{weather_filepath.name}"
-            )
+            weather_file_modelica_string = f"modelica://{scaffold.project_name}/{scaffold.plants_path.resources_relative_dir}/{weather_filepath.name}"
 
         template_data = {
             "nominal_values": {
@@ -111,7 +109,9 @@ class CoolingPlant(PlantBase):
             data=template_data,
         )
 
-        self.copy_required_mo_files(dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants")
+        self.copy_required_mo_files(
+            dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
+        )
 
         package = PackageParser(scaffold.project_path)
         if "Plants" not in package.order:
