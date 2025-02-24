@@ -96,4 +96,7 @@ class DistrictSystemTest(TestCaseBase):
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             run_path=self.district._scaffold.project_path,
             file_to_load=self.district._scaffold.package_path,
+            start_time=0,  # Day 0 (in seconds)
+            stop_time=3600,  # For 1 hour duration (in seconds)
+            step_size=300,  # (in seconds)
         )

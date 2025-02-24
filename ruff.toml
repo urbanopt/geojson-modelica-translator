@@ -8,6 +8,9 @@ extend-select = ["RUF", "E", "F", "I", "UP", "N", "S", "BLE", "A", "C4", "T10", 
 "Q", "SIM", "TID", "ARG", "DTZ", "PD", "PGH", "PLC", "PLE", "PLR", "PLW", "PIE", "COM"] # Enable these rules
 ignore = ["PLR0913", "PLR2004", "PLR0402", "COM812", "COM819", "SIM108", "ARG002", "ISC001", "S603", "S607", "S701"] # except for these specific errors
 
+[lint.pep8-naming]
+extend-ignore-names = ["test_*"]
+
 [lint.pylint]
 # system_parameters.py has many file lookups that necessitate nested statements & branches
 # Raise the allowed limits the least possible amount https://docs.astral.sh/ruff/settings/#pylint-max-branches
