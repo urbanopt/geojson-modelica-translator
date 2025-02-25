@@ -79,6 +79,7 @@
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
         "diameter_ratio": 11,
+        "pressure_drop_per_meter": 300,
         "roughness": 1e-06,
         "rho_cp": 2139000,
         "number_of_segments": 1,
