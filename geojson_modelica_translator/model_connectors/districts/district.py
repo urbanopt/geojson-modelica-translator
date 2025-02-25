@@ -72,6 +72,8 @@ class District:
         # construct graph of visual components
         diagram = Diagram(self._coupling_graph)
 
+        district_system_params = self.system_parameters.get_param("$.district_system")
+
         district_template_params = {
             "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
             "diagram": diagram,
@@ -90,11 +92,16 @@ class District:
             },
             "graph": self._coupling_graph,
             "sys_params": {
-                "district_system": self.system_parameters.get_param("$.district_system"),
+                "district_system": district_system_params,
                 # num_buildings counts the ports required for 5G systems
                 "num_buildings": len(self.system_parameters.get_param("$.buildings")),
             },
         }
+
+        if "fifth_generation" in district_system_params:
+            district_template_params["pressure_drop_per_meter"] = district_system_params["fifth_generation"][
+                "horizontal_piping_parameters"
+            ]["pressure_drop_per_meter"]
 
         if district_template_params["is_ghe_district"]:
             # load loop order info from ThermalNetwork

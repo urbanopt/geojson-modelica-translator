@@ -43,6 +43,10 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         # create the district package with the template_data from above
         files_to_copy = []
 
+        template_data["pressure_drop_per_meter"] = self.system_parameters.get_param(
+            "$.district_system.fifth_generation.horizontal_piping_parameters.pressure_drop_per_meter"
+        )
+
         # 1: grab all of the time series files and place them in the proper location
         time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
         # If this is a dict, then there is only one building
