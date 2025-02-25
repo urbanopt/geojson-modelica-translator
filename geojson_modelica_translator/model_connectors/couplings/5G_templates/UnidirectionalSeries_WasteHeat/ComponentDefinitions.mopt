@@ -1,0 +1,19 @@
+// temperature sensors
+Buildings.Fluid.Sensors.TemperatureTwoPort TIn_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={-30,10})));
+{% endraw %}Buildings.Fluid.Sensors.TemperatureTwoPort TOut_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={16,10})));
+{% endraw %}
+Buildings.Fluid.Sensors.TemperatureTwoPort TDisSup_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={34,10})));
+{% endraw %}Buildings.Fluid.Sensors.TemperatureTwoPort TDisRet_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={100,-30})));
+{% endraw %}
