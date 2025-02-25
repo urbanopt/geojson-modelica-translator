@@ -9,7 +9,7 @@ mPipDis_flow_nominal=datDes.mPumDis_flow_nominal,
 {% else %}
   mSto_flow_nominal={{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate }},
 {% endif %}
-dp_length_nominal=250,
+dp_length_nominal={{ sys_params.district_system.fifth_generation.horizontal_piping_parameters.pressure_drop_per_meter }},
 final mCon_flow_nominal={
 {% for building in range( sys_params.num_buildings - 1 ) %}
   {{ graph.couplings_by_type(model.id).load_couplings[building].load.id }}.ets.mSerWat_flow_nominal,

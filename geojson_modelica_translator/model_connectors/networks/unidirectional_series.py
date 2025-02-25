@@ -43,6 +43,9 @@ class UnidirectionalSeries(NetworkBase):
             "diameter_ratio": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.horizontal_piping_parameters.diameter_ratio"
             ),
+            "pressure_drop_per_meter": self.system_parameters.get_param(
+                "$.district_system.fifth_generation.horizontal_piping_parameters.pressure_drop_per_meter"
+            ),
             "roughness": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.horizontal_piping_parameters.roughness"
             ),

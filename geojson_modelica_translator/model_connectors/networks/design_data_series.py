@@ -7,7 +7,6 @@ from pathlib import Path
 
 from modelica_builder.package_parser import PackageParser
 
-from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase
 from geojson_modelica_translator.utils import ModelicaPath
 
@@ -29,13 +28,6 @@ class DesignDataSeries(NetworkBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
 
-        loop_order = load_loop_order(self.system_parameters.filename)
-
-        template_data = {
-            "number_of_loops": len(loop_order),
-            "data": loop_order,
-        }
-
         # create district data package paths
         b_modelica_path = ModelicaPath(self.design_data_name, scaffold.networks_path.files_dir, True)
 
@@ -47,7 +39,7 @@ class DesignDataSeries(NetworkBase):
             os.path.join(b_modelica_path.files_dir, "DesignDataSeries.mo"),
             project_name=scaffold.project_name,
             model_name=self.design_data_name,
-            design_data=template_data,
+            design_data=self.district_template_data,
         )
 
         # generate Modelica package
