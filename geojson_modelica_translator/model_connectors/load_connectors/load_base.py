@@ -100,8 +100,20 @@ class LoadBase(ModelBase):
                 }
             elif self.system_parameters.get_param_by_id(self.building_id, "fifth_gen_ets_parameters") is not None:
                 self.ets_template_data = {
-                    "cop_heating": self.system_parameters.get_param_by_id(
+                    "cop_heat_pump_heating": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_heating"
+                    ),
+                    "cop_heat_pump_cooling": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_cooling"
+                    ),
+                    "supply_water_temperature_building": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.supply_water_temperature_building"
+                    ),
+                    "ets_pump_flow_rate": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.ets_pump_flow_rate"
+                    ),
+                    "ets_pump_head": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.ets_pump_head"
                     ),
                 }
 

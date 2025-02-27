@@ -1,7 +1,6 @@
 # GeoJSON Modelica Translator (GMT)
 
 [![image](https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml)
-[![image](https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop)](https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop)
 [![image](https://badge.fury.io/py/geojson-modelica-translator.svg)](https://badge.fury.io/py/geojson-modelica-translator)
 
 The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 4GDHC and 5GDHC.
