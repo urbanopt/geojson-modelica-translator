@@ -50,7 +50,7 @@ rpds-py = "^0.22.0"
 mypy = "~=1.14"
 pre-commit = "~=4.0"
 pytest = "~=8.3"
-pytest-cov = "~=4.1"
+pytest-cov = "~=6.0"
 syrupy = "~=4.8"
 # documentation - these are used during development of docs, not deployment
 markdown-include = "~=0.8.1"
