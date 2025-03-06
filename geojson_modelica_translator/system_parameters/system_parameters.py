@@ -162,13 +162,13 @@ class SystemParameters:
         on the file extension.
 
         filename, str: Name of weather file to download, e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos
-        save_directory, str: Location where to save the downloaded content. The path must exist before downloading.
+        save_directory, str: Location where to save the downloaded content.
         """
         p_download = Path(filename)
         p_save = Path(save_directory)
 
         if not p_save.is_dir():
-            print(f"Creating directory to save weather file, {p_save!s}")
+            print(f"Creating directory to save weather file: {p_save!s}")
             p_save.mkdir(parents=True, exist_ok=True)
 
         # get country & state from weather file name
@@ -939,15 +939,24 @@ class SystemParameters:
 
         # Get weather data
         weather_filename = self.sdk_input["project"]["weather_filename"]
-        weather_path = self.sys_param_filename.parent / weather_filename
-        # Check if the EPW weatherfile exists, if not, try to download
+        # Look for weather files of that name in the project folder
+        potential_weather_paths = []
+        potential_weather_paths.append(self.sys_param_filename.parent / weather_filename)
+        potential_weather_paths.append(scenario_dir.parent.parent / "weather" / weather_filename)
+
+        # If the weather file doesn't exist, download it to project weather dir (last item of potential_weather_paths)
+        weather_path = next(
+            (weather_path for weather_path in potential_weather_paths if weather_path.exists()),
+            potential_weather_paths[-1],
+        )
+
         if not skip_weather_download and not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # also download the MOS weatherfile -- this is the file that will be set in the sys param file
         mos_weather_path = weather_path.with_suffix(".mos")
         if not skip_weather_download and not mos_weather_path.exists():
-            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
+            self.download_weatherfile(mos_weather_path.name, weather_path.parent)
 
         # Use building data from URBANopt SDK
         building_list, district_nominal_massflow_rate = self.retrieve_building_data_from_sdk(
