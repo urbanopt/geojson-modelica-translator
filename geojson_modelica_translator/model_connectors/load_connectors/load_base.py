@@ -40,6 +40,7 @@ class LoadBase(ModelBase):
         # TODO: Decide if we're requiring sys-param file, and if all loads have an ets.
         # test_base.py and test_time_series.py test these cases
         if system_parameters is not None:
+            # 4G ETS parameters
             if self.system_parameters.get_param_by_id(self.building_id, "ets_indirect_parameters") is not None:
                 self.ets_template_data = {
                     "heat_flow_nominal": self.system_parameters.get_param_by_id(
@@ -98,6 +99,7 @@ class LoadBase(ModelBase):
                         self.building_id, "ets_indirect_parameters.heating_controller_y_min"
                     ),
                 }
+            # 5G ETS parameters
             elif self.system_parameters.get_param_by_id(self.building_id, "fifth_gen_ets_parameters") is not None:
                 self.ets_template_data = {
                     "cop_heat_pump_heating": self.system_parameters.get_param_by_id(
@@ -114,6 +116,12 @@ class LoadBase(ModelBase):
                     ),
                     "ets_pump_head": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.ets_pump_head"
+                    ),
+                    "fan_design_flow_rate": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.fan_design_flow_rate"
+                    ),
+                    "fan_design_head": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.fan_design_head"
                     ),
                 }
 
