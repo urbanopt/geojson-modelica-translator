@@ -18,7 +18,6 @@ from geojson_modelica_translator.system_parameters.system_parameters import Syst
 from tests.base_test_case import TestCaseBase
 
 
-@pytest.mark.simulation
 class DistrictCoolingSystemTest(TestCaseBase):
     def setUp(self):
         # TODO: remove all the unittest stuff since we use pytest
