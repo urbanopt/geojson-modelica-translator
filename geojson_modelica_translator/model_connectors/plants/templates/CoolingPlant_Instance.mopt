@@ -2,16 +2,16 @@
     "Nominal chilled water mass flow rate";
   parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
     "Nominal condenser water mass flow rate";
-  parameter Modelica.Units.SI.PressureDifference dpCHW_nominal_{{ model.id }}=44.8*1000
+  parameter Modelica.Units.SI.PressureDifference dpCHW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_chw_nominal }}
     "Nominal chilled water side pressure";
-  parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}=46.2*1000
+  parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_cw_nominal }}
     "Nominal condenser water side pressure";
   parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
     "Nominal cooling capacity (Negative means cooling)";
   parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
     "Minimum mass flow rate of single chiller";
   // control settings
-  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=70000
+  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_setpoint }}
     "Differential pressure setpoint";
   parameter Modelica.Units.SI.Pressure pumDP_{{ model.id }}=dpCHW_nominal_{{ model.id }}+dpSetPoi_{{ model.id }}+200000;
   parameter Modelica.Units.SI.Time tWai_{{ model.id }}=30
