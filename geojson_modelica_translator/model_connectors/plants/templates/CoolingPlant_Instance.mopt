@@ -21,8 +21,8 @@
     final powerOrEfficiencyIsHydraulic=false,
     etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Power_VolumeFlowRate,
     pressure(
-      V_flow=360/numberofchillers/1000*{0.1, 1,1.2},
-      dp=1000*{1.2,1,0.1}
+      V_flow={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_chw_flow_nominal }}/numberofchillers/1000*{0.1, 1,1.2},
+      dp={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.chw_pump_head }}*{1.2,1,0.1}
     )
   )
     "Performance data for chilled water pumps";
@@ -30,8 +30,12 @@
     final powerOrEfficiencyIsHydraulic=false,
     etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Power_VolumeFlowRate,
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=250/1000*{0.2,0.6,1.0,1.2},
-      dp=(1000+60000+6000)*{1.2,1.1,1.0,0.6}
+      V_flow={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_cw_flow_nominal }}/1000*{0.2,0.6,1.0,1.2},
+      dp=({{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.cw_pump_head }})*{1.2,1.1,1.0,0.6}
+    ),
+    power(
+      V_flow={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_chw_flow_nominal }}*{0.2,0.6,1.0,1.2},
+      P=1000*{0.2,0.6,1.0,1.2}
     )
   )
     "Performance data for condenser water pumps";
