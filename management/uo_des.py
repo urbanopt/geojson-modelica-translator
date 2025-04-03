@@ -206,7 +206,16 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
-def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
+@click.option(
+    "-o",
+    "--output_variables",
+    default=None,
+    help="Specific output variables to capture from simulation",
+    type=list[str],
+)
+def run_model(
+    modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int, output_variables: list[str]
+):
     """Run the model
 
     \b
@@ -225,6 +234,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     :param stop_time (int): stop time of the simulation (seconds of a year)
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
+    :param output_variables (list[str] Specific Modelica variables to save from simulation)
     """
     project_name = modelica_project.stem
 
@@ -245,6 +255,7 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
         stop_time=stop_time,
         step_size=step_size,
         number_of_intervals=intervals,
+        output_variables=output_variables,
     )
 
     run_location = modelica_project.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"

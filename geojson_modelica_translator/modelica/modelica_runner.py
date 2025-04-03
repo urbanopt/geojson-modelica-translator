@@ -103,6 +103,7 @@ class ModelicaRunner:
                 stop_time (int): stop time of the simulation, in seconds
                 step_size (int): step size of the simulation, in seconds
                 number_of_intervals (int): number of intervals to run the simulation
+                output_variables (list[str]): list of Modelica output variables to produce.
         """
         # read in the start, stop, and step times
         project_in_library = kwargs.get("project_in_library", False)
@@ -110,6 +111,23 @@ class ModelicaRunner:
         stop_time = kwargs.get("stop_time")
         step_size = kwargs.get("step_size")
         number_of_intervals = kwargs.get("number_of_intervals")
+        output_variables = kwargs.get("output_variables")
+
+        simulation_args = f"{model_name}"
+        if start_time:
+            simulation_args += f", startTime={start_time}"
+        if stop_time:
+            simulation_args += f", stopTime={stop_time}"
+        if step_size:
+            simulation_args += f", stepSize={step_size}"
+        if number_of_intervals:
+            simulation_args += f", numberOfIntervals={number_of_intervals}"
+        if output_variables:
+            simulation_args += f", outputVariables={{{', '.join(map(str, output_variables))}}}"
+            # triple curly braces lets us use the f-string and then escape to wrap in literal curly braces
+            # Mapping enforces all output_variables elements be strings
+            # Joining puts them in the Modelica curly-brace list, not a standard Python list
+        logger.debug(f"Arguments passed to OMC: {simulation_args}")
 
         # initialize the templating framework (Jinja2)
         template_env = Environment(
@@ -121,13 +139,8 @@ class ModelicaRunner:
         model_data = {
             "project_in_library": project_in_library,
             "file_to_load": Path(filename).name if filename else None,
+            "simulation_args": simulation_args,
             "model_name": model_name,
-            "use_default_time_params": not start_time
-            and not stop_time,  # https://docs.astral.sh/ruff/rules/if-expr-with-false-true/#flake8-simplify-sim
-            "start_time": start_time,
-            "stop_time": stop_time,
-            "step_size": step_size,
-            "number_of_intervals": number_of_intervals,
         }
         with open(run_path / "simulate.mos", "w") as f:
             f.write(template.render(**model_data))
@@ -228,6 +241,7 @@ class ModelicaRunner:
                 stop_time (float): stop time of the simulation
                 step_size (float): step size of the simulation
                 number_of_intervals (int): number of intervals to run the simulation
+                output_variables (list[str]): list of Modelica output variables to produce.
                 debug (bool): whether to run in debug mode or not, prevents files from being deleted.
 
         Returns:
