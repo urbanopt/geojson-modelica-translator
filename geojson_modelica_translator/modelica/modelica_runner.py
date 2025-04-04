@@ -103,7 +103,7 @@ class ModelicaRunner:
                 stop_time (int): stop time of the simulation, in seconds
                 step_size (int): step size of the simulation, in seconds
                 number_of_intervals (int): number of intervals to run the simulation
-                output_variables (list[str]): list of Modelica output variables to produce.
+                output_variables (list[str]): limit Modelica .
         """
         # read in the start, stop, and step times
         project_in_library = kwargs.get("project_in_library", False)
@@ -112,6 +112,12 @@ class ModelicaRunner:
         step_size = kwargs.get("step_size")
         number_of_intervals = kwargs.get("number_of_intervals")
         output_variables = kwargs.get("output_variables")
+
+        if step_size and number_of_intervals:
+            logger.error("step_size and number_of_intervals are mutually exclusive. Pass one or the other, not both.")
+            raise ValueError()
+            # ValueError is raised in order to prevent the simulation from running.
+            # Text in the ValueError does not get out of our test, therefore log the message for user visibility.
 
         simulation_args = f"{model_name}"
         if start_time:
@@ -123,10 +129,7 @@ class ModelicaRunner:
         if number_of_intervals:
             simulation_args += f", numberOfIntervals={number_of_intervals}"
         if output_variables:
-            simulation_args += f", outputVariables={{{', '.join(map(str, output_variables))}}}"
-            # triple curly braces lets us use the f-string and then escape to wrap in literal curly braces
-            # Mapping enforces all output_variables elements be strings
-            # Joining puts them in the Modelica curly-brace list, not a standard Python list
+            simulation_args += f', variableFilter="{"|".join(output_variables)}"'
         logger.debug(f"Arguments passed to OMC: {simulation_args}")
 
         # initialize the templating framework (Jinja2)
