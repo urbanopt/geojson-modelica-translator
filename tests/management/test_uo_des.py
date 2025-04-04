@@ -366,3 +366,33 @@ class CLIIntegrationTest(TestCase):
         assert (
             self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
         ).exists()
+
+    @pytest.mark.simulation
+    def test_cli_runs_existing_5g_model_with_specific_variables(self):
+        project_name = "modelica_project_5g"
+        results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
+        if (self.output_dir / project_name / results_dir).exists():
+            rmtree(self.output_dir / project_name / results_dir)
+
+        # run subprocess as if we're an end-user
+        self.runner.invoke(
+            cli,
+            [
+                "run-model",
+                str(self.output_dir / project_name),
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+                "-o",
+                [".*PPumETS", ".*PHea"],
+            ],
+        )
+
+        # If this file exists, the cli command ran successfully
+        assert (
+            self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+        ).exists()
+        # TODO: check the output file for the expected variables, and that, in this case, PPum is not in the output
