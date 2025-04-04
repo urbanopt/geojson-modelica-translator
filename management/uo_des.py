@@ -202,7 +202,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-i",
     "--intervals",
-    default=144,
+    default=None,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
@@ -213,8 +213,21 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     help="Specific output variables to capture from simulation",
     type=list[str],
 )
+@click.option(
+    "-d",
+    "--debug",
+    is_flag=True,
+    help="Keeps intermediate files for debugging if something goes wrong",
+    default=False,
+)
 def run_model(
-    modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int, output_variables: list[str]
+    modelica_project: Path,
+    start_time: int,
+    stop_time: int,
+    step_size: int,
+    intervals: int,
+    output_variables: list[str],
+    debug: bool,
 ):
     """Run the model
 
@@ -235,6 +248,7 @@ def run_model(
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
     :param output_variables (list[str] Specific Modelica variables to save from simulation)
+    :param debug (bool): if True, keeps intermediate files for debugging
     """
     project_name = modelica_project.stem
 
@@ -256,6 +270,7 @@ def run_model(
         step_size=step_size,
         number_of_intervals=intervals,
         output_variables=output_variables,
+        debug=debug,
     )
 
     run_location = modelica_project.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"
