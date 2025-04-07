@@ -4,6 +4,9 @@ within {{ project_name }}.Loads.{{ model_name }};
   extends Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
     {% endraw %}COPHeaWat_nominal={{data['cop_heat_pump_heating']}},
+    TChiWatSup_nominal={{ data['chilled_water_supply_temp'] }},
+    THeaWatSup_nominal={{ data['hot_water_supply_temp'] }},
+    dp_nominal={{ data['ets_pump_head'] }},
     redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
       {% raw %}have_hotWat=true,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
