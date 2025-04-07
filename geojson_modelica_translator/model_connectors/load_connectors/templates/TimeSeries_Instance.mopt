@@ -6,8 +6,8 @@
     have_hotWat=true,
     T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=291.15,
-    delTAirCoo(displayUnit="degC")=10,
-    delTAirHea(displayUnit="degC")=20,
+    delTAirCoo(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_cooling }},
+    delTAirHea(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_heating }},
     k=0.1,
     Ti=120
     ), ets(have_hotWat = true, have_varFloEva=false)
@@ -15,8 +15,8 @@
     allowFlowReversal = true,
     T_aHeaWat_nominal(displayUnit="K")=318.15,
     T_aChiWat_nominal(displayUnit="K")=280.15,
-    delTAirCoo(displayUnit="degC")=10,
-    delTAirHea(displayUnit="degC")=20,
+    delTAirCoo(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_cooling }},
+    delTAirHea(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_heating }},
     k=0.1,
     Ti=120,
     nPorts_aHeaWat=1,
