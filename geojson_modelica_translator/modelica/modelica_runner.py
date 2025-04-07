@@ -129,7 +129,7 @@ class ModelicaRunner:
         if number_of_intervals:
             simulation_args += f", numberOfIntervals={number_of_intervals}"
         if output_variables:
-            simulation_args += f', variableFilter="{"|".join(output_variables)}"'
+            simulation_args += f', variableFilter="{"|".join(output_variables.split(","))}"'
         logger.debug(f"Arguments passed to OMC: {simulation_args}")
 
         # initialize the templating framework (Jinja2)
@@ -151,7 +151,7 @@ class ModelicaRunner:
         with open(run_path / "compile_fmu.mos", "w") as f:
             f.write(template.render(**model_data))
 
-    def _subprocess_call_to_docker(self, run_path: Path, action: str) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, action: str, simflags: list[str] | None = None) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
@@ -180,6 +180,9 @@ class ModelicaRunner:
                 "-c",
                 f"cd mnt/shared/{model_name} && omc {mo_script}.mos",
             ]
+            # Add simulation flags, if any
+            if simflags is not None:
+                exec_call.extend(simflags)
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
             completed_process = subprocess.run(
@@ -245,6 +248,7 @@ class ModelicaRunner:
                 step_size (float): step size of the simulation
                 number_of_intervals (int): number of intervals to run the simulation
                 output_variables (list[str]): list of Modelica output variables to produce.
+                simflags (list[str]): OpenModelica simulation flags. For advanced users only.
                 debug (bool): whether to run in debug mode or not, prevents files from being deleted.
 
         Returns:
@@ -259,7 +263,7 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
-        exitcode = self._subprocess_call_to_docker(verified_run_path, action)
+        exitcode = self._subprocess_call_to_docker(verified_run_path, action, kwargs.get("simflags"))
 
         logger.debug("Checking stdout.log for errors")
         with open(verified_run_path / "stdout.log") as f:
