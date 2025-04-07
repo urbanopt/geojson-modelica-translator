@@ -111,6 +111,12 @@ class LoadBase(ModelBase):
                     "supply_water_temperature_building": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.supply_water_temperature_building"
                     ),
+                    "chilled_water_supply_temp": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.chilled_water_supply_temp"
+                    ),
+                    "hot_water_supply_temp": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.hot_water_supply_temp"
+                    ),
                     "ets_pump_flow_rate": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.ets_pump_flow_rate"
                     ),
