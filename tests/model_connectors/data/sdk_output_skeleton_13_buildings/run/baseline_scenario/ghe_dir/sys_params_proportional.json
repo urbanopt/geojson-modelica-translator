@@ -499,6 +499,7 @@
     "fifth_generation": {
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
+        "hydraulic_diameter_autosized": true,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
         "diameter_ratio": 11,
@@ -561,7 +562,9 @@
               "buried_depth": 2.0,
               "diameter": 0.15,
               "length_of_boreholes": 130.5300693149386,
-              "number_of_boreholes": 1633
+              "length_of_boreholes_autosized": true,
+              "number_of_boreholes": 1633,
+              "number_of_boreholes_autosized": true
             }
           },
           {
@@ -574,7 +577,9 @@
               "buried_depth": 2.0,
               "diameter": 0.15,
               "length_of_boreholes": 130.5300693149386,
-              "number_of_boreholes": 1633
+              "length_of_boreholes_autosized": true,
+              "number_of_boreholes": 1633,
+              "number_of_boreholes_autosized": true
             }
           },
           {
@@ -587,14 +592,18 @@
               "buried_depth": 2.0,
               "diameter": 0.15,
               "length_of_boreholes": 130.5300693149386,
-              "number_of_boreholes": 1633
+              "length_of_boreholes_autosized": true,
+              "number_of_boreholes": 1633,
+              "number_of_boreholes_autosized": true
             }
           }
         ]
       },
       "central_pump_parameters": {
+        "pump_design_head": 60000000,
+        "pump_design_head_autosized": true,
         "pump_flow_rate": 0.01,
-        "pump_design_head": 600000000
+        "pump_flow_rate_autosized": true
       }
     }
   },
