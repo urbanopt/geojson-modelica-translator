@@ -51,9 +51,6 @@ class GroundCoupling(NetworkBase):
             "rho_cp": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.horizontal_piping_parameters.rho_cp"
             ),
-            "number_of_segments": self.system_parameters.get_param(
-                "$.district_system.fifth_generation.horizontal_piping_parameters.number_of_segments"
-            ),
             "buried_depth": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.horizontal_piping_parameters.buried_depth"
             ),

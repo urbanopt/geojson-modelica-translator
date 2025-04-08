@@ -108,9 +108,6 @@ class LoadBase(ModelBase):
                     "cop_heat_pump_cooling": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_cooling"
                     ),
-                    "supply_water_temperature_building": self.system_parameters.get_param_by_id(
-                        self.building_id, "fifth_gen_ets_parameters.supply_water_temperature_building"
-                    ),
                     "chilled_water_supply_temp": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.chilled_water_supply_temp"
                     ),
