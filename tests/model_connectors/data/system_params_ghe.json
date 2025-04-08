@@ -24,11 +24,12 @@
       },
       "ets_model": "Fifth Gen Heat Pump",
       "fifth_gen_ets_parameters": {
-        "supply_water_temperature_building": 15,
         "chilled_water_supply_temp": 5,
+        "heating_water_supply_temp": 50,
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
+        "cop_heat_pump_hot_water": 2.5,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -46,7 +47,6 @@
         "pressure_drop_per_meter": 300,
         "roughness": 1e-06,
         "rho_cp": 2139000,
-        "number_of_segments": 1,
         "buried_depth": 1.5
       },
       "central_pump_parameters": {
