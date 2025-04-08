@@ -108,8 +108,14 @@ class LoadBase(ModelBase):
                     "cop_heat_pump_cooling": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_cooling"
                     ),
+                    "cop_heat_pump_hot_water": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_hot_water"
+                    ),
                     "chilled_water_supply_temp": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.chilled_water_supply_temp"
+                    ),
+                    "heating_water_supply_temp": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.heating_water_supply_temp"
                     ),
                     "hot_water_supply_temp": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.hot_water_supply_temp"
