@@ -202,11 +202,41 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-i",
     "--intervals",
-    default=144,
+    default=None,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
-def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
+@click.option(
+    "-o",
+    "--output_variables",
+    default=None,
+    help="Comma-separated list of specific output variables to capture from simulation",
+    type=str,
+)
+@click.option(
+    "-s",
+    "--simflags",
+    default=None,
+    help="Comma-separated list of OpenModelica simulation flags. For advanced users only",
+    type=str,
+)
+@click.option(
+    "-d",
+    "--debug",
+    is_flag=True,
+    help="Keeps intermediate files for debugging if something goes wrong",
+    default=False,
+)
+def run_model(
+    modelica_project: Path,
+    start_time: int,
+    stop_time: int,
+    step_size: int,
+    intervals: int,
+    output_variables: str,
+    simflags: str,
+    debug: bool,
+):
     """Run the model
 
     \b
@@ -225,6 +255,9 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     :param stop_time (int): stop time of the simulation (seconds of a year)
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
+    :param output_variables (str) Comma-separated list of specific output variables to capture from simulation
+    :param simflags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+    :param debug (bool): if True, keeps intermediate files for debugging
     """
     project_name = modelica_project.stem
 
@@ -245,6 +278,9 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
         stop_time=stop_time,
         step_size=step_size,
         number_of_intervals=intervals,
+        output_variables=output_variables,
+        simflags=simflags,
+        debug=debug,
     )
 
     run_location = modelica_project.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"
