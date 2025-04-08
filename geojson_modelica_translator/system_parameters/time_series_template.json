@@ -68,8 +68,8 @@
       },
       "ets_model": "Fifth Gen Heat Pump",
       "fifth_gen_ets_parameters": {
-        "chilled_water_supply_temp": 5,
-        "heating_water_supply_temp": 50,
+        "chilled_water_supply_temp": 18,
+        "heating_water_supply_temp": 38,
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
