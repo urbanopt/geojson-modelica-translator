@@ -387,12 +387,74 @@ class CLIIntegrationTest(TestCase):
                 "-x",
                 str(self.step_size_90_seconds),
                 "-o",
-                [".*PPumETS", ".*PHea"],
+                ".*PPumETS,.*PHea",
             ],
         )
 
-        # If this file exists, the cli command ran successfully
         assert (
             self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
         ).exists()
         # TODO: check the output file for the expected variables, and that, in this case, PPum is not in the output
+
+    @pytest.mark.simulation
+    def test_cli_runs_existing_5g_model_with_compiler_flags(self):
+        project_name = "modelica_project_5g"
+        results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
+        if (self.output_dir / project_name / results_dir).exists():
+            rmtree(self.output_dir / project_name / results_dir)
+
+        # run subprocess as if we're an end-user
+        self.runner.invoke(
+            cli,
+            [
+                "run-model",
+                str(self.output_dir / project_name),
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+                "-o",
+                ".*PPumETS,.*PHea",
+                "-c",
+                "-d=aliasConflicts",
+            ],
+        )
+
+        assert (
+            self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+        ).exists()
+        # TODO: check the output log file for any alias conflicts printed
+
+    @pytest.mark.simulation
+    def test_cli_runs_existing_5g_model_with_simulation_flags(self):
+        project_name = "modelica_project_5g"
+        results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
+        if (self.output_dir / project_name / results_dir).exists():
+            rmtree(self.output_dir / project_name / results_dir)
+
+        # run subprocess as if we're an end-user
+        self.runner.invoke(
+            cli,
+            [
+                "run-model",
+                str(self.output_dir / project_name),
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_201_in_seconds),
+                "-x",
+                str(self.step_size_90_seconds),
+                "-o",
+                ".*PPumETS,.*PHea",
+                "-s",
+                "-noEventEmit,-abortSlowSimulation",
+            ],
+        )
+
+        assert (
+            self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+        ).exists()
+        # TODO: check the output that the simulation had the appropriate flags applied.
+        # noEventEmit should result in smaller file size. abortSlowSimulation is to show how to pass multiple flags
