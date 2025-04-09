@@ -173,10 +173,9 @@ class ModelicaRunner:
         mo_script = "compile_fmu" if action == "compile" else "simulate"
         if compiler_flags is not None:
             # Format compiler flags for OpenModelica
-            compiler_flags_list = compiler_flags.split(",")
-            compiler_flags_string = " && ".join(compiler_flags_list)
+            compiler_flags_for_modelica = compiler_flags.replace(",", " ")
         else:
-            compiler_flags_string = ""
+            compiler_flags_for_modelica = ""
 
         try:
             # create the command to call the open modelica compiler inside the docker image
@@ -188,7 +187,7 @@ class ModelicaRunner:
                 f"{image_name}",
                 "/bin/bash",
                 "-c",
-                f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_string}",
+                f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_for_modelica}",
             ]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
