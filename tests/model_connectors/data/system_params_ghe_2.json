@@ -76,7 +76,7 @@
     "fifth_generation": {
       "central_pump_parameters": {
         "pump_design_head": 300000,
-        "pump_flow_rate": 0.01
+        "pump_flow_rate": 8.0
       },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
