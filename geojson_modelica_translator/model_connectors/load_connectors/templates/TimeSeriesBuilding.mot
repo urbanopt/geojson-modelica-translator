@@ -213,6 +213,12 @@ model TimeSeriesBuilding
     k=facMul) if have_cooLoa
     "Scaling"
     annotation (Placement(transformation(extent={{272,-10},{292,10}})));
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter mulQReqHot_flow(
+    u(
+      unit="W"),
+    k=facMul) if have_heaLoa
+    "Scaling"
+    annotation (Placement(transformation(extent={{270,-130},{290,-110}})));
 protected
   parameter Modelica.Units.SI.SpecificHeatCapacity cp_air=1005
     "Air specific heat capacity";
@@ -233,10 +239,10 @@ equation
     annotation (Line(points={{120,-64},{64,-64},{64,-32.3333},{70,-32.3333}},color={0,127,255}));
   connect(terUniHea.mReqHeaWat_flow,disFloHea.mReq_flow[1])
     annotation (Line(points={{90.8333,-27.3333},{90.8333,-28},{100,-28},{100,-74},{119,-74}},color={0,0,127}));
-  connect(disFloHea.QActTot_flow,QHea_flow)
+  connect(disFloHea.QActTot_flow,mulQHea_flow.u)
     annotation (Line(points={{141,-76},{260,-76},{260,280},{320,280}},color={0,0,127}));
-  connect(disFloCoo.QActTot_flow,QCoo_flow)
-    annotation (Line(points={{141,-266},{268,-266},{268,240},{320,240}},color={0,0,127}));
+  connect(disFloCoo.QActTot_flow,mulQCoo_flow.u)
+    annotation (Line(points={{141,-266},{252,-266},{252,240},{268,240}}, color={0,0,127}));
   connect(loa.y[1],terUniCoo.QReqCoo_flow)
     annotation (Line(points={{21,0},{46,0},{46,32.5},{69.1667,32.5}},color={0,0,127}));
   connect(loa.y[2],terUniHea.QReqHea_flow)
@@ -251,36 +257,38 @@ equation
     annotation (Line(points={{-258,180},{-20,180},{-20,-20},{24,-20},{24,-19},{69.1667,-19}},color={0,0,127}));
   connect(maxTSet.y,terUniCoo.TSetCoo)
     annotation (Line(points={{-258,220},{0,220},{0,39.3333},{69.1667,39.3333}},color={0,0,127}));
-  connect(ports_aHeaWat[1],disFloHea.port_a)
+  connect(mulHeaWatInl[1].port_b,disFloHea.port_a)
     annotation (Line(points={{-300,-60},{-90,-60},{-90,-70},{120,-70}},color={0,127,255}));
-  connect(ports_bHeaWat[1],disFloHea.port_b)
+  connect(mulHeaWatOut[1].port_a,disFloHea.port_b)
     annotation (Line(points={{300,-60},{220,-60},{220,-70},{140,-70}},color={0,127,255}));
-  connect(ports_aChiWat[1],disFloCoo.port_a)
+  connect(mulChiWatInl[1].port_b,disFloCoo.port_a)
     annotation (Line(points={{-300,-260},{120,-260}},color={0,127,255}));
-  connect(ports_bChiWat[1],disFloCoo.port_b)
+  connect(mulChiWatOut[1].port_a,disFloCoo.port_b)
     annotation (Line(points={{300,-260},{140,-260}},color={0,127,255}));
-  connect(loa.y[1],QReqCoo_flow)
+  connect(mulQReqCoo_flow.y,QReqCoo_flow)
     annotation (Line(points={{21,0},{320,0},{320,0}},color={0,0,127}));
-  connect(loa.y[2],QReqHea_flow)
-    annotation (Line(points={{21,0},{280,0},{280,40},{320,40}},color={0,0,127}));
+  connect(mulQReqHea_flow.y,QReqHea_flow)
+    annotation (Line(points={{294,40},{320,40}}, color={0,0,127}));
   connect(loa.y[1],mulQReqCoo_flow.u)
     annotation (Line(points={{-259,0},{270,0}},color={0,0,127}));
   connect(loa.y[2],mulQReqHea_flow.u)
-    annotation (Line(points={{-259,0},{260,0},{260,40},{270,40}},color={0,0,127}));
-  connect(loa.y[3],QReqHotWat_flow)
-    annotation (Line(points={{-259,0},{40,0},{40,-120},{320,-120}},color={0,0,127}));
+    annotation (Line(points={{-259,0},{264,0},{264,40},{270,40}}, color={0,0,127}));
+  connect(mulQReqHot_flow.y, QReqHotWat_flow)
+    annotation (Line(points={{292,-120},{320,-120}}, color={0,0,127}));
+  connect(mulQReqHot_flow.u, loa.y[3]) annotation (Line(points={{268,-120},{40,-120},
+          {40,0},{-259,0}}, color={0,0,127}));
   connect(disFloHea.PPum,addPPum.u1)
     annotation (Line(points={{141,-78},{170,-78},{170,86},{220,86}},color={0,0,127}));
   connect(disFloCoo.PPum,addPPum.u2)
     annotation (Line(points={{141,-268},{200,-268},{200,74},{220,74}},color={0,0,127}));
-  connect(addPPum.y,PPum)
+  connect(addPPum.y,mulPPum.u)
     annotation (Line(points={{244,80},{320,80}},color={0,0,127}));
   connect(noHea.y,addPPum.u1)
     annotation (Line(points={{102,130},{170,130},{170,86},{220,86}},color={0,0,127}));
   connect(noCoo.y,addPPum.u2)
     annotation (Line(points={{102,88},{200,88},{200,74},{220,74}},color={0,0,127}));
-  connect(addPFan.y,PFan)
-    annotation (Line(points={{244,130},{282,130},{282,120},{320,120}},color={0,0,127}));
+  connect(addPFan.y,mulPFan.u)
+    annotation (Line(points={{244,130},{256,130},{256,120},{268,120}}, color={0,0,127}));
   connect(noHea.y,addPFan.u1)
     annotation (Line(points={{102,130},{200,130},{200,136},{220,136}},color={0,0,127}));
   connect(noCoo.y,addPFan.u2)

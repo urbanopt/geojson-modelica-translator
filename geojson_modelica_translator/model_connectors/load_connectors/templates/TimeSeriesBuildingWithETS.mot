@@ -12,8 +12,8 @@ within {{ project_name }}.Loads.{{ model_name }};
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
       facMulHea=10*QHea_flow_nominal/(1.7E5),
       facMulCoo=40*QCoo_flow_nominal/(-1.5E5)),
-    redeclare Buildings.DHC.ETS.Combined.HeatPumpHeatExchanger ets(
-      final dT_nominal=dT_nominal,
+    {% endraw %}redeclare {{ project_name }}.Loads.ETS.HeatPumpTrio ets(
+      {% raw %}final dT_nominal=dT_nominal,
       final TDisWatMin=TDisWatMin,
       final TDisWatMax=TDisWatMax,
       final TChiWatSup_nominal=TChiWatSup_nominal,
@@ -23,6 +23,7 @@ within {{ project_name }}.Loads.{{ model_name }};
       final dp_nominal=dp_nominal,
       final COPHeaWat_nominal=COPHeaWat_nominal,
       final COPHotWat_nominal=COPHotWat_nominal,
+      final COPChiWat_nominal=COPChiWat_nominal,
       have_hotWat=true,
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
@@ -43,6 +44,9 @@ within {{ project_name }}.Loads.{{ model_name }};
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
     annotation (Dialog(group="Design parameter"));
+  {% endraw %}parameter Real COPChiWat_nominal(unit="1")={{data['cop_cooling']}}
+    {% raw %}"COP of heat pump for chilled water production"
+    annotation (Dialog(group="ETS model parameters"));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput THotWatSupSet(
     final unit="K",
     displayUnit="degC")
