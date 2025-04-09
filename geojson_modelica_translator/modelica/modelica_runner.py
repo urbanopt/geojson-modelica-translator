@@ -112,6 +112,7 @@ class ModelicaRunner:
         step_size = kwargs.get("step_size")
         number_of_intervals = kwargs.get("number_of_intervals")
         output_variables = kwargs.get("output_variables")
+        simulation_flags = kwargs.get("simulation_flags")
 
         if step_size and number_of_intervals:
             logger.error("step_size and number_of_intervals are mutually exclusive. Pass one or the other, not both.")
@@ -130,6 +131,8 @@ class ModelicaRunner:
             simulation_args += f", numberOfIntervals={number_of_intervals}"
         if output_variables:
             simulation_args += f', variableFilter="{"|".join(output_variables.split(","))}"'
+        if simulation_flags:
+            simulation_args += f', simflags="{" ".join(simulation_flags.split(","))}"'
         logger.debug(f"Arguments passed to OMC: {simulation_args}")
 
         # initialize the templating framework (Jinja2)
@@ -151,7 +154,7 @@ class ModelicaRunner:
         with open(run_path / "compile_fmu.mos", "w") as f:
             f.write(template.render(**model_data))
 
-    def _subprocess_call_to_docker(self, run_path: Path, action: str, simflags: list[str] | None = None) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, action: str, compiler_flags: str | None = None) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
@@ -168,6 +171,13 @@ class ModelicaRunner:
         model_name = run_path.parts[-1]
         image_name = "nrel/gmt-om-runner:3.0.0"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
+        if compiler_flags is not None:
+            # Format compiler flags for OpenModelica
+            compiler_flags_list = compiler_flags.split(",")
+            compiler_flags_string = " && ".join(compiler_flags_list)
+        else:
+            compiler_flags_string = ""
+
         try:
             # create the command to call the open modelica compiler inside the docker image
             exec_call = [
@@ -178,11 +188,8 @@ class ModelicaRunner:
                 f"{image_name}",
                 "/bin/bash",
                 "-c",
-                f"cd mnt/shared/{model_name} && omc {mo_script}.mos",
+                f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_string}",
             ]
-            # Add simulation flags, if any
-            if simflags is not None:
-                exec_call.extend(simflags)
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
             completed_process = subprocess.run(
@@ -247,9 +254,10 @@ class ModelicaRunner:
                 stop_time (float): stop time of the simulation
                 step_size (float): step size of the simulation
                 number_of_intervals (int): number of intervals to run the simulation
-                output_variables (list[str]): list of Modelica output variables to produce.
-                simflags (list[str]): OpenModelica simulation flags. For advanced users only.
-                debug (bool): whether to run in debug mode or not, prevents files from being deleted.
+                output_variables (str): Comma separated list of Modelica output variables to produce
+                compiler_flags (str): Comma separated list of OpenModelica simulation flags. For advanced users only
+                simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+                debug (bool): whether to run in debug mode or not, prevents files from being deleted
 
         Returns:
             tuple[bool, str]: success status and path to the results directory
@@ -263,7 +271,7 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
-        exitcode = self._subprocess_call_to_docker(verified_run_path, action, kwargs.get("simflags"))
+        exitcode = self._subprocess_call_to_docker(verified_run_path, action, kwargs.get("compiler_flags"))
 
         logger.debug("Checking stdout.log for errors")
         with open(verified_run_path / "stdout.log") as f:
