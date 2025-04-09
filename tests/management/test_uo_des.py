@@ -418,7 +418,7 @@ class CLIIntegrationTest(TestCase):
                 "-o",
                 ".*PPumETS,.*PHea",
                 "-c",
-                "-d=aliasConflicts",
+                "-d=aliasConflicts,-d=cgraph",
             ],
         )
 
