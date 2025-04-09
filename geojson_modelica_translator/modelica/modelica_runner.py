@@ -130,9 +130,9 @@ class ModelicaRunner:
         if number_of_intervals:
             simulation_args += f", numberOfIntervals={number_of_intervals}"
         if output_variables:
-            simulation_args += f', variableFilter="{"|".join(output_variables.split(","))}"'
+            simulation_args += f', variableFilter="{output_variables.replace(",", "|")}"'
         if simulation_flags:
-            simulation_args += f', simflags="{" ".join(simulation_flags.split(","))}"'
+            simulation_args += f', simflags="{simulation_flags.replace(",", " ")}"'
         logger.debug(f"Arguments passed to OMC: {simulation_args}")
 
         # initialize the templating framework (Jinja2)
