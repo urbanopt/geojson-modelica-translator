@@ -214,8 +214,15 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     type=str,
 )
 @click.option(
+    "-c",
+    "--compiler_flags",
+    default=None,
+    help="Comma-separated list of OpenModelica compiler flags. For advanced users only",
+    type=str,
+)
+@click.option(
     "-s",
-    "--simflags",
+    "--simulation_flags",
     default=None,
     help="Comma-separated list of OpenModelica simulation flags. For advanced users only",
     type=str,
@@ -234,7 +241,8 @@ def run_model(
     step_size: int,
     intervals: int,
     output_variables: str,
-    simflags: str,
+    compiler_flags: str,
+    simulation_flags: str,
     debug: bool,
 ):
     """Run the model
@@ -256,7 +264,8 @@ def run_model(
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
     :param output_variables (str) Comma-separated list of specific output variables to capture from simulation
-    :param simflags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+    :param compiler_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+    :param simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
     :param debug (bool): if True, keeps intermediate files for debugging
     """
     project_name = modelica_project.stem
@@ -279,7 +288,8 @@ def run_model(
         step_size=step_size,
         number_of_intervals=intervals,
         output_variables=output_variables,
-        simflags=simflags,
+        compiler_flags=compiler_flags,
+        simulation_flags=simulation_flags,
         debug=debug,
     )
 
