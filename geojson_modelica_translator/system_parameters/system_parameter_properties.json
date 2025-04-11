@@ -1020,10 +1020,6 @@
           "description": "Volumetric heat capacity of the pipe wall material",
           "type": "number"
         },
-        "number_of_segments": {
-          "description": "Number of axial pipe segments, used to discretize pipe models",
-          "type": "integer"
-        },
         "buried_depth": {
           "description": "Pipes buried depth",
           "type": "number"
@@ -1290,23 +1286,28 @@
     },
     "fifth_gen_ets_parameters": {
       "properties": {
-        "supply_water_temperature_building": {
-          "description": "Water supply temperature building side. (C)",
-          "type": "number",
-          "default": 15
-        },
         "chilled_water_supply_temp": {
           "description": "Chilled water supply temperature. (C)",
           "type": "number",
           "default": 5
         },
         "hot_water_supply_temp": {
+          "description": "Domestic hot water supply temperature. (C)",
+          "type": "number",
+          "default": 50
+        },
+        "heating_water_supply_temp": {
           "description": "Heating water supply temperature. (C)",
           "type": "number",
           "default": 50
         },
         "cop_heat_pump_heating": {
           "description": "COP of heat pump for heating water production.",
+          "type": "number",
+          "default": 2.5
+        },
+        "cop_heat_pump_hot_water": {
+          "description": "COP of heat pump for domestic hot water production.",
           "type": "number",
           "default": 2.5
         },
@@ -1337,11 +1338,12 @@
         }
       },
       "required": [
-        "supply_water_temperature_building",
-        "chilled_water_supply_temp",
         "hot_water_supply_temp",
+        "chilled_water_supply_temp",
+        "heating_water_supply_temp",
         "cop_heat_pump_heating",
         "cop_heat_pump_cooling",
+        "cop_heat_pump_hot_water",
         "ets_pump_flow_rate",
         "ets_pump_head",
         "fan_design_flow_rate",

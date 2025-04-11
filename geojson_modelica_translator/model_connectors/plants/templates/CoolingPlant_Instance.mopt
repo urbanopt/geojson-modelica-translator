@@ -2,16 +2,16 @@
     "Nominal chilled water mass flow rate";
   parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
     "Nominal condenser water mass flow rate";
-  parameter Modelica.Units.SI.PressureDifference dpCHW_nominal_{{ model.id }}=44.8*1000
+  parameter Modelica.Units.SI.PressureDifference dpCHW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_chw_nominal }}
     "Nominal chilled water side pressure";
-  parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}=46.2*1000
+  parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_cw_nominal }}
     "Nominal condenser water side pressure";
   parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
     "Nominal cooling capacity (Negative means cooling)";
   parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
     "Minimum mass flow rate of single chiller";
   // control settings
-  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}=70000
+  parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_setpoint }}
     "Differential pressure setpoint";
   parameter Modelica.Units.SI.Pressure pumDP_{{ model.id }}=dpCHW_nominal_{{ model.id }}+dpSetPoi_{{ model.id }}+200000;
   parameter Modelica.Units.SI.Time tWai_{{ model.id }}=30
@@ -21,8 +21,8 @@
     final powerOrEfficiencyIsHydraulic=false,
     etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Power_VolumeFlowRate,
     pressure(
-      V_flow=360/numberofchillers/1000*{0.1, 1,1.2},
-      dp=1000*{1.2,1,0.1}
+      V_flow={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_chw_flow_nominal }}/numberofchillers/1000*{0.1, 1,1.2},
+      dp={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.chw_pump_head }}*{1.2,1,0.1}
     )
   )
     "Performance data for chilled water pumps";
@@ -30,8 +30,12 @@
     final powerOrEfficiencyIsHydraulic=false,
     etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Power_VolumeFlowRate,
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=250/1000*{0.2,0.6,1.0,1.2},
-      dp=(1000+60000+6000)*{1.2,1.1,1.0,0.6}
+      V_flow={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_cw_flow_nominal }}/1000*{0.2,0.6,1.0,1.2},
+      dp=({{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.cw_pump_head }})*{1.2,1.1,1.0,0.6}
+    ),
+    power(
+      V_flow={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_cw_flow_nominal }}*{0.2,0.6,1.0,1.2},
+      P=1000*{0.2,0.6,1.0,1.2}
     )
   )
     "Performance data for condenser water pumps";
@@ -64,3 +68,12 @@
     )
     "District cooling plant."
     annotation (Placement({{ diagram.transformation.cooling_plant.plant }}));
+annotation (
+revisions="<html>
+<ul>
+<li>
+April 11, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
+</ul>
+</html>");

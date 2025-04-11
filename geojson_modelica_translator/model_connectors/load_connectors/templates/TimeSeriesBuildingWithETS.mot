@@ -3,7 +3,12 @@ within {{ project_name }}.Loads.{{ model_name }};
   "Model of a building with an internal ETS. Building loads provided as time series"
   extends Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
-    {% endraw %}COPHeaWat_nominal={{data['cop_heating']}},
+    {% endraw %}COPHeaWat_nominal={{data['cop_heat_pump_heating']}},
+    COPHotWat_nominal={{data['cop_heat_pump_hot_water']}},
+    TChiWatSup_nominal=273.15+{{ data['chilled_water_supply_temp'] }},
+    THeaWatSup_nominal=273.15+{{ data['heating_water_supply_temp'] }},
+    THotWatSup_nominal=273.15+{{ data['hot_water_supply_temp'] }},
+    dp_nominal={{ data['ets_pump_head'] }},
     redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
       {% raw %}have_hotWat=true,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
@@ -114,6 +119,10 @@ and hot water loads are provided as time series.
 </html>",
       revisions="<html>
 <ul>
+<li>
+April 11, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
 <li>
 February 23, 2021, by Antoine Gautier:<br/>
 First implementation.
