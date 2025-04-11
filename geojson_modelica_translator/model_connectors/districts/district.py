@@ -108,6 +108,9 @@ class District:
             ets_templates_dir_path = Path(__file__).parent.parent / "energy_transfer_systems" / "templates"
             heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
             heat_pump_ets.to_modelica(self._scaffold)
+        else:
+            # Remove the empty ETS dir which isn't used in non-5G systems
+            (self._scaffold.heat_pump_ets_path.root_dir / "ETS").rmdir()
 
         if district_template_params["is_ghe_district"]:
             # load loop order info from ThermalNetwork
