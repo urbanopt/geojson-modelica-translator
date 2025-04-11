@@ -32,13 +32,6 @@ class Scaffold:
         """
         self.root_dir = Path(root_dir)
         self.project_name = project_name
-        self.loads_path = None
-        self.substations_path = None
-        self.plants_path = None
-        self.districts_path = None
-        self.scripts_path = None
-        self.networks_path = None
-        self.heat_pump_ets_path = None
         self.overwrite = overwrite
 
         # clear out the project path
