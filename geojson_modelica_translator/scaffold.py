@@ -2,8 +2,8 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
-import os
 import shutil
+from pathlib import Path
 
 from geojson_modelica_translator.utils import ModelicaPath
 
@@ -22,50 +22,43 @@ class Scaffold:
     create a list of all of the submodels (yet).
     """
 
-    def __init__(self, root_dir, project_name, overwrite=False):
+    def __init__(self, root_dir: Path, project_name: str, overwrite: bool = False):
         """Initialize the scaffold. This will clear out the directory if it already exists, so use this
         with caution.
 
-        :param root_dir: Directory where to create the scaffold
-        :param project_name: Name of the project to create (should contain no spaces)
+        :param root_dir: Path, Directory where to create the scaffold
+        :param project_name: str, Name of the project to create (should contain no spaces)
         :param overwrite: boolean, overwrite the project if it already exists?
         """
-        self.root_dir = root_dir
+        self.root_dir = Path(root_dir)
         self.project_name = project_name
-        self.loads_path = None
-        self.substations_path = None
-        self.plants_path = None
-        self.districts_path = None
-        self.scripts_path = None
-        self.networks_path = None
         self.overwrite = overwrite
 
         # clear out the project path
-        self.project_path = os.path.join(self.root_dir, self.project_name)
-        self.package_path = os.path.join(self.project_path, "package.mo")
-        if os.path.exists(self.project_path):
+        self.project_path = self.root_dir / self.project_name
+        self.package_path = self.project_path / "package.mo"
+        if self.project_path.exists():
             if not self.overwrite:
                 raise Exception(f"Directory already exists and overwrite is false for {self.project_path}")
             else:
                 shutil.rmtree(self.project_path)
 
-    def create(self, ignore_paths=[]):
+    def create(self, ignore_paths: list[str] = []) -> None:
         """run the scaffolding to create the directory structure for DES systems
 
         Args:
             ignore_paths (list, optional): List of paths NOT to create.
-                Choose from Loads, Substations, Plants, Districts, Networks. Defaults to [].
+                Choose from Loads, Substations, Plants, Districts, Networks, Heat_Pump_ETSes. Defaults to [].
         """
-        # initialize all of path objects
-        self.loads_path = None
-        self.substations_path = None
-        self.plants_path = None
-        self.districts_path = None
-        self.networks_path = None
 
         # leverage the ModelicaPath function
         if "Loads" not in ignore_paths:
             self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
+
+        if "Heat_Pump_ETSes" not in ignore_paths:
+            self.heat_pump_ets_path = ModelicaPath(
+                "ETS", root_dir=self.project_path / "Loads", overwrite=self.overwrite
+            )
 
         if "Substations" not in ignore_paths:
             self.substations_path = ModelicaPath("Substations", root_dir=self.project_path, overwrite=self.overwrite)
@@ -80,11 +73,11 @@ class Scaffold:
             self.networks_path = ModelicaPath("Networks", root_dir=self.project_path, overwrite=self.overwrite)
 
     def clear_or_create_path(self, path, overwrite=False):
-        if os.path.exists(path):
+        if Path(path).exists():
             if not overwrite:
                 raise Exception(f"Directory already exists and overwrite is false for {path}")
             else:
                 shutil.rmtree(path)
-        os.makedirs(path, exist_ok=True)
+        Path(path).mkdir(exist_ok=True, parents=True)
 
         return path

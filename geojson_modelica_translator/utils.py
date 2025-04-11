@@ -51,7 +51,7 @@ class ModelicaPath:
     the model directory, resources, and scripts directory.
     """
 
-    def __init__(self, name, root_dir, overwrite=False):
+    def __init__(self, name: str, root_dir: Path | None = None, overwrite: bool = False):
         """Create a new modelica-based path with name of 'name'
 
         :param name: Name to create

@@ -103,6 +103,7 @@ class ModelicaRunner:
                 stop_time (int): stop time of the simulation, in seconds
                 step_size (int): step size of the simulation, in seconds
                 number_of_intervals (int): number of intervals to run the simulation
+                output_variables (list[str]): limit Modelica .
         """
         # read in the start, stop, and step times
         project_in_library = kwargs.get("project_in_library", False)
@@ -110,6 +111,29 @@ class ModelicaRunner:
         stop_time = kwargs.get("stop_time")
         step_size = kwargs.get("step_size")
         number_of_intervals = kwargs.get("number_of_intervals")
+        output_variables = kwargs.get("output_variables")
+        simulation_flags = kwargs.get("simulation_flags")
+
+        if step_size and number_of_intervals:
+            logger.error("step_size and number_of_intervals are mutually exclusive. Pass one or the other, not both.")
+            raise ValueError()
+            # ValueError is raised in order to prevent the simulation from running.
+            # Text in the ValueError does not get out of our test, therefore log the message for user visibility.
+
+        simulation_args = f"{model_name}"
+        if start_time:
+            simulation_args += f", startTime={start_time}"
+        if stop_time:
+            simulation_args += f", stopTime={stop_time}"
+        if step_size:
+            simulation_args += f", stepSize={step_size}"
+        if number_of_intervals:
+            simulation_args += f", numberOfIntervals={number_of_intervals}"
+        if output_variables:
+            simulation_args += f', variableFilter="{output_variables.replace(",", "|")}"'
+        if simulation_flags:
+            simulation_args += f', simflags="{simulation_flags.replace(",", " ")}"'
+        logger.debug(f"Arguments passed to OMC: {simulation_args}")
 
         # initialize the templating framework (Jinja2)
         template_env = Environment(
@@ -121,13 +145,8 @@ class ModelicaRunner:
         model_data = {
             "project_in_library": project_in_library,
             "file_to_load": Path(filename).name if filename else None,
+            "simulation_args": simulation_args,
             "model_name": model_name,
-            "use_default_time_params": not start_time
-            and not stop_time,  # https://docs.astral.sh/ruff/rules/if-expr-with-false-true/#flake8-simplify-sim
-            "start_time": start_time,
-            "stop_time": stop_time,
-            "step_size": step_size,
-            "number_of_intervals": number_of_intervals,
         }
         with open(run_path / "simulate.mos", "w") as f:
             f.write(template.render(**model_data))
@@ -135,7 +154,7 @@ class ModelicaRunner:
         with open(run_path / "compile_fmu.mos", "w") as f:
             f.write(template.render(**model_data))
 
-    def _subprocess_call_to_docker(self, run_path: Path, action: str) -> int:
+    def _subprocess_call_to_docker(self, run_path: Path, action: str, compiler_flags: str | None = None) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
@@ -152,6 +171,12 @@ class ModelicaRunner:
         model_name = run_path.parts[-1]
         image_name = "nrel/gmt-om-runner:3.0.0"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
+        if compiler_flags is not None:
+            # Format compiler flags for OpenModelica
+            compiler_flags_for_modelica = compiler_flags.replace(",", " ")
+        else:
+            compiler_flags_for_modelica = ""
+
         try:
             # create the command to call the open modelica compiler inside the docker image
             exec_call = [
@@ -162,7 +187,7 @@ class ModelicaRunner:
                 f"{image_name}",
                 "/bin/bash",
                 "-c",
-                f"cd mnt/shared/{model_name} && omc {mo_script}.mos",
+                f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_for_modelica}",
             ]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
@@ -228,7 +253,10 @@ class ModelicaRunner:
                 stop_time (float): stop time of the simulation
                 step_size (float): step size of the simulation
                 number_of_intervals (int): number of intervals to run the simulation
-                debug (bool): whether to run in debug mode or not, prevents files from being deleted.
+                output_variables (str): Comma separated list of Modelica output variables to produce
+                compiler_flags (str): Comma separated list of OpenModelica simulation flags. For advanced users only
+                simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+                debug (bool): whether to run in debug mode or not, prevents files from being deleted
 
         Returns:
             tuple[bool, str]: success status and path to the results directory
@@ -242,7 +270,7 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
-        exitcode = self._subprocess_call_to_docker(verified_run_path, action)
+        exitcode = self._subprocess_call_to_docker(verified_run_path, action, kwargs.get("compiler_flags"))
 
         logger.debug("Checking stdout.log for errors")
         with open(verified_run_path / "stdout.log") as f:
