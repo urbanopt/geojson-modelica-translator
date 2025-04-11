@@ -113,6 +113,7 @@ tests/output
 tests/*/microgrid_output
 tests/output_ets
 tests/*/output
+tests/**/weather
 tests/modelica/data/packages/*/*.mat
 tests/modelica/data/packages/*/*.txt
 tests/modelica/data/packages/*/*.c

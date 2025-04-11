@@ -16,9 +16,10 @@ class SystemParametersTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = Path(__file__).parent / "data"
         self.output_dir = Path(__file__).parent / "output"
-        self.weather_dir = self.output_dir / "weatherfiles"
         self.scenario_dir = self.data_dir / "sdk_output_skeleton" / "run" / "baseline_15min"
+        self.weather_dir = self.scenario_dir.parent.parent / "weather"
         self.microgrid_scenario_dir = self.data_dir / "sdk_microgrid_output_skeleton" / "run" / "reopt_scenario"
+        self.microgrid_weather_dir = self.microgrid_scenario_dir.parent.parent / "weather"
         self.microgrid_feature_file = self.data_dir / "sdk_microgrid_output_skeleton" / "example_project.json"
         self.microgrid_output_dir = Path(__file__).parent / "microgrid_output"
         self.feature_file = self.data_dir / "sdk_output_skeleton" / "example_project.json"
@@ -33,7 +34,8 @@ class SystemParametersTest(unittest.TestCase):
         self.output_dir.mkdir(parents=True)
         if self.weather_dir.exists():
             rmtree(self.weather_dir)
-        self.weather_dir.mkdir(parents=True)
+        if self.microgrid_weather_dir.exists():
+            rmtree(self.microgrid_weather_dir)
         if self.microgrid_output_dir.exists():
             rmtree(self.microgrid_output_dir)
         self.microgrid_output_dir.mkdir(parents=True)

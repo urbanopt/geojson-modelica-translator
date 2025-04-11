@@ -68,3 +68,12 @@
     )
     "District cooling plant."
     annotation (Placement({{ diagram.transformation.cooling_plant.plant }}));
+annotation (
+revisions="<html>
+<ul>
+<li>
+April 11, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
+</ul>
+</html>");
