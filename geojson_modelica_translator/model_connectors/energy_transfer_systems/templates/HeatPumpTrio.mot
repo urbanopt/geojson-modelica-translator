@@ -178,8 +178,8 @@ within {{ project_name }}.Loads.ETS;
     final energyDynamics=mixingVolumeEnergyDynamics)
     "Mixing volume to break algebraic loops and to emulate the delay of the substation"
     annotation (Placement(transformation(extent={{250,-360},{270,-380}})));
-  district_single_ghe.Loads.ETS.HeatPumpCooling proChiWat(
-    redeclare final package Medium1=MediumSer,
+  {% endraw %}{{ project_name }}.Loads.ETS.HeatPumpCooling proChiWat(
+    {% raw %}redeclare final package Medium1=MediumSer,
     redeclare final package Medium2=MediumBui,
     final have_varFloEva=have_varFloEva,
     final COP_nominal=COPChiWat_nominal,
