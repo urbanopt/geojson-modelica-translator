@@ -242,7 +242,7 @@ equation
   connect(disFloHea.QActTot_flow,mulQHea_flow.u)
     annotation (Line(points={{141,-76},{260,-76},{260,280},{320,280}},color={0,0,127}));
   connect(disFloCoo.QActTot_flow,mulQCoo_flow.u)
-    annotation (Line(points={{141,-266},{252,-266},{252,240},{268,240}}, color={0,0,127}));
+    annotation (Line(points={{141,-266},{252,-266},{252,240},{268,240}},color={0,0,127}));
   connect(loa.y[1],terUniCoo.QReqCoo_flow)
     annotation (Line(points={{21,0},{46,0},{46,32.5},{69.1667,32.5}},color={0,0,127}));
   connect(loa.y[2],terUniHea.QReqHea_flow)
@@ -268,15 +268,15 @@ equation
   connect(mulQReqCoo_flow.y,QReqCoo_flow)
     annotation (Line(points={{21,0},{320,0},{320,0}},color={0,0,127}));
   connect(mulQReqHea_flow.y,QReqHea_flow)
-    annotation (Line(points={{294,40},{320,40}}, color={0,0,127}));
+    annotation (Line(points={{294,40},{320,40}},color={0,0,127}));
   connect(loa.y[1],mulQReqCoo_flow.u)
     annotation (Line(points={{-259,0},{270,0}},color={0,0,127}));
   connect(loa.y[2],mulQReqHea_flow.u)
-    annotation (Line(points={{-259,0},{264,0},{264,40},{270,40}}, color={0,0,127}));
-  connect(mulQReqHot_flow.y, QReqHotWat_flow)
-    annotation (Line(points={{292,-120},{320,-120}}, color={0,0,127}));
-  connect(mulQReqHot_flow.u, loa.y[3]) annotation (Line(points={{268,-120},{40,-120},
-          {40,0},{-259,0}}, color={0,0,127}));
+    annotation (Line(points={{-259,0},{264,0},{264,40},{270,40}},color={0,0,127}));
+  connect(mulQReqHot_flow.y,QReqHotWat_flow)
+    annotation (Line(points={{292,-120},{320,-120}},color={0,0,127}));
+  connect(mulQReqHot_flow.u,loa.y[3])
+    annotation (Line(points={{268,-120},{40,-120},{40,0},{-259,0}},color={0,0,127}));
   connect(disFloHea.PPum,addPPum.u1)
     annotation (Line(points={{141,-78},{170,-78},{170,86},{220,86}},color={0,0,127}));
   connect(disFloCoo.PPum,addPPum.u2)
@@ -288,7 +288,7 @@ equation
   connect(noCoo.y,addPPum.u2)
     annotation (Line(points={{102,88},{200,88},{200,74},{220,74}},color={0,0,127}));
   connect(addPFan.y,mulPFan.u)
-    annotation (Line(points={{244,130},{256,130},{256,120},{268,120}}, color={0,0,127}));
+    annotation (Line(points={{244,130},{256,130},{256,120},{268,120}},color={0,0,127}));
   connect(noHea.y,addPFan.u1)
     annotation (Line(points={{102,130},{200,130},{200,136},{220,136}},color={0,0,127}));
   connect(noCoo.y,addPFan.u2)

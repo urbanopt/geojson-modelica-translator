@@ -44,8 +44,9 @@ within {{ project_name }}.Loads.{{ model_name }};
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
     annotation (Dialog(group="Design parameter"));
-  {% endraw %}parameter Real COPChiWat_nominal(unit="1")={{data['cop_cooling']}}
-    {% raw %}"COP of heat pump for chilled water production"
+  {% endraw %}parameter Real COPChiWat_nominal(
+    unit="1")={{data['cop_cooling']}}
+    {% raw %} "COP of heat pump for chilled water production"
     annotation (Dialog(group="ETS model parameters"));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput THotWatSupSet(
     final unit="K",
