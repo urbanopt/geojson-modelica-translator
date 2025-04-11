@@ -153,6 +153,10 @@ supply temperature set point at the condenser outlet.
       revisions="<html>
 <ul>
 <li>
+April 11, 2025, by Nathan Moore:<br/>
+Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.
+</li>
+<li>
 November 15, 2023, by David Blum:<br/>
 Changed to extend partial base class with added condenser hydronics and control.
 </li>

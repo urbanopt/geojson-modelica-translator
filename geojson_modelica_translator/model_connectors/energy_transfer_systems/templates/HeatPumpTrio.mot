@@ -689,7 +689,11 @@ Energy, Volume 199, 15 May 2020, 117418.
 </html>",
       revisions="<html>
   <ul>
-    <li>
+<li>
+  April 11, 2025, by Nathan Moore:<br/>
+  Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.
+</li>
+<li>
   Jun 12, 2024, by Julia Ho:<br/>
   Removed gain component from <code>heaFloConCHW.u2</code> in chilled water heat pump controls.<br/>
   Removed condition that <code>have_hotWat = true</code> from <code>toSub1</code> component for heating water heat pump controls.<br/>

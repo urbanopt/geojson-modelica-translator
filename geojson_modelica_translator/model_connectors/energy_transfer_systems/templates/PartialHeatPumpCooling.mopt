@@ -310,6 +310,10 @@ the district supply and return flows.
 </html>", revisions="<html>
 <ul>
 <li>
+April 11, 2025, by Nathan Moore:<br/>
+Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.
+</li>
+<li>
 February 15, 2024, by Ettore Zanetti:<br/>
 Made heat pump model dynamic and added junction.
 </li>
