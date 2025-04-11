@@ -23,3 +23,12 @@
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement({{ diagram.transformation.ts_load.load }}));
+annotation (
+revisions="<html>
+<ul>
+<li>
+April 11, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
+</ul>
+</html>");
