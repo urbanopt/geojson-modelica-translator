@@ -109,10 +109,13 @@
       },
       "central_pump_parameters": {
         "pump_design_head": 60000,
-        "pump_flow_rate": 0.01
+        "pump_design_head_autosized": true,
+        "pump_flow_rate": 0.01,
+        "pump_flow_rate_autosized": true
       },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
+        "hydraulic_diameter_autosized": true,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
         "diameter_ratio": 11,
