@@ -3,7 +3,7 @@ model building
   "Model of a building with an internal ETS. Building loads provided as time series"
   extends Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
-    {% endraw %}COPHeaWat_nominal={{data['cop_heat_pump_heating']}},
+    COPHeaWat_nominal={{data['cop_heat_pump_heating']}},
     COPHotWat_nominal={{data['cop_heat_pump_hot_water']}},
     TChiWatSup_nominal=273.15+{{ data['chilled_water_supply_temp'] }},
     THeaWatSup_nominal=273.15+{{ data['heating_water_supply_temp'] }},
