@@ -96,5 +96,5 @@ class WasteHeat(PlantBase):
             package.add_model("Plants")
             package.save()
 
-    def get_modelica_type(self):
+    def get_modelica_type(self, scaffold):
         return f"Plants.{self.waste_heat_name}.WasteHeat"
