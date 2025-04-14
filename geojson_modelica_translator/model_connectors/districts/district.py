@@ -11,6 +11,7 @@ from modelica_builder.package_parser import PackageParser
 from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
+from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
 from geojson_modelica_translator.utils import mbl_version
@@ -102,6 +103,14 @@ class District:
             district_template_params["pressure_drop_per_meter"] = district_system_params["fifth_generation"][
                 "horizontal_piping_parameters"
             ]["pressure_drop_per_meter"]
+
+            # Build the heat pump ETS model to ensure chillers are available to 5G loads
+            ets_templates_dir_path = Path(__file__).parent.parent / "energy_transfer_systems" / "templates"
+            heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
+            heat_pump_ets.to_modelica(self._scaffold)
+        else:
+            # Remove the empty ETS dir which isn't used in non-5G systems
+            (self._scaffold.heat_pump_ets_path.root_dir / "ETS").rmdir()
 
         if district_template_params["is_ghe_district"]:
             # load loop order info from ThermalNetwork

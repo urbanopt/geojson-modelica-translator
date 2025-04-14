@@ -8,7 +8,7 @@
     delTAirHea(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_heating }},
     k=0.1,
     Ti=120
-    ), ets(have_hotWat = true, have_varFloEva=false)
+    ), ets(have_hotWat = true)
     {% else %}
     allowFlowReversal = true,
     delTAirCoo(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_cooling }},
