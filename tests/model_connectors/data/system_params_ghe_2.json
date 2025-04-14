@@ -73,7 +73,7 @@
   "district_system": {
     "fifth_generation": {
       "central_pump_parameters": {
-        "pump_design_head": 300000,
+        "pump_design_head": 1500000,
         "pump_flow_rate": 0.01
       },
       "horizontal_piping_parameters": {
@@ -141,7 +141,7 @@
               "buried_depth": 2.0,
               "diameter": 0.15,
               "length_of_boreholes": 99,
-              "number_of_boreholes": 40
+              "number_of_boreholes": 576
             }
           }
         ]

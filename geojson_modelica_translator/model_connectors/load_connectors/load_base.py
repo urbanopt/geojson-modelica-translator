@@ -103,6 +103,9 @@ class LoadBase(ModelBase):
                     "cop_heating": self.system_parameters.get_param_by_id(
                         self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_heating"
                     ),
+                    "cop_cooling": self.system_parameters.get_param_by_id(
+                        self.building_id, "fifth_gen_ets_parameters.cop_heat_pump_cooling"
+                    ),
                 }
 
     def add_building(self, urbanopt_building, mapper=None):

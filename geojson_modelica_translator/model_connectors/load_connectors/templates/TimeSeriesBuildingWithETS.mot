@@ -1,18 +1,18 @@
 within {{ project_name }}.Loads.{{ model_name }};
-{% raw %}model building
+model building
   "Model of a building with an internal ETS. Building loads provided as time series"
   extends Buildings.DHC.Loads.Combined.BaseClasses.PartialBuildingWithETS(
     final allowFlowReversalSer=true,
-    {% endraw %}COPHeaWat_nominal={{data['cop_heating']}},
+    COPHeaWat_nominal={{data['cop_heating']}},
     redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
-      {% raw %}have_hotWat=true,
+      have_hotWat=true,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
       T_aChiWat_nominal=ets.TChiWatSup_nominal,
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
       facMulHea=10*QHea_flow_nominal/(1.7E5),
       facMulCoo=40*QCoo_flow_nominal/(-1.5E5)),
-    redeclare Buildings.DHC.ETS.Combined.HeatPumpHeatExchanger ets(
+    redeclare {{ project_name }}.Loads.ETS.HeatPumpTrio ets(
       final dT_nominal=dT_nominal,
       final TDisWatMin=TDisWatMin,
       final TDisWatMax=TDisWatMax,
@@ -23,12 +23,13 @@ within {{ project_name }}.Loads.{{ model_name }};
       final dp_nominal=dp_nominal,
       final COPHeaWat_nominal=COPHeaWat_nominal,
       final COPHotWat_nominal=COPHotWat_nominal,
+      final COPChiWat_nominal=COPChiWat_nominal,
       have_hotWat=true,
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
       QHotWat_flow_nominal=QHot_flow_nominal));
-  {% endraw %}parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
-    {% raw %} "Library path of the file with loads as time series";
+  parameter String filNam="modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['time_series']['filename']}}"
+    "Library path of the file with loads as time series";
   final parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=bui.facMul*bui.QCoo_flow_nominal
     "Space cooling design load (<=0)"
@@ -43,11 +44,15 @@ within {{ project_name }}.Loads.{{ model_name }};
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
     annotation (Dialog(group="Design parameter"));
+  parameter Real COPChiWat_nominal(
+    unit="1")={{data['cop_cooling']}}
+    "COP of heat pump for chilled water production"
+    annotation (Dialog(group="ETS model parameters"));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput THotWatSupSet(
     final unit="K",
     displayUnit="degC")
     "Service hot water supply temperature set point"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-320,40}),iconTransformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,30})));
+    {% raw %} annotation (Placement(transformation(extent={{-20,-20},{20,20}},rotation=0,origin={-320,40}),iconTransformation(extent={{-20,-20},{20,20}},rotation=0,origin={-120,30})));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput TColWat(
     final unit="K",
     displayUnit="degC")

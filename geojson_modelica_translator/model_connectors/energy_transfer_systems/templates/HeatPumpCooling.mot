@@ -1,10 +1,10 @@
 within {{ project_name }}.Loads.ETS;
-{% raw %}model HeatPumpCooling
+model HeatPumpCooling
   "Base subsystem with water-to-water heat pump"
-  extends district_single_ghe.Loads.ETS.PartialHeatPumpCooling(
+  extends {{ project_name }}.Loads.ETS.PartialHeatPumpCooling(
     chi(
       QEva_flow_nominal=Q2_flow_nominal));
-  parameter Boolean have_varFloEva=true
+  {% raw %}parameter Boolean have_varFloEva=true
     "Set to true for a variable evaporator flow"
     annotation (Evaluate=true);
   parameter Modelica.Units.SI.HeatFlowRate Q2_flow_nominal(
