@@ -4,19 +4,15 @@
     allowFlowReversalBui = true,
     {{ model.is_5g_district }}(
     have_hotWat=true,
-    T_aHeaWat_nominal(displayUnit="K")=318.15,
-    T_aChiWat_nominal(displayUnit="K")=291.15,
-    delTAirCoo(displayUnit="degC")=10,
-    delTAirHea(displayUnit="degC")=20,
+    delTAirCoo(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_cooling }},
+    delTAirHea(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_heating }},
     k=0.1,
     Ti=120
     ), ets(have_hotWat = true)
     {% else %}
     allowFlowReversal = true,
-    T_aHeaWat_nominal(displayUnit="K")=318.15,
-    T_aChiWat_nominal(displayUnit="K")=280.15,
-    delTAirCoo(displayUnit="degC")=10,
-    delTAirHea(displayUnit="degC")=20,
+    delTAirCoo(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_cooling }},
+    delTAirHea(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_heating }},
     k=0.1,
     Ti=120,
     nPorts_aHeaWat=1,
@@ -27,3 +23,12 @@
     )
     "Building model integrating multiple time series thermal zones."
     annotation (Placement({{ diagram.transformation.ts_load.load }}));
+annotation (
+revisions="<html>
+<ul>
+<li>
+April 11, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
+</ul>
+</html>");
