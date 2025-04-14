@@ -62,10 +62,11 @@ class ModelBase:
                 }
             if "fifth_generation" in district_params:
                 self.district_template_data = {
-                    "waste_heat_params": district_params["fifth_generation"]["waste_heat_parameters"],
+                    "waste_heat_params": district_params["fifth_generation"].get("waste_heat_parameters"),
                     "pressure_drop_per_meter": district_params["fifth_generation"]["horizontal_piping_parameters"][
                         "pressure_drop_per_meter"
                     ],
+                    "number_of_loops": 1,
                 }
                 if "ghe_parameters" in district_params["fifth_generation"]:
                     self.loop_order = load_loop_order(self.system_parameters.filename)
