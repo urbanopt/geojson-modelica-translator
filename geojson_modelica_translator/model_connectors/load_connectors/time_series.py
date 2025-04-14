@@ -91,6 +91,9 @@ class TimeSeries(LoadBase):
                         self.building_id, "load_model_parameters.time_series.temp_hw_return"
                     )
                 ),
+                "max_electrical_load": self.system_parameters.get_param_by_id(
+                    self.building_id, "load_model_parameters.time_series.max_electrical_load"
+                ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"
                 "has_liquid_heating": "true"

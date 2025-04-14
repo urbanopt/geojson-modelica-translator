@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 0.9.3
+
+### Exciting New Features 🎉
+
+* Add horizontal pipe pressure drop to sys-params by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/700>
+
+### Other Changes
+
+* Expand capability of geojson class by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/694>
+* Cleanup Lingering RST Doc Extensions by @mitchute in <https://github.com/urbanopt/geojson-modelica-translator/pull/701>
+
 ## Version 0.9.2
 
 ### Exciting New Features 🎉
