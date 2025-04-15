@@ -53,7 +53,8 @@ class Scaffold:
 
         # leverage the ModelicaPath function
         if "Controls" not in ignore_paths:
-            self.controllers_path = ModelicaPath("Controls", root_dir=self.project_path, overwrite=self.overwrite)
+            self.controls_path = ModelicaPath("Controls", root_dir=self.project_path, overwrite=self.overwrite)
+            self.schedules_path = ModelicaPath("Schedules", root_dir=self.project_path, overwrite=self.overwrite)
 
         if "Loads" not in ignore_paths:
             self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
