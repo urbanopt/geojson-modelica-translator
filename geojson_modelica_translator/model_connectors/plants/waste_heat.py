@@ -29,9 +29,7 @@ class WasteHeat(PlantBase):
 
         waste_heat_template = self.template_env.get_template("WasteHeatRecovery.mot")
 
-        b_modelica_path = ModelicaPath(self.waste_heat_name, scaffold.plants_path.files_dir, True)
-
-        # self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
+        p_modelica_path = ModelicaPath(self.waste_heat_name, scaffold.plants_path.files_dir, True)
 
         template_data = {
             "rate_schedule_path": self.system_parameters.get_param(
@@ -44,7 +42,7 @@ class WasteHeat(PlantBase):
 
         self.run_template(
             template=waste_heat_template,
-            save_file_name=Path(b_modelica_path.files_dir) / "WasteHeatRecovery.mo",
+            save_file_name=Path(p_modelica_path.files_dir) / "WasteHeatRecovery.mo",
             project_name=scaffold.project_name,
             model_name=self.waste_heat_name,
             template_data=template_data,
@@ -69,9 +67,9 @@ class WasteHeat(PlantBase):
         :return: None
         """
 
-        b_modelica_path = Path(scaffold.plants_path.files_dir) / self.waste_heat_name
+        p_modelica_path = Path(scaffold.plants_path.files_dir) / self.waste_heat_name
         new_package = PackageParser.new_from_template(
-            b_modelica_path,
+            p_modelica_path,
             self.waste_heat_name,
             self.template_files_to_include,
             within=f"{scaffold.project_name}.Plants",
