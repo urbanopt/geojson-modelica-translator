@@ -24,13 +24,16 @@ record DesignDataSeries
   parameter Modelica.Units.SI.Temperature TLooMax=273.15+17
     "Maximum loop temperature";
   parameter Real dp_length_nominal(
-    final unit="Pa/m")={{ design_data["pressure_drop_per_meter"] }}
+    final unit="Pa/m")={{ design_data.pressure_drop_per_meter }}
     "Pressure drop per pipe length at nominal flow rate";
-  {% if design_data.ghe_parameters is defined %}parameter Modelica.Units.SI.Length lDis[nBui+{{ design_data["number_of_loops"]-1 }}]=fill(
+  {% if design_data.number_of_loops is defined %}parameter Modelica.Units.SI.Length lDis[nBui+{{ design_data.number_of_loops - 1 }}]=fill(
     100,
     nBui)
-    "Length of the distribution pipe before each connection";
-  {% endif %}parameter Modelica.Units.SI.Length lCon[nBui]=fill(
+  {% else %} parameter Modelica.Units.SI.Length lDis[nBui]=fill(
+    100,
+    nBui)
+    {% endif %} "Length of the distribution pipe before each connection";
+  parameter Modelica.Units.SI.Length lCon[nBui]=fill(
     10,
     nBui)
     "Length of each connection pipe (supply only, not counting return line)";
