@@ -116,11 +116,11 @@ class District:
                 waste_heat_controls = WasteHeatControls(self.system_parameters, controls_templates_dir_path)
                 waste_heat_controls.to_modelica(self._scaffold)
             else:
-                # Remove the empty ETS dir which isn't used in non-5G systems
-                self._scaffold.controls_path.root_dir.rmdir()
+                # Remove the empty Controls dir for any non-waste-heat project (for now)
+                Path(self._scaffold.controls_path.files_dir).rmdir()
         else:
             # Remove the empty ETS dir which isn't used in non-5G systems
-            (self._scaffold.heat_pump_ets_path.root_dir / "ETS").rmdir()
+            Path(self._scaffold.heat_pump_ets_path.files_dir).rmdir()
 
         if district_template_params["is_ghe_district"]:
             # load loop order info from ThermalNetwork
