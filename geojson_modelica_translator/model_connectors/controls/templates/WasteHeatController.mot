@@ -1,12 +1,11 @@
-within waste_heat_stub.Controls;
+within {{ project_name }}.Controls;
 block WasteHeatController
   "Controller for waste heat loop"
   replaceable package MediumSer=Buildings.Media.Water
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "District side medium";
-  // start code block 1
   parameter String filNam_QWasHea=Modelica.Utilities.Files.loadResource(
-    {{ template_data["rate_schedule_path"] }})
+    {{ template_data.rate_schedule_path }})
     "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
   Modelica.Blocks.Sources.CombiTimeTable QWasHea(
     each y(
@@ -21,7 +20,7 @@ block WasteHeatController
     "Heat flow rate from/to the waste heat source/sink"
     {% raw %} annotation (Placement(transformation(extent={{-320,-200},{-300,-180}})));
   {% endraw %}parameter String filNam_TWasHea=Modelica.Utilities.Files.loadResource(
-    {{ template_data["temperature_schedule_path"] }})
+    {{ template_data.temperature_schedule_path }})
     "Waste heat temperature as time series";
   Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat(
     each y(
@@ -35,7 +34,6 @@ block WasteHeatController
     extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
     "Waste heat temperature as time series"
     {% raw %} annotation (Placement(transformation(extent={{-320,70},{-300,90}})));
-  // end code block 1
   parameter Modelica.Units.SI.TemperatureDifference hexAppTem=2
     "Waste heat HX approach temperature";
   Buildings.Controls.OBC.CDL.Reals.Sources.Constant hexAppTem_S(
@@ -46,23 +44,19 @@ block WasteHeatController
     k=hexAppTem)
     "Waste heat HX approach temperature"
     annotation (Placement(transformation(extent={{-200,-130},{-180,-110}})));
-  /*
-  // start code block 1
   Buildings.Controls.OBC.CDL.Interfaces.RealInput QWasHea(
     unit="W",
     displayUnit="W",
     quantity="HeatFlowRate")
     "Heat flow rate from/to the waste heat source/sink"
-    annotation(Placement(transformation(extent={{-340,-210},{-300,-170}}),
-        iconTransformation(extent={{-380,-250},{-300,-170}})));
-
+    annotation (Placement(transformation(extent={{-340,-210},{-300,-170}}),iconTransformation(extent={{-380,-250},{-300,-170}})));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput TWasHeaWat(
-    unit="K",displayUnit="degC",quantity="ThermodynamicTemperature")
+    unit="K",
+    displayUnit="degC",
+    quantity="ThermodynamicTemperature")
     "Waste heat fluid temperature"
-    annotation (Placement(transformation(extent={{-340,60},{-300,100}}),
-      iconTransformation(extent={{-380,-120},{-300,-40}})));
-  // end code block 1
-*/Buildings.Controls.OBC.CDL.Interfaces.RealInput T_disRet(
+    annotation (Placement(transformation(extent={{-340,60},{-300,100}}),iconTransformation(extent={{-380,-120},{-300,-40}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealInput T_disRet(
     unit="K",
     displayUnit="degC",
     quantity="ThermodynamicTemperature")
