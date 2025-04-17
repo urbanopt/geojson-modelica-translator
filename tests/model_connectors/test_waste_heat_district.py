@@ -3,6 +3,8 @@
 
 from pathlib import Path
 
+import pytest
+
 # from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
@@ -31,7 +33,7 @@ class DistrictWasteHeat(TestCaseBase):
         self.gj = UrbanOptGeoJson(geojson_filename)
 
         # load system parameter data
-        sys_param_filename = Path(self.data_dir) / "time_series_5g_sys_params.json"
+        sys_param_filename = Path(self.data_dir) / "time_series_waste_heat_sys_params.json"
         sys_params = SystemParameters(sys_param_filename)
 
         # read the loop order and create building groups
@@ -71,3 +73,11 @@ class DistrictWasteHeat(TestCaseBase):
     def test_build_waste_heat_district(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
+
+    @pytest.mark.simulation
+    def test_simulate_district_waste_heat_system(self):
+        self.run_and_assert_in_docker(
+            f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
+            file_to_load=self.district._scaffold.package_path,
+            run_path=self.district._scaffold.project_path,
+        )
