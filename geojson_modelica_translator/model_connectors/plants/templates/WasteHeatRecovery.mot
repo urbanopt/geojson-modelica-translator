@@ -1,5 +1,5 @@
 within {{ project_name }}.Plants.{{ model_name }};
-model WasteHeatRecovery
+{% raw %}model WasteHeatRecovery
   "Model for waste heat recovery plant"
   extends Buildings.DHC.Plants.BaseClasses.PartialPlant(
     final have_fan=false,
@@ -21,7 +21,7 @@ model WasteHeatRecovery
     displayUnit="kg/s",
     quantity="MassFlowRate")
     "Mass flow rate of plant pump [kg/s]"
-    {% raw %} annotation (Placement(transformation(extent={{-420,300},{-380,340}}),iconTransformation(extent={{-380,180},{-300,260}})));
+    annotation (Placement(transformation(extent={{-420,300},{-380,340}}),iconTransformation(extent={{-380,180},{-300,260}})));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput Q_flow_wasHea_out(
     unit="W",
     displayUnit="W",
