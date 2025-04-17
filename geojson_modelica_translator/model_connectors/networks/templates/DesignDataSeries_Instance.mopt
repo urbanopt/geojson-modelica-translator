@@ -1,7 +1,7 @@
 inner parameter
 {{ model.modelica_type }} {{ model.id }}(
 nBui={{ sys_params.num_buildings }},
-mPumDis_flow_nominal={{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_flow_rate }},
+mPumDis_flow_nominal={{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_flow_rate }} * 1000,
 mPipDis_flow_nominal=datDes.mPumDis_flow_nominal,
 {% if sys_params.district_system.fifth_generation.ghe_parameters is defined %}
   {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}
@@ -16,8 +16,9 @@ final mCon_flow_nominal={
 {% for building in range( sys_params.num_buildings - 1 ) %}
   {{ graph.couplings_by_type(model.id).load_couplings[building].load.id }}.ets.mSerWat_flow_nominal,
 {% endfor %}
-{{ graph.couplings_by_type(model.id).load_couplings[sys_params.num_buildings - 1].load.id }}.ets.mSerWat_flow_nominal},
+{{ graph.couplings_by_type(model.id).load_couplings[sys_params.num_buildings - 1].load.id }}.ets.mSerWat_flow_nominal}
 {% if sys_params.district_system.fifth_generation.ghe_parameters is defined %}
+  ,
   lDis={{ globals.lDis }},
   lEnd={{ globals.lEnd }}
 {% endif %}
