@@ -26,9 +26,19 @@ class WasteHeatControls(ModelBase):
             "rate_schedule_path": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
             ),
+            "rate_schedule_filename": Path(
+                self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
+                )
+            ).name,
             "temperature_schedule_path": self.system_parameters.get_param(
                 "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
             ),
+            "temperature_schedule_filename": Path(
+                self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
+                )
+            ).name,
         }
 
         for model in self.controls_models:

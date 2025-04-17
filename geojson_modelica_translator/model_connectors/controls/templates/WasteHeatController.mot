@@ -5,7 +5,7 @@ block WasteHeatController
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "District side medium";
   parameter String filNam_QWasHea=Modelica.Utilities.Files.loadResource(
-    {{ template_data.rate_schedule_path }})
+    "modelica://{{ project_name }}/Schedules/{{ template_data.rate_schedule_filename }}")
     "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
   Modelica.Blocks.Sources.CombiTimeTable QWasHea(
     each y(
@@ -20,7 +20,7 @@ block WasteHeatController
     "Heat flow rate from/to the waste heat source/sink"
     {% raw %} annotation (Placement(transformation(extent={{-320,-200},{-300,-180}})));
   {% endraw %}parameter String filNam_TWasHea=Modelica.Utilities.Files.loadResource(
-    {{ template_data.temperature_schedule_path }})
+    "modelica://{{ project_name }}/Schedules/{{ template_data.temperature_schedule_filename }}")
     "Waste heat temperature as time series";
   Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat(
     each y(
