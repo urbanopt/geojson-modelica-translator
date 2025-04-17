@@ -41,6 +41,29 @@ class WasteHeat(PlantBase):
             ),
         }
 
+        # Handle relative paths to schedule files (relative to sys-param file)
+        sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
+        if not Path(template_data["rate_schedule_path"]).expanduser().is_absolute():
+            template_data["rate_schedule_path"] = sys_param_dir / Path(template_data["rate_schedule_path"]).name
+            if not template_data["rate_schedule_path"].is_file():
+                raise SystemExit(
+                    f"Can't find rate schedule file.\n"
+                    "If using a relative path, your path "
+                    f" '{template_data['rate_schedule_path']}' must be relative to the dir your "
+                    "sys-param file is in."
+                )
+        if not Path(template_data["temperature_schedule_path"]).expanduser().is_absolute():
+            template_data["temperature_schedule_path"] = (
+                sys_param_dir / Path(template_data["temperature_schedule_path"]).name
+            )
+            if not template_data["temperature_schedule_path"].is_file():
+                raise SystemExit(
+                    f"Can't find temperature schedule file.\n"
+                    "If using a relative path, your path "
+                    f" '{template_data['temperature_schedule_path']}' must be relative to the dir your "
+                    "sys-param file is in."
+                )
+
         # copy over the waste heat schedule files
         # TODO: move some of this over to a validation step
         rate_schedule_path_in_package = (

@@ -73,8 +73,8 @@
   "district_system": {
     "fifth_generation": {
       "waste_heat_parameters": {
-        "rate_schedule_path": "/Users/nmoore/github/geojson-modelica-translator/tests/model_connectors/data/WasteHeatSchedule.mos",
-        "temperature_schedule_path": "/Users/nmoore/github/geojson-modelica-translator/tests/model_connectors/data/TWasHeaWatSchedule.mos"
+        "rate_schedule_path": "./WasteHeatSchedule.mos",
+        "temperature_schedule_path": "./TWasHeaWatSchedule.mos"
       },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
