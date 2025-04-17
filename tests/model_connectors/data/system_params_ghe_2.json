@@ -77,7 +77,7 @@
       "central_pump_parameters": {
         "pump_design_head": 300000,
         "pump_design_head_autosized": true,
-        "pump_flow_rate": 8.0,
+        "pump_flow_rate": 0.008,
         "pump_flow_rate_autosized": true
       },
       "horizontal_piping_parameters": {
