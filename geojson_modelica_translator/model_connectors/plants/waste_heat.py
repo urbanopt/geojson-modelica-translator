@@ -2,6 +2,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
+import shutil
 from pathlib import Path
 
 from modelica_builder.package_parser import PackageParser
@@ -40,17 +41,23 @@ class WasteHeat(PlantBase):
             ),
         }
 
+        # copy over the waste heat schedule files
+        # TODO: move some of this over to a validation step
+        rate_schedule_path_in_package = (
+            Path(p_modelica_path.root_dir).parent / "Schedules" / Path(template_data["rate_schedule_path"]).name
+        ).resolve()
+        shutil.copy(Path(template_data["rate_schedule_path"]), rate_schedule_path_in_package)
+
+        temperature_schedule_path_in_package = (
+            Path(p_modelica_path.root_dir).parent / "Schedules" / Path(template_data["temperature_schedule_path"]).name
+        ).resolve()
+        shutil.copy(Path(template_data["temperature_schedule_path"]), temperature_schedule_path_in_package)
+
         self.run_template(
             template=waste_heat_template,
             save_file_name=Path(p_modelica_path.files_dir) / "WasteHeatRecovery.mo",
             project_name=scaffold.project_name,
             model_name=self.waste_heat_name,
-            template_data=template_data,
-        )
-
-        # generate Modelica package
-        self.copy_required_mo_files(
-            dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
         )
 
         # run post process to create the remaining project files for this building
