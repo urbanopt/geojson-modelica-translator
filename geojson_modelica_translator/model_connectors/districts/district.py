@@ -91,6 +91,7 @@ class District:
                 "delChiWatTemDis": "delChiWatTemDis",
                 "delHeaWatTemBui": "delHeaWatTemBui",
                 "delHeaWatTemDis": "delHeaWatTemDis",
+                "project_name": self._scaffold.project_name,
             },
             "graph": self._coupling_graph,
             "sys_params": {
@@ -115,6 +116,16 @@ class District:
                 controls_templates_dir_path = Path(__file__).parent.parent / "controls" / "templates"
                 waste_heat_controls = WasteHeatControls(self.system_parameters, controls_templates_dir_path)
                 waste_heat_controls.to_modelica(self._scaffold)
+                common_template_params["sys_params"]["rate_schedule_filename"] = Path(
+                    self.system_parameters.get_param(
+                        "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
+                    )
+                ).name
+                common_template_params["sys_params"]["temperature_schedule_filename"] = Path(
+                    self.system_parameters.get_param(
+                        "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
+                    )
+                ).name
             else:
                 # Remove the empty Controls dir for any non-waste-heat project (for now)
                 Path(self._scaffold.controls_path.files_dir).rmdir()
@@ -174,7 +185,7 @@ class District:
                 # read sys params file for the load
                 building_sys_params = self.system_parameters.get_param_by_id(coupling_load.building_id, "$")
                 template_context["sys_params"]["building"] = building_sys_params
-                # Note which load is being used, so ports connect properly in couplings/5G_templates/ConnectStatements
+                # Note which load is being used, so ports connect properly in couplings/5G_templates/*/ConnectStatements
                 template_context["sys_params"]["load_num"] = load_num
                 load_num += 1
 
