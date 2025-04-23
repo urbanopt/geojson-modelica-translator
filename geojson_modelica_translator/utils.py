@@ -139,7 +139,7 @@ class ModelicaPath:
 
 
 # This is used for some test cases where we need deterministic IDs to be generated
-USE_DETERMINISTIC_ID = bool(os.environ.get("GMT_DETERMINISTIC_ID"), False)
+USE_DETERMINISTIC_ID = bool(os.environ.get("GMT_DETERMINISTIC_ID"))
 
 counter = 0
 
