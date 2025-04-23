@@ -22,54 +22,13 @@ class WasteHeatControls(ModelBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
 
-        template_data = {
-            "rate_schedule_path": self.system_parameters.get_param(
-                "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
-            ),
-            "rate_schedule_filename": Path(
-                self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
-                )
-            ).name,
-            "temperature_schedule_path": self.system_parameters.get_param(
-                "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
-            ),
-            "temperature_schedule_filename": Path(
-                self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
-                )
-            ).name,
-        }
-
-        sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
-        if not Path(template_data["rate_schedule_path"]).expanduser().is_absolute():
-            template_data["rate_schedule_path"] = sys_param_dir / Path(template_data["rate_schedule_path"]).name
-            if not template_data["rate_schedule_path"].is_file():
-                raise SystemExit(
-                    f"Can't find rate schedule file.\n"
-                    "If using a relative path, your path "
-                    f" '{template_data['rate_schedule_path']}' must be relative to the dir your "
-                    "sys-param file is in."
-                )
-        if not Path(template_data["temperature_schedule_path"]).expanduser().is_absolute():
-            template_data["temperature_schedule_path"] = (
-                sys_param_dir / Path(template_data["temperature_schedule_path"]).name
-            )
-            if not template_data["temperature_schedule_path"].is_file():
-                raise SystemExit(
-                    f"Can't find temperature schedule file.\n"
-                    "If using a relative path, your path "
-                    f" '{template_data['temperature_schedule_path']}' must be relative to the dir your "
-                    "sys-param file is in."
-                )
-
         for model in self.controls_models:
             template = self.template_env.get_template(model)
             self.run_template(
                 template=template,
                 save_file_name=scaffold.project_path / "Controls" / f"{Path(model).stem}.mo",
                 project_name=scaffold.project_name,
-                template_data=template_data,
+                # template_data=template_data,
             )
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but

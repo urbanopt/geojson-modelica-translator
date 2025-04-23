@@ -1,39 +1,9 @@
 within {{ project_name }}.Controls;
-block WasteHeatController
+{% raw %}block WasteHeatController
   "Controller for waste heat loop"
   replaceable package MediumSer=Buildings.Media.Water
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "District side medium";
-  parameter String filNam_QWasHea=Modelica.Utilities.Files.loadResource(
-    "modelica://{{ project_name }}/Schedules/{{ template_data.rate_schedule_filename }}")
-    "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
-  Modelica.Blocks.Sources.CombiTimeTable QWasHea(
-    each y(
-      unit="W",
-      displayUnit="W",
-      quantity="HeatFlowRate"),
-    tableOnFile=true,
-    tableName="tab1",
-    fileName=filNam_QWasHea,
-    smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
-    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
-    "Heat flow rate from/to the waste heat source/sink"
-    {% raw %} annotation (Placement(transformation(extent={{-320,-200},{-300,-180}})));
-  {% endraw %}parameter String filNam_TWasHea=Modelica.Utilities.Files.loadResource(
-    "modelica://{{ project_name }}/Schedules/{{ template_data.temperature_schedule_filename }}")
-    "Waste heat temperature as time series";
-  Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat(
-    each y(
-      unit="K",
-      displayUnit="degC",
-      quantity="ThermodynamicTemperature"),
-    tableOnFile=true,
-    tableName="tab1",
-    fileName=filNam_TWasHea,
-    smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
-    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
-    "Waste heat temperature as time series"
-    {% raw %} annotation (Placement(transformation(extent={{-320,70},{-300,90}})));
   parameter Modelica.Units.SI.TemperatureDifference hexAppTem=2
     "Waste heat HX approach temperature";
   Buildings.Controls.OBC.CDL.Reals.Sources.Constant hexAppTem_S(
@@ -209,7 +179,7 @@ block WasteHeatController
       unit="W",
       displayUnit="W",
       quantity="HeatFlowRate"))
-    "Addition of heat flow rate when waste heat is source and sink (they will not occur simultanously)"
+    "Addition of heat flow rate when waste heat is source and sink (they will not occur simultaneously)"
     annotation (Placement(transformation(extent={{260,-240},{280,-220}})));
   Buildings.Controls.OBC.CDL.Logical.MultiAnd mulAnd_wasHeaIsSou(
     nin=3)
