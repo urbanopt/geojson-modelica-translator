@@ -1,6 +1,35 @@
 {
   "buildings": [
     {
+      "geojson_id": "1G",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "To be populated",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 0,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Steam",
+      "steam_ets_parameters": {
+        "heat_flow_nominal": 8000
+      },
+      "photovoltaic_panels": [],
+      "diesel_generators": [],
+      "battery_banks": []
+    },
+    {
       "geojson_id": "4G",
       "load_model": "time_series",
       "load_model_parameters": {
@@ -85,6 +114,14 @@
     }
   ],
   "district_system": {
+    "first_generation": {
+      "central_steam_plant_parameters": {
+        "boiler_efficiency": 0.7,
+        "steam_pressure_setpoint": 500000,
+        "reduced_pressure_setpoint": 200000,
+        "condensate_pressure_drop_nominal": 6000
+      }
+    },
     "fourth_generation": {
       "central_cooling_plant_parameters": {
         "heat_flow_nominal": 7999,
