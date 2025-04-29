@@ -98,7 +98,7 @@ class DistrictSystemTest(TestCaseBase):
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="Model is too large for OM. Simulates as expected using Dymola")
+    @pytest.mark.skip(reason="Model appears to be too large for OM. Simulates as expected using Dymola")
     @pytest.mark.dymola
     # TODO: Improve simulation with OM to enable running this test natively
     def test_simulate_multi_ghe_district(self):
