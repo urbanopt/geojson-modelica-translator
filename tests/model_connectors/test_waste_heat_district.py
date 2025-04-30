@@ -17,7 +17,7 @@ from geojson_modelica_translator.model_connectors.networks.network_distribution_
 from geojson_modelica_translator.model_connectors.networks.unidirectional_series import UnidirectionalSeries
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.model_connectors.plants.waste_heat import WasteHeat
-from geojson_modelica_translator.model_connectors.plants.waste_heat_controls import WasteHeatControls
+from geojson_modelica_translator.model_connectors.controls.waste_heat_controls import WasteHeatControls
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from tests.base_test_case import TestCaseBase
 
@@ -48,7 +48,7 @@ class DistrictWasteHeat(TestCaseBase):
         
         # create waste heat source and controller
         waste_heat = WasteHeat(sys_params)
-        waste_heat_controls = WasteHeatControls(sys_params)
+        waste_heat_controls = WasteHeatControls(sys_params, Path(__file__).parent.parent / "geojson_modelica_translator" / "model_connectors" / "controls" / "templates")
 
         # create district data
         design_data = DesignDataSeries(sys_params)
