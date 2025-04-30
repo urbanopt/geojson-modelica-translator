@@ -1,0 +1,16 @@
+  {{ model.modelica_type }} {{ model.id }}(
+    redeclare package MediumSer = MediumSer,
+    allowFlowReversalSer=allowFlowReversalSer,
+    mPla_flow_nominal=datDes.mPumDis_flow_nominal)
+    annotation (Placement(transformation(extent={{0,-180},{20,-160}})));
+  parameter Modelica.Units.SI.Length dhPla(fixed=false,start=0.05,min=0.01)
+    "Hydraulic diameter of the distribution pipe before each connection (waste heat plant)";
+  Buildings.DHC.Networks.Connections.Connection1Pipe_R conPla_wasHea_{{ model.id }}(
+    redeclare package Medium = MediumSer,
+    mDis_flow_nominal=datDes.mPumDis_flow_nominal,
+    mCon_flow_nominal=datDes.mPumDis_flow_nominal,
+    lDis=0,
+    allowFlowReversal=allowFlowReversalSer,
+    dhDis=dhPla)
+    "Connection to the plant (pressure drop lumped in plant and network model)"
+    annotation (Placement(transformation(extent={{0,-120},{20,-140}})));
