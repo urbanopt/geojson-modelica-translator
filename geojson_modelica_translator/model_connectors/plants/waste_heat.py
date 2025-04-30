@@ -125,4 +125,4 @@ class WasteHeat(PlantBase):
             package.save()
 
     def get_modelica_type(self, scaffold):
-        return f"Plants.{self.waste_heat_name}.WasteHeat"
+        return f"Plants.{self.waste_heat_name}.WasteHeatRecovery"
