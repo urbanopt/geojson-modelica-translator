@@ -9,7 +9,7 @@ from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
 class WasteHeatControls(ModelBase):
-    model_name = "WasteHeatControls"
+    model_name = "WasteHeatController"
 
     def __init__(self, system_parameters, template_dir):
         super().__init__(system_parameters, template_dir)

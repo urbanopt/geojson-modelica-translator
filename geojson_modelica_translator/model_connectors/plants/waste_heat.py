@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class WasteHeat(PlantBase):
-    model_name = "WasteHeat"
+    model_name = "WasteHeatRecovery"
 
     def __init__(self, system_parameters):
         super().__init__(system_parameters)
