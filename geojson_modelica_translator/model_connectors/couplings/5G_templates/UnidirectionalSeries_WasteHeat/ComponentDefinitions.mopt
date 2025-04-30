@@ -2,7 +2,8 @@
 Buildings.Fluid.Sensors.TemperatureTwoPort TIn_{{ coupling.id }}(
 redeclare final package Medium = {{ globals.medium_w }},
 m_flow_nominal=datDes.mPumDis_flow_nominal)
-{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={-30,10})));
+{% raw %}annotation (Placement(transformation(extent={{-40,-120},{-20,-140}})));
+{% endraw %}
 {% if sys_params.district_system.fifth_generation.waste_heat_parameters is defined %}
   parameter String filNam_QWasHea=Modelica.Utilities.Files.loadResource(
     "modelica://{{ globals.project_name }}/Schedules/{{ sys_params.rate_schedule_filename }}")
@@ -18,7 +19,7 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
     smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
     extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
     "Heat flow rate from/to the waste heat source/sink"
-    {% raw %} annotation (Placement(transformation(extent={{-320,-200},{-300,-180}})));
+    {% raw %} (Placement(transformation(extent={{-80,-210},{-60,-190}})));
   {% endraw %}parameter String filNam_TWasHea=Modelica.Utilities.Files.loadResource(
     "modelica://{{ globals.project_name }}/Schedules/{{ sys_params.temperature_schedule_filename }}")
     "Waste heat temperature as time series";
@@ -33,7 +34,7 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
     smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
     extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
     "Waste heat temperature as time series"
-    {% raw %} annotation (Placement(transformation(extent={{-320,70},{-300,90}})));
+    {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
   {% endraw %}{% endif %}
 annotation (
 revisions="<html>
