@@ -1029,7 +1029,18 @@
           "description": "Pipes buried depth",
           "type": "number"
         }
-      }
+      },
+      "required": [
+        "hydraulic_diameter",
+        "hydraulic_diameter_autosized",
+        "insulation_thickness",
+        "insulation_conductivity",
+        "diameter_ratio",
+        "pressure_drop_per_meter",
+        "roughness",
+        "rho_cp",
+        "buried_depth"
+      ]
     },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
@@ -1424,7 +1435,9 @@
           },
           "required": [
             "buried_depth",
-            "diameter"
+            "diameter",
+            "number_of_boreholes_autosized",
+            "length_of_boreholes_autosized"
           ],
           "additionalProperties": true
         },
