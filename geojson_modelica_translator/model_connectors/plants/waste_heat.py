@@ -3,6 +3,7 @@
 
 import logging
 import shutil
+import os
 from pathlib import Path
 
 from modelica_builder.package_parser import PackageParser
@@ -20,6 +21,8 @@ class WasteHeat(PlantBase):
         super().__init__(system_parameters)
         self.id = "wasHea_" + simple_uuid()
         self.waste_heat_name = "WasteHeat_" + simple_uuid()
+
+        self.required_mo_files.append(os.path.join(self.template_dir, "WasteHeatController.mo"))
 
     def to_modelica(self, scaffold):
         """Convert the Waste heat to Modelica code
@@ -83,6 +86,11 @@ class WasteHeat(PlantBase):
             model_name=self.waste_heat_name,
         )
 
+        # generate Modelica package
+        self.copy_required_mo_files(
+            dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
+        )
+
         # run post process to create the remaining project files for this building
         self.post_process(scaffold)
 
@@ -107,6 +115,7 @@ class WasteHeat(PlantBase):
         new_package.save()
 
         # now create the Loads level package and package.order.
+        package_models = [self.waste_heat_name] + [Path(mo).stem for mo in self.required_mo_files]
         if not (Path(scaffold.plants_path.files_dir) / "package.mo").exists():
             plant_package = PackageParser.new_from_template(
                 scaffold.plants_path.files_dir, "Plants", [self.waste_heat_name], within=f"{scaffold.project_name}"
@@ -114,7 +123,8 @@ class WasteHeat(PlantBase):
             plant_package.save()
         else:
             plant_package = PackageParser(Path(scaffold.plants_path.files_dir))
-            plant_package.add_model(self.waste_heat_name)
+            for model_name in package_models:
+                plant_package.add_model(model_name)
             plant_package.save()
 
         # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
