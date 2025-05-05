@@ -48,8 +48,7 @@ class DistrictWasteHeat(TestCaseBase):
         
         # create waste heat source and controller
         waste_heat = WasteHeat(sys_params)
-        waste_heat_controls = WasteHeatControls(sys_params, Path(__file__).parent.parent / "geojson_modelica_translator" / "model_connectors" / "controls" / "templates")
-
+        
         # create district data
         design_data = DesignDataSeries(sys_params)
 
