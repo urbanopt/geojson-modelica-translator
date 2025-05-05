@@ -1441,6 +1441,40 @@
           ],
           "additionalProperties": true
         },
+        "pre_designed_borefield": {
+          "description": "Individual borehole properties for Ground Heat Exchanger sizing.",
+          "type": "object",
+          "properties": {
+            "length_of_boreholes": {
+              "description": "The length of the boreholes, in meters.",
+              "type": "number"
+            },
+            "borehole_diameter": {
+              "description": "The diameter of the boreholes, in meters.",
+              "type": "number"
+            },
+            "borehole_x_coordinates": {
+              "description": "X-coordinates of the boreholes, in meters.",
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "borehole_y_coordinates": {
+              "description": "Y-coordinate of the boreholes, in meters.",
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "required": [
+            "length_of_boreholes",
+            "borehole_diameter",
+            "borehole_x_coordinates",
+            "borehole_y_coordinates"
+          ]
+        },
         "ghe_geometric_params": {
           "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
           "type": "object",
@@ -1460,10 +1494,21 @@
           ]
         }
       },
+      "oneOf": [
+        {
+          "required": [
+            "pre_designed_borefield"
+          ]
+        },
+        {
+          "required": [
+            "borehole"
+          ]
+        }
+      ],
       "required": [
         "ghe_id",
-        "ghe_geometric_params",
-        "borehole"
+        "ghe_geometric_params"
       ]
     },
     "pipe_def": {
