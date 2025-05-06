@@ -154,9 +154,9 @@ block WasteHeatController
     annotation (Placement(transformation(extent={{-80,-260},{-60,-240}})));
   Buildings.Controls.OBC.CDL.Routing.RealScalarReplicator reaRep(
     each y(
-      unit="J/(kg.K)",
-      displayUnit="J/(kg.K)",
-      quantity="SpecificHeatCapacity"),
+      each unit="J/(kg.K)",
+      each displayUnit="J/(kg.K)",
+      each quantity="SpecificHeatCapacity"),
     final nout=2)
     "Replicate real number"
     annotation (Placement(transformation(extent={{-120,-280},{-100,-260}})));
@@ -271,17 +271,17 @@ block WasteHeatController
     annotation (Placement(transformation(extent={{180,140},{200,160}})));
   Buildings.Controls.OBC.CDL.Routing.RealScalarReplicator reaRep1(
     each y(
-      unit="kg/s",
-      displayUnit="kg/s",
-      quantity="MassFlowRate"),
+      each unit="kg/s",
+      each displayUnit="kg/s",
+      each quantity="MassFlowRate"),
     final nout=2)
     "Replicate real number"
     annotation (Placement(transformation(extent={{60,-234},{80,-214}})));
   Buildings.Controls.OBC.CDL.Routing.RealScalarReplicator reaRep2(
     each y(
-      unit="K",
-      displayUnit="degC",
-      quantity="ThermodynamicTemperature"),
+      each unit="K",
+      each displayUnit="degC",
+      each quantity="ThermodynamicTemperature"),
     final nout=2)
     "Replicate real number"
     annotation (Placement(transformation(extent={{-160,-246},{-140,-226}})));
