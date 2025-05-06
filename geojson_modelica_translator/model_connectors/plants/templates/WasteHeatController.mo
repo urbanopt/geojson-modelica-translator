@@ -288,7 +288,7 @@ block WasteHeatController
 equation
   connect(T_disRet,dT_wasHeaIsSou.u1)
     annotation (Line(points={{-320,140},{-280,140},{-280,116},{-262,116}},color={0,0,127}));
-  connect(TWasHeaWat, dT_wasHeaIsSou.u2)
+  connect(TWasHeaWat,dT_wasHeaIsSou.u2)
     annotation (Line(points={{-320,80},{-268,80},{-268,104},{-262,104}},color={0,0,127}));
   connect(dT_wasHeaIsSou.y,hys_dT_wasHea_souSin[1].u)
     annotation (Line(points={{-238,110},{-32,110}},color={0,0,127}));
@@ -298,7 +298,7 @@ equation
     annotation (Line(points={{282,170},{320,170}},color={0,0,127}));
   connect(pro_maxQWasHea_souSin[1].y,min_QWasHeaIsSou.u2)
     annotation (Line(points={{122,-230},{130,-230},{130,-96},{158,-96}},color={0,0,127}));
-  connect(QWasHea, min_QWasHeaIsSou.u1)
+  connect(QWasHea,min_QWasHeaIsSou.u1)
     annotation (Line(points={{-320,-190},{120,-190},{120,-84},{158,-84}},color={0,0,127}));
   connect(ProWasHea_cp_dT.y,pro_maxQWasHea_souSin.u2)
     annotation (Line(points={{-58,-250},{90,-250},{90,-236},{98,-236}},color={0,0,127}));
@@ -328,7 +328,7 @@ equation
     annotation (Line(points={{102,90},{110,90},{110,70},{118,70}},color={255,0,255}));
   connect(hexAppTem_S.y,TOutMax_wasHeaSou.u2)
     annotation (Line(points={{-178,-120},{-170,-120},{-170,-96},{-162,-96}},color={0,0,127}));
-  connect(TWasHeaWat, TOutMax_wasHeaSou.u1)
+  connect(TWasHeaWat,TOutMax_wasHeaSou.u1)
     annotation (Line(points={{-320,80},{-268,80},{-268,-84},{-162,-84}},color={0,0,127}));
   connect(TOutMax_wasHeaSou.y,dTHexMax_souSin[1].u1)
     annotation (Line(points={{-138,-90},{-130,-90},{-130,-224},{-122,-224}},color={0,0,127}));
@@ -336,9 +336,9 @@ equation
     annotation (Line(points={{-138,-150},{-130,-150},{-130,-224},{-122,-224}},color={0,0,127}));
   connect(m_flow_pumDis,pro_mPumPla.u1)
     annotation (Line(points={{-320,230},{252,230},{252,176},{258,176}},color={0,0,127}));
-  connect(QWasHea, limSou_wasHea.u)
+  connect(QWasHea,limSou_wasHea.u)
     annotation (Line(points={{-320,-190},{-274,-190},{-274,10},{-222,10}},color={0,0,127}));
-  connect(QWasHea, limSin_wasHea.u)
+  connect(QWasHea,limSin_wasHea.u)
     annotation (Line(points={{-320,-190},{-274,-190},{-274,-30},{-222,-30}},color={0,0,127}));
   connect(limSou_wasHea.y,QWasHeaSou_nor.u)
     annotation (Line(points={{-198,10},{-182,10}},color={0,0,127}));
@@ -382,8 +382,8 @@ equation
     annotation (Line(points={{102,130},{320,130}},color={255,0,255}));
   connect(mulAnd_wasHeaIsSin.y,uWasHeaSin)
     annotation (Line(points={{102,90},{320,90}},color={255,0,255}));
-  connect(TWasHeaWat, TOutMin_wasHeaSin.u1)
-    annotation (Line(points={{-320,80},{-268,80},{-268,-144},{-162,-144}}, color={0,0,127}));
+  connect(TWasHeaWat,TOutMin_wasHeaSin.u1)
+    annotation (Line(points={{-320,80},{-268,80},{-268,-144},{-162,-144}},color={0,0,127}));
   connect(hexAppTem_S.y,TOutMin_wasHeaSin.u2)
     annotation (Line(points={{-178,-120},{-170,-120},{-170,-156},{-162,-156}},color={0,0,127}));
   connect(cp_defaultSer_s.y,reaRep.u)
@@ -392,8 +392,8 @@ equation
     annotation (Line(points={{-98,-270},{-90,-270},{-90,-256},{-82,-256}},color={0,0,127}));
   connect(reaRep1.y,pro_maxQWasHea_souSin.u1)
     annotation (Line(points={{82,-224},{98,-224}},color={0,0,127}));
-  connect(QWasHea, max_QWasHeaIsSin.u1)
-    annotation (Line(points={{-320,-190},{120,-190},{120,-144},{158,-144}}, color={0,0,127}));
+  connect(QWasHea,max_QWasHeaIsSin.u1)
+    annotation (Line(points={{-320,-190},{120,-190},{120,-144},{158,-144}},color={0,0,127}));
   connect(pro_maxQWasHea_souSin[2].y,max_QWasHeaIsSin.u2)
     annotation (Line(points={{122,-230},{140,-230},{140,-156},{158,-156}},color={0,0,127}));
   connect(pro_QWasHea_souSin[1].y,add_Q_flow_wasHea_out.u1)
