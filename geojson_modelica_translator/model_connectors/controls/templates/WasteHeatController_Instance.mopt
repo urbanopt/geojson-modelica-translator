@@ -1,3 +1,0 @@
-  {{ model.modelica_type }} {{ model.id }}(
-      redeclare package MediumSer = MediumSer, filNam_QWasHea=filNam_QWasHea)
-    annotation (Placement(transformation(extent={{-40,-180},{-20,-160}})));
