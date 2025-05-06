@@ -10,7 +10,6 @@ from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.external_package_utils import load_loop_order
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
-from geojson_modelica_translator.model_connectors.controls.waste_heat_controls import WasteHeatControls
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
@@ -110,25 +109,6 @@ class District:
             ets_templates_dir_path = Path(__file__).parent.parent / "energy_transfer_systems" / "templates"
             heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
             heat_pump_ets.to_modelica(self._scaffold)
-
-            if "waste_heat_parameters" in district_system_params["fifth_generation"]:
-                # Populate Controls dir in Modelica model
-                controls_templates_dir_path = Path(__file__).parent.parent / "controls" / "templates"
-                waste_heat_controls = WasteHeatControls(self.system_parameters, controls_templates_dir_path)
-                waste_heat_controls.to_modelica(self._scaffold)
-                common_template_params["sys_params"]["rate_schedule_filename"] = Path(
-                    self.system_parameters.get_param(
-                        "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
-                    )
-                ).name
-                common_template_params["sys_params"]["temperature_schedule_filename"] = Path(
-                    self.system_parameters.get_param(
-                        "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
-                    )
-                ).name
-            else:
-                # Remove the empty Controls dir for any non-waste-heat project (for now)
-                Path(self._scaffold.controls_path.files_dir).rmdir()
         else:
             # Remove the empty ETS dir which isn't used in non-5G systems
             Path(self._scaffold.heat_pump_ets_path.files_dir).rmdir()
