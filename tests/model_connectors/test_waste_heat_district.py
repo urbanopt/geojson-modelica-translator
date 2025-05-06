@@ -17,7 +17,6 @@ from geojson_modelica_translator.model_connectors.networks.network_distribution_
 from geojson_modelica_translator.model_connectors.networks.unidirectional_series import UnidirectionalSeries
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.model_connectors.plants.waste_heat import WasteHeat
-from geojson_modelica_translator.model_connectors.controls.waste_heat_controls import WasteHeatControls
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from tests.base_test_case import TestCaseBase
 
@@ -45,10 +44,10 @@ class DistrictWasteHeat(TestCaseBase):
 
         # create ground coupling
         ground_coupling = GroundCoupling(sys_params)
-        
+
         # create waste heat source and controller
         waste_heat = WasteHeat(sys_params)
-        
+
         # create district data
         design_data = DesignDataSeries(sys_params)
 
@@ -79,13 +78,17 @@ class DistrictWasteHeat(TestCaseBase):
             all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
         # couple distribution and waste heat
         all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
-        all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))          
+        all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
 
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
 
         self.district = District(
-            root_dir=self.output_dir, project_name=project_name, system_parameters=sys_params, geojson_file=self.gj, coupling_graph=graph
+            root_dir=self.output_dir,
+            project_name=project_name,
+            system_parameters=sys_params,
+            geojson_file=self.gj,
+            coupling_graph=graph,
         )
 
         self.district.to_modelica()

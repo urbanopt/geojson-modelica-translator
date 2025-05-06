@@ -98,7 +98,7 @@
         "pump_flow_rate": 0.01,
         "pump_flow_rate_autosized": true
       },
-	  "ghe_parameters": {
+      "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
         "fluid": {

@@ -2,8 +2,8 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
-import shutil
 import os
+import shutil
 from pathlib import Path
 
 from modelica_builder.package_parser import PackageParser
