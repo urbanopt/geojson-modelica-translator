@@ -90,10 +90,12 @@
               "width_of_ghe": 100
             },
             "borehole": {
-              "number_of_boreholes_autosized": true,
-              "length_of_boreholes_autosized": true,
               "buried_depth": 2.0,
-              "diameter": 0.15
+              "diameter": 0.15,
+              "length_of_boreholes": 1.0,
+              "length_of_boreholes_autosized": true,
+              "number_of_boreholes": 5,
+              "number_of_boreholes_autosized": true
             }
           },
           {
@@ -102,11 +104,21 @@
               "length_of_ghe": 100,
               "width_of_ghe": 100
             },
-            "borehole": {
-              "number_of_boreholes_autosized": true,
-              "length_of_boreholes_autosized": true,
-              "buried_depth": 10.0,
-              "diameter": 0.25
+            "pre_designed_borefield": {
+              "length_of_boreholes": 100,
+              "borehole_diameter": 0.16,
+              "borehole_x_coordinates": [
+                0.0,
+                1.0,
+                2.0,
+                3.0
+              ],
+              "borehole_y_coordinates": [
+                0.0,
+                1.0,
+                2.0,
+                3.0
+              ]
             }
           }
         ]

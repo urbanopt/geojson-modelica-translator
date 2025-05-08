@@ -279,7 +279,12 @@ class SystemParametersTest(unittest.TestCase):
         value = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40033", "borehole")
 
         # Assert
-        assert value == {"buried_depth": 2.0, "diameter": 0.15}
+        assert value == {
+            "number_of_boreholes_autosized": True,
+            "length_of_boreholes_autosized": True,
+            "buried_depth": 2.0,
+            "diameter": 0.15,
+        }
 
         # Act
         second_ghe_borehole = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40034", "borehole")
