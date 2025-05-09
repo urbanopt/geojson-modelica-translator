@@ -4,25 +4,6 @@ model DistrictEnergySystem
   // District Parameters
   package MediumW=Buildings.Media.Water
     "Source side medium";
-  {% if not is_ghe_district %}
-  package MediumA=Buildings.Media.Air
-    "Load side medium";
-  // TODO: dehardcode these
-  parameter Modelica.Units.SI.TemperatureDifference delChiWatTemDis(displayUnit="degC")=7;
-  parameter Modelica.Units.SI.TemperatureDifference delChiWatTemBui(displayUnit="degC")=5;
-  parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemDis(displayUnit="degC")=12;
-  parameter Modelica.Units.SI.TemperatureDifference delHeaWatTemBui(displayUnit="degC")=5;
-  parameter Integer numberofchillers = 2;
-  inner parameter Buildings.DHC.Examples.Combined.BaseClasses.DesignDataSeries datDes(
-    nBui=1,
-    mPumDis_flow_nominal=95,
-    mPipDis_flow_nominal=95,
-    // The keys for District params are read directly from the dict in district.py, such as models, couplings, or pressure_drop_per_meter
-    dp_length_nominal={{ pressure_drop_per_meter }},
-    epsPla=0.935,
-    final mCon_flow_nominal={18})
-    "Design data";
-  {% endif %}
   // Models
   {% for model in models %}
   //

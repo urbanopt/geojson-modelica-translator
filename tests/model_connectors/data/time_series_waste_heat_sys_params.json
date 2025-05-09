@@ -9,15 +9,14 @@
           "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
-          "has_liquid_cooling": true,
           "has_liquid_heating": true,
-          "has_electric_cooling": false,
           "has_electric_heating": false,
-          "max_electrical_load": 0,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 15,
           "temp_chw_return": 12,
-          "temp_chw_supply": 7,
-          "temp_hw_return": 35,
-          "temp_hw_supply": 40,
+          "temp_hw_supply": 25,
+          "temp_hw_return": 20,
           "temp_setpoint_cooling": 24,
           "temp_setpoint_heating": 20
         }
@@ -44,15 +43,14 @@
           "filepath": "../../data_shared/time_series_large_office_2013_5B.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
-          "has_liquid_cooling": true,
           "has_liquid_heating": true,
-          "has_electric_cooling": false,
           "has_electric_heating": false,
-          "max_electrical_load": 0,
+          "has_liquid_cooling": true,
+          "has_electric_cooling": false,
+          "temp_chw_supply": 15,
           "temp_chw_return": 12,
-          "temp_chw_supply": 7,
-          "temp_hw_return": 35,
-          "temp_hw_supply": 40,
+          "temp_hw_supply": 25,
+          "temp_hw_return": 20,
           "temp_setpoint_cooling": 24,
           "temp_setpoint_heating": 20
         }
@@ -74,11 +72,9 @@
   ],
   "district_system": {
     "fifth_generation": {
-      "central_pump_parameters": {
-        "pump_design_head": 300000,
-        "pump_design_head_autosized": true,
-        "pump_flow_rate": 0.008,
-        "pump_flow_rate_autosized": true
+      "waste_heat_parameters": {
+        "rate_schedule_path": "./WasteHeatSchedule.mos",
+        "temperature_schedule_path": "./TWasHeaWatSchedule.mos"
       },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
@@ -95,6 +91,12 @@
         "conductivity": 2.0,
         "rho_cp": 2343493,
         "undisturbed_temp": 18.3
+      },
+      "central_pump_parameters": {
+        "pump_design_head": 60000,
+        "pump_design_head_autosized": true,
+        "pump_flow_rate": 0.01,
+        "pump_flow_rate_autosized": true
       },
       "ghe_parameters": {
         "version": "1.0",

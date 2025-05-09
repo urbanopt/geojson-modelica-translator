@@ -16,40 +16,37 @@ from geojson_modelica_translator.model_connectors.networks.ground_coupling impor
 from geojson_modelica_translator.model_connectors.networks.network_distribution_pump import NetworkDistributionPump
 from geojson_modelica_translator.model_connectors.networks.unidirectional_series import UnidirectionalSeries
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
+from geojson_modelica_translator.model_connectors.plants.waste_heat import WasteHeat
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from tests.base_test_case import TestCaseBase
 
 
-class DistrictSystemTest(TestCaseBase):
+class DistrictWasteHeat(TestCaseBase):
     def setUp(self):
         super().setUp()
 
-        project_name = "district_multi_ghe"
+        project_name = "district_waste_heat"
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load in the example geojson with multiple buildings
-        geojson_filename = Path(self.data_dir) / "sdk_output_skeleton_13_buildings" / "exportGeo.json"
+        geojson_filename = Path(self.data_dir) / "time_series_ex2.json"
         self.gj = UrbanOptGeoJson(geojson_filename)
 
         # load system parameter data
-        sys_param_filename = (
-            Path(self.data_dir)
-            / "sdk_output_skeleton_13_buildings"
-            / "run"
-            / "baseline_scenario"
-            / "ghe_dir"
-            / "sys_params_proportional.json"
-        )
+        sys_param_filename = Path(self.data_dir) / "time_series_waste_heat_sys_params.json"
         sys_params = SystemParameters(sys_param_filename)
 
         # read the loop order and create building groups
         loop_order = load_loop_order(sys_param_filename)
 
-        # create ambient water stub
+        # create ambient water loop stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
 
         # create ground coupling
         ground_coupling = GroundCoupling(sys_params)
+
+        # create waste heat source and controller
+        waste_heat = WasteHeat(sys_params)
 
         # create district data
         design_data = DesignDataSeries(sys_params)
@@ -79,8 +76,11 @@ class DistrictSystemTest(TestCaseBase):
             all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
             # empty couple between borefield and ground
             all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
+        # couple distribution and waste heat
+        all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
         all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
 
+        # create the couplings and graph
         graph = CouplingGraph(all_couplings)
 
         self.district = District(
@@ -93,17 +93,17 @@ class DistrictSystemTest(TestCaseBase):
 
         self.district.to_modelica()
 
-    def test_build_multi_ghe_district(self):
+    def test_build_waste_heat_district(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="Model appears to be too large for OM. Simulates as expected using Dymola")
     @pytest.mark.dymola
-    # TODO: Improve simulation with OM to enable running this test natively
-    def test_simulate_multi_ghe_district(self):
+    @pytest.mark.skip(reason="Controller has too many event simulations for OM. Simulates as expected using Dymola")
+    def test_simulate_district_waste_heat_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
-            run_path=self.district._scaffold.project_path,
             file_to_load=self.district._scaffold.package_path,
+            run_path=self.district._scaffold.project_path,
+            # simulation_flags="-mei=50000"
         )

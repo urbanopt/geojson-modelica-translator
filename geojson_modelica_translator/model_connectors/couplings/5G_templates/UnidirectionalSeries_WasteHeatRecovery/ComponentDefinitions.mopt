@@ -1,0 +1,47 @@
+// temperature sensors
+Buildings.Fluid.Sensors.TemperatureTwoPort TIn_wasHea(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-40,-120},{-20,-140}})));
+{% endraw %}
+{% if sys_params.district_system.fifth_generation.waste_heat_parameters is defined %}
+  parameter String filNam_QWasHea=Modelica.Utilities.Files.loadResource(
+    "modelica://{{ globals.project_name }}/Schedules/{{ sys_params.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path }}")
+    "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
+  Modelica.Blocks.Sources.CombiTimeTable QWasHea(
+    each y(
+      each unit="W",
+      each displayUnit="W",
+      each quantity="HeatFlowRate"),
+    tableOnFile=true,
+    tableName="tab1",
+    fileName=filNam_QWasHea,
+    smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
+    "Heat flow rate from/to the waste heat source/sink"
+    {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
+  {% endraw %}parameter String filNam_TWasHea=Modelica.Utilities.Files.loadResource(
+    "modelica://{{ globals.project_name }}/Schedules/{{ sys_params.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path }}")
+    "Waste heat temperature as time series";
+  Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat(
+    each y(
+      each unit="K",
+      each displayUnit="degC",
+      each quantity="ThermodynamicTemperature"),
+    tableOnFile=true,
+    tableName="tab1",
+    fileName=filNam_TWasHea,
+    smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+    extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
+    "Waste heat temperature as time series"
+    {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
+  {% endraw %}{% endif %}
+annotation (
+revisions="<html>
+<ul>
+<li>
+April 22, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
+</ul>
+</html>");

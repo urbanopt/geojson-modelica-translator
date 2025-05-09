@@ -284,7 +284,9 @@ class ModelicaRunner:
                     " Increase Docker resources, decrease number of buildings simulated, or both"
                 )
             elif "division by zero at time" and "Simulation execution failed for model:" in stdout_log:
-                logger.error("Model failed to run due to division by zero")
+                logger.error(
+                    "Model failed to run due to division by zero. Perhaps head pressure or flow rate are insufficient?"
+                )
                 exitcode = 1
             elif "The simulation finished successfully" in stdout_log:
                 logger.info("Model ran successfully")

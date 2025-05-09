@@ -997,17 +997,22 @@ class SystemParameters:
                     "Perhaps you haven't run REopt post-processing step in the UO sdk?"
                 )
 
-        # Update ground heat exchanger properties if true
+        # Remove template components that do not apply
         if district_type in ["5G_ghe", "5G"]:
             if district_type == "5G_ghe":
                 self.process_ghe_inputs(scenario_dir)
             elif district_type == "5G":
                 # Process waste-heat inputs
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
-            # remove fourth generation district system type
             del self.param_template["district_system"]["fourth_generation"]
+            if (
+                self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"][
+                    "rate_schedule_path"
+                ]
+                == "To be populated"
+            ):
+                del self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"]
         elif district_type in ["4G", "steam"]:
-            # remove fifth generation district system type if it exists in template and ghe is not true
             with suppress(KeyError):
                 del self.param_template["district_system"]["fifth_generation"]
 
