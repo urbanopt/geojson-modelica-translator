@@ -1,5 +1,17 @@
 # Change Log
 
+## Version 0.10.0
+
+### Exciting New Features 🎉
+
+* Expose skipping weather download by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/706>
+* Enable selecting output variables from Modelica simulation by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/707>
+* Add capability to pass Modelica flags to the GMT CLI by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/709>
+* More params by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/703>
+* Add autosizing flags to sys-param values that may be autosized by TN/GHED by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/708>
+* Add new heat pump ETS to 5G loads by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/710>
+* Require autosize flags in sys-param files by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/712>
+
 ## Version 0.9.3
 
 ### Exciting New Features 🎉
