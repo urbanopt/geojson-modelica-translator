@@ -154,7 +154,6 @@ class District:
 
         # render each coupling
         load_num = 1
-        geojson_ids = []
         for coupling in self._coupling_graph.couplings:
             template_context = {
                 "diagram": diagram.to_dict(coupling.id, is_coupling=True),
@@ -165,10 +164,6 @@ class District:
             if coupling_load is not None:
                 # read sys params file for the load
                 building_sys_params = self.system_parameters.get_param_by_id(coupling_load.building_id, "$")
-                if building_sys_params["geojson_id"] in geojson_ids:
-                    continue
-                else:
-                    geojson_ids.append(building_sys_params["geojson_id"])
                 template_context["sys_params"]["building"] = building_sys_params
                 # Note which load is being used, so ports connect properly in couplings/5G_templates/*/ConnectStatements
                 template_context["sys_params"]["load_num"] = load_num
