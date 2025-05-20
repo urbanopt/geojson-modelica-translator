@@ -283,7 +283,7 @@ class ModelicaRunner:
                     "Model is too large for the Docker resources available."
                     " Increase Docker resources, decrease number of buildings simulated, or both"
                 )
-            elif "division by zero at time" and "Simulation execution failed for model:" in stdout_log:
+            elif "division by zero at time" in stdout_log and "Simulation execution failed for model:" in stdout_log:
                 logger.error(
                     "Model failed to run due to division by zero. Perhaps head pressure or flow rate are insufficient?"
                 )
