@@ -2,6 +2,7 @@ inner parameter
 {{ model.modelica_type }} {{ model.id }}(
 nBui={{ sys_params.num_buildings }},
 mPumDis_flow_nominal={{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_flow_rate }} * 1000,
+// multiply by 1,000 to convert from m3/s to L/s
 mPipDis_flow_nominal=datDes.mPumDis_flow_nominal,
 {% if sys_params.district_system.fifth_generation.ghe_parameters is defined %}
   {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}
