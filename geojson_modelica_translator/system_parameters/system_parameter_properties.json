@@ -1763,6 +1763,16 @@
         "pump_flow_rate_autosized"
       ]
     },
+    "waste_heat_parameters": {
+      "rate_schedule_path": {
+        "description": "Path to the rate schedule file. Waste heat rate as time series (source positive, sink negative)",
+        "type": "string"
+      },
+      "temperature_schedule_path": {
+        "description": "Path to the temperature schedule file. Waste heat temperature as time series",
+        "type": "string"
+      }
+    },
     "fifth_generation": {
       "description": "Fifth generation district parameters, for an ambient loop system.",
       "type": "object",
@@ -1789,6 +1799,9 @@
         },
         "horizontal_piping_parameters": {
           "$ref": "#/definitions/horizontal_piping_parameters"
+        },
+        "waste_heat_parameters": {
+          "$ref": "#/definitions/waste_heat_parameters"
         }
       },
       "required": [

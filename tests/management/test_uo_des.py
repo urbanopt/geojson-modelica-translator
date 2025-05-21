@@ -126,7 +126,7 @@ class CLIIntegrationTest(TestCase):
 
         gmt.to_modelica()
 
-        # If this file exists, the cli successfully built the model
+        # If this file exists, the code successfully built the model
         assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
         # Great! We know our files are good, let's cleanup and test the CLI
         rmtree(self.output_dir / project_name)
@@ -144,7 +144,7 @@ class CLIIntegrationTest(TestCase):
 
         # -- Assert
         assert res.exit_code == 0
-        # If this file exists, the cli successfully built the model
+        # If this file exists, the cli successfully used the code to build the model
         assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
 
     def test_cli_makes_model_with_ghe(self):

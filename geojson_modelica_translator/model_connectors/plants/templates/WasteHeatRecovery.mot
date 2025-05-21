@@ -1,0 +1,99 @@
+within {{ project_name }}.Plants.{{ model_name }};
+{% raw %}model WasteHeatRecovery
+  "Model for waste heat recovery plant"
+  extends Buildings.DHC.Plants.BaseClasses.PartialPlant(
+    final have_fan=false,
+    final have_pum=true,
+    final have_eleHea=false,
+    final have_eleCoo=false,
+    final have_weaBus=false,
+    final typ=Buildings.DHC.Types.DistrictSystemType.CombinedGeneration5);
+  replaceable package MediumSer=Buildings.Media.Water
+    constrainedby Modelica.Media.Interfaces.PartialMedium
+    "District side medium";
+  parameter Boolean allowFlowReversalSer
+    "= true to allow flow reversal, false restricts to design direction (port_a -> port_b)"
+    annotation (Dialog(tab="Assumptions"),Evaluate=true);
+  parameter Modelica.Units.SI.MassFlowRate mPla_flow_nominal
+    "Nominal mass flow rate of waste heat loop (plant side)";
+  Buildings.Controls.OBC.CDL.Interfaces.RealInput m_flow_pumPla(
+    unit="kg/s",
+    displayUnit="kg/s",
+    quantity="MassFlowRate")
+    "Mass flow rate of plant pump [kg/s]"
+    annotation (Placement(transformation(extent={{-420,300},{-380,340}}),iconTransformation(extent={{-380,180},{-300,260}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealInput Q_flow_wasHea_out(
+    unit="W",
+    displayUnit="W",
+    quantity="HeatFlowRate")
+    "Heat flow rate from/to the waste heat source/sink"
+    annotation (Placement(transformation(extent={{-420,260},{-380,300}}),iconTransformation(extent={{-380,200},{-300,120}})));
+  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumPla(
+    redeclare package Medium=MediumSer,
+    m_flow_nominal=mPla_flow_nominal,
+    allowFlowReversal=allowFlowReversalSer)
+    "Plant pump"
+    annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
+  Buildings.Fluid.Sensors.TemperatureTwoPort TInHex_plaSid(
+    redeclare package Medium=MediumSer,
+    m_flow_nominal=mPla_flow_nominal)
+    "Heat exchanger inlet temperature sensor (plant side)"
+    annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
+  Buildings.Fluid.Sensors.TemperatureTwoPort TOutHex_plaSid(
+    redeclare package Medium=MediumSer,
+    m_flow_nominal=mPla_flow_nominal)
+    "Heat exchanger outlet temperature sensor (plant side)"
+    annotation (Placement(transformation(extent={{100,-80},{120,-60}})));
+  Buildings.Fluid.Sensors.MassFlowRate senMasFlo_hexPlaSid(
+    redeclare package Medium=MediumSer,
+    allowFlowReversal=allowFlowReversalSer)
+    "Heat exchanger mass flow rate sensor (plant side)"
+    annotation (Placement(transformation(extent={{60,-80},{80,-60}})));
+  parameter Modelica.Units.SI.Time tauMixVolWasHea=600
+    "Time constant at nominal flow [s]";
+  parameter MediumSer.ThermodynamicState sta_defaultSer=MediumSer.setState_pTX(
+    T=MediumSer.T_default,
+    p=MediumSer.p_default,
+    X=MediumSer.X_default);
+  parameter Modelica.Units.SI.Density rho_defaultSer=MediumSer.density(
+    sta_defaultSer)
+    "Density, used to convert from mass flow rate [kg/s] to volume [m3]";
+  Buildings.Fluid.MixingVolumes.MixingVolume souWasHea_woHX(
+    redeclare package Medium=MediumSer,
+    nPorts=2,
+    V=mPla_flow_nominal*tauMixVolWasHea/rho_defaultSer,
+    mSenFac=1,
+    m_flow_nominal=mPla_flow_nominal,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    "Volume for waste heat source"
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},origin={10,-10})));
+  Buildings.HeatTransfer.Sources.PrescribedHeatFlow Q_flow_wasHea_woHX
+    "Heat flow rate from/to the waste heat source/sink"
+    annotation (Placement(transformation(extent={{-300,270},{-280,290}})));
+equation
+  connect(pumPla.port_b,TInHex_plaSid.port_a)
+    annotation (Line(points={{-60,-70},{-40,-70}},color={0,127,255}));
+  connect(senMasFlo_hexPlaSid.port_b,TOutHex_plaSid.port_a)
+    annotation (Line(points={{80,-70},{100,-70}},color={0,127,255}));
+  connect(port_aSerAmb,pumPla.port_a)
+    annotation (Line(points={{-380,40},{-360,40},{-360,-70},{-80,-70}},color={0,127,255}));
+  connect(TOutHex_plaSid.port_b,port_bSerAmb)
+    annotation (Line(points={{120,-70},{360,-70},{360,40},{380,40}},color={0,127,255}));
+  connect(pumPla.P,PPum)
+    annotation (Line(points={{-59,-61},{-50,-61},{-50,-40},{280,-40},{280,160},{400,160}},color={0,0,127}));
+  connect(TInHex_plaSid.port_b,souWasHea_woHX.ports[1])
+    annotation (Line(points={{-20,-70},{-10,-70},{-10,-20},{9,-20}},color={0,127,255}));
+  connect(souWasHea_woHX.ports[2],senMasFlo_hexPlaSid.port_a)
+    annotation (Line(points={{11,-20},{30,-20},{30,-70},{60,-70}},color={0,127,255}));
+  connect(Q_flow_wasHea_out,Q_flow_wasHea_woHX.Q_flow)
+    annotation (Line(points={{-400,280},{-300,280}},color={0,0,127}));
+  connect(Q_flow_wasHea_woHX.port,souWasHea_woHX.heatPort)
+    annotation (Line(points={{-280,280},{-8,280},{-8,-10},{0,-10}},color={191,0,0}));
+  connect(m_flow_pumPla,pumPla.m_flow_in)
+    annotation (Line(points={{-400,320},{-70,320},{-70,-58}},color={0,0,127}));
+  annotation (
+    Diagram(
+      coordinateSystem(
+        extent={{-380,-380},{380,380}})));
+end WasteHeatRecovery;
+{% endraw %}
