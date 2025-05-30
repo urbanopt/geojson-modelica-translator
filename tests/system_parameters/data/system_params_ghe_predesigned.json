@@ -44,6 +44,23 @@
         "rho_cp": 2343493,
         "undisturbed_temp": 18.3
       },
+      "central_pump_parameters": {
+        "pump_design_head": 60000,
+        "pump_design_head_autosized": true,
+        "pump_flow_rate": 0.01,
+        "pump_flow_rate_autosized": true
+      },
+      "horizontal_piping_parameters": {
+        "hydraulic_diameter": 0.089,
+        "hydraulic_diameter_autosized": true,
+        "insulation_thickness": 0.2,
+        "insulation_conductivity": 2.3,
+        "diameter_ratio": 11,
+        "pressure_drop_per_meter": 300,
+        "roughness": 1e-06,
+        "rho_cp": 2139000,
+        "buried_depth": 1.5
+      },
       "ghe_parameters": {
         "version": "1.0",
         "ghe_dir": "tests/system_parameters/data",
@@ -82,63 +99,39 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "ghe_specific_params": [
+        "borehole": {
+          "buried_depth": 2.0,
+          "diameter": 0.15
+        },
+        "borefields": [
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40033",
-            "ghe_geometric_params": {
-              "length_of_ghe": 100,
-              "width_of_ghe": 100
-            },
-            "borehole": {
-              "buried_depth": 2.0,
-              "diameter": 0.15,
-              "length_of_boreholes": 1.0,
-              "length_of_boreholes_autosized": true,
-              "number_of_boreholes": 5,
-              "number_of_boreholes_autosized": true
+            "pre_designed_borefield": {
+              "borehole_length": 100,
+              "borehole_x_coordinates": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "borehole_y_coordinates": [
+                0,
+                10,
+                20,
+                30
+              ]
             }
           },
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40034",
-            "ghe_geometric_params": {
+            "autosized_borefield": {
               "length_of_ghe": 100,
-              "width_of_ghe": 100
-            },
-            "pre_designed_borefield": {
-              "length_of_boreholes": 100,
-              "borehole_diameter": 0.16,
-              "borehole_x_coordinates": [
-                0.0,
-                1.0,
-                2.0,
-                3.0
-              ],
-              "borehole_y_coordinates": [
-                0.0,
-                1.0,
-                2.0,
-                3.0
-              ]
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
             }
           }
         ]
-      },
-      "central_pump_parameters": {
-        "pump_design_head": 60000,
-        "pump_design_head_autosized": true,
-        "pump_flow_rate": 0.01,
-        "pump_flow_rate_autosized": true
-      },
-      "horizontal_piping_parameters": {
-        "hydraulic_diameter": 0.089,
-        "hydraulic_diameter_autosized": true,
-        "insulation_thickness": 0.2,
-        "insulation_conductivity": 2.3,
-        "diameter_ratio": 11,
-        "pressure_drop_per_meter": 300,
-        "roughness": 1e-06,
-        "rho_cp": 2139000,
-        "buried_depth": 1.5
       }
     }
   }
