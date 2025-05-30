@@ -1404,7 +1404,7 @@
           "type": "string"
         },
         "autosized_borefield": {
-          "description": "Borefield properties for Ground Heat Exchanger sizing.",
+          "description": "Borefield properties for complete Ground Heat Exchanger sizing.",
           "type": "object",
           "properties": {
             "number_of_boreholes": {
@@ -1433,7 +1433,7 @@
           "additionalProperties": true
         },
         "pre_designed_borefield": {
-          "description": "Borefield properties for Ground Heat Exchanger sizing.",
+          "description": "Pre-designed borefield properties for limited Ground Heat Exchanger sizing.",
           "type": "object",
           "properties": {
             "borehole_length": {
