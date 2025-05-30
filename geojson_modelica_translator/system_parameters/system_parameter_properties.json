@@ -952,11 +952,11 @@
           "description": "Results directory for GHE Designer. Absolute path, or relative to the sys-param file.",
           "type": "string"
         },
-        "ghe_specific_params": {
+        "borefields": {
           "description": "Specific properties for each Ground Heat Exchanger",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ghe_specific_params_def"
+            "$ref": "#/definitions/borefields_def"
           }
         },
         "pipe": {
@@ -976,10 +976,13 @@
         },
         "design": {
           "$ref": "#/definitions/design_def"
+        },
+        "borehole": {
+          "$ref": "#/definitions/borehole_def"
         }
       },
       "required": [
-        "ghe_specific_params",
+        "borefields",
         "pipe",
         "fluid",
         "grout",
@@ -1392,7 +1395,7 @@
         "undisturbed_temp"
       ]
     },
-    "ghe_specific_params_def": {
+    "borefields_def": {
       "description": "The properties associated with each Ground Heat Exchanger instance",
       "type": "object",
       "properties": {
@@ -1400,57 +1403,41 @@
           "description": "Feature ID of GHE from GeoJSON Feature File.",
           "type": "string"
         },
-        "borehole": {
-          "description": "Borehole properties for Ground Heat Exchanger sizing.",
+        "autosized_borefield": {
+          "description": "Borefield properties for Ground Heat Exchanger sizing.",
           "type": "object",
           "properties": {
-            "buried_depth": {
-              "description": "The depth below the ground surface to the top of the borehole, in meters.",
-              "type": "number",
-              "default": 1.2
-            },
-            "diameter": {
-              "description": "The diameter of the borehole, in meters.",
-              "type": "number",
-              "default": 0.15
-            },
             "number_of_boreholes": {
               "description": "Number of boreholes on the site, determined from Thermal Network sizing",
               "type": "number"
             },
-            "number_of_boreholes_autosized": {
-              "description": "True if the number of boreholes is autosized, false if set manually",
-              "type": "boolean",
-              "default": true
-            },
-            "length_of_boreholes": {
-              "description": "The length of the borehole (in meters), determined from Thermal Network sizing.",
+            "borehole_length": {
+              "description": "The length of the boreholes, in meters.",
               "type": "number"
             },
-            "length_of_boreholes_autosized": {
-              "description": "True if the length of boreholes is autosized, false if set manually",
-              "type": "boolean",
-              "default": true
+            "length_of_ghe": {
+              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
+              "type": "number"
+            },
+            "width_of_ghe": {
+              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
+              "type": "number"
             }
           },
           "required": [
-            "buried_depth",
-            "diameter",
-            "number_of_boreholes_autosized",
-            "length_of_boreholes_autosized"
+            "number_of_boreholes",
+            "borehole_length",
+            "length_of_ghe",
+            "width_of_ghe"
           ],
           "additionalProperties": true
         },
         "pre_designed_borefield": {
-          "description": "Individual borehole properties for Ground Heat Exchanger sizing.",
+          "description": "Borefield properties for Ground Heat Exchanger sizing.",
           "type": "object",
           "properties": {
-            "length_of_boreholes": {
+            "borehole_length": {
               "description": "The length of the boreholes, in meters.",
-              "type": "number"
-            },
-            "borehole_diameter": {
-              "description": "The diameter of the boreholes, in meters.",
               "type": "number"
             },
             "borehole_x_coordinates": {
@@ -1469,28 +1456,9 @@
             }
           },
           "required": [
-            "length_of_boreholes",
-            "borehole_diameter",
+            "borehole_length",
             "borehole_x_coordinates",
             "borehole_y_coordinates"
-          ]
-        },
-        "ghe_geometric_params": {
-          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
-          "type": "object",
-          "properties": {
-            "length_of_ghe": {
-              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
-              "type": "number"
-            },
-            "width_of_ghe": {
-              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
-              "type": "number"
-            }
-          },
-          "required": [
-            "length_of_ghe",
-            "width_of_ghe"
           ]
         }
       },
@@ -1502,13 +1470,12 @@
         },
         {
           "required": [
-            "borehole"
+            "autosized_borefield"
           ]
         }
       ],
       "required": [
-        "ghe_id",
-        "ghe_geometric_params"
+        "ghe_id"
       ]
     },
     "pipe_def": {
@@ -1730,6 +1697,26 @@
         "flow_type",
         "max_eft",
         "min_eft"
+      ]
+    },
+    "borehole_def": {
+      "description": "Borehole properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "buried_depth": {
+          "description": "The depth below the ground surface to the top of the borehole, in meters.",
+          "type": "number",
+          "default": 2.0
+        },
+        "diameter": {
+          "description": "The diameter of the borehole, in meters.",
+          "type": "number",
+          "default": 0.15
+        }
+      },
+      "required": [
+        "buried_depth",
+        "diameter"
       ]
     },
     "central_pump_parameters": {
