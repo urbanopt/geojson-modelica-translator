@@ -146,7 +146,7 @@ class SystemParameters:
             validate(instance=self.param_template, schema=self.schema)
         except ValidationError as error:
             print("\n System Parameter Validation Error:")
-            print(f"  Bad Input Location: {' → '.join(map(str, error.path)) if error.path else 'Root'}")
+            print(f"  Bad Input Location: {' -> '.join(map(str, error.path)) if error.path else 'Root'}")
             print(f"  Problematic Key: {error.path[-1] if error.path else 'N/A'}")
             print(f"  Error: {error.message}")
             fix = "\n Suggested Fix:"
