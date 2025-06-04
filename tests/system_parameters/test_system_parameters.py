@@ -8,6 +8,7 @@ from pathlib import Path
 from shutil import rmtree
 
 import pytest
+from jsonschema import ValidationError
 
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
@@ -43,8 +44,6 @@ class SystemParametersTest(unittest.TestCase):
     def test_expanded_paths(self):
         filename = self.data_dir / "system_params_1.json"
         sdp = SystemParameters(filename)
-        for s in sdp.validate():
-            print(s)
         value = sdp.get_param_by_id("ijk678", "load_model_parameters.spawn.idf_filename")
         assert Path(value) == Path(filename).parent / "example_model.idf"
         value = sdp.get_param("$.weather")
@@ -65,15 +64,14 @@ class SystemParametersTest(unittest.TestCase):
         assert sdp is not None
 
     def test_valid_system_parameters_ghe(self):
-        filename = self.data_dir / "system_params_ghe.json"
+        filename = self.data_dir / "system_params_ghe_predesigned.json"
         sdp = SystemParameters(filename)
         assert sdp is not None
-        assert len(sdp.validate()) == 0
-        assert sdp.validate() == []
+        assert sdp.validate_input_file() is None
 
     def test_error_system_parameters_ghe(self):
         filename = self.data_dir / "system_params_ghe_invalid.json"
-        with pytest.raises(ValueError, match="Invalid"):
+        with pytest.raises(ValidationError, match="Invalid"):
             SystemParameters(filename)
 
     def test_missing_file(self):
@@ -93,17 +91,8 @@ class SystemParametersTest(unittest.TestCase):
             ]
         }
 
-        with pytest.raises(ValueError, match="Invalid system parameter"):
+        with pytest.raises(ValidationError, match="Invalid"):
             SystemParameters.loadd(incomplete_teaser_params)
-
-        sp = SystemParameters.loadd(incomplete_teaser_params, validate_on_load=False)
-        assert "'None' is not one of ['Indirect Heating and Cooling', 'Fifth Gen Heat Pump']" in sp.validate()
-        assert "'fraction_latent_person' is a required property" in sp.validate()
-        assert "'temp_hw_supply' is a required property" in sp.validate()
-        assert "'temp_setpoint_cooling' is a required property" in sp.validate()
-        assert "'temp_setpoint_heating' is a required property" in sp.validate()
-        assert "5 is not one of [1, 2, 3, 4]" in sp.validate()
-        assert len(sp.validate()) == 8
 
     def test_get_param(self):
         data = {
@@ -276,20 +265,26 @@ class SystemParametersTest(unittest.TestCase):
         self.maxDiff = None
 
         # Act
-        value = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40033", "borehole")
+        value = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40033", "autosized_rectangle_borefield")
 
         # Assert
         assert value == {
-            "number_of_boreholes_autosized": True,
-            "length_of_boreholes_autosized": True,
-            "buried_depth": 2.0,
-            "diameter": 0.15,
+            "b_min": 3.0,
+            "b_max": 10.0,
+            "max_height": 135.0,
+            "min_height": 60.0,
+            "length_of_ghe": 100,
+            "width_of_ghe": 100,
+            "borehole_length": 1,
+            "number_of_boreholes": 1,
         }
 
         # Act
-        second_ghe_borehole = sdp.get_param_by_id("c432cb11-4813-40df-8dd4-e88f5de40034", "borehole")
+        second_ghe_borehole = sdp.get_param_by_id(
+            "c432cb11-4813-40df-8dd4-e88f5de40034", "autosized_rectangle_borefield"
+        )
         # Assert
-        assert second_ghe_borehole["buried_depth"] == 10.0
+        assert second_ghe_borehole["width_of_ghe"] == 100
 
     def test_get_param_with_none_building_id(self):
         # Setup
