@@ -12,7 +12,7 @@ from typing import Union
 import pandas as pd
 import requests
 from jsonpath_ng.ext import parse
-from jsonschema.validators import Draft202012Validator as LatestValidator
+from jsonschema import ValidationError, validate
 
 logger = logging.getLogger(__name__)
 
@@ -51,9 +51,7 @@ class SystemParameters:
             else:
                 raise FileNotFoundError(f"System design parameters file does not exist: {self.filename}")
 
-            errors = self.validate()
-            if len(errors) != 0:
-                raise ValueError(f"Invalid system parameter file. Errors: {errors}")
+            self.validate_input_file()
 
             self.resolve_paths()
 
@@ -71,9 +69,7 @@ class SystemParameters:
         sp.param_template = d
 
         if validate_on_load:
-            errors = sp.validate()
-            if len(errors) != 0:
-                raise ValueError(f"Invalid system parameter file. Errors: {errors}")
+            sp.validate_input_file()
 
         return sp
 
@@ -134,26 +130,38 @@ class SystemParameters:
             # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
             # Don't crash or quit, just keep a stiff upper lip and carry on.
             district = self.param_template.get("district_system", {})
-            for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
+            for ghe in district["fifth_generation"]["ghe_parameters"]["borefields"]:
                 if ghe.get("ghe_id") == param_id:
                     # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
         if param_id is None:
             raise SystemExit("No id submitted. Please retry and include the appropriate id")
 
-    def validate(self):
-        """Validate an instance against a loaded schema
-
-        :param instance: dict, json instance to validate
-
-        :return: validation results
+    def validate_input_file(self) -> None:
         """
-        results = []
-        v = LatestValidator(self.schema)
-        for error in sorted(v.iter_errors(self.param_template), key=str):
-            results.append(error.message)
+        Validate input file against the schema
+        """
 
-        return results
+        try:
+            validate(instance=self.param_template, schema=self.schema)
+        except ValidationError as error:
+            print("\n System Parameter Validation Error:")
+            print(f"  Bad Input Location: {' → '.join(map(str, error.path)) if error.path else 'Root'}")
+            print(f"  Problematic Key: {error.path[-1] if error.path else 'N/A'}")
+            print(f"  Error: {error.message}")
+            fix = "\n Suggested Fix:"
+            if "required" in error.schema and isinstance(error.schema["required"], list):
+                print(
+                    f"{fix}  Ensure that the following required keys are present: {', '.join(error.schema['required'])}"
+                )
+            elif "enum" in error.schema:
+                print(f"{fix}  Use one of the allowed values: {', '.join(map(str, error.schema['enum']))}")
+            elif "minimum" in error.schema:
+                print(f"{fix}  Ensure the value is greater than or equal to: {error.schema['minimum']}")
+            elif "type" in error.schema:
+                print(f"{fix}  Ensure the value is of type: {error.schema['type']}")
+            print(f"Ensure your value is in the correct format: {error.schema.get('format', 'string')}")
+            raise ValidationError("Invalid system parameter file.")
 
     def download_weatherfile(self, filename, save_directory: str) -> Union[str, Path]:
         """Download the MOS or EPW weather file from energyplus.net
@@ -755,16 +763,16 @@ class SystemParameters:
         ghe_list = []
         for ghe in ghe_ids:
             # update GHE specific properties
-            ghe_info = deepcopy(ghe_sys_param["ghe_specific_params"][0])
+            ghe_info = deepcopy(ghe_sys_param["borefields"][0])
             # Update GHE ID
             ghe_info["ghe_id"] = str(ghe["ghe_id"])
             # Add ghe geometric properties
-            ghe_info["ghe_geometric_params"]["length_of_ghe"] = ghe["length_of_ghe"]
-            ghe_info["ghe_geometric_params"]["width_of_ghe"] = ghe["width_of_ghe"]
+            ghe_info["autosized_rectangle_borefield"]["length_of_ghe"] = ghe["length_of_ghe"]
+            ghe_info["autosized_rectangle_borefield"]["width_of_ghe"] = ghe["width_of_ghe"]
             ghe_list.append(ghe_info)
 
         # Add all GHE specific properties to sys-param file
-        ghe_sys_param["ghe_specific_params"] = ghe_list
+        ghe_sys_param["borefields"] = ghe_list
 
         # Update ghe_dir
         ghe_dir = scenario_dir / "ghe_dir"
