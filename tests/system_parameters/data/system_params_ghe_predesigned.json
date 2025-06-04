@@ -85,13 +85,6 @@
         "simulation": {
           "num_months": 240
         },
-        "geometric_constraints": {
-          "b_min": 3.0,
-          "b_max": 10.0,
-          "max_height": 135.0,
-          "min_height": 60.0,
-          "method": "rectangle"
-        },
         "design": {
           "method": "AREAPROPORTIONAL",
           "flow_rate": 0.2,
@@ -124,11 +117,155 @@
           },
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40034",
-            "autosized_borefield": {
+            "autosized_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
               "length_of_ghe": 100,
               "width_of_ghe": 100,
               "borehole_length": 1,
               "number_of_boreholes": 1
+            }
+          },
+          {
+            "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40035",
+            "autosized_birectangle_borefield": {
+              "b_min": 3.0,
+              "b_max_x": 10.0,
+              "b_max_y": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "length_of_ghe": 100,
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
+            }
+          },
+          {
+            "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40036",
+            "autosized_birectangle_constrained_borefield": {
+              "b_min": 3.0,
+              "b_max_x": 10.0,
+              "b_max_y": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "borehole_length": 1,
+              "number_of_boreholes": 1,
+              "property_boundary": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  100,
+                  0
+                ],
+                [
+                  100,
+                  100
+                ],
+                [
+                  0,
+                  100
+                ]
+              ],
+              "no_go_boundaries": [
+                [
+                  10,
+                  10
+                ],
+                [
+                  10,
+                  20
+                ],
+                [
+                  20,
+                  20
+                ],
+                [
+                  20,
+                  10
+                ]
+              ]
+            }
+          },
+          {
+            "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40037",
+            "autosized_bizoned_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max_x": 10.0,
+              "b_max_y": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "length_of_ghe": 100,
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
+            }
+          },
+          {
+            "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40038",
+            "autosized_near_square_borefield": {
+              "length": 100,
+              "b": 3.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "length_of_ghe": 100,
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
+            }
+          },
+          {
+            "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40039",
+            "autosized_rowwise_borefield": {
+              "min_spacing": 3.0,
+              "max_spacing": 10.0,
+              "spacing_step": 1.0,
+              "min_rotation": 0.0,
+              "max_rotation": 90.0,
+              "rotate_step": 1.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "borehole_length": 1,
+              "number_of_boreholes": 1,
+              "property_boundary": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  100,
+                  0
+                ],
+                [
+                  100,
+                  100
+                ],
+                [
+                  0,
+                  100
+                ]
+              ],
+              "no_go_boundaries": [
+                [
+                  10,
+                  10
+                ],
+                [
+                  10,
+                  20
+                ],
+                [
+                  20,
+                  20
+                ],
+                [
+                  20,
+                  10
+                ]
+              ]
             }
           }
         ]
