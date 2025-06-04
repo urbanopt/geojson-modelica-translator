@@ -122,12 +122,9 @@
         "simulation": {
           "num_months": 240
         },
-        "geometric_constraints": {
-          "b_min": 3.0,
-          "b_max": 10.0,
-          "max_height": 135.0,
-          "min_height": 60.0,
-          "method": "rectangle"
+        "borehole": {
+          "buried_depth": 2.0,
+          "diameter": 0.15
         },
         "design": {
           "method": "AREAPROPORTIONAL",
@@ -139,17 +136,15 @@
         "borefields": [
           {
             "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-            "ghe_geometric_params": {
+            "autosized_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
               "length_of_ghe": 100,
-              "width_of_ghe": 100
-            },
-            "borehole": {
-              "buried_depth": 2.0,
-              "diameter": 0.15,
-              "length_of_boreholes": 99,
-              "length_of_boreholes_autosized": true,
-              "number_of_boreholes": 40,
-              "number_of_boreholes_autosized": true
+              "width_of_ghe": 100,
+              "borehole_length": 99,
+              "number_of_boreholes": 40
             }
           }
         ]
