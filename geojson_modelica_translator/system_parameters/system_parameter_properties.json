@@ -971,9 +971,6 @@
         "simulation": {
           "$ref": "#/definitions/simulation_def"
         },
-        "geometric_constraints": {
-          "$ref": "#/definitions/geometric_constraints_def"
-        },
         "design": {
           "$ref": "#/definitions/design_def"
         },
@@ -983,11 +980,11 @@
       },
       "required": [
         "borefields",
+        "borehole",
         "pipe",
         "fluid",
         "grout",
         "simulation",
-        "geometric_constraints",
         "design"
       ]
     },
@@ -1403,63 +1400,26 @@
           "description": "Feature ID of GHE from GeoJSON Feature File.",
           "type": "string"
         },
-        "autosized_borefield": {
-          "description": "Borefield properties for complete Ground Heat Exchanger sizing.",
-          "type": "object",
-          "properties": {
-            "number_of_boreholes": {
-              "description": "Number of boreholes on the site, determined from Thermal Network sizing",
-              "type": "number"
-            },
-            "borehole_length": {
-              "description": "The length of the boreholes, in meters.",
-              "type": "number"
-            },
-            "length_of_ghe": {
-              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
-              "type": "number"
-            },
-            "width_of_ghe": {
-              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
-              "type": "number"
-            }
-          },
-          "required": [
-            "number_of_boreholes",
-            "borehole_length",
-            "length_of_ghe",
-            "width_of_ghe"
-          ],
-          "additionalProperties": true
-        },
         "pre_designed_borefield": {
-          "description": "Pre-designed borefield properties for limited Ground Heat Exchanger sizing.",
-          "type": "object",
-          "properties": {
-            "borehole_length": {
-              "description": "The length of the boreholes, in meters.",
-              "type": "number"
-            },
-            "borehole_x_coordinates": {
-              "description": "X-coordinates of the boreholes, in meters.",
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
-            },
-            "borehole_y_coordinates": {
-              "description": "Y-coordinate of the boreholes, in meters.",
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
-            }
-          },
-          "required": [
-            "borehole_length",
-            "borehole_x_coordinates",
-            "borehole_y_coordinates"
-          ]
+          "$ref": "#/definitions/pre_designed_borefield_def"
+        },
+        "autosized_rectangle_borefield": {
+          "$ref": "#/definitions/autosized_rectangle_borefield_def"
+        },
+        "autosized_birectangle_borefield": {
+          "$ref": "#/definitions/autosized_birectangle_borefield_def"
+        },
+        "autosized_birectangle_constrained_borefield": {
+          "$ref": "#/definitions/autosized_birectangle_constrained_borefield_def"
+        },
+        "autosized_bizoned_rectangle_borefield": {
+          "$ref": "#/definitions/autosized_bizoned_rectangle_borefield_def"
+        },
+        "autosized_near_square_borefield": {
+          "$ref": "#/definitions/autosized_near_square_borefield_def"
+        },
+        "autosized_rowwise_borefield": {
+          "$ref": "#/definitions/autosized_rowwise_borefield_def"
         }
       },
       "oneOf": [
@@ -1470,13 +1430,537 @@
         },
         {
           "required": [
-            "autosized_borefield"
+            "autosized_rectangle_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_birectangle_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_birectangle_constrained_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_bizoned_rectangle_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_near_square_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_rowwise_borefield"
           ]
         }
       ],
       "required": [
         "ghe_id"
       ]
+    },
+    "pre_designed_borefield_def": {
+      "description": "Pre-designed borefield properties for limited Ground Heat Exchanger sizing.",
+      "type": "object",
+      "properties": {
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 135,
+          "format": "Meters"
+        },
+        "borehole_x_coordinates": {
+          "description": "X-coordinates of the boreholes.",
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "Meters"
+          }
+        },
+        "borehole_y_coordinates": {
+          "description": "Y-coordinate of the boreholes.",
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "Meters"
+          }
+        }
+      },
+      "required": [
+        "borehole_length",
+        "borehole_x_coordinates",
+        "borehole_y_coordinates"
+      ]
+    },
+    "autosized_rectangle_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the RECTANGLE method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing.",
+          "type": "number",
+          "minimum": 1
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 1,
+          "default": 135,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchange.r",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_birectangle_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the BIRECTANGLE method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max_x": {
+          "description": "Maximum borehole-to-borehole spacing in x-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "b_max_y": {
+          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_birectangle_constrained_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the BIRECTANGLECONSTRAINED method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max_x": {
+          "description": "Maximum borehole-to-borehole spacing in x-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "b_max_y": {
+          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "property_boundary": {
+          "description": "(x, y) coordinate points of closed polygon defining property boundary. Points should be entered in a counter-clockwise fashion.",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "format": "Meters"
+        },
+        "no_go_boundaries": {
+          "description": "(x, y) coordinate points of closed polygon defining go/no-go boundaries. Go/no-go zones must lie within the area defined in 'property_boundary'. Points should be entered in a counter-clockwise fashion.",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "property_boundary",
+        "no_go_boundaries"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_bizoned_rectangle_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the BIZONEDRECTANGLE method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max_x": {
+          "description": "Maximum borehole-to-borehole spacing in x-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "b_max_y": {
+          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_near_square_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the NEARSQUARE method.",
+      "type": "object",
+      "properties": {
+        "b": {
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters",
+          "description": "Borehole-to-borehole spacing."
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_rowwise_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the ROWWISE method.",
+      "type": "object",
+      "properties": {
+        "min_spacing": {
+          "description": "The smallest minimum spacing that will be used to generate a RowWise field.",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
+        },
+        "max_spacing": {
+          "description": "The largest minimum spacing that will be used to generate a RowWise field.",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
+        },
+        "spacing_step": {
+          "description": "The distance in spacing from the design found in the first part of first search to exhaustively check in the second part.",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
+        },
+        "min_rotation": {
+          "type": "number",
+          "format": "Degrees",
+          "maximum": 90,
+          "minimum": -90,
+          "description": "The minimum rotation of the rows of each field relative to horizontal that will be used in the search."
+        },
+        "max_rotation": {
+          "type": "number",
+          "format": "Degrees",
+          "maximum": 90,
+          "minimum": -90,
+          "description": "The maximum rotation of the rows of each field relative to horizontal that will be used in the search."
+        },
+        "rotate_step": {
+          "type": "number",
+          "format": "Degrees",
+          "description": "Step size for field rotation search."
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "property_boundary": {
+          "description": "(x, y) coordinate points of closed polygon defining property boundary. Points should be entered in a counter-clockwise fashion.",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "format": "Meters"
+        },
+        "no_go_boundaries": {
+          "description": "(x, y) coordinate points of closed polygon defining go/no-go boundaries. Go/no-go zones must lie within the area defined in 'property_boundary'. Points should be entered in a counter-clockwise fashion.",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "min_spacing",
+        "max_spacing",
+        "spacing_step",
+        "min_rotation",
+        "max_rotation",
+        "rotate_step",
+        "number_of_boreholes",
+        "borehole_length",
+        "property_boundary",
+        "no_go_boundaries"
+      ],
+      "additionalProperties": true
     },
     "pipe_def": {
       "description": "Pipe properties for Ground Heat Exchanger sizing",
@@ -1608,48 +2092,6 @@
       },
       "required": [
         "num_months"
-      ]
-    },
-    "geometric_constraints_def": {
-      "description": "Geometric constraints for GHE and boreholes.",
-      "type": "object",
-      "properties": {
-        "b_min": {
-          "description": "Minimum borehole-to-borehole spacing, in meters.",
-          "type": "number",
-          "default": 3
-        },
-        "b_max": {
-          "description": "Maximum borehole-to-borehole spacing, in meters.",
-          "type": "number",
-          "default": 10
-        },
-        "max_height": {
-          "description": "Maximum height, or depth, of each borehole heat exchanger, in meters.",
-          "type": "number",
-          "default": 200
-        },
-        "min_height": {
-          "description": "Minimum height, or depth, of each borehole heat exchanger, in meters.",
-          "type": "number",
-          "default": 100
-        },
-        "method": {
-          "description": "GHE sizing method",
-          "type": "string",
-          "enum": [
-            "nearsquare",
-            "rectangle"
-          ],
-          "default": "rectangle"
-        }
-      },
-      "required": [
-        "b_min",
-        "b_max",
-        "max_height",
-        "min_height",
-        "method"
       ]
     },
     "design_def": {
