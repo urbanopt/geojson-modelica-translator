@@ -136,7 +136,7 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "ghe_specific_params": [
+        "borefields": [
           {
             "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
             "ghe_geometric_params": {
