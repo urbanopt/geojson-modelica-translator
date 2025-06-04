@@ -71,12 +71,16 @@ class Borefield(PlantBase):
                     "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
                 "borehole_height": self.system_parameters.get_param_by_id(
-                    self.ghe_id, "$.borehole.length_of_boreholes"
+                    self.ghe_id, "$.autosized_rectangle_borefield.borehole_length"
                 ),
-                "borehole_diameter": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.diameter"),
-                "borehole_buried_depth": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.buried_depth"),
+                "borehole_diameter": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.diameter"
+                ),
+                "borehole_buried_depth": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.buried_depth"
+                ),
                 "number_of_boreholes": self.system_parameters.get_param_by_id(
-                    self.ghe_id, "$.borehole.number_of_boreholes"
+                    self.ghe_id, "$.autosized_rectangle_borefield.number_of_boreholes"
                 ),
             },
             "tube": {
