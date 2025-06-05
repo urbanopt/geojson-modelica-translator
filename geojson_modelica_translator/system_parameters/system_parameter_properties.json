@@ -1066,12 +1066,14 @@
         "insulation_thickness": {
           "description": "Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil.",
           "type": "number",
-          "minimum": 0.01
+          "minimum": 0.01,
+          "format": "Meters"
         },
         "insulation_conductivity": {
           "description": "Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil.",
           "type": "number",
-          "minimum": 0.01
+          "minimum": 0.01,
+          "format": "Watts per meter-Kelvin"
         },
         "diameter_ratio": {
           "description": "The ratio of pipe outer diameter to pipe wall thickness",
@@ -1085,11 +1087,13 @@
         },
         "roughness": {
           "description": "Average height of pipe material surface asperities",
-          "type": "number"
+          "type": "number",
+          "format": "Meters"
         },
         "rho_cp": {
           "description": "Volumetric heat capacity of the pipe wall material",
-          "type": "number"
+          "type": "number",
+          "format": "Joules per cubic meter-Kelvin"
         },
         "buried_depth": {
           "description": "Pipes buried depth below ground surface",
