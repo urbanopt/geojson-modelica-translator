@@ -68,13 +68,6 @@
         "simulation": {
           "num_months": 240
         },
-        "geometric_constraints": {
-          "b_min": 3.0,
-          "b_max": 10.0,
-          "max_height": 135.0,
-          "min_height": 60.0,
-          "method": "rectangle"
-        },
         "design": {
           "method": "AREAPROPORTIONAL",
           "flow_rate": 0.2,
@@ -82,31 +75,35 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "ghe_specific_params": [
+        "borehole": {
+          "buried_depth": 2.0,
+          "diameter": 0.15
+        },
+        "borefields": [
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40033",
-            "ghe_geometric_params": {
+            "autosized_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
               "length_of_ghe": 100,
-              "width_of_ghe": 100
-            },
-            "borehole": {
-              "number_of_boreholes_autosized": true,
-              "length_of_boreholes_autosized": true,
-              "buried_depth": 2.0,
-              "diameter": 0.15
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
             }
           },
           {
             "ghe_id": "c432cb11-4813-40df-8dd4-e88f5de40034",
-            "ghe_geometric_params": {
+            "autosized_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
               "length_of_ghe": 100,
-              "width_of_ghe": 100
-            },
-            "borehole": {
-              "number_of_boreholes_autosized": true,
-              "length_of_boreholes_autosized": true,
-              "buried_depth": 10.0,
-              "diameter": 0.25
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
             }
           }
         ]
