@@ -31,7 +31,7 @@ packages = [
 # https://python-poetry.org/docs/dependency-specification/#version-constraints
 python = ">=3.10, <3.14"
 BuildingsPy = "~=5.1"
-click = "~=8.1"
+click = "~=8.2"
 geojson = "~=3.1"
 jinja2 = "~=3.1"
 jsonpath-ng = "~=1.6"
