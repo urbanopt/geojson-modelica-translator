@@ -114,6 +114,18 @@ class District:
             Path(self._scaffold.heat_pump_ets_path.files_dir).rmdir()
 
         if district_template_params["is_ghe_district"]:
+            # determine the maximum borefield flow rate in the district
+            borefields = self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters.borefields")
+            number_of_boreholes = []
+            for borefield in borefields:
+                ghe_id = borefield["ghe_id"]
+                if "pre_designed_borefield" not in borefield:
+                    number_of_boreholes.append(self.system_parameters.get_param_by_id(ghe_id,"$.*.number_of_boreholes"))
+                else:
+                    number_of_boreholes.append(len(borefield["pre_designed_borefield"]["borehole_x_coordinates"]))
+            print(number_of_boreholes)
+            common_template_params["number_of_boreholes"] = max(number_of_boreholes)
+            
             # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
 
