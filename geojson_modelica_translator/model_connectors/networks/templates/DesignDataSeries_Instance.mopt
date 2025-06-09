@@ -6,7 +6,7 @@ mPumDis_flow_nominal={{ sys_params.district_system.fifth_generation.central_pump
 mPipDis_flow_nominal=datDes.mPumDis_flow_nominal,
 {% if sys_params.district_system.fifth_generation.ghe_parameters is defined %}
   {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}
-    mSto_flow_nominal={{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate * number_of_boreholes }},
+    mSto_flow_nominal={{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate * max_number_of_boreholes }},
   {% else %}
     mSto_flow_nominal={{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate }},
   {% endif %}
