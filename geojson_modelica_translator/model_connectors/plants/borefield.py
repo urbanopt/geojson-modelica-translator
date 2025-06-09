@@ -99,6 +99,11 @@ class Borefield(PlantBase):
             },
         }
 
+        if template_data["configuration"]["number_of_boreholes"] is None:
+            template_data["configuration"]["number_of_boreholes"] = len(
+                self.system_parameters.get_param_by_id(self.ghe_id, "$.pre_designed_borefield.borehole_x_coordinates")
+            )
+
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
             gfunction = pd.read_csv(
