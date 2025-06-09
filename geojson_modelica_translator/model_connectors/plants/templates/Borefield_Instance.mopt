@@ -2,7 +2,7 @@
     "Hydraulic diameter of the distribution pipe before each connection";
   parameter Modelica.Units.SI.MassFlowRate m_flow_nominal_{{ model.id }} =
   {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}
-    {{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate * number_of_boreholes[graph.get_ghe_id(model.id)] }}
+    {{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate * max_number_of_boreholes }}
     {% else %}
     {{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate }}
     {% endif %}
@@ -17,7 +17,7 @@
   Buildings.DHC.Networks.Connections.Connection1Pipe_R conSto_{{ model.id }}(
     redeclare final package Medium = {{ globals.medium_w }},
     final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
-    final mCon_flow_nominal=datDes.m_flow_nominal_{{ model.id }},
+    final mCon_flow_nominal=m_flow_nominal_{{ model.id }},
     lDis=0,
     final allowFlowReversal=allowFlowReversalSer,
     dhDis=dhSto_{{ model.id }})
@@ -35,7 +35,7 @@
     uHighCoo=0.4) "Borefield GHE pump controller"
   {% raw %}annotation (Placement(transformation(extent={{-60,80},{-40,100}})));
 {% endraw %}
-  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai1_{{ model.id }}(k=datDes.m_flow_nominal_{{ model.id }})
+  Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai1_{{ model.id }}(k=m_flow_nominal_{{ model.id }})
     "Scale with nominal mass flow rate"
   {% raw %}annotation (Placement(transformation(extent={{-30,80},{-10,100}})));
 {% endraw %}
