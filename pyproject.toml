@@ -30,33 +30,33 @@ packages = [
 [tool.poetry.dependencies]
 # https://python-poetry.org/docs/dependency-specification/#version-constraints
 python = ">=3.10, <3.14"
-BuildingsPy = "~=5.1"
-click = "~=8.2"
-geojson = "~=3.1"
-jinja2 = "~=3.1"
-jsonpath-ng = "~=1.6"
-jsonschema = "~=4.20"
-modelica-builder = "~=0.6.0"
+BuildingsPy = "^5.1"
+click = "^8.2"
+geojson = "^3.1"
+jinja2 = "^3.1"
+jsonpath-ng = "^1.6"
+jsonschema = "^4.20"
+modelica-builder = "^0.6.0"
 # modelica-builder = { path = "../modelica-builder", develop = true }
 # modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
-pandas = "~2"
-requests = "~=2.28"
+pandas = "^2.0"
+requests = "^2.28"
 teaser = "1.1.0"
 # teaser = { git = "https://github.com/RWTH-EBC/TEASER.git", branch = "development" }
 # myst-parser = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
 rpds-py = "^0.22.0"
-mypy = "~=1.14"
-pre-commit = "~=4.0"
-pytest = "~=8.3"
-pytest-cov = "~=6.0"
-syrupy = "~=4.8"
+mypy = "^1.14"
+pre-commit = "^4.0"
+pytest = "^8.3"
+pytest-cov = "^6.0"
+syrupy = "^4.8"
 # documentation - these are used during development of docs, not deployment
-markdown-include = "~=0.8.1"
-mkdocs-material = "~=9.5"
-mkdocs-schema-reader = "~=0.11.1"
-mkdocstrings-python = "~=1.12"
+markdown-include = "^0.8.1"
+mkdocs-material = "^9.5"
+mkdocs-schema-reader = "^0.11.1"
+mkdocstrings-python = "^1.12"
 
 [build-system]
 requires = ["poetry-core>=2.0.1"]
