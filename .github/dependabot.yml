@@ -4,6 +4,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      dev-deps:
+        dependency-type: "development"
+      prod-deps:
+        dependency-type: "production"
     open-pull-requests-limit: 5
     commit-message:
       prefix: "deps"
@@ -11,6 +16,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
     open-pull-requests-limit: 5
     commit-message:
       prefix: "ci"
