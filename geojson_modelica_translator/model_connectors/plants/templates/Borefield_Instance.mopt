@@ -2,7 +2,7 @@
     "Hydraulic diameter of the distribution pipe before each connection";
   parameter Modelica.Units.SI.MassFlowRate m_flow_nominal_{{ model.id }} =
   {% if sys_params.district_system.fifth_generation.ghe_parameters.design.flow_type == 'borehole' %}
-    {{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate * max_number_of_boreholes }}
+    {{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate * number_of_boreholes[graph.get_ghe_id_by_model_id(model.id)] }}
     {% else %}
     {{ sys_params.district_system.fifth_generation.ghe_parameters.design.flow_rate }}
     {% endif %}
