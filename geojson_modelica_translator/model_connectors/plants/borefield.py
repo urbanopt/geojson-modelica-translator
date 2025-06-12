@@ -70,13 +70,17 @@ class Borefield(PlantBase):
                 "flow_type": self.system_parameters.get_param(
                     "$.district_system.fifth_generation.ghe_parameters.design.flow_type"
                 ),
-                "borehole_height": self.system_parameters.get_param_by_id(
-                    self.ghe_id, "$.borehole.length_of_boreholes"
+                "borehole_height": self.system_parameters.get_param_by_id(self.ghe_id, "$.*.borehole_length"),
+                "borehole_diameter": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.diameter"
                 ),
-                "borehole_diameter": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.diameter"),
-                "borehole_buried_depth": self.system_parameters.get_param_by_id(self.ghe_id, "$.borehole.buried_depth"),
+                "borehole_buried_depth": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.borehole.buried_depth"
+                ),
                 "number_of_boreholes": self.system_parameters.get_param_by_id(
-                    self.ghe_id, "$.borehole.number_of_boreholes"
+                    # The borefield could be one of several types, so we have to use the wildcard to get in.
+                    self.ghe_id,
+                    "$.*.number_of_boreholes",
                 ),
             },
             "tube": {
@@ -94,6 +98,11 @@ class Borefield(PlantBase):
                 ),
             },
         }
+
+        if template_data["configuration"]["number_of_boreholes"] is None:
+            template_data["configuration"]["number_of_boreholes"] = len(
+                self.system_parameters.get_param_by_id(self.ghe_id, "$.pre_designed_borefield.borehole_x_coordinates")
+            )
 
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():

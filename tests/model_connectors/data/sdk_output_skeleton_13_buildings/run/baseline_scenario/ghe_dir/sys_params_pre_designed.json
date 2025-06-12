@@ -551,28 +551,46 @@
         "borefields": [
           {
             "ghe_id": "344421ab-b416-403e-bd22-7b8af7b581a2",
-            "autosized_rectangle_borefield": {
-              "length_of_ghe": 694.3287743700416,
-              "width_of_ghe": 487.17122562995837,
-              "borehole_length": 130.5300693149386,
-              "number_of_boreholes": 1633
+            "pre_designed_borefield": {
+              "borehole_length": 100,
+              "borehole_x_coordinates": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "borehole_y_coordinates": [
+                0,
+                10,
+                20,
+                30
+              ]
             }
           },
           {
             "ghe_id": "8410c9a9-d52e-4c68-b7bc-4affae974481",
             "autosized_rectangle_borefield": {
-              "length_of_ghe": 523.1004518062042,
-              "width_of_ghe": 323.8995481937958,
-              "borehole_length": 130.5300693149386,
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "length_of_ghe": 100,
+              "width_of_ghe": 100,
+              "borehole_length": 130,
               "number_of_boreholes": 1633
             }
           },
           {
             "ghe_id": "3eb26af6-a1f7-4daa-8372-ec016ca185a4",
-            "autosized_rectangle_borefield": {
-              "length_of_ghe": 785.0109484676316,
-              "width_of_ghe": 510.9890515323684,
-              "borehole_length": 130.5300693149386,
+            "autosized_birectangle_borefield": {
+              "b_min": 3.0,
+              "b_max_x": 10.0,
+              "b_max_y": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "length_of_ghe": 100,
+              "width_of_ghe": 100,
+              "borehole_length": 130,
               "number_of_boreholes": 1633
             }
           }
