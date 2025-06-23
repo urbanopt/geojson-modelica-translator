@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 0.11.0
+
+### Exciting New Features 🎉
+
+* New model templates for waste heat recovery by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/702>
+* Improve sys-param schema for borefields by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/715>
+
 ## Version 0.10.0
 
 ### Exciting New Features 🎉
