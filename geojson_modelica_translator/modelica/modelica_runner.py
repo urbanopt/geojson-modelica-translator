@@ -169,7 +169,7 @@ class ModelicaRunner:
         os.chdir(run_path)
         stdout_log = open("stdout.log", "w")  # noqa: SIM115
         model_name = run_path.parts[-1]
-        image_name = "nrel/gmt-om-runner:3.0.0"
+        image_name = "nrel/gmt-om-runner:om_1251"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
         if compiler_flags is not None:
             # Format compiler flags for OpenModelica
