@@ -1,0 +1,34 @@
+[
+  {
+    "name": "10",
+    "type": "building"
+  },
+  {
+    "name": "data_center_waste_heat",
+    "type": "source"
+  },
+  {
+    "name": "2",
+    "type": "building"
+  },
+  {
+    "name": "3",
+    "type": "building"
+  },
+  {
+    "name": "4",
+    "type": "building"
+  },
+  {
+    "name": "8",
+    "type": "building"
+  },
+  {
+    "name": "jkl;",
+    "type": "source"
+  },
+  {
+    "name": "8410c9a9-d52e-4c68-b7bc-4affae974481",
+    "type": "ghe"
+  }
+]
