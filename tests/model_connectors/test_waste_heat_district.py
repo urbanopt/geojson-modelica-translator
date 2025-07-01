@@ -29,11 +29,11 @@ class DistrictWasteHeat(TestCaseBase):
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load in the example geojson with multiple buildings
-        geojson_filename = Path(self.data_dir) / "time_series_ex2.json"
+        geojson_filename = Path(self.data_dir) / "time_series_waste_heat_ghe.json"
         self.gj = UrbanOptGeoJson(geojson_filename)
 
         # load system parameter data
-        sys_param_filename = Path(self.data_dir) / "time_series_waste_heat_sys_params.json"
+        sys_param_filename = Path(self.data_dir) / "sys_params_waste_heat.json"
         sys_params = SystemParameters(sys_param_filename)
 
         # read the loop order and create building groups

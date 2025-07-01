@@ -1,0 +1,206 @@
+{
+  "buildings": [
+    {
+      "geojson_id": "5a6b99ec37f4de7f94020090",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "/Users/nmoore/github/aaa/run/baseline_scenario/5a6b99ec37f4de7f94020090/022_export_modelica_loads/modelica.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 380264000,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "chilled_water_supply_temp": 5,
+        "heating_water_supply_temp": 50,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "cop_heat_pump_hot_water": 2.5,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      },
+      "photovoltaic_panels": [],
+      "diesel_generators": [],
+      "battery_banks": []
+    },
+    {
+      "geojson_id": "abcdefghijklmnopqrstuvwx",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "/Users/nmoore/github/aaa/run/baseline_scenario/abcdefghijklmnopqrstuvwx/022_export_modelica_loads/modelica.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 439576000,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "chilled_water_supply_temp": 5,
+        "heating_water_supply_temp": 50,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "cop_heat_pump_hot_water": 2.5,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      },
+      "photovoltaic_panels": [],
+      "diesel_generators": [],
+      "battery_banks": []
+    },
+    {
+      "geojson_id": "5e707283-8265-4958-adbc-aef19f2afc97",
+      "load_model": "time_series",
+      "load_model_parameters": {
+        "time_series": {
+          "filepath": "/Users/nmoore/github/aaa/run/baseline_scenario/5e707283-8265-4958-adbc-aef19f2afc97/022_export_modelica_loads/modelica.mos",
+          "delta_temp_air_cooling": 10,
+          "delta_temp_air_heating": 18,
+          "has_liquid_cooling": true,
+          "has_liquid_heating": true,
+          "has_electric_cooling": false,
+          "has_electric_heating": false,
+          "max_electrical_load": 339401000,
+          "temp_chw_return": 12,
+          "temp_chw_supply": 7,
+          "temp_hw_return": 35,
+          "temp_hw_supply": 40,
+          "temp_setpoint_cooling": 24,
+          "temp_setpoint_heating": 20
+        }
+      },
+      "ets_model": "Fifth Gen Heat Pump",
+      "fifth_gen_ets_parameters": {
+        "chilled_water_supply_temp": 5,
+        "heating_water_supply_temp": 50,
+        "hot_water_supply_temp": 50,
+        "cop_heat_pump_heating": 2.5,
+        "cop_heat_pump_cooling": 3.5,
+        "cop_heat_pump_hot_water": 2.5,
+        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_head": 10000,
+        "fan_design_flow_rate": 0.25,
+        "fan_design_head": 150
+      },
+      "photovoltaic_panels": [],
+      "diesel_generators": [],
+      "battery_banks": []
+    }
+  ],
+  "district_system": {
+    "fifth_generation": {
+      "horizontal_piping_parameters": {
+        "hydraulic_diameter": 0.14807045454545453,
+        "hydraulic_diameter_autosized": true,
+        "insulation_thickness": 0.2,
+        "insulation_conductivity": 2.3,
+        "diameter_ratio": 11,
+        "pressure_drop_per_meter": 300,
+        "roughness": 1e-06,
+        "rho_cp": 2139000,
+        "buried_depth": 1.5
+      },
+      "central_pump_parameters": {
+        "pump_design_head": 62621.33120978641,
+        "pump_design_head_autosized": true,
+        "pump_flow_rate": 0.036000000000000004,
+        "pump_flow_rate_autosized": true
+      },
+      "soil": {
+        "conductivity": 2.0,
+        "rho_cp": 2343493,
+        "undisturbed_temp": 18.3
+      },
+      "ghe_parameters": {
+        "version": "1.0",
+        "ghe_dir": "/Users/nmoore/github/aaa/run/baseline_scenario/ghe_dir",
+        "fluid": {
+          "fluid_name": "Water",
+          "concentration_percent": 0.0,
+          "temperature": 20
+        },
+        "grout": {
+          "conductivity": 1.0,
+          "rho_cp": 3901000
+        },
+        "pipe": {
+          "inner_diameter": 0.0216,
+          "outer_diameter": 0.0266,
+          "shank_spacing": 0.0323,
+          "roughness": 1e-06,
+          "conductivity": 0.4,
+          "rho_cp": 1542000,
+          "arrangement": "singleutube"
+        },
+        "simulation": {
+          "num_months": 240
+        },
+        "design": {
+          "method": "AREAPROPORTIONAL",
+          "flow_rate": 0.2,
+          "flow_type": "borehole",
+          "max_eft": 35.0,
+          "min_eft": 5.0
+        },
+        "borehole": {
+          "buried_depth": 2.0,
+          "diameter": 0.15
+        },
+        "borefields": [
+          {
+            "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+            "autosized_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
+              "length_of_ghe": 154.03369510831095,
+              "width_of_ghe": 64.96630489168905,
+              "borehole_length": 126.73549068077853,
+              "number_of_boreholes": 180
+            }
+          }
+        ]
+      }
+    }
+  },
+  "weather": "/Users/nmoore/github/aaa/weather/USA_CO_Denver.Intl.AP.725650_TMY3.mos",
+  "electrical_grid": {},
+  "photovoltaic_panels": [],
+  "wind_turbines": [],
+  "combined_heat_and_power_systems": [],
+  "capacitor_banks": [],
+  "substations": [],
+  "transformers": [],
+  "power_converters": [],
+  "distribution_lines": [],
+  "battery_banks": []
+}
