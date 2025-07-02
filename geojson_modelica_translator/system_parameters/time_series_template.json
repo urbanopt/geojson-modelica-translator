@@ -119,8 +119,8 @@
     },
     "fifth_generation": {
       "waste_heat_parameters": {
-        "rate_schedule_path": "To be populated",
-        "temperature_schedule_path": "To be populated"
+        "waste_heat_rate": "To be populated",
+        "waste_heat_temperature": "To be populated"
       },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
