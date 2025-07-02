@@ -117,6 +117,10 @@
   ],
   "district_system": {
     "fifth_generation": {
+      "waste_heat_parameters": {
+        "waste_heat_rate": "./WasteHeatSchedule.mos",
+        "waste_heat_temperature": "./TWasHeaWatSchedule.mos"
+      },
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.14807045454545453,
         "hydraulic_diameter_autosized": true,
@@ -141,7 +145,7 @@
       },
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "/Users/nmoore/github/aaa/run/baseline_scenario/ghe_dir",
+        "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,

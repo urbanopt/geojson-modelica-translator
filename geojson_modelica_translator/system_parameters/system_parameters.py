@@ -1014,9 +1014,7 @@ class SystemParameters:
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
             del self.param_template["district_system"]["fourth_generation"]
             if (
-                self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"][
-                    "rate_schedule_path"
-                ]
+                self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"]["waste_heat_rate"]
                 == "To be populated"
             ):
                 del self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"]
