@@ -22,11 +22,20 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
       "Heat flow rate from/to the waste heat source/sink"
       {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
     {% endraw %}{% elif isinstance(data.waste_heat_rate, int) %}
-      // TODO
+    Modelica.Blocks.Sources.CombiTimeTable QWasHea(
+      each y(
+        each unit="W",
+        each displayUnit="W",
+        each quantity="HeatFlowRate"),
+      tableOnFile=false,
+      table=[0,data.waste_heat_rate])
+      "Heat flow rate from/to the waste heat source/sink"
+      {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
+    {% endraw %}
   {% endif %}
   {% if isinstance(data.waste_heat_temperature, str) %}
     parameter String filNam_TWasHea=Modelica.Utilities.Files.loadResource(
-      "modelica://{{ globals.project_name }}/Schedules/{{ sys_params.district_system.fifth_generation.waste_heat_parameters.waste_heat_temperature }}")
+      "modelica://{{ globals.project_name }}/Schedules/{{ data.waste_heat_temperature }}")
       "Waste heat temperature as time series";
     Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat(
       each y(
@@ -41,7 +50,15 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
       "Waste heat temperature as time series"
       {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
     {% endraw %}{% elif isinstance(data.waste_heat_temperature, int) %}
-      // TODO
+    Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat(
+      each y(
+        each unit="K",
+        each displayUnit="degC",
+        each quantity="ThermodynamicTemperature"),
+      tableOnFile=false,
+      table=[0,data.waste_heat_temperature])
+      "Waste heat temperature as time series"
+      {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
     {% endif %}
   {% endif %}
 annotation (
