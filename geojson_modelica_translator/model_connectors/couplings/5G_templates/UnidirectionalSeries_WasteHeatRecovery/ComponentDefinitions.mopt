@@ -48,6 +48,10 @@ annotation (
 revisions="<html>
 <ul>
 <li>
+July 03, 2025, by Nathan Moore:<br/>
+GMT template updated to allow constants as well as schedule files.
+</li>
+<li>
 April 22, 2025, by Nathan Moore:<br/>
 GMT template updated to read additional data from system-parameter file.
 </li>
