@@ -2322,14 +2322,16 @@
         "type": [
           "string",
           "integer"
-        ]
+        ],
+        "format": "Watts"
       },
       "waste_heat_temperature": {
         "description": "Either a constant value (integer) or a path to the temperature schedule file. If filepath, provide a *.mos waste heat temperature as time series (source positive, sink negative)",
         "type": [
           "string",
           "integer"
-        ]
+        ],
+        "format": "Kelvin"
       }
     },
     "fifth_generation": {
