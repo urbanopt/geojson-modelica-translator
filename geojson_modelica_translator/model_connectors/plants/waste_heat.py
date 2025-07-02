@@ -35,55 +35,61 @@ class WasteHeat(PlantBase):
 
         p_modelica_path = ModelicaPath(self.waste_heat_name, scaffold.plants_path.files_dir, True)
 
-        rate_schedule_path = Path(
-            self.system_parameters.get_param(
-                "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
-            )
+        waste_heat_params = {}
+
+        waste_heat_rate = Path(
+            self.system_parameters.get_param("$.district_system.fifth_generation.waste_heat_parameters.waste_heat_rate")
         )
-        temperature_schedule_path = Path(
+        waste_heat_temperature = Path(
             self.system_parameters.get_param(
-                "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
+                "$.district_system.fifth_generation.waste_heat_parameters.waste_heat_temperature"
             )
         )
 
         # Handle relative paths to schedule files (relative to sys-param file)
         sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
-        if not rate_schedule_path.expanduser().is_absolute():
-            rate_schedule_path = sys_param_dir / rate_schedule_path.name
-            if not rate_schedule_path.is_file():
+
+        if isinstance(waste_heat_rate, Path) and not waste_heat_rate.expanduser().is_absolute():
+            waste_heat_rate = sys_param_dir / waste_heat_rate.name
+            if not waste_heat_rate.is_file():
                 raise SystemExit(
                     f"Can't find rate schedule file.\n"
                     "If using a relative path, your path "
-                    f" '{rate_schedule_path}' must be relative to the dir your "
+                    f" '{waste_heat_rate}' must be relative to the dir your "
                     "sys-param file is in."
                 )
-        if not temperature_schedule_path.expanduser().is_absolute():
-            temperature_schedule_path = sys_param_dir / temperature_schedule_path.name
-            if not temperature_schedule_path.is_file():
+            # Copy schedule file into the modelica package
+            waste_heat_rate_in_package = (
+                Path(p_modelica_path.root_dir).parent / "Schedules" / waste_heat_rate.name
+            ).resolve()
+            shutil.copy(waste_heat_rate, waste_heat_rate_in_package)
+
+        elif isinstance(waste_heat_rate, int):
+            waste_heat_params["waste_heat_rate"] = waste_heat_rate
+
+        if isinstance(waste_heat_temperature, Path) and not waste_heat_temperature.expanduser().is_absolute():
+            waste_heat_temperature = sys_param_dir / waste_heat_temperature.name
+            if not waste_heat_temperature.is_file():
                 raise SystemExit(
                     f"Can't find temperature schedule file.\n"
                     "If using a relative path, your path "
-                    f" '{temperature_schedule_path}' must be relative to the dir your "
+                    f" '{waste_heat_temperature}' must be relative to the dir your "
                     "sys-param file is in."
                 )
-
-        # copy over the waste heat schedule files
-        # TODO: move some of this over to a validation step
-        rate_schedule_path_in_package = (
-            Path(p_modelica_path.root_dir).parent / "Schedules" / rate_schedule_path.name
-        ).resolve()
-        shutil.copy(rate_schedule_path, rate_schedule_path_in_package)
-
-        temperature_schedule_path_in_package = (
-            Path(p_modelica_path.root_dir).parent / "Schedules" / temperature_schedule_path.name
-        ).resolve()
-        shutil.copy(temperature_schedule_path, temperature_schedule_path_in_package)
+            # Copy schedule file into the modelica package
+            waste_heat_temperature_in_package = (
+                Path(p_modelica_path.root_dir).parent / "Schedules" / waste_heat_temperature.name
+            ).resolve()
+            shutil.copy(waste_heat_temperature, waste_heat_temperature_in_package)
+        elif isinstance(waste_heat_temperature, int):
+            waste_heat_params["waste_heat_temperature"] = waste_heat_temperature
 
         self.run_template(
             template=waste_heat_template,
             save_file_name=Path(p_modelica_path.files_dir) / "WasteHeatRecovery.mo",
             project_name=scaffold.project_name,
             model_name=self.waste_heat_name,
+            data=waste_heat_params,
         )
 
         # generate Modelica package
