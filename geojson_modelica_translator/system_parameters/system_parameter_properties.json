@@ -2317,13 +2317,19 @@
       ]
     },
     "waste_heat_parameters": {
-      "rate_schedule_path": {
-        "description": "Path to the rate schedule file. Waste heat rate as time series (source positive, sink negative)",
-        "type": "string"
+      "waste_heat_rate": {
+        "description": "Either a constant value (integer) or a path to the rate schedule file. If filepath, provide a *.mos waste heat rate as time series (source positive, sink negative)",
+        "type": [
+          "string",
+          "integer"
+        ]
       },
-      "temperature_schedule_path": {
-        "description": "Path to the temperature schedule file. Waste heat temperature as time series",
-        "type": "string"
+      "waste_heat_temperature": {
+        "description": "Either a constant value (integer) or a path to the temperature schedule file. If filepath, provide a *.mos waste heat temperature as time series (source positive, sink negative)",
+        "type": [
+          "string",
+          "integer"
+        ]
       }
     },
     "fifth_generation": {
