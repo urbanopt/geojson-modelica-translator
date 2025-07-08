@@ -109,7 +109,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare package Medium = Medium1,
     final allowFlowReversal=allowFlowReversal1,
     addPowerToMedium=false,
-    use_inputFilter=false,
+     use_strokeTime=false,
     m_flow_nominal=mCon_flow_nominal,
     dp_nominal=dp1_nominal + 6000)
     "Pump for heat pump condenser"
@@ -121,7 +121,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare final package Medium = Medium2,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=mEva_flow_nominal,
-    riseTime=10,
+    strokeTime=10,
     dp_nominal=dp2_nominal)
     "Heat pump evaporator water pump"
     annotation (Placement(transformation(extent={{-40,-70},{-60,-50}})));
