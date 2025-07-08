@@ -7,7 +7,11 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from modelica_builder.package_parser import PackageParser
 
-from geojson_modelica_translator.external_package_utils import load_loop_order, set_minimum_dhw_load
+from geojson_modelica_translator.external_package_utils import (
+    load_loop_order,
+    set_loop_order_data_in_template_params,
+    set_minimum_dhw_load,
+)
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
@@ -112,7 +116,7 @@ class District:
             # Remove the empty ETS dir which isn't used in non-5G systems
             Path(self._scaffold.heat_pump_ets_path.files_dir).rmdir()
 
-        if district_template_params["is_ghe_district"]:
+        if district_template_params["is_ghe_district"] and self.gj:
             # determine the maximum borefield flow rate in the district
             borefields = self.system_parameters.get_param(
                 "$.district_system.fifth_generation.ghe_parameters.borefields"
@@ -128,43 +132,13 @@ class District:
             common_template_params["number_of_boreholes"] = number_of_boreholes_dict
             common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values())
 
-            # load loop order info from ThermalNetwork
+            # # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
-
-            common_template_params["loop_order"] = {
-                "number_of_loops": len(loop_order),
-                "data": loop_order,
-            }
-
-            # This indent level requires the District to include a GHE, because the only way we get a loop_order
-            # is by running ThermalNetwork for sizing.
             # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
             # or: Ensure TN is used for all networks, so loop order is generated that way.
-            if self.gj:
-                # get horizontal pipe lengths from geojson, starting from the beginning of the loop
-                feature_properties = self.gj.get_feature("$.features.[*].properties")
-                dict_of_pipe_lengths = {
-                    feature_prop.get("startFeatureId"): feature_prop["total_length"]
-                    for feature_prop in feature_properties
-                    if feature_prop["type"] == "ThermalConnector"
-                }
-                ordered_feature_list = []
-                ordered_pipe_list = []
-                for loop in loop_order:
-                    ordered_feature_list.extend(loop["list_bldg_ids_in_group"])
-                    ordered_feature_list.extend(loop["list_ghe_ids_in_group"])
 
-                for feature in ordered_feature_list:
-                    for dict_feature, pipe_length in dict_of_pipe_lengths.items():
-                        if dict_feature == feature:
-                            ordered_pipe_list.append(pipe_length)
-
-                common_template_params["globals"]["lDis"] = (
-                    str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
-                )
-                common_template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
-            else:
-                raise SystemExit("No geojson file provided, unable to determine thermal network loop order")
+            feature_properties = self.gj.get_feature("$.features.[*].properties")
+            set_loop_order_data_in_template_params(common_template_params, feature_properties, loop_order)
 
         # render each coupling
         load_num = 1
