@@ -73,13 +73,13 @@ model building
     "Latent heat gain"
     annotation (Placement(transformation(extent={{-66,88},{-46,108}})));
   {% endraw %}// TODO: apply a dynamic layout
-  {% for zone in data['thermal_zones'] %}Buildings.ThermalZones.EnergyPlus_9_6_0.ThermalZone {{zone['modelica_object_name']}}(
+  {% for zone in data['thermal_zones'] %}Buildings.Obsolete.ThermalZones.EnergyPlus_9_6_0.ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium=MediumA,
     nPorts=2,
     zoneName="{{zone['spawn_object_name']}}")
     "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{40,-20},{80,20}})));
-  {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus_9_6_0.Building building(
+  {% endraw %}{% endfor %}{% raw %}inner Buildings.Obsolete.ThermalZones.EnergyPlus_9_6_0.Building building(
     idfName=Modelica.Utilities.Files.loadResource(
       idfName),
     epwName=Modelica.Utilities.Files.loadResource(
@@ -94,7 +94,7 @@ model building
   Buildings.Controls.OBC.CDL.Reals.MultiSum mulSum3(
     nin=2) if have_pum
     annotation (Placement(transformation(extent={{260,70},{280,90}})));
-  Buildings.DHC.Loads.BaseClasses.Examples.BaseClasses.FanCoil4Pipe terUni[nZon](
+  Buildings.DHC.Loads.BaseClasses.FanCoil4Pipe terUni[nZon](
     each T_aChiWat_nominal=T_aChiWat_nominal,
     each T_bChiWat_nominal=T_bChiWat_nominal,
     redeclare each final package Medium1=MediumW,
