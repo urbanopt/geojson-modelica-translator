@@ -21,7 +21,7 @@ model building
     annotation (Placement(transformation(extent={{-74,-50},{-54,-30}})));
     {% endraw %}
   {% for zone in data['thermal_zones'] %}
-  Buildings.Obsolete.ThermalZones.EnergyPlus_9_6_0.ThermalZone {{zone['modelica_object_name']}}(
+  Buildings.ThermalZones.EnergyPlus_24_2_0.ThermalZone {{zone['modelica_object_name']}}(
     redeclare package Medium = Medium,
     idfName=idfName,
     weaName=weaName,
