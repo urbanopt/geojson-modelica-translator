@@ -185,7 +185,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
 
     @pytest.mark.simulation
-    @pytest.mark.skipif(platform.machine().lower().startswith("arm"), reason="Test only runs on Intel (not ARM) chips")
+    @pytest.mark.skipif(platform.machine().lower() not in ("x86_64", "amd64", "i386", "i686"),
+                        reason="MBL Spawn only runs on Intel chips")
     def test_simulate_mbl_spawn_in_docker(self):
         # This is the E+ version used by MBLv12.1.0
         model_name = "Buildings.ThermalZones.EnergyPlus_24_2_0.Examples.SmallOffice.ASHRAE2006Winter"
