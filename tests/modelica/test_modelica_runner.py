@@ -4,6 +4,7 @@
 import inspect
 import logging
 import os
+import platform
 import shutil
 import unittest
 from pathlib import Path
@@ -184,9 +185,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="Spawn doesn't work on ARM chips")
+    @pytest.mark.skipif(platform.machine().lower().startswith("arm"), reason="Test only runs on Intel (not ARM) chips")
     def test_simulate_mbl_spawn_in_docker(self):
-        # MBLv12.1.0
+        # This is the E+ version used by MBLv12.1.0
         model_name = "Buildings.ThermalZones.EnergyPlus_24_2_0.Examples.SmallOffice.ASHRAE2006Winter"
 
         mr = ModelicaRunner()
