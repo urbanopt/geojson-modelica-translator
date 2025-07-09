@@ -127,15 +127,20 @@ class SystemParameters:
                 # logger.debug(f"Found building with id {param_id}")
                 return self.get_param(jsonpath, data=b)
         with suppress(KeyError):
-            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed,
+            # or it wasn't a ghe_id or heat_source_id
             # Don't crash or quit, just keep a stiff upper lip and carry on.
             district = self.param_template.get("district_system", {})
             for ghe in district["fifth_generation"]["ghe_parameters"]["borefields"]:
                 if ghe.get("ghe_id") == param_id:
                     # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
+            for heat_source in district["fifth_generation"]["heat_source_parameters"]:
+                if heat_source.get("heat_source_id") == param_id:
+                    # logger.debug(f"Found heat source with id {param_id}")
+                    return self.get_param(jsonpath, data=heat_source)
         if param_id is None:
-            raise SystemExit("No id submitted. Please retry and include the appropriate id")
+            raise KeyError("No id submitted. Please retry and include the appropriate id")
 
     def validate_input_file(self) -> None:
         """

@@ -62,7 +62,7 @@ class ModelBase:
                 }
             if "fifth_generation" in district_params:
                 self.district_template_data = {
-                    "waste_heat_params": district_params["fifth_generation"].get("waste_heat_parameters"),
+                    "waste_heat_params": district_params["fifth_generation"].get("heat_source_parameters", []),
                     "pressure_drop_per_meter": district_params["fifth_generation"]["horizontal_piping_parameters"][
                         "pressure_drop_per_meter"
                     ],
