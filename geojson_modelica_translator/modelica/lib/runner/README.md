@@ -29,6 +29,7 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 | GTM Runner Version | OM Version | MSL Version | MBL Version |
 | ------------------ | ---------- | ----------- | ----------- |
+| 4.0.0              | 1.25.1     | 4.0.0       | 12.1.0      |
 | 3.0.0              | 1.24.0     | 4.0.0       | 11.0.0      |
 | 2.0.1              | 1.22.1     | 4.0.0       | 10.0.0      |
 | 2.0.0              | 1.22.1     | 4.0.0       | 10.0.0      |

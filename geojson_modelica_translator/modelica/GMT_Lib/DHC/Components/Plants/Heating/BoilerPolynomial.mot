@@ -18,7 +18,7 @@ extends Buildings.Fluid.Boilers.Examples.BoilerPolynomial(
 
 
 annotation (
-  uses(Buildings(version="10.0.0")),
+  uses(Buildings(version="12.1.0")),
   Icon(coordinateSystem(preserveAspectRatio=false)),
   Diagram(coordinateSystem(preserveAspectRatio=false)),
   experiment(Tolerance=1e-6, StopTime=3600),
