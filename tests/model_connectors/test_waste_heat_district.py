@@ -89,14 +89,17 @@ class DistrictWasteHeat(TestCaseBase):
                     # empty coupling between each borefield and ground
                     all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
                     # couple each borefield and distribution
+                    # TODO: double check the coupling between distribution and borefield
                     all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
                     # look at the following object
                     if next2["type"] == "source":
                         # create waste heat source and controller
                         waste_heat = WasteHeat(sys_params)
                         # couple distribution and waste heat
+                        # TODO: double check the coupling between distribution and waste heat
                         all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
                         # couple waste heat and borefield
+                        # TODO: create the coupling between borefield and waste heat, no matter which one is upstream
                         all_couplings.append(Coupling(borefield, waste_heat, district_type="fifth_generation"))
                 elif next1["type"] == "source":
                     # create waste heat source and controller
