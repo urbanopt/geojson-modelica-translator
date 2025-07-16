@@ -56,7 +56,7 @@ class DistrictWasteHeat(TestCaseBase):
                 break
         if first_index is None:
             raise ValueError("No building group found in loop_order")
-        
+
         # create the couplings and graph
         all_couplings = []
         # start from the first building group and loop in a circular manner
@@ -72,9 +72,15 @@ class DistrictWasteHeat(TestCaseBase):
                             # create the building time series load
                             time_series_load = TimeSeries(sys_params, geojson_load)
                             # couple each time series load to distribution
-                            all_couplings.append(Coupling(time_series_load, distribution, district_type="fifth_generation"))
-                            all_couplings.append(Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation"))
-                            all_couplings.append(Coupling(time_series_load, design_data, district_type="fifth_generation"))
+                            all_couplings.append(
+                                Coupling(time_series_load, distribution, district_type="fifth_generation")
+                            )
+                            all_couplings.append(
+                                Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
+                            )
+                            all_couplings.append(
+                                Coupling(time_series_load, design_data, district_type="fifth_generation")
+                            )
                 # couple distribution and ground coupling
                 all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
                 # look at the objects following the building group
@@ -119,7 +125,7 @@ class DistrictWasteHeat(TestCaseBase):
                         all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
                         # couple waste heat and borefield
                         all_couplings.append(Coupling(borefield, waste_heat, district_type="fifth_generation"))
-            
+
             index = (index + 1) % n
             if index == first_index:
                 break

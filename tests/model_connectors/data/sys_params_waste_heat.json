@@ -117,10 +117,13 @@
   ],
   "district_system": {
     "fifth_generation": {
-      "waste_heat_parameters": {
-        "waste_heat_rate": "./WasteHeatSchedule.mos",
-        "waste_heat_temperature": "./TWasHeaWatSchedule.mos"
-      },
+      "heat_source_parameters": [
+        {
+          "heat_source_id": "asdf",
+          "heat_source_rate": "./WasteHeatSchedule.mos",
+          "heat_source_temperature": "./TWasHeaWatSchedule.mos"
+        }
+      ],
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.14807045454545453,
         "hydraulic_diameter_autosized": true,

@@ -2316,22 +2316,29 @@
         "pump_flow_rate_autosized"
       ]
     },
-    "waste_heat_parameters": {
-      "waste_heat_rate": {
-        "description": "Either a constant value (integer) or a path to the rate schedule file. If filepath, provide a *.mos waste heat rate as time series (source positive, sink negative)",
-        "type": [
-          "string",
-          "integer"
-        ],
-        "format": "Watts"
-      },
-      "waste_heat_temperature": {
-        "description": "Either a constant value (integer) or a path to the temperature schedule file. If filepath, provide a *.mos waste heat temperature as time series (source positive, sink negative)",
-        "type": [
-          "string",
-          "integer"
-        ],
-        "format": "Kelvin"
+    "heat_source_parameters": {
+      "type": "array",
+      "items": {
+        "heat_source_id": {
+          "description": "Identifier for the heat source.",
+          "type": "string"
+        },
+        "heat_source_rate": {
+          "description": "Either a constant value (integer) or a path to the rate schedule file. If filepath, provide a *.mos heat source rate as time series (source positive, sink negative)",
+          "type": [
+            "string",
+            "integer"
+          ],
+          "format": "Watts"
+        },
+        "heat_source_temperature": {
+          "description": "Either a constant value (integer) or a path to the temperature schedule file. If filepath, provide a *.mos heat source temperature as time series (source positive, sink negative)",
+          "type": [
+            "string",
+            "integer"
+          ],
+          "format": "Kelvin"
+        }
       }
     },
     "fifth_generation": {
@@ -2361,8 +2368,8 @@
         "horizontal_piping_parameters": {
           "$ref": "#/definitions/horizontal_piping_parameters"
         },
-        "waste_heat_parameters": {
-          "$ref": "#/definitions/waste_heat_parameters"
+        "heat_source_parameters": {
+          "$ref": "#/definitions/heat_source_parameters"
         }
       },
       "required": [

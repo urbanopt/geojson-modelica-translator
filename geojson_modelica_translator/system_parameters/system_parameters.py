@@ -127,15 +127,20 @@ class SystemParameters:
                 # logger.debug(f"Found building with id {param_id}")
                 return self.get_param(jsonpath, data=b)
         with suppress(KeyError):
-            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed,
+            # or it wasn't a ghe_id or heat_source_id
             # Don't crash or quit, just keep a stiff upper lip and carry on.
             district = self.param_template.get("district_system", {})
             for ghe in district["fifth_generation"]["ghe_parameters"]["borefields"]:
                 if ghe.get("ghe_id") == param_id:
                     # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
+            for heat_source in district["fifth_generation"]["heat_source_parameters"]:
+                if heat_source.get("heat_source_id") == param_id:
+                    # logger.debug(f"Found heat source with id {param_id}")
+                    return self.get_param(jsonpath, data=heat_source)
         if param_id is None:
-            raise SystemExit("No id submitted. Please retry and include the appropriate id")
+            raise KeyError("No id submitted. Please retry and include the appropriate id")
 
     def validate_input_file(self) -> None:
         """
@@ -992,7 +997,7 @@ class SystemParameters:
         self.param_template["weather"] = str(mos_weather_path)
         # Process community microgrid inputs
         if microgrid and not feature_opt_file.exists():
-            logger.warn(
+            logger.warning(
                 "Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                 "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid."
             )
@@ -1006,26 +1011,29 @@ class SystemParameters:
                 )
 
         # Remove template components that do not apply
-        if district_type in ["5G_ghe", "5G"]:
-            if district_type == "5G_ghe":
-                self.process_ghe_inputs(scenario_dir)
-            elif district_type == "5G":
+        match district_type:
+            case "5G_ghe" | "5G":
+                del self.param_template["district_system"]["fourth_generation"]
                 # Process waste-heat inputs
+                if (
+                    self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
+                        "heat_source_rate"
+                    ]
+                    == "To be populated"
+                ):
+                    del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
+            case "5G_ghe":
+                self.process_ghe_inputs(scenario_dir)
+            case "5G":
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
-            del self.param_template["district_system"]["fourth_generation"]
-            if (
-                self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"]["waste_heat_rate"]
-                == "To be populated"
-            ):
-                del self.param_template["district_system"]["fifth_generation"]["waste_heat_parameters"]
-        elif district_type in ["4G", "steam"]:
-            with suppress(KeyError):
-                del self.param_template["district_system"]["fifth_generation"]
+            case "4G" | "steam":
+                with suppress(KeyError):
+                    del self.param_template["district_system"]["fifth_generation"]
 
         # save the file to disk
-        self.save()
+        self.save(self.sys_param_filename, self.param_template)
 
-    def save(self):
+    def save(self, outputfile, source_data):
         """Write the system parameters file with param_template and save"""
-        with open(self.sys_param_filename, "w") as outfile:
-            json.dump(self.param_template, outfile, indent=2)
+        with open(outputfile, "w") as outfile:
+            json.dump(source_data, outfile, indent=2)

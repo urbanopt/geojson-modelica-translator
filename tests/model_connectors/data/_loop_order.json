@@ -5,7 +5,7 @@
   },
   {
     "type": "building group",
-	"list_bldg_ids_in_group": [
+    "list_bldg_ids_in_group": [
       "5e707283-8265-4958-adbc-aef19f2afc97",
       "abcdefghijklmnopqrstuvwx"
     ]
@@ -16,8 +16,8 @@
   },
   {
     "type": "building group",
-	"list_bldg_ids_in_group": [
-	  "5a6b99ec37f4de7f94020090"
+    "list_bldg_ids_in_group": [
+      "5a6b99ec37f4de7f94020090"
     ]
   }
 ]
