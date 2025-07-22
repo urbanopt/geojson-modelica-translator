@@ -1,5 +1,5 @@
-// Borefield and distribution coupling connections
-{% if graph.get_ghe_id(coupling.id) == loop_order.data[0].list_ghe_ids_in_group[0] %}
+// Connections for distribution and borefield coupling
+{% if graph.couplings_by_type(coupling.network.id).load_couplings[0].load.id == loop_order.data[loop_order.first_index].list_bldg_ids_in_group[0] %}
   connect(pumDis.port_b, TDisSup_{{ coupling.id }}.port_a)
   {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
   {% endraw %}
@@ -21,25 +21,22 @@ connect(TIn_{{ coupling.id }}.port_b, conSto_{{ coupling.plant.id }}.port_aDis)
 {% endraw %}connect({{ coupling.network.id }}.port_bDisSup, TDisRet_{{ coupling.id }}.port_a)
 {% raw %}annotation (Line(points={{90,10},{100,10},{100,-20}}, color={0,127,255}));
 {% endraw %}
-{% for group_num in range(loop_order.number_of_loops) %}
-  {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
-    {% if group_num == loop_order.number_of_loops-1 %}
-      {% if sys_params.district_system.fifth_generation.heat_source_parameters is defined %}
-        connect(TOut_{{ coupling.id }}.port_b, TIn_wasHea.port_a)
-        {% raw %}annotation (Line(points={{32,-18},{38,-18},{38,-114},{-46,-114},{-46,-130},{-40,-130}},color={0,127,255}));
-        {% endraw %}
-      {% else %}
+{% for obj_num in range(loop_order.number_of_loops) %}
+  {% if loop_order.data[obj_num].type == "ghe" %}
+    {% if graph.get_ghe_id(coupling.id) == loop_order.data[obj_num].name %} 
+      {% if obj_num == loop_order.number_of_loops-1 %}
         connect(TOut_{{ coupling.id }}.port_b, pumDis.port_a)
         {% raw %}annotation (Line(points={{100,-40},{100,-74},{-72,-74},{-72,-70}}, color={0,127,255}));
         {% endraw %}
+      {% else %}
+        {% if loop_order.data[obj_num+1].type == "building group" %}
+          {% set next_building_id = loop_order.data[obj_num+1].list_bldg_ids_in_group[0] %}
+          {% set next_dis_id = graph.couplings_by_type(next_building_id).network_couplings[0].network.id %}
+          connect(TOut_{{ coupling.id }}.port_b, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
+          {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
+          {% endraw %}
+        {% endif %}
       {% endif %}
-    {% else %}
-      {% set ground_id = graph.couplings_by_type(coupling.network.id).network_couplings[0].network.id %}
-      {% set next_borefield_id = graph.couplings_by_type(ground_id).plant_couplings[group_num+1].plant.id %}
-      {% set next_dis_id = graph.couplings_by_type(next_borefield_id).network_couplings[0].network.id %}
-      connect(TOut_{{ coupling.id }}.port_b, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
-      {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
-      {% endraw %}
     {% endif %}
   {% endif %}
 {% endfor %}
