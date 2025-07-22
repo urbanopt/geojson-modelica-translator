@@ -3,6 +3,7 @@
 import re
 from datetime import datetime, timezone
 from pathlib import Path
+
 import pandas as pd
 from buildingspy.io.outputfile import Reader
 
@@ -23,7 +24,6 @@ class ResultsModelica:
             / f"{project_name}.Districts.DistrictEnergySystem_results"
             / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
         )
-
 
         if result_mat_file.exists():
             print(f"The path {result_mat_file} exists.")
@@ -74,12 +74,13 @@ class ResultsModelica:
                         time_values = time.tolist()
                     renamed = rename_column(var)
                     key_value_pairs[renamed] = values.tolist()
-                except Exception as e:
+                except (KeyError, AttributeError, TypeError) as e:
                     print(f"Error reading values for {var}: {e}")
 
         # Convert seconds to timezone-aware datetime and adjust year to 2017
         def adjust_year(dt):
             return dt.replace(year=2017)
+
         # Convert timestamps to timezone-aware datetime objects in UTC
         time_values = [datetime.fromtimestamp(t, tz=timezone.utc) for t in time_values]
         adjusted_time_values = [adjust_year(dt) for dt in time_values]
@@ -88,13 +89,14 @@ class ResultsModelica:
             "Datetime": adjusted_time_values,
             "TimeInSeconds": [int(dt.timestamp()) for dt in adjusted_time_values],
         }
-
         for var, values in key_value_pairs.items():
             if len(values) < len(adjusted_time_values):
-                values.extend([None] * (len(adjusted_time_values) - len(values)))
+                padded_values = values + [None] * (len(adjusted_time_values) - len(values))
             elif len(values) > len(adjusted_time_values):
-                values = values[: len(adjusted_time_values)]
-            data_for_df[var] = values
+                padded_values = values[: len(adjusted_time_values)]
+            else:
+                padded_values = values
+            data_for_df[var] = padded_values
 
         df_values = pd.DataFrame(data_for_df)
 
