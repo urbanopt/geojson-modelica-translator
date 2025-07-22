@@ -1,9 +1,5 @@
 [
   {
-    "name": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-    "type": "ghe"
-  },
-  {
     "type": "building group",
     "list_bldg_ids_in_group": [
       "5e707283-8265-4958-adbc-aef19f2afc97",
@@ -19,5 +15,9 @@
     "list_bldg_ids_in_group": [
       "5a6b99ec37f4de7f94020090"
     ]
+  },
+  {
+    "name": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
+    "type": "ghe"
   }
 ]
