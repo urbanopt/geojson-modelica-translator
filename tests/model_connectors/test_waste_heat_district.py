@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from geojson_modelica_translator.external_package_utils import load_loop_order
+from geojson_modelica_translator.external_package_utils import loop_order_first_index
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
@@ -38,6 +39,7 @@ class DistrictWasteHeat(TestCaseBase):
 
         # read the loop order and create building groups
         loop_order = load_loop_order(sys_param_filename)
+        first_index = loop_order_first_index(loop_order)
 
         # create ambient water loop stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
@@ -47,15 +49,6 @@ class DistrictWasteHeat(TestCaseBase):
 
         # create district data
         design_data = DesignDataSeries(sys_params)
-
-        # find the first index in the loop
-        first_index = None
-        for i, obj in enumerate(loop_order):
-            if obj["type"] == "building group":
-                first_index = i
-                break
-        if first_index is None:
-            raise ValueError("No building group found in loop_order")
 
         # create the couplings and graph
         all_couplings = []
