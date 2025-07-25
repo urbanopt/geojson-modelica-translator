@@ -149,7 +149,7 @@ class SystemParameters:
             print(f"  Bad Input Location: {' -> '.join(map(str, error.path)) if error.path else 'Root'}")
             print(f"  Problematic Key: {error.path[-1] if error.path else 'N/A'}")
             print(f"  Error: {error.message}")
-            fix = "\n Suggested Fix:"
+            fix = "\nSuggested Fix:"
             if "required" in error.schema and isinstance(error.schema["required"], list):
                 print(
                     f"{fix}  Ensure that the following required keys are present: {', '.join(error.schema['required'])}"
