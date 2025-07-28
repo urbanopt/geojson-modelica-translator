@@ -9,7 +9,6 @@ from modelica_builder.modelica_mos_file import ModelicaMOS
 from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.external_package_utils import load_loop_order
-from geojson_modelica_translator.external_package_utils import loop_order_first_index
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
@@ -136,7 +135,6 @@ class District:
             common_template_params["loop_order"] = {
                 "number_of_loops": len(loop_order),
                 "data": loop_order,
-                "first_index": loop_order_first_index(loop_order),
             }
 
             # This indent level requires the District to include a GHE, because the only way we get a loop_order
