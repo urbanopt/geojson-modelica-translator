@@ -132,7 +132,7 @@ class District:
             common_template_params["number_of_boreholes"] = number_of_boreholes_dict
             common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values())
 
-            # # load loop order info from ThermalNetwork
+            # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
             # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
             # or: Ensure TN is used for all networks, so loop order is generated that way.
