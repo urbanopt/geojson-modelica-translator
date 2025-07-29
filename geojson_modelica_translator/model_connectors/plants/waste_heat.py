@@ -17,10 +17,11 @@ logger = logging.getLogger(__name__)
 class WasteHeat(PlantBase):
     model_name = "WasteHeatRecovery"
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, heat_source=None):
         super().__init__(system_parameters)
         self.id = "wasHea_" + simple_uuid()
         self.waste_heat_name = "WasteHeat_" + simple_uuid()
+        self.source_id = heat_source["heat_source_id"]
 
         self.required_mo_files.append(os.path.join(self.template_dir, "WasteHeatController.mo"))
 
@@ -37,16 +38,9 @@ class WasteHeat(PlantBase):
 
         waste_heat_params = {}
 
-        heat_source_rate = Path(
-            self.system_parameters.get_param(
-                "$.district_system.fifth_generation.heat_source_parameters.heat_source_rate"
-            )
-        )
-        heat_source_temperature = Path(
-            self.system_parameters.get_param(
-                "$.district_system.fifth_generation.heat_source_parameters.heat_source_temperature"
-            )
-        )
+        heat_source_rate = self.system_parameters.get_param_by_id(self.source_id, "heat_source_rate")
+
+        heat_source_temperature = self.system_parameters.get_param_by_id(self.source_id, "heat_source_temperature")
 
         # Handle relative paths to schedule files (relative to sys-param file)
         sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
