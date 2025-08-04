@@ -31,6 +31,17 @@ connect(TWasHeaWat_{{ coupling.id }}.y[1], con_{{ waste_heat_id }}.TWasHeaWat)
 {% endraw %}connect(con_{{ waste_heat_id }}.m_flow_pumPla, {{ waste_heat_id }}.m_flow_pumPla)
 {% raw %}annotation (Line(points={{-18.6667,-162},{-18.6667,-162.667},{-1.33333,-162.667}},color={0,0,127}));
 {% endraw %}
+{% for group_num in range(loop_order.number_of_loops) %}
+  {% if loop_order.data[group_num].list_source_ids_in_group is defined %}
+    {% if graph.get_source_id(coupling.id) == loop_order.data[group_num].list_source_ids_in_group[0] %}
+      connect(TIn_wasHea_{{ dis_coupling_id }}.T, conPum.TSouIn[{{ group_num+1 }}])
+      {% raw %}annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
+      {% endraw %}connect(TOut_wasHea_{{ dis_coupling_id }}.T, conPum.TSouOut[{{ group_num+1 }}])
+      {% raw %}annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
+      {% endraw %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
 // internal connections
 connect(TIn_wasHea_{{ coupling.id }}.port_b, conPla_{{ waste_heat_id }}.port_aDis)
 {% raw %}annotation (Line(points={{-20,-130},{0,-130}},color={0,127,255}));
