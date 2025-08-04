@@ -58,20 +58,11 @@ connect(conBor_{{ borefield_id }}.y, gai1_{{ borefield_id }}.u)
 {% raw %}annotation (Line(points={{89,-30},{-78,-30},{-78,85},{-61.5385,85}}, color={0,0,127}));
 {% endraw %}
 {% for group_num in range(loop_order.number_of_loops) %}
-  {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
-    {% if group_num == 0 %}
-      connect({{ dis_coupling_id.network.id }}.TOut, conPum.TMix[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}])
-        {% raw %}annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
-        {% endraw %}
-      {% else %}
-        {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
-        connect({{ dis_coupling_id.network.id }}.TOut, conPum.TMix[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}])
-        {% raw %}annotation (Line(points={{92,4},{128,4},{128,-112},{-134,-112},{-134,-84},{-122,-84}}, color={0,0,127}));
-        {% endraw %}
-      {% endif %}
-      connect(TIn_{{ dis_coupling_id.id }}.T, conPum.TSouIn[{{ group_num+1 }}])
+  {% if loop_order.data[group_num].list_ghe_ids_in_group is defined %}
+    {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+      connect(TIn_{{ coupling.id }}.T, conPum.TSouIn[{{ group_num+1 }}])
       {% raw %}annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
-      {% endraw %}connect(TOut_{{ dis_coupling_id.id }}.T, conPum.TSouOut[{{ group_num+1 }}])
+      {% endraw %}connect(TOut_{{ coupling.id }}.T, conPum.TSouOut[{{ group_num+1 }}])
       {% raw %}annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
       {% endraw %}
     {% endif %}
