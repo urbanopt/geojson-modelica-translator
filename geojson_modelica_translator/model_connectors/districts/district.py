@@ -131,10 +131,17 @@ class District:
 
             # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
+            # determine total number of sources and GHEs
+            number_of_sources = 0
+            for group in loop_order:
+                sources = group.get("list_source_ids_in_group", [])
+                ghes = group.get("list_ghe_ids_in_group", [])
+                number_of_sources += len(sources) + len(ghes)
 
             common_template_params["loop_order"] = {
                 "number_of_loops": len(loop_order),
                 "data": loop_order,
+                "number_of_sources": number_of_sources,
             }
 
             # This indent level requires the District to include a GHE, because the only way we get a loop_order
