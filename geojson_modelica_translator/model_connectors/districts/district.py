@@ -159,8 +159,8 @@ class District:
                 ordered_feature_list = []
                 ordered_pipe_list = []
                 for loop in loop_order:
-                    ordered_feature_list.extend(loop["list_bldg_ids_in_group"])
-                    ordered_feature_list.extend(loop["list_ghe_ids_in_group"])
+                    for key in loop:
+                        ordered_feature_list.extend(loop[key])
 
                 for feature in ordered_feature_list:
                     for dict_feature, pipe_length in dict_of_pipe_lengths.items():
