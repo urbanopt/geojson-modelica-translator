@@ -29,9 +29,9 @@ connect(TWasHeaWat_{{ coupling.id }}.y[1], con_{{ coupling.plant.id }}.TWasHeaWa
         {% endraw %}
       {% endif %}
       connect(TIn_wasHea_{{ coupling.id }}.T, conPum.TSouIn[{{ group_num+1 }}])
-      {% raw %}annotation (Line(points={{121,-30},{128,-30},{128,-112},{-130,-112},{-130,-90},{-122,-90}}, color={0,0,127}));
+      {% raw %}annotation (Line(points={{-30,-141},{-30,-148},{-130,-148},{-130,-86.75},{-121.692,-86.75}}, color={0,0,127}));
       {% endraw %}connect(TOut_wasHea_{{ coupling.id }}.T, conPum.TSouOut[{{ group_num+1 }}])
-      {% raw %}annotation (Line(points={{16,-1},{16,-112},{-126,-112},{-126,-96},{-122,-96}},color={0,0,127}));
+      {% raw %}annotation (Line(points={{40,-141},{40,-154},{-126,-154},{-126,-91.75},{-121.692,-91.75}}, color={0,0,127}));
       {% endraw %}
     {% endif %}
   {% endif %}
@@ -49,6 +49,8 @@ connect(TIn_wasHea_{{ coupling.id }}.port_b, conPla_{{ coupling.plant.id }}.port
 {% raw %}annotation (Line(points={{44,10},{50,10}}, color={0,127,255}));
 {% endraw %}connect({{ coupling.network.id }}.port_bDisSup, TDisRet_{{ coupling.id }}.port_a)
 {% raw %}annotation (Line(points={{90,10},{100,10},{100,-20}}, color={0,127,255}));
+{% endraw %}connect(conPla_{{ coupling.plant.id }}.port_bDis, TOut_wasHea_{{ coupling.id }}.port_a)
+{% raw %}annotation (Line(points={{20,-130},{30,-130}}, color={0,127,255}));
 {% endraw %}
 // external connections
 {% if loop_order.data[0].list_source_ids_in_group is defined %}
@@ -63,14 +65,14 @@ connect(TIn_wasHea_{{ coupling.id }}.port_b, conPla_{{ coupling.plant.id }}.port
     {% if graph.get_source_id(coupling.id) == loop_order.data[group_num].list_source_ids_in_group[0] %}
       {% if loop_order.data[group_num].list_ghe_ids_in_group is not defined %}
         {% if group_num == loop_order.number_of_loops-1 %}
-          connect(conPla_{{ coupling.plant.id }}.port_bDis, pumDis.port_a)
-          {% raw %}annotation (Line(points={{20,-130},{30,-130},{30,-80},{-44,-80},{-44,-70}},color={0,127,255}));
+          connect(TOut_wasHea_{{ coupling.id }}.port_b, pumDis.port_a) 
+          {% raw %}annotation (Line(points={{50,-130},{60,-130},{60,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
           {% endraw %}
         {% else %}
           {% set ground_id = graph.couplings_by_type(coupling.network.id).network_couplings[0].network.id %}
           {% set next_dis_id = graph.couplings_by_type(ground_id).network_couplings[group_num+1].network.id %}
-          connect(conPla_{{ coupling.plant.id }}.port_bDis, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
-          {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
+          connect(TOut_wasHea_{{ coupling.id }}.port_b, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
+          {% raw %}annotation (Line(points={{50,-130},{60,-130},{60,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
           {% endraw %}
         {% endif %}
       {% endif %}
