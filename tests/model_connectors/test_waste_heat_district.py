@@ -69,11 +69,19 @@ class DistrictWasteHeat(TestCaseBase):
                         )
             # couple distribution and ground coupling
             all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
-            # look at the objects following the building group
-            next1 = loop_order[(index + 1)]
-            next2 = loop_order[(index + 2)]
-            if next1["type"] == "ghe":
-                ghe_id = next1["name"]
+            # look at the keys following the building group
+            keys = list(loop.keys())
+            if len(keys) > 1: 
+                next1_key = keys[1]
+                if len(keys) > 2:
+                    next2_key = keys[2]
+                else:
+                    next2_key = None
+            else:
+                next1_key = None
+                next2_key = None
+            if next1_key == "list_ghe_ids_in_group":
+                ghe_id = loop["list_ghe_ids_in_group"][0]
                 for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
                     if ghe_id == ghe["ghe_id"]:
                         borefield = Borefield(sys_params, ghe)
@@ -83,21 +91,29 @@ class DistrictWasteHeat(TestCaseBase):
                 # couple each borefield and distribution
                 all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
                 # look at the following object
-                if next2["type"] == "source":
+                if next2_key == "list_source_ids_in_group":
+                    source_id = loop["list_source_ids_in_group"][0]
                     # create waste heat source and controller
-                    waste_heat = WasteHeat(sys_params)
+                    for heat_source in sys_params.get_param("$.district_system.fifth_generation.heat_source_parameters"):
+                        if source_id == heat_source["heat_source_id"]:
+                            waste_heat = WasteHeat(sys_params, heat_source)
+                            break
                     # couple distribution and waste heat
                     all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
                     # couple borefield and waste heat
                     all_couplings.append(Coupling(borefield, waste_heat, district_type="fifth_generation"))
-            elif next1["type"] == "source":
+            elif next1_key == "list_source_ids_in_group":
+                source_id = loop["list_source_ids_in_group"][0]
                 # create waste heat source and controller
-                waste_heat = WasteHeat(sys_params)
+                for heat_source in sys_params.get_param("$.district_system.fifth_generation.heat_source_parameters"):
+                    if source_id == heat_source["heat_source_id"]:
+                        waste_heat = WasteHeat(sys_params, heat_source)
+                        break
                 # couple distribution and waste heat
                 all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
                 # look at the following object
-                if next2["type"] == "ghe":
-                    ghe_id = next2["name"]
+                if next2_key == "list_ghe_ids_in_group":
+                    ghe_id = loop["list_ghe_ids_in_group"][0]
                     for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
                         if ghe_id == ghe["ghe_id"]:
                             borefield = Borefield(sys_params, ghe)
