@@ -119,7 +119,7 @@
     "fifth_generation": {
       "heat_source_parameters": [
         {
-          "heat_source_id": "asdf",
+          "heat_source_id": "59fb78a8-2975-4331-b94d-460258d9b0a9",
           "heat_source_rate": "./WasteHeatSchedule.mos",
           "heat_source_temperature": "./TWasHeaWatSchedule.mos"
         }
