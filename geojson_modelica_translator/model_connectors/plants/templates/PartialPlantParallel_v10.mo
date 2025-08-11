@@ -8,9 +8,6 @@ partial model PartialPlantParallel_v10
       101325,
       273.15+4,
       Medium.X_default));
-  //extends
-  // Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
-  //  final numFil=num);
   constant Boolean homotopyInitialization=true
     "= true, use homotopy method"
     annotation (HideResult=true);
@@ -36,8 +33,7 @@ partial model PartialPlantParallel_v10
     each dpFixed_nominal=dp_nominal,
     each final show_T=show_T,
     each final homotopyInitialization=homotopyInitialization,
-    each final use_inputFilter=false,
-    //each final riseTime=riseTimeValve,
+    each final use_strokeTime=false,
     //each final init=initValve,
     //final y_start=yValve_start,
     each final l=l,

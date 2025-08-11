@@ -102,7 +102,7 @@ model CoolingTowerWithBypass
     "Leaving water temperature"
     annotation (Placement(transformation(extent={{100,20},{120,40}})));
   CoolingTowerParallel cooTowSys(
-    use_inputFilter=true,
+    use_strokeTime=true,
     redeclare package Medium=Medium,
     num=num,
     show_T=show_T,
@@ -119,7 +119,7 @@ model CoolingTowerWithBypass
     redeclare package Medium=Medium,
     m_flow_nominal=m_flow_nominal*0.0001,
     dpValve_nominal=dp_nominal,
-    use_inputFilter=false)
+    use_strokeTime=false)
     "Condenser water bypass valve"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},origin={0,-40})));
   Buildings.Fluid.Sensors.TemperatureTwoPort senTCWSup(
