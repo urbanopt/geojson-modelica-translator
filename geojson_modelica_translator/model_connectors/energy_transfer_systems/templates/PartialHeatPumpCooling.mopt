@@ -109,7 +109,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare package Medium = Medium1,
     final allowFlowReversal=allowFlowReversal1,
     addPowerToMedium=false,
-    use_inputFilter=false,
+    use_riseTime=false,
     m_flow_nominal=mCon_flow_nominal,
     dp_nominal=dp1_nominal + 6000)
     "Pump for heat pump condenser"
@@ -117,7 +117,7 @@ within {{ project_name }}.Loads.ETS;
         rotation=180,
         origin={-50,60})));
 
-  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumEva(
+   Buildings.Fluid.Movers.Preconfigured.FlowControlled_m_flow pumEva(
     redeclare final package Medium = Medium2,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=mEva_flow_nominal,

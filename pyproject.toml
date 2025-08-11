@@ -46,8 +46,8 @@ teaser = "1.1.0"
 # myst-parser = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
-rpds-py = ">=0.22,<0.26"
-mypy = "^1.14"
+rpds-py = ">=0.22,<0.27"
+mypy = "^1.17"
 pre-commit = "^4.0"
 pytest = "^8.3"
 pytest-cov = "^6.0"
@@ -56,7 +56,7 @@ syrupy = "^4.8"
 markdown-include = "^0.8.1"
 mkdocs-material = "^9.5"
 mkdocs-schema-reader = "^0.11.1"
-mkdocstrings-python = "^1.12"
+mkdocstrings-python = ">=1.12.2,<1.17.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.1"]

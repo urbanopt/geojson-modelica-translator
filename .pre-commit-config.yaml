@@ -44,10 +44,10 @@ repos:
         pass_filenames: false
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.0
+    rev: v0.12.2
     hooks:
       # Run the linter
-      - id: ruff
+      - id: ruff-check
       #  unsafe fixes: https://docs.astral.sh/ruff/linter/#fixes
         args: [--fix, --exit-non-zero-on-fix, --output-format=full, --unsafe-fixes]
       # Run the formatter
