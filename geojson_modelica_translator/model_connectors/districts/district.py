@@ -134,19 +134,7 @@ class District:
 
             # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
-            # determine total number of sources and GHEs
-            number_of_sources = 0
-            for group in loop_order:
-                sources = group.get("list_source_ids_in_group", [])
-                ghes = group.get("list_ghe_ids_in_group", [])
-                number_of_sources += len(sources) + len(ghes)
-
-            common_template_params["loop_order"] = {
-                "number_of_loops": len(loop_order),
-                "data": loop_order,
-                "number_of_sources": number_of_sources,
-            }
-            
+                        
             # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
             # or: Ensure TN is used for all networks, so loop order is generated that way.
             feature_properties = self.gj.get_feature("$.features.[*].properties")
