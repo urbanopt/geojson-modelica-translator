@@ -244,8 +244,12 @@ class Borefield(PlantBase):
             for model_name in package_models:
                 # We only want a single model named GroundTemperatureResponse to be included, so we skip adding
                 # (One was included when the Plants package order_data was first created just above)
-                if model_name != "GroundTemperatureResponse":
-                    plants_package.add_model(model_name)
+                if (
+                    model_name == "GroundTemperatureResponse"
+                    and "GroundTemperatureResponse" in plants_package.order_data
+                ):
+                    continue
+                plants_package.add_model(model_name)
         plants_package.save()
 
     def get_modelica_type(self, scaffold):
