@@ -211,7 +211,7 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "5e707283-8265-4958-adbc-aef19f2afc97",
+        "id": "5e70728382654958adbcaef19f2afc97",
         "geometryType": "Rectangle",
         "name": "Small Office 3",
         "type": "Building",
@@ -272,7 +272,7 @@
       "properties": {
         "id": "9742a911-28c0-46fe-bb16-c048ff7c01c6",
         "type": "ThermalJunction",
-        "buildingId": "5e707283-8265-4958-adbc-aef19f2afc97"
+        "buildingId": "5e70728382654958adbcaef19f2afc97"
       },
       "geometry": {
         "type": "Point",
@@ -290,7 +290,7 @@
         "startJunctionId": "62cbc975-276f-406e-adc0-e328283cee4f",
         "endJunctionId": "9742a911-28c0-46fe-bb16-c048ff7c01c6",
         "startFeatureId": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-        "endFeatureId": "5e707283-8265-4958-adbc-aef19f2afc97",
+        "endFeatureId": "5e70728382654958adbcaef19f2afc97",
         "total_length": 68,
         "connector_type": "OnePipe",
         "fluid_temperature_type": "Ambient",
@@ -315,7 +315,7 @@
       "properties": {
         "id": "e24e5c08-cbab-44eb-9b18-a24b2d3e16aa",
         "type": "ThermalJunction",
-        "buildingId": "5e707283-8265-4958-adbc-aef19f2afc97"
+        "buildingId": "5e70728382654958adbcaef19f2afc97"
       },
       "geometry": {
         "type": "Point",
@@ -347,7 +347,7 @@
         "id": "b3b46541-bc86-4968-b769-0217029d4cdd",
         "startJunctionId": "e24e5c08-cbab-44eb-9b18-a24b2d3e16aa",
         "endJunctionId": "7b0a2bfa-d44d-4a66-adec-baa79a7f67bb",
-        "startFeatureId": "5e707283-8265-4958-adbc-aef19f2afc97",
+        "startFeatureId": "5e70728382654958adbcaef19f2afc97",
         "endFeatureId": "abcdefghijklmnopqrstuvwx",
         "total_length": 38,
         "connector_type": "OnePipe",
