@@ -46,7 +46,7 @@ class WasteHeat(PlantBase):
         sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
 
         if isinstance(heat_source_rate, Path) and not heat_source_rate.expanduser().is_absolute():
-            heat_source_rate = sys_param_dir / heat_source_rate.name
+            heat_source_rate = sys_param_dir / heat_source_rate
             if not heat_source_rate.is_file():
                 raise SystemExit(
                     f"Can't find rate schedule file.\n"
@@ -55,7 +55,7 @@ class WasteHeat(PlantBase):
                 )
             # Copy schedule file into the modelica package
             heat_source_rate_in_package = (
-                Path(p_modelica_path.root_dir).parent / "Schedules" / heat_source_rate.name
+                Path(p_modelica_path.root_dir).parent / "Schedules" / heat_source_rate
             ).resolve()
             shutil.copy(heat_source_rate, heat_source_rate_in_package)
 
@@ -63,7 +63,7 @@ class WasteHeat(PlantBase):
             waste_heat_params["heat_source_rate"] = heat_source_rate
 
         if isinstance(heat_source_temperature, Path) and not heat_source_temperature.expanduser().is_absolute():
-            heat_source_temperature = sys_param_dir / heat_source_temperature.name
+            heat_source_temperature = sys_param_dir / heat_source_temperature
             if not heat_source_temperature.is_file():
                 raise SystemExit(
                     f"Can't find temperature schedule file.\n"
@@ -72,7 +72,7 @@ class WasteHeat(PlantBase):
                 )
             # Copy schedule file into the modelica package
             heat_source_temperature_in_package = (
-                Path(p_modelica_path.root_dir).parent / "Schedules" / heat_source_temperature.name
+                Path(p_modelica_path.root_dir).parent / "Schedules" / heat_source_temperature
             ).resolve()
             shutil.copy(heat_source_temperature, heat_source_temperature_in_package)
         elif isinstance(heat_source_temperature, int):
@@ -123,7 +123,7 @@ class WasteHeat(PlantBase):
         package_models = [self.waste_heat_name] + [Path(mo).stem for mo in self.required_mo_files]
         if not (Path(scaffold.plants_path.files_dir) / "package.mo").exists():
             plant_package = PackageParser.new_from_template(
-                scaffold.plants_path.files_dir, "Plants", [self.waste_heat_name], within=f"{scaffold.project_name}"
+                scaffold.plants_path.files_dir, "Plants", package_models, within=f"{scaffold.project_name}"
             )
             plant_package.save()
         else:
