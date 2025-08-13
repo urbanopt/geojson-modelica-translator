@@ -1,0 +1,19 @@
+[
+  {
+    "list_bldg_ids_in_group": [
+      "5e70728382654958adbcaef19f2afc97",
+      "abcdefghijklmnopqrstuvwx"
+    ],
+	"list_source_ids_in_group":	[
+	  "59fb78a8-2975-4331-b94d-460258d9b0a9"
+	]
+  },
+  {
+    "list_bldg_ids_in_group": [
+      "5a6b99ec37f4de7f94020090"
+    ],
+	"list_ghe_ids_in_group": [
+	  "0b575a8f-97d1-47e6-b329-7ef7566d26f2"
+	]
+  }
+]
