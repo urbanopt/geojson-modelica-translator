@@ -34,7 +34,8 @@ connect(TIn_{{ coupling.id }}.port_b, conSto_{{ borefield_id }}.port_aDis)
       {% raw %}annotation (Line(points={{100,-40},{100,-74},{-72,-74},{-72,-70}}, color={0,127,255}));
       {% endraw %}
     {% else %}
-      {% set next_dis_id = graph.couplings_by_type(ground_id).network_couplings[group_num+1].network.id %}
+      {% set next_dis_coupling_id = graph.couplings_by_type(ground_id).network_couplings[group_num+1].id %}
+      {% set next_dis_id = graph.get_other_model(next_dis_coupling_id, ground_id).id %}
       connect(TOut_{{ coupling.id }}.port_b, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
       {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
       {% endraw %}
