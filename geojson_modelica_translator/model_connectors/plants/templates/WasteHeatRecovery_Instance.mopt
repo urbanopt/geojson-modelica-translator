@@ -17,6 +17,6 @@
     {% raw %}annotation (Placement(transformation(extent={{0,-120},{20,-140}})));
   {% endraw %}
   Plants.WasteHeatController con_{{ model.id }}(
-      redeclare package MediumSer = {{ globals.medium_w }}, filNam_QWasHea=filNam_QWasHea)
+      redeclare package MediumSer = {{ globals.medium_w }}, filNam_QWasHea=filNam_QWasHea_{{ model.id }})
     {% raw %}annotation (Placement(transformation(extent={{-40,-180},{-20,-160}})));
   {% endraw %}
