@@ -293,11 +293,11 @@ class SystemParametersTest(unittest.TestCase):
         self.maxDiff = None
 
         # Act
-        with pytest.raises(SystemExit) as context:
+        with pytest.raises(KeyError) as excinfo:
             sdp.get_param_by_id(None, "ets_model")
 
         # Assert
-        assert "No id submitted. Please retry and include the appropriate id" in str(context.value)
+        assert "No id submitted. Please retry and include the appropriate id" in str(excinfo.value)
 
     def test_missing_files(self):
         output_sys_param_file = self.output_dir / "going_to_fail_first.json"
