@@ -1012,9 +1012,8 @@ class SystemParameters:
 
         # Remove template components that do not apply
         match district_type:
-            case "5G_ghe" | "5G":
+            case "5G_ghe":
                 del self.param_template["district_system"]["fourth_generation"]
-                # Process waste-heat inputs
                 if (
                     self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
                         "heat_source_rate"
@@ -1022,9 +1021,16 @@ class SystemParameters:
                     == "To be populated"
                 ):
                     del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
-            case "5G_ghe":
                 self.process_ghe_inputs(scenario_dir)
             case "5G":
+                del self.param_template["district_system"]["fourth_generation"]
+                if (
+                    self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
+                        "heat_source_rate"
+                    ]
+                    == "To be populated"
+                ):
+                    del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
             case "4G" | "steam":
                 with suppress(KeyError):
