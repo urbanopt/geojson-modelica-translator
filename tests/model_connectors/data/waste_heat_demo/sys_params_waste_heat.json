@@ -5,7 +5,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "./waste_heat_demo/run/baseline_scenario/5a6b99ec37f4de7f94020090/022_export_modelica_loads/modelica.mos",
+          "filepath": "./run/baseline_scenario/5a6b99ec37f4de7f94020090/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -43,7 +43,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "./waste_heat_demo/run/baseline_scenario/abcdefghijklmnopqrstuvwx/022_export_modelica_loads/modelica.mos",
+          "filepath": "./run/baseline_scenario/abcdefghijklmnopqrstuvwx/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -81,7 +81,7 @@
       "load_model": "time_series",
       "load_model_parameters": {
         "time_series": {
-          "filepath": "./waste_heat_demo/run/baseline_scenario/5e70728382654958adbcaef19f2afc97/022_export_modelica_loads/modelica.mos",
+          "filepath": "./run/baseline_scenario/5e70728382654958adbcaef19f2afc97/022_export_modelica_loads/modelica.mos",
           "delta_temp_air_cooling": 10,
           "delta_temp_air_heating": 18,
           "has_liquid_cooling": true,
@@ -148,7 +148,7 @@
       },
       "ghe_parameters": {
         "version": "1.0",
-        "ghe_dir": "../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
+        "ghe_dir": "../../../management/data/sdk_project_scraps/run/baseline_scenario/ghe_dir",
         "fluid": {
           "fluid_name": "Water",
           "concentration_percent": 0.0,
