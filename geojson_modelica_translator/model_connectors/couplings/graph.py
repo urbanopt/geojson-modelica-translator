@@ -150,7 +150,7 @@ class CouplingGraph:
             return model_a.ghe_id
         elif coupling._get_model_superclass(model_b) is PlantBase and "Borefield" in model_b.model_name:
             return model_b.ghe_id
-    
+
     def get_source_id(self, coupling_id):
         """If there's a source model in the coupling, it returns the id of the source model. Else
         it returns None.

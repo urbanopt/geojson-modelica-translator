@@ -38,7 +38,7 @@ def set_loop_order_data_in_template_params(
         sources = group.get("list_source_ids_in_group", [])
         ghes = group.get("list_ghe_ids_in_group", [])
         number_of_sources += len(sources) + len(ghes)
-    
+
     template_params["loop_order"] = {
         "number_of_loops": len(loop_order),
         "data": loop_order,

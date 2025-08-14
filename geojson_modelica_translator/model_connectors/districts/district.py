@@ -134,7 +134,7 @@ class District:
 
             # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
-                        
+
             # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
             # or: Ensure TN is used for all networks, so loop order is generated that way.
             feature_properties = self.gj.get_feature("$.features.[*].properties")

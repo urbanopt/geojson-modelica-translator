@@ -58,20 +58,16 @@ class DistrictWasteHeat(TestCaseBase):
                         # create the building time series load
                         time_series_load = TimeSeries(sys_params, geojson_load)
                         # couple each time series load to distribution
-                        all_couplings.append(
-                            Coupling(time_series_load, distribution, district_type="fifth_generation")
-                        )
+                        all_couplings.append(Coupling(time_series_load, distribution, district_type="fifth_generation"))
                         all_couplings.append(
                             Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
                         )
-                        all_couplings.append(
-                            Coupling(time_series_load, design_data, district_type="fifth_generation")
-                        )
+                        all_couplings.append(Coupling(time_series_load, design_data, district_type="fifth_generation"))
             # couple distribution and ground coupling
             all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
             # look at the keys following the building group
             keys = list(loop.keys())
-            if len(keys) > 1: 
+            if len(keys) > 1:
                 next1_key = keys[1]
                 if len(keys) > 2:
                     next2_key = keys[2]
@@ -94,7 +90,9 @@ class DistrictWasteHeat(TestCaseBase):
                 if next2_key == "list_source_ids_in_group":
                     source_id = loop["list_source_ids_in_group"][0]
                     # create waste heat source and controller
-                    for heat_source in sys_params.get_param("$.district_system.fifth_generation.heat_source_parameters"):
+                    for heat_source in sys_params.get_param(
+                        "$.district_system.fifth_generation.heat_source_parameters"
+                    ):
                         if source_id == heat_source["heat_source_id"]:
                             waste_heat = WasteHeat(sys_params, heat_source)
                             break
@@ -144,8 +142,8 @@ class DistrictWasteHeat(TestCaseBase):
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation
-    @pytest.mark.dymola
-    @pytest.mark.skip(reason="Controller has too many event simulations for OM. Simulates as expected using Dymola")
+    # @pytest.mark.dymola
+    # @pytest.mark.skip(reason="Controller has too many event simulations for OM. Simulates as expected using Dymola")
     def test_simulate_district_waste_heat_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
