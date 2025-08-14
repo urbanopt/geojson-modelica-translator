@@ -142,8 +142,8 @@ class DistrictWasteHeat(TestCaseBase):
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation
-    # @pytest.mark.dymola
-    # @pytest.mark.skip(reason="Controller has too many event simulations for OM. Simulates as expected using Dymola")
+    @pytest.mark.dymola
+    @pytest.mark.skip(reason="Controller has too many event simulations for OM. Simulates as expected using Dymola")
     def test_simulate_district_waste_heat_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
