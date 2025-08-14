@@ -40,7 +40,10 @@ class TimeSeries(LoadBase):
         )
 
         if not os.path.exists(time_series_filename):
-            raise Exception(f"Missing MOS file for time series: {time_series_filename}")
+            raise Exception(
+                f"Missing MOS file for time series: {time_series_filename}\n"
+                "If providing a relative path, ensure it is relative to the system parameters file."
+            )
         elif os.path.splitext(time_series_filename)[1].lower() == ".csv":
             raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
 
