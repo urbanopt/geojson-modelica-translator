@@ -150,7 +150,7 @@ class DistrictWasteHeat(TestCaseBase):
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
             start_time=0,  # Day 0 (in seconds)
-            stop_time=86400,  # For 1 day duration (in seconds)
-            step_size=300,  # (in seconds)
+            stop_time=1000,  # For short duration (in seconds)
+            step_size=0.5,  # (in seconds)
             # simulation_flags="-mei=50000"
         )
