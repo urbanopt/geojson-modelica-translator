@@ -145,22 +145,22 @@ class SystemParameters:
         try:
             validate(instance=self.param_template, schema=self.schema)
         except ValidationError as error:
-            print("\n System Parameter Validation Error:")
-            print(f"  Bad Input Location: {' -> '.join(map(str, error.path)) if error.path else 'Root'}")
-            print(f"  Problematic Key: {error.path[-1] if error.path else 'N/A'}")
-            print(f"  Error: {error.message}")
+            logger.error("\n System Parameter Validation Error:")
+            logger.error(f"  Bad Input Location: {' -> '.join(map(str, error.path)) if error.path else 'Root'}")
+            logger.error(f"  Problematic Key: {error.path[-1] if error.path else 'N/A'}")
+            logger.error(f"  Error: {error.message}")
             fix = "\nSuggested Fix:"
             if "required" in error.schema and isinstance(error.schema["required"], list):
-                print(
+                logger.error(
                     f"{fix}  Ensure that the following required keys are present: {', '.join(error.schema['required'])}"
                 )
             elif "enum" in error.schema:
-                print(f"{fix}  Use one of the allowed values: {', '.join(map(str, error.schema['enum']))}")
+                logger.error(f"{fix}  Use one of the allowed values: {', '.join(map(str, error.schema['enum']))}")
             elif "minimum" in error.schema:
-                print(f"{fix}  Ensure the value is greater than or equal to: {error.schema['minimum']}")
+                logger.error(f"{fix}  Ensure the value is greater than or equal to: {error.schema['minimum']}")
             elif "type" in error.schema:
-                print(f"{fix}  Ensure the value is of type: {error.schema['type']}")
-            print(f"Ensure your value is in the correct format: {error.schema.get('format', 'string')}")
+                logger.error(f"{fix}  Ensure the value is of type: {error.schema['type']}")
+            logger.error(f"Ensure your value is in the correct format: {error.schema.get('format', 'string')}")
             raise ValidationError("Invalid system parameter file.")
 
     def download_weatherfile(self, filename, save_directory: str) -> Union[str, Path]:
