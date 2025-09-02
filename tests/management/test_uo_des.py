@@ -90,7 +90,7 @@ class CLIIntegrationTest(TestCase):
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
 
-    def test_cli_makes_model(self):
+    def test_cli_makes_4g_model(self):
         # -- Setup
         # Generate a sys-params file using the CLI
         project_name = "modelica_project_4g"
