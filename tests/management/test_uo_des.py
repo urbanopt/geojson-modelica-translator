@@ -28,8 +28,8 @@ class CLIIntegrationTest(TestCase):
             self.data_dir / "sdk_project_scraps" / "run" / "baseline_scenario" / "system_parameter.json"
         )
         self.day_200_in_seconds = 17280000  # in seconds
-        self.day_201_in_seconds = 17366400  # in seconds
-        self.step_size_90_seconds = 90  # in seconds
+        self.day_200_plus_a_thousand = 17280000 + 1000  # in seconds
+        self.step_size_one_second = 1  # in seconds
 
     def test_cli_builds_sys_params(self):
         self.sys_param_path.unlink(missing_ok=True)
@@ -329,9 +329,9 @@ class CLIIntegrationTest(TestCase):
                 "-a",
                 str(self.day_200_in_seconds),
                 "-z",
-                str(self.day_201_in_seconds),
+                str(self.day_200_plus_a_thousand),
                 "-x",
-                str(self.step_size_90_seconds),
+                str(self.step_size_one_second),
             ],
         )
 
@@ -356,9 +356,9 @@ class CLIIntegrationTest(TestCase):
                 "-a",
                 str(self.day_200_in_seconds),
                 "-z",
-                str(self.day_201_in_seconds),
+                str(self.day_200_plus_a_thousand),
                 "-x",
-                str(self.step_size_90_seconds),
+                str(self.step_size_one_second),
             ],
         )
 
@@ -383,9 +383,9 @@ class CLIIntegrationTest(TestCase):
                 "-a",
                 str(self.day_200_in_seconds),
                 "-z",
-                str(self.day_201_in_seconds),
+                str(self.day_200_plus_a_thousand),
                 "-x",
-                str(self.step_size_90_seconds),
+                str(self.step_size_one_second),
                 "-o",
                 ".*PPumETS,.*PHea",
             ],
@@ -412,9 +412,9 @@ class CLIIntegrationTest(TestCase):
                 "-a",
                 str(self.day_200_in_seconds),
                 "-z",
-                str(self.day_201_in_seconds),
+                str(self.day_200_plus_a_thousand),
                 "-x",
-                str(self.step_size_90_seconds),
+                str(self.step_size_one_second),
                 "-o",
                 ".*PPumETS,.*PHea",
                 "-c",
@@ -443,9 +443,9 @@ class CLIIntegrationTest(TestCase):
                 "-a",
                 str(self.day_200_in_seconds),
                 "-z",
-                str(self.day_201_in_seconds),
+                str(self.day_200_plus_a_thousand),
                 "-x",
-                str(self.step_size_90_seconds),
+                str(self.step_size_one_second),
                 "-o",
                 ".*PPumETS,.*PHea",
                 "-s",
