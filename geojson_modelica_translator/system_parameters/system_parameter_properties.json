@@ -1685,15 +1685,8 @@
           "default": 3,
           "format": "Meters"
         },
-        "b_max_x": {
-          "description": "Maximum borehole-to-borehole spacing in x-direction.",
-          "type": "number",
-          "minimum": 0,
-          "default": 10,
-          "format": "Meters"
-        },
-        "b_max_y": {
-          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing.",
           "type": "number",
           "minimum": 0,
           "default": 10,
