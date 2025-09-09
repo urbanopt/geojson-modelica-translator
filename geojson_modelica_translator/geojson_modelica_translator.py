@@ -18,6 +18,7 @@ from geojson_modelica_translator.model_connectors.networks.unidirectional_series
 from geojson_modelica_translator.model_connectors.plants import CoolingPlant
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.model_connectors.plants.chp import HeatingPlantWithOptionalCHP
+from geojson_modelica_translator.model_connectors.plants.waste_heat import WasteHeat
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
@@ -33,7 +34,9 @@ LOAD_MODEL_TO_CLASS = {
 }
 
 
-def _parse_couplings(geojson, sys_params, sys_param_district_type):
+def _parse_couplings(
+    geojson: UrbanOptGeoJson, sys_params: SystemParameters, sys_param_district_type: str
+) -> list[Coupling]:
     """Given config files, construct the necessary models and their couplings which
     can then be passed to CouplingGraph.
 
@@ -61,6 +64,19 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
             Coupling(cooling_plant, cooling_network),
             Coupling(heating_plant, heating_network),
         ]
+        for building in geojson.buildings:
+            load_model_type = sys_params.get_param_by_id(building.id, "load_model")
+            load_class = LOAD_MODEL_TO_CLASS[load_model_type]
+            load = load_class(sys_params, building)
+
+            cooling_indirect = CoolingIndirect(sys_params, building.id)
+            all_couplings.append(Coupling(load, cooling_indirect))
+            all_couplings.append(Coupling(cooling_indirect, cooling_network))
+
+            heating_indirect = HeatingIndirect(sys_params, building.id)
+            all_couplings.append(Coupling(load, heating_indirect))
+            all_couplings.append(Coupling(heating_indirect, heating_network))
+
     elif sys_param_district_type == "fifth_generation":
         # create ambient water stub
         ambient_water_stub = NetworkDistributionPump(sys_params)
@@ -73,10 +89,6 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
             # create ground coupling
             ground_coupling = GroundCoupling(sys_params)
             for loop in loop_order:
-                ghe_id = loop["list_ghe_ids_in_group"][0]
-                for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
-                    if ghe_id == ghe["ghe_id"]:
-                        borefield = Borefield(sys_params, ghe)
                 distribution = UnidirectionalSeries(sys_params)
                 for bldg_id in loop["list_bldg_ids_in_group"]:
                     for geojson_load in geojson.buildings:
@@ -85,40 +97,76 @@ def _parse_couplings(geojson, sys_params, sys_param_district_type):
                             time_series_load = TimeSeries(sys_params, geojson_load)
                             # couple each time series load to distribution
                             all_couplings.append(
-                                Coupling(time_series_load, distribution, district_type=sys_param_district_type)
+                                Coupling(time_series_load, distribution, district_type="fifth_generation")
                             )
                             all_couplings.append(
-                                Coupling(time_series_load, ambient_water_stub, district_type=sys_param_district_type)
+                                Coupling(time_series_load, ambient_water_stub, district_type="fifth_generation")
                             )
                             all_couplings.append(
-                                Coupling(time_series_load, design_data, district_type=sys_param_district_type)
+                                Coupling(time_series_load, design_data, district_type="fifth_generation")
                             )
-                # couple each borefield and distribution
-                all_couplings.append(Coupling(distribution, borefield, district_type=sys_param_district_type))
                 # couple distribution and ground coupling
-                all_couplings.append(Coupling(distribution, ground_coupling, district_type=sys_param_district_type))
-                # empty couple between borefield and ground
-                all_couplings.append(Coupling(ground_coupling, borefield, district_type=sys_param_district_type))
-            all_couplings.append(
-                Coupling(ambient_water_stub, ambient_water_stub, district_type=sys_param_district_type)
-            )
-        else:
-            pass  # Create waste heat components & couplings
-
-    # create the loads and their ETSes
-    for building in geojson.buildings:
-        load_model_type = sys_params.get_param_by_id(building.id, "load_model")
-        load_class = LOAD_MODEL_TO_CLASS[load_model_type]
-        load = load_class(sys_params, building)
-
-        if sys_param_district_type is None or sys_param_district_type == "fourth_generation":
-            cooling_indirect = CoolingIndirect(sys_params, building.id)
-            all_couplings.append(Coupling(load, cooling_indirect))
-            all_couplings.append(Coupling(cooling_indirect, cooling_network))
-
-            heating_indirect = HeatingIndirect(sys_params, building.id)
-            all_couplings.append(Coupling(load, heating_indirect))
-            all_couplings.append(Coupling(heating_indirect, heating_network))
+                all_couplings.append(Coupling(distribution, ground_coupling, district_type="fifth_generation"))
+                # look at the keys following the building group
+                keys = list(loop.keys())
+                if len(keys) > 1:
+                    next1_key = keys[1]
+                    if len(keys) > 2:
+                        next2_key = keys[2]
+                    else:
+                        next2_key = None
+                else:
+                    next1_key = None
+                    next2_key = None
+                if next1_key == "list_ghe_ids_in_group":
+                    ghe_id = loop["list_ghe_ids_in_group"][0]
+                    for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
+                        if ghe_id == ghe["ghe_id"]:
+                            borefield = Borefield(sys_params, ghe)
+                            break
+                    # empty coupling between each borefield and ground
+                    all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
+                    # couple each borefield and distribution
+                    all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
+                    # look at the following object
+                    if next2_key == "list_source_ids_in_group":
+                        source_id = loop["list_source_ids_in_group"][0]
+                        # create waste heat source and controller
+                        for heat_source in sys_params.get_param(
+                            "$.district_system.fifth_generation.heat_source_parameters"
+                        ):
+                            if source_id == heat_source["heat_source_id"]:
+                                waste_heat = WasteHeat(sys_params, heat_source)
+                                break
+                        # couple distribution and waste heat
+                        all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
+                        # couple borefield and waste heat
+                        all_couplings.append(Coupling(borefield, waste_heat, district_type="fifth_generation"))
+                elif next1_key == "list_source_ids_in_group":
+                    source_id = loop["list_source_ids_in_group"][0]
+                    # create waste heat source and controller
+                    for heat_source in sys_params.get_param(
+                        "$.district_system.fifth_generation.heat_source_parameters"
+                    ):
+                        if source_id == heat_source["heat_source_id"]:
+                            waste_heat = WasteHeat(sys_params, heat_source)
+                            break
+                    # couple distribution and waste heat
+                    all_couplings.append(Coupling(distribution, waste_heat, district_type="fifth_generation"))
+                    # look at the following object
+                    if next2_key == "list_ghe_ids_in_group":
+                        ghe_id = loop["list_ghe_ids_in_group"][0]
+                        for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
+                            if ghe_id == ghe["ghe_id"]:
+                                borefield = Borefield(sys_params, ghe)
+                                break
+                        # empty coupling between each borefield and ground
+                        all_couplings.append(Coupling(ground_coupling, borefield, district_type="fifth_generation"))
+                        # couple each borefield and distribution
+                        all_couplings.append(Coupling(distribution, borefield, district_type="fifth_generation"))
+                        # couple waste heat and borefield
+                        all_couplings.append(Coupling(waste_heat, borefield, district_type="fifth_generation"))
+            all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
 
     return all_couplings
 
