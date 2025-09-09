@@ -150,7 +150,8 @@
               "b_max_y": 10.0,
               "max_height": 135.0,
               "min_height": 60.0,
-              "borehole_length": 1
+              "borehole_length": 1,
+              "number_of_boreholes": 1
             }
           },
           {
