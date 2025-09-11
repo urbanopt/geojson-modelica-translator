@@ -17,13 +17,26 @@ from management.uo_des import cli
 class CLIIntegrationTest(TestCase):
     def setUp(self):
         self.runner = CliRunner()
-        self.data_dir = Path(__file__).parent / "data"
-        self.output_dir = Path(__file__).parent / "output"
+        self.data_dir = Path(__file__).parent.resolve() / "data"
+        self.output_dir = Path(__file__).parent.resolve() / "output"
         self.output_dir.mkdir(exist_ok=True)
         self.scenario_file_path = self.data_dir / "sdk_project_scraps" / "baseline_scenario.csv"
         self.feature_file_path = self.data_dir / "sdk_project_scraps" / "example_project.json"
         self.feature_file_path_ghe = self.data_dir / "sdk_project_scraps" / "exportGeo_combine_GHE.json"
         self.feature_file_path_germany = self.data_dir / "sdk_project_scraps" / "exportGeo_germany_ghe.json"
+        self.sys_param_path_waste_heat = (
+            self.data_dir.parent.parent / "model_connectors" / "data" / "waste_heat_demo" / "system_parameter.json"
+        )
+        self.scenario_file_path_waste_heat = (
+            self.data_dir.parent.parent / "model_connectors" / "data" / "waste_heat_demo" / "baseline_scenario.csv"
+        )
+        self.feature_file_path_waste_heat = (
+            self.data_dir.parent.parent
+            / "model_connectors"
+            / "data"
+            / "waste_heat_demo"
+            / "time_series_waste_heat_ghe.json"
+        )
         self.sys_param_path = (
             self.data_dir / "sdk_project_scraps" / "run" / "baseline_scenario" / "system_parameter.json"
         )
@@ -40,8 +53,8 @@ class CLIIntegrationTest(TestCase):
             [
                 "build-sys-param",
                 str(self.sys_param_path),
-                str(self.scenario_file_path.resolve()),
-                str(self.feature_file_path.resolve()),
+                str(self.scenario_file_path),
+                str(self.feature_file_path),
             ],
         )
 
@@ -59,8 +72,8 @@ class CLIIntegrationTest(TestCase):
             [
                 "build-sys-param",
                 str(self.sys_param_path),
-                str(self.scenario_file_path.resolve()),
-                str(self.feature_file_path_ghe.resolve()),
+                str(self.scenario_file_path),
+                str(self.feature_file_path_ghe),
                 "5G_ghe",
             ],
         )
@@ -79,8 +92,8 @@ class CLIIntegrationTest(TestCase):
             [
                 "build-sys-param",
                 str(self.sys_param_path),
-                str(self.scenario_file_path.resolve()),
-                str(self.feature_file_path_germany.resolve()),
+                str(self.scenario_file_path),
+                str(self.feature_file_path_germany),
                 "5G_ghe",
             ],
         )
@@ -89,6 +102,26 @@ class CLIIntegrationTest(TestCase):
 
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
+
+    def test_cli_builds_sys_params_with_waste_heat(self):
+        self.sys_param_path_waste_heat.unlink(missing_ok=True)
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path_waste_heat),
+                str(self.scenario_file_path_waste_heat),
+                str(self.feature_file_path_waste_heat),
+                "5G_ghe",
+            ],
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert self.sys_param_path_waste_heat.exists()
 
     def test_cli_makes_4g_model(self):
         # -- Setup
@@ -105,8 +138,8 @@ class CLIIntegrationTest(TestCase):
             [
                 "build-sys-param",
                 str(self.sys_param_path),
-                str(self.scenario_file_path.resolve()),
-                str(self.feature_file_path.resolve()),
+                str(self.scenario_file_path),
+                str(self.feature_file_path),
             ],
         )
 
@@ -195,6 +228,64 @@ class CLIIntegrationTest(TestCase):
                 "create-model",
                 str(self.sys_param_path),
                 str(self.feature_file_path_ghe),
+                str(self.output_dir / project_name),
+            ],
+        )
+
+        # -- Assert
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
+
+    def test_cli_makes_model_with_waste_heat(self):
+        # -- Setup
+        # first verify the package can be generated without the CLI (ie verify our
+        # files are valid)
+        project_name = "modelica_project_waste_heat"
+        if (self.output_dir / project_name).exists():
+            rmtree(self.output_dir / project_name)
+
+        self.sys_param_path_waste_heat.unlink(missing_ok=True)
+
+        # run subprocess as if we're an end-user
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path_waste_heat),
+                str(self.scenario_file_path_waste_heat),
+                str(self.feature_file_path_waste_heat),
+                "5G_ghe",
+            ],
+        )
+
+        assert res.exit_code == 0
+
+        # If this file exists, the cli command ran successfully
+        assert self.sys_param_path_waste_heat.exists()
+
+        gmt = GeoJsonModelicaTranslator(
+            self.feature_file_path_waste_heat,
+            self.sys_param_path_waste_heat,
+            self.output_dir,
+            project_name,
+        )
+
+        gmt.to_modelica()
+
+        # If this file exists, the code successfully built the model
+        assert (self.output_dir / project_name / "Districts" / "DistrictEnergySystem.mo").exists()
+        # Great! We know our files are good, let's cleanup and test the CLI
+        rmtree(self.output_dir / project_name)
+
+        # -- Act
+        res = self.runner.invoke(
+            cli,
+            [
+                "create-model",
+                str(self.sys_param_path_waste_heat),
+                str(self.feature_file_path_waste_heat),
                 str(self.output_dir / project_name),
             ],
         )
