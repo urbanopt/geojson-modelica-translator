@@ -59,6 +59,11 @@ jobs:
             mv modelicafmt '/c/Program Files/'
           fi
       - name: Install MBL
+        uses: actions/checkout@v5
+        with:
+          repository: lbl-srg/modelica-buildings
+          ref: matrix.mbl_tag
+          path: modelica-buildings
         run: |
           if [[ '${{ matrix.os }}' == 'ubuntu-latest' ]]; then
             MODELICAPATH='/home/runner/work/modelica-buildings'
@@ -66,7 +71,7 @@ jobs:
             echo $GITHUB_WORKSPACE
             MODELICAPATH='/c/Program Files/modelica-buildings'
           fi
-          git clone --single-branch --branch ${{ matrix.mbl_tag }} https://github.com/lbl-srg/modelica-buildings.git "${MODELICAPATH}"
+          mv modelica-buildings ${MODELICAPATH}
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
