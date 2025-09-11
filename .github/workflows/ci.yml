@@ -64,6 +64,7 @@ jobs:
           repository: lbl-srg/modelica-buildings
           ref: matrix.mbl_tag
           path: modelica-buildings
+      - name: Set MODELICAPATH
         run: |
           if [[ '${{ matrix.os }}' == 'ubuntu-latest' ]]; then
             MODELICAPATH='/home/runner/work/modelica-buildings'
