@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: lbl-srg/modelica-buildings
-          ref: matrix.mbl_tag
+          ref: ${{ matrix.mbl_tag }}
           path: modelica-buildings
       - name: Set MODELICAPATH
         run: |
