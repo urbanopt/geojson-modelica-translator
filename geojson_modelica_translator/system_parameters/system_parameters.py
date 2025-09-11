@@ -787,6 +787,29 @@ class SystemParameters:
 
         return ghe_sys_param
 
+    def process_heat_recovery_inputs(self, feature_properties: dict):
+        # Deepcopy the template (dummy) entry
+        heat_recovery_params = deepcopy(
+            self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0]
+        )
+        # Update with real data
+        heat_recovery_params["heat_source_id"] = feature_properties["id"]
+        potential_temp_schedule_path = self.sys_param_filename.parent / "TWasHeaWatSchedule.mos"
+        if potential_temp_schedule_path.exists():
+            heat_recovery_params["heat_source_temperature"] = str(potential_temp_schedule_path)
+        potential_rate_schedule_path = self.sys_param_filename.parent / "TWasHeaWatSchedule.mos"
+        if potential_rate_schedule_path.exists():
+            heat_recovery_params["heat_source_rate"] = str(potential_rate_schedule_path)
+        # Append to the list
+        self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"].append(
+            heat_recovery_params
+        )
+
+        # Remove the original dummy entry if it exists and this is the first real entry
+        params = self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
+        if len(params) > 1 and params[0]["heat_source_id"] == "asdf":
+            del params[0]
+
     def retrieve_building_data_from_sdk(
         self, scenario_dir: Path, modelica_load_filename, model_type: str, district_type: str
     ):
@@ -1012,27 +1035,26 @@ class SystemParameters:
                     "Perhaps you haven't run REopt post-processing step in the UO sdk?"
                 )
 
+        for feature in self.sdk_input["features"]:
+            if "Waste Heat Source--Ambient Water" in str(feature["properties"].get("equipment", [])):
+                self.process_heat_recovery_inputs(feature["properties"])
+
+        # If there are no heat sources, remove the dummy entry
+        if (
+            len(self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]) == 1
+        ) and self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
+            "heat_source_id"
+        ] == "asdf":
+            with suppress(KeyError):
+                del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
+
         # Remove template components that do not apply
         match district_type:
             case "5G_ghe":
                 del self.param_template["district_system"]["fourth_generation"]
-                if (
-                    self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
-                        "heat_source_rate"
-                    ]
-                    == "To be populated"
-                ):
-                    del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
                 self.process_ghe_inputs(scenario_dir)
             case "5G":
                 del self.param_template["district_system"]["fourth_generation"]
-                if (
-                    self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
-                        "heat_source_rate"
-                    ]
-                    == "To be populated"
-                ):
-                    del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
             case "4G" | "steam":
                 with suppress(KeyError):
