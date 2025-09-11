@@ -797,7 +797,7 @@ class SystemParameters:
         potential_temp_schedule_path = self.sys_param_filename.parent / "TWasHeaWatSchedule.mos"
         if potential_temp_schedule_path.exists():
             heat_recovery_params["heat_source_temperature"] = str(potential_temp_schedule_path)
-        potential_rate_schedule_path = self.sys_param_filename.parent / "TWasHeaWatSchedule.mos"
+        potential_rate_schedule_path = self.sys_param_filename.parent / "WasteHeatSchedule.mos"
         if potential_rate_schedule_path.exists():
             heat_recovery_params["heat_source_rate"] = str(potential_rate_schedule_path)
         # Append to the list
