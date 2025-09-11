@@ -46,11 +46,11 @@ class WasteHeat(PlantBase):
         sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
 
         if isinstance(heat_source_rate, str):
+            if not Path(heat_source_rate).expanduser().is_absolute():
+                heat_source_rate = sys_param_dir / heat_source_rate
             heat_source_rate_in_package = (
                 Path(p_modelica_path.root_dir).parent / "Schedules" / Path(heat_source_rate).name
             ).resolve()
-            if not Path(heat_source_rate).expanduser().is_absolute():
-                heat_source_rate = sys_param_dir / heat_source_rate
             if not Path(heat_source_rate).is_file():
                 raise SystemExit(
                     f"Can't find rate schedule file.\n"
@@ -64,11 +64,11 @@ class WasteHeat(PlantBase):
             waste_heat_params["heat_source_rate"] = heat_source_rate
 
         if isinstance(heat_source_temperature, str):
+            if not Path(heat_source_temperature).expanduser().is_absolute():
+                heat_source_temperature = sys_param_dir / heat_source_temperature
             heat_source_temperature_in_package = (
                 Path(p_modelica_path.root_dir).parent / "Schedules" / Path(heat_source_temperature).name
             ).resolve()
-            if not Path(heat_source_temperature).expanduser().is_absolute():
-                heat_source_temperature = sys_param_dir / heat_source_temperature
             if not Path(heat_source_temperature).is_file():
                 raise SystemExit(
                     f"Can't find temperature schedule file.\n"
