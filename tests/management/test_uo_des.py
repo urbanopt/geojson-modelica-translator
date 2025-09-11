@@ -549,3 +549,30 @@ class CLIIntegrationTest(TestCase):
         ).exists()
         # TODO: check the output that the simulation had the appropriate flags applied.
         # noEventEmit should result in smaller file size. abortSlowSimulation is to show how to pass multiple flags
+
+    @pytest.mark.simulation
+    def test_cli_runs_existing_waste_heat_model(self):
+        project_name = "modelica_project_waste_heat"
+        results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
+        if (self.output_dir / project_name / results_dir).exists():
+            rmtree(self.output_dir / project_name / results_dir)
+
+        # run subprocess as if we're an end-user
+        self.runner.invoke(
+            cli,
+            [
+                "run-model",
+                str(self.output_dir / project_name),
+                "-a",
+                str(self.day_200_in_seconds),
+                "-z",
+                str(self.day_200_plus_a_thousand),
+                "-x",
+                str(self.step_size_one_second),
+            ],
+        )
+
+        # If this file exists, the cli command ran successfully
+        assert (
+            self.output_dir / project_name / results_dir / f"{project_name}.Districts.DistrictEnergySystem_res.mat"
+        ).exists()
