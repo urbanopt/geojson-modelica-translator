@@ -24,7 +24,7 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
     {% if source.heat_source_id == graph.get_source_id(coupling.id) %}
       {% if source.heat_source_rate is string %}
         parameter String filNam_QWasHea_{{ coupling.plant.id }}=Modelica.Utilities.Files.loadResource(
-          "modelica://{{ globals.project_name }}/Schedules/{{ source.heat_source_rate }}")
+          "modelica://{{ globals.project_name }}/Schedules/{{ source.heat_source_rate | basename }}")
           "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
         Modelica.Blocks.Sources.CombiTimeTable QWasHea_{{ coupling.id }}(
           each y(
@@ -53,7 +53,7 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
       {% endif %}
       {% if source.heat_source_temperature is string %}
         parameter String filNam_TWasHea_{{ coupling.id }}=Modelica.Utilities.Files.loadResource(
-          "modelica://{{ globals.project_name }}/Schedules/{{ source.heat_source_temperature }}")
+          "modelica://{{ globals.project_name }}/Schedules/{{ source.heat_source_temperature | basename }}")
           "Waste heat temperature as time series";
         Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat_{{ coupling.id }}(
           each y(

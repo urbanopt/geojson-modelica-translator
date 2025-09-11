@@ -12,7 +12,7 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
 {% if sys_params.district_system.fifth_generation.heat_source_parameters is defined %}
   {% if isinstance(data.heat_source_rate, str) %}
     parameter String filNam_QWasHea_{{ coupling.id }}=Modelica.Utilities.Files.loadResource(
-      "modelica://{{ globals.project_name }}/Schedules/{{ data.heat_source_rate }}")
+      "modelica://{{ globals.project_name }}/Schedules/{{ data.heat_source_rate | basename }}")
       "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
     Modelica.Blocks.Sources.CombiTimeTable QWasHea_{{ coupling.id }}(
       each y(
@@ -40,7 +40,7 @@ m_flow_nominal=datDes.mPumDis_flow_nominal)
   {% endif %}
   {% if isinstance(data.heat_source_temperature, str) %}
     parameter String filNam_TWasHea_{{ coupling.id }}=Modelica.Utilities.Files.loadResource(
-      "modelica://{{ globals.project_name }}/Schedules/{{ data.heat_source_temperature }}")
+      "modelica://{{ globals.project_name }}/Schedules/{{ data.heat_source_temperature | basename }}")
       "Waste heat temperature as time series";
     Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat_{{ coupling.id }}(
       each y(
