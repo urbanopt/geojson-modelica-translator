@@ -71,7 +71,7 @@ jobs:
       - name: Set MODELICAPATH
         run: |
           if [[ '${{ matrix.os }}' == 'ubuntu-latest' ]]; then
-            MODELICAPATH='/home/runner/work/modelica-buildings'
+            MODELICAPATH="${GITHUB_WORKSPACE}/modelica-buildings"
           else
             echo $GITHUB_WORKSPACE
             # For Windows, use a simpler path without spaces
