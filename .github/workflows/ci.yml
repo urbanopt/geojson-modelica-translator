@@ -58,6 +58,10 @@ jobs:
           else
             mv modelicafmt '/c/Program Files/'
           fi
+      - name: Allow long filenames in Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          git config --system core.longpaths true
       - name: Install MBL
         uses: actions/checkout@v5
         with:
