@@ -67,19 +67,10 @@ jobs:
         with:
           repository: lbl-srg/modelica-buildings
           ref: ${{ matrix.mbl_tag }}
-          path: modelica-buildings
+          path: ${{ runner.workspace }}/modelica-buildings
       - name: Set MODELICAPATH
         run: |
-          if [[ '${{ matrix.os }}' == 'ubuntu-latest' ]]; then
-            MODELICAPATH="${GITHUB_WORKSPACE}/modelica-buildings"
-          else
-            echo $GITHUB_WORKSPACE
-            # For Windows, use a simpler path without spaces
-            MODELICAPATH='/c/modelica-buildings'
-            # Ensure parent directory exists
-            mkdir -p "$(dirname "${MODELICAPATH}")"
-            mv ./modelica-buildings ${MODELICAPATH}
-          fi
+          MODELICAPATH="${{ runner.workspace }}/modelica-buildings"
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
