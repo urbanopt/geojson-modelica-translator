@@ -74,7 +74,7 @@ jobs:
             MODELICAPATH='/home/runner/work/modelica-buildings'
           else
             echo $GITHUB_WORKSPACE
-            MODELICAPATH='/c/Program Files/modelica-buildings'
+            MODELICAPATH='/c/Program\ Files/modelica-buildings'
           fi
           mv ./modelica-buildings ${MODELICAPATH}
           cd "${MODELICAPATH}"
