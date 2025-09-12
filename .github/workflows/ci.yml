@@ -74,7 +74,14 @@ jobs:
             MODELICAPATH='/home/runner/work/modelica-buildings'
           else
             echo $GITHUB_WORKSPACE
+<<<<<<< HEAD
             MODELICAPATH='/c/Program\ Files/modelica-buildings'
+=======
+            # For Windows, use a simpler path without spaces
+            MODELICAPATH='/c/modelica-buildings'
+            # Ensure parent directory exists
+            mkdir -p "$(dirname "${MODELICAPATH}")"
+>>>>>>> 4589e07b (escape space in windows path)
           fi
           mv ./modelica-buildings ${MODELICAPATH}
           cd "${MODELICAPATH}"
