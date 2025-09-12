@@ -67,10 +67,10 @@ jobs:
         with:
           repository: lbl-srg/modelica-buildings
           ref: ${{ matrix.mbl_tag }}
-          path: ${{ runner.workspace }}/../modelica-buildings
+          path: modelica-buildings
       - name: Set MODELICAPATH
         run: |
-          MODELICAPATH="${{ runner.workspace }}/../modelica-buildings"
+          MODELICAPATH="${{ github.workspace }}/modelica-buildings"
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
