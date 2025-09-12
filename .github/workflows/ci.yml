@@ -78,8 +78,8 @@ jobs:
             MODELICAPATH='/c/modelica-buildings'
             # Ensure parent directory exists
             mkdir -p "$(dirname "${MODELICAPATH}")"
+            mv ./modelica-buildings ${MODELICAPATH}
           fi
-          mv ./modelica-buildings ${MODELICAPATH}
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
