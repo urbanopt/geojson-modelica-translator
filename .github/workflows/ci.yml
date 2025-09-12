@@ -76,7 +76,7 @@ jobs:
             echo $GITHUB_WORKSPACE
             MODELICAPATH='/c/Program Files/modelica-buildings'
           fi
-          mv modelica-buildings ${MODELICAPATH}
+          mv ./modelica-buildings ${MODELICAPATH}
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
