@@ -76,10 +76,10 @@ end Simple;"""
         bad_line = "{{ diagram.line.bad }}"
 
         # Act/Assert
-        with pytest.raises(TypeError, match='Invalid diagram templating command: "transformation".*'):
+        with pytest.raises(TypeError, match='Invalid diagram templating command: "transformation"'):
             parse_diagram_commands(bad_transformation)
 
-        with pytest.raises(TypeError, match='Invalid diagram templating command: "line".*'):
+        with pytest.raises(TypeError, match='Invalid diagram templating command: "line"'):
             parse_diagram_commands(bad_line)
 
     def test_diagram_commands_to_graph_succeeds_for_transformations(self):
