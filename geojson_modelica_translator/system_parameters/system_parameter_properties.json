@@ -1513,6 +1513,9 @@
         "autosized_rectangle_borefield": {
           "$ref": "#/definitions/autosized_rectangle_borefield_def"
         },
+        "autosized_rectangle_constrained_borefield": {
+          "$ref": "#/definitions/autosized_rectangle_constrained_borefield_def"
+        },
         "autosized_birectangle_borefield": {
           "$ref": "#/definitions/autosized_birectangle_borefield_def"
         },
@@ -1671,6 +1674,57 @@
       ],
       "additionalProperties": true
     },
+    "autosized_rectangle_constrained_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the RECTANGLECONSTRAINED method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length"
+      ],
+      "additionalProperties": true
+    },
     "autosized_birectangle_borefield_def": {
       "description": "Borefield properties for Ground Heat Exchanger sizing via the BIRECTANGLE method.",
       "type": "object",
@@ -1795,41 +1849,11 @@
           "minimum": 0,
           "default": 100,
           "format": "Meters"
-        },
-        "property_boundary": {
-          "description": "(x, y) coordinate points of closed polygon defining property boundary. Points should be entered in a counter-clockwise fashion.",
-          "type": "array",
-          "items": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "format": "Meters"
-        },
-        "no_go_boundaries": {
-          "description": "(x, y) coordinate points of closed polygon defining go/no-go boundaries. Go/no-go zones must lie within the area defined in 'property_boundary'. Points should be entered in a counter-clockwise fashion.",
-          "type": "array",
-          "items": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "format": "Meters"
         }
       },
       "required": [
         "number_of_boreholes",
-        "borehole_length",
-        "property_boundary",
-        "no_go_boundaries"
+        "borehole_length"
       ],
       "additionalProperties": true
     },
@@ -2025,34 +2049,6 @@
           "minimum": 0,
           "default": 100,
           "format": "Meters"
-        },
-        "property_boundary": {
-          "description": "(x, y) coordinate points of closed polygon defining property boundary. Points should be entered in a counter-clockwise fashion.",
-          "type": "array",
-          "items": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "format": "Meters"
-        },
-        "no_go_boundaries": {
-          "description": "(x, y) coordinate points of closed polygon defining go/no-go boundaries. Go/no-go zones must lie within the area defined in 'property_boundary'. Points should be entered in a counter-clockwise fashion.",
-          "type": "array",
-          "items": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          "format": "Meters"
         }
       },
       "required": [
@@ -2063,9 +2059,7 @@
         "max_rotation",
         "rotate_step",
         "number_of_boreholes",
-        "borehole_length",
-        "property_boundary",
-        "no_go_boundaries"
+        "borehole_length"
       ],
       "additionalProperties": true
     },
