@@ -268,7 +268,7 @@ class InputParser:
             replace_all (bool, optional):  allow replacement of all strings. Defaults to False.
         """
         # find the connection that matches a, b
-        index, c = self.find_connect(a, b)
+        index, _c = self.find_connect(a, b)
         while index:
             if index:
                 if new_a:
@@ -279,7 +279,7 @@ class InputParser:
             if not replace_all:
                 break
             else:
-                index, c = self.find_connect(a, b)
+                index, _c = self.find_connect(a, b)
 
     def remove_connect_string(self, a: str, b: str) -> None:
         """Remove a connection string that matches the a, b.
