@@ -60,6 +60,6 @@ class TeaserModelConnectorSingleBuildingTest(TestCaseBase):
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
             start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
-            stop_time=17366400,  # For 1 day duration (in seconds)
-            step_size=90,  # (in seconds)
+            stop_time=17290000,  # For 10_000 seconds duration (in seconds)
+            step_size=1,  # (in seconds)
         )
