@@ -82,15 +82,14 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="Takes forever to run. Teaser is a problem for another day.")
     def test_teaser_district_heating_and_cooling_systems(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
             start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
-            stop_time=17366400,  # For 1 day duration (in seconds)
-            step_size=3600,  # At 1 hour intervals (in seconds)
+            stop_time=17290000,  # For 10_000 seconds duration (in seconds)
+            step_size=1,  # (in seconds)
         )
 
         #
@@ -117,11 +116,13 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         (_, cool_m_flow_nominal) = mat_results.values(f"{load.id}.terUni[1].mLoaCoo_flow_nominal")
         cool_m_flow_nominal = cool_m_flow_nominal[0]
 
-        assert heat_m_flow <= pytest.approx(heat_m_flow_nominal, rel=m_flow_nominal_tolerance).all(), (
-            "Heating mass flow rate must be less than nominal "
-            f"mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
-        )
-        assert cool_m_flow <= pytest.approx(cool_m_flow_nominal, rel=m_flow_nominal_tolerance).all(), (
-            "Cooling mass flow rate must be less than nominal "
-            f"mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
-        )
+        for idx, flow_rate in enumerate(heat_m_flow):
+            assert flow_rate <= heat_m_flow_nominal * (1 + m_flow_nominal_tolerance), (
+                f"Heating mass flow rate at time index {idx} must no more than nominal "
+                f"mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
+            )
+        for idx, flow_rate in enumerate(cool_m_flow):
+            assert flow_rate <= cool_m_flow_nominal * (1 + m_flow_nominal_tolerance), (
+                f"Cooling mass flow rate at time index {idx} must no more than nominal "
+                f"mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
+            )
