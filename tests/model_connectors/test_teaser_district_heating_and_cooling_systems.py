@@ -117,12 +117,12 @@ class TestTeaserDistrictHeatingAndCoolingSystems(TestCaseBase):
         cool_m_flow_nominal = cool_m_flow_nominal[0]
 
         for idx, flow_rate in enumerate(heat_m_flow):
-            assert flow_rate <= heat_m_flow_nominal + m_flow_nominal_tolerance, (
-                f"Heating mass flow rate at time index {idx} must be less than nominal "
+            assert flow_rate <= heat_m_flow_nominal * (1 + m_flow_nominal_tolerance), (
+                f"Heating mass flow rate at time index {idx} must no more than nominal "
                 f"mass flow rate ({heat_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
             )
         for idx, flow_rate in enumerate(cool_m_flow):
-            assert flow_rate <= cool_m_flow_nominal + m_flow_nominal_tolerance, (
-                f"Cooling mass flow rate at time index {idx} must be less than nominal "
+            assert flow_rate <= cool_m_flow_nominal * (1 + m_flow_nominal_tolerance), (
+                f"Cooling mass flow rate at time index {idx} must no more than nominal "
                 f"mass flow rate ({cool_m_flow_nominal}) plus a tolerance ({m_flow_nominal_tolerance * 100}%)"
             )
