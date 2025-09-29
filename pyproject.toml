@@ -51,7 +51,7 @@ mypy = "^1.17"
 pre-commit = "^4.0"
 pytest = "^8.3"
 pytest-cov = ">=6,<8"
-syrupy = "^4.8"
+syrupy = ">=4.8,<6.0"
 # documentation - these are used during development of docs, not deployment
 markdown-include = "^0.8.1"
 mkdocs-material = "^9.5"
