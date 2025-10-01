@@ -17,10 +17,11 @@ logger = logging.getLogger(__name__)
 class WasteHeat(PlantBase):
     model_name = "WasteHeatRecovery"
 
-    def __init__(self, system_parameters):
+    def __init__(self, system_parameters, heat_source=None):
         super().__init__(system_parameters)
         self.id = "wasHea_" + simple_uuid()
         self.waste_heat_name = "WasteHeat_" + simple_uuid()
+        self.source_id = heat_source["heat_source_id"]
 
         self.required_mo_files.append(os.path.join(self.template_dir, "WasteHeatController.mo"))
 
@@ -35,61 +36,67 @@ class WasteHeat(PlantBase):
 
         p_modelica_path = ModelicaPath(self.waste_heat_name, scaffold.plants_path.files_dir, True)
 
-        rate_schedule_path = Path(
-            self.system_parameters.get_param(
-                "$.district_system.fifth_generation.waste_heat_parameters.rate_schedule_path"
-            )
-        )
-        temperature_schedule_path = Path(
-            self.system_parameters.get_param(
-                "$.district_system.fifth_generation.waste_heat_parameters.temperature_schedule_path"
-            )
-        )
+        waste_heat_params = {}
+
+        heat_source_rate = self.system_parameters.get_param_by_id(self.source_id, "heat_source_rate")
+
+        heat_source_temperature = self.system_parameters.get_param_by_id(self.source_id, "heat_source_temperature")
 
         # Handle relative paths to schedule files (relative to sys-param file)
         sys_param_dir = Path(self.system_parameters.filename).parent.resolve()
-        if not rate_schedule_path.expanduser().is_absolute():
-            rate_schedule_path = sys_param_dir / rate_schedule_path.name
-            if not rate_schedule_path.is_file():
+
+        if isinstance(heat_source_rate, str):
+            if not Path(heat_source_rate).expanduser().is_absolute():
+                heat_source_rate = sys_param_dir / heat_source_rate
+            heat_source_rate_in_package = (
+                Path(p_modelica_path.root_dir).parent / "Schedules" / Path(heat_source_rate).name
+            ).resolve()
+            if not Path(heat_source_rate).is_file():
                 raise SystemExit(
                     f"Can't find rate schedule file.\n"
                     "If using a relative path, your path "
-                    f" '{rate_schedule_path}' must be relative to the dir your "
-                    "sys-param file is in."
+                    f" '{heat_source_rate}' must be relative to the dir your sys-param file is in."
                 )
-        if not temperature_schedule_path.expanduser().is_absolute():
-            temperature_schedule_path = sys_param_dir / temperature_schedule_path.name
-            if not temperature_schedule_path.is_file():
+            # Copy schedule file into the modelica package
+            shutil.copy(heat_source_rate, heat_source_rate_in_package)
+
+        elif isinstance(heat_source_rate, int):
+            waste_heat_params["heat_source_rate"] = heat_source_rate
+
+        if isinstance(heat_source_temperature, str):
+            if not Path(heat_source_temperature).expanduser().is_absolute():
+                heat_source_temperature = sys_param_dir / heat_source_temperature
+            heat_source_temperature_in_package = (
+                Path(p_modelica_path.root_dir).parent / "Schedules" / Path(heat_source_temperature).name
+            ).resolve()
+            if not Path(heat_source_temperature).is_file():
                 raise SystemExit(
                     f"Can't find temperature schedule file.\n"
                     "If using a relative path, your path "
-                    f" '{temperature_schedule_path}' must be relative to the dir your "
-                    "sys-param file is in."
+                    f" '{heat_source_temperature}' must be relative to the dir your sys-param file is in."
                 )
-
-        # copy over the waste heat schedule files
-        # TODO: move some of this over to a validation step
-        rate_schedule_path_in_package = (
-            Path(p_modelica_path.root_dir).parent / "Schedules" / rate_schedule_path.name
-        ).resolve()
-        shutil.copy(rate_schedule_path, rate_schedule_path_in_package)
-
-        temperature_schedule_path_in_package = (
-            Path(p_modelica_path.root_dir).parent / "Schedules" / temperature_schedule_path.name
-        ).resolve()
-        shutil.copy(temperature_schedule_path, temperature_schedule_path_in_package)
+            # Copy schedule file into the modelica package
+            shutil.copy(heat_source_temperature, heat_source_temperature_in_package)
+        elif isinstance(heat_source_temperature, int):
+            waste_heat_params["heat_source_temperature"] = heat_source_temperature
 
         self.run_template(
             template=waste_heat_template,
             save_file_name=Path(p_modelica_path.files_dir) / "WasteHeatRecovery.mo",
             project_name=scaffold.project_name,
             model_name=self.waste_heat_name,
+            data=waste_heat_params,
         )
 
         # generate Modelica package
         self.copy_required_mo_files(
             dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
         )
+
+        # copy the schedule files into the Modelica model scaffold
+        # new_file = Path(p_modelica_path.schedules_dir) / schedule_filepath
+        # os.makedirs(os.path.dirname(new_file), exist_ok=True)
+        # shutil.copy(time_series_filename, new_file)
 
         # run post process to create the remaining project files for this building
         self.post_process(scaffold)
@@ -118,7 +125,7 @@ class WasteHeat(PlantBase):
         package_models = [self.waste_heat_name] + [Path(mo).stem for mo in self.required_mo_files]
         if not (Path(scaffold.plants_path.files_dir) / "package.mo").exists():
             plant_package = PackageParser.new_from_template(
-                scaffold.plants_path.files_dir, "Plants", [self.waste_heat_name], within=f"{scaffold.project_name}"
+                scaffold.plants_path.files_dir, "Plants", package_models, within=f"{scaffold.project_name}"
             )
             plant_package.save()
         else:

@@ -11,11 +11,7 @@
   Buildings.DHC.Networks.Controls.MainPump1Pipe conPum(
     nMix=datDes.nBui,
     nBui=datDes.nBui,
-    {% if loop_order is defined %}
-    nSou={{ loop_order.number_of_loops }},
-    {% else %}
-    nSou=1,
-    {% endif %}
+    nSou={{ loop_order.number_of_sources }},
     use_temperatureShift=false)
     {% raw %}annotation (Placement(transformation(extent={{-120,-100},{-100,-80}})));
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)

@@ -1,7 +1,14 @@
 // Connections between ground coupling and distribution
 {% for group_num in range(loop_order.number_of_loops) %}
   {% set dis_id = graph.get_other_model(coupling.id, coupling.network.id).id %}
-  {% if graph.get_ghe_id(graph.couplings_by_type(dis_id).plant_couplings[0].id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+  {% if loop_order.data[group_num].list_ghe_ids_in_group is defined %}
+    {% set plant_id = loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    {% set get_id_func = graph.get_ghe_id %}
+  {% else %}
+    {% set plant_id = loop_order.data[group_num].list_source_ids_in_group[0] %}
+    {% set get_id_func = graph.get_source_id %}
+  {% endif %}
+  {% if get_id_func(graph.couplings_by_type(dis_id).plant_couplings[0].id) == plant_id %}
     {% if group_num == 0 %}
       connect({{ dis_id }}.heatPortGro, {{ coupling.network.id }}.ports[1,1:{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}])
     {% else %}

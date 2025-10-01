@@ -23,6 +23,8 @@ class SystemParametersTest(unittest.TestCase):
         self.microgrid_weather_dir = self.microgrid_scenario_dir.parent.parent / "weather"
         self.microgrid_feature_file = self.data_dir / "sdk_microgrid_output_skeleton" / "example_project.json"
         self.microgrid_output_dir = Path(__file__).parent / "microgrid_output"
+        self.waste_heat_scenario_dir = self.data_dir / "waste_heat_demo" / "run" / "baseline_scenario"
+        self.waste_heat_feature_file = self.data_dir / "waste_heat_demo" / "time_series_waste_heat_ghe.json"
         self.feature_file = self.data_dir / "sdk_output_skeleton" / "example_project.json"
         self.sys_param_template = (
             Path(__file__).parent.parent.parent
@@ -293,11 +295,11 @@ class SystemParametersTest(unittest.TestCase):
         self.maxDiff = None
 
         # Act
-        with pytest.raises(SystemExit) as context:
+        with pytest.raises(KeyError) as excinfo:
             sdp.get_param_by_id(None, "ets_model")
 
         # Assert
-        assert "No id submitted. Please retry and include the appropriate id" in str(context.value)
+        assert "No id submitted. Please retry and include the appropriate id" in str(excinfo.value)
 
     def test_missing_files(self):
         output_sys_param_file = self.output_dir / "going_to_fail_first.json"
@@ -381,6 +383,24 @@ class SystemParametersTest(unittest.TestCase):
 
         # ghe
         assert sys_param_data["district_system"]["fifth_generation"]["ghe_parameters"] is not False
+
+    def test_csv_to_sys_param_waste_heat(self):
+        output_sys_param_file = self.output_dir / "test_sys_param_waste_heat.json"
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
+            model_type="time_series",
+            scenario_dir=self.waste_heat_scenario_dir,
+            feature_file=self.waste_heat_feature_file,
+            district_type="5G_ghe",
+            sys_param_filename=output_sys_param_file,
+        )
+
+        assert output_sys_param_file.is_file()
+        with open(output_sys_param_file) as f:
+            sys_param_data = json.load(f)
+
+        # ghe
+        assert len(sys_param_data["district_system"]["fifth_generation"]["heat_source_parameters"]) > 0
 
     def test_csv_to_sys_param_microgrid(self):
         output_sys_param_file = self.microgrid_output_dir / "test_sys_param_microgrid.json"

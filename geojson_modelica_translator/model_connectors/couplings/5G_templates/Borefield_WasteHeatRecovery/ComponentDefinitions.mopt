@@ -1,0 +1,69 @@
+// Components for borefield and waste heat coupling
+Buildings.Fluid.Sensors.TemperatureTwoPort TIn_wasHea_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-40,-120},{-20,-140}})));
+{% endraw %}
+Buildings.Fluid.Sensors.TemperatureTwoPort TOut_wasHea_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{30,-120},{50,-140}})));
+{% endraw %}
+{% if sys_params.district_system.fifth_generation.heat_source_parameters is defined %}
+  {% if isinstance(data.heat_source_rate, str) %}
+    parameter String filNam_QWasHea_{{ coupling.id }}=Modelica.Utilities.Files.loadResource(
+      "modelica://{{ globals.project_name }}/Schedules/{{ data.heat_source_rate | basename }}")
+      "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
+    Modelica.Blocks.Sources.CombiTimeTable QWasHea_{{ coupling.id }}(
+      each y(
+        each unit="W",
+        each displayUnit="W",
+        each quantity="HeatFlowRate"),
+      tableOnFile=true,
+      tableName="tab1",
+      fileName=filNam_QWasHea_{{ coupling.id }},
+      smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+      extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
+      "Heat flow rate from/to the waste heat source/sink"
+      {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
+    {% endraw %}{% elif isinstance(data.heat_source_rate, int) %}
+    Modelica.Blocks.Sources.CombiTimeTable QWasHea_{{ coupling.id }}(
+      each y(
+        each unit="W",
+        each displayUnit="W",
+        each quantity="HeatFlowRate"),
+      tableOnFile=false,
+      table=[0,data.heat_source_rate])
+      "Heat flow rate from/to the waste heat source/sink"
+      {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
+    {% endraw %}
+  {% endif %}
+  {% if isinstance(data.heat_source_temperature, str) %}
+    parameter String filNam_TWasHea_{{ coupling.id }}=Modelica.Utilities.Files.loadResource(
+      "modelica://{{ globals.project_name }}/Schedules/{{ data.heat_source_temperature | basename }}")
+      "Waste heat temperature as time series";
+    Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat_{{ coupling.id }}(
+      each y(
+        each unit="K",
+        each displayUnit="degC",
+        each quantity="ThermodynamicTemperature"),
+      tableOnFile=true,
+      tableName="tab1",
+      fileName=filNam_TWasHea_{{ coupling.id }},
+      smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+      extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
+      "Waste heat temperature as time series"
+      {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
+    {% endraw %}{% elif isinstance(data.heat_source_temperature, int) %}
+    Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat_{{ coupling.id }}(
+      each y(
+        each unit="K",
+        each displayUnit="degC",
+        each quantity="ThermodynamicTemperature"),
+      tableOnFile=false,
+      table=[0,data.heat_source_temperature])
+      "Waste heat temperature as time series"
+      {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
+      {% endraw %}
+    {% endif %}
+  {% endif %}

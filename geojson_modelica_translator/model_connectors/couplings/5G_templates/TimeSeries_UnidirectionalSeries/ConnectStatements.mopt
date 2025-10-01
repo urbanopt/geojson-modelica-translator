@@ -1,7 +1,13 @@
 // Timeseries load and network coupling connections
-{% if sys_params.district_system.fifth_generation.ghe_parameters is defined %}
 {% for group_num in range(loop_order.number_of_loops) %}
-  {% if graph.get_ghe_id(graph.couplings_by_type(coupling.network.id).plant_couplings[0].id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+  {% if loop_order.data[group_num].list_ghe_ids_in_group is defined %}
+    {% set plant_id = loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    {% set get_id_func = graph.get_ghe_id %}
+  {% else %}
+    {% set plant_id = loop_order.data[group_num].list_source_ids_in_group[0] %}
+    {% set get_id_func = graph.get_source_id %}
+  {% endif %}
+  {% if get_id_func(graph.couplings_by_type(coupling.network.id).plant_couplings[0].id) == plant_id %}
     {% for bldg_num in range(loop_order.data[group_num].list_bldg_ids_in_group|length) %}
       {% if loop_order.data[group_num].list_bldg_ids_in_group[bldg_num][0].isnumeric() %}
         {% set bldg_id = "TimeSerLoa_B" ~ loop_order.data[group_num].list_bldg_ids_in_group[bldg_num] %}
@@ -22,7 +28,6 @@
     {% endfor %}
   {% endif %}
 {% endfor %}
-{% endif %}
 connect(THeaWatSupMinSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMinSet)
 {% raw %}annotation (Line(points={{-98,80},{-80,80},{-80,100},{26,100},{26,39},{58,39}}, color={0,0,127}));
 {% endraw %}connect(THeaWatSupMaxSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMaxSet)

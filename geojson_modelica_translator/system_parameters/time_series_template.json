@@ -118,10 +118,13 @@
       }
     },
     "fifth_generation": {
-      "waste_heat_parameters": {
-        "rate_schedule_path": "To be populated",
-        "temperature_schedule_path": "To be populated"
-      },
+      "heat_source_parameters": [
+        {
+          "heat_source_id": "asdf",
+          "heat_source_rate": "To be populated",
+          "heat_source_temperature": "To be populated"
+        }
+      ],
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
         "hydraulic_diameter_autosized": true,
