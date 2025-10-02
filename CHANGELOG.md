@@ -1,5 +1,17 @@
 # Change Log
 
+## Version 0.12.0
+
+### Exciting New Features 🎉
+
+* Upgrade OpenModelica and MBL versions by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/738>
+* Improve schema validation messages by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/749>
+* Support multiple waste heat sources at random locations in the district loop by @JingWang-CUB in <https://github.com/urbanopt/geojson-modelica-translator/pull/731>
+
+### Other Changes
+
+* Schema fixes for ThermalNetwork by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/753>
+
 ## Version 0.11.0
 
 ### Exciting New Features 🎉
