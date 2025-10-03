@@ -7,43 +7,42 @@ on:
 
 jobs:
   build:
+    name: Build distribution 📦
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v5
-
+        with:
+          persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.12
-
+          python-version: "3.x"
       - name: Install pypa/build
         run: >-
           python3 -m
-          pip install
+          pip install --upgrade pip
           build
           --user
-
       - name: Build a binary wheel and a source tarball
         run: python3 -m build
-
       - name: Store the distribution packages
         uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
 
-  release:
+  publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
     needs:
-    - build
+      - build
     runs-on: ubuntu-latest
     environment:
       name: pypi_release
       url: https://pypi.org/p/geojson-modelica-translator
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write # IMPORTANT: mandatory for trusted publishing
 
     steps:
       - name: Download all the dists
