@@ -18,7 +18,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import Syst
 from tests.base_test_case import TestCaseBase
 
 
-class DistrictHeatingSystemNewTest(TestCaseBase):
+class DistrictHeatingSystemTest(TestCaseBase):
     def setUp(self):
         super().setUp()
 
@@ -66,7 +66,7 @@ class DistrictHeatingSystemNewTest(TestCaseBase):
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
-            start_time=17280000,  # Day 200 (in seconds) (Run in summer to keep chiller happy)
-            stop_time=17366400,  # For 1 day duration (in seconds)
-            step_size=3600,  # At 1 hour step size (in seconds)
+            start_time=86400 * 5,  # Day 5 (in seconds)
+            stop_time=86400 * 6,  # For 1 day duration (in seconds)
+            step_size=300,  # At 5-minute step size (in seconds)
         )

@@ -40,7 +40,10 @@ class TimeSeries(LoadBase):
         )
 
         if not os.path.exists(time_series_filename):
-            raise Exception(f"Missing MOS file for time series: {time_series_filename}")
+            raise Exception(
+                f"Missing MOS file for time series: {time_series_filename}\n"
+                "If providing a relative path, ensure it is relative to the system parameters file."
+            )
         elif os.path.splitext(time_series_filename)[1].lower() == ".csv":
             raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
 
@@ -90,6 +93,9 @@ class TimeSeries(LoadBase):
                     self.system_parameters.get_param_by_id(
                         self.building_id, "load_model_parameters.time_series.temp_hw_return"
                     )
+                ),
+                "max_electrical_load": self.system_parameters.get_param_by_id(
+                    self.building_id, "load_model_parameters.time_series.max_electrical_load"
                 ),
                 # FIXME: pick up default value from schema if not specified in system_parameters,
                 # FYI: Modelica insists on booleans being lowercase, so we need to explicitly set "true" and "false"

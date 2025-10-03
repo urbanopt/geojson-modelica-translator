@@ -15,7 +15,7 @@ model HeatingWaterPumpSpeed
     "Minimum mass flow rate";
   parameter Real minSpe=0.05
     "Minimum speed ratio required by heating water pumps";
-  parameter Modelica.Units.SI.Time riseTime=120
+  parameter Modelica.Units.SI.Time strokeTime=120
     "Rise time till the pump reaches its maximum speed";
   parameter Modelica.Blocks.Types.SimpleController controllerType=Modelica.Blocks.Types.SimpleController.PI
     "Type of pump speed controller";

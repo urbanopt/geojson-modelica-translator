@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.13"]
         test_env: [python, mypy]
-        mbl_tag: [v11.0.0]
+        mbl_tag: [v12.1.0]
         exclude:
           # only test mypy on linux for all versions of python
           - os: windows-latest
@@ -27,9 +27,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Display system info
@@ -58,15 +58,19 @@ jobs:
           else
             mv modelicafmt '/c/Program Files/'
           fi
-      - name: Install MBL
+      - name: Allow long filenames in Windows
+        if: matrix.os == 'windows-latest'
         run: |
-          if [[ '${{ matrix.os }}' == 'ubuntu-latest' ]]; then
-            MODELICAPATH='/home/runner/work/modelica-buildings'
-          else
-            echo $GITHUB_WORKSPACE
-            MODELICAPATH='/c/Program Files/modelica-buildings'
-          fi
-          git clone --single-branch --branch ${{ matrix.mbl_tag }} https://github.com/lbl-srg/modelica-buildings.git "${MODELICAPATH}"
+          git config --system core.longpaths true
+      - name: Install MBL
+        uses: actions/checkout@v5
+        with:
+          repository: lbl-srg/modelica-buildings
+          ref: ${{ matrix.mbl_tag }}
+          path: modelica-buildings
+      - name: Set MODELICAPATH
+        run: |
+          MODELICAPATH="${{ github.workspace }}/modelica-buildings"
           cd "${MODELICAPATH}"
           echo "Git branch is $(git branch)"
           # export MODELICAPATH for subsequent steps
@@ -83,7 +87,7 @@ jobs:
         run: poetry run pre-commit run --show-diff-on-failure --color=always --all-files
       - name: Run mypy
         if: matrix.test_env =='mypy'
-        run: poetry run mypy --install-types --non-interactive --show-error-codes .
+        run: poetry run mypy --exclude='modelica-buildings/' --install-types --non-interactive --show-error-codes .
       - name: Job Failed
         if: ${{ failure() }}
         run: |

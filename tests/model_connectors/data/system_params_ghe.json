@@ -24,11 +24,12 @@
       },
       "ets_model": "Fifth Gen Heat Pump",
       "fifth_gen_ets_parameters": {
-        "supply_water_temperature_building": 15,
         "chilled_water_supply_temp": 5,
+        "heating_water_supply_temp": 50,
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
+        "cop_heat_pump_hot_water": 2.5,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -40,18 +41,20 @@
     "fifth_generation": {
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
+        "hydraulic_diameter_autosized": true,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
         "diameter_ratio": 11,
         "pressure_drop_per_meter": 300,
         "roughness": 1e-06,
         "rho_cp": 2139000,
-        "number_of_segments": 1,
         "buried_depth": 1.5
       },
       "central_pump_parameters": {
         "pump_design_head": 60000,
-        "pump_flow_rate": 0.01
+        "pump_design_head_autosized": true,
+        "pump_flow_rate": 0.01,
+        "pump_flow_rate_autosized": true
       },
       "soil": {
         "conductivity": 2.0,
@@ -82,12 +85,9 @@
         "simulation": {
           "num_months": 240
         },
-        "geometric_constraints": {
-          "b_min": 3.0,
-          "b_max": 10.0,
-          "max_height": 135.0,
-          "min_height": 60.0,
-          "method": "rectangle"
+        "borehole": {
+          "buried_depth": 2.0,
+          "diameter": 0.15
         },
         "design": {
           "method": "AREAPROPORTIONAL",
@@ -96,30 +96,22 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "ghe_specific_params": [
+        "borefields": [
           {
             "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-            "ghe_geometric_params": {
+            "autosized_rectangle_borefield": {
               "length_of_ghe": 427.09084385292005,
-              "width_of_ghe": 300.40915614707995
-            },
-            "borehole": {
-              "buried_depth": 2.0,
-              "diameter": 0.15,
-              "length_of_boreholes": 100,
+              "width_of_ghe": 300.40915614707995,
+              "borehole_length": 1.0,
               "number_of_boreholes": 5
             }
           },
           {
             "ghe_id": "47fd01d3-3d72-46c0-85f2-a12854783764",
-            "ghe_geometric_params": {
+            "autosized_rectangle_borefield": {
               "length_of_ghe": 411.7146746166177,
-              "width_of_ghe": 254.28532538338231
-            },
-            "borehole": {
-              "buried_depth": 2.0,
-              "diameter": 0.15,
-              "length_of_boreholes": 100,
+              "width_of_ghe": 254.28532538338231,
+              "borehole_length": 1.0,
               "number_of_boreholes": 5
             }
           }

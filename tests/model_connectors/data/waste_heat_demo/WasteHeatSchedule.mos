@@ -1,0 +1,29 @@
+#1
+#Heat Flow Rate From Waste Heat Source
+#
+#First column: Seconds in the year
+#Second column: Heat Flow Rate From Waste Heat Source in Watts
+#Peak heat flow rate to the waste heat sink = -1000 Watts
+#Peak heat flow rate from the waste heat source = 1000 Watts
+double tab1(21,2)
+0;1000
+1576800;1000
+3153600;1000
+4730400;1000
+6307200;1000
+7884000;1000
+9460800;1000
+11037600;1000
+12614400;1000
+14191200;1000
+15768000;1000
+17344800;-1000
+18921600;-1000
+20498400;-1000
+22075200;-1000
+23652000;-1000
+25228800;-1000
+26805600;-1000
+28382400;-1000
+29959200;-1000
+31536000;-1000

@@ -1,0 +1,72 @@
+// Borefield and waste heat coupling connections
+{% if "wasHea" in coupling.plant.id %}
+  {% set borefield_id = get_other_model(coupling_id, coupling.plant.id).id %}
+  {% set waste_heat_id = coupling.plant.id %}
+{% else %}
+  {% set borefield_id = coupling.plant.id %}
+  {% set waste_heat_id = get_other_model(coupling_id, coupling.plant.id).id %}
+{% endif %}
+{% for coupling in graph.couplings_by_type(borefield_id).network_couplings %}
+  {% if "groCou_" in coupling.get_other_model(borefield_id).id %}
+    {% set ground_id = coupling.get_other_model(borefield_id).id %}
+  {% else %}
+    {% if "dis_" in coupling.get_other_model(borefield_id).id %}
+      {% set dis_coupling_id = coupling.id %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+// control related connections
+connect(TWasHeaWat_{{ coupling.id }}.y[1], con_{{ waste_heat_id }}.TWasHeaWat)
+{% raw %}annotation (Line(points={{-59,-170},{-48,-170},{-48,-172.667},{-41.3333,-172.667}},color={0,0,127}));
+{% endraw %}connect(QWasHea_{{ coupling.id }}.y[1], con_{{ waste_heat_id }}.QWasHea)
+{% raw %}annotation (Line(points={{-59,-200},{-46,-200},{-46,-177},{-41.3333,-177}},color={0,0,127}));
+{% endraw %}connect(TIn_wasHea_{{ coupling.id }}.T, con_{{ waste_heat_id }}.T_disRet)
+{% raw %}annotation (Line(points={{-30,-141},{-30,-150},{-44,-150},{-44,-162},{-41.3333,-162}},color={0,0,127}));
+{% endraw %}connect(conPum.y, con_{{ waste_heat_id }}.yPumDis)
+{% raw %}annotation (Line(points={{-98.4615,-90},{-90,-90},{-90,-154},{-50,-154},{-50,-176},{-46,-176},{-46,-175.333},{-41.3333,-175.333}},color={0,0,127}));
+{% endraw %}connect(pumDis.m_flow_actual, con_{{ waste_heat_id }}.m_flow_pumDis)
+{% raw %}annotation (Line(points={{-39,-49},{-40,-49},{-40,-44},{-24,-44},{-24,-106},{-50,-106},{-50,-152},{-46,-152},{-46,-170},{-41.3333,-170}},color={0,0,127}));
+{% endraw %}connect(con_{{ waste_heat_id }}.Q_flow_wasHea_out, {{ waste_heat_id }}.Q_flow_wasHea_out)
+{% raw %}annotation (Line(points={{-18.6667,-164.667},{-14,-164.667},{-14,-164},{-10.0003,-164},{-10.0003,-164.667},{-1.33333,-164.667}},color={0,0,127}));
+{% endraw %}connect(con_{{ waste_heat_id }}.m_flow_pumPla, {{ waste_heat_id }}.m_flow_pumPla)
+{% raw %}annotation (Line(points={{-18.6667,-162},{-18.6667,-162.667},{-1.33333,-162.667}},color={0,0,127}));
+{% endraw %}
+{% for group_num in range(loop_order.number_of_loops) %}
+  {% if loop_order.data[group_num].list_source_ids_in_group is defined %}
+    {% if graph.get_source_id(coupling.id) == loop_order.data[group_num].list_source_ids_in_group[0] %}
+      connect(TIn_wasHea_{{ coupling_id }}.T, conPum.TSouIn[{{ group_num+1 }}])
+      {% raw %}annotation (Line(points={{-30,-141},{-30,-148},{-130,-148},{-130,-86.75},{-121.692,-86.75}}, color={0,0,127}));
+      {% endraw %}connect(TOut_wasHea_{{ coupling_id }}.T, conPum.TSouOut[{{ group_num+1 }}])
+      {% raw %}annotation (Line(points={{40,-141},{40,-154},{-126,-154},{-126,-91.75},{-121.692,-91.75}}, color={0,0,127}));
+      {% endraw %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+// internal connections
+connect(TIn_wasHea_{{ coupling.id }}.port_b, conPla_{{ waste_heat_id }}.port_aDis)
+{% raw %}annotation (Line(points={{-20,-130},{0,-130}},color={0,127,255}));
+{% endraw %}connect(conPla_{{ waste_heat_id }}.port_bCon, {{ waste_heat_id }}.port_aSerAmb)
+{% raw %}annotation (Line(points={{10,-140},{10,-146},{-6,-146},{-6,-168.667},{0,-168.667}},color={0,127,255}));
+{% endraw %}connect({{ waste_heat_id }}.port_bSerAmb, conPla_{{ waste_heat_id }}.port_aCon)
+{% raw %}annotation (Line(points={{20,-168.667},{26,-168.667},{26,-146},{16,-146},{16,-140}},color={0,127,255}));
+{% endraw %}connect(TOut_{{ dis_coupling_id }}.port_b, TIn_wasHea_{{ coupling.id }}.port_a)
+{% raw %}annotation (Line(points={{32,-18},{38,-18},{38,-114},{-46,-114},{-46,-130},{-40,-130}},color={0,127,255}));
+{% endraw %}connect(conPla_{{ waste_heat_id }}.port_bDis, TOut_wasHea_{{ coupling.id }}.port_a)
+{% raw %}annotation (Line(points={{20,-130},{30,-130}}, color={0,127,255}));
+{% endraw %}
+// external connections
+{% for group_num in range(loop_order.number_of_loops) %}
+  {% if graph.get_ghe_id(coupling.id) == loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+    {% if group_num == loop_order.number_of_loops-1 %}
+      connect(TOut_wasHea_{{ coupling.id }}.port_b, pumDis.port_a)
+      {% raw %}annotation (Line(points={{50,-130},{60,-130},{60,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
+      {% endraw %}
+    {% else %}
+      {% set next_dis_coupling_id = graph.couplings_by_type(ground_id).network_couplings[group_num+1].id %}
+      {% set next_dis_id = graph.get_other_model(next_dis_coupling_id, ground_id).id %}
+      connect(TOut_wasHea_{{ coupling.id }}.port_b, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
+      {% raw %}annotation (Line(points={{50,-130},{60,-130},{60,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
+      {% endraw %}
+    {% endif %}
+  {% endif %}
+{% endfor %}

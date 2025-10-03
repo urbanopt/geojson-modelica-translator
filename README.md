@@ -1,7 +1,6 @@
 # GeoJSON Modelica Translator (GMT)
 
 [![image](https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/urbanopt/geojson-modelica-translator/actions/workflows/ci.yml)
-[![image](https://coveralls.io/repos/github/urbanopt/geojson-modelica-translator/badge.svg?branch=develop)](https://coveralls.io/github/urbanopt/geojson-modelica-translator?branch=develop)
 [![image](https://badge.fury.io/py/geojson-modelica-translator.svg)](https://badge.fury.io/py/geojson-modelica-translator)
 
 The GeoJSON Modelica Translator (GMT) is a one-way trip from GeoJSON in combination with a well-defined instance of the system parameters schema to a Modelica package with multiple buildings loads, energy transfer stations, distribution networks, and central plants. The project will eventually allow multiple paths to build up different district heating and cooling system topologies; however, the initial implementation is limited to 4GDHC and 5GDHC.
@@ -14,7 +13,7 @@ The project is motivated by the need to easily evaluate district energy systems.
 
 ## Getting Started
 
-It is possible to test the GeoJSON to Modelica Translator (GMT) by simply installing the Python package and running the command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available [here](docs/getting_started.md).
+It is possible to test the GeoJSON to Modelica Translator (GMT) by simply installing the Python package and running the command line interface (CLI) with results from and URBANopt SDK set of results. However, to fully leverage the functionality of this package (e.g., running simulations), then you must also install the Modelica Buildings library (MBL) and Docker. Instructions for installing and configuring the MBL and Docker are available at the [getting started](docs/getting_started.md) page.
 
 To simply scaffold out a Modelica package that can be inspected in a Modelica environment (e.g., Dymola, OpenModelica) then run the following code below up to the point of run-model. The example generates a complete 4th Generation District Heating and Cooling (4GDHC) system with time series loads that were generated from the URBANopt SDK using OpenStudio/EnergyPlus simulations.
 

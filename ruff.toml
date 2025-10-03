@@ -14,15 +14,13 @@ extend-ignore-names = ["test_*"]
 [lint.pylint]
 # system_parameters.py has many file lookups that necessitate nested statements & branches
 # Raise the allowed limits the least possible amount https://docs.astral.sh/ruff/settings/#pylint-max-branches
-max-statements = 65
+max-statements = 70
 max-branches = 24
 
 [lint.per-file-ignores]
 "tests/*" = ["S101"] # assert statements are allowed in tests, and paths are safe
 "geojson_modelica_translator/model_connectors/load_connectors/teaser.py" = ["PLR0915"]
 # Lots of statements in the teaser post-processing. Don't think we can avoid it.
-"geojson_modelica_translator/model_connectors/districts/district.py" = ["PLR0915", "PLR0912"]
-# FIXME: The District.to_modelica method is large and probably should be broken into a few separate methods.
 "geojson_modelica_translator/model_connectors/couplings/diagram.py" = ["E501"]
 # Only needed for _parse_coupling_graph docstring
 

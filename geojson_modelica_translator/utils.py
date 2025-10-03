@@ -43,7 +43,7 @@ def mbl_version():
     """Returns the version of the Modelica Buildings Library (MBL) used by the
     geojson-modelica-translator.
     """
-    return "11.0.0"
+    return "12.1.0"
 
 
 class ModelicaPath:
@@ -51,7 +51,7 @@ class ModelicaPath:
     the model directory, resources, and scripts directory.
     """
 
-    def __init__(self, name, root_dir, overwrite=False):
+    def __init__(self, name: str, root_dir: Path | None = None, overwrite: bool = False):
         """Create a new modelica-based path with name of 'name'
 
         :param name: Name to create
@@ -139,7 +139,7 @@ class ModelicaPath:
 
 
 # This is used for some test cases where we need deterministic IDs to be generated
-USE_DETERMINISTIC_ID = bool(os.environ.get("GMT_DETERMINISTIC_ID", False))
+USE_DETERMINISTIC_ID = bool(os.environ.get("GMT_DETERMINISTIC_ID"))
 
 counter = 0
 

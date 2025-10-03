@@ -120,7 +120,7 @@ class TimeSeriesModelConnectorSingleBuildingMFTETSTest(TestCaseBase):
             if None not in (timeseries_load_var, coolflow_var, heatflow_var):
                 break
 
-        (time1, ts_hea_load) = mat_results.values(f"TimeSerMFTLoa_{timeseries_load_var}.ports_aChiWat[1].m_flow")
+        (_time1, ts_hea_load) = mat_results.values(f"TimeSerMFTLoa_{timeseries_load_var}.ports_aChiWat[1].m_flow")
         (_time1, ts_chi_load) = mat_results.values(f"TimeSerMFTLoa_{timeseries_load_var}.ports_aHeaWat[1].m_flow")
         (_time1, cool_q_flow) = mat_results.values(f"cooInd_{coolflow_var}.Q_flow")
         (_time1, heat_q_flow) = mat_results.values(f"heaInd_{heatflow_var}.Q_flow")

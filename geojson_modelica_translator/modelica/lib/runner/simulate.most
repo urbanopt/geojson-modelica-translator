@@ -6,15 +6,6 @@ loadFile("{{ file_to_load }}");
 getErrorString();
 {% endif %}
 
-{% if use_default_time_params %}
-simulate({{ model_name }});
-{% else %}
-    {% if step_size %}
-simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}}, stepSize={{step_size}});
-    {% elif number_of_intervals %}
-simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}}, numberOfIntervals={{number_of_intervals}});
-    {% else %}
-simulate({{ model_name }}, startTime={{start_time}}, stopTime={{stop_time}});
-    {% endif %}
-{% endif %}
+simulate({{ simulation_args }});
+
 getErrorString();

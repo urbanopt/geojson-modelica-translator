@@ -1,0 +1,4 @@
+Feature Id,Feature Name,Mapper Class
+5a6b99ec37f4de7f94020090,Small Office 1,URBANopt::Scenario::BaselineMapper
+abcdefghijklmnopqrstuvwx,Small Office 2,URBANopt::Scenario::BaselineMapper
+5e70728382654958adbcaef19f2afc97,Small Office 3,URBANopt::Scenario::BaselineMapper

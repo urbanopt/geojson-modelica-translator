@@ -1,5 +1,47 @@
 # Change Log
 
+## Version 0.12.0
+
+### Exciting New Features 🎉
+
+* Upgrade OpenModelica and MBL versions by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/738>
+* Improve schema validation messages by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/749>
+* Support multiple waste heat sources at random locations in the district loop by @JingWang-CUB in <https://github.com/urbanopt/geojson-modelica-translator/pull/731>
+
+### Other Changes
+
+* Schema fixes for ThermalNetwork by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/753>
+
+## Version 0.11.0
+
+### Exciting New Features 🎉
+
+* New model templates for waste heat recovery by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/702>
+* Improve sys-param schema for borefields by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/715>
+
+## Version 0.10.0
+
+### Exciting New Features 🎉
+
+* Expose skipping weather download by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/706>
+* Enable selecting output variables from Modelica simulation by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/707>
+* Add capability to pass Modelica flags to the GMT CLI by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/709>
+* More params by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/703>
+* Add autosizing flags to sys-param values that may be autosized by TN/GHED by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/708>
+* Add new heat pump ETS to 5G loads by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/710>
+* Require autosize flags in sys-param files by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/712>
+
+## Version 0.9.3
+
+### Exciting New Features 🎉
+
+* Add horizontal pipe pressure drop to sys-params by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/700>
+
+### Other Changes
+
+* Expand capability of geojson class by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/694>
+* Cleanup Lingering RST Doc Extensions by @mitchute in <https://github.com/urbanopt/geojson-modelica-translator/pull/701>
+
 ## Version 0.9.2
 
 ### Exciting New Features 🎉

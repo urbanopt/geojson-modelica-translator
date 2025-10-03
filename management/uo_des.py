@@ -54,6 +54,13 @@ def cli():
     help="If specified, microgrid inputs will be added to system parameters file",
     default=False,
 )
+@click.option(
+    "-w",
+    "--skip_weather_download",
+    is_flag=True,
+    help="If specified, weather files will not be downloaded",
+    default=False,
+)
 def build_sys_param(
     model_type: str,
     sys_param_filename: Path,
@@ -62,6 +69,7 @@ def build_sys_param(
     district_type: str,
     overwrite: bool,
     microgrid: bool,
+    skip_weather_download: bool,
 ):
     """Create system parameters file using uo_sdk output
 
@@ -101,6 +109,7 @@ def build_sys_param(
         district_type=district_type,
         overwrite=overwrite,
         microgrid=microgrid,
+        skip_weather_download=skip_weather_download,
     )
 
     if Path(sys_param_filename).exists():
@@ -193,11 +202,49 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
 @click.option(
     "-i",
     "--intervals",
-    default=144,
+    default=None,
     help="Number of intervals to divide the simulation into (alternative to step_size)",
     type=int,
 )
-def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size: int, intervals: int):
+@click.option(
+    "-o",
+    "--output_variables",
+    default=None,
+    help="Comma-separated list of specific output variables to capture from simulation",
+    type=str,
+)
+@click.option(
+    "-c",
+    "--compiler_flags",
+    default=None,
+    help="Comma-separated list of OpenModelica compiler flags. For advanced users only",
+    type=str,
+)
+@click.option(
+    "-s",
+    "--simulation_flags",
+    default=None,
+    help="Comma-separated list of OpenModelica simulation flags. For advanced users only",
+    type=str,
+)
+@click.option(
+    "-d",
+    "--debug",
+    is_flag=True,
+    help="Keeps intermediate files for debugging if something goes wrong",
+    default=False,
+)
+def run_model(
+    modelica_project: Path,
+    start_time: int,
+    stop_time: int,
+    step_size: int,
+    intervals: int,
+    output_variables: str,
+    compiler_flags: str,
+    simulation_flags: str,
+    debug: bool,
+):
     """Run the model
 
     \b
@@ -216,6 +263,10 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
     :param stop_time (int): stop time of the simulation (seconds of a year)
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
+    :param output_variables (str) Comma-separated list of specific output variables to capture from simulation
+    :param compiler_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+    :param simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
+    :param debug (bool): if True, keeps intermediate files for debugging
     """
     project_name = modelica_project.stem
 
@@ -236,6 +287,10 @@ def run_model(modelica_project: Path, start_time: int, stop_time: int, step_size
         stop_time=stop_time,
         step_size=step_size,
         number_of_intervals=intervals,
+        output_variables=output_variables,
+        compiler_flags=compiler_flags,
+        simulation_flags=simulation_flags,
+        debug=debug,
     )
 
     run_location = modelica_project.parent / project_name / f"{project_name}.Districts.DistrictEnergySystem_results"

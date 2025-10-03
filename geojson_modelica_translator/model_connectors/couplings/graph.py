@@ -151,7 +151,32 @@ class CouplingGraph:
         elif coupling._get_model_superclass(model_b) is PlantBase and "Borefield" in model_b.model_name:
             return model_b.ghe_id
 
-        return None
+    def get_source_id(self, coupling_id):
+        """If there's a source model in the coupling, it returns the id of the source model. Else
+        it returns None.
+
+        :return: source_id | None
+        """
+
+        coupling = self.get_coupling(coupling_id)
+        model_a, model_b = coupling._model_a, coupling._model_b
+
+        if coupling._get_model_superclass(model_a) is PlantBase and "WasteHeat" in model_a.model_name:
+            return model_a.source_id
+        elif coupling._get_model_superclass(model_b) is PlantBase and "WasteHeat" in model_b.model_name:
+            return model_b.source_id
+
+    def get_ghe_id_by_model_id(self, model_id):
+        """If the model is a GHE, it returns the ghe_id of the model. Else
+        it returns None.
+
+        :return: ghe_id | None
+        """
+
+        model = self._models_by_id.get(model_id)
+
+        if "Borefield" in model.model_name:
+            return model.ghe_id
 
     def get_other_model(self, coupling_id, model_id):
         """Returns the other model in the coupling

@@ -51,7 +51,7 @@ class DistrictSystemTest(TestCaseBase):
         all_couplings = []
         for loop in loop_order:
             ghe_id = loop["list_ghe_ids_in_group"][0]
-            for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
+            for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
                 if ghe_id == ghe["ghe_id"]:
                     borefield = Borefield(sys_params, ghe)
             distribution = UnidirectionalSeries(sys_params)
@@ -97,6 +97,6 @@ class DistrictSystemTest(TestCaseBase):
             run_path=self.district._scaffold.project_path,
             file_to_load=self.district._scaffold.package_path,
             start_time=0,  # Day 0 (in seconds)
-            stop_time=3600,  # For 1 hour duration (in seconds)
+            stop_time=86400,  # For 1 day duration (in seconds)
             step_size=300,  # (in seconds)
         )

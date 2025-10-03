@@ -1,0 +1,98 @@
+// Components for distribution and waste heat coupling
+Buildings.Fluid.Sensors.TemperatureTwoPort TDisSup_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=0,origin={34,10})));
+{% endraw %}Buildings.Fluid.Sensors.TemperatureTwoPort TDisRet_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={100,-30})));
+{% endraw %}
+Buildings.Fluid.Sensors.TemperatureTwoPort TIn_wasHea_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{-40,-120},{-20,-140}})));
+{% endraw %}
+Buildings.Fluid.Sensors.TemperatureTwoPort TOut_wasHea_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+m_flow_nominal=datDes.mPumDis_flow_nominal)
+{% raw %}annotation (Placement(transformation(extent={{30,-120},{50,-140}})));
+{% endraw %}
+{% if sys_params.district_system.fifth_generation.heat_source_parameters is defined %}
+  {% set source_list = sys_params.district_system.fifth_generation.heat_source_parameters %}
+  {% for source in source_list %}
+    {% if source.heat_source_id == graph.get_source_id(coupling.id) %}
+      {% if source.heat_source_rate is string %}
+        parameter String filNam_QWasHea_{{ coupling.plant.id }}=Modelica.Utilities.Files.loadResource(
+          "modelica://{{ globals.project_name }}/Schedules/{{ source.heat_source_rate | basename }}")
+          "Waste heat rate as time series (source positive, sink negative) (user input, also must provide both peaks source and sink)";
+        Modelica.Blocks.Sources.CombiTimeTable QWasHea_{{ coupling.id }}(
+          each y(
+            each unit="W",
+            each displayUnit="W",
+            each quantity="HeatFlowRate"),
+          tableOnFile=true,
+          tableName="tab1",
+          fileName=filNam_QWasHea_{{ coupling.plant.id }},
+          smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+          extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
+          "Heat flow rate from/to the waste heat source/sink"
+          {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
+        {% endraw %}
+      {% elif source.heat_source_rate is integer %}
+        Modelica.Blocks.Sources.CombiTimeTable QWasHea_{{ coupling.id }}(
+          each y(
+            each unit="W",
+            each displayUnit="W",
+            each quantity="HeatFlowRate"),
+          tableOnFile=false,
+          table=[0,source.heat_source_rate])
+          "Heat flow rate from/to the waste heat source/sink"
+          {% raw %} annotation (Placement(transformation(extent={{-80,-210},{-60,-190}})));
+        {% endraw %}
+      {% endif %}
+      {% if source.heat_source_temperature is string %}
+        parameter String filNam_TWasHea_{{ coupling.id }}=Modelica.Utilities.Files.loadResource(
+          "modelica://{{ globals.project_name }}/Schedules/{{ source.heat_source_temperature | basename }}")
+          "Waste heat temperature as time series";
+        Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat_{{ coupling.id }}(
+          each y(
+            each unit="K",
+            each displayUnit="degC",
+            each quantity="ThermodynamicTemperature"),
+          tableOnFile=true,
+          tableName="tab1",
+          fileName=filNam_TWasHea_{{ coupling.id }},
+          smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+          extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic)
+          "Waste heat temperature as time series"
+          {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
+        {% endraw %}
+      {% elif source.heat_source_temperature is integer %}
+        Modelica.Blocks.Sources.CombiTimeTable TWasHeaWat_{{ coupling.id }}(
+          each y(
+            each unit="K",
+            each displayUnit="degC",
+            each quantity="ThermodynamicTemperature"),
+          tableOnFile=false,
+          table=[0,source.heat_source_temperature])
+          "Waste heat temperature as time series"
+          {% raw %} annotation (Placement(transformation(extent={{-80,-180},{-60,-160}})));
+          {% endraw %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+annotation (
+revisions="<html>
+<ul>
+<li>
+July 03, 2025, by Nathan Moore:<br/>
+GMT template updated to allow constants as well as schedule files.
+</li>
+<li>
+April 22, 2025, by Nathan Moore:<br/>
+GMT template updated to read additional data from system-parameter file.
+</li>
+</ul>
+</html>");

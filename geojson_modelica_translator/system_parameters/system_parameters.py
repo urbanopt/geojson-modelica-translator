@@ -12,7 +12,7 @@ from typing import Union
 import pandas as pd
 import requests
 from jsonpath_ng.ext import parse
-from jsonschema.validators import Draft202012Validator as LatestValidator
+from jsonschema import ValidationError, validate
 
 logger = logging.getLogger(__name__)
 
@@ -51,9 +51,7 @@ class SystemParameters:
             else:
                 raise FileNotFoundError(f"System design parameters file does not exist: {self.filename}")
 
-            errors = self.validate()
-            if len(errors) != 0:
-                raise ValueError(f"Invalid system parameter file. Errors: {errors}")
+            self.validate_input_file()
 
             self.resolve_paths()
 
@@ -71,9 +69,7 @@ class SystemParameters:
         sp.param_template = d
 
         if validate_on_load:
-            errors = sp.validate()
-            if len(errors) != 0:
-                raise ValueError(f"Invalid system parameter file. Errors: {errors}")
+            sp.validate_input_file()
 
         return sp
 
@@ -131,29 +127,48 @@ class SystemParameters:
                 # logger.debug(f"Found building with id {param_id}")
                 return self.get_param(jsonpath, data=b)
         with suppress(KeyError):
-            # If this dict key doesn't exist then either this is a 4G district, no id was passed, or it wasn't a ghe_id
+            # If this dict key doesn't exist then either this is a 4G district, no id was passed,
+            # or it wasn't a ghe_id or heat_source_id
             # Don't crash or quit, just keep a stiff upper lip and carry on.
             district = self.param_template.get("district_system", {})
-            for ghe in district["fifth_generation"]["ghe_parameters"]["ghe_specific_params"]:
+            for ghe in district["fifth_generation"]["ghe_parameters"]["borefields"]:
                 if ghe.get("ghe_id") == param_id:
                     # logger.debug(f"Found ghe with id {param_id}")
                     return self.get_param(jsonpath, data=ghe)
+            for heat_source in district["fifth_generation"]["heat_source_parameters"]:
+                if heat_source.get("heat_source_id") == param_id:
+                    # logger.debug(f"Found heat source with id {param_id}")
+                    return self.get_param(jsonpath, data=heat_source)
         if param_id is None:
-            raise SystemExit("No id submitted. Please retry and include the appropriate id")
+            raise KeyError("No id submitted. Please retry and include the appropriate id")
 
-    def validate(self):
-        """Validate an instance against a loaded schema
-
-        :param instance: dict, json instance to validate
-
-        :return: validation results
+    def validate_input_file(self) -> None:
         """
-        results = []
-        v = LatestValidator(self.schema)
-        for error in sorted(v.iter_errors(self.param_template), key=str):
-            results.append(error.message)
+        Validate input file against the schema
+        """
 
-        return results
+        try:
+            validate(instance=self.param_template, schema=self.schema)
+        except ValidationError as error:
+            logger.error(
+                "\nSystem Parameter Validation Error:"
+                f"\nBad Input Location: {' -> '.join(map(str, error.path)) if error.path else 'Root'}"
+                f"\nProblematic Key: {error.path[-1] if error.path else 'N/A'}"
+                f"\nError: {error.message}"
+            )
+            fix = "\nSuggested Fix:"
+            if "required" in error.schema and isinstance(error.schema["required"], list):
+                logger.error(
+                    f"{fix}  Ensure that the following required keys are present: {', '.join(error.schema['required'])}"
+                )
+            elif "enum" in error.schema:
+                logger.error(f"{fix}  Use one of the allowed values: {', '.join(map(str, error.schema['enum']))}")
+            elif "minimum" in error.schema:
+                logger.error(f"{fix}  Ensure the value is greater than or equal to: {error.schema['minimum']}")
+            elif "type" in error.schema:
+                logger.error(f"{fix}  Ensure the value is of type: {error.schema['type']}")
+            logger.error(f"Ensure your value is in the correct format: {error.schema.get('format', 'string')}")
+            raise ValidationError("Invalid system parameter file.")
 
     def download_weatherfile(self, filename, save_directory: str) -> Union[str, Path]:
         """Download the MOS or EPW weather file from energyplus.net
@@ -162,13 +177,13 @@ class SystemParameters:
         on the file extension.
 
         filename, str: Name of weather file to download, e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos
-        save_directory, str: Location where to save the downloaded content. The path must exist before downloading.
+        save_directory, str: Location where to save the downloaded content.
         """
         p_download = Path(filename)
         p_save = Path(save_directory)
 
         if not p_save.is_dir():
-            print(f"Creating directory to save weather file, {p_save!s}")
+            print(f"Creating directory to save weather file: {p_save!s}")
             p_save.mkdir(parents=True, exist_ok=True)
 
         # get country & state from weather file name
@@ -755,22 +770,45 @@ class SystemParameters:
         ghe_list = []
         for ghe in ghe_ids:
             # update GHE specific properties
-            ghe_info = deepcopy(ghe_sys_param["ghe_specific_params"][0])
+            ghe_info = deepcopy(ghe_sys_param["borefields"][0])
             # Update GHE ID
             ghe_info["ghe_id"] = str(ghe["ghe_id"])
             # Add ghe geometric properties
-            ghe_info["ghe_geometric_params"]["length_of_ghe"] = ghe["length_of_ghe"]
-            ghe_info["ghe_geometric_params"]["width_of_ghe"] = ghe["width_of_ghe"]
+            ghe_info["autosized_rectangle_borefield"]["length_of_ghe"] = ghe["length_of_ghe"]
+            ghe_info["autosized_rectangle_borefield"]["width_of_ghe"] = ghe["width_of_ghe"]
             ghe_list.append(ghe_info)
 
         # Add all GHE specific properties to sys-param file
-        ghe_sys_param["ghe_specific_params"] = ghe_list
+        ghe_sys_param["borefields"] = ghe_list
 
         # Update ghe_dir
         ghe_dir = scenario_dir / "ghe_dir"
         ghe_sys_param["ghe_dir"] = str(ghe_dir)
 
         return ghe_sys_param
+
+    def process_heat_recovery_inputs(self, feature_properties: dict):
+        # Deepcopy the template (dummy) entry
+        heat_recovery_params = deepcopy(
+            self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0]
+        )
+        # Update with real data
+        heat_recovery_params["heat_source_id"] = feature_properties["id"]
+        potential_temp_schedule_path = self.sys_param_filename.parent / "TWasHeaWatSchedule.mos"
+        if potential_temp_schedule_path.exists():
+            heat_recovery_params["heat_source_temperature"] = str(potential_temp_schedule_path)
+        potential_rate_schedule_path = self.sys_param_filename.parent / "WasteHeatSchedule.mos"
+        if potential_rate_schedule_path.exists():
+            heat_recovery_params["heat_source_rate"] = str(potential_rate_schedule_path)
+        # Append to the list
+        self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"].append(
+            heat_recovery_params
+        )
+
+        # Remove the original dummy entry if it exists and this is the first real entry
+        params = self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
+        if len(params) > 1 and params[0]["heat_source_id"] == "asdf":
+            del params[0]
 
     def retrieve_building_data_from_sdk(
         self, scenario_dir: Path, modelica_load_filename, model_type: str, district_type: str
@@ -941,15 +979,24 @@ class SystemParameters:
 
         # Get weather data
         weather_filename = self.sdk_input["project"]["weather_filename"]
-        weather_path = self.sys_param_filename.parent / weather_filename
-        # Check if the EPW weatherfile exists, if not, try to download
+        # Look for weather files of that name in the project folder
+        potential_weather_paths = []
+        potential_weather_paths.append(self.sys_param_filename.parent / weather_filename)
+        potential_weather_paths.append(scenario_dir.parent.parent / "weather" / weather_filename)
+
+        # If the weather file doesn't exist, download it to project weather dir (last item of potential_weather_paths)
+        weather_path = next(
+            (weather_path for weather_path in potential_weather_paths if weather_path.exists()),
+            potential_weather_paths[-1],
+        )
+
         if not skip_weather_download and not weather_path.exists():
             self.download_weatherfile(weather_path.name, weather_path.parent)
 
         # also download the MOS weatherfile -- this is the file that will be set in the sys param file
         mos_weather_path = weather_path.with_suffix(".mos")
         if not skip_weather_download and not mos_weather_path.exists():
-            self.download_weatherfile(mos_weather_path.name, mos_weather_path.parent)
+            self.download_weatherfile(mos_weather_path.name, weather_path.parent)
 
         # Use building data from URBANopt SDK
         building_list, district_nominal_massflow_rate = self.retrieve_building_data_from_sdk(
@@ -977,7 +1024,7 @@ class SystemParameters:
         self.param_template["weather"] = str(mos_weather_path)
         # Process community microgrid inputs
         if microgrid and not feature_opt_file.exists():
-            logger.warn(
+            logger.warning(
                 "Microgrid requires OpenDSS and REopt feature optimization for full functionality.\n"
                 "Run opendss and reopt-feature post-processing in the UO SDK for a full-featured microgrid."
             )
@@ -990,31 +1037,35 @@ class SystemParameters:
                     "Perhaps you haven't run REopt post-processing step in the UO sdk?"
                 )
 
-        # Update ground heat exchanger properties if true
-        if district_type in ["5G_ghe", "5G"]:
-            if district_type == "5G_ghe":
-                self.process_ghe_inputs(scenario_dir)
-            elif district_type == "5G":
-                # Process waste-heat inputs
-                del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
-            # remove other district system types
-            del self.param_template["district_system"]["first_generation"]
-            del self.param_template["district_system"]["fourth_generation"]
-        elif district_type in ["4G"]:
-            # remove fifth generation district system type if it exists in template and ghe is not true
+        for feature in self.sdk_input["features"]:
+            if "Waste Heat Source--Ambient Water" in str(feature["properties"].get("equipment", [])):
+                self.process_heat_recovery_inputs(feature["properties"])
+
+        # If there are no heat sources, remove the dummy entry
+        if (
+            len(self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]) == 1
+        ) and self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"][0][
+            "heat_source_id"
+        ] == "asdf":
             with suppress(KeyError):
-                del self.param_template["district_system"]["fifth_generation"]
-                del self.param_template["district_system"]["first_generation"]
-        elif district_type in ["steam"]:
-            # TODO: process steam inputs
-            # remove other district system types
-            del self.param_template["district_system"]["fourth_generation"]
-            del self.param_template["district_system"]["fifth_generation"]
+                del self.param_template["district_system"]["fifth_generation"]["heat_source_parameters"]
+
+        # Remove template components that do not apply
+        match district_type:
+            case "5G_ghe":
+                del self.param_template["district_system"]["fourth_generation"]
+                self.process_ghe_inputs(scenario_dir)
+            case "5G":
+                del self.param_template["district_system"]["fourth_generation"]
+                del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
+            case "4G" | "steam":
+                with suppress(KeyError):
+                    del self.param_template["district_system"]["fifth_generation"]
 
         # save the file to disk
-        self.save()
+        self.save(self.sys_param_filename, self.param_template)
 
-    def save(self):
+    def save(self, outputfile, source_data):
         """Write the system parameters file with param_template and save"""
-        with open(self.sys_param_filename, "w") as outfile:
-            json.dump(self.param_template, outfile, indent=2)
+        with open(outputfile, "w") as outfile:
+            json.dump(source_data, outfile, indent=2)

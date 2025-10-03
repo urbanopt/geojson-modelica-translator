@@ -8,7 +8,7 @@ exclude: |
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-ast
       - id: check-added-large-files
@@ -44,16 +44,16 @@ repos:
         pass_filenames: false
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.1
+    rev: v0.13.2
     hooks:
       # Run the linter
-      - id: ruff
+      - id: ruff-check
       #  unsafe fixes: https://docs.astral.sh/ruff/linter/#fixes
         args: [--fix, --exit-non-zero-on-fix, --output-format=full, --unsafe-fixes]
       # Run the formatter
       - id: ruff-format
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.43.0
+    rev: v0.45.0
     hooks:
       - id: markdownlint
         name: markdownlint

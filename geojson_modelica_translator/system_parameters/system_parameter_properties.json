@@ -314,16 +314,19 @@
           "description": "microgrid-related load fields",
           "properties": {
             "nominal_voltage": {
-              "description": "Nominal load voltage (V)",
-              "type": "number"
+              "description": "Nominal load voltage",
+              "type": "number",
+              "format": "V"
             },
             "max_power": {
-              "description": "Maximum load power (kW)",
-              "type": "number"
+              "description": "Maximum load power",
+              "type": "number",
+              "format": "kW"
             },
             "max_reactive_power": {
-              "description": "Maximum reactive power (kvar)",
-              "type": "number"
+              "description": "Maximum reactive power",
+              "type": "number",
+              "format": "kvar"
             }
           }
         }
@@ -357,12 +360,14 @@
       "type": "object",
       "properties": {
         "pipe_diameter": {
-          "description": "[unused] Pipe diameter. (m)",
-          "type": "number"
+          "description": "[unused] Pipe diameter.",
+          "type": "number",
+          "format": "Meters"
         },
         "pipe_insulation_rvalue": {
-          "description": "[unused] Pipe insulation R-Value. (m2-K/W)",
-          "type": "number"
+          "description": "[unused] Pipe insulation R-Value.",
+          "type": "number",
+          "format": "m2-K/W"
         },
         "pipe_location": {
           "description": "[unused] Location of the pipe.",
@@ -431,9 +436,10 @@
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "Nominal heat flow rate. (W)",
+          "description": "Nominal heat flow rate.",
           "type": "number",
-          "default": 10000
+          "default": 10000,
+          "format": "W"
         },
         "heat_exchanger_efficiency": {
           "description": "Heat exchanger efficiency. (fraction)",
@@ -441,59 +447,70 @@
           "default": 0.8
         },
         "heat_exchanger_primary_pressure_drop": {
-          "description": "Heat exchanger primary side pressure drop. (Pa)",
+          "description": "Heat exchanger primary side pressure drop.",
           "type": "number",
-          "default": 500
+          "default": 500,
+          "format": "Pascals"
         },
         "heat_exchanger_secondary_pressure_drop": {
-          "description": "Heat exchanger secondary side pressure drop. (Pa)",
+          "description": "Heat exchanger secondary side pressure drop.",
           "type": "number",
-          "default": 500
+          "default": 500,
+          "format": "Pascals"
         },
         "nominal_mass_flow_building": {
-          "description": "Building water nominal flow rate. (kg/s)",
+          "description": "Building water nominal flow rate.",
           "type": "number",
-          "default": 10
+          "default": 10,
+          "format": "Kilograms per second"
         },
         "nominal_mass_flow_district": {
-          "description": "District water nominal flow rate. (kg/s)",
+          "description": "District water nominal flow rate.",
           "type": "number",
-          "default": 10
+          "default": 10,
+          "format": "Kilograms per second"
         },
         "valve_pressure_drop": {
-          "description": "Valve pressure drop. (Pa)",
+          "description": "Valve pressure drop.",
           "type": "number",
-          "default": 6000
+          "default": 6000,
+          "format": "Pascals"
         },
         "cooling_supply_water_temperature_building": {
-          "description": "Chilled water supply temperature building side. (C)",
+          "description": "Chilled water supply temperature building side.",
           "type": "number",
-          "default": 7
+          "default": 7,
+          "format": "Celsius"
         },
         "heating_supply_water_temperature_building": {
-          "description": "Heating water supply temperature building side. (C)",
+          "description": "Heating water supply temperature building side.",
           "type": "number",
-          "default": 50
+          "default": 50,
+          "format": "Celsius"
         },
         "delta_temp_hw_district": {
-          "description": "Heating water temperature difference on on the district side. (deltaC)",
+          "description": "Heating water temperature difference on on the district side.",
           "type": "number",
-          "default": 20
+          "default": 20,
+          "format": "Celsius"
         },
         "delta_temp_hw_building": {
-          "description": "Design temperature differential on the building side. (deltaC)",
+          "description": "Design temperature differential on the building side.",
           "type": "number",
-          "default": 15
+          "default": 15,
+          "format": "Celsius"
         },
         "delta_temp_chw_building": {
-          "description": "Chilled water temperature difference on the building side. (deltaC)",
+          "description": "Chilled water temperature difference on the building side.",
           "type": "number",
-          "default": 5
+          "default": 5,
+          "format": "Celsius"
         },
         "delta_temp_chw_district": {
-          "description": "Design temperature differential on the district side. (deltaC)",
+          "description": "Design temperature differential on the district side.",
           "type": "number",
-          "default": 8
+          "default": 8,
+          "format": "Celsius"
         },
         "cooling_controller_y_max": {
           "description": "Controller upper limit",
@@ -541,34 +558,40 @@
       "type": "object",
       "properties": {
         "temp_setpoint_cooling": {
-          "description": "Cooling setpoint air temperature. (C)",
+          "description": "Cooling setpoint air temperature.",
           "type": "number",
-          "default": 24
+          "default": 24,
+          "format": "Celsius"
         },
         "temp_setpoint_heating": {
-          "description": "Heating setpoint air temperature. (C)",
+          "description": "Heating setpoint air temperature.",
           "type": "number",
-          "default": 20
+          "default": 20,
+          "format": "Celsius"
         },
         "temp_hw_supply": {
-          "description": "Heating water supply temperature. (C)",
+          "description": "Heating water supply temperature.",
           "type": "number",
-          "default": 40
+          "default": 40,
+          "format": "Celsius"
         },
         "temp_hw_return": {
-          "description": "Heating water return temperature. (C)",
+          "description": "Heating water return temperature.",
           "type": "number",
-          "default": 35
+          "default": 35,
+          "format": "Celsius"
         },
         "temp_chw_supply": {
-          "description": "Chilled water supply temperature. (C)",
+          "description": "Chilled water supply temperature.",
           "type": "number",
-          "default": 7
+          "default": 7,
+          "format": "Celsius"
         },
         "temp_chw_return": {
-          "description": "Chilled water return temperature. (C)",
+          "description": "Chilled water return temperature.",
           "type": "number",
-          "default": 12
+          "default": 12,
+          "format": "Celsius"
         },
         "has_liquid_heating": {
           "description": "Whether the building has liquid heating.",
@@ -635,34 +658,40 @@
       "type": "object",
       "properties": {
         "temp_setpoint_cooling": {
-          "description": "Cooling setpoint air temperature. (C)",
+          "description": "Cooling setpoint air temperature.",
           "type": "number",
-          "default": 24
+          "default": 24,
+          "format": "Celsius"
         },
         "temp_setpoint_heating": {
-          "description": "Heating setpoint air temperature. (C)",
+          "description": "Heating setpoint air temperature.",
           "type": "number",
-          "default": 20
+          "default": 20,
+          "format": "Celsius"
         },
         "temp_hw_supply": {
-          "description": "Heating water supply temperature. (C)",
+          "description": "Heating water supply temperature.",
           "type": "number",
-          "default": 40
+          "default": 40,
+          "format": "Celsius"
         },
         "temp_hw_return": {
-          "description": "Heating water return temperature. (C)",
+          "description": "Heating water return temperature.",
           "type": "number",
-          "default": 35
+          "default": 35,
+          "format": "Celsius"
         },
         "temp_chw_supply": {
-          "description": "Chilled water supply temperature. (C)",
+          "description": "Chilled water supply temperature.",
           "type": "number",
-          "default": 7
+          "default": 7,
+          "format": "Celsius"
         },
         "temp_chw_return": {
-          "description": "Chilled water return temperature. (C)",
+          "description": "Chilled water return temperature.",
           "type": "number",
-          "default": 12
+          "default": 12,
+          "format": "Celsius"
         },
         "has_liquid_heating": {
           "description": "Whether the building has liquid heating.",
@@ -713,34 +742,40 @@
       "type": "object",
       "properties": {
         "temp_setpoint_cooling": {
-          "description": "Cooling setpoint air temperature. (C)",
+          "description": "Cooling setpoint air temperature.",
           "type": "number",
-          "default": 24
+          "default": 24,
+          "format": "Celsius"
         },
         "temp_setpoint_heating": {
-          "description": "Heating setpoint air temperature. (C)",
+          "description": "Heating setpoint air temperature.",
           "type": "number",
-          "default": 20
+          "default": 20,
+          "format": "Celsius"
         },
         "temp_hw_supply": {
-          "description": "Heating water supply temperature. (C)",
+          "description": "Heating water supply temperature.",
           "type": "number",
-          "default": 40
+          "default": 40,
+          "format": "Celsius"
         },
         "temp_hw_return": {
-          "description": "Heating water return temperature. (C)",
+          "description": "Heating water return temperature.",
           "type": "number",
-          "default": 35
+          "default": 35,
+          "format": "Celsius"
         },
         "temp_chw_supply": {
-          "description": "Chilled water supply temperature. (C)",
+          "description": "Chilled water supply temperature.",
           "type": "number",
-          "default": 7
+          "default": 7,
+          "format": "Celsius"
         },
         "temp_chw_return": {
-          "description": "Chilled water return temperature. (C)",
+          "description": "Chilled water return temperature.",
           "type": "number",
-          "default": 12
+          "default": 12,
+          "format": "Celsius"
         },
         "has_liquid_heating": {
           "description": "Whether the building has liquid heating.",
@@ -763,22 +798,25 @@
           "default": false
         },
         "max_electrical_load": {
-          "description": "Maximum electrical load from OpenStudio building simulation. (W)",
+          "description": "Maximum electrical load from OpenStudio building simulation.",
           "type": "number",
-          "default": 0
+          "default": 0,
+          "format": "Watts"
         },
         "filepath": {
           "type": "string"
         },
         "delta_temp_air_cooling": {
-          "description": "Nominal cooling air temperature difference across the terminal unit heat exchanger. (deltaC)",
+          "description": "Nominal cooling air temperature difference across the terminal unit heat exchanger.",
           "type": "number",
-          "default": 10
+          "default": 10,
+          "format": "Celsius"
         },
         "delta_temp_air_heating": {
-          "description": "Nominal heating air temperature difference across the terminal unit heat exchanger. (deltaC)",
+          "description": "Nominal heating air temperature difference across the terminal unit heat exchanger.",
           "type": "number",
-          "default": 18
+          "default": 18,
+          "format": "Celsius"
         }
       },
       "required": [
@@ -796,89 +834,106 @@
       "type": "object",
       "properties": {
         "cooling_tower_fan_power_nominal": {
-          "description": "Cooling tower fan power (W)",
+          "description": "Cooling tower fan power.",
           "type": "number",
-          "default": 5000
+          "default": 5000,
+          "format": "Watts"
         },
         "heat_flow_nominal": {
-          "description": "Nominal district cooling load. (W)",
+          "description": "Nominal district cooling load.",
           "type": "number",
-          "default": 8000
+          "default": 8000,
+          "format": "Watts"
         },
         "mass_chw_flow_nominal": {
-          "description": "Nominal chilled water mass flow rate. (kg/s)",
+          "description": "Nominal chilled water mass flow rate.",
           "type": "number",
-          "default": 10
+          "default": 10,
+          "format": "Kilograms per second"
         },
         "chiller_water_flow_minimum": {
-          "description": " Chiller minimum  water mass flow rate. (kg/s)",
+          "description": " Chiller minimum  water mass flow rate.",
           "type": "number",
-          "default": 10
+          "default": 10,
+          "format": "Kilograms per second"
         },
         "mass_cw_flow_nominal": {
-          "description": "Nominal condenser water mass flow rate. (kg/s)",
+          "description": "Nominal condenser water mass flow rate.",
           "type": "number",
-          "default": 10
+          "default": 10,
+          "format": "Kilograms per second"
         },
         "chw_pump_head": {
-          "description": "Chilled water pump head (Pa)",
+          "description": "Chilled water pump head",
           "type": "number",
-          "default": 300000
+          "default": 300000,
+          "format": "Pascals"
         },
         "cw_pump_head": {
-          "description": "Cooling water pump head (Pa)",
+          "description": "Cooling water pump head.",
           "type": "number",
-          "default": 200000
+          "default": 200000,
+          "format": "Pascals"
         },
         "pressure_drop_chw_nominal": {
-          "description": "Nominal chilled water (evaporator) side pressure drop. (Pa)",
+          "description": "Nominal chilled water (evaporator) side pressure drop.",
           "type": "number",
-          "default": 55000
+          "default": 55000,
+          "format": "Pascals"
         },
         "pressure_drop_cw_nominal": {
-          "description": "Nominal cooling water (condenser) side pressure drop. (Pa)",
+          "description": "Nominal cooling water (condenser) side pressure drop.",
           "type": "number",
-          "default": 80000
+          "default": 80000,
+          "format": "Pascals"
         },
         "pressure_drop_setpoint": {
-          "description": "The chilled water circuit pressure drop setpoint. (Pa)",
+          "description": "The chilled water circuit pressure drop setpoint.",
           "type": "number",
-          "default": 50000
+          "default": 50000,
+          "format": "Pascals"
         },
         "temp_setpoint_chw": {
-          "description": "District circuit chilled water temperature setpoint. (C)",
+          "description": "District circuit chilled water temperature setpoint.",
           "type": "number",
-          "default": 5
+          "default": 5,
+          "format": "Celsius"
         },
         "pressure_drop_chw_valve_nominal": {
-          "description": "Chiller isolation valve pressure drop. (Pa)",
+          "description": "Chiller isolation valve pressure drop.",
           "type": "number",
-          "default": 6000
+          "default": 6000,
+          "format": "Pascals"
         },
         "pressure_drop_cw_pum_nominal": {
-          "description": "Cooling tower isolation valve pressure drop. (Pa)",
+          "description": "Cooling tower isolation valve pressure drop.",
           "type": "number",
-          "default": 6000
+          "default": 6000,
+          "format": "Pascals"
         },
         "temp_air_wb_nominal": {
-          "description": "Design air wet-bulb temperature. (C)",
+          "description": "Design air wet-bulb temperature.",
           "type": "number",
-          "default": 25
+          "default": 25,
+          "format": "Celsius"
         },
         "temp_cw_in_nominal": {
-          "description": "Nominal cooling water inlet temperature. (C)",
+          "description": "Nominal cooling water inlet temperature.",
           "type": "number",
-          "default": 35
+          "default": 35,
+          "format": "Celsius"
         },
         "cooling_tower_water_temperature_difference_nominal": {
-          "description": "Nominal water temperature difference of the tower. (C)",
+          "description": "Nominal water temperature difference of the tower.",
           "type": "number",
-          "default": 7
+          "default": 7,
+          "format": "Celsius"
         },
         "delta_temp_approach": {
-          "description": "Approach temperature difference. (deltaC)",
+          "description": "Approach temperature difference.",
           "type": "number",
-          "default": 3
+          "default": 3,
+          "format": "Celsius"
         },
         "ratio_water_air_nominal": {
           "description": "To be defined",
@@ -895,34 +950,40 @@
       "type": "object",
       "properties": {
         "heat_flow_nominal": {
-          "description": "Nominal district heating load. (W)",
+          "description": "Nominal district heating load.",
           "type": "number",
-          "default": 8000
+          "default": 8000,
+          "format": "Watts"
         },
         "mass_hhw_flow_nominal": {
-          "description": "Nominal heating water mass flow rate. (kg/s)",
+          "description": "Nominal heating water mass flow rate.",
           "type": "number",
-          "default": 1
+          "default": 1,
+          "format": "Kilograms per second"
         },
         "boiler_water_flow_minimum": {
-          "description": "[unused] Boiler minimum  water mass flow rate. (kg/s)",
+          "description": "[unused] Boiler minimum  water mass flow rate.",
           "type": "number",
-          "default": 0.1
+          "default": 0.1,
+          "format": "Kilograms per second"
         },
         "pressure_drop_hhw_nominal": {
-          "description": "[unused] Nominal heating water (boiler side) pressure drop. (Pa)",
+          "description": "[unused] Nominal heating water (boiler side) pressure drop.",
           "type": "number",
-          "default": 55000
+          "default": 55000,
+          "format": "Pascals"
         },
         "temp_setpoint_hhw": {
-          "description": "District circuit heating water temperature setpoint. (C)",
+          "description": "District circuit heating water temperature setpoint.",
           "type": "number",
-          "default": 55
+          "default": 55,
+          "format": "Celsius"
         },
         "pressure_drop_hhw_valve_nominal": {
-          "description": "Boiler isolation valve pressure drop. (Pa)",
+          "description": "Boiler isolation valve pressure drop.",
           "type": "number",
-          "default": 6000
+          "default": 6000,
+          "format": "Pascals"
         },
         "chp_installed": {
           "description": "True if heating plant is a Combined Heat and Power plant",
@@ -1001,11 +1062,11 @@
           "description": "Results directory for GHE Designer. Absolute path, or relative to the sys-param file.",
           "type": "string"
         },
-        "ghe_specific_params": {
+        "borefields": {
           "description": "Specific properties for each Ground Heat Exchanger",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ghe_specific_params_def"
+            "$ref": "#/definitions/borefields_def"
           }
         },
         "pipe": {
@@ -1020,20 +1081,20 @@
         "simulation": {
           "$ref": "#/definitions/simulation_def"
         },
-        "geometric_constraints": {
-          "$ref": "#/definitions/geometric_constraints_def"
-        },
         "design": {
           "$ref": "#/definitions/design_def"
+        },
+        "borehole": {
+          "$ref": "#/definitions/borehole_def"
         }
       },
       "required": [
-        "ghe_specific_params",
+        "borefields",
+        "borehole",
         "pipe",
         "fluid",
         "grout",
         "simulation",
-        "geometric_constraints",
         "design"
       ]
     },
@@ -1042,54 +1103,79 @@
       "properties": {
         "hydraulic_diameter": {
           "description": "Hydraulic diameter of the distribution pipe",
-          "type": "number"
+          "type": "number",
+          "minimum": 0.01,
+          "format": "Meters"
+        },
+        "hydraulic_diameter_autosized": {
+          "description": "True if the hydraulic diameter is autosized, false if set manually",
+          "type": "boolean",
+          "default": true
         },
         "insulation_thickness": {
-          "description": "Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
-          "type": "number"
+          "description": "Thickness of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil.",
+          "type": "number",
+          "minimum": 0.01,
+          "format": "Meters"
         },
         "insulation_conductivity": {
-          "description": "Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil. Must be greater than zero.",
-          "type": "number"
+          "description": "Heat conductivity of pipe insulation, used to compute R. If no insulation, use a virtual insulation layer of soil.",
+          "type": "number",
+          "minimum": 0.01,
+          "format": "Watts per meter-Kelvin"
         },
         "diameter_ratio": {
           "description": "The ratio of pipe outer diameter to pipe wall thickness",
           "type": "number"
         },
         "pressure_drop_per_meter": {
-          "description": "Pressure drop per meter of pipe at nominal flow rate (Pascals/meter)",
+          "description": "Pressure drop per meter of pipe at nominal flow rate.",
           "type": "integer",
-          "minimum": 0
+          "minimum": 0,
+          "format": "Pascals per meter"
         },
         "roughness": {
           "description": "Average height of pipe material surface asperities",
-          "type": "number"
+          "type": "number",
+          "format": "Meters"
         },
         "rho_cp": {
           "description": "Volumetric heat capacity of the pipe wall material",
-          "type": "number"
-        },
-        "number_of_segments": {
-          "description": "Number of axial pipe segments, used to discretize pipe models",
-          "type": "integer"
+          "type": "number",
+          "format": "Joules per cubic meter-Kelvin"
         },
         "buried_depth": {
-          "description": "Pipes buried depth",
-          "type": "number"
+          "description": "Pipes buried depth below ground surface",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
         }
-      }
+      },
+      "required": [
+        "hydraulic_diameter",
+        "hydraulic_diameter_autosized",
+        "insulation_thickness",
+        "insulation_conductivity",
+        "diameter_ratio",
+        "pressure_drop_per_meter",
+        "roughness",
+        "rho_cp",
+        "buried_depth"
+      ]
     },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
       "type": "object",
       "properties": {
         "nominal_power_generation": {
-          "description": "Nominal power generation (W)",
-          "type": "number"
+          "description": "Nominal power generation.",
+          "type": "number",
+          "format": "Watts"
         },
         "source_phase_shift": {
           "description": "Phase shift angle of source (degrees)",
-          "type": "number"
+          "type": "number",
+          "format": "Degrees"
         }
       }
     },
@@ -1098,17 +1184,20 @@
       "type": "object",
       "properties": {
         "frequency": {
-          "description": "Frequency (Hz)",
+          "description": "Frequency of the electrical grid",
           "type": "number",
-          "default": 60
+          "default": 60,
+          "format": "Hertz"
         },
         "source_rms_voltage": {
-          "description": "Root mean square (RMS) voltage of source (V)",
-          "type": "number"
+          "description": "Root mean square (RMS) voltage of source",
+          "type": "number",
+          "format": "Volts"
         },
         "source_phase_shift": {
-          "description": "Phase shift angle of source (degrees)",
-          "type": "number"
+          "description": "Phase shift angle of source",
+          "type": "number",
+          "format": "Degrees"
         }
       }
     },
@@ -1117,25 +1206,29 @@
       "type": "object",
       "properties": {
         "net_surface_area": {
-          "description": "Net PV Surface Area (m2)",
-          "type": "number"
+          "description": "Net PV Surface Area",
+          "type": "number",
+          "format": "Square Meters"
         },
         "surface_tilt": {
-          "description": "PV Surface Tilt (degrees)",
-          "type": "number"
+          "description": "PV Surface Tilt",
+          "type": "number",
+          "format": "Degrees"
         },
         "surface_azimuth": {
-          "description": "PV Surface Azimuth (degrees)",
-          "type": "number"
+          "description": "PV Surface Azimuth",
+          "type": "number",
+          "format": "Degrees"
         },
         "latitude": {
           "description": "Latitude",
           "type": "number"
         },
         "nominal_voltage": {
-          "description": "Nominal System Voltage (V)",
+          "description": "Nominal System Voltage",
           "type": "number",
-          "default": 480
+          "default": 480,
+          "format": "Volts"
         }
       },
       "required": [
@@ -1155,25 +1248,29 @@
           "type": "number"
         },
         "height_over_ground": {
-          "description": "Height over ground (m)",
-          "type": "number"
+          "description": "Height over ground",
+          "type": "number",
+          "format": "Meters"
         },
         "power_curve": {
           "description": "Power curve given as an array of pairs of value: the first in (m/s) and the second in (W).",
           "type": "array"
         },
         "rated_power": {
-          "description": "Wind turbine size (kW)",
-          "type": "number"
+          "description": "Wind turbine size",
+          "type": "number",
+          "format": "kiloWatts"
         },
         "annual_energy_produced": {
-          "description": "Average yearly energy produced (kWh)",
-          "type": "number"
+          "description": "Average yearly energy produced",
+          "type": "number",
+          "format": "kiloWatt-hours"
         },
         "nominal_voltage": {
-          "description": "Nominal System Voltage (V)",
+          "description": "Nominal System Voltage",
           "type": "number",
-          "default": 480
+          "default": 480,
+          "format": "Volts"
         }
       }
     },
@@ -1182,8 +1279,9 @@
       "type": "object",
       "properties": {
         "nominal_capacity": {
-          "description": "Nominal Capacity (var)",
-          "type": "number"
+          "description": "Nominal Capacity",
+          "type": "number",
+          "format": "var"
         }
       },
       "required": [
@@ -1195,12 +1293,14 @@
       "type": "object",
       "properties": {
         "RMS_voltage_high_side": {
-          "description": "RMS voltage on high side (V)",
-          "type": "number"
+          "description": "RMS voltage on high side",
+          "type": "number",
+          "format": "Volts"
         },
         "RMS_voltage_low_side": {
-          "description": "RMS voltage on low side (V)",
-          "type": "number"
+          "description": "RMS voltage on low side",
+          "type": "number",
+          "format": "Volts"
         }
       }
     },
@@ -1213,8 +1313,9 @@
           "type": "string"
         },
         "nominal_capacity": {
-          "description": "Nominal Capacity (kVA)",
-          "type": "number"
+          "description": "Nominal Capacity",
+          "type": "number",
+          "format": "kVA"
         },
         "reactance_resistance_ratio": {
           "description": "Ratio between reactance and resistance",
@@ -1240,7 +1341,8 @@
         },
         "nominal_capacity": {
           "description": "Nominal Capacity (kVA)",
-          "type": "number"
+          "type": "number",
+          "format": "kVA"
         }
       }
     },
@@ -1249,17 +1351,20 @@
       "type": "object",
       "properties": {
         "line_length": {
-          "description": "Length of distribution lines (m)",
-          "type": "number"
+          "description": "Length of distribution lines",
+          "type": "number",
+          "format": "Meters"
         },
         "maximum_ampacity": {
-          "description": "Maximum power of the lines. this is defined in Amps",
-          "type": "number"
+          "description": "Maximum power of the lines.",
+          "type": "number",
+          "format": "Amps"
         },
         "nominal_voltage": {
-          "description": "Nominal voltage of the lines (V)",
+          "description": "Nominal voltage of the lines",
           "type": "number",
-          "default": 480
+          "default": 480,
+          "format": "Volts"
         },
         "commercial_line_type": {
           "description": "Commercial line type given by the type of each wire making up the line",
@@ -1272,8 +1377,9 @@
       "type": "object",
       "properties": {
         "nominal_voltage": {
-          "description": "Nominal voltage (V)",
-          "type": "number"
+          "description": "Nominal voltage",
+          "type": "number",
+          "format": "Volts"
         },
         "nominal_power_consumption": {
           "description": "Nominal Power Consumption type",
@@ -1290,8 +1396,9 @@
       "type": "object",
       "properties": {
         "nominal_voltage": {
-          "description": "Nominal voltage (V)",
-          "type": "number"
+          "description": "Nominal voltage",
+          "type": "number",
+          "format": "Volts"
         },
         "nominal_power_consumption": {
           "description": "Nominal Power Consumption type",
@@ -1308,12 +1415,14 @@
       "type": "object",
       "properties": {
         "capacity": {
-          "description": "Maximum available charge (MWh)",
-          "type": "number"
+          "description": "Maximum available charge",
+          "type": "number",
+          "format": "MegaWatt-hours"
         },
         "nominal_voltage": {
           "description": "Nominal voltage (V)",
-          "type": "number"
+          "type": "number",
+          "format": "Volts"
         }
       }
     },
@@ -1422,23 +1531,31 @@
     },
     "fifth_gen_ets_parameters": {
       "properties": {
-        "supply_water_temperature_building": {
-          "description": "Water supply temperature building side. (C)",
-          "type": "number",
-          "default": 15
-        },
         "chilled_water_supply_temp": {
-          "description": "Chilled water supply temperature. (C)",
+          "description": "Chilled water supply temperature.",
           "type": "number",
-          "default": 5
+          "default": 5,
+          "format": "Celsius"
         },
         "hot_water_supply_temp": {
-          "description": "Heating water supply temperature. (C)",
+          "description": "Domestic hot water supply temperature.",
           "type": "number",
-          "default": 50
+          "default": 50,
+          "format": "Celsius"
+        },
+        "heating_water_supply_temp": {
+          "description": "Heating water supply temperature.",
+          "type": "number",
+          "default": 50,
+          "format": "Celsius"
         },
         "cop_heat_pump_heating": {
           "description": "COP of heat pump for heating water production.",
+          "type": "number",
+          "default": 2.5
+        },
+        "cop_heat_pump_hot_water": {
+          "description": "COP of heat pump for domestic hot water production.",
           "type": "number",
           "default": 2.5
         },
@@ -1448,32 +1565,37 @@
           "default": 3.5
         },
         "ets_pump_flow_rate": {
-          "description": "Design volume flow rate of the ETS pump. (m3/s)",
+          "description": "Design volume flow rate of the ETS pump.",
           "type": "number",
-          "default": 0.0005
+          "default": 0.0005,
+          "format": "Cubic meters per second"
         },
         "ets_pump_head": {
-          "description": "Design head pressure of the ETS pump. (Pa)",
+          "description": "Design head pressure of the ETS pump.",
           "type": "number",
-          "default": 10000
+          "default": 10000,
+          "format": "Pascals"
         },
         "fan_design_flow_rate": {
-          "description": "Design volume flow rate of the load-side fan. (m3/s)",
+          "description": "Design volume flow rate of the load-side fan.",
           "type": "number",
-          "default": 0.25
+          "default": 0.25,
+          "format": "Cubic meters per second"
         },
         "fan_design_head": {
-          "description": "Design head pressure of the load-side fan. (Pa)",
+          "description": "Design head pressure of the load-side fan.",
           "type": "number",
-          "default": 150
+          "default": 150,
+          "format": "Pascals"
         }
       },
       "required": [
-        "supply_water_temperature_building",
-        "chilled_water_supply_temp",
         "hot_water_supply_temp",
+        "chilled_water_supply_temp",
+        "heating_water_supply_temp",
         "cop_heat_pump_heating",
         "cop_heat_pump_cooling",
+        "cop_heat_pump_hot_water",
         "ets_pump_flow_rate",
         "ets_pump_head",
         "fan_design_flow_rate",
@@ -1485,19 +1607,22 @@
       "type": "object",
       "properties": {
         "conductivity": {
-          "description": "The conductivity of the soil, in units of W/m-K.",
+          "description": "The conductivity of the soil.",
           "type": "number",
-          "default": 2
+          "default": 2,
+          "format": "Watts per meter-Kelvin"
         },
         "rho_cp": {
-          "description": "The volumetric heat capacity of the soil, in units of J/m^3-K",
+          "description": "The volumetric heat capacity of the soil.",
           "type": "number",
-          "default": 2600000
+          "default": 2600000,
+          "format": "Joules per cubic meter-Kelvin"
         },
         "undisturbed_temp": {
-          "description": "The undisturbed average soil temperature, in units of degrees Celsius.",
+          "description": "The undisturbed average soil temperature.",
           "type": "number",
-          "default": 15
+          "default": 15,
+          "format": "Celsius"
         }
       },
       "required": [
@@ -1506,7 +1631,7 @@
         "undisturbed_temp"
       ]
     },
-    "ghe_specific_params_def": {
+    "borefields_def": {
       "description": "The properties associated with each Ground Heat Exchanger instance",
       "type": "object",
       "properties": {
@@ -1514,98 +1639,606 @@
           "description": "Feature ID of GHE from GeoJSON Feature File.",
           "type": "string"
         },
-        "borehole": {
-          "description": "Borehole properties for Ground Heat Exchanger sizing.",
-          "type": "object",
-          "properties": {
-            "buried_depth": {
-              "description": "The depth below the ground surface to the top of the borehole, in meters.",
-              "type": "number",
-              "default": 1.2
-            },
-            "diameter": {
-              "description": "The diameter of the borehole, in meters.",
-              "type": "number",
-              "default": 0.15
-            },
-            "number_of_boreholes": {
-              "description": "Number of boreholes on the site, determined from Thermal Network sizing",
-              "type": "number"
-            },
-            "length_of_boreholes": {
-              "description": "The length of the borehole (in meters), determined from Thermal Network sizing.",
-              "type": "number"
-            }
-          },
-          "required": [
-            "buried_depth",
-            "diameter"
-          ],
-          "additionalProperties": true
+        "pre_designed_borefield": {
+          "$ref": "#/definitions/pre_designed_borefield_def"
         },
-        "ghe_geometric_params": {
-          "description": "The length and width of the Ground Heat Exchanger determined from the GeoJSON Feature File.",
-          "type": "object",
-          "properties": {
-            "length_of_ghe": {
-              "description": "Horizontal surface length allowed for the ground heat exchanger, in meters.",
-              "type": "number"
-            },
-            "width_of_ghe": {
-              "description": "Horizontal surface width allowed for the ground heat exchanger, in meters.",
-              "type": "number"
-            }
-          },
+        "autosized_rectangle_borefield": {
+          "$ref": "#/definitions/autosized_rectangle_borefield_def"
+        },
+        "autosized_rectangle_constrained_borefield": {
+          "$ref": "#/definitions/autosized_rectangle_constrained_borefield_def"
+        },
+        "autosized_birectangle_borefield": {
+          "$ref": "#/definitions/autosized_birectangle_borefield_def"
+        },
+        "autosized_birectangle_constrained_borefield": {
+          "$ref": "#/definitions/autosized_birectangle_constrained_borefield_def"
+        },
+        "autosized_bizoned_rectangle_borefield": {
+          "$ref": "#/definitions/autosized_bizoned_rectangle_borefield_def"
+        },
+        "autosized_near_square_borefield": {
+          "$ref": "#/definitions/autosized_near_square_borefield_def"
+        },
+        "autosized_rowwise_borefield": {
+          "$ref": "#/definitions/autosized_rowwise_borefield_def"
+        }
+      },
+      "oneOf": [
+        {
           "required": [
-            "length_of_ghe",
-            "width_of_ghe"
+            "pre_designed_borefield"
           ]
+        },
+        {
+          "required": [
+            "autosized_rectangle_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_birectangle_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_birectangle_constrained_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_bizoned_rectangle_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_near_square_borefield"
+          ]
+        },
+        {
+          "required": [
+            "autosized_rowwise_borefield"
+          ]
+        }
+      ],
+      "required": [
+        "ghe_id"
+      ]
+    },
+    "pre_designed_borefield_def": {
+      "description": "Pre-designed borefield properties for limited Ground Heat Exchanger sizing.",
+      "type": "object",
+      "properties": {
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 135,
+          "format": "Meters"
+        },
+        "borehole_x_coordinates": {
+          "description": "X-coordinates of the boreholes.",
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "Meters"
+          }
+        },
+        "borehole_y_coordinates": {
+          "description": "Y-coordinate of the boreholes.",
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "Meters"
+          }
         }
       },
       "required": [
-        "ghe_id",
-        "ghe_geometric_params",
-        "borehole"
+        "borehole_length",
+        "borehole_x_coordinates",
+        "borehole_y_coordinates"
       ]
+    },
+    "autosized_rectangle_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the RECTANGLE method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing.",
+          "type": "number",
+          "minimum": 1
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 1,
+          "default": 135,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchange.r",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_rectangle_constrained_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the RECTANGLECONSTRAINED method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max": {
+          "description": "Maximum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_birectangle_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the BIRECTANGLE method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max_x": {
+          "description": "Maximum borehole-to-borehole spacing in x-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "b_max_y": {
+          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_birectangle_constrained_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the BIRECTANGLECONSTRAINED method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max_x": {
+          "description": "Maximum borehole-to-borehole spacing in x-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "b_max_y": {
+          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_bizoned_rectangle_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the BIZONEDRECTANGLE method.",
+      "type": "object",
+      "properties": {
+        "b_min": {
+          "description": "Minimum borehole-to-borehole spacing.",
+          "type": "number",
+          "minimum": 0,
+          "default": 3,
+          "format": "Meters"
+        },
+        "b_max_x": {
+          "description": "Maximum borehole-to-borehole spacing in x-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "b_max_y": {
+          "description": "Maximum borehole-to-borehole spacing in y-direction.",
+          "type": "number",
+          "minimum": 0,
+          "default": 10,
+          "format": "Meters"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_near_square_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the NEARSQUARE method.",
+      "type": "object",
+      "properties": {
+        "b": {
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters",
+          "description": "Borehole-to-borehole spacing."
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        },
+        "length_of_ghe": {
+          "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "number_of_boreholes",
+        "borehole_length",
+        "length_of_ghe",
+        "width_of_ghe"
+      ],
+      "additionalProperties": true
+    },
+    "autosized_rowwise_borefield_def": {
+      "description": "Borefield properties for Ground Heat Exchanger sizing via the ROWWISE method.",
+      "type": "object",
+      "properties": {
+        "min_spacing": {
+          "description": "The smallest minimum spacing that will be used to generate a RowWise field.",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
+        },
+        "max_spacing": {
+          "description": "The largest minimum spacing that will be used to generate a RowWise field.",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
+        },
+        "spacing_step": {
+          "description": "The distance in spacing from the design found in the first part of first search to exhaustively check in the second part.",
+          "type": "number",
+          "minimum": 0,
+          "format": "Meters"
+        },
+        "min_rotation": {
+          "description": "The minimum rotation of the rows of each field relative to horizontal that will be used in the search.",
+          "type": "number",
+          "format": "Degrees",
+          "maximum": 90,
+          "minimum": -90
+        },
+        "max_rotation": {
+          "description": "The maximum rotation of the rows of each field relative to horizontal that will be used in the search.",
+          "type": "number",
+          "format": "Degrees",
+          "maximum": 90,
+          "minimum": -90
+        },
+        "rotate_step": {
+          "description": "Step size for field rotation search.",
+          "type": "number",
+          "format": "Degrees"
+        },
+        "max_height": {
+          "description": "Maximum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 200,
+          "format": "Meters"
+        },
+        "min_height": {
+          "description": "Minimum height, or depth, of each borehole heat exchanger.",
+          "type": "number",
+          "minimum": 0,
+          "default": 50,
+          "format": "Meters"
+        },
+        "number_of_boreholes": {
+          "description": "Number of boreholes on the site, determined from Thermal Network sizing",
+          "type": "number",
+          "minimum": 0
+        },
+        "borehole_length": {
+          "description": "The length of the boreholes.",
+          "type": "number",
+          "minimum": 0,
+          "default": 100,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "min_spacing",
+        "max_spacing",
+        "spacing_step",
+        "min_rotation",
+        "max_rotation",
+        "rotate_step",
+        "number_of_boreholes",
+        "borehole_length"
+      ],
+      "additionalProperties": true
     },
     "pipe_def": {
       "description": "Pipe properties for Ground Heat Exchanger sizing",
       "type": "object",
       "properties": {
         "inner_diameter": {
-          "description": "The diameter of the inner pipe surface, in meters.",
+          "description": "The diameter of the inner pipe surface.",
           "type": "number",
-          "default": 0.0269
+          "default": 0.0269,
+          "format": "Meters"
         },
         "outer_diameter": {
-          "description": "The diameter of the outer pipe surface, in meters.",
+          "description": "The diameter of the outer pipe surface.",
           "type": "number",
           "minimum": 0,
-          "default": 0.0334
+          "default": 0.0334,
+          "format": "Meters"
         },
         "shank_spacing": {
-          "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e., not referenced from each pipes respective centerline), in meters.",
+          "description": "The spacing between the U-tube legs, as referenced from outer surface of the pipes (i.e., not referenced from each pipes respective centerline).",
           "type": "number",
           "minimum": 0,
-          "default": 0.0277
+          "default": 0.0277,
+          "format": "Meters"
         },
         "roughness": {
-          "description": "The surface roughness of the pipe, in meters.",
+          "description": "The surface roughness of the pipe.",
           "type": "number",
           "minimum": 0,
-          "default": 1e-06
+          "default": 1e-06,
+          "format": "Meters"
         },
         "conductivity": {
-          "description": "The conductivity of the pipe material, in W/m-K.",
+          "description": "The conductivity of the pipe material.",
           "type": "number",
           "minimum": 0,
-          "default": 0.4
+          "default": 0.4,
+          "format": "Watts per meter-Kelvin"
         },
         "rho_cp": {
-          "description": "The volumetric heat capacity of the pipe material, in J/m^3-K",
+          "description": "The volumetric heat capacity of the pipe material.",
           "type": "number",
           "minimum": 0,
-          "default": 1542000
+          "default": 1542000,
+          "format": "Joules per cubic meter-Kelvin"
         },
         "arrangement": {
           "description": "Arrangement of the pipes.",
@@ -1652,9 +2285,10 @@
           "default": 0
         },
         "temperature": {
-          "description": "Average design fluid temperature at peak conditions, in C.",
+          "description": "Average design fluid temperature at peak conditions.",
           "type": "number",
-          "default": 20
+          "default": 20,
+          "format": "Celsius"
         }
       },
       "required": [
@@ -1668,16 +2302,18 @@
       "type": "object",
       "properties": {
         "conductivity": {
-          "description": "Grout thermal conductivity, in W/m-K.",
+          "description": "Grout thermal conductivity.",
           "type": "number",
           "minimum": 0,
-          "default": 2
+          "default": 2,
+          "format": "Watts per meter-Kelvin"
         },
         "rho_cp": {
-          "description": "Grout volumetric heat capacity, in J/m^3-K.",
+          "description": "Grout volumetric heat capacity.",
           "type": "number",
           "minimum": 0,
-          "default": 4408000
+          "default": 4408000,
+          "format": "Joules per cubic meter-Kelvin"
         }
       },
       "required": [
@@ -1690,56 +2326,15 @@
       "type": "object",
       "properties": {
         "num_months": {
-          "description": "Length of ground heat exchanger sizing period, in months.",
+          "description": "Length of ground heat exchanger sizing period.",
           "type": "integer",
           "minimum": 0,
-          "default": 240
+          "default": 240,
+          "format": "Months"
         }
       },
       "required": [
         "num_months"
-      ]
-    },
-    "geometric_constraints_def": {
-      "description": "Geometric constraints for GHE and boreholes.",
-      "type": "object",
-      "properties": {
-        "b_min": {
-          "description": "Minimum borehole-to-borehole spacing, in meters.",
-          "type": "number",
-          "default": 3
-        },
-        "b_max": {
-          "description": "Maximum borehole-to-borehole spacing, in meters.",
-          "type": "number",
-          "default": 10
-        },
-        "max_height": {
-          "description": "Maximum height, or depth, of each borehole heat exchanger, in meters.",
-          "type": "number",
-          "default": 200
-        },
-        "min_height": {
-          "description": "Minimum height, or depth, of each borehole heat exchanger, in meters.",
-          "type": "number",
-          "default": 100
-        },
-        "method": {
-          "description": "GHE sizing method",
-          "type": "string",
-          "enum": [
-            "nearsquare",
-            "rectangle"
-          ],
-          "default": "rectangle"
-        }
-      },
-      "required": [
-        "b_min",
-        "b_max",
-        "max_height",
-        "min_height",
-        "method"
       ]
     },
     "design_def": {
@@ -1756,10 +2351,11 @@
           "default": "AREAPROPORTIONAL"
         },
         "flow_rate": {
-          "description": "Nominal design mass flow rate, in l/s. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
+          "description": "Nominal design mass flow rate. Depending on whether the flow_type attribute is set to 'borehole' or 'system', this will be the nominal flow rate for either each borehole or the entire ground heat exchanger.",
           "type": "number",
           "minimum": 0,
-          "default": 0.3
+          "default": 0.3,
+          "format": "Liters per second"
         },
         "flow_type": {
           "description": "Flow type for ground heat exchanger sizing",
@@ -1771,14 +2367,16 @@
           "default": "borehole"
         },
         "max_eft": {
-          "description": "Maximum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
+          "description": "Maximum heat pump entering fluid temperature used for ground heat exchanger sizing.",
           "type": "number",
-          "default": 35
+          "default": 35,
+          "format": "Celsius"
         },
         "min_eft": {
-          "description": "Minimum heat pump entering fluid temperature used for ground heat exchanger sizing, in Celsius.",
+          "description": "Minimum heat pump entering fluid temperature used for ground heat exchanger sizing.",
           "type": "number",
-          "default": 5
+          "default": 5,
+          "format": "Celsius"
         }
       },
       "required": [
@@ -1789,24 +2387,85 @@
         "min_eft"
       ]
     },
+    "borehole_def": {
+      "description": "Borehole properties for Ground Heat Exchanger sizing",
+      "type": "object",
+      "properties": {
+        "buried_depth": {
+          "description": "The depth below the ground surface to the top of the borehole.",
+          "type": "number",
+          "default": 2.0,
+          "format": "Meters"
+        },
+        "diameter": {
+          "description": "The diameter of the borehole.",
+          "type": "number",
+          "default": 0.15,
+          "format": "Meters"
+        }
+      },
+      "required": [
+        "buried_depth",
+        "diameter"
+      ]
+    },
     "central_pump_parameters": {
       "description": "Parameters for central pump",
       "type": "object",
       "properties": {
         "pump_design_head": {
-          "description": "Measured in Pa.",
-          "type": "number"
+          "description": "Head pressure of the central network pump.",
+          "type": "number",
+          "format": "Pascals"
+        },
+        "pump_design_head_autosized": {
+          "description": "True if the pump head is autosized, false if set manually",
+          "type": "boolean",
+          "default": true
         },
         "pump_flow_rate": {
-          "description": "Design volume flow rate of the ambient loop pump. (m3/s)",
+          "description": "Design volume flow rate of the ambient loop pump.",
           "type": "number",
-          "default": 0.01
+          "default": 0.01,
+          "format": "Cubic meters per second"
+        },
+        "pump_flow_rate_autosized": {
+          "description": "True if the pump flow rate is autosized, false if set manually",
+          "type": "boolean",
+          "default": true
         }
       },
       "required": [
         "pump_design_head",
-        "pump_flow_rate"
+        "pump_design_head_autosized",
+        "pump_flow_rate",
+        "pump_flow_rate_autosized"
       ]
+    },
+    "heat_source_parameters": {
+      "type": "array",
+      "items": {
+        "heat_source_id": {
+          "description": "Identifier for the heat source.",
+          "type": "string"
+        },
+        "heat_source_rate": {
+          "description": "Either a constant value (integer) or a path to the rate schedule file. If filepath, provide a *.mos heat source rate as time series (source positive, sink negative)",
+          "type": [
+            "string",
+            "integer"
+          ],
+          "format": "Watts"
+        },
+        "heat_source_temperature": {
+          "description": "Either a constant value (integer) or a path to the temperature schedule file. If filepath, provide a *.mos heat source temperature as time series (source positive, sink negative)",
+          "type": [
+            "string",
+            "integer"
+          ],
+          "format": "Kelvin"
+        }
+      }
     },
     "fifth_generation": {
       "description": "Fifth generation district parameters, for an ambient loop system.",
@@ -1834,6 +2493,9 @@
         },
         "horizontal_piping_parameters": {
           "$ref": "#/definitions/horizontal_piping_parameters"
+        },
+        "heat_source_parameters": {
+          "$ref": "#/definitions/heat_source_parameters"
         }
       },
       "required": [

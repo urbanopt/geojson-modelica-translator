@@ -97,11 +97,12 @@
       },
       "ets_model": "Fifth Gen Heat Pump",
       "fifth_gen_ets_parameters": {
-        "supply_water_temperature_building": 15,
         "chilled_water_supply_temp": 5,
+        "heating_water_supply_temp": 50,
         "hot_water_supply_temp": 50,
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
+        "cop_heat_pump_hot_water": 2.5,
         "ets_pump_flow_rate": 0.0005,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
@@ -130,8 +131,8 @@
         "mass_cw_flow_nominal": 9.9,
         "chw_pump_head": 300000,
         "cw_pump_head": 200000,
-        "pressure_drop_chw_nominal": 5999,
-        "pressure_drop_cw_nominal": 5999,
+        "pressure_drop_chw_nominal": 44801,
+        "pressure_drop_cw_nominal": 46200,
         "pressure_drop_setpoint": 49999,
         "temp_setpoint_chw": 6,
         "pressure_drop_chw_valve_nominal": 5999,
@@ -154,16 +155,29 @@
       }
     },
     "fifth_generation": {
+      "heat_source_parameters": [
+        {
+          "heat_source_id": "asdf",
+          "heat_source_rate": "To be populated",
+          "heat_source_temperature": "To be populated"
+        }
+      ],
       "horizontal_piping_parameters": {
         "hydraulic_diameter": 0.089,
+        "hydraulic_diameter_autosized": true,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
         "diameter_ratio": 11,
         "pressure_drop_per_meter": 300,
         "roughness": 1e-06,
         "rho_cp": 2139000,
-        "number_of_segments": 1,
         "buried_depth": 1.5
+      },
+      "central_pump_parameters": {
+        "pump_design_head": 200000,
+        "pump_design_head_autosized": true,
+        "pump_flow_rate": 1e-05,
+        "pump_flow_rate_autosized": true
       },
       "soil": {
         "conductivity": 2.0,
@@ -194,13 +208,6 @@
         "simulation": {
           "num_months": 240
         },
-        "geometric_constraints": {
-          "b_min": 3.0,
-          "b_max": 10.0,
-          "max_height": 135.0,
-          "min_height": 60.0,
-          "method": "rectangle"
-        },
         "design": {
           "method": "AREAPROPORTIONAL",
           "flow_rate": 0.2,
@@ -208,25 +215,25 @@
           "max_eft": 35.0,
           "min_eft": 5.0
         },
-        "ghe_specific_params": [
+        "borehole": {
+          "buried_depth": 2.0,
+          "diameter": 0.15
+        },
+        "borefields": [
           {
             "ghe_id": "0b575a8f-97d1-47e6-b329-7ef7566d26f2",
-            "ghe_geometric_params": {
+            "autosized_rectangle_borefield": {
+              "b_min": 3.0,
+              "b_max": 10.0,
+              "max_height": 135.0,
+              "min_height": 60.0,
               "length_of_ghe": 100,
-              "width_of_ghe": 100
-            },
-            "borehole": {
-              "buried_depth": 2.0,
-              "diameter": 0.15,
-              "length_of_boreholes": 1.0,
-              "number_of_boreholes": 5
+              "width_of_ghe": 100,
+              "borehole_length": 1,
+              "number_of_boreholes": 1
             }
           }
         ]
-      },
-      "central_pump_parameters": {
-        "pump_design_head": 200000,
-        "pump_flow_rate": 0.01
       }
     }
   },

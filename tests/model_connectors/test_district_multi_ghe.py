@@ -58,7 +58,7 @@ class DistrictSystemTest(TestCaseBase):
         all_couplings = []
         for loop in loop_order:
             ghe_id = loop["list_ghe_ids_in_group"][0]
-            for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.ghe_specific_params"):
+            for ghe in sys_params.get_param("$.district_system.fifth_generation.ghe_parameters.borefields"):
                 if ghe_id == ghe["ghe_id"]:
                     borefield = Borefield(sys_params, ghe)
             distribution = UnidirectionalSeries(sys_params)
@@ -98,7 +98,7 @@ class DistrictSystemTest(TestCaseBase):
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="Model is too large for OM. Simulates as expected using Dymola")
+    @pytest.mark.skip(reason="Model appears to be too large for OM. Simulates as expected using Dymola")
     @pytest.mark.dymola
     # TODO: Improve simulation with OM to enable running this test natively
     def test_simulate_multi_ghe_district(self):

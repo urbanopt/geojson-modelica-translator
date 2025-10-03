@@ -2,9 +2,8 @@ within geojson_modelica_translator.model_connectors.templates;
 model CoolingTowerParallel
   "Multiple identical cooling towers in parallel connection"
   extends Buildings.Applications.DataCenters.ChillerCooled.Equipment.BaseClasses.SignalFilter(
-    riseTimeValve=30,
-    use_inputFilter=true,
-    final numFil=num);
+    use_strokeTime=true,
+    final numAct=num);
   parameter Integer num(
     min=1)=2
     "Number of cooling towers";
@@ -123,8 +122,8 @@ equation
     connect(cooTow[i].TLvg,TLvg[i])
       annotation (Line(points={{11,-6},{26,-6},{26,30},{110,30}},color={0,0,127}));
   end for;
-  if use_inputFilter then
-    connect(on,filter.u)
+  if use_strokeTime then
+    connect(on,actPos.u)
       annotation (Line(points={{-120,60},{-60,60},{-60,84},{-55.2,84}},color={0,0,127}));
   else
     connect(on,y_actual)
