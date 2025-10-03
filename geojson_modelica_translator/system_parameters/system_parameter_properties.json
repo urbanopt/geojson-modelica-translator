@@ -159,9 +159,6 @@
           }
         }
       },
-      "required": [
-        "weather"
-      ],
       "additionalProperties": false
     },
     "topology_def": {
@@ -1969,6 +1966,13 @@
         },
         "length_of_ghe": {
           "description": "Horizontal surface length allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger.",
           "type": "number",
           "minimum": 1,
           "default": 100,
