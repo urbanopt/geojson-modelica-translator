@@ -1053,14 +1053,19 @@ class SystemParameters:
         # Remove template components that do not apply
         match district_type:
             case "5G_ghe":
+                del self.param_template["district_system"]["first_generation"]
                 del self.param_template["district_system"]["fourth_generation"]
                 self.process_ghe_inputs(scenario_dir)
             case "5G":
+                del self.param_template["district_system"]["first_generation"]
                 del self.param_template["district_system"]["fourth_generation"]
                 del self.param_template["district_system"]["fifth_generation"]["ghe_parameters"]
-            case "4G" | "steam":
-                with suppress(KeyError):
-                    del self.param_template["district_system"]["fifth_generation"]
+            case "4G":
+                del self.param_template["district_system"]["fifth_generation"]
+                del self.param_template["district_system"]["first_generation"]
+            case "steam":
+                del self.param_template["district_system"]["fourth_generation"]
+                del self.param_template["district_system"]["fifth_generation"]
 
         # save the file to disk
         self.save(self.sys_param_filename, self.param_template)
