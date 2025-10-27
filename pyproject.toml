@@ -46,7 +46,7 @@ teaser = "1.3.0"
 # myst-parser = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
-rpds-py = ">=0.22,<0.28"
+rpds-py = ">=0.22,<0.29"
 mypy = "^1.17"
 pre-commit = "^4.0"
 pytest = "^8.3"
