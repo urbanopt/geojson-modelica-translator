@@ -1,5 +1,16 @@
 # Change Log
 
+## Version 0.13.0
+
+## What's Changed
+
+### Other Changes
+
+* Fix param schema for docs site by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/762>
+* Downgrade click to support python 3.9 by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/770>
+
+**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.12.0...v0.13.0>
+
 ## Version 0.12.0
 
 ### Exciting New Features 🎉
