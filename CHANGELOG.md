@@ -8,8 +8,7 @@
 
 * Fix param schema for docs site by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/762>
 * Downgrade click to support python 3.9 by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/770>
-
-**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.12.0...v0.13.0>
+* Update result processing library for GHPs by @tanushree04 in <https://github.com/urbanopt/geojson-modelica-translator/pull/742>
 
 ## Version 0.12.0
 
