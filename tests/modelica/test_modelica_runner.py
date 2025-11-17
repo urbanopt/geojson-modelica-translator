@@ -98,6 +98,22 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert not os.path.exists(os.path.join(results_path, "om_docker.sh"))
 
     @pytest.mark.simulation
+    def test_simulate_bouncing_ball_in_older_docker(self):
+        # test running bouncing ball in older docker image
+        mr = ModelicaRunner()
+        success, _ = mr.run_in_docker("compile_and_run", "BouncingBall",
+                         file_to_load = os.path.join(self.run_path, "BouncingBall.mo"),
+                         run_path=self.run_path,
+                         docker_image="nrel/gmt-om-runner:3.0.0")
+
+        assert success
+
+        results_path = os.path.join(self.run_path, "BouncingBall_results")
+        assert os.path.exists(os.path.join(results_path, "stdout.log"))
+        assert os.path.exists(os.path.join(results_path, "BouncingBall_res.mat"))
+        assert not os.path.exists(os.path.join(results_path, "om_docker.sh"))
+
+    @pytest.mark.simulation
     @pytest.mark.skip(reason="Need to install libfortran.so.4 in docker image")
     def test_simulate_fmu_in_docker(self):
         # TODO: this breaks at the moment due to the libfortran.so.4 error.
