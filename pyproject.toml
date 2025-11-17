@@ -32,7 +32,7 @@ packages = [
 python = ">=3.10, <3.14"
 BuildingsPy = "^5.1"
 # Keep click <8.2 for compatibility with SEED (see SEED's requirements)
-click = "<8.2"
+click = "<8.4"
 geojson = "^3.1"
 jinja2 = "^3.1"
 jsonpath-ng = "^1.6"
