@@ -16,8 +16,7 @@ class ResultsModelica:
     def __init__(self, modelica_project):
         self._modelica_project = Path(modelica_project).resolve()
 
-    # ruff: noqa: PLR0915
-    def calculate_results(self):  # ruff: noqa: PLR0915
+    def calculate_results(self):
         key_value_pairs = {}
         # Extract the project name from the modelica_project path
         project_name = self._modelica_project.name
