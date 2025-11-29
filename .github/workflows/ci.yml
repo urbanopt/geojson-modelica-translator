@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
@@ -63,7 +63,7 @@ jobs:
         run: |
           git config --system core.longpaths true
       - name: Install MBL
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: lbl-srg/modelica-buildings
           ref: ${{ matrix.mbl_tag }}

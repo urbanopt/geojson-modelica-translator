@@ -154,12 +154,25 @@ class ModelicaRunner:
         with open(run_path / "compile_fmu.mos", "w") as f:
             f.write(template.render(**model_data))
 
-    def _subprocess_call_to_docker(self, run_path: Path, action: str, compiler_flags: str | None = None) -> int:
+    def _subprocess_call_to_docker(
+        self,
+        run_path: Path,
+        action: str,
+        compiler_flags: str | None = None,
+        docker_image: str = "nrel/gmt-om-runner:4.0.0",
+    ) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
-            run_path (Path): local path where the Modelica simulation or compilation will start
+            run_path (Path): local path where the Modelica simulation
+                             or compilation will start
             action (str):  action to run either compile_and_run, compile, or run
+            compiler_flags (str | None): Comma separated list of OpenModelica
+                                         compiler flags. For advanced users only
+            docker_image (str): Docker image to use for running the simulation.
+                                Defaults to latest nrel/gmt-om-runner. See more
+                                information on the docker hub page:
+                                https://hub.docker.com/r/nrel/gmt-om-runner
 
         Returns:
             int: exit code of the subprocess
@@ -169,7 +182,6 @@ class ModelicaRunner:
         os.chdir(run_path)
         stdout_log = open("stdout.log", "w")  # noqa: SIM115
         model_name = run_path.parts[-1]
-        image_name = "nrel/gmt-om-runner:4.0.0"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
         if compiler_flags is not None:
             # Format compiler flags for OpenModelica
@@ -184,7 +196,7 @@ class ModelicaRunner:
                 "run",
                 "-v",
                 f"{run_path}:/mnt/shared/{model_name}",
-                f"{image_name}",
+                f"{docker_image}",
                 "/bin/bash",
                 "-c",
                 f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_for_modelica}",
@@ -213,7 +225,7 @@ class ModelicaRunner:
             # Find containers from our image
             for container_line in containers_list:
                 container_id, container_image = container_line.split()
-                if container_image == image_name:
+                if container_image == docker_image:
                     logger.debug(f"Killing container: {container_id} (Image: {container_image})")
                     # Kill the container
                     kill_command = f"docker kill {container_id}"
@@ -257,6 +269,8 @@ class ModelicaRunner:
                 compiler_flags (str): Comma separated list of OpenModelica simulation flags. For advanced users only
                 simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
                 debug (bool): whether to run in debug mode or not, prevents files from being deleted
+                docker_image (str): Docker image to use for running the simulation.
+                                    Defaults to latest nrel/gmt-om-runner.
 
         Returns:
             tuple[bool, str]: success status and path to the results directory
@@ -270,7 +284,11 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
-        exitcode = self._subprocess_call_to_docker(verified_run_path, action, kwargs.get("compiler_flags"))
+        # When updating the GMT OM Runner, this is the location to bump the image.
+        docker_image = kwargs.get("docker_image", "nrel/gmt-om-runner:4.0.0")
+        exitcode = self._subprocess_call_to_docker(
+            verified_run_path, action, kwargs.get("compiler_flags"), docker_image=docker_image
+        )
 
         logger.debug("Checking stdout.log for errors")
         with open(verified_run_path / "stdout.log") as f:
@@ -325,7 +343,7 @@ class ModelicaRunner:
             openModel("/home/username/Dymola/config/Modelica 4.0.0/package.mo", changeDirectory=false);
 
             // Open MBL
-            openModel("/home/username/working/modelica-buildings/Buildings/package.mo", changeDirectory=false);
+            openModel("/home/username/modelica-buildings/Buildings/package.mo", changeDirectory=false);
 
             // Set the home directory
             cd("/home/username/working")
