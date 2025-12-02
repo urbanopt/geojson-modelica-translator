@@ -1,6 +1,6 @@
 within {{ data["project_name"] }}.Districts;
 model district
-  "Series connection with variable district water mass flow rate"
+  "Series connection with variable district water mass flow rate, heating from heat pump, and direct cooling through HX"
   extends
     PartialSeries(redeclare
       Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
@@ -99,6 +99,10 @@ allowed loop temperature, then the mass flow rate is reduced to save pump energy
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+December 02, 2025, by Nicholas Long:<br/>
+Updated model name to reflect cooling from heat exchange rather than heat pump.
+</li>
 <li>
 November 17, 2023, by Nicholas Long:<br/>
 Break out the mass flow rate gain multiplier for the GHX/Storage.

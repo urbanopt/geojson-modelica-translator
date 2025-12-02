@@ -1,6 +1,6 @@
 within {{ data["project_name"] }}.Districts;
 model district
-  "Series connection with constant district water mass flow rate"
+  "Series connection with constant district water mass flow rate, heating from heat pump, and direct cooling through HX"
   extends
     PartialSeries(redeclare
       Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
@@ -81,6 +81,10 @@ Energy, Volume 199, 15 May 2020, 117418.
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+December 02, 2025, by Nicholas Long:<br/>
+Updated model name to reflect cooling from heat exchange rather than heat pump.
+</li>
 <li>
 April 12, 2023, by Nicholas Long:<br/>
 Templatized for direct use in GMT with n-building connectors.<br/>
