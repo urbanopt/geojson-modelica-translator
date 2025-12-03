@@ -2150,10 +2150,10 @@
           "default": "Water"
         },
         "concentration_percent": {
-          "description": "The concentration of circulation fluid in percent, from 0-60.",
+          "description": "The concentration of circulation fluid in fractional percent, from 0.0 to 0.6.",
           "type": "number",
           "minimum": 0,
-          "maximum": 60,
+          "maximum": 0.6,
           "default": 0
         },
         "temperature": {
