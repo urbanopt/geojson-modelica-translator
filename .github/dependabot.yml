@@ -12,6 +12,8 @@ updates:
       prod-deps:
         dependency-type: "production"
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "click"
     commit-message:
       prefix: "deps"
   - package-ecosystem: "github-actions"

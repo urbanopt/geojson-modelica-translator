@@ -1,5 +1,15 @@
 # Change Log
 
+## Version 0.13.0 (unreleased)
+
+### Other Changes
+
+* Fix param schema for docs site by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/762>
+* Downgrade click to support python 3.9 by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/770>
+* Update result processing library for GHPs by @tanushree04 in <https://github.com/urbanopt/geojson-modelica-translator/pull/742>
+* Support docker_image argument in OM Runner by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/772>
+* adds more robust result processing for GHP by @tanushree04 in <https://github.com/urbanopt/geojson-modelica-translator/pull/775>
+
 ## Version 0.12.0
 
 ### Exciting New Features 🎉
