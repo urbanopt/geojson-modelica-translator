@@ -2150,7 +2150,7 @@
           "default": "Water"
         },
         "concentration_percent": {
-          "description": "The concentration of circulation fluid in fractional percent, from 0.0 to 0.6.",
+          "description": "The concentration of circulation fluid as a fraction, from 0.0 to 0.6 (where 0.6 represents 60%).",
           "type": "number",
           "minimum": 0,
           "maximum": 0.6,
