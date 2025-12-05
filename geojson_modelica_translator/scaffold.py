@@ -160,6 +160,9 @@ class Scaffold:
             scaffold.add_subpackage('CustomModels')
             scaffold.add_subpackage('MyModel', parent='Districts')
         """
+        if self._package is None:
+            raise RuntimeError("Scaffold not yet created. Call create() first.")
+
         if parent:
             parent_pkg = getattr(self._package, parent.lower())
             subpackage = parent_pkg.add_model(name, create_subpackage=True)
