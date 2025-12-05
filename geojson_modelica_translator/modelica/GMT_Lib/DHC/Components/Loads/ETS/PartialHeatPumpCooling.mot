@@ -1,4 +1,4 @@
-within DES_5G_Variable_Dymola.Loads.ETS;
+within {{ data["project_name"] }}.Loads.ETS;
 model PartialHeatPumpCooling
   "Partial base class for subsystems containing a heat pump"
   replaceable package Medium1=Modelica.Media.Interfaces.PartialMedium
@@ -44,6 +44,7 @@ model PartialHeatPumpCooling
     "Pressure difference over evaporator"
     annotation (Dialog(group="Nominal condition"));
   // IO CONNECTORS
+  {% raw %}
   Modelica.Fluid.Interfaces.FluidPort_a port_a2(
     redeclare final package Medium = Medium2,
     m_flow(min=if allowFlowReversal2 then -Modelica.Constants.inf else 0),
@@ -328,3 +329,4 @@ First implementation.
 </ul>
 </html>"));
 end PartialHeatPumpCooling;
+{% endraw %}

@@ -1,4 +1,4 @@
-within DES_5G_Variable_Dymola.Loads.ETS;
+within {{ data["project_name"] }}.Loads.ETS;
 model HeatPumpTrio
   "Model of a substation with heating, hot water, and cooling heat pumps"
   extends Buildings.DHC.ETS.BaseClasses.PartialETS(
@@ -112,6 +112,7 @@ model HeatPumpTrio
     "Formulation of energy balance for mixing volume at inlet and outlet"
      annotation(Dialog(tab="Dynamics"));
   // IO CONNECTORS
+  {% raw %}
   Buildings.Controls.OBC.CDL.Interfaces.BooleanInput uCoo
     "Cooling enable signal"
     annotation (Placement(transformation(extent={{-340,
@@ -881,3 +882,4 @@ This is for
           fillPattern=FillPattern.Solid),
         Rectangle(extent={{-260,140},{260,-142}}, lineColor={95,95,95})}));
 end HeatPumpTrio;
+{% endraw %}

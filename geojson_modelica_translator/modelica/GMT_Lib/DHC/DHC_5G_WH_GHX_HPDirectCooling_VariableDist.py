@@ -98,9 +98,9 @@ class DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(SimpleGMTBase):
 
         template_data["max_flow_rate"] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)  # type: ignore[arg-type]
 
-        nbuildings = len(template_data["building_load_files"])
-        template_data["lDis"] = self.build_string("lDis = {", "0.5, ", nbuildings)
-        template_data["lCon"] = self.build_string("lCon = {", "0.5, ", nbuildings)
+        n_buildings = len(template_data["building_load_files"])
+        template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)
+        template_data["lCon"] = self.build_string("lCon = {", "0.5, ", n_buildings)
 
         # 6: generate the modelica files from the template
         self.to_modelica(
