@@ -1461,7 +1461,7 @@ python-versions = ">=3.9, <3.14"
 groups = ["main"]
 markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = []
-develop = true
+develop = false
 
 [package.dependencies]
 antlr4-python3-runtime = "4.13.2"
@@ -1470,8 +1470,10 @@ jinja2 = "~3.1.4"
 pathspec = ">=0.11.2,<0.13.0"
 
 [package.source]
-type = "directory"
-url = "../modelica-builder"
+type = "git"
+url = "https://github.com/urbanopt/modelica-builder.git"
+reference = "make-package-parser-dynamic"
+resolved_reference = "2a6928beb937a57dca16fe602b1504c1936d57fc"
 
 [[package]]
 name = "mypy"
@@ -2785,4 +2787,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <3.14"
-content-hash = "eb522d3d9829a763bf3a93d0af03c66642fa0705073bb7c7e7468c25a67cd680"
+content-hash = "29a8ad66c10ae7efca3fcf79508de74319a99c1d20fe67cd7eee3c26720f3eb6"
