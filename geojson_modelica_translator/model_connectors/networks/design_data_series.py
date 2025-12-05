@@ -57,25 +57,11 @@ class DesignDataSeries(NetworkBase):
         )
         design_data_package.save()
 
-        # Networks package
-        package = PackageParser(scaffold.project_path)
-        if "Networks" not in package.order:
-            package.add_model("Networks")
-            package.save()
-
+        # Add models to Networks package using scaffold's PackageParser
         package_models = [self.design_data_name] + [Path(mo).stem for mo in self.required_mo_files]
-        networks_package = PackageParser(scaffold.networks_path.files_dir)
-        if networks_package.order_data is None:
-            networks_package = PackageParser.new_from_template(
-                path=scaffold.networks_path.files_dir,
-                name="Networks",
-                order=package_models,
-                within=scaffold.project_name,
-            )
-        else:
-            for model_name in package_models:
-                networks_package.add_model(model_name)
-        networks_package.save()
+        for model_name in package_models:
+            scaffold.package.networks.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"Networks.{self.design_data_name}.DesignDataSeries"

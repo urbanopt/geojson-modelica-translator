@@ -5,8 +5,6 @@ import os
 import shutil
 from pathlib import Path
 
-from modelica_builder.package_parser import PackageParser
-
 from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
 from geojson_modelica_translator.utils import simple_uuid
 
@@ -113,21 +111,11 @@ class CoolingPlant(PlantBase):
             dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
         )
 
-        package = PackageParser(scaffold.project_path)
-        if "Plants" not in package.order:
-            package.add_model("Plants")
-            package.save()
-
+        # Add models to Plants package using scaffold's PackageParser
         package_models = ["CentralCoolingPlant"] + [Path(mo).stem for mo in self.required_mo_files]
-        plants_package = PackageParser(scaffold.plants_path.files_dir)
-        if plants_package.order_data is None:
-            plants_package = PackageParser.new_from_template(
-                path=scaffold.plants_path.files_dir, name="Plants", order=package_models, within=scaffold.project_name
-            )
-        else:
-            for model_name in package_models:
-                plants_package.add_model(model_name)
-        plants_package.save()
+        for model_name in package_models:
+            scaffold.package.plants.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return "Plants.CentralCoolingPlant"

@@ -172,29 +172,16 @@ class TimeSeries(LoadBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :return: None
         """
+        # Create the building-specific package within Loads
         b_modelica_path = os.path.join(scaffold.loads_path.files_dir, self.building_name)
         new_package = PackageParser.new_from_template(
             b_modelica_path, self.building_name, self.template_files_to_include, within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
-        # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, "package.mo")):
-            load_package = PackageParser.new_from_template(
-                scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
-            )
-            load_package.save()
-        else:
-            load_package = PackageParser(os.path.join(scaffold.loads_path.files_dir))
-            load_package.add_model(self.building_name)
-            load_package.save()
-
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path)
-        if "Loads" not in package.order:
-            package.add_model("Loads")
-            package.save()
+        # Add the building to the Loads package using scaffold's PackageParser
+        scaffold.package.loads.add_model(self.building_name, create_subpackage=True)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         district_params = self.system_parameters.get_param("district_system")

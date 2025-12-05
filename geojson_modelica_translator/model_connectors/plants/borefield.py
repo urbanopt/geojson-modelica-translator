@@ -228,29 +228,17 @@ class Borefield(PlantBase):
         )
         borefield_package.save()
 
-        # Plants package
-        package = PackageParser(scaffold.project_path)
-        if "Plants" not in package.order:
-            package.add_model("Plants")
-            package.save()
-
+        # Add models to Plants package using scaffold's PackageParser
         package_models = [self.borefield_name] + [Path(mo).stem for mo in self.required_mo_files]
-        plants_package = PackageParser(scaffold.plants_path.files_dir)
-        if plants_package.order_data is None:
-            plants_package = PackageParser.new_from_template(
-                path=scaffold.plants_path.files_dir, name="Plants", order=package_models, within=scaffold.project_name
-            )
-        else:
-            for model_name in package_models:
-                # We only want a single model named GroundTemperatureResponse to be included, so we skip adding
-                # (One was included when the Plants package order_data was first created just above)
-                if (
-                    model_name == "GroundTemperatureResponse"
-                    and "GroundTemperatureResponse" in plants_package.order_data
-                ):
-                    continue
-                plants_package.add_model(model_name)
-        plants_package.save()
+        for model_name in package_models:
+            # We only want a single model named GroundTemperatureResponse to be included, so we skip adding
+            if (
+                model_name == "GroundTemperatureResponse"
+                and "GroundTemperatureResponse" in scaffold.package.plants.order
+            ):
+                continue
+            scaffold.package.plants.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"Plants.{self.borefield_name}.Borefield"

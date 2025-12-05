@@ -2,11 +2,9 @@ import shutil
 from pathlib import Path
 
 from modelica_builder.modelica_mos_file import ModelicaMOS
-from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
 
 
 class DHC5GWasteHeatAndGHX(SimpleGMTBase):
@@ -27,18 +25,9 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         """
         template_data = {"project_name": project_name, "save_file_name": "district", "building_load_files": []}
 
-        # create the directory structure
-        scaffold = Scaffold(output_dir, project_name=project_name)
+        # create the directory structure (Districts is created by default)
+        scaffold = Scaffold(output_dir, project_name=project_name, overwrite=True)
         scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations"])
-
-        # create the root package
-        package = PackageParser.new_from_template(
-            scaffold.project_path,
-            project_name,
-            order=[],
-            mbl_version=mbl_version(),
-        )
-        package.add_model("Districts")
 
         # create the district package with the template_data from above
         files_to_copy = []
@@ -116,8 +105,10 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             partial_files={"DHC_5G_partial": "PartialSeries"},
         )
 
-        # 7: save the root package.mo
-        package.save()
+        # 7: add the district model to Districts and save
+        scaffold.package.districts.add_model("district", create_subpackage=False)
+        scaffold.package.districts.add_model("PartialSeries", create_subpackage=False)
+        scaffold.package.save()
 
     def build_string(self, base_text: str, value: str, iterations: int) -> str:
         """Builds a string with a comma separated list of values.

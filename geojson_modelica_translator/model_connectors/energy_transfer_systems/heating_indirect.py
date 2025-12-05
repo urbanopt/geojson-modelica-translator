@@ -3,8 +3,6 @@
 
 import os
 
-from modelica_builder.package_parser import PackageParser
-
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.energy_transfer_base import EnergyTransferBase
 from geojson_modelica_translator.utils import simple_uuid
 
@@ -40,27 +38,9 @@ class HeatingIndirect(EnergyTransferBase):
             ets_data=combined_template_data,
         )
 
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path)
-        if "Substations" not in package.order:
-            package.add_model("Substations")
-            package.save()
-
-        package_models = [self._model_filename]
-        ets_package = PackageParser(scaffold.substations_path.files_dir)
-        if ets_package.order_data is None:
-            ets_package = PackageParser.new_from_template(
-                path=scaffold.substations_path.files_dir,
-                name="Substations",
-                order=package_models,
-                within=scaffold.project_name,
-            )
-        else:
-            for model_name in package_models:
-                if model_name not in ets_package.order:
-                    ets_package.add_model(model_name)
-        ets_package.save()
+        # Add model to the Substations package using scaffold's PackageParser
+        scaffold.package.substations.add_model(self._model_filename, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"Substations.{self._model_filename}"

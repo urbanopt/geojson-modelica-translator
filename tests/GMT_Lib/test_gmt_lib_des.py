@@ -116,12 +116,20 @@ class GmtLibDesTest(unittest.TestCase):
         # Did the mofile get created?
         assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
 
+        # make sure the package.order includes the district model
+        with open(package_output_dir / package_name / "Districts" / "package.order") as f:
+            package_order = f.read()
+            # make sure PartialSeries is before district
+            assert package_order.index("PartialSeries") < package_order.index("district")
+            assert "district" in package_order
+            assert "PartialSeries" in package_order
+
         # Test to make sure that a zero SWH peak is set to a minimum value.
         # Otherwise, Modelica will error out.
         with open(package_output_dir / package_name / "Resources" / "Data" / "Districts" / "8" / "B11.mos") as f:
             assert "#Peak water heating load = 7714.5 Watts" in f.read()
 
-        # # -- Act - with simulation
+        # -- Act - with simulation
         runner = ModelicaRunner()
         success, _ = runner.run_in_docker(
             "compile_and_run",

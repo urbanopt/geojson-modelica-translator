@@ -37,8 +37,8 @@ geojson = "^3.1"
 jinja2 = "^3.1"
 jsonpath-ng = "^1.6"
 jsonschema = "^4.20"
-modelica-builder = "^0.6.0"
-# modelica-builder = { path = "../modelica-builder", develop = true }
+# modelica-builder = "^0.6.0"
+modelica-builder = { path = "../modelica-builder", develop = true }
 # modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 pandas = "^2.0"
 requests = "^2.28"

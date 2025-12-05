@@ -122,24 +122,11 @@ class WasteHeat(PlantBase):
         new_package.save()
 
         # now create the Loads level package and package.order.
+        # Add models to Plants package using scaffold's PackageParser
         package_models = [self.waste_heat_name] + [Path(mo).stem for mo in self.required_mo_files]
-        if not (Path(scaffold.plants_path.files_dir) / "package.mo").exists():
-            plant_package = PackageParser.new_from_template(
-                scaffold.plants_path.files_dir, "Plants", package_models, within=f"{scaffold.project_name}"
-            )
-            plant_package.save()
-        else:
-            plant_package = PackageParser(Path(scaffold.plants_path.files_dir))
-            for model_name in package_models:
-                plant_package.add_model(model_name)
-            plant_package.save()
-
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path)
-        if "Plants" not in package.order:
-            package.add_model("Plants")
-            package.save()
+        for model_name in package_models:
+            scaffold.package.plants.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"Plants.{self.waste_heat_name}.WasteHeatRecovery"

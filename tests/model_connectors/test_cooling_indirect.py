@@ -3,8 +3,6 @@
 
 from pathlib import Path
 
-from modelica_builder.package_parser import PackageParser
-
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.cooling_indirect import CoolingIndirect
 from geojson_modelica_translator.scaffold import Scaffold
@@ -28,9 +26,6 @@ class CoolingIndirectTest(TestCaseBase):
         filename = Path(self.data_dir) / "time_series_system_params_ets.json"
         sys_params = SystemParameters(filename)
 
-        # currently we must setup the root project before we can run to_modelica
-        package = PackageParser.new_from_template(scaffold.project_path, scaffold.project_name, order=[])
-        package.save()
         # now test the connector (independent of the larger geojson translator)
         geojson_id = self.gj.buildings[0].feature.properties["id"]
         self.cooling_indirect = CoolingIndirect(sys_params, geojson_id)

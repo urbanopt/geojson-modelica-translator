@@ -608,9 +608,9 @@ class Teaser(LoadBase):
         # copy over the required mo files and add the other models to the package order
         mo_files = self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
         for f in mo_files:
-            package.add_model(os.path.splitext(os.path.basename(f))[0])
-        package.add_model("building")
-        package.add_model("coupling")
+            package.add_model(os.path.splitext(os.path.basename(f))[0], create_subpackage=False)
+        package.add_model("building", create_subpackage=False)
+        package.add_model("coupling", create_subpackage=False)
 
         # save the updated package.mo and package.order in the Loads.B{} folder
         new_package = PackageParser.new_from_template(
@@ -633,23 +633,9 @@ class Teaser(LoadBase):
         if not keep_original_models:
             shutil.rmtree(os.path.join(scaffold.loads_path.files_dir, "Project"))
 
-        # now create the Loads level package and package.order.
-        if not os.path.exists(os.path.join(scaffold.loads_path.files_dir, "package.mo")):
-            load_package = PackageParser.new_from_template(
-                scaffold.loads_path.files_dir, "Loads", [self.building_name], within=f"{scaffold.project_name}"
-            )
-            load_package.save()
-        else:
-            load_package = PackageParser(os.path.join(scaffold.loads_path.files_dir))
-            load_package.add_model(self.building_name)
-            load_package.save()
-
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path)
-        if "Loads" not in package.order:
-            package.add_model("Loads")
-            package.save()
+        # Add the building to the Loads package using scaffold's PackageParser
+        scaffold.package.loads.add_model(self.building_name, create_subpackage=True)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"Loads.{self.building_name}.building"
