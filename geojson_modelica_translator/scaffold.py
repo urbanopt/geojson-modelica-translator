@@ -46,6 +46,16 @@ class Scaffold:
         self._mbl_version = mbl_version_str or mbl_version()
         self._package: Optional[PackageParser] = None
 
+        # Dynamically created paths (set by create() method). These are
+        # used for mypy checks.
+        self.districts_path: Optional[ModelicaPath] = None
+        self.loads_path: Optional[ModelicaPath] = None
+        self.plants_path: Optional[ModelicaPath] = None
+        self.substations_path: Optional[ModelicaPath] = None
+        self.networks_path: Optional[ModelicaPath] = None
+        self.schedules_path: Optional[ModelicaPath] = None
+        self.heat_pump_ets_path: Optional[ModelicaPath] = None
+
         # clear out the project path
         self.project_path = self.root_dir / self.project_name
         self.package_path = self.project_path / "package.mo"
