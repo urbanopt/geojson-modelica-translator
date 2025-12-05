@@ -78,7 +78,7 @@ class Scaffold:
     def package(self) -> PackageParser:
         """Get or create the root PackageParser for this scaffold."""
         if self._package is None:
-            raise RuntimeError("Scaffold not yet created. Call create() first.")
+            raise RuntimeError("Scaffold not yet created. Call the create() method before accessing the package property.")
         return self._package
 
     def create(self, ignore_paths: list[str] = [], subpackages: list[str] = []) -> None:
