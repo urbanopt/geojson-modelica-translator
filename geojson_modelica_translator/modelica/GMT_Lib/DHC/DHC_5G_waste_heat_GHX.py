@@ -29,6 +29,10 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         scaffold = Scaffold(output_dir, project_name=project_name, overwrite=True)
         scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations"])
 
+        # Verify districts_path was created
+        assert scaffold.districts_path is not None, "Districts path must be created by scaffold"
+        districts_path = scaffold.districts_path  # Type narrowing for mypy
+
         # create the district package with the template_data from above
         files_to_copy = []
 
@@ -48,7 +52,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 {
                     "orig_file": building_load_file,
                     "geojson_id": building["geojson_id"],
-                    "save_path": f"{scaffold.districts_path.resources_dir}/{building['geojson_id']}",
+                    "save_path": f"{districts_path.resources_dir}/{building['geojson_id']}",
                     "save_filename": building_load_file.name,
                 }
             )
@@ -79,7 +83,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 mos_file.save()
 
             # 4: Add the path to the param data with Modelica friendly path names
-            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
+            rel_path_name = f"{project_name}/{districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
             template_data["building_load_files"].append(f"modelica://{rel_path_name}")  # type: ignore[attr-defined]
 
         # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
@@ -97,7 +101,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
 
         # 6: generate the modelica files from the template
         self.to_modelica(
-            output_dir=Path(scaffold.districts_path.files_dir),
+            output_dir=Path(districts_path.files_dir),
             model_name="DHC_5G_waste_heat_GHX",
             param_data=template_data,
             save_file_name="district.mo",
