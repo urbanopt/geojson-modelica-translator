@@ -32,7 +32,8 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
         scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations", "Schedules"])
 
         # Verify districts_path was created
-        assert scaffold.districts_path is not None, "Districts path must be created by scaffold"
+        if scaffold.districts_path is None:
+            raise RuntimeError("Districts path must be created by scaffold")
         districts_path = scaffold.districts_path  # Type narrowing for mypy
 
         # create the district package with the template_data from above
