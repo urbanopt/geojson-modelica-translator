@@ -146,6 +146,10 @@ and hot water loads are provided as time series.
       revisions="<html>
 <ul>
 <li>
+December 05, 2025, by Nicholas Long and Jing Wang:<br/>
+Templatized for use within the GMT framework.
+</li>
+<li>
 February 23, 2021, by Antoine Gautier:<br/>
 First implementation.
 </li>

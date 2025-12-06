@@ -305,6 +305,10 @@ are provided as time series.
       revisions="<html>
 <ul>
 <li>
+December 05, 2025, by Nicholas Long and Jing Wang:<br/>
+Templatized for use within the GMT framework for the HeatPumpTrio.
+</li>
+<li>
 October 20, 2020, by Hagar Elarga:<br/>
 The <code>mLoaHea_flow_nominal</code> and <code>mLoaCoo_flow_nominal</code> are
 evaluated as a function of <code> QHea_flow_nominal</code> and

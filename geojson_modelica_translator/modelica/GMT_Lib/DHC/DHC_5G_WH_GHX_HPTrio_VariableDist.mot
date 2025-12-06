@@ -102,7 +102,7 @@ allowed loop temperature, then the mass flow rate is reduced to save pump energy
 </html>", revisions="<html>
 <ul>
 <li>
-December 5, 2023, by Nicholas Long and Jing Wang:<br/>
+December 5, 2025, by Nicholas Long and Jing Wang:<br/>
 Updated the base building model to include a heat pump trio configuration.
 Templatized for use within the GMT framework.
 </li>

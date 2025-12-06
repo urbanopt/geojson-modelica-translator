@@ -310,6 +310,10 @@ the district supply and return flows.
 </html>", revisions="<html>
 <ul>
 <li>
+December 05, 2025, by Nicholas Long and Jing Wang:<br/>
+Templatized for use within the GMT framework.
+</li>
+<li>
 February 15, 2024, by Ettore Zanetti:<br/>
 Made heat pump model dynamic and added junction.
 </li>

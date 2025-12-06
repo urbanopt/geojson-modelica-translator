@@ -143,6 +143,9 @@ supply temperature set point at the condenser outlet.
 </html>", revisions="<html>
 <ul>
 <li>
+December 05, 2025, by Nicholas Long and Jing Wang:<br/>
+Templatized for use within the GMT framework.
+<li>
 November 15, 2023, by David Blum:<br/>
 Changed to extend partial base class with added condenser hydronics and control.
 </li>
