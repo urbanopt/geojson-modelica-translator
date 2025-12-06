@@ -110,7 +110,7 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
 
         # 6: Generate the modelica files from the template
         self.to_modelica(
-            output_dir=Path(districts_path.files_dir),
+            output_dir=Path(str(districts_path.files_dir)),
             model_name="DHC_5G_WH_GHX_HPTrio_VariableDist",
             param_data=template_data,
             save_file_name="district.mo",
@@ -122,7 +122,7 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         for building_load_file in template_data["building_load_files"]:
             building_template_data = {"project_name": project_name, "building_load_file": building_load_file}
             self.to_modelica(
-                output_dir=Path(loads_path.files_dir),
+                output_dir=Path(str(loads_path.files_dir)),
                 model_name="Components/Loads/buildingHPTrio",
                 param_data=building_template_data,
                 save_file_name="buildingHPTrio.mo",
@@ -131,7 +131,7 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
 
             # TimeSeriesBuilding
             self.to_modelica(
-                output_dir=Path(loads_path.files_dir),
+                output_dir=Path(str(loads_path.files_dir)),
                 model_name="Components/Loads/TimeSeriesBuilding",
                 param_data=building_template_data,
                 save_file_name="TimeSeriesBuilding.mo",
@@ -139,21 +139,21 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
             )
         # 8: Copy over the Components/Loads/ETS files which need mild templating.
         self.to_modelica(
-            output_dir=Path(loads_path.files_dir),
+            output_dir=Path(str(loads_path.files_dir)),
             model_name="Components/Loads/ETS/HeatPumpCooling",
             param_data={"project_name": project_name},
             save_file_name="ETS/HeatPumpCooling.mo",
             generate_package=False,
         )
         self.to_modelica(
-            output_dir=Path(loads_path.files_dir),
+            output_dir=Path(str(loads_path.files_dir)),
             model_name="Components/Loads/ETS/HeatPumpTrio",
             param_data={"project_name": project_name},
             save_file_name="ETS/HeatPumpTrio.mo",
             generate_package=False,
         )
         self.to_modelica(
-            output_dir=Path(loads_path.files_dir),
+            output_dir=Path(str(loads_path.files_dir)),
             model_name="Components/Loads/ETS/PartialHeatPumpCooling",
             param_data={"project_name": project_name},
             save_file_name="ETS/PartialHeatPumpCooling.mo",

@@ -4,7 +4,7 @@ model district
   extends
     PartialSeries(redeclare
       {{ data["project_name"] }}.Loads.buildingHPTrio
-      bui[nBui](TChiWatSup_nominal=280.15, final filNam=filNam), datDes(
+      bui[nBui](each TChiWatSup_nominal=280.15, final filNam=filNam), datDes(
       nBui={{ data["building_load_files"] | count }},
       mPumDis_flow_nominal={{ data["max_flow_rate"] }},
       mPla_flow_nominal={{ data["max_flow_rate"] }},

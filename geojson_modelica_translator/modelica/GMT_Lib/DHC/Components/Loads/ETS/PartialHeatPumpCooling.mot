@@ -110,7 +110,6 @@ model PartialHeatPumpCooling
     redeclare package Medium = Medium1,
     final allowFlowReversal=allowFlowReversal1,
     addPowerToMedium=false,
-    use_inputFilter=false,
     m_flow_nominal=mCon_flow_nominal,
     dp_nominal=dp1_nominal + 6000)
     "Pump for heat pump condenser"

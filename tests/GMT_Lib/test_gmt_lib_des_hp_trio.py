@@ -5,11 +5,13 @@ import unittest
 from pathlib import Path
 from shutil import rmtree
 
+import pytest
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.modelica.GMT_Lib.DHC.DHC_5G_WH_GHX_HPTrio_VariableDist import (
     DHC5GWasteHeatGHXwithHPTrioVariableDist,
 )
+from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 from geojson_modelica_translator.utils import linecount
 
@@ -42,162 +44,37 @@ class GmtLibDesHpTrioTest(unittest.TestCase):
         # Did the mofile get created?
         assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
 
-    # @pytest.mark.simulation
-    # def test_dhc_5g_wh_ghx_hpdirectcooling_constantdist_simulation(self):
-    #     # -- Setup
-    #     package_output_dir = PARENT_DIR / "output"
-    #     package_name = "DES_5G_DirectCooling_ConstantDist_OM"
-    #     if (package_output_dir / package_name).exists():
-    #         rmtree(package_output_dir / package_name)
-    #     sys_params = SystemParameters(DES_PARAMS)
+    @pytest.mark.simulation
+    def test_dhc_5g_wh_ghx_hptrio_variabledist_simulation(self):
+        # -- Setup
+        package_output_dir = PARENT_DIR / "output"
+        package_name = "DES_5G_HPTrio_VariableDist_OM"
+        if (package_output_dir / package_name).exists():
+            rmtree(package_output_dir / package_name)
+        sys_params = SystemParameters(DES_PARAMS)
 
-    #     # -- Act
-    #     cpv = DHC5GWasteHeatGHXwithHPDirectCoolingConstantDist(sys_params)
-    #     cpv.build_from_template(package_output_dir, package_name)
+        # -- Act
+        cpv = DHC5GWasteHeatGHXwithHPTrioVariableDist(sys_params)
+        cpv.build_from_template(package_output_dir, package_name)
 
-    #     # -- Assert
-    #     # Did the mofile get created?
-    #     assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
+        # -- Assert
+        # Did the mofile get created?
+        assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
 
-    #     # Test to make sure that a zero SWH peak is set to a minimum value.
-    #     # Otherwise, Modelica will error out.
-    #     with open(package_output_dir / package_name / "Resources" / "Data" / "Districts" / "8" / "B11.mos") as f:
-    #         assert "#Peak water heating load = 7714.5 Watts" in f.read()
+        # Test to make sure that a zero SWH peak is set to a minimum value.
+        # Otherwise, Modelica will error out.
+        with open(package_output_dir / package_name / "Resources" / "Data" / "Districts" / "8" / "B11.mos") as f:
+            assert "#Peak water heating load = 7714.5 Watts" in f.read()
 
-    #     # # -- Act - with simulation
-    #     runner = ModelicaRunner()
-    #     success, _ = runner.run_in_docker(
-    #         "compile_and_run",
-    #         f"{package_name}.Districts.district",
-    #         file_to_load=package_output_dir / package_name / "package.mo",
-    #         run_path=package_output_dir / package_name,
-    #         start_time=0,
-    #         stop_time=86400,
-    #     )
+        # # -- Act - with simulation
+        runner = ModelicaRunner()
+        success, _ = runner.run_in_docker(
+            "compile_and_run",
+            f"{package_name}.Districts.district",
+            file_to_load=package_output_dir / package_name / "package.mo",
+            run_path=package_output_dir / package_name,
+            start_time=0,
+            stop_time=86400,
+        )
 
-    #     assert success is True
-
-    # @pytest.mark.dymola
-    # def test_dhc_5g_wh_ghx_hpdirectcooling_constantdist_dymola(self):
-    #     # -- Setup
-    #     package_output_dir = PARENT_DIR / "output"
-    #     package_name = "DES_5G_DirectCooling_ConstantDist_Dymola"
-    #     if (package_output_dir / package_name).exists():
-    #         rmtree(package_output_dir / package_name)
-    #     sys_params = SystemParameters(DES_PARAMS)
-
-    #     # -- Act
-    #     cpv = DHC5GWasteHeatGHXwithHPDirectCoolingConstantDist(sys_params)
-    #     cpv.build_from_template(package_output_dir, package_name)
-
-    #     # -- Assert
-    #     # Did the mofile get created?
-    #     assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
-
-    #     # Test to make sure that a zero SWH peak is set to a minimum value.
-    #     # Otherwise, Modelica will error out.
-    #     with open(package_output_dir / package_name / "Resources" / "Data" / "Districts" / "8" / "B11.mos") as f:
-    #         assert "#Peak water heating load = 7714.5 Watts" in f.read()
-
-    #     # -- Act - with simulation
-    #     runner = ModelicaRunner()
-    #     success, _ = runner.run_in_dymola(
-    #         "simulate",
-    #         f"{package_name}.Districts.district",
-    #         file_to_load=package_output_dir / package_name,
-    #         run_path=package_output_dir / package_name,
-    #         start_time=0,
-    #         stop_time=86400,
-    #         step_size=300,
-    #         debug=True,
-    #     )
-
-    #     assert success is True
-
-    # def test_dhc_5g_wh_ghx_hpdirectcooling_variabledist_build(self):
-    #     # -- Setup
-    #     package_output_dir = PARENT_DIR / "output"
-    #     package_name = "DES_5G_DirectCooling_Variable_Build"
-    #     if (package_output_dir / package_name).exists():
-    #         rmtree(package_output_dir / package_name)
-    #     sys_params = SystemParameters(DES_PARAMS)
-
-    #     # -- Act
-    #     cpv = DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(sys_params)
-    #     cpv.build_from_template(package_output_dir, package_name)
-
-    #     # -- Assert
-    #     # Did the mofile get created?
-    #     assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
-
-    # @pytest.mark.simulation
-    # def test_dhc_5g_wh_ghx_hpdirectcooling_variabledist_simulation(self):
-    #     # -- Setup
-    #     package_output_dir = PARENT_DIR / "output"
-    #     package_name = "DES_5G_DirectCooling_Variable_OM"
-    #     if (package_output_dir / package_name).exists():
-    #         rmtree(package_output_dir / package_name)
-    #     sys_params = SystemParameters(DES_PARAMS)
-
-    #     # -- Act
-    #     cpv = DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(sys_params)
-    #     cpv.build_from_template(package_output_dir, package_name)
-
-    #     # -- Assert
-    #     # Did the mofile get created?
-    #     assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
-
-    #     # Test to make sure that a zero SWH peak is set to a minimum value.
-    #     # Otherwise, Modelica will error out.
-    #     with open(package_output_dir / package_name / "Resources" / "Data" / "Districts" / "8" / "B11.mos") as f:
-    #         assert "#Peak water heating load = 7714.5 Watts" in f.read()
-
-    #     # # -- Act - with simulation
-    #     runner = ModelicaRunner()
-    #     success, _ = runner.run_in_docker(
-    #         "compile_and_run",
-    #         f"{package_name}.Districts.district",
-    #         file_to_load=package_output_dir / package_name / "package.mo",
-    #         run_path=package_output_dir / package_name,
-    #         start_time=0,
-    #         stop_time=86400,
-    #     )
-
-    #     assert success is True
-
-    # @pytest.mark.dymola
-    # def test_dhc_5g_wh_ghx_hpdirectcooling_variabledist_dymola(self):
-    #     # -- Setup
-    #     package_output_dir = PARENT_DIR / "output"
-    #     package_name = "DES_5G_DirectCooling_Variable_Dymola"
-    #     if (package_output_dir / package_name).exists():
-    #         rmtree(package_output_dir / package_name)
-    #     sys_params = SystemParameters(DES_PARAMS)
-
-    #     # -- Act
-    #     cpv = DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(sys_params)
-    #     cpv.build_from_template(package_output_dir, package_name)
-
-    #     # -- Assert
-    #     # Did the mofile get created?
-    #     assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
-
-    #     # Test to make sure that a zero SWH peak is set to a minimum value.
-    #     # Otherwise, Modelica will error out.
-    #     with open(package_output_dir / package_name / "Resources" / "Data" / "Districts" / "8" / "B11.mos") as f:
-    #         assert "#Peak water heating load = 7714.5 Watts" in f.read()
-
-    #     # # -- Act - with simulation
-    #     runner = ModelicaRunner()
-    #     success, _ = runner.run_in_dymola(
-    #         "simulate",
-    #         f"{package_name}.Districts.district",
-    #         file_to_load=package_output_dir / package_name,
-    #         run_path=package_output_dir / package_name,
-    #         start_time=0,
-    #         stop_time=86400,
-    #         step_size=300,
-    #         debug=True,
-    #     )
-
-    #     assert success is True
+        assert success is True
