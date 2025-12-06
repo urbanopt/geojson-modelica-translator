@@ -1,4 +1,4 @@
-within DES_5G_Variable_Dymola.Loads;
+within {{ data["project_name"] }}.Loads;
 model TimeSeriesBuilding
   "Building model with heating and cooling loads provided as time series"
   extends Buildings.DHC.Loads.BaseClasses.PartialBuilding(
@@ -13,7 +13,7 @@ model TimeSeriesBuilding
   replaceable package Medium2=Buildings.Media.Air
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "Load side medium";
-  parameter String filNam="modelica://Mainz_Kastel_DES/Loads/Resources/Data/B1/modelica.mos"
+  parameter String filNam=""{{ data["building_load_file"] }}""
      "Library path of the file with loads as time series";
   parameter Boolean have_hotWat=false
     "Set to true if SHW load is included in the time series"
@@ -87,6 +87,7 @@ model TimeSeriesBuilding
     QHea_flow_nominal/cp_default/(T_aHeaWat_nominal-T_bHeaWat_nominal))
     "Heating water mass flow rate at nominal conditions (all units)"
     annotation (Dialog(group="Nominal condition"));
+  {% raw %}
   Modelica.Blocks.Sources.CombiTimeTable loa(
     tableOnFile=true,
     tableName="tab1",
@@ -328,3 +329,4 @@ First implementation.
         preserveAspectRatio=false,
         extent={{-300,-300},{300,300}})));
 end TimeSeriesBuilding;
+{% endraw %}

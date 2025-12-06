@@ -2,11 +2,9 @@ import shutil
 from pathlib import Path
 
 from modelica_builder.modelica_mos_file import ModelicaMOS
-from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
 
 
 class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
@@ -33,14 +31,14 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         scaffold = Scaffold(output_dir, project_name=project_name)
         scaffold.create(ignore_paths=["Networks", "Plants", "Substations"])
 
-        # create the root package
-        package = PackageParser.new_from_template(
-            scaffold.project_path,
-            project_name,
-            order=[],
-            mbl_version=mbl_version(),
-        )
-        package.add_model("Districts")
+        # Verify districts_path was created
+        if scaffold.districts_path is None:
+            raise RuntimeError("Districts path must be created by scaffold")
+        districts_path = scaffold.districts_path  # Type narrowing for mypy
+
+        if scaffold.loads_path is None:
+            raise RuntimeError("Loads path must be created by scaffold")
+        loads_path = scaffold.loads_path  # Type narrowing for mypy
 
         # create the district package with the template_data from above
         files_to_copy = []
@@ -49,8 +47,8 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
             "$.district_system.fifth_generation.horizontal_piping_parameters.pressure_drop_per_meter"
         )
 
-        # 1: grab all of the time series files and place them in the proper location
-        # If this is a dict, then there is only one building
+        # 1: Grab all of the time series files and place them in the proper location
+        #    If this is a dict, then there is only one building
         time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
         if isinstance(time_series, dict):
             time_series = [time_series]
@@ -61,7 +59,7 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
                 {
                     "orig_file": building_load_file,
                     "geojson_id": building["geojson_id"],
-                    "save_path": f"{scaffold.districts_path.resources_dir}/{building['geojson_id']}",
+                    "save_path": f"{districts_path.resources_dir}/{building['geojson_id']}",
                     "save_filename": building_load_file.name,
                 }
             )
@@ -92,11 +90,13 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
                 mos_file.save()
 
             # 4: Add the path to the param data with Modelica friendly path names
-            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
+            rel_path_name = f"{project_name}/{districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
             template_data["building_load_files"].append(f"modelica://{rel_path_name}")  # type: ignore[attr-defined]
 
-        # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
-        #    (assuming 5C delta T [since 5G] and 4.18 Cp (kJ/kgK)). Add 1.5x the peak for oversizing
+        # 5: Calculate the mass flow rates (kg/s) for the heating and cooling
+        #    networks peak load (in Watts).
+        #    (assuming 5C delta T [since 5G] and 4.18 Cp (kJ/kgK)). Add 1.5x
+        #    the peak for oversizing
         delta_t = 5
         heating_flow_rate = 1.5 * total_heating_load / (1000 * delta_t * 4.18)
         cooling_flow_rate = 1.5 * total_cooling_load / (1000 * delta_t * 4.18)
@@ -108,9 +108,9 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)
         template_data["lCon"] = self.build_string("lCon = {", "0.5, ", n_buildings)
 
-        # 6: generate the modelica files from the template
+        # 6: Generate the modelica files from the template
         self.to_modelica(
-            output_dir=Path(scaffold.districts_path.files_dir),
+            output_dir=Path(districts_path.files_dir),
             model_name="DHC_5G_WH_GHX_HPTrio_VariableDist",
             param_data=template_data,
             save_file_name="district.mo",
@@ -122,38 +122,55 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         for building_load_file in template_data["building_load_files"]:
             building_template_data = {"project_name": project_name, "building_load_file": building_load_file}
             self.to_modelica(
-                output_dir=Path(scaffold.loads_path.files_dir),
+                output_dir=Path(loads_path.files_dir),
                 model_name="Components/Loads/buildingHPTrio",
                 param_data=building_template_data,
                 save_file_name="buildingHPTrio.mo",
                 generate_package=True,
             )
 
+            # TimeSeriesBuilding
+            self.to_modelica(
+                output_dir=Path(loads_path.files_dir),
+                model_name="Components/Loads/TimeSeriesBuilding",
+                param_data=building_template_data,
+                save_file_name="TimeSeriesBuilding.mo",
+                generate_package=False,
+            )
         # 8: Copy over the Components/Loads/ETS files which need mild templating.
         self.to_modelica(
-            output_dir=Path(scaffold.loads_path.files_dir),
+            output_dir=Path(loads_path.files_dir),
             model_name="Components/Loads/ETS/HeatPumpCooling",
             param_data={"project_name": project_name},
             save_file_name="ETS/HeatPumpCooling.mo",
             generate_package=False,
         )
         self.to_modelica(
-            output_dir=Path(scaffold.loads_path.files_dir),
+            output_dir=Path(loads_path.files_dir),
             model_name="Components/Loads/ETS/HeatPumpTrio",
             param_data={"project_name": project_name},
             save_file_name="ETS/HeatPumpTrio.mo",
             generate_package=False,
         )
         self.to_modelica(
-            output_dir=Path(scaffold.loads_path.files_dir),
+            output_dir=Path(loads_path.files_dir),
             model_name="Components/Loads/ETS/PartialHeatPumpCooling",
             param_data={"project_name": project_name},
             save_file_name="ETS/PartialHeatPumpCooling.mo",
             generate_package=False,
         )
 
-        # 8: save the root package.mo
-        package.save()
+        # 8: Add the models to the packages and save
+        scaffold.package.districts.add_model("PartialSeries", create_subpackage=False)
+        scaffold.package.districts.add_model("district", create_subpackage=False)
+
+        scaffold.package.loads.add_model("TimeSeriesBuilding", create_subpackage=False)
+        scaffold.package.loads.add_model("buildingHPTrio", create_subpackage=False)
+
+        scaffold.package.loads.ets.add_model("HeatPumpTrio", create_subpackage=False)
+        scaffold.package.loads.ets.add_model("HeatPumpCooling", create_subpackage=False)
+        scaffold.package.loads.ets.add_model("PartialHeatPumpCooling", create_subpackage=False)
+        scaffold.package.save()
 
     def build_string(self, base_text: str, value: str, iterations: int) -> str:
         """Builds a string with a comma separated list of values.
