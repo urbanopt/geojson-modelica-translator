@@ -119,8 +119,8 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         )
 
         # 7: Now generate the building load files, which are one per load
-        for building_load_file in template_data["building_load_files"]:
-            building_template_data = {"project_name": project_name, "building_load_file": building_load_file}
+        for building_load_path in template_data["building_load_files"]:
+            building_template_data = {"project_name": project_name, "building_load_file": building_load_path}
             self.to_modelica(
                 output_dir=Path(str(loads_path.files_dir)),
                 model_name="Components/Loads/buildingHPTrio",
