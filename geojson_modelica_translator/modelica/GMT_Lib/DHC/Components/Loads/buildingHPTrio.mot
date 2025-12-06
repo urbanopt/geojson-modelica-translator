@@ -53,9 +53,8 @@ model buildingHPTrio
     "Set to true to use Carnot effectiveness etaCarnot_nominal rather than COP_nominal"
     annotation(Dialog(group="Efficiency"));
 
-  parameter String filNam=
-     "{{ data["building_load_file"] }}"
-     "Library path of the file with loads as time series";
+  parameter String filNam
+     "Library path of the file with loads as time series. Received from parent class.";
   final parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=bui.facMul*bui.QCoo_flow_nominal
     "Space cooling design load (<=0)"

@@ -13,7 +13,7 @@ model TimeSeriesBuilding
   replaceable package Medium2=Buildings.Media.Air
     constrainedby Modelica.Media.Interfaces.PartialMedium
     "Load side medium";
-  parameter String filNam="{{ data["building_load_file"] }}"
+  parameter String filNam
     "Library path of the file with loads as time series";
   parameter Boolean have_hotWat=false
     "Set to true if SHW load is included in the time series"
