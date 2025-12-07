@@ -1,4 +1,4 @@
-URBANopt™, Copyright (c) 2019, 2024 Alliance for Sustainable Energy, LLC, and other contributors.
+URBANopt™, Copyright (c) 2019, 2025 Alliance for Sustainable Energy, LLC, and other contributors.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted
