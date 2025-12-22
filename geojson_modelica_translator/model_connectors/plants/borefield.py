@@ -57,15 +57,15 @@ class Borefield(PlantBase):
             if abs(float(undisturbed_temp_value) - matched_temp) > difference_threshold:
                 logger.warning(
                     f"Undisturbed soil temperature is set to "
-                    f"{undisturbed_temp_value}°C in system parameters, which "
-                    f"differs from the lookup value of {matched_temp}°C for weather station '{station_name}'. "
+                    f"{undisturbed_temp_value} °C in system parameters, which "
+                    f"differs from the lookup value of {matched_temp} °C for weather station '{station_name}'. "
                     f"Consider updating the undisturbed soil temperature value in the system parameters file."
                 )
         else:
             logger.warning(
                 f"Could not validate undisturbed soil temperature in system parameters file against our weather "
                 f"station lookup file. Undisturbed soil temperature is currently set to "
-                f"{undisturbed_temp_value}°C."
+                f"{undisturbed_temp_value} °C."
             )
 
     def to_modelica(self, scaffold):
