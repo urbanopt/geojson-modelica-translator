@@ -104,8 +104,7 @@ class Borefield(PlantBase):
                 self.system_parameters.get_param_by_id(self.ghe_id, "$.pre_designed_borefield.borehole_x_coordinates")
             )
 
-        # Validate undisturbed soil temperature - this is required field, but warn for default value and warn if different than lookup
-        default_undisturbed_temp = 15 # from schema
+        # Validate undisturbed soil temperature - this is required field, but warn if different than lookup
         difference_threshold = 0.5  # degrees C
 
         # lookup by weather station name
@@ -129,23 +128,7 @@ class Borefield(PlantBase):
         if not matched_rows.empty:
             matched_temp = float(matched_rows.iloc[0]["Ts,avg, C"])
 
-        if template_data["soil"]["initial_ground_temperature"] is default_undisturbed_temp:
-            if matched_temp:
-                if abs(float(template_data["soil"]["initial_ground_temperature"]) - matched_temp) > difference_threshold:
-                    logger.warning(
-                        f"Undisturbed soil temperature is set to default value "
-                        f"of {default_undisturbed_temp} °C. "
-                        f"Consider updating the system parameters to reflect site-specific conditions. "
-                        f"Undisturbed soil temperature for station '{station_name}' is {matched_temp} °C."
-                    )
-            else:
-                logger.warning(
-                    f"Undisturbed soil temperature is set to default value "
-                    f"of {default_undisturbed_temp} °C. "
-                    f"Consider updating the system parameters to reflect site-specific conditions. "
-                    f"Undisturbed soil temperature for station '{station_name}' is not available in the lookup file."
-                )
-        elif matched_temp:
+        if matched_temp:
             if abs(float(template_data["soil"]["initial_ground_temperature"]) - matched_temp) > difference_threshold:
                 logger.warning(
                     f"Undisturbed soil temperature is set to "
