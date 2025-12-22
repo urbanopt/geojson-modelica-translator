@@ -39,6 +39,12 @@ class Borefield(PlantBase):
             station_name = parts[2]
         elif len(parts) == 3:
             station_name = parts[1]
+        else:
+            logger.warning(
+                "Unexpected weather file name format '%s'. Using last underscore-separated part as station name.",
+                weather,
+            )
+            station_name = os.path.splitext(parts[-1])[0]
         station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
 
         # lookup undisturbed soil temperature from csv based on station name
