@@ -53,7 +53,7 @@ class Borefield(PlantBase):
         if not matched_rows.empty:
             matched_temp = float(matched_rows.iloc[0]["Ts,avg, C"])
 
-        if matched_temp:
+        if matched_temp is not None:
             if abs(float(undisturbed_temp_value) - matched_temp) > difference_threshold:
                 logger.warning(
                     f"Undisturbed soil temperature is set to "
