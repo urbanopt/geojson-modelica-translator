@@ -4,8 +4,8 @@
 import logging
 import math
 import os
-from pathlib import Path
 import re
+from pathlib import Path
 
 import pandas as pd
 import scipy.io as sio
@@ -27,6 +27,46 @@ class Borefield(PlantBase):
         self.ghe_id = ghe["ghe_id"]
 
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
+
+    def validate_undisturbed_soil_temperature(self, undisturbed_temp_value):
+        # Validate undisturbed soil temperature - this is required field, but warn if different than lookup
+        difference_threshold = 0.5  # degrees C
+
+        # lookup by weather station name
+        weather = self.system_parameters.get_param("$.weather")
+        parts = weather.split("/")[-1].split("_")
+        if len(parts) == 4:
+            station_name = parts[2]
+        elif len(parts) == 3:
+            station_name = parts[1]
+        station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
+
+        # lookup undisturbed soil temperature from csv based on station name
+        weather_station_df = pd.read_csv(
+            Path(__file__).parent.parent / "networks" / "data" / "Soil_temp_coefficients.csv"
+        )
+
+        # if weather file is not found, it won't actually get this far in the process
+        # but just in case we can have this here
+        matched_rows = weather_station_df[weather_station_df["Station"].str.contains(station_name, case=False)]
+        matched_temp = None
+        if not matched_rows.empty:
+            matched_temp = float(matched_rows.iloc[0]["Ts,avg, C"])
+
+        if matched_temp:
+            if abs(float(undisturbed_temp_value) - matched_temp) > difference_threshold:
+                logger.warning(
+                    f"Undisturbed soil temperature is set to "
+                    f"{undisturbed_temp_value}°C in system parameters, which "
+                    f"differs from the lookup value of {matched_temp}°C for weather station '{station_name}'. "
+                    f"Consider updating the undisturbed soil temperature value in the system parameters file."
+                )
+        else:
+            logger.warning(
+                f"Could not validate undisturbed soil temperature in system parameters file against our weather "
+                f"station lookup file. Undisturbed soil temperature is currently set to "
+                f"{undisturbed_temp_value}°C."
+            )
 
     def to_modelica(self, scaffold):
         """Convert the Borefield to Modelica code
@@ -104,43 +144,8 @@ class Borefield(PlantBase):
                 self.system_parameters.get_param_by_id(self.ghe_id, "$.pre_designed_borefield.borehole_x_coordinates")
             )
 
-        # Validate undisturbed soil temperature - this is required field, but warn if different than lookup
-        difference_threshold = 0.5  # degrees C
-
-        # lookup by weather station name
-        weather = self.system_parameters.get_param("$.weather")
-        parts = weather.split("/")[-1].split("_")
-        if len(parts) == 4:
-            station_name = parts[2]
-        elif len(parts) == 3:
-            station_name = parts[1]
-        station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
-        print("Station name:", station_name)
-        # lookup undisturbed soil temperature from csv based on station name
-        weather_station_df = pd.read_csv(
-            Path(__file__).parent.parent / "networks" / "data" / "Soil_temp_coefficients.csv"
-        )
-
-        # if weather file is not found, it won't actually get this far in the process
-        # but just in case we can have this here
-        matched_rows = weather_station_df[weather_station_df["Station"].str.contains(station_name, case=False)]
-        matched_temp = None
-        if not matched_rows.empty:
-            matched_temp = float(matched_rows.iloc[0]["Ts,avg, C"])
-
-        if matched_temp:
-            if abs(float(template_data["soil"]["initial_ground_temperature"]) - matched_temp) > difference_threshold:
-                logger.warning(
-                    f"Undisturbed soil temperature is set to "
-                    f"{template_data['soil']['initial_ground_temperature']} °C in system parameters, which differs from "
-                    f"the lookup value of {matched_temp} °C for weather station '{station_name}'. "
-                    f"Consider updating the undisturbed soil temperature value in the system parameters file."
-                )
-        else:
-            logger.warning(
-                f"Could not validate undisturbed soil temperature in system parameters file against our weather station lookup file. "
-                f"Undisturbed soil temperature is currently set to {template_data['soil']['initial_ground_temperature']} °C."
-            )
+        # Validate undisturbed soil temperature (validates and warns - does not change values)
+        self.validate_undisturbed_soil_temperature(template_data["soil"]["initial_ground_temperature"])
 
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
