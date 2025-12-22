@@ -5,6 +5,7 @@ import logging
 import math
 import os
 from pathlib import Path
+import re
 
 import pandas as pd
 import scipy.io as sio
@@ -33,7 +34,6 @@ class Borefield(PlantBase):
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-
         template_data = {
             "gfunction": {
                 "input_path": self.system_parameters.get_param(
@@ -102,6 +102,61 @@ class Borefield(PlantBase):
         if template_data["configuration"]["number_of_boreholes"] is None:
             template_data["configuration"]["number_of_boreholes"] = len(
                 self.system_parameters.get_param_by_id(self.ghe_id, "$.pre_designed_borefield.borehole_x_coordinates")
+            )
+
+        # Validate undisturbed soil temperature - this is required field, but warn for default value and warn if different than lookup
+        default_undisturbed_temp = 15 # from schema
+        difference_threshold = 0.5  # degrees C
+
+        # lookup by weather station name
+        weather = self.system_parameters.get_param("$.weather")
+        parts = weather.split("/")[-1].split("_")
+        if len(parts) == 4:
+            station_name = parts[2]
+        elif len(parts) == 3:
+            station_name = parts[1]
+        station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
+        print("Station name:", station_name)
+        # lookup undisturbed soil temperature from csv based on station name
+        weather_station_df = pd.read_csv(
+            Path(__file__).parent.parent / "networks" / "data" / "Soil_temp_coefficients.csv"
+        )
+
+        # if weather file is not found, it won't actually get this far in the process
+        # but just in case we can have this here
+        matched_rows = weather_station_df[weather_station_df["Station"].str.contains(station_name, case=False)]
+        matched_temp = None
+        if not matched_rows.empty:
+            matched_temp = float(matched_rows.iloc[0]["Ts,avg, C"])
+
+        if template_data["soil"]["initial_ground_temperature"] is default_undisturbed_temp:
+            if matched_temp:
+                if abs(float(template_data["soil"]["initial_ground_temperature"]) - matched_temp) > difference_threshold:
+                    logger.warning(
+                        f"Undisturbed soil temperature is set to default value "
+                        f"of {default_undisturbed_temp} °C. "
+                        f"Consider updating the system parameters to reflect site-specific conditions. "
+                        f"Undisturbed soil temperature for station '{station_name}' is {matched_temp} °C."
+                    )
+            else:
+                logger.warning(
+                    f"Undisturbed soil temperature is set to default value "
+                    f"of {default_undisturbed_temp} °C. "
+                    f"Consider updating the system parameters to reflect site-specific conditions. "
+                    f"Undisturbed soil temperature for station '{station_name}' is not available in the lookup file."
+                )
+        elif matched_temp:
+            if abs(float(template_data["soil"]["initial_ground_temperature"]) - matched_temp) > difference_threshold:
+                logger.warning(
+                    f"Undisturbed soil temperature is set to "
+                    f"{template_data['soil']['initial_ground_temperature']} °C in system parameters, which differs from "
+                    f"the lookup value of {matched_temp} °C for weather station '{station_name}'. "
+                    f"Consider updating the undisturbed soil temperature value in the system parameters file."
+                )
+        else:
+            logger.warning(
+                f"Could not validate undisturbed soil temperature in system parameters file against our weather station lookup file. "
+                f"Undisturbed soil temperature is currently set to {template_data['soil']['initial_ground_temperature']} °C."
             )
 
         # process g-function file
