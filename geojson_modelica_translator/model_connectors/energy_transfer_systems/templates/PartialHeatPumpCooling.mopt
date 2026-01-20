@@ -180,6 +180,7 @@ within {{ project_name }}.Loads.ETS;
         mCon_flow_nominal,-mCon_flow_nominal,mCon_flow_nominal})
     annotation (Placement(transformation(extent={{140,70},{160,50}})));
   Buildings.Controls.OBC.CDL.Reals.LimitSlewRate ramLim
+    "Rate limiter for valve control signal to improve stability"
     annotation (Placement(transformation(extent={{-70,10},{-50,30}})));
 equation
   connect(chi.P, PHea) annotation (Line(points={{11,54},{16,54},{16,40},{220,40}},
