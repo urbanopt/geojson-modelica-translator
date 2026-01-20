@@ -4,8 +4,10 @@ model HeatPumpCooling
   extends {{ project_name }}.Loads.ETS.PartialHeatPumpCooling(
     chi(
       QEva_flow_nominal=Q2_flow_nominal),
-      conPI(controllerType=Buildings.Controls.OBC.CDL.Types.SimpleController.PID),
-      ramLim(raisingSlewRate=0.01));
+    conPI(
+      controllerType=Buildings.Controls.OBC.CDL.Types.SimpleController.PID),
+    ramLim(
+      raisingSlewRate=0.01));
   {% raw %}parameter Boolean have_varFloEva=true
     "Set to true for a variable evaporator flow"
     annotation (Evaluate=true);
