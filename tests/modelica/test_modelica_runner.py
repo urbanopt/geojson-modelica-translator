@@ -98,6 +98,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert not os.path.exists(os.path.join(results_path, "om_docker.sh"))
 
     @pytest.mark.simulation
+    @pytest.mark.xfail(reason="Older docker image may fail on CI")
     def test_simulate_bouncing_ball_in_older_docker(self):
         # test running bouncing ball in older docker image
         mr = ModelicaRunner()

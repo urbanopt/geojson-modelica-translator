@@ -7,10 +7,8 @@ from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
 
 
-class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
-    """Generates a full Modelica package with the DHC 5G waste heat and GHX model with a
-    controlled variable speed distribution pump.
-    """
+class DHC5GWasteHeatGHXwithHPDirectCoolingConstantDist(SimpleGMTBase):
+    """Generates a full Modelica package with the DHC 5G waste heat and GHX model."""
 
     def __init__(self, system_parameters):
         self.system_parameters = system_parameters
@@ -29,7 +27,7 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
 
         # create the directory structure (Districts is created by default)
         scaffold = Scaffold(output_dir, project_name=project_name, overwrite=True)
-        scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations", "Schedules"])
+        scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations"])
 
         # Verify districts_path was created
         if scaffold.districts_path is None:
@@ -44,8 +42,8 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
         )
 
         # 1: grab all of the time series files and place them in the proper location
-        # If this is a dict, then there is only one building
         time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
+        # If this is a dict, then there is only one building
         if isinstance(time_series, dict):
             time_series = [time_series]
 
@@ -98,23 +96,23 @@ class DHC5GWasteHeatAndGHXVariable(SimpleGMTBase):
 
         template_data["max_flow_rate"] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)  # type: ignore[arg-type]
 
-        nbuildings = len(template_data["building_load_files"])
-        template_data["lDis"] = self.build_string("lDis = {", "0.5, ", nbuildings)
-        template_data["lCon"] = self.build_string("lCon = {", "0.5, ", nbuildings)
+        n_buildings = len(template_data["building_load_files"])
+        template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)
+        template_data["lCon"] = self.build_string("lCon = {", "0.5, ", n_buildings)
 
         # 6: generate the modelica files from the template
         self.to_modelica(
-            output_dir=Path(districts_path.files_dir),
-            model_name="DHC_5G_waste_heat_GHX_variable",
+            output_dir=Path(scaffold.districts_path.files_dir),
+            model_name="DHC_5G_WH_GHX_HPDirectCooling_ConstantDist",
             param_data=template_data,
             save_file_name="district.mo",
             generate_package=True,
             partial_files={"DHC_5G_partial": "PartialSeries"},
         )
 
-        # 7: add the district model to the Districts package and save
-        scaffold.package.districts.add_model("PartialSeries", create_subpackage=False)
+        # 7: add the district model to Districts and save
         scaffold.package.districts.add_model("district", create_subpackage=False)
+        scaffold.package.districts.add_model("PartialSeries", create_subpackage=False)
         scaffold.package.save()
 
     def build_string(self, base_text: str, value: str, iterations: int) -> str:

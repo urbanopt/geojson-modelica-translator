@@ -169,7 +169,7 @@ simulation mapper class from existing at that level.
 
 ## Running Simulations
 
-The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)` method. The test suite uses this to run most of our models with OpenModelica.
+The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)` method. This is useful for running Modelica simulations via Python and Docker using OpenModelica. This package's test suite also uses `ModelicaRunner` to run our test models with OpenModelica.
 
 ## Release Instructions
 
