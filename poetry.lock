@@ -2598,15 +2598,15 @@ pytest = ">=8.0.0"
 
 [[package]]
 name = "teaser"
-version = "1.3.0"
+version = "1.3.1"
 description = "Tool for Energy Analysis and Simulation for Efficient Retrofit "
 optional = false
 python-versions = "*"
 groups = ["main"]
 markers = "python_version <= \"3.11\" or python_version >= \"3.12\""
 files = [
-    {file = "teaser-1.3.0-py3-none-any.whl", hash = "sha256:d92cdc8738911816beed754c2c3797629b1422cf7c4f05203220a5cf13b93d41"},
-    {file = "teaser-1.3.0.tar.gz", hash = "sha256:6056f96cf7faaa792bef02438358565247da7e00dfb1c14bc835cbd9620a6f0f"},
+    {file = "teaser-1.3.1-py3-none-any.whl", hash = "sha256:26c86dfcc7fc0b87dc89c8786a50ed4ef4743d29852eca12f3dfafcff6e7dd4a"},
+    {file = "teaser-1.3.1.tar.gz", hash = "sha256:999d8bb83df2758751d98a68ee21e8de66ec347e6ea7550c8c1bf740bf739f1b"},
 ]
 
 [package.dependencies]
@@ -2792,4 +2792,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <3.14"
-content-hash = "e6943fb75d634b5c677438b7eaf722c4ec9ea41aba1a07ac10d3d73291ae5a52"
+content-hash = "0bcf6b210a113196b326a160474797b04f02e0a43e971d71f6dddfbf51254d08"
