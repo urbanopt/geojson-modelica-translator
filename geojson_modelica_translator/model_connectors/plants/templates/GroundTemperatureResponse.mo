@@ -285,7 +285,7 @@ where <i>&nu;</i> refers to the vector <code>nu</code> in this model and
 <p>
 At every aggregation time step, a time event is generated to perform the load aggregation steps.
 First, the thermal load is shifted. When shifting between cells of different size, total
-energy is conserved. This operation is illustred in the figure below by Cimmino (2014).
+energy is conserved. This operation is illustrated in the figure below by Cimmino (2014).
 </p>
 <p align=\"center\">
 <img alt=\"image\" src=\"modelica://Buildings/Resources/Images/Fluid/Geothermal/Borefields/LoadAggregation_01.png\" />
