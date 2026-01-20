@@ -3,8 +3,6 @@
 
 from pathlib import Path
 
-from modelica_builder.package_parser import PackageParser
-
 from geojson_modelica_translator.model_connectors.model_base import ModelBase
 
 
@@ -30,27 +28,11 @@ class HeatPumpETS(ModelBase):
                 project_name=scaffold.project_name,
             )
 
-        # now create the Package level package. This really needs to happen at the GeoJSON to modelica stage, but
-        # do it here for now to aid in testing.
-        package = PackageParser(scaffold.project_path / "Loads")
-        if "ETS" not in package.order:
-            package.add_model("ETS")
-            package.save()
-
+        # Add models to Loads.ETS package using scaffold's PackageParser
         package_models = [Path(model).stem for model in self.heat_pump_models]
-        ets_package = PackageParser(scaffold.heat_pump_ets_path.files_dir)
-        if ets_package.order_data is None:
-            ets_package = PackageParser.new_from_template(
-                path=scaffold.heat_pump_ets_path.files_dir,
-                name="ETS",
-                order=package_models,
-                within=f"{scaffold.project_name}.Loads",
-            )
-        else:
-            for model_name in package_models:
-                if model_name not in ets_package.order:
-                    ets_package.add_model(model_name)
-        ets_package.save()
+        for model_name in package_models:
+            scaffold.package.loads.ets.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"ETS.{self._model_filename}"

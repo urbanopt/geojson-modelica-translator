@@ -69,14 +69,16 @@ class ResultsModelica:
                         building_id = match.group(1)
                         return key.replace("#{building_id}", building_id)
                     except IndexError:
-                        print(f"Error: Column '{col_name}' does not match expected pattern.")
+                        # use logger if you want this print message
+                        # print(f"Error: Column '{col_name}' does not match expected pattern.")
                         return col_name
             return col_name
 
         # Collect values and rename
         for key, pattern in patterns.items():
             matching_vars = results.varNames(pattern)
-            print(f"\nPattern for '{key}' matched: {matching_vars}")
+            # use logger if you want this print message
+            # print(f"\nPattern for '{key}' matched: {matching_vars}")
             for var in matching_vars:
                 try:
                     time, values = results.values(var)
@@ -155,9 +157,11 @@ class ResultsModelica:
         def rename_column(col_name):
             for key, pattern in patterns.items():
                 match = re.match(pattern, col_name)
-                print(
-                    f"Checking column '{col_name}' against pattern '{pattern}': {'Matched' if match else 'Not Matched'}"
-                )
+                # disable this from printing. If needed convert to a debug log
+                # print(
+                #     f"Checking column '{col_name}' against pattern '{pattern}': "
+                #     f"{'Matched' if match else 'Not Matched'}"
+                # )
                 if match:
                     if key == "electrical_power_consumed":
                         return key
@@ -165,7 +169,8 @@ class ResultsModelica:
                         building_id = match.group(1)
                         return key.replace("#{building_id}", building_id)
                     except IndexError:
-                        print(f"Error: Column '{col_name}' does not match expected pattern.")
+                        # use logger if you want this print message
+                        # print(f"Error: Column '{col_name}' does not match expected pattern.")
                         return col_name
             # If no pattern matches, return the original column name
             return col_name

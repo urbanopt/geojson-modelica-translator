@@ -2,11 +2,9 @@ import shutil
 from pathlib import Path
 
 from modelica_builder.modelica_mos_file import ModelicaMOS
-from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
 
 
 class DHC5GWasteHeatAndGHX(SimpleGMTBase):
@@ -27,18 +25,14 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         """
         template_data = {"project_name": project_name, "save_file_name": "district", "building_load_files": []}
 
-        # create the directory structure
-        scaffold = Scaffold(output_dir, project_name=project_name)
+        # create the directory structure (Districts is created by default)
+        scaffold = Scaffold(output_dir, project_name=project_name, overwrite=True)
         scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations"])
 
-        # create the root package
-        package = PackageParser.new_from_template(
-            scaffold.project_path,
-            project_name,
-            order=[],
-            mbl_version=mbl_version(),
-        )
-        package.add_model("Districts")
+        # Verify districts_path was created
+        if scaffold.districts_path is None:
+            raise RuntimeError("Districts path must be created by scaffold")
+        districts_path = scaffold.districts_path  # Type narrowing for mypy
 
         # create the district package with the template_data from above
         files_to_copy = []
@@ -59,7 +53,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 {
                     "orig_file": building_load_file,
                     "geojson_id": building["geojson_id"],
-                    "save_path": f"{scaffold.districts_path.resources_dir}/{building['geojson_id']}",
+                    "save_path": f"{districts_path.resources_dir}/{building['geojson_id']}",
                     "save_filename": building_load_file.name,
                 }
             )
@@ -90,7 +84,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 mos_file.save()
 
             # 4: Add the path to the param data with Modelica friendly path names
-            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
+            rel_path_name = f"{project_name}/{districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
             template_data["building_load_files"].append(f"modelica://{rel_path_name}")  # type: ignore[attr-defined]
 
         # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
@@ -108,7 +102,7 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
 
         # 6: generate the modelica files from the template
         self.to_modelica(
-            output_dir=Path(scaffold.districts_path.files_dir),
+            output_dir=Path(districts_path.files_dir),
             model_name="DHC_5G_waste_heat_GHX",
             param_data=template_data,
             save_file_name="district.mo",
@@ -116,8 +110,10 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             partial_files={"DHC_5G_partial": "PartialSeries"},
         )
 
-        # 7: save the root package.mo
-        package.save()
+        # 7: add the district model to Districts and save
+        scaffold.package.districts.add_model("district", create_subpackage=False)
+        scaffold.package.districts.add_model("PartialSeries", create_subpackage=False)
+        scaffold.package.save()
 
     def build_string(self, base_text: str, value: str, iterations: int) -> str:
         """Builds a string with a comma separated list of values.
