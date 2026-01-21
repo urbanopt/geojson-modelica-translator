@@ -4,6 +4,7 @@
 import logging
 import math
 import os
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -27,13 +28,58 @@ class Borefield(PlantBase):
 
         self.required_mo_files.append(os.path.join(self.template_dir, "GroundTemperatureResponse.mo"))
 
+    def validate_undisturbed_soil_temperature(self, undisturbed_temp_value):
+        # Validate undisturbed soil temperature - this is required field, but warn if different than lookup
+        difference_threshold = 0.5  # degrees C
+
+        # lookup by weather station name
+        weather = self.system_parameters.get_param("$.weather")
+        parts = weather.split("/")[-1].split("_")
+        if len(parts) == 4:
+            station_name = parts[2]
+        elif len(parts) == 3:
+            station_name = parts[1]
+        else:
+            logger.warning(
+                "Unexpected weather file name format '%s'. Using last underscore-separated part as station name.",
+                weather,
+            )
+            station_name = os.path.splitext(parts[-1])[0]
+        station_name = re.sub(r"\d+", "", station_name).replace(".", " ")
+
+        # lookup undisturbed soil temperature from csv based on station name
+        weather_station_df = pd.read_csv(
+            Path(__file__).parent.parent / "networks" / "data" / "Soil_temp_coefficients.csv"
+        )
+
+        # if weather file is not found, it won't actually get this far in the process
+        # but just in case we can have this here
+        matched_rows = weather_station_df[weather_station_df["Station"].str.contains(station_name, case=False)]
+        matched_temp = None
+        if not matched_rows.empty:
+            matched_temp = float(matched_rows.iloc[0]["Ts,avg, C"])
+
+        if matched_temp is not None:
+            if abs(float(undisturbed_temp_value) - matched_temp) > difference_threshold:
+                logger.warning(
+                    f"Undisturbed soil temperature is set to "
+                    f"{undisturbed_temp_value} °C in system parameters, which "
+                    f"differs from the lookup value of {matched_temp} °C for weather station '{station_name}'. "
+                    f"Consider updating the undisturbed soil temperature value in the system parameters file."
+                )
+        else:
+            logger.warning(
+                f"Could not validate undisturbed soil temperature in system parameters file against our weather "
+                f"station lookup file. Undisturbed soil temperature is currently set to "
+                f"{undisturbed_temp_value} °C."
+            )
+
     def to_modelica(self, scaffold):
         """Convert the Borefield to Modelica code
         Create timeSeries models based on the data in the buildings and GeoJSONs
 
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
-
         template_data = {
             "gfunction": {
                 "input_path": self.system_parameters.get_param(
@@ -103,6 +149,9 @@ class Borefield(PlantBase):
             template_data["configuration"]["number_of_boreholes"] = len(
                 self.system_parameters.get_param_by_id(self.ghe_id, "$.pre_designed_borefield.borehole_x_coordinates")
             )
+
+        # Validate undisturbed soil temperature (validates and warns - does not change values)
+        self.validate_undisturbed_soil_temperature(template_data["soil"]["initial_ground_temperature"])
 
         # process g-function file
         if Path(template_data["gfunction"]["input_path"]).expanduser().is_absolute():
@@ -228,29 +277,17 @@ class Borefield(PlantBase):
         )
         borefield_package.save()
 
-        # Plants package
-        package = PackageParser(scaffold.project_path)
-        if "Plants" not in package.order:
-            package.add_model("Plants")
-            package.save()
-
+        # Add models to Plants package using scaffold's PackageParser
         package_models = [self.borefield_name] + [Path(mo).stem for mo in self.required_mo_files]
-        plants_package = PackageParser(scaffold.plants_path.files_dir)
-        if plants_package.order_data is None:
-            plants_package = PackageParser.new_from_template(
-                path=scaffold.plants_path.files_dir, name="Plants", order=package_models, within=scaffold.project_name
-            )
-        else:
-            for model_name in package_models:
-                # We only want a single model named GroundTemperatureResponse to be included, so we skip adding
-                # (One was included when the Plants package order_data was first created just above)
-                if (
-                    model_name == "GroundTemperatureResponse"
-                    and "GroundTemperatureResponse" in plants_package.order_data
-                ):
-                    continue
-                plants_package.add_model(model_name)
-        plants_package.save()
+        for model_name in package_models:
+            # We only want a single model named GroundTemperatureResponse to be included, so we skip adding
+            if (
+                model_name == "GroundTemperatureResponse"
+                and "GroundTemperatureResponse" in scaffold.package.plants.order
+            ):
+                continue
+            scaffold.package.plants.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return f"Plants.{self.borefield_name}.Borefield"

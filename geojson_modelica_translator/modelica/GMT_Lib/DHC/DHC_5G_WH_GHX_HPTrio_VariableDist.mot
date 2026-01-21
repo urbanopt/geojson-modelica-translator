@@ -1,10 +1,10 @@
 within {{ data["project_name"] }}.Districts;
 model district
-  "Series connection with variable district water mass flow rate"
+  "Series connection with variable district water mass flow rate, heating and cooling from Heat Pump Trio"
   extends
     PartialSeries(redeclare
-      Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
-      bui[nBui](final filNam=filNam), datDes(
+      {{ data["project_name"] }}.Loads.buildingHPTrio
+      bui[nBui](each TChiWatSup_nominal=280.15, final filNam=filNam), datDes(
       nBui={{ data["building_load_files"] | count }},
       mPumDis_flow_nominal={{ data["max_flow_rate"] }},
       mPla_flow_nominal={{ data["max_flow_rate"] }},
@@ -57,27 +57,29 @@ equation
   connect(pumDis.m_flow_in, gaiPumDis.y)
     annotation (Line(points={{68,-60},{-218,-60}}, color={0,0,127}));
   connect(conPum.y, gaiPumDis.u)
-    annotation (Line(points={{-258,-60},{-242,-60}}, color={0,0,127}));
+    annotation (Line(points={{-258.462,-60},{-242,-60}},
+                                                     color={0,0,127}));
   connect(dis.TOut, conPum.TMix) annotation (Line(points={{22,134},{30,134},{30,
-          120},{-300,120},{-300,-54},{-282,-54}},
+          120},{-300,120},{-300,-53},{-281.692,-53}},
                                          color={0,0,127}));
   connect(TDisWatRet.T, conPum.TSouIn[1]) annotation (Line(points={{69,0},{60,0},
-          {60,80},{-304,80},{-304,-61},{-282,-61}},
+          {60,80},{-304,80},{-304,-57.25},{-281.692,-57.25}},
                                             color={0,0,127}));
   connect(TDisWatBorLvg.T, conPum.TSouIn[2]) annotation (Line(points={{-91,-40},
-          {-290,-40},{-290,-58},{-282,-58},{-282,-59}},
+          {-290,-40},{-290,-58},{-281.692,-58},{-281.692,-56.75}},
                                                   color={0,0,127}));
   connect(TDisWatBorLvg.T, conPum.TSouOut[1]) annotation (Line(points={{-91,-40},
-          {-290,-40},{-290,-67},{-282,-67}},              color={0,0,127}));
-  connect(TDisWatSup.T, conPum.TSouOut[2]) annotation (Line(points={{-91,20},{-100,
-          20},{-100,60},{-296,60},{-296,-65},{-282,-65}},
+          {-290,-40},{-290,-62.25},{-281.692,-62.25}},    color={0,0,127}));
+  connect(TDisWatSup.T, conPum.TSouOut[2]) annotation (Line(points={{-91,20},{
+          -100,20},{-100,60},{-296,60},{-296,-61.75},{-281.692,-61.75}},
                                                    color={0,0,127}));
   connect(gaiPumSto.u, gaiPumDis.u) annotation (Line(points={{-242,-102},{-248,
           -102},{-248,-60},{-242,-60}}, color={0,0,127}));
   connect(gaiPumSto.y, pumSto.m_flow_in) annotation (Line(points={{-218,-102},{
           -210,-102},{-210,-62},{-180,-62},{-180,-68}}, color={0,0,127}));
-  connect(bui.QCoo_flow, conPum.QCoo_flow) annotation (Line(points={{7,168},{6,168},
-          {6,156},{-130,156},{-130,130},{-312,130},{-312,-66},{-281.692,-66}}, color={0,0,127}));
+  connect(bui.QCoo_flow, conPum.QCoo_flow) annotation (Line(points={{7,168},{6,
+          168},{6,156},{-130,156},{-130,130},{-312,130},{-312,-66},{-281.692,
+          -66}},                                                               color={0,0,127}));
   annotation (
   Diagram(
   coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
@@ -99,6 +101,11 @@ allowed loop temperature, then the mass flow rate is reduced to save pump energy
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+December 5, 2025, by Nicholas Long and Jing Wang:<br/>
+Updated the base building model to include a heat pump trio configuration.
+Templatized for use within the GMT framework.
+</li>
 <li>
 November 17, 2023, by Nicholas Long:<br/>
 Break out the mass flow rate gain multiplier for the GHX/Storage.

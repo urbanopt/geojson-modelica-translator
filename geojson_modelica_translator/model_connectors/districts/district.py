@@ -2,10 +2,10 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
+import shutil
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
-from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.external_package_utils import (
     load_loop_order,
@@ -17,7 +17,6 @@ from geojson_modelica_translator.model_connectors.couplings.diagram import Diagr
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
 
 logger = logging.getLogger(__name__)
 
@@ -59,15 +58,6 @@ class District:
         # scaffold the project
         self._scaffold.create()
         self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
-
-        # create the root package
-        root_package = PackageParser.new_from_template(
-            self._scaffold.project_path,
-            self._scaffold.project_name,
-            order=[],
-            mbl_version=mbl_version(),
-        )
-        root_package.save()
 
         # generate model modelica files
         for model in self._coupling_graph.models:
@@ -113,8 +103,13 @@ class District:
             heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
             heat_pump_ets.to_modelica(self._scaffold)
         else:
-            # Remove the empty ETS dir which isn't used in non-5G systems
-            Path(self._scaffold.heat_pump_ets_path.files_dir).rmdir()
+            # Remove the ETS dir which isn't used in non-5G systems
+            ets_path = Path(self._scaffold.heat_pump_ets_path.files_dir)
+            if ets_path.exists():
+                shutil.rmtree(ets_path)
+            # Also remove ETS from the Loads package order
+            if hasattr(self._scaffold.package, "loads") and "ETS" in self._scaffold.package.loads.order:
+                self._scaffold.package.loads.order.remove("ETS")
 
         if district_template_params["is_ghe_district"] and self.gj:
             # determine the maximum borefield flow rate in the district
@@ -194,18 +189,9 @@ class District:
         with open(self.district_model_filepath, "w") as f:
             f.write(final_result)
 
-        districts_package = PackageParser.new_from_template(
-            self._scaffold.districts_path.files_dir,
-            "Districts",
-            ["DistrictEnergySystem"],
-            within=f"{self._scaffold.project_name}",
-        )
-        districts_package.save()
-
-        root_package = PackageParser(self._scaffold.project_path)
-        if "Districts" not in root_package.order:
-            root_package.add_model("Districts")
-            root_package.save()
+        # Add DistrictEnergySystem to Districts package using scaffold's PackageParser
+        self._scaffold.package.districts.add_model("DistrictEnergySystem", create_subpackage=False)
+        self._scaffold.package.save()
 
         # Enforce minimum DHW load in Modelica model
         data_dir = Path(self._scaffold.project_path) / "Loads" / "Resources" / "Data"
