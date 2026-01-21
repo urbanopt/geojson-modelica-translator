@@ -14,7 +14,7 @@ extend-ignore-names = ["test_*"]
 [lint.pylint]
 # system_parameters.py has many file lookups that necessitate nested statements & branches
 # Raise the allowed limits the least possible amount https://docs.astral.sh/ruff/settings/#pylint-max-branches
-max-statements = 70
+max-statements = 75
 max-branches = 24
 
 [lint.per-file-ignores]
