@@ -10,6 +10,7 @@ model building
     THotWatSup_nominal=273.15+{{ data['hot_water_supply_temp'] }},
     dp_nominal={{ data['ets_pump_head'] }},
     redeclare {{ project_name }}.Loads.{{ model_name }}.TimeSeriesBuilding bui(
+      filNam=filNam,
       have_hotWat=true,
       T_aHeaWat_nominal=ets.THeaWatSup_nominal,
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
