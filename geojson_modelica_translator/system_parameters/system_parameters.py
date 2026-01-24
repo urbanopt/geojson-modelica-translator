@@ -7,7 +7,6 @@ import math
 from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 import requests
@@ -170,7 +169,7 @@ class SystemParameters:
             logger.error(f"Ensure your value is in the correct format: {error.schema.get('format', 'string')}")
             raise ValidationError("Invalid system parameter file.")
 
-    def download_weatherfile(self, filename, save_directory: str) -> Union[str, Path]:
+    def download_weatherfile(self, filename, save_directory: str) -> str | Path:
         """Download the MOS or EPW weather file from energyplus.net
 
         This routine downloads the weather file, either an MOS or EPW, which is selected based
