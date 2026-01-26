@@ -10,16 +10,14 @@ changelog:
   categories:
     - title: Exciting New Features 🎉
       labels:
-        - enhancement
         - feature
     - title: Improvements & Bug Fixes 🐛
       labels:
-        - fix
         - improvement
-        - enhancements
-    - title: Breaking Changes 🛠
-      labels:
-        - breaking-change
+        - enhancement
+    # - title: Breaking Changes 🛠
+    #   labels:
+    #     - breaking-change
     - title: Bug Fixes 🐞
       labels:
         - bug
@@ -27,6 +25,9 @@ changelog:
       labels:
         - dependabot
         - dependencies
+    - title: Maintenance 🧹
+      labels:
+        - maintenance
     - title: Other Changes
       labels:
         - "*"

@@ -14,8 +14,8 @@ updates:
     open-pull-requests-limit: 5
     ignore:
       - dependency-name: "click"
-    commit-message:
-      prefix: "deps"
+    labels:
+      - "dependabot"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -25,5 +25,5 @@ updates:
         patterns:
           - "*"
     open-pull-requests-limit: 5
-    commit-message:
-      prefix: "ci"
+    labels:
+      - "maintenance"
