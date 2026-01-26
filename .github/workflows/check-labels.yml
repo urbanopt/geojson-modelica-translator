@@ -13,7 +13,7 @@ jobs:
         with:
           script: |
             const requiredLabels = [
-              'bug',  
+              'bug',
               'dependabot',
               'dependencies',
               'documentation',
@@ -22,10 +22,10 @@ jobs:
               'ignore-for-release',
               'maintenance',
             ];
-            
+
             const prLabels = context.payload.pull_request.labels.map(label => label.name);
             const hasRequiredLabel = requiredLabels.some(label => prLabels.includes(label));
-            
+
             if (!hasRequiredLabel) {
               core.setFailed(
                 `PR must have at least one of these labels: ${requiredLabels.join(', ')}`
