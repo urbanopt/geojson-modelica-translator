@@ -6,21 +6,27 @@ changelog:
       - ignore-for-release
       - DO NOT MERGE
       - invalid
-      - dependencies
-      - tests
-    authors:
-      - octocat
-      - dependabot
+      - wontfix
   categories:
-    - title: Breaking Changes 🛠
-      labels:
-        - Semver-Major
-        - breaking-change
     - title: Exciting New Features 🎉
       labels:
-        - Semver-Minor
         - enhancement
-        - Feature
+        - feature
+    - title: Improvements & Bug Fixes 🐛
+      labels:
+        - fix
+        - improvement
+        - enhancements
+    - title: Breaking Changes 🛠
+      labels:
+        - breaking-change
+    - title: Bug Fixes 🐞
+      labels:
+        - bug
+    - title: Dependency Updates 📦
+      labels:
+        - dependabot
+        - dependencies
     - title: Other Changes
       labels:
         - "*"
