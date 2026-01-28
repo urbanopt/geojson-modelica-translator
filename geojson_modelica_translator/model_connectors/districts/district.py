@@ -8,9 +8,9 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.external_package_utils import (
+    get_num_buildings_in_loop_order,
     load_loop_order,
     set_loop_order_data_in_template_params,
-    get_num_buildings_in_loop_order,
     set_minimum_dhw_load,
 )
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS

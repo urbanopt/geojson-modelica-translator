@@ -33,6 +33,7 @@ def get_num_buildings_in_loop_order(loop_order: list) -> int:
         num_buildings += len(group.get("list_bldg_ids_in_group", []))
     return num_buildings
 
+
 def set_loop_order_data_in_template_params(
     template_params: dict, feature_properties: list[dict], loop_order: list
 ) -> dict:
