@@ -19,6 +19,14 @@ jobs:
         run: pip install -r docs/docs_requirements.txt
       - name: Build documentation
         run: mkdocs build --strict
+      - name: Verify build output
+        run: |
+          if [ ! -f site/index.html ]; then
+            echo "Error: site/index.html not found"
+            exit 1
+          fi
+          echo "Documentation built successfully"
+          ls -lh site/
 
   deploy:
     runs-on: ubuntu-latest
