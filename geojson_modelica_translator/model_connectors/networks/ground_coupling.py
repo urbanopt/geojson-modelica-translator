@@ -55,7 +55,7 @@ class GroundCoupling(NetworkBase):
                 "$.district_system.fifth_generation.horizontal_piping_parameters.buried_depth"
             ),
             "weather": self.system_parameters.get_param("$.weather"),
-            "num_buildings": len(self.system_parameters.get_param("$.buildings")),
+            "num_buildings": self.num_buildings,
             "loop_order": {
                 "number_of_loops": len(self.loop_order),
                 "data": self.loop_order,

@@ -8,6 +8,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.external_package_utils import (
+    get_num_buildings_in_loop_order,
     load_loop_order,
     set_loop_order_data_in_template_params,
     set_minimum_dhw_load,
@@ -76,6 +77,9 @@ class District:
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
         }
 
+        # temporary number of buildings (unused for 4G but just a placeholder)
+        num_buildings = len(self.system_parameters.get_param("$.buildings"))
+
         common_template_params = {
             "globals": {
                 "medium_w": "MediumW",
@@ -89,27 +93,9 @@ class District:
             "sys_params": {
                 "district_system": district_system_params,
                 # num_buildings counts the ports required for 5G systems
-                "num_buildings": len(self.system_parameters.get_param("$.buildings")),
+                "num_buildings": num_buildings,
             },
         }
-
-        if "fifth_generation" in district_system_params:
-            district_template_params["pressure_drop_per_meter"] = district_system_params["fifth_generation"][
-                "horizontal_piping_parameters"
-            ]["pressure_drop_per_meter"]
-
-            # Build the heat pump ETS model to ensure chillers are available to 5G loads
-            ets_templates_dir_path = Path(__file__).parent.parent / "energy_transfer_systems" / "templates"
-            heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
-            heat_pump_ets.to_modelica(self._scaffold)
-        else:
-            # Remove the ETS dir which isn't used in non-5G systems
-            ets_path = Path(self._scaffold.heat_pump_ets_path.files_dir)
-            if ets_path.exists():
-                shutil.rmtree(ets_path)
-            # Also remove ETS from the Loads package order
-            if hasattr(self._scaffold.package, "loads") and "ETS" in self._scaffold.package.loads.order:
-                self._scaffold.package.loads.order.remove("ETS")
 
         if district_template_params["is_ghe_district"] and self.gj:
             # determine the maximum borefield flow rate in the district
@@ -129,11 +115,31 @@ class District:
 
             # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
+            # calculate number of connected buildings in loop order for 5G systems & reassign
+            common_template_params["sys_params"]["num_buildings"] = get_num_buildings_in_loop_order(loop_order)
 
             # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
             # or: Ensure TN is used for all networks, so loop order is generated that way.
             feature_properties = self.gj.get_feature("$.features.[*].properties")
             set_loop_order_data_in_template_params(common_template_params, feature_properties, loop_order)
+
+        if "fifth_generation" in district_system_params:
+            district_template_params["pressure_drop_per_meter"] = district_system_params["fifth_generation"][
+                "horizontal_piping_parameters"
+            ]["pressure_drop_per_meter"]
+
+            # Build the heat pump ETS model to ensure chillers are available to 5G loads
+            ets_templates_dir_path = Path(__file__).parent.parent / "energy_transfer_systems" / "templates"
+            heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
+            heat_pump_ets.to_modelica(self._scaffold)
+        else:
+            # Remove the ETS dir which isn't used in non-5G systems
+            ets_path = Path(self._scaffold.heat_pump_ets_path.files_dir)
+            if ets_path.exists():
+                shutil.rmtree(ets_path)
+            # Also remove ETS from the Loads package order
+            if hasattr(self._scaffold.package, "loads") and "ETS" in self._scaffold.package.loads.order:
+                self._scaffold.package.loads.order.remove("ETS")
 
         # render each coupling
         load_num = 1
