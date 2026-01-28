@@ -2,7 +2,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 
 # TODO: This needs to be removed. It is not used anywhere in the codebase.
@@ -13,7 +13,7 @@ class InputParser:
     instead which is syntax-aware of the Modelica language.
     """
 
-    def __init__(self, modelica_filename: Union[str, Path]) -> None:
+    def __init__(self, modelica_filename: str | Path) -> None:
         """Initialize the class with the modelica file to parse
 
         Args:
@@ -128,7 +128,7 @@ class InputParser:
         """Save the resulting file to the same file from which it was initialized"""
         return self.save_as(self.modelica_filename)
 
-    def save_as(self, new_filename: Union[str, Path]) -> None:
+    def save_as(self, new_filename: str | Path) -> None:
         """Save the resulting file with a new filename
 
         Args:
@@ -155,7 +155,7 @@ class InputParser:
         """
         self.within = new_string
 
-    def find_model_object(self, obj_name: str) -> tuple[Union[int, None], Union[str, None]]:
+    def find_model_object(self, obj_name: str) -> tuple[int | None, str | None]:
         """Find a model object in the list of parsed objects
 
         Args:
@@ -231,7 +231,7 @@ class InputParser:
         """
         self.connections.append(f"  connect({a}, {b})\n    {annotation};\n")
 
-    def find_connect(self, port_a: str, port_b: str) -> tuple[Union[int, None], Union[str, None]]:
+    def find_connect(self, port_a: str, port_b: str) -> tuple[int | None, str | None]:
         """Find an existing connection that has port_a and/or port_b. If there are more than one, then it will only
         return the first.
 
@@ -256,7 +256,7 @@ class InputParser:
         return None, None
 
     def replace_connect_string(
-        self, a: str, b: str, new_a: Union[str, None], new_b: Union[str, None], replace_all: bool = False
+        self, a: str, b: str, new_a: str | None, new_b: str | None, replace_all: bool = False
     ) -> None:
         """Replace content of the connect string with new_a and/or new_b
 

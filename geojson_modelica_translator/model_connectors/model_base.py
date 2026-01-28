@@ -4,7 +4,6 @@
 import logging
 import shutil
 from pathlib import Path
-from typing import Union
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
@@ -21,7 +20,7 @@ class ModelBase:
     """
 
     # model_name must be overridden in subclass
-    model_name: Union[str, None] = None
+    model_name: str | None = None
 
     def __init__(self, system_parameters, template_dir):
         """Base initializer

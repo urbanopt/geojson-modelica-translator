@@ -6,7 +6,6 @@ import os
 import shutil
 import stat
 from pathlib import Path
-from typing import Optional
 
 from modelica_builder.package_parser import PackageParser
 
@@ -29,9 +28,7 @@ class Scaffold:
     The scaffold now uses PackageParser for more flexible subpackage management.
     """
 
-    def __init__(
-        self, root_dir: Path, project_name: str, overwrite: bool = False, mbl_version_str: Optional[str] = None
-    ):
+    def __init__(self, root_dir: Path, project_name: str, overwrite: bool = False, mbl_version_str: str | None = None):
         """Initialize the scaffold. This will clear out the directory if it already exists, so use this
         with caution.
 
@@ -44,17 +41,17 @@ class Scaffold:
         self.project_name = project_name
         self.overwrite = overwrite
         self._mbl_version = mbl_version_str or mbl_version()
-        self._package: Optional[PackageParser] = None
+        self._package: PackageParser | None = None
 
         # Dynamically created paths (set by create() method). These are
         # used for mypy checks.
-        self.districts_path: Optional[ModelicaPath] = None
-        self.loads_path: Optional[ModelicaPath] = None
-        self.plants_path: Optional[ModelicaPath] = None
-        self.substations_path: Optional[ModelicaPath] = None
-        self.networks_path: Optional[ModelicaPath] = None
-        self.schedules_path: Optional[ModelicaPath] = None
-        self.heat_pump_ets_path: Optional[ModelicaPath] = None
+        self.districts_path: ModelicaPath | None = None
+        self.loads_path: ModelicaPath | None = None
+        self.plants_path: ModelicaPath | None = None
+        self.substations_path: ModelicaPath | None = None
+        self.networks_path: ModelicaPath | None = None
+        self.schedules_path: ModelicaPath | None = None
+        self.heat_pump_ets_path: ModelicaPath | None = None
 
         # clear out the project path
         self.project_path = self.root_dir / self.project_name
@@ -146,7 +143,7 @@ class Scaffold:
                     ModelicaPath(package_name, root_dir=self.project_path, overwrite=True),
                 )
 
-    def add_subpackage(self, name: str, parent: Optional[str] = None) -> PackageParser:
+    def add_subpackage(self, name: str, parent: str | None = None) -> PackageParser:
         """Add a new subpackage dynamically to the scaffold.
 
         Args:

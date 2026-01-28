@@ -7,7 +7,6 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Union
 
 from buildingspy.simulate.Dymola import Simulator
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -33,7 +32,7 @@ class ModelicaRunner:
         r = subprocess.call(["docker", "ps"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
-    def _verify_docker_run_capability(self, file_to_load: Union[str, Path, None]):
+    def _verify_docker_run_capability(self, file_to_load: str | Path | None):
         """Verify that docker is configured on the host computer correctly before running
 
         Args:
@@ -51,9 +50,7 @@ class ModelicaRunner:
         if file_to_load and not Path(file_to_load).exists():
             raise SystemExit(f"File not found to run {file_to_load}")
 
-    def _verify_run_path_for_docker(
-        self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]
-    ) -> Path:
+    def _verify_run_path_for_docker(self, run_path: str | Path | None, file_to_run: str | Path | None) -> Path:
         """If there is no run_path, then run it in the same directory as the
         file being run. This works fine for simple Modelica projects but typically
         the run_path needs to be a few levels higher in order to include other
@@ -84,7 +81,7 @@ class ModelicaRunner:
         return new_run_path
 
     def _copy_over_docker_resources(
-        self, run_path: Path, filename: Union[str, Path, None], model_name: str, **kwargs
+        self, run_path: Path, filename: str | Path | None, model_name: str, **kwargs
     ) -> None:
         """Copy over files needed to run the simulation, this includes
         the generation of the OpenModelica scripts to load and compile/run
@@ -243,10 +240,10 @@ class ModelicaRunner:
         self,
         action: str,
         model_name: str,
-        file_to_load: Union[str, Path, None] = None,
-        run_path: Union[str, Path, None] = None,
+        file_to_load: str | Path | None = None,
+        run_path: str | Path | None = None,
         **kwargs,
-    ) -> tuple[bool, Union[str, Path]]:
+    ) -> tuple[bool, str | Path]:
         """Run the Modelica project in a docker-based environment.
         The action will determine what type of run will be conducted.
         This method supports either a file path pointing to the package to load, or a modelica path which is a
@@ -326,8 +323,8 @@ class ModelicaRunner:
         return (exitcode == 0, results_path)
 
     def run_in_dymola(
-        self, action: str, model_name: str, file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs
-    ) -> tuple[bool, Union[str, Path]]:
+        self, action: str, model_name: str, file_to_load: str | Path, run_path: str | Path, **kwargs
+    ) -> tuple[bool, str | Path]:
         """If running on Windows or Linux, you can run Dymola (assuming you have a license),
         using the BuildingsPy library. This is not supported on Mac.
 
@@ -423,7 +420,7 @@ class ModelicaRunner:
 
         return True, run_path
 
-    def move_results(self, from_path: Path, to_path: Path, model_name: Union[str, None] = None) -> None:
+    def move_results(self, from_path: Path, to_path: Path, model_name: str | None = None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.

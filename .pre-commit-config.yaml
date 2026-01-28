@@ -44,7 +44,7 @@ repos:
         pass_filenames: false
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.2
+    rev: v0.14.14
     hooks:
       # Run the linter
       - id: ruff-check
@@ -53,7 +53,7 @@ repos:
       # Run the formatter
       - id: ruff-format
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.45.0
+    rev: v0.47.0
     hooks:
       - id: markdownlint
         name: markdownlint
