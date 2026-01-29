@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 # from __future__ import annotations

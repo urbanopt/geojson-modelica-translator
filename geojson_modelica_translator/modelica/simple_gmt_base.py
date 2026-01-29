@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 # https://docs.astral.sh/ruff/rules/implicit-optional/ for to_modelica arg: partial_files
