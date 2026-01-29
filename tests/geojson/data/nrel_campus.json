@@ -33,7 +33,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d32e",
         "source_id": "Bridge",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -88,7 +88,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d302",
         "source_id": "Vehicle Testing and Integration Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -143,7 +143,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d334",
         "source_id": "Unknown East A",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -198,7 +198,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d32c",
         "source_id": "Unknown E",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -253,7 +253,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d338",
         "source_id": "Unknown East B",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -308,7 +308,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d33c",
         "source_id": "Unknown North A",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -375,7 +375,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d306",
         "source_id": "Thermal Test Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -438,7 +438,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d308",
         "source_id": "Solar Radiation Research Laboratory",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -493,7 +493,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d30a",
         "source_id": "High Flux Solar Furnace",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -584,7 +584,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d304",
         "source_id": "Outdoor Test Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -639,7 +639,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d326",
         "source_id": "Unknown West F",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -694,7 +694,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d332",
         "source_id": "Unknown West E",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -749,7 +749,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d33e",
         "source_id": "Unknown North B",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -804,7 +804,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d340",
         "source_id": "Unknown North C",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -859,7 +859,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d342",
         "source_id": "Unknown North D",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -914,7 +914,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d300",
         "source_id": "South Entrance",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1032,15 +1032,15 @@
       },
       "properties": {
         "id": "59a9ce2b42f7d007c059d2fe",
-        "source_id": "NREL Employee Parking Garage",
-        "source_name": "NREL_GDS",
+        "source_id": "NLR Employee Parking Garage",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
         "stroke-opacity": 1,
         "fill": "#555555",
         "fill-opacity": 0.5,
-        "name": "NREL Employee Parking Garage",
+        "name": "NLR Employee Parking Garage",
         "maximum_roof_height": 50,
         "floor_area": 641495.5237569604,
         "number_of_stories": 5,
@@ -1120,7 +1120,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2fa",
         "source_id": "Cafe",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1223,7 +1223,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2fc",
         "source_id": "Field Test Laboratory Building",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1362,7 +1362,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2f8",
         "source_id": "Solar Energy Research Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1417,7 +1417,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d32a",
         "source_id": "Unknown D",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1484,7 +1484,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d346",
         "source_id": "South Parking",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1643,7 +1643,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2f6",
         "source_id": "Science and Technology Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1794,7 +1794,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2f4",
         "source_id": "Research Support Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -1921,7 +1921,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2ee",
         "source_id": "Energy Systems Integration Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2000,7 +2000,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2f0",
         "source_id": "Education Center",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2079,7 +2079,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d2f2",
         "source_id": "East Entry",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2142,7 +2142,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d30e",
         "source_id": "East Parking",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2197,7 +2197,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d314",
         "source_id": "West Gate Entrance",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2252,7 +2252,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d320",
         "source_id": "Unknown West A",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2307,7 +2307,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d312",
         "source_id": "Shipping and Receiving Building",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2362,7 +2362,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d322",
         "source_id": "Unknown West B",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2481,7 +2481,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d310",
         "source_id": "Integrated Biorefinery Research Facility",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2536,7 +2536,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d324",
         "source_id": "Unknown West C",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2591,7 +2591,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d330",
         "source_id": "Unknown West D",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2646,7 +2646,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d344",
         "source_id": "High Flux PV",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2699,7 +2699,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d30c",
         "source_id": "Solar Industrial Mesa Test Area",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2772,7 +2772,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d316",
         "source_id": "Mesa PV A",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2825,7 +2825,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d318",
         "source_id": "Mesa PV B",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2922,7 +2922,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d31a",
         "source_id": "Mesa PV C",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -2975,7 +2975,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d31c",
         "source_id": "Central PV A",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -3032,7 +3032,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d31e",
         "source_id": "Outdoor Test PV",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -3085,7 +3085,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d328",
         "source_id": "Outdoor Test PV ",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -3154,7 +3154,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d336",
         "source_id": "Central Chiller",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,
@@ -3207,7 +3207,7 @@
       "properties": {
         "id": "59a9ce2b42f7d007c059d33a",
         "source_id": "Vehicle Testing PV",
-        "source_name": "NREL_GDS",
+        "source_name": "NLR_GDS",
         "project_id": "59a9ccdf42f7d007c059d2ed",
         "stroke": "#555555",
         "stroke-width": 2,

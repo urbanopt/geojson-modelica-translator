@@ -9,7 +9,7 @@ The GMT requires a locally built image or a version from Docker hub to run tests
 
 To build the docker container locally, follow the below instructions:
 
-1. If on the NREL network:
+1. If on the NLR network:
     - Disable Netskope temporarily
     - Disconnect from VPN
 2. Then:
@@ -39,7 +39,7 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 ### Releasing a new container for users
 
-Releasing is only available to individuals with write access to the NREL org. Unfortunately, the NREL org is still
+Releasing is only available to individuals with write access to the NLR org. Unfortunately, the NLR org is still
 under a free plan resulting in a maximum of 3 users for the entire org, which have already been allocated.
 
 Building for release is a bit different than development since you will need to handle multiple platforms (that is adding support for armhf to

@@ -47,9 +47,9 @@
 !***** opinions of authors expressed herein do not necessarily state or *****
 !***** reflect those of the United States government or any agency thereof. *****
 !***** Access to and use of the Reference Buildings imposes the following obligations *****
-!***** on the user. The user agrees to credit DOE, NREL, PNNL, and LBNL in *****
+!***** on the user. The user agrees to credit DOE, NLR, PNNL, and LBNL in *****
 !***** any publication(s) that that result from the use of Reference Buildings. *****
-!***** However, the names of DOE/NREL/PNNL/LBNL may not be used in any *****
+!***** However, the names of DOE/NLR/PNNL/LBNL may not be used in any *****
 !***** advertising or publicity that implies endorsement or promotion of any *****
 !***** products, services or commercial entities. *****
 ! Reference citation for the Commercial Reference Buildings:
@@ -250,7 +250,7 @@
     -6.00,                   !- Time Zone {hr}
     190;                     !- Elevation {m}
 
-! CHICAGO_IL_USA Annual Heating 99.6%, MaxDB=-20.6°C
+! CHICAGO_IL_USA Annual Heating 99.6%, MaxDB=-20.6ï¿½C
 
   SizingPeriod:DesignDay,
     CHICAGO Ann Htg 99.6% Condns DB,  !- Name
@@ -280,7 +280,7 @@
     ,                        !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud) {dimensionless}
     0.00;                    !- Sky Clearness
 
-! CHICAGO_IL_USA Annual Cooling (WB=>MDB) .4%, MDB=31.2°C WB=25.5°C
+! CHICAGO_IL_USA Annual Cooling (WB=>MDB) .4%, MDB=31.2ï¿½C WB=25.5ï¿½C
 
   SizingPeriod:DesignDay,
     CHICAGO Ann Clg .4% Condns WB=>MDB,  !- Name
@@ -4802,7 +4802,7 @@
 
 ! Deru and Torcellini 2007
 ! Source Energy and Emission Factors for Energy Use in Buildings
-! NREL/TP-550-38617
+! NLR/TP-550-38617
 ! source factor and Higher Heating Values from Table 5
 ! post-combustion emission factors for boiler from Table 9 (with factor of 1000 correction for natural gas)
 
