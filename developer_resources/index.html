@@ -1,0 +1,1183 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../input_file_documentation/">
+      
+      
+        <link rel="next" href="../authors/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Developer Resources - Geojson to Modelica Translator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#developer-resources" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Geojson to Modelica Translator" class="md-header__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Geojson to Modelica Translator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Developer Resources
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Geojson to Modelica Translator" class="md-nav__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Geojson to Modelica Translator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../input_file_documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input File Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-as-a-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Started as a Developer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting Started as a Developer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-new-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding New Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding New Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#couplings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Couplings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#district-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        District system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#templating-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Templating Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-templating-contexts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of Templating Contexts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Summary of Templating Contexts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coupling-component-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coupling Component Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coupling-connect-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coupling Connect Statements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Instance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-mapper-class-translator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simulation Mapper Class / Translator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-simulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Simulations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Release Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-and-release-the-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build and release the documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot Testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-as-a-developer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Started as a Developer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting Started as a Developer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-new-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding New Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding New Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#couplings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Couplings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#district-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        District system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#templating-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Templating Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-templating-contexts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary of Templating Contexts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Summary of Templating Contexts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coupling-component-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coupling Component Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coupling-connect-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coupling Connect Statements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model Instance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-mapper-class-translator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simulation Mapper Class / Translator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-simulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Simulations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Instructions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Release Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-and-release-the-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build and release the documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="developer-resources">Developer Resources</h1>
+<h2 id="tests">Tests</h2>
+<p>Tests are run with pytest, e.g.,</p>
+<pre><code class="language-bash">poetry run pytest
+</code></pre>
+<h2 id="snapshot-testing">Snapshot Testing</h2>
+<p>Some tests use <a href="https://github.com/tophat/syrupy">syrupy</a> to compare generated modelica models to saved "snapshots" of the models (saved as .ambr files).</p>
+<p>Snapshots should only be updated if we have changed how a model is generated, and we <em>know</em> the new version of the model is the correct version. To update all snapshots, you can run the following and commit the new snapshot files.</p>
+<pre><code class="language-bash">poetry run pytest --snapshot-update
+</code></pre>
+<h2 id="design-overview">Design Overview</h2>
+<p>The GMT is designed to create an arbitrary number of user-configured models attached to other user-configured models to represent a district energy system.
+GMT has "building blocks" that it uses to define and attach models, which currently include: Energy Transfer Stations (ETSs), Loads, Networks, and Plants.</p>
+<p>Each block type is a collection of models, e.g., the Loads includes time series and spawn models. A model in GMT refers to an abstracted Modelica model. It generates Modelica code (the Modelica model) and is used to define attachments to other models.</p>
+<p>Each block type can attach to other specific block types. For example, you can attach a load to an ETS, but you cannot attach a load to a network. However, some models (i.e., 5G) have an ETS embedded in them.</p>
+<p>Each block type has a corresponding directory inside of <code>geojson_modelica_translator/model_connectors</code>, which contains its different model types (e.g., for Loads it contains the Time Series model and others).</p>
+<p>Because models are different, even within a block type (e.g., different properties and maybe even ports), the GMT uses the concept of couplings for attaching models. Couplings define how two <em>specific</em> models attach in modelica.
+For example, a coupling could define how the time series load actually attaches to the heating indirect ETS.</p>
+<p>As an aside, if the GMT reached a point where all models within a block type implemented the same interface then couplings would not be necessary.</p>
+<h2 id="getting-started-as-a-developer">Getting Started as a Developer</h2>
+<p>There are a few steps that are imperative to complete when starting as a developer of the GMT. First, make sure
+to follow the detailed instructions for <a href="../getting_started/#docker-installation">Docker Installation</a> in the Getting Started guide.</p>
+<p>Follow the instructions below in order to configure your local environment:</p>
+<ul>
+<li>
+<p>Get the Modelica Buildings Library. See the documentation at <a href="../getting_started/#mbl-installation">MBL Installation</a></p>
+</li>
+<li>
+<p>Clone <a href="https://github.com/urbanopt/geojson-modelica-translator">the GMT repo</a> into a working directory</p>
+</li>
+<li>(optional/as-needed) Add Python 3 to the environment variables</li>
+<li>As general guidance, we recommend using virtual environments to avoid dependencies colliding between your Python projects. <a href="https://docs.python.org/3/library/venv.html">venv</a> is the Python native solution that will work everywhere, though other options may be more user-friendly:<ul>
+<li><a href="https://github.com/pyenv/pyenv">pyenv</a> and <a href="https://github.com/pyenv/pyenv-virtualenv">the virtualenv plugin</a> work together nicely for Linux/Mac machines</li>
+<li><a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a></li>
+<li><a href="https://docs.conda.io/projects/miniconda/en/latest/">miniconda</a></li>
+</ul>
+</li>
+<li>For developers, dependency management is through <a href="https://python-poetry.org/docs/">Poetry</a>. Poetry can be acquired by running <code>pip install poetry</code>.</li>
+<li>If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.</li>
+<li>Move to the GMT root directory and run <code>poetry install</code> to install the dependencies.</li>
+<li>Verify that everything is installed correctly by running <code>poetry run pytest -m 'not compilation and not simulation and not dymola'</code>. This will run all the unit and integration tests.</li>
+<li>Follow the instructions below to install pre-commit.</li>
+<li>To confirm that models will build and simulate, you can run</li>
+</ul>
+<pre><code class="language-bash">poetry run pytest -m 'not dymola' --cov-report term-missing --cov .
+</code></pre>
+<p>The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
+of Modelica models that are created, simulated, and persisted into the <code>tests/GMT_Lib/output</code> folder and the
+<code>tests/model_connectors/output</code> folder.</p>
+<h3 id="pre-commit">Pre-commit</h3>
+<p>This project uses <a href="https://pre-commit.com/">pre-commit</a> to ensure code consistency.
+To enable pre-commit for your local development process, run the following from the command line from within the git checkout of the
+GMT:</p>
+<pre><code class="language-bash">pre-commit install
+</code></pre>
+<p>To run pre-commit against the files without calling git commit, then run the following. This is useful when cleaning up the repo before committing. CI will fail if pre-commit hasn't been run locally.</p>
+<pre><code class="language-bash">pre-commit run --all-files
+</code></pre>
+<h2 id="adding-new-models">Adding New Models</h2>
+<p>To add a new model you have to do the following:</p>
+<ol>
+<li>
+<p>Define the model's python class: First, create a new python file and class under its respective directory in model_connectors. Follow the patterns of existing classes.</p>
+</li>
+<li>
+<p>Create coupling files: For every model that can be linked to, create a <code>&lt;ModelA&gt;_&lt;ModelB&gt;</code> directory in the couplings directory. The two files ComponentDefinitions.mopt and ConnectStatements.mopt must exist in this directory. See more information on the content of the coupling files below in the <em>Couplings</em> sections.</p>
+</li>
+<li>
+<p>Create the instance file: In the templates directory, you must define <code>&lt;ModelName&gt;_Instance.mopt</code> which is the template that instantiates the system in the district model.</p>
+</li>
+</ol>
+<p>See the notes below for more information.</p>
+<h3 id="couplings">Couplings</h3>
+<p>A coupling defines the Modelica code necessary for interfacing two specific models, e.g., a time series load and heating indirect ETS.
+Each coupling is unique in its requirements:</p>
+<ul>
+<li>What additional components are necessary, for example there might be some sensor between system A and B, or maybe B requires a pump when A is a specific model type</li>
+<li>What ports are connected, for example connecting ports of model A and model B</li>
+</ul>
+<p>Thus each coupling must define two template files, <code>ComponentDefinitions.mopt</code> and <code>ConnectStatements.mopt</code>, respectively. These files must be placed in the directory <code>couplings/templates/&lt;model A&gt;_&lt;model B&gt;/</code>.
+In general, the <strong>order of the names</strong> should <strong>follow the order of system types</strong> if you laid out the district system starting with loads on the far left and plants on the far right (e.g., load before ETS, ETS before network, network before plant).</p>
+<h3 id="district-system">District system</h3>
+<p>A district system is the model which incorporates all of the models and their couplings.</p>
+<h3 id="templating-flow">Templating Flow</h3>
+<p>When rendering the district system model file, it must:</p>
+<ol>
+<li>call to_modelica() for each model to generate its Modelica code</li>
+<li>render the coupling partial templates (ie the Modelica code required for couplings)</li>
+<li>render the model instance definition (ie the Modelica code which instantiates the model)</li>
+<li>insert the coupling partials and model instance definitions into the district Modelica file</li>
+</ol>
+<p>Refer to <a href="https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/templates/DistrictEnergySystem.mot">the district template</a> and <a href="https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/district.py">the district code</a> for reference.</p>
+<p>Each templating step has access to a particular set of variables, which is defined below.</p>
+<h2 id="summary-of-templating-contexts">Summary of Templating Contexts</h2>
+<h3 id="model-definition">Model Definition</h3>
+<p>Each model generates one or more Modelica files to define its model. The templating context is implementation dependent, so refer to its <code>to_modelica()</code> method.</p>
+<h3 id="coupling-component-definitions">Coupling Component Definitions</h3>
+<p>This is the template which defines new components/variables necessary for a coupling. More specifically, these are the partial template files at <code>model_connectors/couplings/templates/&lt;coupling name&gt;/ComponentDefinitions.mopt</code>. These templates have access to:</p>
+<ul>
+<li><code>globals</code>: global variables (those defined in the district.py, such as medium_w = MediumW)</li>
+<li><code>coupling</code>: contains the coupling id, as well as references to the coupled models under their respective types (e.g., coupling.load.id or coupling.network.id). You should append <code>coupling.id</code> to any variable identifiers to prevent name collisions. For example, instead of just writing <code>parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal</code> you should do <code>parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal_{{ coupling.id }}</code> as well as any place where you would reference that variable.</li>
+<li><code>graph</code>: an instance of the CouplingGraph class, where all couplings are located. It can provide useful methods for accessing couplings throughout the entire system. Refer to the python class to see what it can do.</li>
+<li><code>sys_params</code>: an object containing data from the system parameters file</li>
+<li><code>district_system</code>: contains the data from the district_system portion of the system parameters file</li>
+<li><code>building</code>: if the coupling includes a load, this object will be included as well -- if there's no as part of the coupling this object will NOT be present. It contains the building-specific system parameters pulled from the system parameters JSON file.</li>
+</ul>
+<h3 id="coupling-connect-statements">Coupling Connect Statements</h3>
+<p>This is the template which defines connect statements to be inserted into the equation section. More specifically, these are the partial template files at <code>model_connectors/couplings/templates/&lt;coupling name&gt;/ConnectStatements.mopt</code>. These templates have access to:</p>
+<ul>
+<li><code>globals</code>: same as Coupling Component Definitions context</li>
+<li><code>coupling</code>: same as Coupling Component Definitions context. Just like with the component definitions template, you should use the coupling.id to avoid variable name collisions.</li>
+<li><code>graph</code>: same as Coupling Component Definitions context</li>
+<li><code>sys_params</code>: same as Coupling Component Definitions context</li>
+</ul>
+<h3 id="model-instance">Model Instance</h3>
+<p>This template is used to declare a model instance.</p>
+<ul>
+<li><code>globals</code></li>
+<li><code>graph</code></li>
+<li><code>couplings</code>: contains each coupling the model is associated with. For example, if our ETS was coupled to a load and network, couplings would look like <code>{ load_couplings: [&lt;load coupling&gt;], network_couplings: [&lt;network coupling&gt;] }</code>. This can be used to access coupling and model ids.</li>
+<li><code>model</code>: contains info about the model instance, including <code>modelica_type</code> and <code>id</code>. These should be used to define the model, for example <code>{{ model.modelica_type }} {{ model.id }}(...)</code></li>
+<li><code>sys_params</code>: same as Coupling Component Definitions context</li>
+</ul>
+<h2 id="simulation-mapper-class-translator">Simulation Mapper Class / Translator</h2>
+<p>The Simulation Mapper Class can operate at multiple levels:</p>
+<ol>
+<li>The GeoJSON level -- input: geojson, output: geojson+</li>
+<li>The Load Model Attachment -- input: geojson+, output: multiple files related to building load models (spawn, rom, csv)</li>
+<li>The Translation to Modelica -- input: custom format, output: .mo (example inputs: geojson+, system design parameters). The translators are implicit to the load model connectors as each load model requires different parameters to calculate the loads.</li>
+</ol>
+<p>In some cases, the Level 3 case (translation to Modelica) is a blackbox method (e.g., TEASER) which prevents a
+simulation mapper class from existing at that level.</p>
+<h2 id="running-simulations">Running Simulations</h2>
+<p>The GeoJSON to Modelica Translator contains a <code>ModelicaRunner.run_in_docker(...)</code> method. This is useful for running Modelica simulations via Python and Docker using OpenModelica. This package's test suite also uses <code>ModelicaRunner</code> to run our test models with OpenModelica.</p>
+<h2 id="release-instructions">Release Instructions</h2>
+<ol>
+<li>Create a branch named <code>Release 0.x.</code></li>
+<li>Update version in <code>pyproject.toml</code></li>
+<li>Update CHANGELOG using GitHub's "Autogenerate Change Log" feature, using <code>develop</code> as the target</li>
+<li>After tests pass, merge branch into develop</li>
+<li>From local command line, merge develop into main with: <code>git checkout main; git pull; git merge --ff-only origin develop; git push</code></li>
+<li>In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.</li>
+</ol>
+<h3 id="build-and-release-the-documentation">Build and release the documentation</h3>
+<p>During development we can <a href="https://squidfunk.github.io/mkdocs-material/creating-your-site/#previewing-as-you-write">serve docs locally</a> and view updates as they are made.</p>
+<ol>
+<li>Start a documentation update branch: <code>git switch -c &lt;branch_name&gt;</code></li>
+<li><code>poetry run mkdocs serve</code></li>
+<li>
+<p>Point browser to <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a></p>
+</li>
+<li>
+<p>To deploy, push a commit in the <code>docs</code> folder to the <code>main</code> branch</p>
+</li>
+<li>Wait a few minutes, then verify the new documentation on the <a href="https://docs.urbanopt.net/geojson-modelica-translator/">docs website</a></li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

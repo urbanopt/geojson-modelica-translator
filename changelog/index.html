@@ -1,0 +1,2139 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../authors/">
+      
+      
+        <link rel="next" href="../license/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Change Log - Geojson to Modelica Translator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#change-log" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Geojson to Modelica Translator" class="md-header__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Geojson to Modelica Translator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Change Log
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Geojson to Modelica Translator" class="md-nav__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Geojson to Modelica Translator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../input_file_documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input File Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer_resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Log
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#version-0130" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.13.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Changed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s Changed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#improvements-bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improvements &amp; Bug Fixes 🐛
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes 🐞
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Updates 📦
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance 🧹
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.12.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.12.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0110" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.11.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.11.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.10.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.10.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-093" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.9.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-092" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.9.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-091" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-090" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.9.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.8.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.8.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-070" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.7.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.7.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-060" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.6.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.6.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.5.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.5.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Contributors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-041" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.4.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.4.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#whats-changed_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What\'s Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.4.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.4.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-030" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.3.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-022" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#version-0130" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.13.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Changed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s Changed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#improvements-bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Improvements &amp; Bug Fixes 🐛
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bug Fixes 🐞
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Updates 📦
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance 🧹
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.12.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.12.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0110" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.11.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.11.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-0100" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.10.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.10.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-093" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.3
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.9.3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-092" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.9.2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-091" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-090" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.9.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.9.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-080" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.8.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.8.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-070" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.7.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.7.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-060" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.6.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.6.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-050" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.5.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.5.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New Contributors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-041" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.4.1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.4.1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#whats-changed_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What\'s Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.4.0
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Version 0.4.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exciting-new-features_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exciting New Features 🎉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-changes_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-030" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.3.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-022" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.2.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version 0.1.0
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="change-log">Change Log</h1>
+<h2 id="version-0130">Version 0.13.0</h2>
+<h2 id="whats-changed">What's Changed</h2>
+<h3 id="exciting-new-features">Exciting New Features 🎉</h3>
+<ul>
+<li>Use dynamic scaffolding, deprecate most PackageParser instances by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/785">https://github.com/urbanopt/geojson-modelica-translator/pull/785</a></li>
+<li>Add 5G Heat Pump Trio to GMT_Lib template by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/787">https://github.com/urbanopt/geojson-modelica-translator/pull/787</a></li>
+</ul>
+<h3 id="improvements-bug-fixes">Improvements &amp; Bug Fixes 🐛</h3>
+<ul>
+<li>Support docker_image argument in OM Runner by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/772">https://github.com/urbanopt/geojson-modelica-translator/pull/772</a></li>
+<li>adds more robust result processing for GHP by @tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/775">https://github.com/urbanopt/geojson-modelica-translator/pull/775</a></li>
+<li>Update fluid concentration to be a fractional percent by @kflemin in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/784">https://github.com/urbanopt/geojson-modelica-translator/pull/784</a></li>
+<li>Add undisturbed soil temp validation by @kflemin in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/796">https://github.com/urbanopt/geojson-modelica-translator/pull/796</a></li>
+<li>Improve HeatPumpTrio ETS robustness by @JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/802">https://github.com/urbanopt/geojson-modelica-translator/pull/802</a></li>
+</ul>
+<h3 id="bug-fixes">Bug Fixes 🐞</h3>
+<ul>
+<li>Downgrade click to support python 3.9 by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/770">https://github.com/urbanopt/geojson-modelica-translator/pull/770</a></li>
+<li>Update result processing library for GHPs by @tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/742">https://github.com/urbanopt/geojson-modelica-translator/pull/742</a></li>
+<li>Update method of counting number of buildings for 5G systems by @kflemin in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/808">https://github.com/urbanopt/geojson-modelica-translator/pull/808</a></li>
+</ul>
+<h3 id="dependency-updates">Dependency Updates 📦</h3>
+<ul>
+<li>ci: bump the actions-deps group with 2 updates by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/765">https://github.com/urbanopt/geojson-modelica-translator/pull/765</a></li>
+<li>deps: bump the dev-deps group across 1 directory with 3 updates by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/768">https://github.com/urbanopt/geojson-modelica-translator/pull/768</a></li>
+<li>deps: bump the prod-deps group across 1 directory with 2 updates by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/769">https://github.com/urbanopt/geojson-modelica-translator/pull/769</a></li>
+<li>deps: bump rpds-py from 0.28.0 to 0.29.0 in the dev-deps group by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/773">https://github.com/urbanopt/geojson-modelica-translator/pull/773</a></li>
+<li>deps: bump pre-commit from 4.4.0 to 4.5.0 in the dev-deps group by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/776">https://github.com/urbanopt/geojson-modelica-translator/pull/776</a></li>
+<li>ci: bump actions/checkout from 5 to 6 in the actions-deps group by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/778">https://github.com/urbanopt/geojson-modelica-translator/pull/778</a></li>
+<li>deps: bump the dev-deps group with 2 updates by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/779">https://github.com/urbanopt/geojson-modelica-translator/pull/779</a></li>
+<li>deps: bump mkdocstrings-python from 1.19.0 to 2.0.1 in the prod-deps group across 1 directory by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/782">https://github.com/urbanopt/geojson-modelica-translator/pull/782</a></li>
+<li>ci: bump the actions-deps group with 2 updates by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/792">https://github.com/urbanopt/geojson-modelica-translator/pull/792</a></li>
+<li>deps: bump the prod-deps group across 1 directory with 3 updates by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/798">https://github.com/urbanopt/geojson-modelica-translator/pull/798</a></li>
+<li>Bump syrupy from 5.0.0 to 5.1.0 in the dev-deps group by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/805">https://github.com/urbanopt/geojson-modelica-translator/pull/805</a></li>
+<li>Update modelica builder version and precommit by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/804">https://github.com/urbanopt/geojson-modelica-translator/pull/804</a></li>
+</ul>
+<h3 id="maintenance">Maintenance 🧹</h3>
+<ul>
+<li>Update changelog formatting by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/806">https://github.com/urbanopt/geojson-modelica-translator/pull/806</a></li>
+<li>Bump actions/github-script from 7 to 8 in the actions-deps group by @dependabot[bot] in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/807">https://github.com/urbanopt/geojson-modelica-translator/pull/807</a></li>
+<li>Add check to run documenation build on every commit by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/810">https://github.com/urbanopt/geojson-modelica-translator/pull/810</a></li>
+</ul>
+<h3 id="other-changes">Other Changes</h3>
+<ul>
+<li>Fix param schema for docs site by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/762">https://github.com/urbanopt/geojson-modelica-translator/pull/762</a></li>
+<li>Update copyright and names by @kflemin in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/809">https://github.com/urbanopt/geojson-modelica-translator/pull/809</a></li>
+</ul>
+<h2 id="version-0120">Version 0.12.0</h2>
+<h3 id="exciting-new-features_1">Exciting New Features 🎉</h3>
+<ul>
+<li>Upgrade OpenModelica and MBL versions by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/738">https://github.com/urbanopt/geojson-modelica-translator/pull/738</a></li>
+<li>Improve schema validation messages by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/749">https://github.com/urbanopt/geojson-modelica-translator/pull/749</a></li>
+<li>Support multiple waste heat sources at random locations in the district loop by @JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/731">https://github.com/urbanopt/geojson-modelica-translator/pull/731</a></li>
+</ul>
+<h3 id="other-changes_1">Other Changes</h3>
+<ul>
+<li>Schema fixes for ThermalNetwork by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/753">https://github.com/urbanopt/geojson-modelica-translator/pull/753</a></li>
+</ul>
+<h2 id="version-0110">Version 0.11.0</h2>
+<h3 id="exciting-new-features_2">Exciting New Features 🎉</h3>
+<ul>
+<li>New model templates for waste heat recovery by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/702">https://github.com/urbanopt/geojson-modelica-translator/pull/702</a></li>
+<li>Improve sys-param schema for borefields by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/715">https://github.com/urbanopt/geojson-modelica-translator/pull/715</a></li>
+</ul>
+<h2 id="version-0100">Version 0.10.0</h2>
+<h3 id="exciting-new-features_3">Exciting New Features 🎉</h3>
+<ul>
+<li>Expose skipping weather download by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/706">https://github.com/urbanopt/geojson-modelica-translator/pull/706</a></li>
+<li>Enable selecting output variables from Modelica simulation by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/707">https://github.com/urbanopt/geojson-modelica-translator/pull/707</a></li>
+<li>Add capability to pass Modelica flags to the GMT CLI by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/709">https://github.com/urbanopt/geojson-modelica-translator/pull/709</a></li>
+<li>More params by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/703">https://github.com/urbanopt/geojson-modelica-translator/pull/703</a></li>
+<li>Add autosizing flags to sys-param values that may be autosized by TN/GHED by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/708">https://github.com/urbanopt/geojson-modelica-translator/pull/708</a></li>
+<li>Add new heat pump ETS to 5G loads by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/710">https://github.com/urbanopt/geojson-modelica-translator/pull/710</a></li>
+<li>Require autosize flags in sys-param files by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/712">https://github.com/urbanopt/geojson-modelica-translator/pull/712</a></li>
+</ul>
+<h2 id="version-093">Version 0.9.3</h2>
+<h3 id="exciting-new-features_4">Exciting New Features 🎉</h3>
+<ul>
+<li>Add horizontal pipe pressure drop to sys-params by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/700">https://github.com/urbanopt/geojson-modelica-translator/pull/700</a></li>
+</ul>
+<h3 id="other-changes_2">Other Changes</h3>
+<ul>
+<li>Expand capability of geojson class by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/694">https://github.com/urbanopt/geojson-modelica-translator/pull/694</a></li>
+<li>Cleanup Lingering RST Doc Extensions by @mitchute in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/701">https://github.com/urbanopt/geojson-modelica-translator/pull/701</a></li>
+</ul>
+<h2 id="version-092">Version 0.9.2</h2>
+<h3 id="exciting-new-features_5">Exciting New Features 🎉</h3>
+<ul>
+<li>Change thermal connectors to be measured in meters by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/697">https://github.com/urbanopt/geojson-modelica-translator/pull/697</a></li>
+</ul>
+<h3 id="other-changes_3">Other Changes</h3>
+<ul>
+<li>Clean up matching district generation types by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/690">https://github.com/urbanopt/geojson-modelica-translator/pull/690</a></li>
+<li>Handle all-caps soil-temp stations, like Frankfurt by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/689">https://github.com/urbanopt/geojson-modelica-translator/pull/689</a></li>
+<li>Remove <code>is_ghe_start_loop</code> from test geojson files by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/688">https://github.com/urbanopt/geojson-modelica-translator/pull/688</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.9.1...v0.9.2">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.9.1...v0.9.2</a></p>
+<h2 id="version-091">Version 0.9.1</h2>
+<ul>
+<li>Fix incorrect link to documentation site by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/684">https://github.com/urbanopt/geojson-modelica-translator/pull/684</a></li>
+<li>Use pre-made GHA workflow to publish docs by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/685">https://github.com/urbanopt/geojson-modelica-translator/pull/685</a></li>
+</ul>
+<h2 id="version-090">Version 0.9.0</h2>
+<h3 id="exciting-new-features_6">Exciting New Features 🎉</h3>
+<ul>
+<li>Upgrade OpenModelica &amp; MBL by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/641">https://github.com/urbanopt/geojson-modelica-translator/pull/641</a></li>
+<li>Support Python 3.13 by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/676">https://github.com/urbanopt/geojson-modelica-translator/pull/676</a></li>
+</ul>
+<h3 id="other-changes_4">Other Changes</h3>
+<ul>
+<li>Putting GHEs downstream of the buildings by @JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/677">https://github.com/urbanopt/geojson-modelica-translator/pull/677</a></li>
+<li>Order horizontal piping correctly between buildings by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/679">https://github.com/urbanopt/geojson-modelica-translator/pull/679</a></li>
+<li>Allow skipping GeoJSON validation by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/681">https://github.com/urbanopt/geojson-modelica-translator/pull/681</a></li>
+<li>Switch to MkDocs by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/664">https://github.com/urbanopt/geojson-modelica-translator/pull/664</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.8.0...v0.9.0">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.8.0...v0.9.0</a></p>
+<h2 id="version-080">Version 0.8.0</h2>
+<h3 id="exciting-new-features_7">Exciting New Features 🎉</h3>
+<ul>
+<li>Add default cop values for 5G district heat pump efficiencies by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/640">https://github.com/urbanopt/geojson-modelica-translator/pull/640</a></li>
+<li>Support international weather locations by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/654">https://github.com/urbanopt/geojson-modelica-translator/pull/654</a></li>
+<li>Support multiple GHEs in a single district by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/644">https://github.com/urbanopt/geojson-modelica-translator/pull/644</a></li>
+<li>Adds method to process modelica results by @tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/646">https://github.com/urbanopt/geojson-modelica-translator/pull/646</a></li>
+<li>Simplify sys params to closer match reality by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/659">https://github.com/urbanopt/geojson-modelica-translator/pull/659</a></li>
+<li>Templates and tests for horizontal piping modeling by @JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/627">https://github.com/urbanopt/geojson-modelica-translator/pull/627</a></li>
+<li>Support single building DES templates by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/670">https://github.com/urbanopt/geojson-modelica-translator/pull/670</a></li>
+</ul>
+<h3 id="other-changes_5">Other Changes</h3>
+<ul>
+<li>Improve cli typing &amp; validation by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/662">https://github.com/urbanopt/geojson-modelica-translator/pull/662</a></li>
+<li>Add detail to Docker setup docs for Windows users by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/643">https://github.com/urbanopt/geojson-modelica-translator/pull/643</a></li>
+<li>Use the correct ETS heat pump COP by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/642">https://github.com/urbanopt/geojson-modelica-translator/pull/642</a></li>
+<li>Use feature ids in load names instead of simple_uuid by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/652">https://github.com/urbanopt/geojson-modelica-translator/pull/652</a></li>
+<li>Remove alfalfa from conftest.py by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/665">https://github.com/urbanopt/geojson-modelica-translator/pull/665</a></li>
+<li>Update version of Jinja by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/667">https://github.com/urbanopt/geojson-modelica-translator/pull/667</a></li>
+<li>Clean up sys-param code that reads parameters by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/668">https://github.com/urbanopt/geojson-modelica-translator/pull/668</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.7.0...v0.8.0">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.7.0...v0.8.0</a></p>
+<h2 id="version-070">Version 0.7.0</h2>
+<h3 id="exciting-new-features_8">Exciting New Features 🎉</h3>
+<ul>
+<li>Rename new modelica models to clarify MBL version by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/618">https://github.com/urbanopt/geojson-modelica-translator/pull/618</a></li>
+<li>Minor improvements to the CLI by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/620">https://github.com/urbanopt/geojson-modelica-translator/pull/620</a></li>
+<li>Enable more detail when specifying district types by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/622">https://github.com/urbanopt/geojson-modelica-translator/pull/622</a></li>
+<li>Force a dummy value for SHW in modelica loads even if not present by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/626">https://github.com/urbanopt/geojson-modelica-translator/pull/626</a></li>
+</ul>
+<h3 id="other-changes_6">Other Changes</h3>
+<ul>
+<li>Move README and CHANGELOG to markdown and update deployment notes by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/615">https://github.com/urbanopt/geojson-modelica-translator/pull/615</a></li>
+<li>Update instructions for releasing documentation publicly by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/617">https://github.com/urbanopt/geojson-modelica-translator/pull/617</a></li>
+<li>Specify units of GHE flow_rate by @vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/623">https://github.com/urbanopt/geojson-modelica-translator/pull/623</a></li>
+<li>Code documentation cleanup by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/631">https://github.com/urbanopt/geojson-modelica-translator/pull/631</a></li>
+<li>Expose borehole variables by @nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/630">https://github.com/urbanopt/geojson-modelica-translator/pull/630</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0...v0.7.0">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.6.0...v0.7.0</a></p>
+<h2 id="version-060">Version 0.6.0</h2>
+<h3 id="exciting-new-features_9">Exciting New Features 🎉</h3>
+<ul>
+<li>Python 311 by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/518">https://github.com/urbanopt/geojson-modelica-translator/pull/518</a></li>
+<li>add max_electrical_load to building sys-param data by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/530">https://github.com/urbanopt/geojson-modelica-translator/pull/530</a></li>
+<li>Modifications for GHE by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></li>
+<li>Add Level 1 5G DES system by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/539">https://github.com/urbanopt/geojson-modelica-translator/pull/539</a></li>
+<li>Set SWH peak to 1/10th of space heating or min 5000W by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/542">https://github.com/urbanopt/geojson-modelica-translator/pull/542</a></li>
+<li>Added GHE templates - Issue511 by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/533">https://github.com/urbanopt/geojson-modelica-translator/pull/533</a></li>
+<li>Add MOS file wrapper and size the 5G mass flow rate by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/548">https://github.com/urbanopt/geojson-modelica-translator/pull/548</a></li>
+<li>Add OpenModelica compatibility by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/516">https://github.com/urbanopt/geojson-modelica-translator/pull/516</a></li>
+<li>Modify GHE params by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/537">https://github.com/urbanopt/geojson-modelica-translator/pull/537</a></li>
+<li>Fixing borefield test breaks due to schema changes by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/550">https://github.com/urbanopt/geojson-modelica-translator/pull/550</a></li>
+<li>Updating GHE Parameters: Modifying GHE Parameters schema and example files by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/551">https://github.com/urbanopt/geojson-modelica-translator/pull/551</a></li>
+<li>Enable compile &amp; simulate with OpenModelica in Docker by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/545">https://github.com/urbanopt/geojson-modelica-translator/pull/545</a></li>
+<li>Enhance and expand microgrid templates and code by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/549">https://github.com/urbanopt/geojson-modelica-translator/pull/549</a></li>
+<li>Enable numberOfIntervals run option by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/562">https://github.com/urbanopt/geojson-modelica-translator/pull/562</a></li>
+<li>Breakout package parser class by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/566">https://github.com/urbanopt/geojson-modelica-translator/pull/566</a></li>
+<li>Add a new GHE district test with new network template models by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/561">https://github.com/urbanopt/geojson-modelica-translator/pull/561</a></li>
+<li>Add GHE Properties to System Parameter File by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/570">https://github.com/urbanopt/geojson-modelica-translator/pull/570</a></li>
+<li>Use <code>filNam</code> parameter for TEASER loads and add within parsing to PackageParser by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/574">https://github.com/urbanopt/geojson-modelica-translator/pull/574</a></li>
+<li>Add new <code>ModelicaProject</code> class by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/575">https://github.com/urbanopt/geojson-modelica-translator/pull/575</a></li>
+<li>Add Dymola runner by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/577">https://github.com/urbanopt/geojson-modelica-translator/pull/577</a></li>
+<li>Template initial microgrid subsystem example by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/569">https://github.com/urbanopt/geojson-modelica-translator/pull/569</a></li>
+<li>Microgrid heating by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/586">https://github.com/urbanopt/geojson-modelica-translator/pull/586</a></li>
+<li>Change how ModelicaPaths are built so they also work on Windows computers by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/590">https://github.com/urbanopt/geojson-modelica-translator/pull/590</a></li>
+<li>Refactoring and enhancing to support multiple GHEs in a single district by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/601">https://github.com/urbanopt/geojson-modelica-translator/pull/601</a></li>
+<li>Replace shell script with call directly to docker by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/607">https://github.com/urbanopt/geojson-modelica-translator/pull/607</a></li>
+<li>Implement a PyPI release workflow by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/603">https://github.com/urbanopt/geojson-modelica-translator/pull/603</a></li>
+<li>Support Python 3.12 by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/593">https://github.com/urbanopt/geojson-modelica-translator/pull/593</a></li>
+<li>Add district nominal pump head to system parameters file by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/610">https://github.com/urbanopt/geojson-modelica-translator/pull/610</a></li>
+</ul>
+<h3 id="other-changes_7">Other Changes</h3>
+<ul>
+<li>specify ports for each time series building in instance template by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/525">https://github.com/urbanopt/geojson-modelica-translator/pull/525</a></li>
+<li>Update license language by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/529">https://github.com/urbanopt/geojson-modelica-translator/pull/529</a></li>
+<li>Read correct data from sys-param for microgrid electrical load by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/560">https://github.com/urbanopt/geojson-modelica-translator/pull/560</a></li>
+<li>Prep for prerelease 0.6.0 by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/578">https://github.com/urbanopt/geojson-modelica-translator/pull/578</a></li>
+<li>initialize empty variable before potential use by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/579">https://github.com/urbanopt/geojson-modelica-translator/pull/579</a></li>
+<li>Include 5G partial model in generation by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/580">https://github.com/urbanopt/geojson-modelica-translator/pull/580</a></li>
+<li>Allow skipping of specific files when cloning a modelica project by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/584">https://github.com/urbanopt/geojson-modelica-translator/pull/584</a></li>
+<li>Add a quick fix for reading gfunction.csv from ghe_id subfolder by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/589">https://github.com/urbanopt/geojson-modelica-translator/pull/589</a></li>
+<li>Move modelica methods from GMT to modelica-builder by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/591">https://github.com/urbanopt/geojson-modelica-translator/pull/591</a></li>
+<li>Add model for controlled distribution loop mass flow rate by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/594">https://github.com/urbanopt/geojson-modelica-translator/pull/594</a></li>
+<li>Allow user to specify Modelica load filename by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/599">https://github.com/urbanopt/geojson-modelica-translator/pull/599</a></li>
+<li>Decouple gain for distribution and ghx mass flow rates by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/600">https://github.com/urbanopt/geojson-modelica-translator/pull/600</a></li>
+<li>Closed-loop changes to existing test_single_ghe test by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/597">https://github.com/urbanopt/geojson-modelica-translator/pull/597</a></li>
+<li>Update documentation for version 0.6.0 by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/592">https://github.com/urbanopt/geojson-modelica-translator/pull/592</a></li>
+<li>Use Ubuntu 20 and fix CHP model by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/611">https://github.com/urbanopt/geojson-modelica-translator/pull/611</a></li>
+</ul>
+<p><strong>Full Changelog</strong>:
+<a href="https://github.com/urbanopt/geojson-modelica-translator/compare/v0.5.0...v0.6.0">https://github.com/urbanopt/geojson-modelica-translator/compare/v0.5.0...v0.6.0</a></p>
+<h2 id="version-050">Version 0.5.0</h2>
+<h3 id="exciting-new-features_10">Exciting New Features 🎉</h3>
+<ul>
+<li>Python 3.11 support by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/518">https://github.com/urbanopt/geojson-modelica-translator/pull/518</a></li>
+<li>Add max_electrical_load to building sys-param data by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/530">https://github.com/urbanopt/geojson-modelica-translator/pull/530</a></li>
+<li>Modifications for GHE by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></li>
+<li>Add Level 1 - 5G DES system by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/539">https://github.com/urbanopt/geojson-modelica-translator/pull/539</a></li>
+<li>Set SWH peak to 1/10th of space heating or min 5000W by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/542">https://github.com/urbanopt/geojson-modelica-translator/pull/542</a></li>
+<li>Added GHE templates by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/533">https://github.com/urbanopt/geojson-modelica-translator/pull/533</a></li>
+<li>Add OpenModelica compatibility by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/516">https://github.com/urbanopt/geojson-modelica-translator/pull/516</a></li>
+<li>Modify GHE params by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/537">https://github.com/urbanopt/geojson-modelica-translator/pull/537</a></li>
+<li>Enable compile &amp; simulate with OpenModelica in Docker by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/545">https://github.com/urbanopt/geojson-modelica-translator/pull/545</a></li>
+</ul>
+<h3 id="other-changes_8">Other Changes</h3>
+<ul>
+<li>Specify ports for each time series building in instance template by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/525">https://github.com/urbanopt/geojson-modelica-translator/pull/525</a></li>
+<li>Update license language by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/529">https://github.com/urbanopt/geojson-modelica-translator/pull/529</a></li>
+<li>Add MOS file wrapper and size the 5G mass flow rate by \@nllong in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/548">https://github.com/urbanopt/geojson-modelica-translator/pull/548</a></li>
+<li>Fixing borefield test breaks due to schema changes by \@JingWang-CUB in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/550">https://github.com/urbanopt/geojson-modelica-translator/pull/550</a></li>
+<li>Updating GHE Parameters: Modifying GHE Parameters schema and example files by \@tanushree04 in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/551">https://github.com/urbanopt/geojson-modelica-translator/pull/551</a></li>
+<li>Enhance and expand microgrid templates and code by \@vtnate in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/549">https://github.com/urbanopt/geojson-modelica-translator/pull/549</a></li>
+</ul>
+<h3 id="new-contributors">New Contributors</h3>
+<ul>
+<li>\@tanushree04 made their first contribution in <a href="https://github.com/urbanopt/geojson-modelica-translator/pull/526">https://github.com/urbanopt/geojson-modelica-translator/pull/526</a></li>
+</ul>
+<p><strong>Full Changelog</strong>:
+<a href="https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1...v0.5.0">https://github.com/urbanopt/geojson-modelica-translator/compare/0.4.1...v0.5.0</a></p>
+<h2 id="version-041">Version 0.4.1</h2>
+<h3 id="whats-changed_1">What\'s Changed</h3>
+<ul>
+<li>Cli bug fixes</li>
+<li>Detailed models</li>
+<li>End-of-year updates to GMT docs</li>
+<li>Remove support for 3.7 in development, update development dependencies</li>
+<li>Update copyrights to 2023</li>
+</ul>
+<h2 id="version-040">Version 0.4.0</h2>
+<p>As of version 0.4.0 changes will be published using Github automated formatting at the release itself. Those changes are copied here.</p>
+<h3 id="exciting-new-features_11">Exciting New Features 🎉</h3>
+<ul>
+<li>Redeclare the teaser model to use buildings.media.air medium</li>
+<li>Fmu runner</li>
+<li>Spawn docker named args</li>
+<li>Compile &amp; run with Spawn &amp; Optima</li>
+<li>Microgrid lines</li>
+<li>Add 5G to System Parameters file</li>
+<li>Weather file at top level</li>
+<li>Test with 3.10</li>
+<li>4G or 5G timeseries in Dymola</li>
+</ul>
+<h3 id="other-changes_9">Other Changes</h3>
+<ul>
+<li>Breakout run in docker command</li>
+<li>Better error message if modelica timeseries files from sdk are not found</li>
+<li>Break out build and simulate tests</li>
+<li>Use Modelica Buildings Library (MBL) v9.0.0</li>
+<li>Point tests to latest mbl release</li>
+<li>Cli less brittle</li>
+<li>Run compilation tasks on CI using spawn Modelica and Optimica</li>
+<li>Update schema.json</li>
+</ul>
+<h2 id="version-030">Version 0.3.0</h2>
+<ul>
+<li>Use MBL v9 (current master branch) for all models. Note that JModelica no longer works with this version. User must now use either Dymola or Optimica. A new solution is forthcoming.</li>
+<li>Update unit tests to break out building the tests and running the tests.</li>
+</ul>
+<h2 id="version-023">Version 0.2.3</h2>
+<ul>
+<li>Add GMT Lib methods for Level 1 translation of Modelica-templated objects (for microgrid).</li>
+<li>Use MBL v9 (current master branch) for GMT Lib. The DES models still require the usage of the <code>issue2204_gmt_mbl</code> branch.</li>
+<li>Updated Jinja and Sphinx dependencies. Jinja is now a required dependency (no longer a testing dependency).</li>
+<li>Fix bug in CLI where commands only work in Unix-like operating systems, not Windows</li>
+<li>Fix bug in TEASER model for four-element RC models.</li>
+<li>Fix bug in TEASER infinite heating/cooling coupling template.</li>
+</ul>
+<h2 id="version-022">Version 0.2.2</h2>
+<ul>
+<li>Fix bug in CLI which required the user to be in a specific directory to run. Updated CLI is more flexible.</li>
+<li>Update documentation.</li>
+</ul>
+<h2 id="version-021">Version 0.2.1</h2>
+<ul>
+<li>New command line interface (CLI) for scaffolding project using results of URBANopt SDK\'s OpenStudio results</li>
+<li>New script for converting CSV file into Modelica mos file.</li>
+<li>Cleanup of System Parameter Schema including renaming elements, adding definitions, and adding units</li>
+<li>Redesign the couplings and remove redundant model connector files</li>
+<li>Promote DES configuration variables to be accessible in the System Parameter file</li>
+<li>Extended flexibility of setting parameter values programmatically for Teaser, TimeSeries, and Spawn building load models models</li>
+<li>Upgrade to TEASER 0.7.5</li>
+<li>Upgrade to MBL 2.1.0</li>
+<li>Migrate to Poetry for development</li>
+<li>Add regression testing to full district energy system</li>
+<li>Auto-layout of templated components. This is a work in progress and  the next version will include \"pooling\" of components.</li>
+</ul>
+<h2 id="version-020">Version 0.2.0</h2>
+<ul>
+<li>Add ETS data for indirect cooling to system parameters schema</li>
+<li>Add district system example</li>
+<li>Add time series model using mass flow rates and temperatures</li>
+<li>Add district heating (1GDH and 4GDH) and heating indirect ETS</li>
+<li>Add district cooling (4GDC) and cooling indirect ETS</li>
+<li>Add distribution network</li>
+<li>Update scaffolding to allow for mixed models</li>
+<li>Create initial documentation</li>
+</ul>
+<h2 id="version-010">Version 0.1.0</h2>
+<p>This is the initial release of the package and includes the following
+functionality:</p>
+<ul>
+<li>Initial implementation of a ModelicaRunner to call a Docker container to run the model.</li>
+<li>Create an RC model using Modelica 3.2.x, Modelica Buildings Library 7.0 and TEASER 0.7.2.</li>
+<li>Create a Spawn-based models which loads an IDF file.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
