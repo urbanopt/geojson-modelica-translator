@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from geojson_modelica_translator.external_package_utils import load_loop_order
+from geojson_modelica_translator.external_package_utils import load_loop_order, set_loop_order_data_in_template_params
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
@@ -140,6 +140,111 @@ class DistrictWasteHeat(TestCaseBase):
     def test_build_waste_heat_district(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
+
+    def test_pipe_length_order_matches_loop_order(self):
+        """Test that pipe length order matches the loop order determined by set_loop_order_data_in_template_params"""
+        # Recreate the template logic since common_template_params is not stored as an instance variable
+
+        # Load the same loop order used in setUp
+        sys_param_filename = Path(self.data_dir) / "waste_heat_demo" / "sys_params_waste_heat.json"
+        loop_order = load_loop_order(sys_param_filename)
+
+        # Get feature properties from the GeoJSON
+        feature_properties = self.gj.get_feature("$.features.[*].properties")
+
+        # Create template params dict like in District.to_modelica
+        template_params = {"globals": {}}
+
+        # Apply the loop order logic
+        template_params = set_loop_order_data_in_template_params(template_params, feature_properties, loop_order)
+
+        # Verify loop order data exists
+        assert "loop_order" in template_params
+        assert "data" in template_params["loop_order"]
+
+        # Expected order based on the _loop_order.json file:
+        # Loop 1: ["5e70728382654958adbcaef19f2afc97", "abcdefghijklmnopqrstuvwx",
+        # "59fb78a8-2975-4331-b94d-460258d9b0a9"]
+        # Loop 2: ["5a6b99ec37f4de7f94020090", "0b575a8f-97d1-47e6-b329-7ef7566d26f2"]
+
+        # Expected pipe lengths based on startFeatureId -> total_length mapping:
+        # "5e70728382654958adbcaef19f2afc97": 38
+        # "abcdefghijklmnopqrstuvwx": 72
+        # "59fb78a8-2975-4331-b94d-460258d9b0a9": 74
+        # "5a6b99ec37f4de7f94020090": 44
+        # "0b575a8f-97d1-47e6-b329-7ef7566d26f2": 68 (should be lEnd)
+
+        expected_ldis = "{38, 72, 74, 44}"
+        expected_lend = 68
+
+        # Verify the pipe lengths are ordered correctly
+        assert template_params["globals"]["lDis"] == expected_ldis
+        assert template_params["globals"]["lEnd"] == expected_lend
+
+        # Also verify the loop order data structure
+        loop_order_data = template_params["loop_order"]["data"]
+        assert len(loop_order_data) == 2  # Two loops
+
+        # Verify that the generated DistrictEnergySystem.mo file contains the correct pipe lengths
+        district_mo_file = Path(self.district._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+        assert district_mo_file.exists(), "DistrictEnergySystem.mo file should exist"
+
+        mo_content = district_mo_file.read_text()
+        assert "lDis={38, 72, 74, 44}," in mo_content, "lDis should contain the expected pipe lengths in correct order"
+        assert "lEnd=68" in mo_content, "lEnd should contain the expected final pipe length"
+
+    def test_pipe_length_order_changes_with_loop_order(self):
+        """Test that changing loop order also changes pipe length order"""
+
+        # Get the original loop order for comparison
+        sys_param_filename = Path(self.data_dir) / "waste_heat_demo" / "sys_params_waste_heat.json"
+        original_loop_order = load_loop_order(sys_param_filename)
+
+        # Get feature properties from the GeoJSON
+        feature_properties = self.gj.get_feature("$.features.[*].properties")
+
+        # Test original order first
+        original_template_params = {"globals": {}}
+        original_template_params = set_loop_order_data_in_template_params(
+            original_template_params, feature_properties, original_loop_order
+        )
+
+        # Create modified loop order (reverse the loops)
+        modified_loop_order = [
+            {
+                "list_bldg_ids_in_group": ["5a6b99ec37f4de7f94020090"],
+                "list_ghe_ids_in_group": ["0b575a8f-97d1-47e6-b329-7ef7566d26f2"],
+            },
+            {
+                "list_bldg_ids_in_group": ["5e70728382654958adbcaef19f2afc97", "abcdefghijklmnopqrstuvwx"],
+                "list_source_ids_in_group": ["59fb78a8-2975-4331-b94d-460258d9b0a9"],
+            },
+        ]
+
+        # Create a fresh template params dict
+        modified_template_params = {"globals": {}}
+
+        # Apply the modified loop order
+        modified_template_params = set_loop_order_data_in_template_params(
+            modified_template_params, feature_properties, modified_loop_order
+        )
+
+        # With reversed loop order, pipe lengths should be:
+        # Loop 1: ["5a6b99ec37f4de7f94020090", "0b575a8f-97d1-47e6-b329-7ef7566d26f2"]
+        # Loop 2: ["5e70728382654958adbcaef19f2afc97", "abcdefghijklmnopqrstuvwx",
+        # "59fb78a8-2975-4331-b94d-460258d9b0a9"]
+        # Expected: [44, 68, 38, 72] (with 74 as lEnd)
+
+        expected_modified_ldis = "{44, 68, 38, 72}"
+        expected_modified_lend = 74
+
+        # Verify the pipe lengths changed according to the new loop order
+        assert modified_template_params["globals"]["lDis"] == expected_modified_ldis
+        assert modified_template_params["globals"]["lEnd"] == expected_modified_lend
+
+        # Verify this is different from the original order
+        assert modified_template_params["globals"]["lDis"] != original_template_params["globals"]["lDis"]
+        assert modified_template_params["globals"]["lEnd"] != original_template_params["globals"]["lEnd"]
 
     @pytest.mark.simulation
     def test_simulate_district_waste_heat_system(self):
