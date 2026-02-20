@@ -908,7 +908,6 @@ class SystemParameters:
         """
         Calculate the dimensions of a rectangle given its area and perimeter.
 
-        :param self: Description
         :param area: area of the rectangle from geojson feature properties
         :param perimeter: perimeter of the rectangle from geojson feature properties
         :return: length and width of the rectangle
