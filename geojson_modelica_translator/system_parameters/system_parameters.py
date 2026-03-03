@@ -905,10 +905,39 @@ class SystemParameters:
         return building_list, district_nominal_massflow_rate
 
     def calculate_dimensions(self, area, perimeter):
+        """
+        Calculate the dimensions of a rectangle given its area and perimeter.
+
+        :param area: area of the rectangle from geojson feature properties
+        :param perimeter: perimeter of the rectangle from geojson feature properties
+        :return: length and width of the rectangle
+
+        Special case to handle slight measurement errors for near-square rectangles:
+        If the discriminant is negative but the perimeter is within 1% of the
+        perimeter of a square with the given area, treat it
+        as a square and return equal length and width based on the area.
+
+        """
         discriminant = perimeter**2 - 16 * area
 
         if discriminant < 0:
-            raise ValueError("No valid rectangle dimensions exist for the given area and perimeter.")
+            # Check if we're close to a square (within 1% tolerance)
+            square_side = math.sqrt(area)
+            square_perimeter = 4 * square_side
+            perimeter_error = abs(perimeter - square_perimeter) / square_perimeter
+
+            if perimeter_error < 0.01:  # Within 1% of square perimeter
+                # Treat as a square and use the geometric mean of the implied dimensions
+                logger.warning(
+                    f"Rectangle dimensions (area={area}, perimeter={perimeter}) are very close to a square. "
+                    f"Using square dimensions with side length {square_side:.2f}"
+                )
+                return square_side, square_side
+            else:
+                raise ValueError(
+                    f"No valid rectangle dimensions exist for the given area ({area}) and perimeter ({perimeter}). "
+                    f"Minimum perimeter for this area is {square_perimeter:.2f}"
+                )
 
         length = (perimeter + math.sqrt(discriminant)) / 4
         width = (perimeter - 2 * length) / 2
