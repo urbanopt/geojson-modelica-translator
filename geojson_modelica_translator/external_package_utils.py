@@ -63,6 +63,7 @@ def set_loop_order_data_in_template_params(
         for feature_prop in feature_properties
         if feature_prop["type"] == "ThermalConnector"
     }
+
     ordered_feature_list = []
     ordered_pipe_list = []
     for loop in loop_order:
