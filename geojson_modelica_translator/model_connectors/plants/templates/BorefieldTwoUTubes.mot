@@ -8,34 +8,9 @@ within {{ project_name }}.Plants.{{ model_name }};
   extends Buildings.Fluid.Interfaces.TwoPortFlowResistanceParameters(
     final dp_nominal=borFieDat.conDat.dp_nominal,
     final computeFlowResistance=(borFieDat.conDat.dp_nominal > Modelica.Constants.eps));
-{% if ghe_data["fluid"]["fluid_name"] == "Water" %}{% raw %}
   replaceable package Medium=Buildings.Media.Water
     "Medium in the component"
-{% endraw %}{% elif ghe_data["fluid"]["fluid_name"] == "PropyleneGlycol" %}{% raw %}
-  replaceable package Medium=Buildings.Media.Antifreeze.PropyleneGlycolWater(
-    property_T={% endraw %}{{ghe_data["fluid"]["temperature"] + 273.15}}{% raw %},
-    X_a={% endraw %}{{ghe_data["fluid"]["concentration_percent"]}}{% raw %})
-    "Medium in the component"
-{% endraw %}{% elif ghe_data["fluid"]["fluid_name"] == "EthyleneGlycol" %}{% raw %}
-  replaceable package Medium=Buildings.Media.Antifreeze.EthyleneGlycolWater(
-    property_T={% endraw %}{{ghe_data["fluid"]["temperature"] + 273.15}}{% raw %},
-    X_a={% endraw %}{{ghe_data["fluid"]["concentration_percent"]}}{% raw %})
-    "Medium in the component"
-{% endraw %}{% elif ghe_data["fluid"]["fluid_name"] == "EthylAlcohol" %}{% raw %}
-  replaceable package Medium=Buildings.Media.Antifreeze.EthylAlcoholWater(
-    property_T={% endraw %}{{ghe_data["fluid"]["temperature"] + 273.15}}{% raw %},
-    X_a={% endraw %}{{ghe_data["fluid"]["concentration_percent"]}}{% raw %})
-    "Medium in the component"
-{% endraw %}{% elif ghe_data["fluid"]["fluid_name"] == "MethylAlcohol" %}{% raw %}
-  replaceable package Medium=Buildings.Media.Antifreeze.MethylAlcoholWater(
-    property_T={% endraw %}{{ghe_data["fluid"]["temperature"] + 273.15}}{% raw %},
-    X_a={% endraw %}{{ghe_data["fluid"]["concentration_percent"]}}{% raw %})
-    "Medium in the component"
-{% endraw %}{% else %}{% raw %}
-  replaceable package Medium=Buildings.Media.Water
-    "Medium in the component (defaulting to water for unsupported fluid type)"
-{% endraw %}{% endif %}{% raw %}
-    annotation (choices(choice(redeclare package Medium=Buildings.Media.Water "Water"),choice(redeclare package Medium=Buildings.Media.Antifreeze.PropyleneGlycolWater(property_T=293.15,X_a=0.40) "Propylene glycol water, 40% mass fraction"),choice(redeclare package Medium=Buildings.Media.Antifreeze.EthyleneGlycolWater(property_T=293.15,X_a=0.30) "Ethylene glycol water, 30% mass fraction")));{% endraw %}
+    annotation (choices(choice(redeclare package Medium=Buildings.Media.Water "Water"),choice(redeclare package Medium=Buildings.Media.Antifreeze.PropyleneGlycolWater(property_T=293.15,X_a=0.40) "Propylene glycol water, 40% mass fraction")));
   constant Real mSenFac(
     min=1)=1
     "Factor for scaling the sensible thermal mass of the volume";
