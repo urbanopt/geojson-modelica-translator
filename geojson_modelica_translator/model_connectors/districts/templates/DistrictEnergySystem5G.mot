@@ -2,27 +2,27 @@ within {{ district_within_path }};
 model DistrictEnergySystem
   extends Modelica.Icons.Example;
   // District Parameters
-{% if fluid.fluid_name == "Water" %}{% raw %}
+{% if fluid.fluid_name == "Water" %}
   package MediumW=Buildings.Media.Water
-{% endraw %}{% elif fluid.fluid_name == "PropyleneGlycol" %}{% raw %}
+{% elif fluid.fluid_name == "PropyleneGlycol" %}
   package MediumW=Buildings.Media.Antifreeze.PropyleneGlycolWater(
-    property_T={% endraw %}{{fluid.temperature + 273.15}}{% raw %},
-    X_a={% endraw %}{{fluid.concentration_percent}}{% raw %})
-{% endraw %}{% elif fluid.fluid_name == "EthyleneGlycol" %}{% raw %}
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% elif fluid.fluid_name == "EthyleneGlycol" %}
   replaceable package Medium=Buildings.Media.Antifreeze.EthyleneGlycolWater(
-    property_T={% endraw %}{{fluid.temperature + 273.15}}{% raw %},
-    X_a={% endraw %}{{fluid.concentration_percent}}{% raw %})
-{% endraw %}{% elif fluid.fluid_name == "EthylAlcohol" %}{% raw %}
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% elif fluid.fluid_name == "EthylAlcohol" %}
   replaceable package Medium=Buildings.Media.Antifreeze.EthylAlcoholWater(
-    property_T={% endraw %}{{fluid.temperature + 273.15}}{% raw %},
-    X_a={% endraw %}{{fluid.concentration_percent}}{% raw %})
-{% endraw %}{% elif fluid.fluid_name == "MethylAlcohol" %}{% raw %}
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% elif fluid.fluid_name == "MethylAlcohol" %}
   replaceable package Medium=Buildings.Media.Antifreeze.MethylAlcoholWater(
-    property_T={% endraw %}{{fluid.temperature + 273.15}}{% raw %},
-    X_a={% endraw %}{{fluid.concentration_percent}}{% raw %})
-{% endraw %}{% else %}{% raw %}
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% else %}
   replaceable package Medium=Buildings.Media.Water
-{% endraw %}{% endif %}{% raw %}
+{% endif %}{% raw %}
     "Source side medium";
 {% endraw %}
   // Models
