@@ -143,17 +143,6 @@ class Borefield(PlantBase):
                     "$.district_system.fifth_generation.ghe_parameters.pipe.shank_spacing"
                 ),
             },
-            "fluid": {
-                "fluid_name": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.fluid.fluid_name"
-                ),
-                "concentration_percent": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.fluid.concentration_percent"
-                ),
-                "temperature": self.system_parameters.get_param(
-                    "$.district_system.fifth_generation.ghe_parameters.fluid.temperature"
-                ),
-            },
         }
 
         if template_data["configuration"]["number_of_boreholes"] is None:
