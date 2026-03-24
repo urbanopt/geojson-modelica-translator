@@ -9,19 +9,19 @@ model DistrictEnergySystem
     property_T={{fluid.temperature + 273.15}},
     X_a={{fluid.concentration_percent}})
 {% elif fluid.fluid_name == "EthyleneGlycol" %}
-  replaceable package Medium=Buildings.Media.Antifreeze.EthyleneGlycolWater(
+  replaceable package MediumW=Buildings.Media.Antifreeze.EthyleneGlycolWater(
     property_T={{fluid.temperature + 273.15}},
     X_a={{fluid.concentration_percent}})
 {% elif fluid.fluid_name == "EthylAlcohol" %}
-  replaceable package Medium=Buildings.Media.Antifreeze.EthylAlcoholWater(
+  replaceable package MediumW=Buildings.Media.Antifreeze.EthylAlcoholWater(
     property_T={{fluid.temperature + 273.15}},
     X_a={{fluid.concentration_percent}})
 {% elif fluid.fluid_name == "MethylAlcohol" %}
-  replaceable package Medium=Buildings.Media.Antifreeze.MethylAlcoholWater(
+  replaceable package MediumW=Buildings.Media.Antifreeze.MethylAlcoholWater(
     property_T={{fluid.temperature + 273.15}},
     X_a={{fluid.concentration_percent}})
 {% else %}
-  replaceable package Medium=Buildings.Media.Water
+  replaceable package MediumW=Buildings.Media.Water
 {% endif %}{% raw %}
     "Source side medium";
 {% endraw %}
