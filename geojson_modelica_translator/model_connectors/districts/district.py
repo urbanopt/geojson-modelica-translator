@@ -75,6 +75,17 @@ class District:
             "couplings": [],
             "models": [],
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
+            "fluid": {
+                "fluid_name": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.fluid.fluid_name"
+                ),
+                "concentration_percent": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.fluid.concentration_percent"
+                ),
+                "temperature": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.fluid.temperature"
+                ),
+            },
         }
 
         # temporary number of buildings (unused for 4G but just a placeholder)

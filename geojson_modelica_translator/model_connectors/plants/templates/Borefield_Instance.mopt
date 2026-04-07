@@ -39,6 +39,8 @@
     "Scale with nominal mass flow rate"
   {% raw %}annotation (Placement(transformation(extent={{-30,80},{-10,100}})));
 {% endraw %}
-  {{ model.modelica_type }} {{ model.id }}
+  {{ model.modelica_type }} {{ model.id }}(
+    redeclare final package Medium = {{ globals.medium_w }}
+  )
   {% raw %}annotation (Placement(transformation(extent={{-10,0},{10,20}})));
 {% endraw %}

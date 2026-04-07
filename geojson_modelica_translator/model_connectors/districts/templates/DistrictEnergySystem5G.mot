@@ -2,8 +2,29 @@ within {{ district_within_path }};
 model DistrictEnergySystem
   extends Modelica.Icons.Example;
   // District Parameters
+{% if fluid.fluid_name == "Water" %}
   package MediumW=Buildings.Media.Water
+{% elif fluid.fluid_name == "PropyleneGlycol" %}
+  package MediumW=Buildings.Media.Antifreeze.PropyleneGlycolWater(
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% elif fluid.fluid_name == "EthyleneGlycol" %}
+  replaceable package MediumW=Buildings.Media.Antifreeze.EthyleneGlycolWater(
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% elif fluid.fluid_name == "EthylAlcohol" %}
+  replaceable package MediumW=Buildings.Media.Antifreeze.EthylAlcoholWater(
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% elif fluid.fluid_name == "MethylAlcohol" %}
+  replaceable package MediumW=Buildings.Media.Antifreeze.MethylAlcoholWater(
+    property_T={{fluid.temperature + 273.15}},
+    X_a={{fluid.concentration_percent}})
+{% else %}
+  replaceable package MediumW=Buildings.Media.Water
+{% endif %}{% raw %}
     "Source side medium";
+{% endraw %}
   // Models
   {% for model in models %}
   //
