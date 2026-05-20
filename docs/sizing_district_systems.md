@@ -109,7 +109,8 @@ A common practical compromise is to size `mass_chw_flow_nominal` to the
 *coincident* peak, not the simple sum of building design flows — that's
 usually 50–70 % of the latter in a mixed-use district. The guidance:
 
-- If you don't know better, start with `Q / (coincident peak * 5)` (the design rule).
+- If you don't know better, start with `Q_coincident / (4184 × ΔT_CHW)`; for
+  example, at a 5 K CHW design ΔT this becomes `Q_coincident / (4184 × 5)`.
 - If freeze assertions on the CW loop appear, the issue is usually that the
   CW loop has too little **thermal mass**, not CHW — see Step 3.
 - If you see chillers stuck at 0 or 100 % and CHW temperatures swing
