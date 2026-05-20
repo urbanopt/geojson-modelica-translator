@@ -143,12 +143,13 @@ loop temperature plunges past −1 °C, triggering the medium's bounds check.
 
 ### Step 4 — set `chiller_water_flow_minimum`
 
-This is the **per-plant** turndown limit (the template divides by `numChi`
-internally to get per-chiller flow). A reasonable value is 20–30 % of
-`mass_chw_flow_nominal`:
+In `sys_params.json`, this value is the **plant-level** chilled-water minimum
+flow. The template then divides it by `numChi` internally to obtain each
+chiller's `mMin_flow`. Therefore, size `chiller_water_flow_minimum` as
+20–30 % of the plant-level `mass_chw_flow_nominal`:
 
 ```json
-// 85 kg/s nominal, 25 % turndown → 21 kg/s plant floor
+// 85 kg/s plant nominal, 25 % turndown → ~21 kg/s plant minimum
 "chiller_water_flow_minimum": 20
 ```
 
