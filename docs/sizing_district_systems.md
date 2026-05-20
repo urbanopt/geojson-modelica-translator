@@ -80,8 +80,9 @@ district, in watts. Quick paths to a number:
 The chiller catalog record currently hard-coded in
 `CoolingPlant_Instance.mopt` is `ElectricEIRChiller_Carrier_19EX_5208kW…`,
 which is 5.2 MW per unit. With `numberofchillers = 2`, total installed
-capacity is 10.4 MW. Aim for `heat_flow_nominal ≤ numChi × catalog_capacity`
-or you'll over-rely on a single chiller.
+capacity is 10.4 MW. Aim for `heat_flow_nominal ≤ 10.4 MW` (that is,
+`numberofchillers × catalog_capacity` with the current fixed value of 2) or
+you'll over-rely on a single chiller.
 
 ### Step 2 — derive `mass_chw_flow_nominal`
 
