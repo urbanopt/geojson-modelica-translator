@@ -1,18 +1,36 @@
-  parameter Modelica.Units.SI.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ model.id }}.numChi*3
-    "Nominal chilled water mass flow rate";
-  parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ model.id }}.perChi.mCon_flow_nominal
-    "Nominal condenser water mass flow rate";
+{#-
+  Cooling-plant instance template.
+
+  PATCH (2026-05-20): mCHW_flow_nominal, mCW_flow_nominal, QEva_nominal,
+  mMin_flow and the district CHW supply setpoint are now driven by
+  sys_params.district_system.fourth_generation.central_cooling_plant_parameters
+  instead of being hard-coded inside the template. See
+  docs/sizing_district_systems.md for how to size these.
+
+  Still TODO (out of scope here, see docs/sizing_district_systems.md):
+    * `numberofchillers` is still hard-coded in DistrictEnergySystem.mot. Add a
+      `num_chillers` field to the sys_params schema and wire it through to
+      DistrictEnergySystem.mot so plants with !=2 chillers can be modelled.
+    * The chiller catalog record `ElectricEIRChiller_Carrier_19EX_5208kW_…`
+      is still hard-coded below. Add a `chiller_performance_data` sys_params
+      field that lets the user redeclare any record from
+      `Buildings.Fluid.Chillers.Data.ElectricEIR`.
+-#}
+  parameter Modelica.Units.SI.MassFlowRate mCHW_flow_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_chw_flow_nominal }}
+    "Nominal chilled water mass flow rate (sys_params: mass_chw_flow_nominal)";
+  parameter Modelica.Units.SI.MassFlowRate mCW_flow_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.mass_cw_flow_nominal }}
+    "Nominal condenser water mass flow rate (sys_params: mass_cw_flow_nominal)";
   parameter Modelica.Units.SI.PressureDifference dpCHW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_chw_nominal }}
-    "Nominal chilled water side pressure";
+    "Nominal chilled water side pressure (sys_params: pressure_drop_chw_nominal)";
   parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_cw_nominal }}
-    "Nominal condenser water side pressure";
-  parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=mCHW_flow_nominal_{{ model.id }}*4200*(5-14)
-    "Nominal cooling capacity (Negative means cooling)";
-  parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}=0.2*mCHW_flow_nominal_{{ model.id }}/{{ model.id }}.numChi
-    "Minimum mass flow rate of single chiller";
+    "Nominal condenser water side pressure (sys_params: pressure_drop_cw_nominal)";
+  parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=-{{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.heat_flow_nominal }}
+    "Nominal cooling capacity, negative=cooling (sys_params: heat_flow_nominal)";
+  parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.chiller_water_flow_minimum }}/{{ model.id }}.numChi
+    "Minimum mass flow rate per chiller (sys_params: chiller_water_flow_minimum, divided by numChi)";
   // control settings
   parameter Modelica.Units.SI.Pressure dpSetPoi_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_setpoint }}
-    "Differential pressure setpoint";
+    "Differential pressure setpoint (sys_params: pressure_drop_setpoint)";
   parameter Modelica.Units.SI.Pressure pumDP_{{ model.id }}=dpCHW_nominal_{{ model.id }}+dpSetPoi_{{ model.id }}+200000;
   parameter Modelica.Units.SI.Time tWai_{{ model.id }}=30
     "Waiting time";
@@ -42,8 +60,8 @@
 
 
   Modelica.Blocks.Sources.RealExpression TSetChiWatDis_{{ model.id }}(
-    y=5+273.15)
-    "Chilled water supply temperature set point on district level."
+    y={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.temp_setpoint_chw }}+273.15)
+    "Chilled water supply temperature set point on district level (sys_params: temp_setpoint_chw)."
     annotation (Placement({{ diagram.transformation.t_set_chi_wat_dis.real_expression }}));
   Modelica.Blocks.Sources.BooleanConstant on_{{ model.id }}
     "On signal of the plant"
@@ -71,6 +89,13 @@
 annotation (
 revisions="<html>
 <ul>
+<li>
+May 20, 2026, by Nicholas Long:<br/>
+Sys_params keys mass_chw_flow_nominal, mass_cw_flow_nominal, heat_flow_nominal,
+chiller_water_flow_minimum, and temp_setpoint_chw now propagate into the
+generated cooling plant Modelica.
+Within GMT, see docs/sizing_district_systems.md for sizing guidance.
+</li>
 <li>
 April 11, 2025, by Nathan Moore:<br/>
 GMT template updated to read additional data from system-parameter file.
