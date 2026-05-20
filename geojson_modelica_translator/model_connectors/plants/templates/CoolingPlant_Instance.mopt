@@ -24,8 +24,8 @@
     "Nominal chilled water side pressure (sys_params: pressure_drop_chw_nominal)";
   parameter Modelica.Units.SI.PressureDifference dpCW_nominal_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.pressure_drop_cw_nominal }}
     "Nominal condenser water side pressure (sys_params: pressure_drop_cw_nominal)";
-  parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=-{{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.heat_flow_nominal }}
-    "Nominal cooling capacity, negative=cooling (sys_params: heat_flow_nominal)";
+  parameter Modelica.Units.SI.Power QEva_nominal_{{ model.id }}=-{{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.heat_flow_nominal }}/{{ model.id }}.numChi
+    "Nominal cooling capacity per chiller, negative=cooling (sys_params: heat_flow_nominal divided by numChi)";
   parameter Modelica.Units.SI.MassFlowRate mMin_flow_{{ model.id }}={{ sys_params.district_system.fourth_generation.central_cooling_plant_parameters.chiller_water_flow_minimum }}/{{ model.id }}.numChi
     "Minimum mass flow rate per chiller (sys_params: chiller_water_flow_minimum, divided by numChi)";
   // control settings
