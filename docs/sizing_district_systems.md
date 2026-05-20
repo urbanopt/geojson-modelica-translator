@@ -100,6 +100,8 @@ with the building ETS settings (`delta_temp_chw_building`) and:
 // 8 MW plant, ΔT = 5 K → m_CHW ≈ 382 kg/s
 // 8 MW plant, ΔT = 9 K → m_CHW ≈ 212 kg/s
 // 8 MW plant, ΔT = 14 K (legacy GMT default in mopt) → m_CHW ≈ 136 kg/s
+// Example below assumes a smaller coincident peak, not the full 8 MW:
+// 3.2 MW coincident peak, ΔT = 9 K → m_CHW ≈ 85 kg/s
 "mass_chw_flow_nominal": 85
 ```
 
