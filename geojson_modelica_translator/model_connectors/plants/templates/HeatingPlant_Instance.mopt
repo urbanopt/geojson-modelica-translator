@@ -44,7 +44,7 @@
     "Waiting time";
   parameter Buildings.Fluid.Movers.Data.Generic perHWPum_{{ model.id }}(
     pressure=Buildings.Fluid.Movers.BaseClasses.Characteristics.flowParameters(
-      V_flow=mHW_flow_nominal_{{ model.id }}/1000*{0.1,1.1},
+      V_flow=mBoi_flow_nominal_{{ model.id }}/1000*{0.1,1.1},
       dp=pumDP_{{ model.id }}*{1.1,0.1}))
     "Performance data for heating water pumps";
 
