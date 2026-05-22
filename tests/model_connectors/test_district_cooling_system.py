@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import re
 from pathlib import Path
 
 import pytest
@@ -60,6 +61,31 @@ class DistrictCoolingSystemTest(TestCaseBase):
     def test_build_district_cooling_system(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
+
+    def test_cooling_plant_sys_params_are_propagated(self):
+        """Verify central cooling plant parameters from sys_params are rendered in Modelica."""
+        district_mo_file = Path(self.district._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+        mo_content = district_mo_file.read_text()
+
+        # The fixture sets these to 9.9, 9.9, 7999, and 6 respectively.
+        mchw_match = re.search(r"mCHW_flow_nominal_(\w+)\s*=\s*9\.9\b", mo_content)
+        assert mchw_match is not None, "mCHW_flow_nominal should propagate from sys_params"
+        plant_id = mchw_match.group(1)
+
+        assert re.search(r"mCW_flow_nominal_\w+\s*=\s*9\.9\b", mo_content), (
+            "mCW_flow_nominal should propagate from sys_params"
+        )
+        assert re.search(r"QEva_nominal_\w+\s*=\s*-7999\b", mo_content), (
+            "QEva_nominal should be the negated heat_flow_nominal from sys_params"
+        )
+        assert re.search(r"TSetChiWatDis_\w+\(\s*y\s*=\s*6\+273\.15\)", mo_content), (
+            "temp_setpoint_chw should propagate from sys_params"
+        )
+
+        compact = "".join(mo_content.split())
+        assert f"mMin_flow_{plant_id}=9.9/{plant_id}.numChi" in compact, (
+            "mMin_flow should be based on chiller_water_flow_minimum divided by numChi"
+        )
 
     @pytest.mark.simulation
     def test_simulate_district_cooling_system(self):
