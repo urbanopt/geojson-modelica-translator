@@ -68,9 +68,9 @@ revisions="<html>
 <ul>
 <li>
 May 20, 2026, by Nicholas Long:<br/>
-Sys_params keys heat_flow_nominal, mass_hhw_flow_nominal,
+SystemParameters keys heat_flow_nominal, mass_hhw_flow_nominal,
 boiler_water_flow_minimum, and pressure_drop_hhw_nominal now propagate into
-the generated heating plant Modelica (previously hard-coded inside the
+the generated heating plant (previously hard-coded inside the
 template; e.g. Q_flow_nominal=1000000*2). The HHW pump performance curve also
 now reflects the plant flow and head. Within GMT, see
 docs/sizing_district_systems.md for sizing guidance.
