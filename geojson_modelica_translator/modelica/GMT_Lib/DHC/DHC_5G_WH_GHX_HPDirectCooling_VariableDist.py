@@ -121,9 +121,7 @@ class DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(SimpleGMTBase):
         source_load = max(total_cooling_rejection_load, total_heating_extraction_load + total_swh_extraction_load)
         source_flow_rate = flow_rate_from_load(source_load, delta_t)
         template_data["source_flow_rate"] = round(source_flow_rate, 3)  # type: ignore[arg-type]
-        template_data["source_pump_dp_nominal"] = round(
-            source_pump_dp_nominal(source_flow_rate)
-        )  # type: ignore[arg-type]
+        template_data["source_pump_dp_nominal"] = round(source_pump_dp_nominal(source_flow_rate))  # type: ignore[arg-type]
 
         n_buildings = len(template_data["building_load_files"])
         template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)
