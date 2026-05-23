@@ -53,7 +53,9 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
             assert "mPumDis_flow_nominal=22.95," in district_mo
             assert "mSto_flow_nominal=29.507," in district_mo
         with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
-            assert "dp_nominal=35409)" in f.read()
+            partial_series_mo = f.read()
+            dp_nominal_values = [float(value) for value in re.findall(r"dp_nominal=([0-9.+-eE]+)\)", partial_series_mo)]
+            assert any(value == pytest.approx(35409) for value in dp_nominal_values)
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hpdirectcooling_constantdist_simulation(self):
