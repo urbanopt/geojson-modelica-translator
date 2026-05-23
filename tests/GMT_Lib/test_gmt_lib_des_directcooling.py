@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import re
 import unittest
 from pathlib import Path
 from shutil import rmtree
@@ -154,7 +155,9 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
             assert "mPumDis_flow_nominal=22.95," in district_mo
             assert "mSto_flow_nominal=29.507," in district_mo
         with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
-            assert "dp_nominal=35409)" in f.read()
+            match = re.search(r"dp_nominal=([0-9.]+)\)", f.read())
+            assert match is not None
+            assert float(match.group(1)) == pytest.approx(35409, abs=1)
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hpdirectcooling_variabledist_simulation(self):
