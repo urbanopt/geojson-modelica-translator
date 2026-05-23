@@ -71,12 +71,12 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
 
         # 2: Copy the files to the appropriate location and ensure uniqueness by putting into a unique directory
         #    (since OpenStudio creates all files with modelica.mos)
-        total_heating_load = 0
-        total_cooling_load = 0
-        total_swh_load = 0
-        total_heating_extraction_load = 0
-        total_cooling_rejection_load = 0
-        total_swh_extraction_load = 0
+        total_heating_load = 0.0
+        total_cooling_load = 0.0
+        total_swh_load = 0.0
+        total_heating_extraction_load = 0.0
+        total_cooling_rejection_load = 0.0
+        total_swh_extraction_load = 0.0
         for building, file_to_copy in zip(time_series, files_to_copy):
             # create the path if it doesn't exist
             Path(file_to_copy["save_path"]).mkdir(parents=True, exist_ok=True)
