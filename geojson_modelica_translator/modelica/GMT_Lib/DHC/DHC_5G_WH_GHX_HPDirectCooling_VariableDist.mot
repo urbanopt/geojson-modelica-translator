@@ -8,7 +8,7 @@ model district
       nBui={{ data["building_load_files"] | count }},
       mPumDis_flow_nominal={{ data["max_flow_rate"] }},
       mPla_flow_nominal={{ data["max_flow_rate"] }},
-      mSto_flow_nominal={{ data["max_flow_rate"] / 10 }},
+      mSto_flow_nominal={{ data["source_flow_rate"] }},
       dp_length_nominal={{ data["pressure_drop_per_meter"] }},
       epsPla=0.935,
       {{ data['lDis'] }},

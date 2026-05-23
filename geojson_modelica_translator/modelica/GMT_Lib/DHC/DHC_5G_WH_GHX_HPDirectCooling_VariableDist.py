@@ -3,6 +3,11 @@ from pathlib import Path
 
 from modelica_builder.modelica_mos_file import ModelicaMOS
 
+from geojson_modelica_translator.modelica.GMT_Lib.DHC._flow_sizing import (
+    flow_rate_from_load,
+    source_pump_dp_nominal,
+    source_side_loads,
+)
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
 
@@ -65,7 +70,10 @@ class DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(SimpleGMTBase):
         total_heating_load = 0
         total_cooling_load = 0
         total_swh_load = 0
-        for file_to_copy in files_to_copy:
+        total_heating_extraction_load = 0
+        total_cooling_rejection_load = 0
+        total_swh_extraction_load = 0
+        for building, file_to_copy in zip(time_series, files_to_copy):
             # create the path if it doesn't exist
             Path(file_to_copy["save_path"]).mkdir(parents=True, exist_ok=True)
             save_filename = f"{file_to_copy['save_path']}/{file_to_copy['save_filename']}"
@@ -74,16 +82,28 @@ class DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(SimpleGMTBase):
             # 3: If the file is an MOS file and Peak water heating load is set to zero, then set it to a minimum value
             #    Also, store the total heating, cooling, and water loads which will be used for sizing.
             mos_file = ModelicaMOS(save_filename)
-            total_heating_load += mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
-            total_cooling_load += mos_file.retrieve_header_variable_value("Peak space cooling load", cast_type=float)
+            peak_heating_load = mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
+            peak_cooling_load = mos_file.retrieve_header_variable_value("Peak space cooling load", cast_type=float)
             peak_water = mos_file.retrieve_header_variable_value("Peak water heating load", cast_type=float)
-            total_swh_load += peak_water
+            total_heating_load += peak_heating_load
+            total_cooling_load += peak_cooling_load
             if peak_water == 0:
                 peak_heat = mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
                 peak_swh = max(peak_heat / 10, 5000)
 
                 mos_file.replace_header_variable_value("Peak water heating load", peak_swh)
                 mos_file.save()
+                peak_water = peak_swh
+            total_swh_load += peak_water
+            heating_extraction_load, cooling_rejection_load, swh_extraction_load = source_side_loads(
+                peak_heating_load,
+                peak_cooling_load,
+                peak_water,
+                building.get("fifth_gen_ets_parameters", {}),
+            )
+            total_heating_extraction_load += heating_extraction_load
+            total_cooling_rejection_load += cooling_rejection_load
+            total_swh_extraction_load += swh_extraction_load
 
             # 4: Add the path to the param data with Modelica friendly path names
             rel_path_name = f"{project_name}/{districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
@@ -92,11 +112,18 @@ class DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(SimpleGMTBase):
         # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
         #    (assuming 5C delta T [since 5G] and 4.18 Cp (kJ/kgK)). Add 1.5x the peak for oversizing
         delta_t = 5
-        heating_flow_rate = 1.5 * total_heating_load / (1000 * delta_t * 4.18)
-        cooling_flow_rate = 1.5 * total_cooling_load / (1000 * delta_t * 4.18)
-        swh_flow_rate = 1.5 * total_swh_load / (1000 * delta_t * 4.18)
+        heating_flow_rate = flow_rate_from_load(total_heating_load, delta_t)
+        # Cooling peaks are stored as negative heat flow rates in MOS files.
+        cooling_flow_rate = flow_rate_from_load(abs(total_cooling_load), delta_t)
+        swh_flow_rate = flow_rate_from_load(total_swh_load, delta_t)
 
         template_data["max_flow_rate"] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)  # type: ignore[arg-type]
+        source_load = max(total_cooling_rejection_load, total_heating_extraction_load + total_swh_extraction_load)
+        source_flow_rate = flow_rate_from_load(source_load, delta_t)
+        template_data["source_flow_rate"] = round(source_flow_rate, 3)  # type: ignore[arg-type]
+        template_data["source_pump_dp_nominal"] = round(
+            source_pump_dp_nominal(source_flow_rate)
+        )  # type: ignore[arg-type]
 
         n_buildings = len(template_data["building_load_files"])
         template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)

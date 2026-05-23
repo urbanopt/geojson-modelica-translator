@@ -43,6 +43,13 @@ class GmtLibDesHpTrioTest(unittest.TestCase):
         # -- Assert
         # Did the mofile get created?
         assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
+        with open(package_output_dir / package_name / "Districts" / "district.mo") as f:
+            district_mo = f.read()
+            # The test loads are cooling-dominant, and cooling peaks are stored as negative loads.
+            assert "mPumDis_flow_nominal=22.95," in district_mo
+            assert "mSto_flow_nominal=29.507," in district_mo
+        with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
+            assert "dp_nominal=35409)" in f.read()
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hptrio_variabledist_simulation(self):

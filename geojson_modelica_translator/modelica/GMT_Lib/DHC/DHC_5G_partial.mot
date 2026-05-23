@@ -75,7 +75,8 @@ partial model PartialSeries "Partial model for series network"
         origin={112,-20})));
   Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumSto(
     redeclare final package Medium = Medium,
-    m_flow_nominal=datDes.mSto_flow_nominal)
+    m_flow_nominal=datDes.mSto_flow_nominal,
+    dp_nominal={% endraw %}{{ data["source_pump_dp_nominal"] }}{% raw %})
     "Bore field pump"
     annotation (Placement(transformation(
       extent={{10,10},{-10,-10}},
