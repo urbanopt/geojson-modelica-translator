@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import re
 import unittest
 from pathlib import Path
 from shutil import rmtree
@@ -46,6 +47,15 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
         # -- Assert
         # Did the mofile get created?
         assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
+        with open(package_output_dir / package_name / "Districts" / "district.mo") as f:
+            district_mo = f.read()
+            # The test loads are cooling-dominant, and cooling peaks are stored as negative loads.
+            assert "mPumDis_flow_nominal=22.95," in district_mo
+            assert "mSto_flow_nominal=29.507," in district_mo
+        with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
+            partial_series_mo = f.read()
+            dp_nominal_values = [float(value) for value in re.findall(r"dp_nominal=([0-9.+-eE]+)\)", partial_series_mo)]
+            assert any(value == pytest.approx(35409) for value in dp_nominal_values)
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hpdirectcooling_constantdist_simulation(self):
@@ -63,6 +73,13 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
         # -- Assert
         # Did the mofile get created?
         assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
+        with open(package_output_dir / package_name / "Districts" / "district.mo") as f:
+            district_mo = f.read()
+            # The test loads are cooling-dominant, and cooling peaks are stored as negative loads.
+            assert "mPumDis_flow_nominal=22.95," in district_mo
+            assert "mSto_flow_nominal=29.507," in district_mo
+        with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
+            assert "dp_nominal=35409)" in f.read()
 
         # Test to make sure that a zero SWH peak is set to a minimum value.
         # Otherwise, Modelica will error out.
@@ -134,6 +151,15 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
         # -- Assert
         # Did the mofile get created?
         assert linecount(package_output_dir / package_name / "Districts" / "district.mo") > 20
+        with open(package_output_dir / package_name / "Districts" / "district.mo") as f:
+            district_mo = f.read()
+            # The test loads are cooling-dominant, and cooling peaks are stored as negative loads.
+            assert "mPumDis_flow_nominal=22.95," in district_mo
+            assert "mSto_flow_nominal=29.507," in district_mo
+        with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
+            match = re.search(r"dp_nominal=([0-9.]+)\)", f.read())
+            assert match is not None
+            assert float(match.group(1)) == pytest.approx(35409, abs=1)
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hpdirectcooling_variabledist_simulation(self):
