@@ -1,10 +1,11 @@
 # Sizing district-system variables in `sys_params.json`
 
 This document explains how to size the variables under
-`district_system.fourth_generation.central_cooling_plant_parameters` (and, in
-passing, the central heating plant) in a GMT system parameter file so that the
-generated Modelica package will compile, simulate, and produce physically
-reasonable results.
+`district_system.fourth_generation.central_cooling_plant_parameters` and
+`district_system.fourth_generation.central_heating_plant_parameters` in a
+GMT system parameter file so that the generated Modelica package will
+compile, simulate, and produce physically reasonable results. Sections 1–6
+cover the cooling plant; section 7 covers the heating plant.
 
 Background: until the template patch that ships alongside this document, several
 of these keys were silently ignored — the GMT template hard-coded values like
@@ -271,10 +272,14 @@ may require either editing the templates manually or extending the schema:
 4. **`pumDP` offset (+200 000 Pa)** in `CoolingPlant_Instance.mopt` is hard-coded
    safety margin. Consider adding `chw_pump_head_safety_margin` to the schema.
 
-5. **Heating plant** (`HeatingPlant_Instance.mopt`) has the same kind of hard-coded
-   sizing (`Q_flow_nominal_{{ model.id }} = 1000000 * 2`, etc.). It deserves the
-   same treatment but is out of scope for this revision; a parallel patch is
-   straightforward.
+5. **Heating plant `numBoi`** is still hard-coded to 2 inside
+   `CentralHeatingPlant.mo`. The heating-plant `delT_nominal` (15 K) and the
+   `+50 000` Pa pumDP safety margin in `HeatingPlant_Instance.mopt` are also
+   hard-coded; consider exposing them as new sys_params fields.
+
+6. **Boiler catalog record** in `CentralHeatingPlant.mo` is hard-coded the
+   same way the chiller record is. Same fix applies: add a
+   `boiler_performance_data` sys_params field.
 
 ---
 
@@ -314,6 +319,158 @@ resolved.
 
 ---
 
+## 7. Central heating plant
+
+The central heating plant (`Plants.CentralHeatingPlant`) is the heating-side
+analogue of the cooling plant: a parallel arrangement of `numBoi` boilers
+(hard-coded to 2 in `CentralHeatingPlant.mo`), a common HHW pump header, a
+demand-side ΔP setpoint, and an HHW supply setpoint controlled at the network
+side.
+
+```text
+              ┌───────────┐
+       ┌─────►│  Boiler 1 ├──────►┐
+  HHW  │      └───────────┘       │  to district
+  ret  │           ...            │  supply
+       └─────►┌───────────┐──────►┘
+              │  Boiler N │
+              └───────────┘
+```
+
+Same patch convention as cooling: `heat_flow_nominal` and
+`mass_hhw_flow_nominal` are the **total plant** values; the template divides
+them by `numBoi` to get per-boiler `QBoi_flow_nominal` and `mBoi_flow_nominal`.
+
+The sys_params fields under
+`district_system.fourth_generation.central_heating_plant_parameters` are:
+
+|Key|Modelica destination|Notes|
+|---|---|---|
+|`heat_flow_nominal`|`Q_flow_nominal` (total) and `QBoi_flow_nominal` (per boiler, =total/numBoi)|Plant heating capacity, W. Positive.|
+|`mass_hhw_flow_nominal`|`mHW_flow_nominal` (total) and `mBoi_flow_nominal` (per boiler, =total/numBoi)|Plant HHW flow, kg/s|
+|`boiler_water_flow_minimum`|`mMin_flow` (per boiler, =total/numBoi)|Per-plant minimum flow, kg/s|
+|`pressure_drop_hhw_nominal`|`dpBoi_nominal`|Boiler-side ΔP, Pa|
+|`pressure_drop_setpoint`|Read from the network-side `dpSetPoi` (the heating plant pulls it from the connected disNet, not from this key)|See note in template TODO|
+|`temp_setpoint_hhw`|HHW supply setpoint via `THeaSet` input on the plant; wired in the network↔plant coupling templates, **not** in `HeatingPlant_Instance.mopt`|°C|
+|`pressure_drop_hhw_valve_nominal`|Not currently consumed by the plant template|—|
+|`chp_installed`|Selects whether `HeatingPlantWithCHP.mot` or `CentralHeatingPlant.mo` is used|Boolean|
+|`chp_thermal_following`|CHP dispatch mode|Only meaningful if `chp_installed = true`|
+
+### Step-by-step sizing recipe (heating)
+
+1. **`heat_flow_nominal`** — coincident peak heating load of all buildings,
+   in watts. Same procedure as cooling: from the `xx_export_modelica_loads`
+   exports, sum the heating column across buildings hour-by-hour and take
+   the max. Pad 10–15 %.
+
+2. **`mass_hhw_flow_nominal`** — derive from the design HHW ΔT. With
+   `delT_nominal = 15 K` (currently hard-coded in the .mopt) and
+   cp_water ≈ 4184 J/kg·K:
+
+   ```text
+   m_HHW [kg/s]  =  heat_flow_nominal [W]  /  (4184 × delT_nominal)
+                 =  Q  /  62,760           for delT_nominal = 15 K
+   ```
+
+   ```json
+   // 4 MW plant, ΔT_HHW = 15 K  → m_HHW ≈ 64 kg/s
+   // 8 MW plant, ΔT_HHW = 20 K  → m_HHW ≈ 96 kg/s
+   "mass_hhw_flow_nominal": 64
+   ```
+
+   If you change `mass_hhw_flow_nominal` without changing `delT_nominal`,
+   the boiler will be force-fed flow it can't actually heat through the
+   designed ΔT — the boiler model will compensate but you'll see odd
+   part-load behavior.
+
+3. **`boiler_water_flow_minimum`** — plant-level minimum, 20–30 % of
+   `mass_hhw_flow_nominal`. The template divides by `numBoi`, so 20 % of
+   64 kg/s = ~13 kg/s plant minimum / ~6.5 kg/s per boiler.
+
+   ```json
+   "boiler_water_flow_minimum": 13
+   ```
+
+   Boilers don't have the same freeze-overcooling failure mode the cooling
+   tower has, but starving the loop at near-zero load will still cause the
+   boiler model's PI controller to chatter.
+
+4. **`pressure_drop_hhw_nominal`** — boiler-side ΔP at design flow, in Pa.
+   Real boilers are 30 000 – 60 000 Pa across the heat exchanger.
+
+5. **`pressure_drop_setpoint`** (on the *network*, not the plant) — design
+   ΔP at the remote pressure-control valve. 50 000 Pa default; raise for
+   long / branchy distribution networks.
+
+6. **`temp_setpoint_hhw`** — district HHW supply setpoint, °C. 50–55 °C is
+   normal for a low-temperature 4G system; 70–80 °C for a legacy high-temp
+   district. The 4G default in the schema is 55 °C.
+
+7. **`chp_installed`** — set `true` to swap the plant model for
+   `HeatingPlantWithCHP` (combined heat and power). If `true` you also need
+   `chp_thermal_following` to be set.
+
+### Sanity-check rules (heating)
+
+1. **Capacity / flow / ΔT identity**:
+   `heat_flow_nominal ≈ mass_hhw_flow_nominal × 4184 × delT_nominal`
+   With the hard-coded `delT_nominal = 15 K`, that means
+   `mass_hhw_flow_nominal ≈ heat_flow_nominal / 62,760`.
+
+2. **Turndown sane**:
+   `0.15 × mass_hhw_flow_nominal  ≤  boiler_water_flow_minimum  ≤
+    0.35 × mass_hhw_flow_nominal`.
+
+3. **Supply temperature > distribution loss + ETS approach**:
+   `temp_setpoint_hhw  ≥  building_HHW_supply_temp + heat_exchanger_approach
+   - distribution_loss`. The
+   `ets_indirect_parameters.heating_supply_water_temperature_building` for
+   each building should be at least 5 K below `temp_setpoint_hhw`.
+
+### Worked example: heating plant for the same 8 MW district
+
+Heating peak loads in a mixed-use district tend to be ~50–70 % of the
+cooling peak in cooling-dominated climates, and 100–150 % in
+heating-dominated climates. For the Buffalo example (cooling-dominated in
+summer, heating-dominated in winter) a ~10 MW heating peak with HHW
+ΔT = 20 K is plausible:
+
+```json
+"central_heating_plant_parameters": {
+  "heat_flow_nominal":                  10000000,
+  "mass_hhw_flow_nominal":                   120,
+  "boiler_water_flow_minimum":                30,
+  "pressure_drop_hhw_nominal":             45000,
+  "pressure_drop_setpoint":                50000,
+  "temp_setpoint_hhw":                        55,
+  "pressure_drop_hhw_valve_nominal":        6000,
+  "chp_installed":                         false
+}
+```
+
+**Warning if your current sys_params look like the GMT defaults
+(`heat_flow_nominal: 8001`, `mass_hhw_flow_nominal: 1`,
+`pressure_drop_hhw_nominal: 55001`):** those are the schema defaults, which
+mean an ~8 kW boiler plant moving 1 kg/s — i.e., not sized at all. Until
+the template patch landed, those values were silently ignored, so an
+8 kW-on-paper plant was happily serving a 10 MW district. **Now** that the
+.mopt honors them, the simulation will refuse to converge if you leave
+them at defaults. Pick real numbers from your load files before the next
+run.
+
+### Known limitations of the heating-plant patch
+
+- `numBoi` is hard-coded to 2 in `CentralHeatingPlant.mo`. Wire it through
+  sys_params (same TODO as `numberofchillers`).
+- `delT_nominal` is hard-coded to 15 K in the `.mopt`. Add a
+  `delta_temp_hhw_nominal` sys_params field if you need to change it.
+- The pumDP `+50 000` Pa safety margin is hard-coded; consider
+  `hhw_pump_head_safety_margin`.
+- The boiler model record in `CentralHeatingPlant.mo` is hard-coded just
+  like the chiller catalog in `CoolingPlant_Instance.mopt`.
+
+---
+
 ## Appendix — keys at a glance
 
 Required for any 4G central cooling plant:
@@ -343,3 +500,21 @@ All of these flow through to the generated Modelica with the template patch
 applied. Without the patch, only the `dp*` keys, the pump heads, the
 cooling-tower fan power, and the values inside the pump performance curves
 actually have any effect — the rest are silently ignored.
+
+Required for any 4G central heating plant:
+
+```text
+heat_flow_nominal                            – plant heating capacity, W
+mass_hhw_flow_nominal                        – kg/s
+boiler_water_flow_minimum                    – kg/s
+pressure_drop_hhw_nominal                    – Pa
+pressure_drop_setpoint                       – Pa (lives on the network, not the plant)
+temp_setpoint_hhw                            – °C (wired via the network↔plant coupling)
+pressure_drop_hhw_valve_nominal              – Pa (not currently consumed)
+chp_installed                                – bool
+chp_thermal_following                        – bool (only if chp_installed = true)
+```
+
+All of these flow through with the `2026-05-20` template patch applied.
+Without the patch, `Q_flow_nominal` was hard-coded to `1 000 000 × 2` and
+`dpBoi_nominal` to `10 000`, regardless of what your sys_params said.

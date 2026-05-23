@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import re
 from pathlib import Path
 
 import pytest
@@ -59,6 +60,29 @@ class DistrictHeatingSystemTest(TestCaseBase):
     def test_build_district_heating_system(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
+
+    def test_heating_plant_sys_params_are_propagated(self):
+        """Verify central heating plant parameters from sys_params are rendered in Modelica."""
+        district_mo_file = Path(self.district._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+        mo_content = district_mo_file.read_text()
+
+        # The fixture sets heat_flow_nominal=8001, mass_hhw_flow_nominal=1,
+        # boiler_water_flow_minimum=0.1, and pressure_drop_hhw_nominal=55001.
+        q_match = re.search(r"Q_flow_nominal_(\w+)\s*=\s*8001\b", mo_content)
+        assert q_match is not None, "Q_flow_nominal should propagate heat_flow_nominal from sys_params"
+        plant_id = q_match.group(1)
+
+        assert re.search(r"mHW_flow_nominal_\w+\s*=\s*1\b", mo_content), (
+            "mHW_flow_nominal should propagate mass_hhw_flow_nominal from sys_params"
+        )
+        assert re.search(r"dpBoi_nominal_\w+\s*=\s*55001\b", mo_content), (
+            "dpBoi_nominal should propagate pressure_drop_hhw_nominal from sys_params"
+        )
+
+        compact = "".join(mo_content.split())
+        assert f"mMin_flow_{plant_id}=0.1/{plant_id}.numBoi" in compact, (
+            "mMin_flow should be boiler_water_flow_minimum divided by numBoi"
+        )
 
     @pytest.mark.simulation
     def test_simulate_district_heating_system(self):

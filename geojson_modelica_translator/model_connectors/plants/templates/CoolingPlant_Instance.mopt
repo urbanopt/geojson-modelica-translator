@@ -91,9 +91,9 @@ revisions="<html>
 <ul>
 <li>
 May 20, 2026, by Nicholas Long:<br/>
-Sys_params keys mass_chw_flow_nominal, mass_cw_flow_nominal, heat_flow_nominal,
+SystemParameters keys mass_chw_flow_nominal, mass_cw_flow_nominal, heat_flow_nominal,
 chiller_water_flow_minimum, and temp_setpoint_chw now propagate into the
-generated cooling plant Modelica.
+generated cooling plant.
 Within GMT, see docs/sizing_district_systems.md for sizing guidance.
 </li>
 <li>
