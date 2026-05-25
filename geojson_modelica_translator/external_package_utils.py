@@ -74,19 +74,16 @@ def set_loop_order_data_in_template_params(
             ordered_feature_list.extend(loop["list_source_ids_in_group"])
 
     for feature in ordered_feature_list:
-        for dict_feature, pipe_length in dict_of_pipe_lengths.items():
-            if dict_feature == feature:
-                ordered_pipe_list.append(pipe_length)
+        pipe_length = dict_of_pipe_lengths.get(feature)
+        if pipe_length is not None:
+            ordered_pipe_list.append(pipe_length)
 
     if ordered_pipe_list:
         template_params["globals"]["lDis"] = str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
         template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
     else:
-        logger.warning(
-            "No thermal connector lengths matched loop-order features; using zero-length lDis and lEnd=0."
-        )
-        num_buildings = template_params.get("sys_params", {}).get("num_buildings", 0)
-        ldis_count = max(int(num_buildings) - 1, 0)
+        logger.warning("No thermal connector lengths matched loop-order features; using zero-length lDis and lEnd=0.")
+        ldis_count = max(get_num_buildings_in_loop_order(loop_order) - 1, 0)
         template_params["globals"]["lDis"] = f"fill(0, {ldis_count})"
         template_params["globals"]["lEnd"] = 0
     return template_params
