@@ -122,7 +122,9 @@ class District:
                     num_boreholes = len(borefield["pre_designed_borefield"]["borehole_x_coordinates"])
                 number_of_boreholes_dict[ghe_id] = num_boreholes
             common_template_params["number_of_boreholes"] = number_of_boreholes_dict
-            common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values())
+            # Allow 5G systems that have ghe_parameters defined but no borefields listed.
+            # A zero default avoids crashing on max([]) and keeps template math deterministic.
+            common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values(), default=0)
 
             # load loop order info from ThermalNetwork
             loop_order = load_loop_order(self.system_parameters.filename)
