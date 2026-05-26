@@ -46,7 +46,6 @@ class ModelicaRunnerTest(unittest.TestCase):
         mr = ModelicaRunner()
         if not mr.docker_configured:
             pytest.skip("Docker is not running on this host")
-        assert mr.docker_configured, "Docker is not running, unable to run all tests"
 
     @pytest.mark.docker
     def test_invalid_action(self):
