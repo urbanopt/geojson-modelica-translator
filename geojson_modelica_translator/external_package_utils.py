@@ -158,3 +158,45 @@ def set_minimum_dhw_load(data_dir) -> None:
             f"Could not find Modelica data directory {data_dir}. Perhaps there are no loads in the model,"
             " and perhaps that is intentional."
         )
+
+
+def normalize_package_order(package_dir: Path) -> None:
+    """Ensure a package.order lists all local .mo files and subpackages.
+
+    Existing order entries are preserved; missing names are appended in sorted order.
+    """
+    package_dir = Path(package_dir)
+    package_mo = package_dir / "package.mo"
+    if not package_mo.is_file():
+        return
+
+    local_models = {mo_file.stem for mo_file in package_dir.glob("*.mo") if mo_file.name != "package.mo"}
+    local_subpackages = {
+        subdir.name for subdir in package_dir.iterdir() if subdir.is_dir() and (subdir / "package.mo").is_file()
+    }
+    expected_names = local_models | local_subpackages
+
+    order_path = package_dir / "package.order"
+    existing_order = []
+    if order_path.is_file():
+        existing_order = [line.strip() for line in order_path.read_text().splitlines() if line.strip()]
+
+    normalized_order = []
+    seen = set()
+    for name in existing_order:
+        if name in expected_names and name not in seen:
+            normalized_order.append(name)
+            seen.add(name)
+
+    missing_names = sorted(expected_names - seen)
+    normalized_order.extend(missing_names)
+
+    if normalized_order:
+        order_path.write_text("\n".join(normalized_order) + "\n")
+
+
+def normalize_package_orders_recursively(root_dir: Path) -> None:
+    """Normalize package.order files for all packages under a project root."""
+    root_dir = Path(root_dir)
+    for package_mo in root_dir.rglob("package.mo"):
+        normalize_package_order(package_mo.parent)

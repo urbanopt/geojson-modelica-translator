@@ -12,7 +12,12 @@ lengths are found. It ensures the function:
 import json
 from pathlib import Path
 
-from geojson_modelica_translator.external_package_utils import load_loop_order, set_loop_order_data_in_template_params
+from geojson_modelica_translator.external_package_utils import (
+    load_loop_order,
+    normalize_package_order,
+    normalize_package_orders_recursively,
+    set_loop_order_data_in_template_params,
+)
 
 
 def test_set_loop_order_data_handles_no_matching_pipe_lengths():
@@ -87,3 +92,40 @@ def test_load_loop_order_raises_for_non_5g_when_missing(tmp_path: Path):
         raise AssertionError("Expected FileNotFoundError for missing loop order in non-5G params")
     except FileNotFoundError:
         pass
+
+
+def test_normalize_package_order_appends_missing_models_and_subpackages(tmp_path: Path):
+    package_dir = tmp_path / "Networks"
+    package_dir.mkdir()
+    (package_dir / "package.mo").write_text("within Demo; package Networks end Networks;\n")
+    (package_dir / "Existing.mo").write_text("within Demo.Networks; model Existing end Existing;\n")
+    (package_dir / "Missing.mo").write_text("within Demo.Networks; model Missing end Missing;\n")
+    nested = package_dir / "SubPkg"
+    nested.mkdir()
+    (nested / "package.mo").write_text("within Demo.Networks; package SubPkg end SubPkg;\n")
+    (package_dir / "package.order").write_text("Existing\n")
+
+    normalize_package_order(package_dir)
+
+    order = (package_dir / "package.order").read_text().splitlines()
+    assert order[0] == "Existing"
+    assert "Missing" in order
+    assert "SubPkg" in order
+
+
+def test_normalize_package_orders_recursively_updates_nested_packages(tmp_path: Path):
+    root = tmp_path / "Demo"
+    loads_dir = root / "Loads" / "B1"
+    loads_dir.mkdir(parents=True)
+    (loads_dir / "package.mo").write_text("within Demo.Loads; package B1 end B1;\n")
+    (loads_dir / "TimeSeriesBuilding.mo").write_text(
+        "within Demo.Loads.B1; model TimeSeriesBuilding end TimeSeriesBuilding;\n"
+    )
+    (loads_dir / "building.mo").write_text("within Demo.Loads.B1; model building end building;\n")
+    (loads_dir / "package.order").write_text("building\n")
+
+    normalize_package_orders_recursively(root)
+
+    order = (loads_dir / "package.order").read_text().splitlines()
+    assert "building" in order
+    assert "TimeSeriesBuilding" in order

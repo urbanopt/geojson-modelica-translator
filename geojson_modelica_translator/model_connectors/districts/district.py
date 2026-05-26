@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from geojson_modelica_translator.external_package_utils import (
     get_num_buildings_in_loop_order,
     load_loop_order,
+    normalize_package_orders_recursively,
     set_loop_order_data_in_template_params,
     set_minimum_dhw_load,
 )
@@ -215,3 +216,6 @@ class District:
         # Enforce minimum DHW load in Modelica model
         data_dir = Path(self._scaffold.project_path) / "Loads" / "Resources" / "Data"
         set_minimum_dhw_load(data_dir)
+
+        # Ensure package.order files include all generated local models/subpackages.
+        normalize_package_orders_recursively(self._scaffold.project_path)
