@@ -7,6 +7,35 @@ from modelica_builder.modelica_mos_file import ModelicaMOS
 logger = logging.getLogger(__name__)
 
 
+def _build_default_loop_order(sys_param_data: dict) -> list | None:
+    """Build a conservative default loop-order structure from system params.
+
+    This fallback is used only when _loop_order.json is missing.
+    """
+    fg = sys_param_data.get("district_system", {}).get("fifth_generation")
+    if not fg:
+        return None
+
+    buildings = sys_param_data.get("buildings", [])
+    bldg_ids = [b.get("geojson_id") for b in buildings if b.get("geojson_id")]
+    if not bldg_ids:
+        return None
+
+    loop_group = {"list_bldg_ids_in_group": bldg_ids}
+
+    borefields = fg.get("ghe_parameters", {}).get("borefields", [])
+    ghe_ids = [b.get("ghe_id") for b in borefields if b.get("ghe_id")]
+    if ghe_ids:
+        loop_group["list_ghe_ids_in_group"] = [ghe_ids[0]]
+
+    heat_sources = fg.get("heat_source_parameters", [])
+    source_ids = [s.get("heat_source_id") for s in heat_sources if s.get("heat_source_id")]
+    if source_ids:
+        loop_group["list_source_ids_in_group"] = [source_ids[0]]
+
+    return [loop_group]
+
+
 def load_loop_order(system_parameters_file: Path) -> list:
     """Loads the loop order from a JSON file
 
@@ -17,7 +46,16 @@ def load_loop_order(system_parameters_file: Path) -> list:
     """
     loop_order_path = Path(system_parameters_file).parent / "_loop_order.json"
     if not loop_order_path.is_file():
-        raise FileNotFoundError(f"Loop order file not found at {loop_order_path}")
+        sys_param_data = json.loads(Path(system_parameters_file).read_text())
+        default_loop_order = _build_default_loop_order(sys_param_data)
+        if default_loop_order is None:
+            raise FileNotFoundError(f"Loop order file not found at {loop_order_path}")
+        loop_order_path.write_text(json.dumps(default_loop_order, indent=2))
+        logger.warning(
+            "Loop order file was missing. Wrote default loop-order structure to %s",
+            loop_order_path,
+        )
+        return default_loop_order
     return json.loads(loop_order_path.read_text())
 
 
