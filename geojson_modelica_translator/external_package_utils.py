@@ -170,9 +170,7 @@ def normalize_package_order(package_dir: Path) -> None:
     if not package_mo.is_file():
         return
 
-    local_models = {
-        mo_file.stem for mo_file in package_dir.glob("*.mo") if mo_file.name != "package.mo"
-    }
+    local_models = {mo_file.stem for mo_file in package_dir.glob("*.mo") if mo_file.name != "package.mo"}
     local_subpackages = {
         subdir.name for subdir in package_dir.iterdir() if subdir.is_dir() and (subdir / "package.mo").is_file()
     }
