@@ -7,6 +7,35 @@ from modelica_builder.modelica_mos_file import ModelicaMOS
 logger = logging.getLogger(__name__)
 
 
+def _build_default_loop_order(sys_param_data: dict) -> list | None:
+    """Build a conservative default loop-order structure from system params.
+
+    This fallback is used only when _loop_order.json is missing.
+    """
+    fg = sys_param_data.get("district_system", {}).get("fifth_generation")
+    if not fg:
+        return None
+
+    buildings = sys_param_data.get("buildings", [])
+    bldg_ids = [b.get("geojson_id") for b in buildings if b.get("geojson_id")]
+    if not bldg_ids:
+        return None
+
+    loop_group = {"list_bldg_ids_in_group": bldg_ids}
+
+    borefields = fg.get("ghe_parameters", {}).get("borefields", [])
+    ghe_ids = [b.get("ghe_id") for b in borefields if b.get("ghe_id")]
+    if ghe_ids:
+        loop_group["list_ghe_ids_in_group"] = [ghe_ids[0]]
+
+    heat_sources = fg.get("heat_source_parameters", [])
+    source_ids = [s.get("heat_source_id") for s in heat_sources if s.get("heat_source_id")]
+    if source_ids:
+        loop_group["list_source_ids_in_group"] = [source_ids[0]]
+
+    return [loop_group]
+
+
 def load_loop_order(system_parameters_file: Path) -> list:
     """Loads the loop order from a JSON file
 
@@ -17,7 +46,16 @@ def load_loop_order(system_parameters_file: Path) -> list:
     """
     loop_order_path = Path(system_parameters_file).parent / "_loop_order.json"
     if not loop_order_path.is_file():
-        raise FileNotFoundError(f"Loop order file not found at {loop_order_path}")
+        sys_param_data = json.loads(Path(system_parameters_file).read_text())
+        default_loop_order = _build_default_loop_order(sys_param_data)
+        if default_loop_order is None:
+            raise FileNotFoundError(f"Loop order file not found at {loop_order_path}")
+        loop_order_path.write_text(json.dumps(default_loop_order, indent=2))
+        logger.warning(
+            "Loop order file was missing. Wrote default loop-order structure to %s",
+            loop_order_path,
+        )
+        return default_loop_order
     return json.loads(loop_order_path.read_text())
 
 
@@ -74,12 +112,18 @@ def set_loop_order_data_in_template_params(
             ordered_feature_list.extend(loop["list_source_ids_in_group"])
 
     for feature in ordered_feature_list:
-        for dict_feature, pipe_length in dict_of_pipe_lengths.items():
-            if dict_feature == feature:
-                ordered_pipe_list.append(pipe_length)
+        pipe_length = dict_of_pipe_lengths.get(feature)
+        if pipe_length is not None:
+            ordered_pipe_list.append(pipe_length)
 
-    template_params["globals"]["lDis"] = str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
-    template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
+    if ordered_pipe_list:
+        template_params["globals"]["lDis"] = str(ordered_pipe_list[:-1]).replace("[", "{").replace("]", "}")
+        template_params["globals"]["lEnd"] = ordered_pipe_list[-1]
+    else:
+        logger.warning("No thermal connector lengths matched loop-order features; using zero-length lDis and lEnd=0.")
+        ldis_count = max(get_num_buildings_in_loop_order(loop_order) - 1, 0)
+        template_params["globals"]["lDis"] = f"fill(0, {ldis_count})"
+        template_params["globals"]["lEnd"] = 0
     return template_params
 
 

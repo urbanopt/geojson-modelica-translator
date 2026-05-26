@@ -172,10 +172,16 @@ class TimeSeries(LoadBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         :return: None
         """
-        # Create the building-specific package within Loads
+        # Create the building-specific package within Loads. Build the order from
+        # actual model files so package.order stays in sync with generated files.
         b_modelica_path = os.path.join(scaffold.loads_path.files_dir, self.building_name)
+        order_files = sorted(
+            os.path.splitext(fname)[0]
+            for fname in os.listdir(b_modelica_path)
+            if fname.endswith(".mo") and fname != "package.mo"
+        )
         new_package = PackageParser.new_from_template(
-            b_modelica_path, self.building_name, self.template_files_to_include, within=f"{scaffold.project_name}.Loads"
+            b_modelica_path, self.building_name, order_files, within=f"{scaffold.project_name}.Loads"
         )
         new_package.save()
 
