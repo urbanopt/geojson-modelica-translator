@@ -10,10 +10,21 @@ model buildingHPTrio
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
       T_aChiWat_nominal=ets.TChiWatSup_nominal,
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
-      facMulHea=10*QHea_flow_nominal/(1.7E5),
-      facMulCoo=40*QCoo_flow_nominal/(-1.5E5),
+      // Keep facMulHea dynamic from peak heating load, but never below 1.
+      // This avoids oversizing per-unit heating duty for low-load buildings,
+      // which can otherwise trigger eps_nominal > 1 during initialization.
+      // Assumes a nominal 170 kW per-unit heating duty for sizing the
+      // terminal-unit heat exchanger.
+      facMulHea=max(1, ceil(QHea_flow_nominal/(1.7E5))),
+      // Keep cooling sizing dynamic and bounded as well so low-load
+      // buildings do not inherit invalid per-unit nominal effectiveness.
+      // Assume a nominal 150 kW per-unit cooling duty for sizing the
+      // terminal-unit heat exchanger.
+      facMulCoo=max(1, ceil(abs(QCoo_flow_nominal)/(1.5E5))),
       delTAirCoo=10,
-      delTAirHea=20),
+      // Use a lower nominal heating air-side delta T for more robust
+      // initialization of terminal-unit heat exchanger nominal effectiveness.
+      delTAirHea=10),
     redeclare {{ data["project_name"] }}.Loads.ETS.HeatPumpTrio ets(
       proHeaWat(heaPum(use_eta_Carnot_nominal=use_eta_Carnot_nominal,
             etaCarnot_nominal=etaCarnot_heaPumHeaWat_nominal)),
@@ -144,6 +155,14 @@ and hot water loads are provided as time series.
 </html>",
       revisions="<html>
 <ul>
+<li>
+May 26, 2026, by Nicholas Long:<br/>
+Updated heating and cooling terminal-unit sizing for robustness by bounding
+<code>facMulHea</code> and <code>facMulCoo</code> to at least 1 using
+<code>max(1, ceil(...))</code>, and reduced <code>delTAirHea</code> to 10 K
+to avoid initialization failures from <code>eps_nominal &gt; 1</code> for
+low-load buildings.
+</li>
 <li>
 December 05, 2025, by Nicholas Long and Jing Wang:<br/>
 Templatized for use within the GMT framework.
