@@ -2,7 +2,37 @@
 
 ## Version 0.14.0
 
-* TEXT TK
+## What's Changed
+
+### Improvements & Bug Fixes 🐛
+
+* Add the different fluid options to modelica templates by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/820>
+* Expose 4G DES Chiller Plant System Parameters in Templates by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/847>
+* Expose 4G DES Boiler Plant System Parameters in Templates by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/848>
+* Improve sizing for mass flows and borehole field when cooling increases [5G template] by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/849>
+* Allow null loop order by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/850>
+* Make facMulHea and facMulCoo dynamic in 5G Template model by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/852>
+
+### Bug Fixes 🐞
+
+* update calculate_dimensions function to handle small geometry errors by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/816>
+* Add tests for pipe lengths order relative to loop order by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/817>
+* Ensure package.order exists and is correct by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/851>
+
+### Dependency Updates 📦
+
+* Bump mkdocstrings-python from 2.0.1 to 2.0.2 in the prod-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/814>
+* Update dependencies by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/834>
+* Update precommit and mypy dependencies by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/846>
+
+### Maintenance 🧹
+
+* Use updated GHA methods for deploying documentation by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/812>
+* Bump actions/upload-pages-artifact from 3 to 4 in the actions-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/813>
+* Bump the actions-deps group across 1 directory with 6 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/830>
+* Enforce line endings to be consistent using pre-commit by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/853>
+
+**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.13.0...v0.14.0>
 
 ## Version 0.13.0
 
