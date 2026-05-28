@@ -15,7 +15,7 @@
 
 ### Bug Fixes 🐞
 
-* update calculate_dimensions function to handle small geometry errors by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/816>
+* Update calculate_dimensions function to handle small geometry errors by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/816>
 * Add tests for pipe lengths order relative to loop order by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/817>
 * Ensure package.order exists and is correct by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/851>
 
