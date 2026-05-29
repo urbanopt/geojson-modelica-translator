@@ -171,7 +171,7 @@ simulation mapper class from existing at that level.
 
 The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)` method. This is useful for running Modelica simulations via Python and Docker using OpenModelica. This package's test suite also uses `ModelicaRunner` to run our test models with OpenModelica.
 
-## Release Instructions
+## Release Instructions with Documentation
 
 1. Create a branch named `release-0.x.`
 1. Update version in `pyproject.toml`
@@ -179,14 +179,35 @@ The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)
 1. After tests pass, merge branch into develop
 1. From local command line, merge develop into main with: `git checkout main; git pull; git merge --ff-only origin develop; git push`
 1. In GitHub, tag the release against main. Copy and paste the changelog entry into the notes. Verify the release is posted to PyPI.
+1. When you push a commit to the `main` branch (for any folder, including `docs`), the automated GitHub Actions workflow will automatically build and deploy the documentation to GitHub Pages
+1. Wait a few minutes, then verify the new documentation on the [docs website](https://docs.urbanopt.net/geojson-modelica-translator/)
 
-### Build and release the documentation
+### Documentation Development
 
 During development we can [serve docs locally](https://squidfunk.github.io/mkdocs-material/creating-your-site/#previewing-as-you-write) and view updates as they are made.
 
-   1. Start a documentation update branch: `git switch -c <branch_name>`
    1. `poetry run mkdocs serve`
    1. Point browser to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-- To deploy, push a commit in the `docs` folder to the `main` branch
-- Wait a few minutes, then verify the new documentation on the [docs website](https://docs.urbanopt.net/geojson-modelica-translator/)
+#### Manual Documentation Build and Deployment
+
+If the automated documentation workflow fails or you need to manually build and deploy the documentation:
+
+1. Build the documentation locally:
+
+   ```bash
+   poetry run mkdocs build --strict
+   ```
+
+   This generates the documentation in the `site/` directory.
+
+2. To manually push to GitHub Pages (deploy to the `gh-pages` branch):
+   Or use a more straightforward approach with `subtree`:
+
+   ```bash
+   git subtree push --prefix site origin gh-pages --force
+   ```
+
+3. Verify the deployment at [https://docs.urbanopt.net/geojson-modelica-translator/](https://docs.urbanopt.net/geojson-modelica-translator/) (may take a minute to refresh)
+
+**Note:** The `--force` flag overwrites the remote branch. Only use this when you're certain the documentation is correct and no one else is pushing to gh-pages simultaneously.
