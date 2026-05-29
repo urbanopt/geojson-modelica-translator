@@ -1,0 +1,1946 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../input_file_documentation/">
+      
+      
+        <link rel="next" href="../developer_resources/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Sizing District Systems - Geojson to Modelica Translator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sizing-district-system-variables-in-sys_paramsjson" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Geojson to Modelica Translator" class="md-header__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Geojson to Modelica Translator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sizing District Systems
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Geojson to Modelica Translator" class="md-nav__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Geojson to Modelica Translator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../input_file_documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input File Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sizing District Systems
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sizing District Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-shape-of-the-central-cooling-plant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The shape of the central cooling plant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-step-by-step-sizing-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Step-by-step sizing recipe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Step-by-step sizing recipe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-pick-the-plant-design-capacity-heat_flow_nominal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — pick the plant design capacity (heat_flow_nominal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-derive-mass_chw_flow_nominal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — derive mass_chw_flow_nominal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-size-mass_cw_flow_nominal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — size mass_cw_flow_nominal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-set-chiller_water_flow_minimum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — set chiller_water_flow_minimum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-pressure-drops-and-pump-heads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — pressure drops and pump heads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-cooling-tower-geometry-and-ambient-design-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — cooling-tower geometry and ambient design conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sanity-check-rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sanity-check rules of thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-common-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Common failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-known-limitations-of-the-current-4g-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Known limitations of the current 4G template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-worked-example-8-mw-cold-climate-district-buffalo-ny" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Worked example: 8 MW cold-climate district (Buffalo NY)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-central-heating-plant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Central heating plant
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Central heating plant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-sizing-recipe-heating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step sizing recipe (heating)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sanity-check-rules-heating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sanity-check rules (heating)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example-heating-plant-for-the-same-8-mw-district" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: heating plant for the same 8 MW district
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations-of-the-heating-plant-patch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitations of the heating-plant patch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-keys-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix — keys at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer_resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Schema
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/system_parameter_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    system_parameter_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/electrical_connector_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    electrical_connector_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/region_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    region_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/district_system_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    district_system_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/thermal_junction_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thermal_junction_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/thermal_connector_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thermal_connector_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/site_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    site_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/building_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    building_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/electrical_junction_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    electrical_junction_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-shape-of-the-central-cooling-plant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The shape of the central cooling plant
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-step-by-step-sizing-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Step-by-step sizing recipe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Step-by-step sizing recipe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-pick-the-plant-design-capacity-heat_flow_nominal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — pick the plant design capacity (heat_flow_nominal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-derive-mass_chw_flow_nominal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — derive mass_chw_flow_nominal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-size-mass_cw_flow_nominal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — size mass_cw_flow_nominal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-set-chiller_water_flow_minimum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — set chiller_water_flow_minimum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-pressure-drops-and-pump-heads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — pressure drops and pump heads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-cooling-tower-geometry-and-ambient-design-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — cooling-tower geometry and ambient design conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-sanity-check-rules-of-thumb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sanity-check rules of thumb
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-common-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Common failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-known-limitations-of-the-current-4g-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Known limitations of the current 4G template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-worked-example-8-mw-cold-climate-district-buffalo-ny" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Worked example: 8 MW cold-climate district (Buffalo NY)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-central-heating-plant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Central heating plant
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Central heating plant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-sizing-recipe-heating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step sizing recipe (heating)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sanity-check-rules-heating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sanity-check rules (heating)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worked-example-heating-plant-for-the-same-8-mw-district" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: heating plant for the same 8 MW district
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations-of-the-heating-plant-patch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitations of the heating-plant patch
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-keys-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix — keys at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sizing-district-system-variables-in-sys_paramsjson">Sizing district-system variables in <code>sys_params.json</code></h1>
+<p>This document explains how to size the variables under
+<code>district_system.fourth_generation.central_cooling_plant_parameters</code> and
+<code>district_system.fourth_generation.central_heating_plant_parameters</code> in a
+GMT system parameter file so that the generated Modelica package will
+compile, simulate, and produce physically reasonable results. Sections 1–6
+cover the cooling plant; section 7 covers the heating plant.</p>
+<p>Background: until the template patch that ships alongside this document, several
+of these keys were silently ignored — the GMT template hard-coded values like
+<code>mCHW_flow_nominal = numChi*3</code>. That meant <code>sys_params.json</code> and the generated
+Modelica could diverge dramatically and the user would have no obvious way to
+know. The patch removes the hard-codes; this document explains how to fill the
+keys in correctly.</p>
+<p>If a simulation fails with a freeze assertion in <code>Buildings.Media.Water</code> (the
+"Temperature T exceeded its minimum allowed value of -1 degC" message), the
+plant is almost certainly under-sized relative to the building loads connected
+to it. Read on.</p>
+<hr />
+<h2 id="1-the-shape-of-the-central-cooling-plant">1. The shape of the central cooling plant</h2>
+<p>The GMT 4G cooling plant is a parallel arrangement of <code>numChi</code> water-cooled
+electric chillers (currently hard-coded to 2 in <code>DistrictEnergySystem.mot</code>),
+each connected to a parallel arrangement of <code>numChi</code> cooling-tower cells and a
+common pair of pump headers:</p>
+<pre><code class="language-text">                ┌────────────┐
+        ┌──────►│  Chiller 1 ├──────►┐
+   CHW  │       └────────────┘       │  CW
+   loop │            ...             │  loop
+        └──────►┌────────────┐──────►┘
+                │  Chiller N │
+                └────────────┘
+                       ▲
+                       │ heat rejection
+                ┌──────┴─────┐
+                │  Cooling   │
+                │ Tower (×N) │
+                └────────────┘
+</code></pre>
+<p>There are three flow circuits to size:</p>
+<table>
+<thead>
+<tr>
+<th>Circuit</th>
+<th>Modelica parameter</th>
+<th>sys_params key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CHW (district side, distributes chilled water to building ETSs)</td>
+<td><code>mCHW_flow_nominal</code></td>
+<td><code>mass_chw_flow_nominal</code></td>
+</tr>
+<tr>
+<td>CW (condenser loop between chiller condenser and cooling tower)</td>
+<td><code>mCW_flow_nominal</code></td>
+<td><code>mass_cw_flow_nominal</code></td>
+</tr>
+<tr>
+<td>Per-chiller turndown floor</td>
+<td><code>mMin_flow</code></td>
+<td><code>chiller_water_flow_minimum</code></td>
+</tr>
+</tbody>
+</table>
+<p>and one capacity:</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Modelica parameter</th>
+<th>sys_params key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plant evaporator capacity (W, positive number; the template negates it)</td>
+<td><code>QEva_nominal</code></td>
+<td><code>heat_flow_nominal</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-step-by-step-sizing-recipe">2. Step-by-step sizing recipe</h2>
+<p>The four flow / capacity keys are not independent — they must be internally
+consistent or the chiller catalog model will misbehave.</p>
+<h3 id="step-1-pick-the-plant-design-capacity-heat_flow_nominal">Step 1 — pick the plant design capacity (<code>heat_flow_nominal</code>)</h3>
+<p>This should be the <strong>coincident peak cooling load</strong> of all buildings on the
+district, in watts. Quick paths to a number:</p>
+<ul>
+<li>Take the coincident peak from your building-load export (e.g., the OpenStudio measure that produces
+  <code>xx_export_modelica_loads/modelica.mos</code> files; look at the cooling column —
+  it's signed negative in the <code>.mos</code> per Modelica convention). Sum across
+  buildings hour-by-hour and take the max.</li>
+<li>Or, if you have URBANopt's OpenStudio results, use the district-level
+  coincident peak cooling.</li>
+<li>Increase ~10–15 percent for sizing margin (HVAC convention).</li>
+</ul>
+<p>The chiller catalog record currently hard-coded in
+<code>CoolingPlant_Instance.mopt</code> is <code>ElectricEIRChiller_Carrier_19EX_5208kW…</code>,
+which is 5.2 MW per unit. With <code>numberofchillers = 2</code>, total installed
+capacity is 10.4 MW. Aim for <code>heat_flow_nominal ≤ 10.4 MW</code> (that is,
+<code>numberofchillers × catalog_capacity</code> with the current fixed value of 2) or
+you'll over-rely on a single chiller.</p>
+<h3 id="step-2-derive-mass_chw_flow_nominal">Step 2 — derive <code>mass_chw_flow_nominal</code></h3>
+<p>For a chilled-water system with design ΔT of 5–9 K between supply and return:</p>
+<pre><code class="language-text">m_CHW [kg/s]  =  heat_flow_nominal [W]  /  (cp_water [J/kg·K] × ΔT_CHW [K])
+              =  Q  /  (4184 × 5)   ≈  Q / 20,920          for ΔT = 5 K
+              =  Q  /  (4184 × 9)   ≈  Q / 37,656          for ΔT = 9 K
+</code></pre>
+<p>In sys_params, <code>delta_temp_chw_district</code> defaults to 8 K. Pick a ΔT consistent
+with the building ETS settings (<code>delta_temp_chw_building</code>) and:</p>
+<pre><code class="language-json">// 8 MW plant, ΔT = 5 K → m_CHW ≈ 382 kg/s
+// 8 MW plant, ΔT = 9 K → m_CHW ≈ 212 kg/s
+// 8 MW plant, ΔT = 14 K (legacy GMT default in mopt) → m_CHW ≈ 136 kg/s
+// Example below assumes a smaller coincident peak, not the full 8 MW:
+// 3.2 MW coincident peak, ΔT = 9 K → m_CHW ≈ 85 kg/s
+&quot;mass_chw_flow_nominal&quot;: 85
+</code></pre>
+<p>A common practical compromise is to size <code>mass_chw_flow_nominal</code> to the
+<em>coincident</em> peak, not the simple sum of building design flows — that's
+usually 50–70 % of the latter in a mixed-use district. The guidance:</p>
+<ul>
+<li>If you don't know better, start with <code>Q_coincident / (4184 × ΔT_CHW)</code>; for
+  example, at a 5 K CHW design ΔT this becomes <code>Q_coincident / (4184 × 5)</code>.</li>
+<li>If freeze assertions on the CW loop appear, the issue is usually that the
+  CW loop has too little <strong>thermal mass</strong>, not CHW — see Step 3.</li>
+<li>If you see chillers stuck at 0 or 100 % and CHW temperatures swing
+  dramatically, the chilled-water flow is too small.</li>
+</ul>
+<h3 id="step-3-size-mass_cw_flow_nominal">Step 3 — size <code>mass_cw_flow_nominal</code></h3>
+<p>For a water-cooled chiller, assume:</p>
+<pre><code class="language-text">m_CW  ≈  1.0  to  1.25  ×  m_CHW
+</code></pre>
+<p>The 1.25x factor accounts for the chiller's compressor work being rejected to
+the condenser. A typical electric chiller rejects roughly
+<code>(1 + 1/COP) × Q_evap</code> to the tower; with COP ≈ 6.88 (the catalog record) the
+heat rejected is about 1.15 * Q_evap, hence the ratio.</p>
+<pre><code class="language-json">// Example for m_CHW = 85 kg/s
+&quot;mass_cw_flow_nominal&quot;: 100
+</code></pre>
+<p><strong>This is the variable that most directly prevents the freeze-assertion
+failure mode.</strong> When the cooling tower is fed too little CW, the small loop
+thermal mass cannot absorb the heat rejected by the chiller compared to the
+heat lost to a cold ambient (cold-climate winter, sub-zero wet-bulb), and the
+loop temperature plunges past −1 °C, triggering the medium's bounds check.</p>
+<h3 id="step-4-set-chiller_water_flow_minimum">Step 4 — set <code>chiller_water_flow_minimum</code></h3>
+<p>In <code>sys_params.json</code>, this value is the <strong>plant-level</strong> chilled-water minimum
+flow. The template then divides it by <code>numChi</code> internally to obtain each
+chiller's <code>mMin_flow</code>. Therefore, size <code>chiller_water_flow_minimum</code> as
+20–30 % of the plant-level <code>mass_chw_flow_nominal</code>:</p>
+<pre><code class="language-json">// 85 kg/s plant nominal, 25 % turndown → ~21 kg/s plant minimum
+&quot;chiller_water_flow_minimum&quot;: 20
+</code></pre>
+<p>Setting <code>chiller_water_flow_minimum == mass_chw_flow_nominal</code>
+forces the plant to push design flow even when district demand is small (e.g.,
+winter), which is the <em>other</em> cause of CW loop freezing — the cold-weather
+overcooling failure mode.</p>
+<p>Going below ~20 % can stall the chiller's flow-proven
+interlock at part-load.</p>
+<h3 id="step-5-pressure-drops-and-pump-heads">Step 5 — pressure drops and pump heads</h3>
+<p>These do propagate through the template already and are simpler:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Typical</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pressure_drop_chw_nominal</code></td>
+<td>30 000 – 60 000 Pa</td>
+<td>Evaporator-side ΔP across the chiller bundle</td>
+</tr>
+<tr>
+<td><code>pressure_drop_cw_nominal</code></td>
+<td>30 000 – 60 000 Pa</td>
+<td>Condenser-side ΔP</td>
+</tr>
+<tr>
+<td><code>pressure_drop_setpoint</code></td>
+<td>50 000 Pa</td>
+<td>Differential pressure setpoint at remote sensor</td>
+</tr>
+<tr>
+<td><code>chw_pump_head</code></td>
+<td>200 000 – 400 000 Pa</td>
+<td>Chilled-water pump design head</td>
+</tr>
+<tr>
+<td><code>cw_pump_head</code></td>
+<td>150 000 – 250 000 Pa</td>
+<td>Condenser pump design head</td>
+</tr>
+<tr>
+<td><code>pressure_drop_chw_valve_nominal</code></td>
+<td>6 000 Pa</td>
+<td>Throttling valve at chiller</td>
+</tr>
+<tr>
+<td><code>pressure_drop_cw_pum_nominal</code></td>
+<td>6 000 Pa</td>
+<td>CW pump fitting losses</td>
+</tr>
+</tbody>
+</table>
+<p>The CHW pump head should be at least
+<code>pressure_drop_chw_nominal + pressure_drop_setpoint + distribution_loop_drop</code>.
+The template internally adds 200 000 Pa of margin, so being a bit conservative
+on <code>chw_pump_head</code> is fine.</p>
+<h3 id="step-6-cooling-tower-geometry-and-ambient-design-conditions">Step 6 — cooling-tower geometry and ambient design conditions</h3>
+<p>These have less effect than the flow values for "will it run" but matter for
+realism:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temp_setpoint_chw</code></td>
+<td>District CHW supply setpoint, °C. 6 °C is a typical 4G value. The template now reads this directly (was hard-coded 5 °C).</td>
+</tr>
+<tr>
+<td><code>temp_air_wb_nominal</code></td>
+<td>Design wet-bulb at peak cooling, °C. 24.9 °C is OK for moderate-humidity climates; for cold-winter climates like Buffalo NY, use ~22–24 °C.</td>
+</tr>
+<tr>
+<td><code>temp_cw_in_nominal</code></td>
+<td>Design CW return temperature into the chiller, °C. 34.9 °C is typical for water-cooled chillers.</td>
+</tr>
+<tr>
+<td><code>cooling_tower_water_temperature_difference_nominal</code></td>
+<td>CW range across the tower, K. 6–8 K typical.</td>
+</tr>
+<tr>
+<td><code>delta_temp_approach</code></td>
+<td>Tower approach (CW supply − wet-bulb), K. 3–5 K is normal; lower = bigger / more expensive tower.</td>
+</tr>
+<tr>
+<td><code>ratio_water_air_nominal</code></td>
+<td>L/G ratio of the tower. 0.5–1.0 typical.</td>
+</tr>
+<tr>
+<td><code>cooling_tower_fan_power_nominal</code></td>
+<td>Total fan power at design air flow, W. Roughly 0.5–1 % of <code>heat_flow_nominal</code> for a typical induced-draft cell.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-sanity-check-rules-of-thumb">3. Sanity-check rules of thumb</h2>
+<p>Once you've filled in the values, sanity-check the consistency:</p>
+<ol>
+<li>
+<p><strong>Capacity / flow / ΔT identity</strong>:
+   <code>heat_flow_nominal ≈ mass_chw_flow_nominal × 4184 × delta_temp_chw_district</code>
+   Within ±15 % is fine; large mismatches will produce nonsense chiller
+   part-load operation.</p>
+</li>
+<li>
+<p><strong>CW / CHW flow ratio</strong>:
+   <code>mass_cw_flow_nominal / mass_chw_flow_nominal</code> between <strong>1.0 and 1.4</strong>.</p>
+</li>
+<li>
+<p><strong>Plant capacity vs catalog</strong>:
+   <code>heat_flow_nominal ≤ numberofchillers × QEva_flow_nominal_per_chiller</code>.
+   The currently hard-coded chiller record is 5208 kW × 2 chillers = 10.4 MW.</p>
+</li>
+<li>
+<p><strong>Cooling-tower throughput</strong>:
+   <code>cooling_tower_water_temperature_difference_nominal × mass_cw_flow_nominal
+   × 4184  ≈  heat_flow_nominal × (1 + 1/COP)</code>.</p>
+</li>
+<li>
+<p><strong>Turndown sane</strong>:
+   <code>0.15 × mass_chw_flow_nominal  ≤  chiller_water_flow_minimum  ≤
+    0.35 × mass_chw_flow_nominal</code>.</p>
+</li>
+<li>
+<p><strong>Wet-bulb consistency with weather</strong>:
+   <code>temp_air_wb_nominal</code> should be reasonably close to the 99 %ile WB of the
+   actual TMY3 / EPW file. For a Buffalo TMY3 that's ~22 °C; the GMT default
+   of 24.9 °C is fine for sizing but overstates the <em>design</em> approach in cold
+   climates.</p>
+</li>
+<li>
+<p><strong>Building-side consistency</strong> (in each <code>ets_indirect_parameters</code>):</p>
+</li>
+<li><code>delta_temp_chw_district</code> ≥ <code>delta_temp_chw_building</code></li>
+<li><code>nominal_mass_flow_building</code> × ΔT_chw_building × 4184  ≈  per-building
+     coincident cooling load.</li>
+</ol>
+<hr />
+<h2 id="4-common-failure-modes">4. Common failure modes</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assert: Temperature T = 26x.x K exceeded minimum -1 degC</code> in <code>cooPla.cooTowWitByp.cooTowSys.cooTow[i].vol</code> or <code>cooPla.pumCW.pum[i]</code></td>
+<td>CW loop too small; freezes when ambient wet-bulb &lt;&lt; 0 °C</td>
+<td>Increase <code>mass_cw_flow_nominal</code> to 1.0–1.25 × <code>mass_chw_flow_nominal</code>. Lower <code>chiller_water_flow_minimum</code> so plant can turn down.</td>
+</tr>
+<tr>
+<td>Same assert but on the CHW side (e.g. <code>senTCHWRet.T &lt; 272.15</code>)</td>
+<td>CHW flow too small relative to building demand</td>
+<td>Increase <code>mass_chw_flow_nominal</code> to match coincident peak / ΔT</td>
+</tr>
+<tr>
+<td><code>Pantelides index reduction failed! System is structurally singular</code> at translate time, but simulation still runs</td>
+<td>OpenModelica analytic-index issue with the assembled plant; not a sizing problem</td>
+<td>Ignore unless the run actually fails later</td>
+</tr>
+<tr>
+<td>Chiller power = 0 throughout the run</td>
+<td><code>QEva_nominal</code> is unsigned-positive (legacy template form)</td>
+<td>The patched template now negates <code>heat_flow_nominal</code> automatically. Make sure your sys_params value is a positive number of watts.</td>
+</tr>
+<tr>
+<td>Pump curve doesn't match plant flow</td>
+<td><code>mass_chw_flow_nominal</code> was used in pump V_flow but plant <code>mCHW_flow_nominal</code> was hard-coded</td>
+<td>Apply the template patch shipped with this doc.</td>
+</tr>
+<tr>
+<td>Setpoint stuck at 5 °C even though <code>temp_setpoint_chw: 6</code></td>
+<td>Same root cause; setpoint expression was hard-coded</td>
+<td>Apply the template patch shipped with this doc.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-known-limitations-of-the-current-4g-template">5. Known limitations of the current 4G template</h2>
+<p>There are still some parameters that stay hard-coded and
+may require either editing the templates manually or extending the schema:</p>
+<ol>
+<li>
+<p><strong><code>numberofchillers</code></strong> is fixed at 2 in <code>DistrictEnergySystem.mot</code>. To run
+   a plant with 1 or 3+ chillers you must edit that file directly (or add
+   <code>num_chillers</code> to the schema and wire it through).</p>
+</li>
+<li>
+<p><strong>Chiller catalog record</strong> is hard-coded in <code>CoolingPlant_Instance.mopt</code>
+   as <code>Buildings.Fluid.Chillers.Data.ElectricEIR.ElectricEIRChiller_Carrier_19EX_5208kW_6_88COP_Vanes</code>.
+   To use a different catalog record, either edit the <code>.mopt</code> after generation
+   or add a <code>chiller_performance_data</code> string field to the schema and use it
+   in the <code>redeclare</code> line.</p>
+</li>
+<li>
+<p><strong>Cooling-tower design conditions</strong> (<code>TAirInWB_nominal</code>, <code>TCW_nominal</code>,
+   <code>TMin</code>) are hard-coded in the <code>Plants.CentralCoolingPlant</code> instantiation
+   in <code>CoolingPlant_Instance.mopt</code>. They should pull from
+   <code>temp_air_wb_nominal</code>, <code>temp_cw_in_nominal</code>, and a new <code>temp_cw_min</code>
+   sys_params field.</p>
+</li>
+<li>
+<p><strong><code>pumDP</code> offset (+200 000 Pa)</strong> in <code>CoolingPlant_Instance.mopt</code> is hard-coded
+   safety margin. Consider adding <code>chw_pump_head_safety_margin</code> to the schema.</p>
+</li>
+<li>
+<p><strong>Heating plant <code>numBoi</code></strong> is still hard-coded to 2 inside
+   <code>CentralHeatingPlant.mo</code>. The heating-plant <code>delT_nominal</code> (15 K) and the
+   <code>+50 000</code> Pa pumDP safety margin in <code>HeatingPlant_Instance.mopt</code> are also
+   hard-coded; consider exposing them as new sys_params fields.</p>
+</li>
+<li>
+<p><strong>Boiler catalog record</strong> in <code>CentralHeatingPlant.mo</code> is hard-coded the
+   same way the chiller record is. Same fix applies: add a
+   <code>boiler_performance_data</code> sys_params field.</p>
+</li>
+</ol>
+<hr />
+<h2 id="6-worked-example-8-mw-cold-climate-district-buffalo-ny">6. Worked example: 8 MW cold-climate district (Buffalo NY)</h2>
+<p>Reference numbers for an example district with ~8 MW coincident peak cooling
+load on Buffalo TMY3 weather:</p>
+<pre><code class="language-json">&quot;central_cooling_plant_parameters&quot;: {
+  &quot;heat_flow_nominal&quot;:                  8000000,
+  &quot;cooling_tower_fan_power_nominal&quot;:      50000,
+  &quot;mass_chw_flow_nominal&quot;:                   85,
+  &quot;chiller_water_flow_minimum&quot;:              20,
+  &quot;mass_cw_flow_nominal&quot;:                   100,
+  &quot;chw_pump_head&quot;:                       300000,
+  &quot;cw_pump_head&quot;:                        200000,
+  &quot;pressure_drop_chw_nominal&quot;:            44801,
+  &quot;pressure_drop_cw_nominal&quot;:             46200,
+  &quot;pressure_drop_setpoint&quot;:               49999,
+  &quot;temp_setpoint_chw&quot;:                        6,
+  &quot;pressure_drop_chw_valve_nominal&quot;:       5999,
+  &quot;pressure_drop_cw_pum_nominal&quot;:          5999,
+  &quot;temp_air_wb_nominal&quot;:                   22.0,
+  &quot;temp_cw_in_nominal&quot;:                    34.9,
+  &quot;cooling_tower_water_temperature_difference_nominal&quot;: 6.56,
+  &quot;delta_temp_approach&quot;:                   3.25,
+  &quot;ratio_water_air_nominal&quot;:                0.6
+}
+</code></pre>
+<p>With these values and the template patch applied, the rendered Modelica is
+internally consistent (pump curves match plant flows, plant capacity matches
+chiller catalog, CHW setpoint matches sys_params) and the freeze assertion
+that the unpatched template produced at sub-freezing wet-bulb conditions is
+resolved.</p>
+<hr />
+<h2 id="7-central-heating-plant">7. Central heating plant</h2>
+<p>The central heating plant (<code>Plants.CentralHeatingPlant</code>) is the heating-side
+analogue of the cooling plant: a parallel arrangement of <code>numBoi</code> boilers
+(hard-coded to 2 in <code>CentralHeatingPlant.mo</code>), a common HHW pump header, a
+demand-side ΔP setpoint, and an HHW supply setpoint controlled at the network
+side.</p>
+<pre><code class="language-text">              ┌───────────┐
+       ┌─────►│  Boiler 1 ├──────►┐
+  HHW  │      └───────────┘       │  to district
+  ret  │           ...            │  supply
+       └─────►┌───────────┐──────►┘
+              │  Boiler N │
+              └───────────┘
+</code></pre>
+<p>Same patch convention as cooling: <code>heat_flow_nominal</code> and
+<code>mass_hhw_flow_nominal</code> are the <strong>total plant</strong> values; the template divides
+them by <code>numBoi</code> to get per-boiler <code>QBoi_flow_nominal</code> and <code>mBoi_flow_nominal</code>.</p>
+<p>The sys_params fields under
+<code>district_system.fourth_generation.central_heating_plant_parameters</code> are:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Modelica destination</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>heat_flow_nominal</code></td>
+<td><code>Q_flow_nominal</code> (total) and <code>QBoi_flow_nominal</code> (per boiler, =total/numBoi)</td>
+<td>Plant heating capacity, W. Positive.</td>
+</tr>
+<tr>
+<td><code>mass_hhw_flow_nominal</code></td>
+<td><code>mHW_flow_nominal</code> (total) and <code>mBoi_flow_nominal</code> (per boiler, =total/numBoi)</td>
+<td>Plant HHW flow, kg/s</td>
+</tr>
+<tr>
+<td><code>boiler_water_flow_minimum</code></td>
+<td><code>mMin_flow</code> (per boiler, =total/numBoi)</td>
+<td>Per-plant minimum flow, kg/s</td>
+</tr>
+<tr>
+<td><code>pressure_drop_hhw_nominal</code></td>
+<td><code>dpBoi_nominal</code></td>
+<td>Boiler-side ΔP, Pa</td>
+</tr>
+<tr>
+<td><code>pressure_drop_setpoint</code></td>
+<td>Read from the network-side <code>dpSetPoi</code> (the heating plant pulls it from the connected disNet, not from this key)</td>
+<td>See note in template TODO</td>
+</tr>
+<tr>
+<td><code>temp_setpoint_hhw</code></td>
+<td>HHW supply setpoint via <code>THeaSet</code> input on the plant; wired in the network↔plant coupling templates, <strong>not</strong> in <code>HeatingPlant_Instance.mopt</code></td>
+<td>°C</td>
+</tr>
+<tr>
+<td><code>pressure_drop_hhw_valve_nominal</code></td>
+<td>Not currently consumed by the plant template</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>chp_installed</code></td>
+<td>Selects whether <code>HeatingPlantWithCHP.mot</code> or <code>CentralHeatingPlant.mo</code> is used</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td><code>chp_thermal_following</code></td>
+<td>CHP dispatch mode</td>
+<td>Only meaningful if <code>chp_installed = true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-by-step-sizing-recipe-heating">Step-by-step sizing recipe (heating)</h3>
+<ol>
+<li>
+<p><strong><code>heat_flow_nominal</code></strong> — coincident peak heating load of all buildings,
+   in watts. Same procedure as cooling: from the <code>xx_export_modelica_loads</code>
+   exports, sum the heating column across buildings hour-by-hour and take
+   the max. Pad 10–15 %.</p>
+</li>
+<li>
+<p><strong><code>mass_hhw_flow_nominal</code></strong> — derive from the design HHW ΔT. With
+   <code>delT_nominal = 15 K</code> (currently hard-coded in the .mopt) and
+   cp_water ≈ 4184 J/kg·K:</p>
+</li>
+</ol>
+<p><code>text
+   m_HHW [kg/s]  =  heat_flow_nominal [W]  /  (4184 × delT_nominal)
+                 =  Q  /  62,760           for delT_nominal = 15 K</code></p>
+<p><code>json
+   // 4 MW plant, ΔT_HHW = 15 K  → m_HHW ≈ 64 kg/s
+   // 8 MW plant, ΔT_HHW = 20 K  → m_HHW ≈ 96 kg/s
+   "mass_hhw_flow_nominal": 64</code></p>
+<p>If you change <code>mass_hhw_flow_nominal</code> without changing <code>delT_nominal</code>,
+   the boiler will be force-fed flow it can't actually heat through the
+   designed ΔT — the boiler model will compensate but you'll see odd
+   part-load behavior.</p>
+<ol>
+<li><strong><code>boiler_water_flow_minimum</code></strong> — plant-level minimum, 20–30 % of
+   <code>mass_hhw_flow_nominal</code>. The template divides by <code>numBoi</code>, so 20 % of
+   64 kg/s = ~13 kg/s plant minimum / ~6.5 kg/s per boiler.</li>
+</ol>
+<p><code>json
+   "boiler_water_flow_minimum": 13</code></p>
+<p>Boilers don't have the same freeze-overcooling failure mode the cooling
+   tower has, but starving the loop at near-zero load will still cause the
+   boiler model's PI controller to chatter.</p>
+<ol>
+<li>
+<p><strong><code>pressure_drop_hhw_nominal</code></strong> — boiler-side ΔP at design flow, in Pa.
+   Real boilers are 30 000 – 60 000 Pa across the heat exchanger.</p>
+</li>
+<li>
+<p><strong><code>pressure_drop_setpoint</code></strong> (on the <em>network</em>, not the plant) — design
+   ΔP at the remote pressure-control valve. 50 000 Pa default; raise for
+   long / branchy distribution networks.</p>
+</li>
+<li>
+<p><strong><code>temp_setpoint_hhw</code></strong> — district HHW supply setpoint, °C. 50–55 °C is
+   normal for a low-temperature 4G system; 70–80 °C for a legacy high-temp
+   district. The 4G default in the schema is 55 °C.</p>
+</li>
+<li>
+<p><strong><code>chp_installed</code></strong> — set <code>true</code> to swap the plant model for
+   <code>HeatingPlantWithCHP</code> (combined heat and power). If <code>true</code> you also need
+   <code>chp_thermal_following</code> to be set.</p>
+</li>
+</ol>
+<h3 id="sanity-check-rules-heating">Sanity-check rules (heating)</h3>
+<ol>
+<li>
+<p><strong>Capacity / flow / ΔT identity</strong>:
+   <code>heat_flow_nominal ≈ mass_hhw_flow_nominal × 4184 × delT_nominal</code>
+   With the hard-coded <code>delT_nominal = 15 K</code>, that means
+   <code>mass_hhw_flow_nominal ≈ heat_flow_nominal / 62,760</code>.</p>
+</li>
+<li>
+<p><strong>Turndown sane</strong>:
+   <code>0.15 × mass_hhw_flow_nominal  ≤  boiler_water_flow_minimum  ≤
+    0.35 × mass_hhw_flow_nominal</code>.</p>
+</li>
+<li>
+<p><strong>Supply temperature &gt; distribution loss + ETS approach</strong>:
+   `temp_setpoint_hhw  ≥  building_HHW_supply_temp + heat_exchanger_approach</p>
+</li>
+<li>distribution_loss<code>. The</code>ets_indirect_parameters.heating_supply_water_temperature_building<code>for
+   each building should be at least 5 K below</code>temp_setpoint_hhw`.</li>
+</ol>
+<h3 id="worked-example-heating-plant-for-the-same-8-mw-district">Worked example: heating plant for the same 8 MW district</h3>
+<p>Heating peak loads in a mixed-use district tend to be ~50–70 % of the
+cooling peak in cooling-dominated climates, and 100–150 % in
+heating-dominated climates. For the Buffalo example (cooling-dominated in
+summer, heating-dominated in winter) a ~10 MW heating peak with HHW
+ΔT = 20 K is plausible:</p>
+<pre><code class="language-json">&quot;central_heating_plant_parameters&quot;: {
+  &quot;heat_flow_nominal&quot;:                  10000000,
+  &quot;mass_hhw_flow_nominal&quot;:                   120,
+  &quot;boiler_water_flow_minimum&quot;:                30,
+  &quot;pressure_drop_hhw_nominal&quot;:             45000,
+  &quot;pressure_drop_setpoint&quot;:                50000,
+  &quot;temp_setpoint_hhw&quot;:                        55,
+  &quot;pressure_drop_hhw_valve_nominal&quot;:        6000,
+  &quot;chp_installed&quot;:                         false
+}
+</code></pre>
+<p><strong>Warning if your current sys_params look like the GMT defaults
+(<code>heat_flow_nominal: 8001</code>, <code>mass_hhw_flow_nominal: 1</code>,
+<code>pressure_drop_hhw_nominal: 55001</code>):</strong> those are the schema defaults, which
+mean an ~8 kW boiler plant moving 1 kg/s — i.e., not sized at all. Until
+the template patch landed, those values were silently ignored, so an
+8 kW-on-paper plant was happily serving a 10 MW district. <strong>Now</strong> that the
+.mopt honors them, the simulation will refuse to converge if you leave
+them at defaults. Pick real numbers from your load files before the next
+run.</p>
+<h3 id="known-limitations-of-the-heating-plant-patch">Known limitations of the heating-plant patch</h3>
+<ul>
+<li><code>numBoi</code> is hard-coded to 2 in <code>CentralHeatingPlant.mo</code>. Wire it through
+  sys_params (same TODO as <code>numberofchillers</code>).</li>
+<li><code>delT_nominal</code> is hard-coded to 15 K in the <code>.mopt</code>. Add a
+  <code>delta_temp_hhw_nominal</code> sys_params field if you need to change it.</li>
+<li>The pumDP <code>+50 000</code> Pa safety margin is hard-coded; consider
+  <code>hhw_pump_head_safety_margin</code>.</li>
+<li>The boiler model record in <code>CentralHeatingPlant.mo</code> is hard-coded just
+  like the chiller catalog in <code>CoolingPlant_Instance.mopt</code>.</li>
+</ul>
+<hr />
+<h2 id="appendix-keys-at-a-glance">Appendix — keys at a glance</h2>
+<p>Required for any 4G central cooling plant:</p>
+<pre><code class="language-text">heat_flow_nominal                            – plant evaporator capacity, W
+cooling_tower_fan_power_nominal              – design fan electrical power, W
+mass_chw_flow_nominal                        – kg/s
+mass_cw_flow_nominal                         – kg/s
+chiller_water_flow_minimum                   – kg/s
+chw_pump_head                                – Pa
+cw_pump_head                                 – Pa
+pressure_drop_chw_nominal                    – Pa
+pressure_drop_cw_nominal                     – Pa
+pressure_drop_setpoint                       – Pa
+temp_setpoint_chw                            – °C
+pressure_drop_chw_valve_nominal              – Pa
+pressure_drop_cw_pum_nominal                 – Pa
+temp_air_wb_nominal                          – °C
+temp_cw_in_nominal                           – °C
+cooling_tower_water_temperature_difference_nominal – K
+delta_temp_approach                          – K
+ratio_water_air_nominal                      – dimensionless
+</code></pre>
+<p>All of these flow through to the generated Modelica with the template patch
+applied. Without the patch, only the <code>dp*</code> keys, the pump heads, the
+cooling-tower fan power, and the values inside the pump performance curves
+actually have any effect — the rest are silently ignored.</p>
+<p>Required for any 4G central heating plant:</p>
+<pre><code class="language-text">heat_flow_nominal                            – plant heating capacity, W
+mass_hhw_flow_nominal                        – kg/s
+boiler_water_flow_minimum                    – kg/s
+pressure_drop_hhw_nominal                    – Pa
+pressure_drop_setpoint                       – Pa (lives on the network, not the plant)
+temp_setpoint_hhw                            – °C (wired via the network↔plant coupling)
+pressure_drop_hhw_valve_nominal              – Pa (not currently consumed)
+chp_installed                                – bool
+chp_thermal_following                        – bool (only if chp_installed = true)
+</code></pre>
+<p>All of these flow through with the <code>2026-05-20</code> template patch applied.
+Without the patch, <code>Q_flow_nominal</code> was hard-coded to <code>1 000 000 × 2</code> and
+<code>dpBoi_nominal</code> to <code>10 000</code>, regardless of what your sys_params said.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
