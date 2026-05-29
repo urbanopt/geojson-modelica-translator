@@ -202,10 +202,17 @@ If the automated documentation workflow fails or you need to manually build and 
    This generates the documentation in the `site/` directory.
 
 2. To manually push to GitHub Pages (deploy to the `gh-pages` branch):
-   Or use a more straightforward approach with `subtree`:
 
    ```bash
-   git subtree push --prefix site origin gh-pages --force
+   git add -f site/
+   git commit -m "Manual documentation deployment"
+   git push origin HEAD:gh-pages
+   ```
+
+   Alternatively, if the above doesn't work, use a force push to overwrite the gh-pages branch:
+
+   ```bash
+   git push --force origin HEAD:gh-pages
    ```
 
 3. Verify the deployment at [https://docs.urbanopt.net/geojson-modelica-translator/](https://docs.urbanopt.net/geojson-modelica-translator/) (may take a minute to refresh)
