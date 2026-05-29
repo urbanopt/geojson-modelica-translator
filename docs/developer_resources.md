@@ -173,7 +173,7 @@ The GeoJSON to Modelica Translator contains a `ModelicaRunner.run_in_docker(...)
 
 ## Release Instructions
 
-1. Create a branch named `Release 0.x.`
+1. Create a branch named `release-0.x.`
 1. Update version in `pyproject.toml`
 1. Update CHANGELOG using GitHub's "Autogenerate Change Log" feature, using `develop` as the target
 1. After tests pass, merge branch into develop
