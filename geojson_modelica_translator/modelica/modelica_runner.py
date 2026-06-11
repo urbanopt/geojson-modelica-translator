@@ -188,9 +188,14 @@ class ModelicaRunner:
 
         try:
             # create the command to call the open modelica compiler inside the docker image
+            run_user = None
+            if hasattr(os, "getuid") and hasattr(os, "getgid"):
+                run_user = f"{os.getuid()}:{os.getgid()}"
+
             exec_call = [
                 "docker",
                 "run",
+                *(["--user", run_user] if run_user is not None else []),
                 "-v",
                 f"{run_path}:/mnt/shared/{model_name}",
                 f"{docker_image}",

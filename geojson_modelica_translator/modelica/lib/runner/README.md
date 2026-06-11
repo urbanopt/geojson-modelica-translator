@@ -23,6 +23,12 @@ docker build -t nrel/gmt-om-runner:<tag> .
 
 The default tag will be `nrel/gmt-om-runner:4.0.0`, which is the default version used in the modelica_runner.py file.
 
+If you run the image directly with a bind mount, pass your host UID and GID so files created inside the container stay accessible on the host:
+
+```bash
+docker run --user "$(id -u):$(id -g)" -v "$PWD:/mnt/shared/<model_name>" nrel/gmt-om-runner:4.0.0
+```
+
 ### Versioning
 
 In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner version.
