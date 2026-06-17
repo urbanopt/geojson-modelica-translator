@@ -83,6 +83,9 @@ class ModelicaRunnerTest(unittest.TestCase):
             # logger.info(f.read())
         assert not os.path.exists(os.path.join(results_path, "compile_fmu.mos"))
         assert not os.path.exists(os.path.join(results_path, "simulate.mos"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, "BouncingBall.fmu")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_bouncing_ball_in_docker(self):
@@ -97,6 +100,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert os.path.exists(os.path.join(results_path, "stdout.log"))
         assert os.path.exists(os.path.join(results_path, "BouncingBall_res.mat"))
         assert not os.path.exists(os.path.join(results_path, "om_docker.sh"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, "BouncingBall_res.mat")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     @pytest.mark.xfail(reason="Older docker image may fail on CI")
@@ -146,6 +152,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert (Path(results_path) / "stdout.log").exists()
         fmu_basename = model_name.split(".")[-1]
         assert (Path(results_path).parent / f"{fmu_basename}.fmu").exists()
+        if platform.system() == "Linux":
+            assert (Path(results_path) / "stdout.log").stat().st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_msl_in_docker(self):
@@ -161,6 +169,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
         assert os.path.exists(os.path.join(results_path, "stdout.log"))
         assert os.path.exists(os.path.join(results_path, f"{model_name}_res.mat"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, f"{model_name}_res.mat")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_msl_with_start_times_in_docker(self):
@@ -176,6 +187,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
         assert os.path.exists(os.path.join(results_path, "stdout.log"))
         assert os.path.exists(os.path.join(results_path, f"{model_name}_res.mat"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, f"{model_name}_res.mat")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_msl_with_intervals_in_docker(self):
@@ -191,6 +205,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
         assert (results_path / "stdout.log").exists()
         assert (results_path / f"{model_name}_res.mat").exists()
+        if platform.system() == "Linux":
+            assert (results_path / "stdout.log").stat().st_uid == os.getuid()
+            assert (results_path / f"{model_name}_res.mat").stat().st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):
