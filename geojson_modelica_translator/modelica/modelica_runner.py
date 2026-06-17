@@ -188,20 +188,35 @@ class ModelicaRunner:
 
         try:
             # create the command to call the open modelica compiler inside the docker image
-            run_user = None
+            host_uid = None
+            host_gid = None
             if hasattr(os, "getuid") and hasattr(os, "getgid"):
-                run_user = f"{os.getuid()}:{os.getgid()}"
+                host_uid = str(os.getuid())
+                host_gid = str(os.getgid())
 
             exec_call = [
                 "docker",
                 "run",
-                *(["--user", run_user] if run_user is not None else []),
+                *(["-e", f"HOST_UID={host_uid}"] if host_uid is not None else []),
+                *(["-e", f"HOST_GID={host_gid}"] if host_gid is not None else []),
+                "-e",
+                f"HOME=/mnt/shared/{model_name}",
                 "-v",
                 f"{run_path}:/mnt/shared/{model_name}",
                 f"{docker_image}",
                 "/bin/bash",
                 "-c",
-                f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_for_modelica}",
+                (
+                    f"cd /mnt/shared/{model_name} && "
+                    'mkdir -p "$HOME/.openmodelica/libraries" && '
+                    'cp -rn /root/.openmodelica/libraries/* "$HOME/.openmodelica/libraries/" 2>/dev/null || true && '
+                    f"omc {mo_script}.mos {compiler_flags_for_modelica} ; "
+                    "ret=$? ; "
+                    'if [[ -n "$HOST_UID" && -n "$HOST_GID" ]]; then '
+                    f'chown -R "$HOST_UID:$HOST_GID" /mnt/shared/{model_name} 2>/dev/null || true ; '
+                    "fi ; "
+                    "exit $ret"
+                ),
             ]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
