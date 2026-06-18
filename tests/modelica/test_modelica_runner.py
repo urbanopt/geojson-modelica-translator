@@ -8,6 +8,7 @@ import platform
 import shutil
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -62,6 +63,68 @@ class ModelicaRunnerTest(unittest.TestCase):
         with pytest.raises(SystemExit) as exc:
             mr.run_in_docker("compile", "no_file", file_to_load=file_to_run)
         assert f"File not found to run {file_to_run}" == str(exc.value)
+
+    def test_docker_command_restores_permissions_after_failed_omc(self):
+        mr = ModelicaRunner.__new__(ModelicaRunner)
+        mr._host_user_ids = lambda: ("501", "20")
+        completed_process = MagicMock(returncode=42)
+        completed_process.args = []
+
+        with patch(
+            "geojson_modelica_translator.modelica.modelica_runner.subprocess.run",
+            return_value=completed_process,
+        ) as run_mock:
+            exitcode = mr._subprocess_call_to_docker(
+                Path(self.run_path),
+                "compile_and_run",
+                "flag1,flag2",
+            )
+
+        assert exitcode == 42
+        run_calls = [call.args[0] for call in run_mock.call_args_list]
+        exec_call = run_calls[0]
+        script = exec_call[exec_call.index("-c") + 1]
+        assert exec_call[exec_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
+        assert exec_call[-4:] == ["--", "simulate", "flag1", "flag2"]
+        assert 'omc "$1.mos" "${@:2}" ; ret=$? ;' in script
+        assert 'chown -R "$HOST_UID:$HOST_GID" "$HOME"' in script
+        assert 'chmod -R a+rwX "$HOME"' in script
+        cleanup_call = run_calls[1]
+        assert "--rm" in cleanup_call
+        assert cleanup_call[cleanup_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
+
+    def test_docker_interrupt_restores_permissions_before_exiting(self):
+        mr = ModelicaRunner.__new__(ModelicaRunner)
+        mr._host_user_ids = lambda: ("501", "20")
+        docker_image = "nrel/gmt-om-runner:test"
+        completed_process = MagicMock(returncode=0)
+        completed_process.args = []
+
+        with (
+            patch(
+                "geojson_modelica_translator.modelica.modelica_runner.subprocess.run",
+                side_effect=[KeyboardInterrupt, completed_process, completed_process],
+            ) as run_mock,
+            patch(
+                "geojson_modelica_translator.modelica.modelica_runner.subprocess.check_output",
+                return_value=f"container-id {docker_image}\n",
+            ),
+            pytest.raises(SystemExit) as exc,
+        ):
+            mr._subprocess_call_to_docker(
+                Path(self.run_path),
+                "compile_and_run",
+                docker_image=docker_image,
+            )
+
+        assert str(exc.value) == "Simulation stopped by user KeyboardInterrupt"
+        run_calls = [call.args[0] for call in run_mock.call_args_list]
+        assert run_calls[1] == ["docker", "kill", "container-id"]
+        cleanup_call = run_calls[2]
+        cleanup_script = cleanup_call[cleanup_call.index("-c") + 1]
+        assert "--rm" in cleanup_call
+        assert cleanup_call[cleanup_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
+        assert 'chown -R "$HOST_UID:$HOST_GID" "$HOME"' in cleanup_script
 
     @pytest.mark.compilation
     def test_compile_bouncing_ball_in_docker(self):

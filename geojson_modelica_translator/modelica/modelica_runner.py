@@ -80,6 +80,61 @@ class ModelicaRunner:
             )
         return new_run_path
 
+    def _docker_post_run_permissions_command(self) -> str:
+        """Return shell commands that make Docker-created outputs editable by the host user."""
+        return (
+            'if [[ -n "${HOST_UID:-}" && -n "${HOST_GID:-}" ]]; then '
+            'if chown -R "$HOST_UID:$HOST_GID" "$HOME" 2>/dev/null; then '
+            'chmod -R u+rwX "$HOME" 2>/dev/null || true ; '
+            "else "
+            'chmod -R a+rwX "$HOME" 2>/dev/null || true ; '
+            "fi ; "
+            "fi"
+        )
+
+    def _host_user_ids(self) -> tuple[str | None, str | None]:
+        """Return the host UID/GID when available for Docker output ownership repair."""
+        if hasattr(os, "getuid") and hasattr(os, "getgid"):
+            return str(os.getuid()), str(os.getgid())
+        return None, None
+
+    def _restore_docker_output_permissions(
+        self, run_path: Path, docker_image: str, stdout_log
+    ) -> None:
+        """Run a short Docker cleanup pass to repair ownership after interrupted runs."""
+        host_uid, host_gid = self._host_user_ids()
+        if host_uid is None or host_gid is None:
+            return
+
+        model_name = run_path.parts[-1]
+        exec_call = [
+            "docker",
+            "run",
+            "--rm",
+            "-e",
+            f"HOST_UID={host_uid}",
+            "-e",
+            f"HOST_GID={host_gid}",
+            "-e",
+            f"HOME=/mnt/shared/{model_name}",
+            "-v",
+            f"{run_path}:/mnt/shared/{model_name}",
+            "-w",
+            f"/mnt/shared/{model_name}",
+            f"{docker_image}",
+            "/bin/bash",
+            "-c",
+            self._docker_post_run_permissions_command(),
+        ]
+        logger.debug(f"Restoring Docker output permissions with {exec_call}")
+        subprocess.run(
+            exec_call,
+            stdout=stdout_log,
+            stderr=subprocess.STDOUT,
+            cwd=run_path,
+            check=False,
+        )
+
     def _copy_over_docker_resources(
         self, run_path: Path, filename: str | Path | None, model_name: str, **kwargs
     ) -> None:
@@ -185,11 +240,7 @@ class ModelicaRunner:
 
         try:
             # create the command to call the open modelica compiler inside the docker image
-            host_uid = None
-            host_gid = None
-            if hasattr(os, "getuid") and hasattr(os, "getgid"):
-                host_uid = str(os.getuid())
-                host_gid = str(os.getgid())
+            host_uid, host_gid = self._host_user_ids()
 
             exec_call = [
                 "docker",
@@ -200,18 +251,17 @@ class ModelicaRunner:
                 f"HOME=/mnt/shared/{model_name}",
                 "-v",
                 f"{run_path}:/mnt/shared/{model_name}",
+                "-w",
+                f"/mnt/shared/{model_name}",
                 f"{docker_image}",
                 "/bin/bash",
                 "-c",
                 (
-                    f"cd /mnt/shared/{model_name} && "
                     'mkdir -p "$HOME/.openmodelica/libraries" && '
-                    'cp -rn /root/.openmodelica/libraries/* "$HOME/.openmodelica/libraries/" 2>/dev/null || true && '
+                    'cp -rn /root/.openmodelica/libraries/* "$HOME/.openmodelica/libraries/" 2>/dev/null || true ; '
                     'omc "$1.mos" "${@:2}" ; '
                     "ret=$? ; "
-                    'if [[ -n "$HOST_UID" && -n "$HOST_GID" ]]; then '
-                    f'chown -R "$HOST_UID:$HOST_GID" /mnt/shared/{model_name} 2>/dev/null || true ; '
-                    "fi ; "
+                    f"{self._docker_post_run_permissions_command()} ; "
                     "exit $ret"
                 ),
                 "--",
@@ -234,19 +284,22 @@ class ModelicaRunner:
             logger.debug(
                 f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}"
             )
+            if completed_process.returncode != 0:
+                self._restore_docker_output_permissions(run_path, docker_image, stdout_log)
         except KeyboardInterrupt:
             # List all containers and their images
             docker_containers_cmd = ["docker", "ps", "--format", "{{.ID}} {{.Image}}"]
             containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split("\n")
 
             # Find containers from our image
-            for container_line in containers_list:
+            for container_line in [line for line in containers_list if line]:
                 container_id, container_image = container_line.split()
                 if container_image == docker_image:
                     logger.debug(f"Killing container: {container_id} (Image: {container_image})")
                     # Kill the container
                     kill_command = f"docker kill {container_id}"
                     subprocess.run(kill_command.split(), check=True, text=True)
+            self._restore_docker_output_permissions(run_path, docker_image, stdout_log)
             # Remind user why the simulation didn't complete
             raise SystemExit("Simulation stopped by user KeyboardInterrupt")
         finally:
