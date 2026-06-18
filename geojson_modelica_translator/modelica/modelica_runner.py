@@ -284,7 +284,7 @@ class ModelicaRunner:
             logger.debug(
                 f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}"
             )
-            if completed_process.returncode != 0:
+            if completed_process.returncode in (130, 137):
                 self._restore_docker_output_permissions(run_path, docker_image, stdout_log)
         except KeyboardInterrupt:
             # List all containers and their images
