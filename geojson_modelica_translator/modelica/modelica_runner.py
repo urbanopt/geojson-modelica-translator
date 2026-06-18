@@ -253,12 +253,7 @@ class ModelicaRunner:
                 f"{docker_image}",
                 "/bin/bash",
                 "-c",
-                (
-                    'omc "$1.mos" "${@:2}" ; '
-                    "ret=$? ; "
-                    f"{self._docker_post_run_permissions_command()} ; "
-                    "exit $ret"
-                ),
+                (f'omc "$1.mos" "${{@:2}}" ; ret=$? ; {self._docker_post_run_permissions_command()} ; exit $ret'),
                 "--",
                 mo_script,
                 *compiler_flags_list,
