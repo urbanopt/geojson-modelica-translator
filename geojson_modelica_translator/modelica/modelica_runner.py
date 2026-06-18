@@ -234,7 +234,9 @@ class ModelicaRunner:
         model_name = run_path.parts[-1]
         mo_script = "compile_fmu" if action == "compile" else "simulate"
         # Split compiler flags into a list for safe argument passing (avoids shell injection)
-        compiler_flags_list = compiler_flags.split(",") if compiler_flags else []
+        compiler_flags_list = (
+            [flag.strip() for flag in compiler_flags.split(",") if flag.strip()] if compiler_flags else []
+        )
 
         try:
             # create the command to call the open modelica compiler inside the docker image
