@@ -98,9 +98,7 @@ class ModelicaRunner:
             return str(os.getuid()), str(os.getgid())
         return None, None
 
-    def _restore_docker_output_permissions(
-        self, run_path: Path, docker_image: str, stdout_log
-    ) -> None:
+    def _restore_docker_output_permissions(self, run_path: Path, docker_image: str, stdout_log) -> None:
         """Run a short Docker cleanup pass to repair ownership after interrupted runs."""
         host_uid, host_gid = self._host_user_ids()
         if host_uid is None or host_gid is None:
