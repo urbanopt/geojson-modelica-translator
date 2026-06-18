@@ -84,10 +84,10 @@ class ModelicaRunner:
         """Return shell commands that make Docker-created outputs editable by the host user."""
         return (
             'if [[ -n "${HOST_UID:-}" && -n "${HOST_GID:-}" ]]; then '
-            'if chown -R "$HOST_UID:$HOST_GID" "$HOME" 2>/dev/null; then '
-            'chmod -R u+rwX "$HOME" 2>/dev/null || true ; '
+            'if chown -R "$HOST_UID:$HOST_GID" "$PWD" 2>/dev/null; then '
+            'chmod -R u+rwX "$PWD" 2>/dev/null || true ; '
             "else "
-            'chmod -R a+rwX "$HOME" 2>/dev/null || true ; '
+            'chmod -R a+rwX "$PWD" 2>/dev/null || true ; '
             "fi ; "
             "fi"
         )
@@ -113,8 +113,6 @@ class ModelicaRunner:
             f"HOST_UID={host_uid}",
             "-e",
             f"HOST_GID={host_gid}",
-            "-e",
-            f"HOME=/mnt/shared/{model_name}",
             "-v",
             f"{run_path}:/mnt/shared/{model_name}",
             "-w",
@@ -247,8 +245,6 @@ class ModelicaRunner:
                 "run",
                 *(["-e", f"HOST_UID={host_uid}"] if host_uid is not None else []),
                 *(["-e", f"HOST_GID={host_gid}"] if host_gid is not None else []),
-                "-e",
-                f"HOME=/mnt/shared/{model_name}",
                 "-v",
                 f"{run_path}:/mnt/shared/{model_name}",
                 "-w",
@@ -257,8 +253,6 @@ class ModelicaRunner:
                 "/bin/bash",
                 "-c",
                 (
-                    'mkdir -p "$HOME/.openmodelica/libraries" && '
-                    'cp -rn /root/.openmodelica/libraries/* "$HOME/.openmodelica/libraries/" 2>/dev/null || true ; '
                     'omc "$1.mos" "${@:2}" ; '
                     "ret=$? ; "
                     f"{self._docker_post_run_permissions_command()} ; "

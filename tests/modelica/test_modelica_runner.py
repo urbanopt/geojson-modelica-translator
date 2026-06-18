@@ -87,8 +87,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert exec_call[exec_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
         assert exec_call[-4:] == ["--", "simulate", "flag1", "flag2"]
         assert 'omc "$1.mos" "${@:2}" ; ret=$? ;' in script
-        assert 'chown -R "$HOST_UID:$HOST_GID" "$HOME"' in script
-        assert 'chmod -R a+rwX "$HOME"' in script
+        assert 'chown -R "$HOST_UID:$HOST_GID" "$PWD"' in script
+        assert 'chmod -R a+rwX "$PWD"' in script
         cleanup_call = run_calls[1]
         assert "--rm" in cleanup_call
         assert cleanup_call[cleanup_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
@@ -124,7 +124,7 @@ class ModelicaRunnerTest(unittest.TestCase):
         cleanup_script = cleanup_call[cleanup_call.index("-c") + 1]
         assert "--rm" in cleanup_call
         assert cleanup_call[cleanup_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
-        assert 'chown -R "$HOST_UID:$HOST_GID" "$HOME"' in cleanup_script
+        assert 'chown -R "$HOST_UID:$HOST_GID" "$PWD"' in cleanup_script
 
     @pytest.mark.compilation
     def test_compile_bouncing_ball_in_docker(self):
