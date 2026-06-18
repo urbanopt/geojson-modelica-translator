@@ -84,11 +84,12 @@ class ModelicaRunner:
         """Return shell commands that make Docker-created outputs editable by the host user."""
         return (
             'if [[ -n "${HOST_UID:-}" && -n "${HOST_GID:-}" ]]; then '
-            'if chown -R "$HOST_UID:$HOST_GID" "$PWD" 2>/dev/null; then '
-            'chmod -R u+rwX "$PWD" 2>/dev/null || true ; '
-            "else "
-            'chmod -R a+rwX "$PWD" 2>/dev/null || true ; '
+            'for output_dir in "$PWD"/*_results; do '
+            'if [[ -e "$output_dir" ]]; then '
+            'chown -R "$HOST_UID:$HOST_GID" "$output_dir" 2>/dev/null || true ; '
+            'chmod -R u+rwX "$output_dir" 2>/dev/null || true ; '
             "fi ; "
+            "done ; "
             "fi"
         )
 
