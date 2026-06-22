@@ -96,6 +96,9 @@ jobs:
         with:
           distribution: Ubuntu-24.04
           additional-packages: docker.io make python3-pip python3-venv
+      - name: Allow long filenames in Windows
+        if: runner.os == 'Windows'
+        run: git config --system core.longpaths true
       - name: Install MBL
         uses: actions/checkout@v6
         with:
