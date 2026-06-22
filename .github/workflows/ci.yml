@@ -57,34 +57,45 @@ jobs:
         run: make test-fast PYTEST_EXTRA_ARGS=-v
 
   resource-intensive-tests:
-    name: Docker simulations and compilations
+    name: Docker simulations and compilations (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-2025]
         mbl_tag: [v12.1.0]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3.13
+        if: runner.os == 'Linux'
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
       - name: Display system info
+        if: runner.os == 'Linux'
         run: |
           python -c "import sys; print(sys.version)"
           docker --version
           docker compose version
       - name: Install Poetry
+        if: runner.os == 'Linux'
         uses: abatilo/actions-poetry@v4
         with:
           poetry-version: "latest"
       - name: Install dependencies with Poetry
+        if: runner.os == 'Linux'
         # poetry setuptools workaround sourced from https://github.com/python-poetry/poetry/issues/7611#issuecomment-1711443539
         run: |
           poetry --version
           poetry self add setuptools
           poetry install
+      - name: Set up WSL2 for Linux containers
+        if: runner.os == 'Windows'
+        uses: Vampire/setup-wsl@v6
+        with:
+          distribution: Ubuntu-24.04
+          additional-packages: docker.io make python3-pip python3-venv
       - name: Install MBL
         uses: actions/checkout@v6
         with:
@@ -92,10 +103,28 @@ jobs:
           ref: ${{ matrix.mbl_tag }}
           path: modelica-buildings
       - name: Set MODELICAPATH
+        if: runner.os == 'Linux'
         run: echo "MODELICAPATH=${{ github.workspace }}/modelica-buildings" >> "$GITHUB_ENV"
       # Keep this as one non-xdist invocation so Docker workloads run in series.
-      - name: Run resource-intensive tests in series
+      - name: Run resource-intensive tests in series on Linux
+        if: runner.os == 'Linux'
         run: make test-resource-intensive PYTEST_EXTRA_ARGS=-v
+      # The GMT runner image is Linux-only. On a Windows host, run it with the
+      # Linux Docker daemon in WSL2, as Docker Desktop does for local users.
+      - name: Run resource-intensive tests in series on Windows
+        if: runner.os == 'Windows'
+        shell: wsl-bash {0}
+        run: |
+          sudo service docker start
+          python3 -m venv /tmp/gmt-ci
+          /tmp/gmt-ci/bin/pip install poetry
+          export PATH="/tmp/gmt-ci/bin:$PATH"
+          export MODELICAPATH="$PWD/modelica-buildings"
+          poetry self add setuptools
+          poetry install
+          python --version
+          docker --version
+          make test-resource-intensive PYTEST_EXTRA_ARGS=-v
       - name: Job Failed
         if: ${{ failure() }}
         run: |
