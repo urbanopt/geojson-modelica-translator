@@ -2,10 +2,24 @@
 
 ## Tests
 
-Tests are run with pytest, e.g.,
+Run the unit and integration tests with the following command. We recommend using `make test` to run the tests that do not require simulation or compilation.
 
 ```bash
-poetry run pytest
+make test
+```
+
+This runs tests that do not require simulation or compilation in parallel. The
+following additional targets run resource-intensive tests serially:
+
+```bash
+# OpenModelica simulations and compilations in Docker
+make test-resource-intensive
+
+# Fast tests followed by the Docker tests
+make test-all
+
+# Dymola-only tests; requires a local Dymola installation and license
+make test-resources-intensive-dymola
 ```
 
 ## Snapshot Testing
@@ -52,12 +66,12 @@ Follow the instructions below in order to configure your local environment:
 - For developers, dependency management is through [Poetry](https://python-poetry.org/docs/). Poetry can be acquired by running `pip install poetry`.
   - If you haven't already installed a virtual environment, Poetry will automatically create a simplified environment for your project.
 - Move to the GMT root directory and run `poetry install` to install the dependencies.
-- Verify that everything is installed correctly by running `poetry run pytest -m 'not compilation and not simulation and not dymola'`. This will run all the unit and integration tests.
+- Verify that everything is installed correctly by running `make test`. This runs all unit and integration tests that do not require simulation or compilation.
 - Follow the instructions below to install pre-commit.
 - To confirm that models will build and simulate, you can run
 
 ```bash
-poetry run pytest -m 'not dymola' --cov-report term-missing --cov .
+make test-all
 ```
 
 The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
