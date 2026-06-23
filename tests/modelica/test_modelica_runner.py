@@ -8,6 +8,7 @@ import platform
 import shutil
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -63,6 +64,68 @@ class ModelicaRunnerTest(unittest.TestCase):
             mr.run_in_docker("compile", "no_file", file_to_load=file_to_run)
         assert f"File not found to run {file_to_run}" == str(exc.value)
 
+    def test_docker_command_restores_permissions_after_failed_omc(self):
+        mr = ModelicaRunner.__new__(ModelicaRunner)
+        mr._host_user_ids = lambda: ("501", "20")
+        completed_process = MagicMock(returncode=42)
+        completed_process.args = []
+
+        with patch(
+            "geojson_modelica_translator.modelica.modelica_runner.subprocess.run",
+            return_value=completed_process,
+        ) as run_mock:
+            exitcode = mr._subprocess_call_to_docker(
+                Path(self.run_path),
+                "compile_and_run",
+                "flag1,flag2",
+            )
+
+        assert exitcode == 42
+        run_calls = [call.args[0] for call in run_mock.call_args_list]
+        exec_call = run_calls[0]
+        script = exec_call[exec_call.index("-c") + 1]
+        assert exec_call[exec_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
+        assert exec_call[-4:] == ["--", "simulate", "flag1", "flag2"]
+        assert 'omc "$1.mos" "${@:2}" ; ret=$? ;' in script
+        assert 'chown -R "$HOST_UID:$HOST_GID" "$PWD"' in script
+        assert 'chmod -R u+rwX "$PWD"' in script
+        assert 'chmod -R a+rwX "$PWD"' not in script
+        assert len(run_calls) == 1
+
+    def test_docker_interrupt_restores_permissions_before_exiting(self):
+        mr = ModelicaRunner.__new__(ModelicaRunner)
+        mr._host_user_ids = lambda: ("501", "20")
+        docker_image = "nrel/gmt-om-runner:test"
+        completed_process = MagicMock(returncode=0)
+        completed_process.args = []
+
+        with (
+            patch(
+                "geojson_modelica_translator.modelica.modelica_runner.subprocess.run",
+                side_effect=[KeyboardInterrupt, completed_process, completed_process],
+            ) as run_mock,
+            patch(
+                "geojson_modelica_translator.modelica.modelica_runner.subprocess.check_output",
+                return_value=f"container-id {docker_image}\n",
+            ),
+            pytest.raises(SystemExit) as exc,
+        ):
+            mr._subprocess_call_to_docker(
+                Path(self.run_path),
+                "compile_and_run",
+                docker_image=docker_image,
+            )
+
+        assert str(exc.value) == "Simulation stopped by user KeyboardInterrupt"
+        run_calls = [call.args[0] for call in run_mock.call_args_list]
+        assert run_calls[1] == ["docker", "kill", "container-id"]
+        cleanup_call = run_calls[2]
+        cleanup_script = cleanup_call[cleanup_call.index("-c") + 1]
+        assert "--rm" in cleanup_call
+        assert cleanup_call[cleanup_call.index("-w") + 1] == f"/mnt/shared/{Path(self.run_path).name}"
+        assert 'chown -R "$HOST_UID:$HOST_GID" "$PWD"' in cleanup_script
+        assert 'chmod -R u+rwX "$PWD"' in cleanup_script
+
     @pytest.mark.compilation
     def test_compile_bouncing_ball_in_docker(self):
         # cleanup output path
@@ -83,6 +146,9 @@ class ModelicaRunnerTest(unittest.TestCase):
             # logger.info(f.read())
         assert not os.path.exists(os.path.join(results_path, "compile_fmu.mos"))
         assert not os.path.exists(os.path.join(results_path, "simulate.mos"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, "BouncingBall.fmu")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_bouncing_ball_in_docker(self):
@@ -97,6 +163,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert os.path.exists(os.path.join(results_path, "stdout.log"))
         assert os.path.exists(os.path.join(results_path, "BouncingBall_res.mat"))
         assert not os.path.exists(os.path.join(results_path, "om_docker.sh"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, "BouncingBall_res.mat")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     @pytest.mark.xfail(reason="Older docker image may fail on CI")
@@ -146,6 +215,8 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert (Path(results_path) / "stdout.log").exists()
         fmu_basename = model_name.split(".")[-1]
         assert (Path(results_path).parent / f"{fmu_basename}.fmu").exists()
+        if platform.system() == "Linux":
+            assert (Path(results_path) / "stdout.log").stat().st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_msl_in_docker(self):
@@ -161,6 +232,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
         assert os.path.exists(os.path.join(results_path, "stdout.log"))
         assert os.path.exists(os.path.join(results_path, f"{model_name}_res.mat"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, f"{model_name}_res.mat")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_msl_with_start_times_in_docker(self):
@@ -176,6 +250,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
         assert os.path.exists(os.path.join(results_path, "stdout.log"))
         assert os.path.exists(os.path.join(results_path, f"{model_name}_res.mat"))
+        if platform.system() == "Linux":
+            assert os.stat(os.path.join(results_path, "stdout.log")).st_uid == os.getuid()
+            assert os.stat(os.path.join(results_path, f"{model_name}_res.mat")).st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_msl_with_intervals_in_docker(self):
@@ -191,6 +268,9 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert success
         assert (results_path / "stdout.log").exists()
         assert (results_path / f"{model_name}_res.mat").exists()
+        if platform.system() == "Linux":
+            assert (results_path / "stdout.log").stat().st_uid == os.getuid()
+            assert (results_path / f"{model_name}_res.mat").stat().st_uid == os.getuid()
 
     @pytest.mark.simulation
     def test_simulate_mbl_pid_in_docker(self):

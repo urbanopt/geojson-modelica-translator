@@ -11,8 +11,8 @@ from tempfile import mkstemp
 import numpy as np
 from modelica_builder.model import Model
 from modelica_builder.package_parser import PackageParser
-from teaser.project import Project
 
+from geojson_modelica_translator.model_connectors.load_connectors._teaser_compat import Project
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
 from geojson_modelica_translator.utils import ModelicaPath, convert_c_to_k, copytree
 
