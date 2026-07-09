@@ -73,9 +73,15 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
 
         assert "/5G_templates/UnidirectionalSeries_NoPlantBoundary/ComponentDefinitions.mopt" in district_text
         assert "bound_heatPort_" in district_text
+        assert "heaNoPlant_" in district_text
+        assert "cooNoPlant_" in district_text
         assert "TSouIn_fallback_" in district_text
         assert "TSouOut_fallback_" in district_text
         assert "Borefield" not in district_text
+
+    def simulation_result_path(self):
+        model_name = f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem"
+        return self.district._scaffold.project_path / f"{model_name}_results" / f"{model_name}_res.mat"
 
     @pytest.mark.simulation
     def test_simulate_district_system(self):
@@ -83,4 +89,21 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
+            # run for 1 week to make sure this works well for longer time windows.
+            start_time="0",
+            stop_time="604800",
         )
+
+        # rename results to winter_results.mat
+        self.simulation_result_path().rename(self.district._scaffold.project_path / "winter_results.mat")
+
+        # run for summer as well to make sure the no-plant boundary works for both heating and cooling
+        self.run_and_assert_in_docker(
+            f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
+            file_to_load=self.district._scaffold.package_path,
+            run_path=self.district._scaffold.project_path,
+            start_time="5184000",
+            stop_time="6048000",
+        )
+        # rename results to summer_results.mat
+        self.simulation_result_path().rename(self.district._scaffold.project_path / "summer_results.mat")

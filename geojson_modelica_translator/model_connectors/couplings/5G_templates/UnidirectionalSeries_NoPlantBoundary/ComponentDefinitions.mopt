@@ -1,12 +1,27 @@
-{% set no_plant_loop_temp_c = 17 %}
-{% if sys_params is defined and sys_params.district_system is defined and sys_params.district_system.fifth_generation is defined %}
-  {% if sys_params.district_system.fifth_generation.soil is defined and sys_params.district_system.fifth_generation.soil.undisturbed_temp is defined %}
-    {% set no_plant_loop_temp_c = sys_params.district_system.fifth_generation.soil.undisturbed_temp %}
-  {% endif %}
-{% endif %}
   // Boundary condition for network heat loss (no-plant 5G)
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant TNoPlant_{{ coupling.id }}(
+    k={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15)
+    "No-plant loop temperature set point"
+{% raw %}    annotation (Placement(transformation(extent={{-20,-160},{0,-140}})));
+  {% endraw %}
+  Buildings.Fluid.HeatExchangers.Heater_T heaNoPlant_{{ coupling.id }}(
+    redeclare package Medium = {{ globals.medium_w }},
+    m_flow_nominal=datDes.mPumDis_flow_nominal,
+    dp_nominal=0,
+    T_start={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15)
+    "Infinite heating source for no-plant 5G loop"
+{% raw %}    annotation (Placement(transformation(extent={{-20,-190},{0,-170}})));
+  {% endraw %}
+  Buildings.Fluid.HeatExchangers.SensibleCooler_T cooNoPlant_{{ coupling.id }}(
+    redeclare package Medium = {{ globals.medium_w }},
+    m_flow_nominal=datDes.mPumDis_flow_nominal,
+    dp_nominal=0,
+    T_start={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15)
+    "Infinite cooling sink for no-plant 5G loop"
+{% raw %}    annotation (Placement(transformation(extent={{10,-190},{30,-170}})));
+  {% endraw %}
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature bound_heatPort_{{ coupling.id }}(
-    T=273.15 + {{ no_plant_loop_temp_c }})
+    T=273.15 + {{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }})
     "Boundary condition for end-of-line pipe heat loss in no-plant 5G"
 {% raw %}    annotation (Placement(transformation(extent={{140,-40},{160,-20}})));
 {% endraw %}

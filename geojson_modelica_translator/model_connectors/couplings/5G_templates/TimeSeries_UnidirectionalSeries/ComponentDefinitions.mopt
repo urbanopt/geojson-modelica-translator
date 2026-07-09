@@ -14,12 +14,6 @@
     "Cold water temperature"
     {% raw %}annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
   {% endraw %}
-{% set no_plant_loop_temp_c = 17 %}
-{% if sys_params is defined and sys_params.district_system is defined and sys_params.district_system.fifth_generation is defined %}
-  {% if sys_params.district_system.fifth_generation.soil is defined and sys_params.district_system.fifth_generation.soil.undisturbed_temp is defined %}
-    {% set no_plant_loop_temp_c = sys_params.district_system.fifth_generation.soil.undisturbed_temp %}
-  {% endif %}
-{% endif %}
 {% set network_couplings = graph.couplings_by_type(coupling.network.id) %}
 {% set explicit_no_plant_boundary = false %}
 {% if network_couplings.plant_couplings is defined and network_couplings.plant_couplings|length > 0 %}
@@ -37,11 +31,11 @@
     {% endif %}
     {% if coupling.load.id == first_bldg_coupling_id %}
       {% if loop_order.number_of_sources == 0 %}
-      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouIn_fallback_{{ coupling.network.id }}(k={{ no_plant_loop_temp_c }} + 273.15)
+      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouIn_fallback_{{ coupling.network.id }}(k={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15)
         "Fallback source inlet temperature for no-source 5G systems"
     {% raw %}        annotation (Placement(transformation(extent={{-120,-150},{-100,-130}})));
       {% endraw %}
-      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouOut_fallback_{{ coupling.network.id }}(k={{ no_plant_loop_temp_c }} + 1 + 273.15)
+      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouOut_fallback_{{ coupling.network.id }}(k={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 1 + 273.15)
         "Fallback source outlet temperature for no-source 5G systems"
     {% raw %}        annotation (Placement(transformation(extent={{-120,-120},{-100,-100}})));
       {% endraw %}

@@ -29,7 +29,7 @@
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
         "cop_heat_pump_hot_water": 2.5,
-        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_flow_rate": 0.02,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
         "fan_design_head": 150
@@ -63,7 +63,7 @@
         "cop_heat_pump_heating": 2.5,
         "cop_heat_pump_cooling": 3.5,
         "cop_heat_pump_hot_water": 2.5,
-        "ets_pump_flow_rate": 0.0005,
+        "ets_pump_flow_rate": 0.02,
         "ets_pump_head": 10000,
         "fan_design_flow_rate": 0.25,
         "fan_design_head": 150
@@ -73,7 +73,7 @@
   "district_system": {
     "fifth_generation": {
       "horizontal_piping_parameters": {
-        "hydraulic_diameter": 0.089,
+        "hydraulic_diameter": 0.2,
         "hydraulic_diameter_autosized": true,
         "insulation_thickness": 0.2,
         "insulation_conductivity": 2.3,
@@ -89,9 +89,9 @@
         "undisturbed_temp": 18.3
       },
       "central_pump_parameters": {
-        "pump_design_head": 100000,
+        "pump_design_head": 150000,
         "pump_design_head_autosized": true,
-        "pump_flow_rate": 0.001,
+        "pump_flow_rate": 0.04,
         "pump_flow_rate_autosized": true
       }
     }

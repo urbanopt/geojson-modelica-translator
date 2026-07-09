@@ -2,7 +2,7 @@
   {{ model.modelica_type }} {{ model.id }}(
     {% if model.is_5g_district == 'bui' %}
     redeclare package MediumSer = {{ globals.medium_w }},
-    allowFlowReversalBui = false,
+    allowFlowReversalBui = true,
     {{ model.is_5g_district }}(
     have_hotWat=true,
     delTAirCoo(displayUnit="degC")={{ sys_params.building.load_model_parameters.time_series.delta_temp_air_cooling }},

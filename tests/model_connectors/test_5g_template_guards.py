@@ -1,9 +1,12 @@
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
+from geojson_modelica_translator.model_connectors.plants.no_plant_boundary import NoPlantBoundary
+from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
 
 
 def _render_template(template_path: Path, **context) -> str:
@@ -198,9 +201,14 @@ def test_time_series_unidirectional_series_renders_fallback_tsouout_for_no_sourc
         data=[{"list_bldg_ids_in_group": ["bldg-1"]}],
     )
     coupling = {"id": "CPL_1", "network": {"id": "UniNet_1"}, "load": {"id": "TimeSerLoa_bldg-1"}}
+    sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 18.3}}}}
 
-    rendered_comp = _render_template(comp_template, graph=graph, loop_order=loop_order, coupling=coupling)
-    rendered_conn = _render_template(conn_template, graph=graph, loop_order=loop_order, coupling=coupling)
+    rendered_comp = _render_template(
+        comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
+    )
+    rendered_conn = _render_template(
+        conn_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
+    )
 
     assert "TSouIn_fallback_UniNet_1" in rendered_comp
     assert "TSouOut_fallback_UniNet_1" in rendered_comp
@@ -331,12 +339,40 @@ def test_unidirectional_series_no_plant_boundary_uses_soil_undisturbed_temp():
     loop_order = SimpleNamespace(number_of_loops=1, data=[{"list_bldg_ids_in_group": ["bldg-1", "bldg-2"]}])
     coupling = {"id": "CPL_NOPL", "network": {"id": "UniNet_1"}}
     sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}}}
+    globals_ctx = {"medium_w": "MediumW"}
 
     rendered_comp = _render_template(
-        comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
+        comp_template,
+        graph=graph,
+        loop_order=loop_order,
+        coupling=coupling,
+        sys_params=sys_params,
+        globals=globals_ctx,
     )
     rendered_conn = _render_template(conn_template, graph=graph, loop_order=loop_order, coupling=coupling)
 
+    assert "TNoPlant_CPL_NOPL(" in rendered_comp
+    assert "heaNoPlant_CPL_NOPL(" in rendered_comp
+    assert "cooNoPlant_CPL_NOPL(" in rendered_comp
     assert "bound_heatPort_CPL_NOPL(" in rendered_comp
     assert "T=273.15 + 16.7)" in rendered_comp
+    assert "connect(TNoPlant_CPL_NOPL.y, heaNoPlant_CPL_NOPL.TSet)" in rendered_conn
+    assert "connect(TNoPlant_CPL_NOPL.y, cooNoPlant_CPL_NOPL.TSet)" in rendered_conn
     assert "connect(bound_heatPort_CPL_NOPL.port, UniNet_1.heatPortGro[3])" in rendered_conn
+
+
+def test_no_plant_boundary_requires_soil_undisturbed_temp():
+    sys_params = SystemParameters.loadd(
+        {
+            "buildings": [],
+            "district_system": {
+                "fifth_generation": {
+                    "horizontal_piping_parameters": {"pressure_drop_per_meter": 300},
+                }
+            },
+        },
+        validate_on_load=False,
+    )
+
+    with pytest.raises(ValueError, match=r"soil\.undisturbed_temp"):
+        NoPlantBoundary(sys_params)

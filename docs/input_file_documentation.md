@@ -9,7 +9,7 @@ As an aside, 5GDHC systems also require a `loop_order` JSON file, which is autom
 
 GMT can generate a 5GDHC model when the system parameters do not include `district_system.fifth_generation.ghe_parameters`. In this topology, the generated district does not include a borefield or other ground heat exchanger plant. Instead, GMT creates an explicit no-plant boundary in the coupling graph and renders fixed-temperature boundary conditions for the ambient loop. This acts as an infinite source/sink for the 5G distribution loop.
 
-The fallback source/sink temperature defaults to `district_system.fifth_generation.soil.undisturbed_temp` when that value is present, and otherwise uses 17 C. This is a modeling assumption for no-GHE cases, not a hidden ground heat exchanger design.
+The source/sink temperature is set by `district_system.fifth_generation.soil.undisturbed_temp`. This value must be provided in the system parameters JSON for no-GHE 5GDHC systems. It is a modeling assumption for no-GHE cases, not a hidden ground heat exchanger design.
 
 ## GeoJSON Documentation
 

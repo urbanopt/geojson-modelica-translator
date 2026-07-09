@@ -1,7 +1,7 @@
   // ambient loop pump
   Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumDis(
     redeclare final package Medium = {{ globals.medium_w }},
-    allowFlowReversal=allowFlowReversalSer,
+    allowFlowReversal=true,
     m_flow_nominal=datDes.mPumDis_flow_nominal,
     dp_nominal={{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_design_head }})
     "Distribution pump"

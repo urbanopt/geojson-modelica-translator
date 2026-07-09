@@ -62,9 +62,22 @@
       {% set first_bldg_id = "TimeSerLoa_" ~ loop_order.data[group_num].list_bldg_ids_in_group[0] %}
     {% endif %}
     {% if first_bldg_id == coupling.load.id %}
+      {% if explicit_no_plant_boundary %}
+        {% set no_plant_coupling_id = network_couplings.plant_couplings[0].id %}
+      connect(pumDis.port_b, heaNoPlant_{{ no_plant_coupling_id }}.port_a)
+      {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-20,10},{-20,-180}}, color={0,127,255}));
+      {% endraw %}
+      connect(heaNoPlant_{{ no_plant_coupling_id }}.port_b, cooNoPlant_{{ no_plant_coupling_id }}.port_a)
+      {% raw %}annotation (Line(points={{0,-180},{10,-180}}, color={0,127,255}));
+      {% endraw %}
+      connect(cooNoPlant_{{ no_plant_coupling_id }}.port_b, {{ coupling.network.id }}.port_aDisSup)
+      {% raw %}annotation (Line(points={{30,-180},{50,-180},{50,10}}, color={0,127,255}));
+      {% endraw %}
+      {% else %}
       connect(pumDis.port_b, {{ coupling.network.id }}.port_aDisSup)
       {% raw %}annotation (Line(points={{-44,-50},{-44,10},{50,10}}, color={0,127,255}));
       {% endraw %}
+      {% endif %}
       connect({{ coupling.network.id }}.port_bDisSup, pumDis.port_a)
       {% raw %}annotation (Line(points={{90,10},{100,10},{100,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
       {% endraw %}

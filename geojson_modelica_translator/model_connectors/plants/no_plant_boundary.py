@@ -16,6 +16,11 @@ class NoPlantBoundary(PlantBase):
     model_name = "NoPlantBoundary"
 
     def __init__(self, system_parameters):
+        if system_parameters.get_param("$.district_system.fifth_generation.soil.undisturbed_temp") is None:
+            raise ValueError(
+                "5G no-plant systems require "
+                "district_system.fifth_generation.soil.undisturbed_temp in the system parameters JSON."
+            )
         super().__init__(system_parameters)
         self.id = "noPla_" + simple_uuid()
 
