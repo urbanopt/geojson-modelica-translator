@@ -12,8 +12,15 @@ import pandas as pd
 import requests
 from jsonpath_ng.ext import parse
 from jsonschema import ValidationError, validate
+from modelica_builder.modelica_mos_file import ModelicaMOS
+
+from geojson_modelica_translator.modelica.GMT_Lib.DHC._flow_sizing import flow_rate_from_load, source_side_loads
 
 logger = logging.getLogger(__name__)
+
+WATER_DENSITY_KG_PER_M3 = 1000
+FIFTH_GENERATION_SOURCE_SIDE_DELTA_T_K = 5
+FIFTH_GENERATION_TARGET_PIPE_VELOCITY_M_PER_S = 2
 
 
 class SystemParameters:
@@ -856,6 +863,7 @@ class SystemParameters:
                 if measure_file_path.suffix == ".mos":
                     # if there is a relative path, then set the path relative
                     timeseries_load_file_path = measure_file_path.resolve()
+                    self.update_fifth_generation_building_pump_flow(district_type, building, timeseries_load_file_path)
                     if self.rel_path:
                         timeseries_load_file_path = timeseries_load_file_path.relative_to(self.rel_path)
 
@@ -957,10 +965,50 @@ class SystemParameters:
             for building in building_list
         )
         if building_pump_flow_rate > 0:
-            central_pump_parameters["pump_flow_rate"] = max(
-                float(central_pump_parameters.get("pump_flow_rate", 0) or 0),
-                round(building_pump_flow_rate, 6),
-            )
+            central_pump_parameters["pump_flow_rate"] = round(building_pump_flow_rate, 6)
+
+        self.update_fifth_generation_horizontal_piping(building_pump_flow_rate)
+
+    def update_fifth_generation_horizontal_piping(self, pump_flow_rate: float) -> None:
+        horizontal_piping_parameters = self.param_template["district_system"]["fifth_generation"][
+            "horizontal_piping_parameters"
+        ]
+        if not horizontal_piping_parameters.get("hydraulic_diameter_autosized", False) or pump_flow_rate <= 0:
+            return
+
+        autosized_hydraulic_diameter = math.sqrt(
+            4 * pump_flow_rate / (math.pi * FIFTH_GENERATION_TARGET_PIPE_VELOCITY_M_PER_S)
+        )
+        horizontal_piping_parameters["hydraulic_diameter"] = round(autosized_hydraulic_diameter, 3)
+
+    def update_fifth_generation_building_pump_flow(self, district_type: str, building: dict, mos_path: Path) -> None:
+        if "5G" not in district_type:
+            return
+
+        ets_parameters = building.get("fifth_gen_ets_parameters")
+        if ets_parameters is None:
+            return
+
+        mos_file = ModelicaMOS(mos_path)
+        peak_heating_load = mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
+        peak_cooling_load = mos_file.retrieve_header_variable_value("Peak space cooling load", cast_type=float)
+        peak_water_load = mos_file.retrieve_header_variable_value("Peak water heating load", cast_type=float)
+        heating_extraction_load, cooling_rejection_load, swh_extraction_load = source_side_loads(
+            peak_heating_load,
+            peak_cooling_load,
+            peak_water_load,
+            ets_parameters,
+        )
+        design_source_side_load = max(heating_extraction_load + swh_extraction_load, cooling_rejection_load)
+        if design_source_side_load <= 0:
+            return
+
+        source_side_mass_flow_rate = flow_rate_from_load(
+            design_source_side_load,
+            FIFTH_GENERATION_SOURCE_SIDE_DELTA_T_K,
+        )
+        source_side_volume_flow_rate = source_side_mass_flow_rate / WATER_DENSITY_KG_PER_M3
+        ets_parameters["ets_pump_flow_rate"] = round(source_side_volume_flow_rate, 6)
 
     def csv_to_sys_param(
         self,

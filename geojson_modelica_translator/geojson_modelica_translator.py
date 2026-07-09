@@ -273,6 +273,10 @@ class GeoJsonModelicaTranslator:
             self._system_parameters.param_template["buildings"] = self._system_parameters.param_template.get(
                 "buildings", []
             )[:max_buildings_count]
+            if "fifth_generation" in self._system_parameters.get_param("district_system"):
+                self._system_parameters.update_fifth_generation_central_pump_flow(
+                    "5G", self._system_parameters.param_template["buildings"]
+                )
 
         geojson_ids = self._system_parameters.get_param("$.buildings.[*].geojson_id")
         self._geojson = UrbanOptGeoJson(geojson_filepath, geojson_ids, skip_validation=skip_validation)
