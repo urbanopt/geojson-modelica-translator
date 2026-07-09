@@ -238,8 +238,12 @@ def test_time_series_unidirectional_series_uses_soil_undisturbed_temp_for_no_pla
     coupling = {"id": "CPL_1", "network": {"id": "UniNet_1"}, "load": {"id": "TimeSerLoa_bldg-1"}}
     sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}}}
 
-    rendered_comp = _render_template(comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params)
-    rendered_conn = _render_template(conn_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params)
+    rendered_comp = _render_template(
+        comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
+    )
+    rendered_conn = _render_template(
+        conn_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
+    )
 
     assert "TSouIn_fallback_UniNet_1(k=16.7 + 273.15)" in rendered_comp
     assert "TSouOut_fallback_UniNet_1(k=16.7 + 1 + 273.15)" in rendered_comp
@@ -328,7 +332,9 @@ def test_unidirectional_series_no_plant_boundary_uses_soil_undisturbed_temp():
     coupling = {"id": "CPL_NOPL", "network": {"id": "UniNet_1"}}
     sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}}}
 
-    rendered_comp = _render_template(comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params)
+    rendered_comp = _render_template(
+        comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
+    )
     rendered_conn = _render_template(conn_template, graph=graph, loop_order=loop_order, coupling=coupling)
 
     assert "bound_heatPort_CPL_NOPL(" in rendered_comp

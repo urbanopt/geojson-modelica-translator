@@ -20,7 +20,9 @@ class GeoJSONTranslatorTest(TestCaseBase):
     geojson_file = TestCaseBase.SHARED_DATA_DIR / "geojson_district" / "geojson.json"
     sys_params_file = TestCaseBase.SHARED_DATA_DIR / "geojson_district" / "system_params.json"
     no_plant_geojson_file = Path(__file__).parents[1] / "model_connectors" / "data" / "time_series_ex1.json"
-    no_plant_sys_params_file = Path(__file__).parents[1] / "model_connectors" / "data" / "time_series_5g_sys_params.json"
+    no_plant_sys_params_file = (
+        Path(__file__).parents[1] / "model_connectors" / "data" / "time_series_5g_sys_params.json"
+    )
 
     def test_to_modelica_is_successful_when_inputs_are_valid(self):
         # -- Setup, Act

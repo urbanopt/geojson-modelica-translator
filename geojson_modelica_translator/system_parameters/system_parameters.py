@@ -944,6 +944,24 @@ class SystemParameters:
 
         return length, width
 
+    def update_fifth_generation_central_pump_flow(self, district_type: str, building_list: list[dict]) -> None:
+        if "5G" not in district_type:
+            return
+
+        central_pump_parameters = self.param_template["district_system"]["fifth_generation"]["central_pump_parameters"]
+        if not central_pump_parameters.get("pump_flow_rate_autosized", False):
+            return
+
+        building_pump_flow_rate = sum(
+            float(building.get("fifth_gen_ets_parameters", {}).get("ets_pump_flow_rate", 0) or 0)
+            for building in building_list
+        )
+        if building_pump_flow_rate > 0:
+            central_pump_parameters["pump_flow_rate"] = max(
+                float(central_pump_parameters.get("pump_flow_rate", 0) or 0),
+                round(building_pump_flow_rate, 6),
+            )
+
     def csv_to_sys_param(
         self,
         model_type: str,
@@ -1041,18 +1059,7 @@ class SystemParameters:
             elif microgrid and feature_opt_file.exists():
                 self.process_building_microgrid_inputs(building, scenario_dir)
 
-        if "5G" in district_type:
-            central_pump_parameters = self.param_template["district_system"]["fifth_generation"]["central_pump_parameters"]
-            if central_pump_parameters.get("pump_flow_rate_autosized", False):
-                building_pump_flow_rate = sum(
-                    float(building.get("fifth_gen_ets_parameters", {}).get("ets_pump_flow_rate", 0) or 0)
-                    for building in building_list
-                )
-                if building_pump_flow_rate > 0:
-                    central_pump_parameters["pump_flow_rate"] = max(
-                        float(central_pump_parameters.get("pump_flow_rate", 0) or 0),
-                        round(building_pump_flow_rate, 6),
-                    )
+        self.update_fifth_generation_central_pump_flow(district_type, building_list)
 
         # Add all buildings to the sys-param file
         self.param_template["buildings"] = building_list

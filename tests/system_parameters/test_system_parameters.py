@@ -401,9 +401,9 @@ class SystemParametersTest(unittest.TestCase):
         building_flow_sum = sum(
             building["fifth_gen_ets_parameters"]["ets_pump_flow_rate"] for building in sys_param_data["buildings"]
         )
-        assert sys_param_data["district_system"]["fifth_generation"]["central_pump_parameters"]["pump_flow_rate"] == round(
-            building_flow_sum, 6
-        )
+        assert sys_param_data["district_system"]["fifth_generation"]["central_pump_parameters"][
+            "pump_flow_rate"
+        ] == round(building_flow_sum, 6)
 
     def test_csv_to_sys_param_waste_heat(self):
         output_sys_param_file = self.output_dir / "test_sys_param_waste_heat.json"
