@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import inspect
 import logging
 import os
 import shutil
@@ -12,6 +13,45 @@ from modelica_builder.package_parser import PackageParser
 from geojson_modelica_translator.utils import ModelicaPath, mbl_version
 
 _log = logging.getLogger(__name__)
+
+
+def _create_subpackage(package: PackageParser, model_name: str) -> PackageParser:
+    if package.path is None:
+        raise ValueError(f"Cannot create subpackage '{model_name}': PackageParser.path is None.")
+
+    subpackage_path = Path(package.path) / model_name
+    subpackage_path.mkdir(parents=True, exist_ok=True)
+    package_within = getattr(package, "within", None)
+    if package_within:
+        within = ".".join([*package_within, package.package_name])
+    else:
+        within = package.package_name
+
+    subpackage = PackageParser.new_from_template(
+        path=subpackage_path,
+        name=model_name,
+        order=[],
+        within=within,
+    )
+    if hasattr(package, "_subpackages"):
+        package._subpackages[model_name.lower()] = subpackage
+    else:
+        setattr(package, model_name.lower(), subpackage)
+    return subpackage
+
+
+if "create_subpackage" not in inspect.signature(PackageParser.add_model).parameters:
+    _package_parser_add_model = PackageParser.add_model
+
+    def _add_model_with_create_subpackage(
+        self: PackageParser, new_model_name: str, insert_at: int = -1, create_subpackage: bool = False
+    ) -> PackageParser:
+        _package_parser_add_model(self, new_model_name, insert_at=insert_at)
+        if create_subpackage:
+            return _create_subpackage(self, new_model_name)
+        return self
+
+    PackageParser.add_model = _add_model_with_create_subpackage
 
 
 class Scaffold:
@@ -80,6 +120,20 @@ class Scaffold:
             )
         return self._package
 
+    @staticmethod
+    def _add_model(package: PackageParser, model_name: str, create_subpackage: bool = False) -> PackageParser:
+        try:
+            return package.add_model(model_name, create_subpackage=create_subpackage)
+        except TypeError as error:
+            if "create_subpackage" not in str(error):
+                raise
+
+        package.add_model(model_name)
+        if not create_subpackage:
+            return package
+
+        return _create_subpackage(package, model_name)
+
     def create(self, ignore_paths: list[str] = [], subpackages: list[str] = []) -> None:
         """Run the scaffolding to create the directory structure for DES systems.
 
@@ -123,7 +177,7 @@ class Scaffold:
             if "/" in package_name:
                 parent_name, subpkg_name = package_name.split("/", 1)
                 parent_pkg = getattr(self._package, parent_name.lower())
-                parent_pkg.add_model(subpkg_name, create_subpackage=True)
+                self._add_model(parent_pkg, subpkg_name, create_subpackage=True)
 
                 # Create ModelicaPath for nested package
                 setattr(
@@ -132,7 +186,7 @@ class Scaffold:
                     ModelicaPath(subpkg_name, root_dir=self.project_path / parent_name, overwrite=True),
                 )
             else:
-                self._package.add_model(package_name, create_subpackage=True)
+                self._add_model(self._package, package_name, create_subpackage=True)
 
                 # Create ModelicaPath for backward compatibility
                 # Set overwrite=True since PackageParser already created the directory
@@ -162,9 +216,9 @@ class Scaffold:
 
         if parent:
             parent_pkg = getattr(self._package, parent.lower())
-            subpackage = parent_pkg.add_model(name, create_subpackage=True)
+            subpackage = self._add_model(parent_pkg, name, create_subpackage=True)
         else:
-            subpackage = self._package.add_model(name, create_subpackage=True)
+            subpackage = self._add_model(self._package, name, create_subpackage=True)
 
         # Create ModelicaPath for the new subpackage
         # Set overwrite=True since PackageParser already created the directory

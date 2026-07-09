@@ -1,0 +1,12 @@
+{% set no_plant_loop_temp_c = 17 %}
+{% if sys_params is defined and sys_params.district_system is defined and sys_params.district_system.fifth_generation is defined %}
+  {% if sys_params.district_system.fifth_generation.soil is defined and sys_params.district_system.fifth_generation.soil.undisturbed_temp is defined %}
+    {% set no_plant_loop_temp_c = sys_params.district_system.fifth_generation.soil.undisturbed_temp %}
+  {% endif %}
+{% endif %}
+  // Boundary condition for network heat loss (no-plant 5G)
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature bound_heatPort_{{ coupling.id }}(
+    T=273.15 + {{ no_plant_loop_temp_c }})
+    "Boundary condition for end-of-line pipe heat loss in no-plant 5G"
+{% raw %}    annotation (Placement(transformation(extent={{140,-40},{160,-20}})));
+{% endraw %}

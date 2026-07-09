@@ -109,25 +109,26 @@ class District:
             },
         }
 
-        if district_template_params["is_ghe_district"] and self.gj:
-            # determine the maximum borefield flow rate in the district
-            borefields = self.system_parameters.get_param(
-                "$.district_system.fifth_generation.ghe_parameters.borefields"
-            )
-            number_of_boreholes_dict = {}
-            for borefield in borefields:
-                ghe_id = borefield["ghe_id"]
-                if "pre_designed_borefield" not in borefield:
-                    num_boreholes = self.system_parameters.get_param_by_id(ghe_id, "$.*.number_of_boreholes")
-                else:
-                    num_boreholes = len(borefield["pre_designed_borefield"]["borehole_x_coordinates"])
-                number_of_boreholes_dict[ghe_id] = num_boreholes
-            common_template_params["number_of_boreholes"] = number_of_boreholes_dict
-            # Allow 5G systems that have ghe_parameters defined but no borefields listed.
-            # A zero default avoids crashing on max([]) and keeps template math deterministic.
-            common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values(), default=0)
+        if "fifth_generation" in district_system_params and self.gj:
+            if district_template_params["is_ghe_district"]:
+                # determine the maximum borefield flow rate in the district
+                borefields = self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.borefields"
+                )
+                number_of_boreholes_dict = {}
+                for borefield in borefields:
+                    ghe_id = borefield["ghe_id"]
+                    if "pre_designed_borefield" not in borefield:
+                        num_boreholes = self.system_parameters.get_param_by_id(ghe_id, "$.*.number_of_boreholes")
+                    else:
+                        num_boreholes = len(borefield["pre_designed_borefield"]["borehole_x_coordinates"])
+                    number_of_boreholes_dict[ghe_id] = num_boreholes
+                common_template_params["number_of_boreholes"] = number_of_boreholes_dict
+                # Allow 5G systems that have ghe_parameters defined but no borefields listed.
+                # A zero default avoids crashing on max([]) and keeps template math deterministic.
+                common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values(), default=0)
 
-            # load loop order info from ThermalNetwork
+            # load loop order info from ThermalNetwork or generated fallback
             loop_order = load_loop_order(self.system_parameters.filename)
             # calculate number of connected buildings in loop order for 5G systems & reassign
             common_template_params["sys_params"]["num_buildings"] = get_num_buildings_in_loop_order(loop_order)

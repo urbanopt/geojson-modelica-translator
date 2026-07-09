@@ -384,6 +384,27 @@ class SystemParametersTest(unittest.TestCase):
         # ghe
         assert sys_param_data["district_system"]["fifth_generation"]["ghe_parameters"] is not False
 
+    def test_csv_to_sys_param_autosizes_5g_central_pump_flow(self):
+        output_sys_param_file = self.output_dir / "test_sys_param_5g.json"
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
+            model_type="time_series",
+            scenario_dir=self.scenario_dir,
+            feature_file=self.feature_file,
+            district_type="5G",
+            sys_param_filename=output_sys_param_file,
+        )
+
+        with open(output_sys_param_file) as f:
+            sys_param_data = json.load(f)
+
+        building_flow_sum = sum(
+            building["fifth_gen_ets_parameters"]["ets_pump_flow_rate"] for building in sys_param_data["buildings"]
+        )
+        assert sys_param_data["district_system"]["fifth_generation"]["central_pump_parameters"]["pump_flow_rate"] == round(
+            building_flow_sum, 6
+        )
+
     def test_csv_to_sys_param_waste_heat(self):
         output_sys_param_file = self.output_dir / "test_sys_param_waste_heat.json"
         sp = SystemParameters()

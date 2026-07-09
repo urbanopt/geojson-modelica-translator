@@ -1041,6 +1041,19 @@ class SystemParameters:
             elif microgrid and feature_opt_file.exists():
                 self.process_building_microgrid_inputs(building, scenario_dir)
 
+        if "5G" in district_type:
+            central_pump_parameters = self.param_template["district_system"]["fifth_generation"]["central_pump_parameters"]
+            if central_pump_parameters.get("pump_flow_rate_autosized", False):
+                building_pump_flow_rate = sum(
+                    float(building.get("fifth_gen_ets_parameters", {}).get("ets_pump_flow_rate", 0) or 0)
+                    for building in building_list
+                )
+                if building_pump_flow_rate > 0:
+                    central_pump_parameters["pump_flow_rate"] = max(
+                        float(central_pump_parameters.get("pump_flow_rate", 0) or 0),
+                        round(building_pump_flow_rate, 6),
+                    )
+
         # Add all buildings to the sys-param file
         self.param_template["buildings"] = building_list
 

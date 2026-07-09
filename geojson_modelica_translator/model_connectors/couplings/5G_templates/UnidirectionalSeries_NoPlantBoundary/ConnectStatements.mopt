@@ -1,0 +1,4 @@
+  // Connect boundary to network heat port for no-plant scenario
+  connect(bound_heatPort_{{ coupling.id }}.port, {{ coupling.network.id }}.heatPortGro[{{ loop_order.data[0].list_bldg_ids_in_group|length + 1 }}])
+  {% raw %}annotation (Line(points={{160,-30},{130,-30},{130,-10},{90,-10}}, color={191,0,0}));
+  {% endraw %}

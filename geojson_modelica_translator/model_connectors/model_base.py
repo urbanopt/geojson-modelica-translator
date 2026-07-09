@@ -71,12 +71,11 @@ class ModelBase:
                     ],
                     "number_of_loops": 1,
                 }
-                if "ghe_parameters" in district_params["fifth_generation"]:
-                    self.loop_order = load_loop_order(self.system_parameters.filename)
-                    # 5G num buildings (counted from loop order)
-                    self.num_buildings = get_num_buildings_in_loop_order(self.loop_order)
-                    self.district_template_data["number_of_loops"] = len(self.loop_order)
-                    self.district_template_data["data"] = self.loop_order
+                self.loop_order = load_loop_order(self.system_parameters.filename)
+                # 5G num buildings (counted from loop order)
+                self.num_buildings = get_num_buildings_in_loop_order(self.loop_order)
+                self.district_template_data["number_of_loops"] = len(self.loop_order)
+                self.district_template_data["data"] = self.loop_order
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """Converts square feet to square meters
