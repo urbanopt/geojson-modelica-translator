@@ -201,7 +201,16 @@ def test_time_series_unidirectional_series_renders_fallback_tsouout_for_no_sourc
         data=[{"list_bldg_ids_in_group": ["bldg-1"]}],
     )
     coupling = {"id": "CPL_1", "network": {"id": "UniNet_1"}, "load": {"id": "TimeSerLoa_bldg-1"}}
-    sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 18.3}}}}
+    sys_params = {
+        "building": {
+            "fifth_gen_ets_parameters": {
+                "chilled_water_supply_temp": 5,
+                "heating_water_supply_temp": 50,
+                "hot_water_supply_temp": 50,
+            }
+        },
+        "district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 18.3}}},
+    }
 
     rendered_comp = _render_template(
         comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
@@ -244,7 +253,16 @@ def test_time_series_unidirectional_series_uses_soil_undisturbed_temp_for_no_pla
         data=[{"list_bldg_ids_in_group": ["bldg-1"]}],
     )
     coupling = {"id": "CPL_1", "network": {"id": "UniNet_1"}, "load": {"id": "TimeSerLoa_bldg-1"}}
-    sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}}}
+    sys_params = {
+        "building": {
+            "fifth_gen_ets_parameters": {
+                "chilled_water_supply_temp": 5,
+                "heating_water_supply_temp": 50,
+                "hot_water_supply_temp": 50,
+            }
+        },
+        "district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}},
+    }
 
     rendered_comp = _render_template(
         comp_template, graph=graph, loop_order=loop_order, coupling=coupling, sys_params=sys_params
@@ -255,6 +273,9 @@ def test_time_series_unidirectional_series_uses_soil_undisturbed_temp_for_no_pla
 
     assert "TSouIn_fallback_UniNet_1(k=16.7 + 273.15)" in rendered_comp
     assert "TSouOut_fallback_UniNet_1(k=16.7 + 1 + 273.15)" in rendered_comp
+    assert "TChiWatSupSet_CPL_1(k=5 + 273.15)" in rendered_comp
+    assert "THeaWatSupMaxSet_CPL_1(k=50 +" in rendered_comp
+    assert "THotWatSupSet_CPL_1(k=50 + 273.15)" in rendered_comp
     # original direct pump-to-network and network-return-to-pump connections present
     assert "connect(pumDis.port_b, UniNet_1.port_aDisSup)" in rendered_conn
     assert "connect(UniNet_1.port_bDisSup, pumDis.port_a)" in rendered_conn
