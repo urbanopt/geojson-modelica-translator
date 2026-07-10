@@ -19,11 +19,11 @@ model building
       facMulHea=max(
         1,
         ceil(
-          10*QHea_flow_nominal/(1.7E5))),
+          QHea_flow_nominal/(1.7E5))),
       facMulCoo=max(
         1,
         ceil(
-          40*abs(
+          abs(
             QCoo_flow_nominal)/(1.5E5)))),
     redeclare {{ project_name }}.Loads.ETS.HeatPumpTrio ets(
       final dT_nominal=dT_nominal,

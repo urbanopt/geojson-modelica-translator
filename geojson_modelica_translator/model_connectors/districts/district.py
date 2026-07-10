@@ -155,6 +155,10 @@ class District:
             # Also remove ETS from the Loads package order
             if hasattr(self._scaffold.package, "loads") and "ETS" in self._scaffold.package.loads.order:
                 self._scaffold.package.loads.order.remove("ETS")
+            if hasattr(self._scaffold.package.loads, "_subpackages"):
+                self._scaffold.package.loads._subpackages.pop("ets", None)
+            elif hasattr(self._scaffold.package.loads, "ets"):
+                delattr(self._scaffold.package.loads, "ets")
 
         # render each coupling
         load_num = 1
