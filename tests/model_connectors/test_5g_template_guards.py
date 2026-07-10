@@ -172,7 +172,13 @@ def _time_series_for_cooling_coil_selection(time_series_parameters, fifth_genera
                     "load_model_parameters": {"time_series": time_series_parameters},
                 }
             ],
-            "district_system": {"fifth_generation": fifth_generation or {"soil": {"undisturbed_temp": 18.3}}},
+            "district_system": {
+                "fifth_generation": fifth_generation
+                or {
+                    "soil": {"undisturbed_temp": 18.3},
+                    "no_central_plant": {"distribution_temperature": 18.3},
+                }
+            },
         },
         validate_on_load=False,
     )
@@ -323,6 +329,7 @@ def test_network_distribution_pump_uses_single_fallback_source_when_no_sources_p
         "district_system": {
             "fifth_generation": {
                 "central_pump_parameters": {"pump_design_head": 200000},
+                "no_central_plant": {"distribution_temperature": 18.3},
                 "soil": {"undisturbed_temp": 18.3},
             }
         }
@@ -374,7 +381,12 @@ def test_time_series_unidirectional_series_renders_fallback_tsouout_for_no_sourc
                 "hot_water_supply_temp": 50,
             }
         },
-        "district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 18.3}}},
+        "district_system": {
+            "fifth_generation": {
+                "soil": {"undisturbed_temp": 18.3},
+                "no_central_plant": {"distribution_temperature": 18.3},
+            }
+        },
     }
 
     rendered_comp = _render_template(
@@ -391,7 +403,7 @@ def test_time_series_unidirectional_series_renders_fallback_tsouout_for_no_sourc
     assert "bound_heatPort_UniNet_1_p1" not in rendered_comp
 
 
-def test_time_series_unidirectional_series_uses_soil_undisturbed_temp_for_no_plant_fallbacks():
+def test_time_series_unidirectional_series_uses_no_central_plant_temperature_for_no_plant_fallbacks():
     comp_template = (
         Path(__file__).parents[2]
         / "geojson_modelica_translator"
@@ -426,7 +438,12 @@ def test_time_series_unidirectional_series_uses_soil_undisturbed_temp_for_no_pla
                 "hot_water_supply_temp": 50,
             }
         },
-        "district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}},
+        "district_system": {
+            "fifth_generation": {
+                "soil": {"undisturbed_temp": 18.3},
+                "no_central_plant": {"distribution_temperature": 16.7},
+            }
+        },
     }
 
     rendered_comp = _render_template(
@@ -531,7 +548,7 @@ def test_unidirectional_series_instance_treats_explicit_no_plant_boundary_like_n
     assert "final allowFlowReversal=allowFlowReversalSer" in rendered
 
 
-def test_unidirectional_series_no_plant_boundary_uses_soil_undisturbed_temp():
+def test_unidirectional_series_no_plant_boundary_uses_no_central_plant_temperature():
     comp_template = (
         Path(__file__).parents[2]
         / "geojson_modelica_translator"
@@ -554,7 +571,15 @@ def test_unidirectional_series_no_plant_boundary_uses_soil_undisturbed_temp():
     graph = _GraphStub(couplings={"UniNet_1": SimpleNamespace(plant_couplings=[{"id": "CPL_NOPL"}])})
     loop_order = SimpleNamespace(number_of_loops=1, data=[{"list_bldg_ids_in_group": ["bldg-1", "bldg-2"]}])
     coupling = {"id": "CPL_NOPL", "network": {"id": "UniNet_1"}}
-    sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 16.7}}}}
+    sys_params = {
+        "district_system": {
+            "fifth_generation": {
+                "soil": {"undisturbed_temp": 16.7},
+                "no_central_plant": {"distribution_temperature": 17.2},
+                "central_pump_parameters": {"pump_design_head": 200000},
+            }
+        }
+    }
     globals_ctx = {"medium_w": "MediumW"}
 
     rendered_comp = _render_template(
@@ -572,16 +597,26 @@ def test_unidirectional_series_no_plant_boundary_uses_soil_undisturbed_temp():
     assert "cooNoPlant_CPL_NOPL(" in rendered_comp
     assert "supNoPlant_CPL_NOPL(" in rendered_comp
     assert "p=101325" in rendered_comp
-    assert "pIdePlaHea_CPL_NOPL=heaNoPlant_CPL_NOPL.Q_flow" in rendered_comp
-    assert "pIdePlaCoo_CPL_NOPL=-cooNoPlant_CPL_NOPL.Q_flow" in rendered_comp
+    assert "qIdePlaRev_CPL_NOPL=max(" in rendered_comp
+    assert "heaNoPlant_CPL_NOPL.port_a.h_outflow - heaNoPlant_CPL_NOPL.port_b.h_outflow" in rendered_comp
+    assert "pIdePlaHea_CPL_NOPL=max(" in rendered_comp
+    assert "-qIdePlaRev_CPL_NOPL" in rendered_comp
+    assert "pIdePlaCoo_CPL_NOPL=max(" in rendered_comp
+    assert "qIdePlaRev_CPL_NOPL" in rendered_comp
+    assert "etaIdePumDis_CPL_NOPL" in rendered_comp
+    assert "rhoIdePumDis_CPL_NOPL" in rendered_comp
+    assert "pIdePumDis_CPL_NOPL=max(" in rendered_comp
+    assert "*200000/etaIdePumDis_CPL_NOPL" in rendered_comp
     assert "bound_heatPort_CPL_NOPL(" in rendered_comp
+    assert "k=17.2 + 273.15" in rendered_comp
+    assert "T=17.2 + 273.15" in rendered_comp
     assert "T=273.15 + 16.7)" in rendered_comp
     assert "connect(TNoPlant_CPL_NOPL.y, heaNoPlant_CPL_NOPL.TSet)" in rendered_conn
     assert "connect(TNoPlant_CPL_NOPL.y, cooNoPlant_CPL_NOPL.TSet)" in rendered_conn
     assert "connect(bound_heatPort_CPL_NOPL.port, UniNet_1.heatPortGro[3])" in rendered_conn
 
 
-def test_no_plant_boundary_requires_soil_undisturbed_temp():
+def test_no_plant_boundary_requires_distribution_temperature():
     sys_params = SystemParameters.loadd(
         {
             "buildings": [],
@@ -594,5 +629,5 @@ def test_no_plant_boundary_requires_soil_undisturbed_temp():
         validate_on_load=False,
     )
 
-    with pytest.raises(ValueError, match=r"soil\.undisturbed_temp"):
+    with pytest.raises(ValueError, match=r"no_central_plant\.distribution_temperature"):
         NoPlantBoundary(sys_params)

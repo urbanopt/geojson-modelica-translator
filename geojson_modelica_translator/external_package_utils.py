@@ -37,6 +37,22 @@ def _build_default_loop_order(sys_param_data: dict) -> list | None:
     return [loop_group]
 
 
+def _loop_order_path(system_parameters_path: Path) -> Path:
+    named_loop_order_paths = [system_parameters_path.with_name(f"{system_parameters_path.stem}_loop_order.json")]
+    if system_parameters_path.stem.endswith("_sys_params"):
+        named_loop_order_paths.append(
+            system_parameters_path.with_name(
+                f"{system_parameters_path.stem.removesuffix('_sys_params')}_loop_order.json"
+            )
+        )
+
+    for named_loop_order_path in named_loop_order_paths:
+        if named_loop_order_path.is_file():
+            return named_loop_order_path
+
+    return system_parameters_path.parent / "_loop_order.json"
+
+
 def load_loop_order(system_parameters_file: Path) -> list:
     """Loads the loop order from a JSON file
 
@@ -54,7 +70,7 @@ def load_loop_order(system_parameters_file: Path) -> list:
 
     allowed_bldg_ids = {str(b.get("geojson_id")) for b in buildings if b.get("geojson_id")}
 
-    loop_order_path = system_parameters_path.parent / "_loop_order.json"
+    loop_order_path = _loop_order_path(system_parameters_path)
     if not loop_order_path.is_file():
         default_loop_order = _build_default_loop_order(sys_param_data)
         if default_loop_order is None:

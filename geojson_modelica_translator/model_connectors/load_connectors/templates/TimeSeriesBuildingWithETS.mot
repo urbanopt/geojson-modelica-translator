@@ -132,13 +132,13 @@ and hot water loads are provided as time series.
 </p>
 <h4>Sizing and initialization</h4>
 <p>
-The design heating, cooling, and service hot water loads are read from the
+The design heating, cooling, and service hot water loads (W) are read from the
 time-series metadata and propagated to the internal ETS. Terminal-unit
 multipliers are computed from those loads so larger buildings can be split
 across multiple terminal units without changing the generated model structure.
-The ETS pressure drop is supplied through <code>dp_nominal</code>, and the
+The ETS pressure drop is supplied through <code>dp_nominal</code> (Pa), and the
 service-water volume start temperature is supplied through
-<code>TSerWat_start</code>. This keeps service-water volume initialization
+<code>TSerWat_start</code> (K). This keeps service-water volume initialization
 configurable from the template data while leaving flow and pressure-drop sizing
 governed by <code>dp_nominal</code> and the load-derived ETS design values.
 </p>
@@ -150,7 +150,7 @@ defined by the district coupling templates.
 </html>",
       revisions="<html>
 <ul>
-<li>
+<li>g
 July 10, 2026, by Nicholas Long:<br/>
 Documented flexible load-based sizing and configurable service-water initialization.
 </li>

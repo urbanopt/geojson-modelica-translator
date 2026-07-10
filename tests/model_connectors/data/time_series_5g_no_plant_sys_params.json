@@ -83,6 +83,9 @@
         "rho_cp": 2139000,
         "buried_depth": 1.5
       },
+      "no_central_plant": {
+        "distribution_temperature": 18.3
+      },
       "soil": {
         "conductivity": 2.0,
         "rho_cp": 2343493,

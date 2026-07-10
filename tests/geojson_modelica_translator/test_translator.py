@@ -21,7 +21,7 @@ class GeoJSONTranslatorTest(TestCaseBase):
     sys_params_file = TestCaseBase.SHARED_DATA_DIR / "geojson_district" / "system_params.json"
     no_plant_geojson_file = Path(__file__).parents[1] / "model_connectors" / "data" / "time_series_ex1.json"
     no_plant_sys_params_file = (
-        Path(__file__).parents[1] / "model_connectors" / "data" / "time_series_5g_sys_params.json"
+        Path(__file__).parents[1] / "model_connectors" / "data" / "time_series_5g_no_plant_sys_params.json"
     )
 
     def test_to_modelica_is_successful_when_inputs_are_valid(self):
@@ -73,7 +73,8 @@ class GeoJSONTranslatorTest(TestCaseBase):
         district_text = district_model.read_text()
         assert "/5G_templates/UnidirectionalSeries_NoPlantBoundary/ComponentDefinitions.mopt" in district_text
         assert "bound_heatPort_" in district_text
-        assert "TSouIn_fallback_" not in district_text
+        assert "TSouIn_fallback_" in district_text
+        assert "TSouOut_fallback_" in district_text
 
     def test_to_modelica_respects_gmt_max_buildings_for_no_plant_fifth_generation(self):
         project_name = "generate_no_plant_5g_package_limited"

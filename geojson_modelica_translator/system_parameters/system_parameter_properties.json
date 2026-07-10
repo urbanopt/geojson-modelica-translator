@@ -1121,6 +1121,20 @@
         "buried_depth"
       ]
     },
+    "no_central_plant": {
+      "description": "Parameters for 5G systems without a central plant, ground heat exchanger, or heat source.",
+      "type": "object",
+      "properties": {
+        "distribution_temperature": {
+          "description": "Ideal no-central-plant distribution loop source/sink temperature.",
+          "type": "number",
+          "format": "Celsius"
+        }
+      },
+      "required": [
+        "distribution_temperature"
+      ]
+    },
     "diesel_generator_parameters": {
       "description": "Diesel generator parameters used by the microgrid model.",
       "type": "object",
@@ -2301,7 +2315,7 @@
           "format": "Pascals"
         },
         "pump_design_head_autosized": {
-          "description": "True if the pump head is autosized, false if set manually",
+          "description": "True if the pump head is autosized, false if set manually. Note: current GMT generation does not recalculate pump_design_head from loop geometry; provide or review pump_design_head in Pascals.",
           "type": "boolean",
           "default": true
         },
@@ -2375,6 +2389,9 @@
         },
         "horizontal_piping_parameters": {
           "$ref": "#/definitions/horizontal_piping_parameters"
+        },
+        "no_central_plant": {
+          "$ref": "#/definitions/no_central_plant"
         },
         "heat_source_parameters": {
           "$ref": "#/definitions/heat_source_parameters"

@@ -191,9 +191,9 @@ equation
 <p>
 This sensible-only two-pipe cooling terminal was added as a selectable
 alternative to the standard wet cooling terminal for time-series buildings.
-The chilled-water mass flow rate is derived from the cooling design load and
-nominal chilled-water temperature difference, while the load-side air flow and
-fan pressure drop remain configurable through the existing nominal parameters.
+The chilled-water mass flow rate (kg/s) is derived from the cooling design load (W) and
+nominal chilled-water temperature difference (K), while the load-side air flow (kg/s) and
+fan pressure drop (Pa) remain configurable through the existing nominal parameters.
 The component does not define district-loop boundary conditions; it only
 models the local dry terminal response.
 </p>

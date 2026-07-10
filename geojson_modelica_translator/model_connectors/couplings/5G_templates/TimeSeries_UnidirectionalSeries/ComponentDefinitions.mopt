@@ -31,11 +31,11 @@
     {% endif %}
     {% if coupling.load.id == first_bldg_coupling_id %}
       {% if loop_order.number_of_sources == 0 %}
-      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouIn_fallback_{{ coupling.network.id }}(k={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15)
+      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouIn_fallback_{{ coupling.network.id }}(k={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 273.15)
         "Fallback source inlet temperature for no-source 5G systems"
     {% raw %}        annotation (Placement(transformation(extent={{-120,-150},{-100,-130}})));
       {% endraw %}
-      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouOut_fallback_{{ coupling.network.id }}(k={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 1 + 273.15)
+      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouOut_fallback_{{ coupling.network.id }}(k={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 1 + 273.15)
         "Fallback source outlet temperature for no-source 5G systems"
     {% raw %}        annotation (Placement(transformation(extent={{-120,-120},{-100,-100}})));
       {% endraw %}

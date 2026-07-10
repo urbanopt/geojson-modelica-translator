@@ -136,7 +136,9 @@ class TimeSeries(LoadBase):
         service_water_start_temp = 293.15
         if is_no_plant_fifth_generation:
             service_water_start_temp = convert_c_to_k(
-                self.system_parameters.get_param("$.district_system.fifth_generation.soil.undisturbed_temp")
+                self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.no_central_plant.distribution_temperature"
+                )
             )
 
         # construct the dict to pass into the template. Depending on the type of model, not all the parameters are

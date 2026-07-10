@@ -732,13 +732,13 @@ of equations if multiple substations are connected to each other.
 </p>
 <h4>Sizing and initialization</h4>
 <p>
-Nominal service and building-side mass flow rates are derived from the
-heating, cooling, and hot-water design loads, the nominal temperature
-difference <code>dT_nominal</code>, and the heat pump COPs. The pressure drop
-parameter <code>dp_nominal</code> remains a model input and is applied to each
+Nominal service and building-side mass flow rates (kg/s) are derived from the
+heating, cooling, and hot-water design loads (W), the nominal temperature
+difference <code>dT_nominal</code> (K), and the heat pump COPs (-). The pressure drop
+parameter <code>dp_nominal</code> (Pa) remains a model input and is applied to each
 flow leg, so the same ETS template can be used with different project-level
 pump-head assumptions. The service-water mixing volumes use
-<code>TSerWat_start</code> for their initial temperature. Callers can use this parameter to align the service-water initial condition
+<code>TSerWat_start</code> (K) for their initial temperature. Callers can use this parameter to align the service-water initial condition
 with the surrounding district-loop initial condition without changing the ETS
 flow or pressure-drop sizing equations.
 </p>

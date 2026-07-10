@@ -170,8 +170,5 @@ model TimeSeriesBuilding
     k=k,
     Ti=Ti,
     QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
-  annotation (
-    Placement(
-      transformation(
-        extent={{70,26},{90,46}})));
-Buildings {% endraw %}
+    annotation (Placement(transformation(extent={{70,26},{90,46}})));
+  Buildings {% endraw %}

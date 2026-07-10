@@ -4,6 +4,7 @@
 from pathlib import Path
 
 import pytest
+from buildingspy.io.outputfile import Reader
 
 from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
@@ -24,14 +25,13 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
 
         project_name = "time_series_5g_no_plant"
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
-        self.no_plant_data_dir = Path(__file__).parent / "data_no_plant"
 
         # load in the example geojson with time series office buildings
         filename = Path(self.data_dir) / "time_series_ex1.json"
         self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data without a 5G plant/GHE definition
-        filename = Path(self.no_plant_data_dir) / "time_series_5g_sys_params.json"
+        filename = Path(self.data_dir) / "time_series_5g_no_plant_sys_params.json"
         sys_params = SystemParameters(filename)
 
         # create 5G district network, pump, design data, and no-plant boundary
@@ -75,8 +75,10 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
         assert "bound_heatPort_" in district_text
         assert "heaNoPlant_" in district_text
         assert "cooNoPlant_" in district_text
+        assert "qIdePlaRev_" in district_text
         assert "pIdePlaHea_" in district_text
         assert "pIdePlaCoo_" in district_text
+        assert "pIdePumDis_" in district_text
         assert "TSouIn_fallback_" in district_text
         assert "TSouOut_fallback_" in district_text
         assert (
@@ -93,6 +95,13 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
         model_name = f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem"
         return self.district._scaffold.project_path / f"{model_name}_results" / f"{model_name}_res.mat"
 
+    def assert_ideal_plant_power_has_positive_peak(self, result_path: Path, variable_prefix: str):
+        mat_results = Reader(str(result_path), "dymola")
+        matching_variables = [name for name in mat_results.varNames() if name.startswith(variable_prefix)]
+
+        assert matching_variables, f"Expected result variable starting with {variable_prefix}"
+        assert max(max(mat_results.values(name)[1]) for name in matching_variables) > 0
+
     @pytest.mark.simulation
     def test_simulate_district_system(self):
         self.run_and_assert_in_docker(
@@ -105,7 +114,10 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
         )
 
         # rename results to winter_results.mat
-        self.simulation_result_path().rename(self.district._scaffold.project_path / "winter_results.mat")
+        winter_results_path = self.district._scaffold.project_path / "winter_results.mat"
+        self.simulation_result_path().rename(winter_results_path)
+        self.assert_ideal_plant_power_has_positive_peak(winter_results_path, "pIdePlaHea_")
+        self.assert_ideal_plant_power_has_positive_peak(winter_results_path, "pIdePlaCoo_")
 
         # run for summer as well to make sure the no-plant boundary works for both heating and cooling
         self.run_and_assert_in_docker(
@@ -116,4 +128,6 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
             stop_time="6048000",
         )
         # rename results to summer_results.mat
-        self.simulation_result_path().rename(self.district._scaffold.project_path / "summer_results.mat")
+        summer_results_path = self.district._scaffold.project_path / "summer_results.mat"
+        self.simulation_result_path().rename(summer_results_path)
+        self.assert_ideal_plant_power_has_positive_peak(summer_results_path, "pIdePlaCoo_")
