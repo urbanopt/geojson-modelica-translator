@@ -97,6 +97,8 @@ def test_time_series_building_defaults_to_wet_cooling_terminal():
     assert (
         "replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo" in rendered
     )
+    assert "mLoaHea_flow_nominal=mLoaHea_flow_nominal/facMulHea" in rendered
+    assert "mLoaCoo_flow_nominal=mLoaCoo_flow_nominal/facMulCoo" in rendered
     assert "FanCoil2PipeCoolingDry terUniCoo" not in rendered
 
 

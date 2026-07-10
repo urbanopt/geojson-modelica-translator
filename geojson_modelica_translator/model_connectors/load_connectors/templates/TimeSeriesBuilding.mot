@@ -128,7 +128,7 @@ model TimeSeriesBuilding
       facMul=facMulHea,
       facMulZon=1,
       QHea_flow_nominal=QHea_flow_nominal/facMulHea,
-      mLoaHea_flow_nominal=mLoaHea_flow_nominal,
+      mLoaHea_flow_nominal=mLoaHea_flow_nominal/facMulHea,
       T_aHeaWat_nominal=T_aHeaWat_nominal,
       T_bHeaWat_nominal=T_bHeaWat_nominal,
       T_aLoaHea_nominal=T_aLoaHea_nominal)
@@ -176,7 +176,7 @@ model TimeSeriesBuilding
       facMul=facMulCoo,
       facMulZon=1,
       QCoo_flow_nominal=QCoo_flow_nominal/facMulCoo,
-      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal/facMulCoo,
       T_aChiWat_nominal=T_aChiWat_nominal,
       T_bChiWat_nominal=T_bChiWat_nominal,
       T_aLoaCoo_nominal=T_aLoaCoo_nominal,
@@ -319,7 +319,8 @@ are provided as time series.
 <p>
 The nominal heating and cooling loads are read from the time-series metadata.
 Water and air mass flow rates are then derived from those loads and the
-nominal supply and return temperatures. The multiplier parameters
+nominal supply and return temperatures. Each replicated terminal unit receives
+the corresponding fraction of the load-side air flow. The multiplier parameters
 <code>facMulHea</code> and <code>facMulCoo</code> allow larger loads to be
 served by multiple terminal units while preserving the same load profile and
 terminal-unit equations.

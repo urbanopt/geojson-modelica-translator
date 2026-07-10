@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 WATER_DENSITY_KG_PER_M3 = 1000
 FIFTH_GENERATION_SOURCE_SIDE_DELTA_T_K = 5
 FIFTH_GENERATION_TARGET_PIPE_VELOCITY_M_PER_S = 2
+DEFAULT_NO_CENTRAL_PLANT_DISTRIBUTION_TEMPERATURE_C = 18.3
 
 
 class SystemParameters:
@@ -1155,6 +1156,17 @@ class SystemParameters:
             case "4G" | "steam":
                 with suppress(KeyError):
                     del self.param_template["district_system"]["fifth_generation"]
+
+        fifth_generation = self.param_template["district_system"].get("fifth_generation")
+        if (
+            fifth_generation
+            and not fifth_generation.get("ghe_parameters")
+            and not fifth_generation.get("heat_source_parameters")
+        ):
+            fifth_generation.setdefault("no_central_plant", {}).setdefault(
+                "distribution_temperature",
+                DEFAULT_NO_CENTRAL_PLANT_DISTRIBUTION_TEMPERATURE_C,
+            )
 
         # save the file to disk
         self.save(self.sys_param_filename, self.param_template)
