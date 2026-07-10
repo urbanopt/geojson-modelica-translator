@@ -572,6 +572,8 @@ def test_unidirectional_series_no_plant_boundary_uses_soil_undisturbed_temp():
     assert "cooNoPlant_CPL_NOPL(" in rendered_comp
     assert "supNoPlant_CPL_NOPL(" in rendered_comp
     assert "p=101325" in rendered_comp
+    assert "pIdePlaHea_CPL_NOPL=heaNoPlant_CPL_NOPL.Q_flow" in rendered_comp
+    assert "pIdePlaCoo_CPL_NOPL=-cooNoPlant_CPL_NOPL.Q_flow" in rendered_comp
     assert "bound_heatPort_CPL_NOPL(" in rendered_comp
     assert "T=273.15 + 16.7)" in rendered_comp
     assert "connect(TNoPlant_CPL_NOPL.y, heaNoPlant_CPL_NOPL.TSet)" in rendered_conn

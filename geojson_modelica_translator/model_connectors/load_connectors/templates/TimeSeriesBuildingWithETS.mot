@@ -138,29 +138,21 @@ multipliers are computed from those loads so larger buildings can be split
 across multiple terminal units without changing the generated model structure.
 The ETS pressure drop is supplied through <code>dp_nominal</code>, and the
 service-water volume start temperature is supplied through
-<code>TSerWat_start</code>. For no-plant fifth-generation systems this start
-temperature is set from the undisturbed soil temperature so the infinite
-source/sink loop initializes at the same reference temperature used by the
-district boundary components.
+<code>TSerWat_start</code>. This keeps service-water volume initialization
+configurable from the template data while leaving flow and pressure-drop sizing
+governed by <code>dp_nominal</code> and the load-derived ETS design values.
 </p>
 <p>
-In a no-plant fifth-generation loop, the infinite source/sink is a thermal
-modeling assumption only. The district coupling also provides a
-<code>Boundary_pT</code> pressure reference at the distribution pump discharge
-so the ambient loop has a well-defined hydraulic datum during initialization.
-That pressure reference does not add pump head or replace the project-level
-sizing parameters; flow and pressure-drop sizing remain governed by
-<code>datDes.mPumDis_flow_nominal</code>, <code>dp_nominal</code>, and the
-load-derived ETS design values.
+This wrapper passes the service-water start temperature into the ETS model;
+district-topology-specific boundary conditions and reporting variables are
+defined by the district coupling templates.
 </p>
 </html>",
       revisions="<html>
 <ul>
 <li>
 July 10, 2026, by Nicholas Long:<br/>
-Documented flexible load-based sizing and the service-water initialization
-used by no-plant fifth-generation systems. Clarified that the no-plant
-pressure boundary is a hydraulic reference, not a plant or pump-head input.
+Documented flexible load-based sizing and configurable service-water initialization.
 </li>
 <li>
 April 11, 2025, by Nathan Moore:<br/>

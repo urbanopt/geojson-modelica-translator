@@ -189,22 +189,20 @@ equation
     Documentation(
       info="<html>
 <p>
-This sensible-only two-pipe cooling terminal is used for no-plant
-fifth-generation time-series buildings where the district loop is modeled as
-an infinite thermal source/sink. The hydraulic pressure reference for that
-no-plant loop is supplied by the district coupling, not by this terminal unit.
+This sensible-only two-pipe cooling terminal was added as a selectable
+alternative to the standard wet cooling terminal for time-series buildings.
 The chilled-water mass flow rate is derived from the cooling design load and
 nominal chilled-water temperature difference, while the load-side air flow and
 fan pressure drop remain configurable through the existing nominal parameters.
+The component does not define district-loop boundary conditions; it only
+models the local dry terminal response.
 </p>
 </html>",
       revisions="<html>
 <ul>
 <li>
 July 10, 2026, by Nicholas Long:<br/>
-Documented the dry sensible coil sizing used by no-plant fifth-generation
-systems and clarified that no-plant pressure referencing is handled by the
-district coupling.
+Documented why the dry sensible coil component was added and how it is sized.
 </li>
 </ul>
 </html>"));

@@ -13,6 +13,10 @@ The source/sink temperature is set by `district_system.fifth_generation.soil.und
 
 Because the no-plant source/sink is thermally ideal, GMT also adds a hydraulic pressure reference on the no-plant supply side. The generated `supNoPlant_*` `Boundary_pT` is connected to the distribution pump discharge (`pumDis.port_b`) at atmospheric pressure. This boundary is only a pressure datum, analogous to an expansion or pressure-maintenance reference point. It does not add pump head, size the loop, or represent a physical plant. The pump, distribution network, ETS pressure drops, and load-derived nominal flow rates still determine hydraulic sizing and operation.
 
+GMT reports the thermal output of the ideal no-plant source/sink with `pIdePlaHea_*` and `pIdePlaCoo_*` variables in the generated district model. Heating is reported directly from the ideal heater heat flow. Cooling is reported as positive cooling by negating the ideal cooler heat flow. These variables are thermal source/sink power, not distribution pump power.
+
+For time-series loads with an internal ETS, GMT initializes the ETS service-water mixing volumes at the no-plant source/sink temperature. This keeps the ETS service side consistent with the ambient-loop thermal reference at the start of the simulation without adding artificial load, fixed flow, or an implied ground heat exchanger.
+
 For no-GHE 5GDHC systems, GMT uses a sensible-only dry cooling coil for time-series building loads by default. Other time-series systems keep the previous wet-coil cooling model by default. To opt into the dry cooling coil explicitly, set `load_model_parameters.time_series.use_dry_cooling_coil` to `true` for a building in the system parameters JSON. To opt into the wet cooling coil for a no-GHE 5GDHC building, set `load_model_parameters.time_series.use_wet_cooling_coil` to `true` and leave `use_dry_cooling_coil` false.
 
 ## GeoJSON Documentation

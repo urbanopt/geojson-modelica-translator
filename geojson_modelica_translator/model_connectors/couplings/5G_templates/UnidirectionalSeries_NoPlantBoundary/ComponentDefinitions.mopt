@@ -28,6 +28,14 @@
     "Pressure boundary for the no-plant 5G supply side"
 {% raw %}    annotation (Placement(transformation(extent={{140,-200},{120,-180}})));
   {% endraw %}
+  Modelica.Units.SI.Power pIdePlaHea_{{ coupling.id }}=heaNoPlant_{{ coupling.id }}.Q_flow
+    "Thermal power added by the ideal no-plant heating source"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal source/sink"));
+  {% endraw %}
+  Modelica.Units.SI.Power pIdePlaCoo_{{ coupling.id }}=-cooNoPlant_{{ coupling.id }}.Q_flow
+    "Thermal power removed by the ideal no-plant cooling sink, reported as positive cooling"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal source/sink"));
+  {% endraw %}
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature bound_heatPort_{{ coupling.id }}(
     T=273.15 + {{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }})
     "Boundary condition for end-of-line pipe heat loss in no-plant 5G"

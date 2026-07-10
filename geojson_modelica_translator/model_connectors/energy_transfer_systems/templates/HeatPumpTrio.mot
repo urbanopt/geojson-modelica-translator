@@ -738,19 +738,9 @@ difference <code>dT_nominal</code>, and the heat pump COPs. The pressure drop
 parameter <code>dp_nominal</code> remains a model input and is applied to each
 flow leg, so the same ETS template can be used with different project-level
 pump-head assumptions. The service-water mixing volumes use
-<code>TSerWat_start</code> for their initial temperature. No-plant
-fifth-generation systems set this value to the loop source/sink temperature,
-which avoids adding artificial load or fixed flow assumptions during
-initialization.
-</p>
-<p>
-For no-plant fifth-generation systems, the infinite source/sink is provided
-outside this ETS by the district no-plant boundary. The separate supply-side
-<code>Boundary_pT</code> used in that coupling is a hydraulic pressure datum
-for the ambient loop, connected at the distribution pump discharge. It should
-not be interpreted as an added plant, an imposed pump head, or an ETS sizing
-parameter. The ETS continues to size its mass flow rates from the design loads,
-temperature differences, and COPs listed above.
+<code>TSerWat_start</code> for their initial temperature. Callers can use this parameter to align the service-water initial condition
+with the surrounding district-loop initial condition without changing the ETS
+flow or pressure-drop sizing equations.
 </p>
 <h4>References</h4>
 <p>
@@ -764,9 +754,7 @@ Energy, Volume 199, 15 May 2020, 117418.
   <ul>
 <li>
   July 10, 2026, by Nicholas Long:<br/>
-  Documented flexible load-based sizing and configurable service-water volume
-  initialization for no-plant fifth-generation systems, including the role of
-  the no-plant hydraulic pressure reference.
+  Documented flexible load-based sizing and configurable service-water volume initialization.
 </li>
 <li>
   April 11, 2025, by Nathan Moore:<br/>

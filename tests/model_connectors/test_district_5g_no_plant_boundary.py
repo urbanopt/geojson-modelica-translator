@@ -75,6 +75,8 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
         assert "bound_heatPort_" in district_text
         assert "heaNoPlant_" in district_text
         assert "cooNoPlant_" in district_text
+        assert "pIdePlaHea_" in district_text
+        assert "pIdePlaCoo_" in district_text
         assert "TSouIn_fallback_" in district_text
         assert "TSouOut_fallback_" in district_text
         assert (
