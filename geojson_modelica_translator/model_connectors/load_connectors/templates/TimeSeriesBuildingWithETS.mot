@@ -150,7 +150,7 @@ defined by the district coupling templates.
 </html>",
       revisions="<html>
 <ul>
-<li>g
+<li>
 July 10, 2026, by Nicholas Long:<br/>
 Documented flexible load-based sizing and configurable service-water initialization.
 </li>
