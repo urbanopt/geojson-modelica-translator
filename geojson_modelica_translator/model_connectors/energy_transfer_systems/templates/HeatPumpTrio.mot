@@ -35,6 +35,9 @@ within {{ project_name }}.Loads.ETS;
   parameter Modelica.Units.SI.Temperature TDisWatMax
     "District water maximum temperature"
     annotation (Dialog(group="DHC system"));
+  parameter Modelica.Units.SI.Temperature TSerWat_start=MediumSer.T_default
+    "Start temperature for service water mixing volumes"
+    annotation (Dialog(tab="Initialization"));
   parameter Modelica.Units.SI.TemperatureDifference dT_nominal(
     min=0)=5
     "Water temperature drop/increase across load and source-side HX (always positive)"
@@ -168,6 +171,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare final package Medium=MediumSer,
     final nPorts=4,
     final m_flow_nominal=mSerWat_flow_nominal,
+    T_start=TSerWat_start,
     tau=600,
     final energyDynamics=mixingVolumeEnergyDynamics)
     "Mixing volume to break algebraic loops and to emulate the delay of the substation"
@@ -176,6 +180,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare final package Medium=MediumSer,
     final nPorts=4,
     final m_flow_nominal=mSerWat_flow_nominal,
+    T_start=TSerWat_start,
     tau=600,
     final energyDynamics=mixingVolumeEnergyDynamics)
     "Mixing volume to break algebraic loops and to emulate the delay of the substation"
@@ -278,6 +283,28 @@ within {{ project_name }}.Loads.ETS;
     "Enable heating"
     annotation (Placement(transformation(extent={{-140,150},{-120,170}})));
   Buildings.DHC.ETS.Combined.Subsystems.HeatPump proHeaWat(
+    valHeaPumEva(
+      y(
+        min=-1e-4,
+        max=1+1e-4),
+      res1(
+        y(
+          min=-1e-4,
+          max=1+1e-4)),
+      res3(
+        y(
+          min=-1e-4,
+          max=1+1e-4))),
+    heaPum(
+      m2_flow(
+        min=-1e-6,
+        max=1e5+1e-6)),
+    pumCon(
+      etaHyd(
+        min=-1e-6)),
+    pumEva(
+      etaHyd(
+        min=-1e-6)),
     redeclare final package Medium1=MediumBui,
     redeclare final package Medium2=MediumSer,
     final have_varFloCon=have_varFloCon,
@@ -293,6 +320,28 @@ within {{ project_name }}.Loads.ETS;
     "Subsystem for heating water production"
     annotation (Placement(transformation(extent={{-10,204},{10,224}})));
   Buildings.DHC.ETS.Combined.Subsystems.HeatPump proHotWat(
+    valHeaPumEva(
+      y(
+        min=-1e-4,
+        max=1+1e-4),
+      res1(
+        y(
+          min=-1e-4,
+          max=1+1e-4)),
+      res3(
+        y(
+          min=-1e-4,
+          max=1+1e-4))),
+    heaPum(
+      m2_flow(
+        min=-1e-6,
+        max=1e5+1e-6)),
+    pumCon(
+      etaHyd(
+        min=-1e-6)),
+    pumEva(
+      etaHyd(
+        min=-1e-6)),
     redeclare final package Medium1=MediumBui,
     redeclare final package Medium2=MediumSer,
     final COP_nominal=COPHotWat_nominal,
@@ -681,6 +730,28 @@ of the heating and cooling systems. These approximate the dynamics
 of the substation, and they also generally avoid nonlinear systems
 of equations if multiple substations are connected to each other.
 </p>
+<h4>Sizing and initialization</h4>
+<p>
+Nominal service and building-side mass flow rates are derived from the
+heating, cooling, and hot-water design loads, the nominal temperature
+difference <code>dT_nominal</code>, and the heat pump COPs. The pressure drop
+parameter <code>dp_nominal</code> remains a model input and is applied to each
+flow leg, so the same ETS template can be used with different project-level
+pump-head assumptions. The service-water mixing volumes use
+<code>TSerWat_start</code> for their initial temperature. No-plant
+fifth-generation systems set this value to the loop source/sink temperature,
+which avoids adding artificial load or fixed flow assumptions during
+initialization.
+</p>
+<p>
+For no-plant fifth-generation systems, the infinite source/sink is provided
+outside this ETS by the district no-plant boundary. The separate supply-side
+<code>Boundary_pT</code> used in that coupling is a hydraulic pressure datum
+for the ambient loop, connected at the distribution pump discharge. It should
+not be interpreted as an added plant, an imposed pump head, or an ETS sizing
+parameter. The ETS continues to size its mass flow rates from the design loads,
+temperature differences, and COPs listed above.
+</p>
 <h4>References</h4>
 <p>
 Sommer T., Sulzer M., Wetter M., Sotnikov A., Mennel S., Stettler C.
@@ -691,6 +762,12 @@ Energy, Volume 199, 15 May 2020, 117418.
 </html>",
       revisions="<html>
   <ul>
+<li>
+  July 10, 2026, by Nicholas Long:<br/>
+  Documented flexible load-based sizing and configurable service-water volume
+  initialization for no-plant fifth-generation systems, including the role of
+  the no-plant hydraulic pressure reference.
+</li>
 <li>
   April 11, 2025, by Nathan Moore:<br/>
   Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.

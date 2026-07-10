@@ -33,11 +33,24 @@ def _create_subpackage(package: PackageParser, model_name: str) -> PackageParser
         order=[],
         within=within,
     )
+    subpackage.save()
     if hasattr(package, "_subpackages"):
         package._subpackages[model_name.lower()] = subpackage
     else:
         setattr(package, model_name.lower(), subpackage)
     return subpackage
+
+
+def _save_package_tree(package: PackageParser) -> None:
+    package.save()
+    if hasattr(package, "_subpackages"):
+        subpackages = package._subpackages.values()
+    else:
+        subpackages = (
+            value for value in vars(package).values() if isinstance(value, PackageParser) and value is not package
+        )
+    for subpackage in subpackages:
+        _save_package_tree(subpackage)
 
 
 if "create_subpackage" not in inspect.signature(PackageParser.add_model).parameters:
@@ -123,7 +136,10 @@ class Scaffold:
     @staticmethod
     def _add_model(package: PackageParser, model_name: str, create_subpackage: bool = False) -> PackageParser:
         try:
-            return package.add_model(model_name, create_subpackage=create_subpackage)
+            model_package = package.add_model(model_name, create_subpackage=create_subpackage)
+            if create_subpackage:
+                model_package.save()
+            return model_package
         except TypeError as error:
             if "create_subpackage" not in str(error):
                 raise
@@ -230,7 +246,7 @@ class Scaffold:
     def save(self) -> None:
         """Save all package files to disk."""
         if self._package:
-            self._package.save()
+            _save_package_tree(self._package)
 
     def clear_or_create_path(self, path, overwrite=False):
         if Path(path).exists():

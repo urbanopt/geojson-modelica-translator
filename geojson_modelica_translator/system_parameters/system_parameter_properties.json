@@ -791,6 +791,16 @@
           "type": "number",
           "default": 18,
           "format": "Celsius"
+        },
+        "use_dry_cooling_coil": {
+          "description": "Whether to use a sensible-only dry cooling coil for time-series cooling loads. Defaults to false; no-plant 5G systems use this behavior unless use_wet_cooling_coil is true.",
+          "type": "boolean",
+          "default": false
+        },
+        "use_wet_cooling_coil": {
+          "description": "Whether to opt into the standard wet cooling coil for no-plant 5G time-series cooling loads. Defaults to false so no-plant 5G systems use the dry coil unless this is explicitly set to true. Do not set this and use_dry_cooling_coil to true at the same time.",
+          "type": "boolean",
+          "default": false
         }
       },
       "required": [

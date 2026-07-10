@@ -67,6 +67,9 @@
       connect(pumDis.port_b, heaNoPlant_{{ no_plant_coupling_id }}.port_a)
       {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-20,10},{-20,-180}}, color={0,127,255}));
       {% endraw %}
+      connect(supNoPlant_{{ no_plant_coupling_id }}.ports[1], pumDis.port_b)
+      {% raw %}annotation (Line(points={{120,-190},{-44,-190},{-44,-50}}, color={0,127,255}));
+      {% endraw %}
       connect(heaNoPlant_{{ no_plant_coupling_id }}.port_b, cooNoPlant_{{ no_plant_coupling_id }}.port_a)
       {% raw %}annotation (Line(points={{0,-180},{10,-180}}, color={0,127,255}));
       {% endraw %}

@@ -7,9 +7,13 @@ As an aside, 5GDHC systems also require a `loop_order` JSON file, which is autom
 
 ## 5GDHC without a ground heat exchanger
 
-GMT can generate a 5GDHC model when the system parameters do not include `district_system.fifth_generation.ghe_parameters`. In this topology, the generated district does not include a borefield or other ground heat exchanger plant. Instead, GMT creates an explicit no-plant boundary in the coupling graph and renders fixed-temperature boundary conditions for the ambient loop. This acts as an infinite source/sink for the 5G distribution loop.
+GMT can generate a 5GDHC model when the system parameters do not include `district_system.fifth_generation.ghe_parameters`. In this topology, the generated district does not include a borefield or other ground heat exchanger plant. Instead, GMT creates an explicit no-plant boundary in the coupling graph and renders fixed-temperature heating and cooling components for the ambient loop. These components are the thermal infinite source/sink for the 5G distribution loop.
 
 The source/sink temperature is set by `district_system.fifth_generation.soil.undisturbed_temp`. This value must be provided in the system parameters JSON for no-GHE 5GDHC systems. It is a modeling assumption for no-GHE cases, not a hidden ground heat exchanger design.
+
+Because the no-plant source/sink is thermally ideal, GMT also adds a hydraulic pressure reference on the no-plant supply side. The generated `supNoPlant_*` `Boundary_pT` is connected to the distribution pump discharge (`pumDis.port_b`) at atmospheric pressure. This boundary is only a pressure datum, analogous to an expansion or pressure-maintenance reference point. It does not add pump head, size the loop, or represent a physical plant. The pump, distribution network, ETS pressure drops, and load-derived nominal flow rates still determine hydraulic sizing and operation.
+
+For no-GHE 5GDHC systems, GMT uses a sensible-only dry cooling coil for time-series building loads by default. Other time-series systems keep the previous wet-coil cooling model by default. To opt into the dry cooling coil explicitly, set `load_model_parameters.time_series.use_dry_cooling_coil` to `true` for a building in the system parameters JSON. To opt into the wet cooling coil for a no-GHE 5GDHC building, set `load_model_parameters.time_series.use_wet_cooling_coil` to `true` and leave `use_dry_cooling_coil` false.
 
 ## GeoJSON Documentation
 

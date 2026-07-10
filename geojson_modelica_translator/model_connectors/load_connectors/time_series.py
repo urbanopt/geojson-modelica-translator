@@ -2,6 +2,7 @@
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import os
+import re
 import shutil
 
 from modelica_builder.package_parser import PackageParser
@@ -17,6 +18,78 @@ class TimeSeries(LoadBase):
         super().__init__(system_parameters, geojson_load)
         self.id = f"TimeSerLoa_{self.building_name}"
 
+    def _is_no_plant_fifth_generation(self):
+        fifth_generation = self.system_parameters.get_param("$.district_system.fifth_generation")
+        if not fifth_generation:
+            return False
+
+        return not fifth_generation.get("ghe_parameters") and not fifth_generation.get("heat_source_parameters")
+
+    def _time_series_parameters(self):
+        for building in self.system_parameters.param_template.get("buildings", []):
+            if building.get("geojson_id") == self.building_id:
+                return building.get("load_model_parameters", {}).get("time_series", {})
+
+        return {}
+
+    def _use_dry_cooling_coil(self, is_no_plant_fifth_generation):
+        time_series_parameters = self._time_series_parameters()
+        use_dry_cooling_coil = bool(time_series_parameters.get("use_dry_cooling_coil"))
+        use_wet_cooling_coil = bool(time_series_parameters.get("use_wet_cooling_coil"))
+
+        if use_dry_cooling_coil and use_wet_cooling_coil:
+            raise ValueError("Only one of use_dry_cooling_coil or use_wet_cooling_coil can be true")
+
+        if use_wet_cooling_coil:
+            return False
+
+        return use_dry_cooling_coil or is_no_plant_fifth_generation
+
+    @staticmethod
+    def _copy_mos_with_zero_start(source_file, target_file):
+        with open(source_file) as source:
+            lines = source.readlines()
+
+        table_line_index = None
+        data_line_index = None
+        for index, line in enumerate(lines):
+            stripped = line.strip()
+            if table_line_index is None and stripped.startswith("double "):
+                table_line_index = index
+                continue
+            if table_line_index is not None and stripped and not stripped.startswith("#"):
+                data_line_index = index
+                break
+
+        if table_line_index is None or data_line_index is None:
+            shutil.copy(source_file, target_file)
+            return
+
+        data_values = lines[data_line_index].strip().split(";")
+        if len(data_values) < 2:
+            shutil.copy(source_file, target_file)
+            return
+
+        try:
+            first_time = float(data_values[0])
+        except ValueError:
+            shutil.copy(source_file, target_file)
+            return
+
+        if first_time <= 0:
+            shutil.copy(source_file, target_file)
+            return
+
+        table_line = lines[table_line_index]
+        match = re.match(r"(\s*double\s+\w+\()(\d+)(\s*,\s*\d+\).*)", table_line)
+        if match:
+            newline = "\n" if table_line.endswith("\n") else ""
+            lines[table_line_index] = f"{match.group(1)}{int(match.group(2)) + 1}{match.group(3)}{newline}"
+        lines.insert(data_line_index, ";".join(["0", *["0"] * (len(data_values) - 1)]) + "\n")
+
+        with open(target_file, "w") as target:
+            target.writelines(lines)
+
     def to_modelica(self, scaffold):
         """Create timeSeries models based on the data in the buildings and geojsons
 
@@ -24,12 +97,23 @@ class TimeSeries(LoadBase):
         """
         time_series_building_template = self.template_env.get_template("TimeSeriesBuilding.mot")
         time_series_building_with_ets_template = self.template_env.get_template("TimeSeriesBuildingWithETS.mot")
+        dry_cooling_terminal_template = self.template_env.get_template("FanCoil2PipeCoolingDry.mot")
         # These templates will be rendered in order for a 5G system. 4G system uses only the first.
         building_templates = {}
         building_templates["TimeSeriesBuilding"] = time_series_building_template
         building_templates["building"] = time_series_building_with_ets_template
 
         b_modelica_path = ModelicaPath(self.building_name, scaffold.loads_path.files_dir, True)
+
+        dry_cooling_terminal_path = os.path.join(scaffold.loads_path.files_dir, "FanCoil2PipeCoolingDry.mo")
+        if not os.path.exists(dry_cooling_terminal_path):
+            self.run_template(
+                template=dry_cooling_terminal_template,
+                save_file_name=dry_cooling_terminal_path,
+                project_name=scaffold.project_name,
+            )
+            scaffold.package.loads.add_model("FanCoil2PipeCoolingDry", create_subpackage=False)
+            scaffold.package.loads.save()
 
         self.copy_required_mo_files(b_modelica_path.files_dir, within=f"{scaffold.project_name}.Loads")
 
@@ -47,10 +131,21 @@ class TimeSeries(LoadBase):
         elif os.path.splitext(time_series_filename)[1].lower() == ".csv":
             raise Exception("The timeseries file is CSV format. This must be converted to an MOS file for use.")
 
+        is_no_plant_fifth_generation = self._is_no_plant_fifth_generation()
+        use_dry_cooling_coil = self._use_dry_cooling_coil(is_no_plant_fifth_generation)
+        service_water_start_temp = 293.15
+        if is_no_plant_fifth_generation:
+            service_water_start_temp = convert_c_to_k(
+                self.system_parameters.get_param("$.district_system.fifth_generation.soil.undisturbed_temp")
+            )
+
         # construct the dict to pass into the template. Depending on the type of model, not all the parameters are
         # used. The `nominal_values` are only used when the time series is coupled to an ETS system.
         building_template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
+            "use_dry_cooling_coil": use_dry_cooling_coil,
+            "heat_cool_enable_threshold": 1e-2 if use_dry_cooling_coil else 1e-4,
+            "service_water_start_temp": service_water_start_temp,
             "time_series": {
                 "filepath": time_series_filename,
                 "filename": os.path.basename(time_series_filename),
@@ -138,7 +233,10 @@ class TimeSeries(LoadBase):
         # TODO: move some of this over to a validation step
         new_file = os.path.join(b_modelica_path.resources_dir, os.path.basename(time_series_filename))
         os.makedirs(os.path.dirname(new_file), exist_ok=True)
-        shutil.copy(time_series_filename, new_file)
+        if is_no_plant_fifth_generation:
+            self._copy_mos_with_zero_start(time_series_filename, new_file)
+        else:
+            shutil.copy(time_series_filename, new_file)
 
         # This if statement exists only because we can't use the 5G model to run a 4G building.
         if "fifth_generation" not in building_template_data["district_type"]:
@@ -187,7 +285,7 @@ class TimeSeries(LoadBase):
 
         # Add the building to the Loads package using scaffold's PackageParser
         scaffold.package.loads.add_model(self.building_name, create_subpackage=True)
-        scaffold.package.save()
+        scaffold.package.loads.save()
 
     def get_modelica_type(self, scaffold):
         district_params = self.system_parameters.get_param("district_system")

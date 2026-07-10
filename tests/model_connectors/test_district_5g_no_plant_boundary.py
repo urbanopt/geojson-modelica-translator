@@ -77,6 +77,14 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
         assert "cooNoPlant_" in district_text
         assert "TSouIn_fallback_" in district_text
         assert "TSouOut_fallback_" in district_text
+        assert (
+            "FanCoil2PipeCoolingDry"
+            in (
+                Path(self.district._scaffold.loads_path.files_dir)
+                / "B5a6b99ec37f4de7f94020090"
+                / "TimeSeriesBuilding.mo"
+            ).read_text()
+        )
         assert "Borefield" not in district_text
 
     def simulation_result_path(self):

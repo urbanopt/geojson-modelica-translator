@@ -167,7 +167,7 @@ def _add_fifth_generation_plant_couplings(
 
 
 def _parse_fifth_generation_couplings(geojson: UrbanOptGeoJson, sys_params: SystemParameters) -> list[Coupling]:
-    all_couplings = []
+    all_couplings: list[Coupling] = []
     ambient_water_stub = NetworkDistributionPump(sys_params)
     design_data = DesignDataSeries(sys_params)
     loop_order = load_loop_order(sys_params.filename)

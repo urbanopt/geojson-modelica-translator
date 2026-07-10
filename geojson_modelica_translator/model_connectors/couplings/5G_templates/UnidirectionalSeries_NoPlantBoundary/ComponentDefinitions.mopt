@@ -20,6 +20,14 @@
     "Infinite cooling sink for no-plant 5G loop"
 {% raw %}    annotation (Placement(transformation(extent={{10,-190},{30,-170}})));
   {% endraw %}
+  Buildings.Fluid.Sources.Boundary_pT supNoPlant_{{ coupling.id }}(
+    redeclare final package Medium = {{ globals.medium_w }},
+    p=101325,
+    T={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15,
+    nPorts=1)
+    "Pressure boundary for the no-plant 5G supply side"
+{% raw %}    annotation (Placement(transformation(extent={{140,-200},{120,-180}})));
+  {% endraw %}
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature bound_heatPort_{{ coupling.id }}(
     T=273.15 + {{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }})
     "Boundary condition for end-of-line pipe heat loss in no-plant 5G"

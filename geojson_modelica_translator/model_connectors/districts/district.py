@@ -212,7 +212,7 @@ class District:
 
         # Add DistrictEnergySystem to Districts package using scaffold's PackageParser
         self._scaffold.package.districts.add_model("DistrictEnergySystem", create_subpackage=False)
-        self._scaffold.package.save()
+        self._scaffold.save()
 
         # Enforce minimum DHW load in Modelica model
         data_dir = Path(self._scaffold.project_path) / "Loads" / "Resources" / "Data"
