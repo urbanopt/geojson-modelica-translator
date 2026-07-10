@@ -192,9 +192,7 @@ def test_no_plant_fifth_generation_allows_wet_cooling_coil_when_requested():
 
 
 def test_time_series_rejects_conflicting_cooling_coil_requests():
-    time_series = _time_series_for_cooling_coil_selection(
-        {"use_dry_cooling_coil": True, "use_wet_cooling_coil": True}
-    )
+    time_series = _time_series_for_cooling_coil_selection({"use_dry_cooling_coil": True, "use_wet_cooling_coil": True})
 
     with pytest.raises(ValueError, match="Only one of use_dry_cooling_coil or use_wet_cooling_coil can be true"):
         time_series._use_dry_cooling_coil(is_no_plant_fifth_generation=True)
