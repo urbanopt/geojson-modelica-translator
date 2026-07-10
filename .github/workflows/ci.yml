@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
@@ -42,7 +42,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: git config --system core.longpaths true
       - name: Install MBL
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: lbl-srg/modelica-buildings
           ref: ${{ matrix.mbl_tag }}
@@ -66,7 +66,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions: write-all
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Python 3.13
         if: runner.os == 'Linux'
         uses: actions/setup-python@v6
@@ -92,7 +92,7 @@ jobs:
           poetry install
       - name: Set up WSL2 for Linux containers
         if: runner.os == 'Windows'
-        uses: Vampire/setup-wsl@v6
+        uses: Vampire/setup-wsl@v7
         with:
           distribution: Ubuntu-24.04
           additional-packages: docker.io make python3-pip python3-venv
@@ -100,7 +100,7 @@ jobs:
         if: runner.os == 'Windows'
         run: git config --system core.longpaths true
       - name: Install MBL
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: lbl-srg/modelica-buildings
           ref: ${{ matrix.mbl_tag }}
@@ -148,7 +148,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
@@ -169,7 +169,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Python 3.13
         uses: actions/setup-python@v6
         with:
