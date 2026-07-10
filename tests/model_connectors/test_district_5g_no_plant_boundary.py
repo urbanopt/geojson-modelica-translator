@@ -1,6 +1,19 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+"""Regression tests for 5G time-series districts with no central plant.
+
+This fixture builds a minimal fifth-generation district that has time-series
+building loads and a distribution loop, but no ground heat exchanger, waste heat
+source, or other central plant. It exists to protect the explicit
+``NoPlantBoundary`` topology: the generated Modelica must include the ideal
+thermal source/sink, the hydraulic pressure reference, pump-controller fallback
+temperatures, dry-coil default behavior, and ideal source/sink accounting
+variables. The simulation windows exercise both heating- and cooling-dominant
+periods so no-plant support is checked as an end-to-end Modelica model, not just
+as rendered text.
+"""
+
 from pathlib import Path
 
 import pytest

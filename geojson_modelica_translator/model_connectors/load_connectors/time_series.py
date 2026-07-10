@@ -23,7 +23,11 @@ class TimeSeries(LoadBase):
         if not fifth_generation:
             return False
 
-        return not fifth_generation.get("ghe_parameters") and not fifth_generation.get("heat_source_parameters")
+        return (
+            bool(fifth_generation.get("no_central_plant"))
+            and not fifth_generation.get("ghe_parameters")
+            and not fifth_generation.get("heat_source_parameters")
+        )
 
     def _time_series_parameters(self):
         for building in self.system_parameters.param_template.get("buildings", []):
@@ -146,6 +150,9 @@ class TimeSeries(LoadBase):
         building_template_data = {
             "load_resources_path": b_modelica_path.resources_relative_dir,
             "use_dry_cooling_coil": use_dry_cooling_coil,
+            "cooling_terminal_model": f"{scaffold.project_name}.Loads.FanCoil2PipeCoolingDry"
+            if use_dry_cooling_coil
+            else "Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling",
             "heat_cool_enable_threshold": 1e-2 if use_dry_cooling_coil else 1e-4,
             "service_water_start_temp": service_water_start_temp,
             "time_series": {

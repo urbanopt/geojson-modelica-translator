@@ -1,3 +1,14 @@
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
+# See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
+
+"""Regression guards for 5G no-plant Modelica template rendering.
+
+These tests render small Jinja template slices with minimal stubs and assert
+that critical generated Modelica fragments stay present or absent for time-series
+loads, fallback source temperatures, pressure references, and no-plant boundary
+behavior.
+"""
+
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -20,6 +31,9 @@ def _time_series_template_data(use_dry_cooling_coil=False):
     return {
         "load_resources_path": "Resources/Data/B1",
         "use_dry_cooling_coil": use_dry_cooling_coil,
+        "cooling_terminal_model": "TestProject.Loads.FanCoil2PipeCoolingDry"
+        if use_dry_cooling_coil
+        else "Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling",
         "heat_cool_enable_threshold": 1e-2 if use_dry_cooling_coil else 1e-4,
         "service_water_start_temp": 293.15,
         "cop_heat_pump_heating": 2.5,

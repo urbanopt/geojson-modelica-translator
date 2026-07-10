@@ -172,6 +172,7 @@ def _parse_fifth_generation_couplings(geojson: UrbanOptGeoJson, sys_params: Syst
     design_data = DesignDataSeries(sys_params)
     loop_order = load_loop_order(sys_params.filename)
     has_ghe_parameters = bool(sys_params.get_param("$.district_system.fifth_generation.ghe_parameters"))
+    has_no_central_plant_parameters = bool(sys_params.get_param("$.district_system.fifth_generation.no_central_plant"))
     ground_coupling = GroundCoupling(sys_params) if has_ghe_parameters else None
 
     for loop in loop_order:
@@ -185,7 +186,7 @@ def _parse_fifth_generation_couplings(geojson: UrbanOptGeoJson, sys_params: Syst
         has_real_loop_plant = _add_fifth_generation_plant_couplings(
             all_couplings, sys_params, loop, distribution, ground_coupling
         )
-        if not has_real_loop_plant:
+        if has_no_central_plant_parameters and not has_real_loop_plant:
             no_plant_boundary = NoPlantBoundary(sys_params)
             all_couplings.append(Coupling(distribution, no_plant_boundary, district_type="fifth_generation"))
     all_couplings.append(Coupling(ambient_water_stub, ambient_water_stub, district_type="fifth_generation"))
