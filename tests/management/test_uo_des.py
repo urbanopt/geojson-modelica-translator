@@ -55,8 +55,10 @@ class CLIIntegrationTest(TestCase):
     ) -> None:
         """Create the model required by a simulation test when it is not already present."""
         project_path = self.output_dir / project_name
-        if (project_path / "package.mo").exists():
+        if (project_path / "Districts" / "DistrictEnergySystem.mo").exists():
             return
+        if project_path.exists():
+            rmtree(project_path)
 
         sys_param_path.unlink(missing_ok=True)
         build_result = self.runner.invoke(
