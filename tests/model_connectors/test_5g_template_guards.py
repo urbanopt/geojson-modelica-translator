@@ -97,6 +97,8 @@ def test_time_series_building_defaults_to_wet_cooling_terminal():
     assert (
         "replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo" in rendered
     )
+    assert "hexWetNtu(" in rendered
+    assert "SHR(\n        min=-1e-6,\n        max=1 + 1e-6)" in rendered
     assert "mLoaHea_flow_nominal=mLoaHea_flow_nominal/facMulHea" in rendered
     assert "mLoaCoo_flow_nominal=mLoaCoo_flow_nominal/facMulCoo" in rendered
     assert "FanCoil2PipeCoolingDry terUniCoo" not in rendered
@@ -121,6 +123,25 @@ def test_time_series_building_uses_dry_cooling_terminal_when_requested():
 
     assert "replaceable TestProject.Loads.FanCoil2PipeCoolingDry terUniCoo" in rendered
     assert "Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo" not in rendered
+    assert "hexWetNtu(" not in rendered
+
+
+def test_partial_heat_pump_cooling_relaxes_small_negative_runtime_values():
+    template_path = (
+        Path(__file__).parents[2]
+        / "geojson_modelica_translator"
+        / "model_connectors"
+        / "energy_transfer_systems"
+        / "templates"
+        / "PartialHeatPumpCooling.mopt"
+    )
+
+    rendered = _render_template(template_path, project_name="TestProject")
+
+    assert "yPL(min=-1e-6)" in rendered
+    assert "m1_flow(min=-1e-6, max=1e5 + 1e-6)" in rendered
+    assert "m2_flow(min=-1e-6, max=1e5 + 1e-6)" in rendered
+    assert "pumCon(\n    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState" in rendered
 
 
 def test_time_series_building_with_ets_uses_larger_enable_threshold_for_dry_coil():

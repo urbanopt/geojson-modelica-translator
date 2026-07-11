@@ -168,7 +168,11 @@ model TimeSeriesBuilding
     T_aLoaHea_nominal=T_aLoaHea_nominal,
     k=k,
     Ti=Ti,
-    QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
+    {% endraw %}{% if not data['use_dry_cooling_coil'] %}{% raw %}hexWetNtu(
+      SHR(
+        min=-1e-6,
+        max=1+1e-6)),
+    {% endraw %}{% endif %}{% raw %}QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
     constrainedby Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,

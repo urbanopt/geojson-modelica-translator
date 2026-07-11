@@ -91,6 +91,9 @@ within {{ project_name }}.Loads.ETS;
   Buildings.Fluid.Chillers.Carnot_TEva  chi(
     redeclare package Medium1 = Medium1,
     redeclare package Medium2 = Medium2,
+    yPL(min=-1e-6),
+    m1_flow(min=-1e-6, max=1e5 + 1e-6),
+    m2_flow(min=-1e-6, max=1e5 + 1e-6),
     allowFlowReversal1=false,
     allowFlowReversal2=false,
     dTEva_nominal=-dT_nominal,
