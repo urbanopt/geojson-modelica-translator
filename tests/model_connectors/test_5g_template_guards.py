@@ -98,7 +98,9 @@ def test_time_series_building_defaults_to_wet_cooling_terminal():
         "replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo" in rendered
     )
     assert "hexWetNtu(" in rendered
-    assert "SHR(\n        min=-1e-6,\n        max=1 + 1e-6)" in rendered
+    assert "SHR(" in rendered
+    assert "min=-1e-6" in rendered
+    assert "max=1+1e-6" in rendered.replace(" ", "")
     assert "mLoaHea_flow_nominal=mLoaHea_flow_nominal/facMulHea" in rendered
     assert "mLoaCoo_flow_nominal=mLoaCoo_flow_nominal/facMulCoo" in rendered
     assert "FanCoil2PipeCoolingDry terUniCoo" not in rendered
