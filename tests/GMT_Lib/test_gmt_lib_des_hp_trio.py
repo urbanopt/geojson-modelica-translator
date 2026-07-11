@@ -86,6 +86,7 @@ class GmtLibDesHpTrioTest(unittest.TestCase):
             run_path=package_output_dir / package_name,
             start_time=0,
             stop_time=86400,
+            step_size=900,
         )
 
         assert success is True

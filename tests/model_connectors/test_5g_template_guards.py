@@ -332,6 +332,56 @@ def test_unidirectional_series_instance_skips_loop_parameters_without_plant_coup
     assert "final allowFlowReversal=allowFlowReversalSer" in rendered
 
 
+def test_unidirectional_series_borefield_adds_supply_pressure_reference():
+    comp_template = (
+        Path(__file__).parents[2]
+        / "geojson_modelica_translator"
+        / "model_connectors"
+        / "couplings"
+        / "5G_templates"
+        / "UnidirectionalSeries_Borefield"
+        / "ComponentDefinitions.mopt"
+    )
+    conn_template = (
+        Path(__file__).parents[2]
+        / "geojson_modelica_translator"
+        / "model_connectors"
+        / "couplings"
+        / "5G_templates"
+        / "UnidirectionalSeries_Borefield"
+        / "ConnectStatements.mopt"
+    )
+
+    graph = _GraphStub()
+    loop_order = SimpleNamespace(
+        number_of_loops=1,
+        data=[{"list_bldg_ids_in_group": ["bldg-1"], "list_ghe_ids_in_group": ["ghe-1"]}],
+    )
+    coupling = SimpleNamespace(
+        id="CPL_GHE",
+        network=SimpleNamespace(id="UniNet_1"),
+        plant=SimpleNamespace(id="borFie_1"),
+    )
+    sys_params = {"district_system": {"fifth_generation": {"soil": {"undisturbed_temp": 18.3}}}}
+    globals_ctx = {"medium_w": "MediumW"}
+
+    rendered_comp = _render_template(
+        comp_template,
+        graph=graph,
+        loop_order=loop_order,
+        coupling=coupling,
+        sys_params=sys_params,
+        globals=globals_ctx,
+    )
+    rendered_conn = _render_template(conn_template, graph=graph, loop_order=loop_order, coupling=coupling)
+
+    assert "Buildings.Fluid.Sources.Boundary_pT supGheRef_CPL_GHE" in rendered_comp
+    assert "p=101325" in rendered_comp
+    assert "T=18.3 + 273.15" in rendered_comp
+    assert "connect(pumDis.port_b, TDisSup_CPL_GHE.port_a)" in rendered_conn
+    assert "connect(supGheRef_CPL_GHE.ports[1], pumDis.port_b)" in rendered_conn
+
+
 def test_network_distribution_pump_uses_single_fallback_source_when_no_sources_present():
     template_path = (
         Path(__file__).parents[2]
