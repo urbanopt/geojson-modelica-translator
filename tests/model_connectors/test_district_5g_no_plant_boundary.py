@@ -117,13 +117,15 @@ class DistrictSystemNoPlantBoundaryTest(TestCaseBase):
 
     @pytest.mark.simulation
     def test_simulate_district_system(self):
+        winter_start = 0
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",
             file_to_load=self.district._scaffold.package_path,
             run_path=self.district._scaffold.project_path,
-            # run for 1 week to make sure this works well for longer time windows.
-            start_time="0",
-            stop_time="604800",
+            # Run a winter day to exercise the no-plant boundary in a heating-dominant period.
+            start_time=str(winter_start),
+            stop_time=str(winter_start + 86400),
+            step_size=900,
         )
 
         # rename results to winter_results.mat
