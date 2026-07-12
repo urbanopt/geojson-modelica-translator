@@ -6,7 +6,7 @@ The OpenModelica docker container provides compilation and simulation capabiliti
 includes Modelica Standards Library and a version of the Modelica Buildings Library. The table below shows the versions of the dependencies.
 
 The GMT requires a locally built image or a version from Docker hub to run tests. The public use image is hosted on [Docker hub](https://hub.docker.com/r/nrel/gmt-om-runner).
-CI builds the runner image from this Dockerfile and runs the Docker-based test suite against that freshly built image.
+CI builds this image once with `buildx` only when this `Dockerfile` changes (or when the published `nrel/gmt-om-runner` image is unavailable), shares the built image with the Linux and Windows/WSL2 Docker test jobs, and otherwise reuses the published image. That keeps runs fast because the image is never built when it has not changed, and never built twice.
 
 To build the docker container locally, follow the below instructions:
 
@@ -48,7 +48,7 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 ### Releasing a new container for users
 
-Releasing is available through the GitHub Actions workflow `Publish GMT runner image`, which accepts the image tag to push to Docker Hub. The workflow still requires Docker Hub credentials with permission to push `nrel/gmt-om-runner`.
+Releasing is available through the GitHub Actions workflow `Publish GMT runner image`, which accepts the image tag to push to Docker Hub. The workflow still requires Docker Hub credentials with permission to push `nrel/gmt-om-runner`. It skips the push when the requested tag already exists on Docker Hub (so an unchanged/existing version is not re-pushed); re-run it with `force_push=true` to overwrite an existing tag.
 
 Building for release is a bit different than development since you will need to handle multiple platforms (that is adding support for armhf to
 support OpenModelica as well as AMD64). See
