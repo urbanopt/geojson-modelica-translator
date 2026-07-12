@@ -1,0 +1,49 @@
+name: Publish GMT runner image
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner_tag:
+        description: Docker tag to publish for nrel/gmt-om-runner
+        required: true
+        default: "4.1.0"
+      publish_latest:
+        description: Also publish the latest tag
+        required: true
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - uses: actions/checkout@v7
+      - name: Log in to Docker Hub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          test -n "$DOCKERHUB_USERNAME"
+          test -n "$DOCKERHUB_TOKEN"
+          echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      - name: Build and push multi-arch runner image
+        env:
+          PUBLISH_LATEST: ${{ inputs.publish_latest }}
+          RUNNER_TAG: ${{ inputs.runner_tag }}
+        run: |
+          docker buildx create --use --name gmt-runner-builder
+          tags=(-t "nrel/gmt-om-runner:${RUNNER_TAG}")
+          if [[ "${PUBLISH_LATEST}" == "true" ]]; then
+            tags+=(-t "nrel/gmt-om-runner:latest")
+          fi
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            "${tags[@]}" \
+            --push \
+            -f geojson_modelica_translator/modelica/lib/runner/Dockerfile \
+            .

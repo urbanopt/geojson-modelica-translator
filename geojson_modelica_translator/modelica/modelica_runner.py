@@ -15,6 +15,9 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_GMT_OM_RUNNER_IMAGE = "nrel/gmt-om-runner:4.1.0"
+GMT_OM_RUNNER_IMAGE_ENV_VAR = "GMT_OM_RUNNER_IMAGE"
+
 
 class ModelicaRunner:
     """Class to run Modelica models."""
@@ -31,6 +34,11 @@ class ModelicaRunner:
         # Verify that docker is up and running, if needed.
         r = subprocess.call(["docker", "ps"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
+
+    @staticmethod
+    def default_docker_image() -> str:
+        """Return the configured GMT OpenModelica runner image."""
+        return os.getenv(GMT_OM_RUNNER_IMAGE_ENV_VAR, DEFAULT_GMT_OM_RUNNER_IMAGE)
 
     def _verify_docker_run_capability(self, file_to_load: str | Path | None):
         """Verify that docker is configured on the host computer correctly before running
@@ -211,7 +219,7 @@ class ModelicaRunner:
         run_path: Path,
         action: str,
         compiler_flags: str | None = None,
-        docker_image: str = "nrel/gmt-om-runner:4.0.0",
+        docker_image: str = DEFAULT_GMT_OM_RUNNER_IMAGE,
     ) -> int:
         """Call out to a subprocess to run the command in docker
 
@@ -347,8 +355,7 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
-        # When updating the GMT OM Runner, this is the location to bump the image.
-        docker_image = kwargs.get("docker_image", "nrel/gmt-om-runner:4.0.0")
+        docker_image = kwargs.get("docker_image") or self.default_docker_image()
         exitcode = self._subprocess_call_to_docker(
             verified_run_path, action, kwargs.get("compiler_flags"), docker_image=docker_image
         )

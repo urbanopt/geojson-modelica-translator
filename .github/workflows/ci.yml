@@ -65,6 +65,8 @@ jobs:
         mbl_tag: [v12.1.0]
     runs-on: ${{ matrix.os }}
     permissions: write-all
+    env:
+      GMT_OM_RUNNER_IMAGE: gmt-om-runner:ci
     steps:
       - uses: actions/checkout@v7
       - name: Set up Python 3.13
@@ -108,10 +110,25 @@ jobs:
       - name: Set MODELICAPATH
         if: runner.os == 'Linux'
         run: echo "MODELICAPATH=${{ github.workspace }}/modelica-buildings" >> "$GITHUB_ENV"
+      - name: Build GMT runner image
+        if: runner.os == 'Linux'
+        run: |
+          docker build -t "${GMT_OM_RUNNER_IMAGE}" -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
+          docker run --rm "${GMT_OM_RUNNER_IMAGE}" omc --version
+          docker run --rm "${GMT_OM_RUNNER_IMAGE}" bash -lc 'ls -1 /root/.openmodelica/libraries'
       # Keep this as one non-xdist invocation so Docker workloads run in series.
       - name: Run resource-intensive tests in series on Linux
         if: runner.os == 'Linux'
         run: make test-resource-intensive PYTEST_EXTRA_ARGS=-v
+      - name: Build GMT runner image in WSL2
+        if: runner.os == 'Windows'
+        shell: wsl-bash {0}
+        run: |
+          sudo service docker start
+          export GMT_OM_RUNNER_IMAGE="${GMT_OM_RUNNER_IMAGE}"
+          docker build -t "${GMT_OM_RUNNER_IMAGE}" -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
+          docker run --rm "${GMT_OM_RUNNER_IMAGE}" omc --version
+          docker run --rm "${GMT_OM_RUNNER_IMAGE}" bash -lc 'ls -1 /root/.openmodelica/libraries'
       # The GMT runner image is Linux-only. On a Windows host, run it with the
       # Linux Docker daemon in WSL2, as Docker Desktop does for local users.
       - name: Run resource-intensive tests in series on Windows
@@ -123,6 +140,7 @@ jobs:
           /tmp/gmt-ci/bin/pip install poetry
           export PATH="/tmp/gmt-ci/bin:$PATH"
           export MODELICAPATH="$PWD/modelica-buildings"
+          export GMT_OM_RUNNER_IMAGE="${GMT_OM_RUNNER_IMAGE}"
           poetry self add setuptools
           poetry install
           python --version
