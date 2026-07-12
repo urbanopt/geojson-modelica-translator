@@ -125,7 +125,6 @@ jobs:
         shell: wsl-bash {0}
         run: |
           sudo service docker start
-          export GMT_OM_RUNNER_IMAGE="${GMT_OM_RUNNER_IMAGE}"
           docker build -t "${GMT_OM_RUNNER_IMAGE}" -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
           docker run --rm "${GMT_OM_RUNNER_IMAGE}" omc --version
           docker run --rm "${GMT_OM_RUNNER_IMAGE}" bash -lc 'ls -1 /root/.openmodelica/libraries'
@@ -140,7 +139,6 @@ jobs:
           /tmp/gmt-ci/bin/pip install poetry
           export PATH="/tmp/gmt-ci/bin:$PATH"
           export MODELICAPATH="$PWD/modelica-buildings"
-          export GMT_OM_RUNNER_IMAGE="${GMT_OM_RUNNER_IMAGE}"
           poetry self add setuptools
           poetry install
           python --version
