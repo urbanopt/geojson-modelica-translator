@@ -13,7 +13,7 @@ To build the docker container locally, follow the below instructions:
 1. If on the NLR network:
     - Disable Netskope temporarily
     - Disconnect from VPN
-2. Then:
+2. Then run the following from the GMT repository root:
 
 ```bash
 # <from gmt root directory>
