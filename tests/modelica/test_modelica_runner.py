@@ -56,6 +56,37 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert "unreal" in str(excinfo.value)
         assert "must be one of ['compile'" in str(excinfo.value)
 
+    def test_tolerance_passthrough_in_simulate_mos(self):
+        # The tolerance kwarg must reach the generated simulate.mos so users can trade
+        # solver accuracy for speed (1e-4 is ~15x faster than 1e-6 for the 5G DES models).
+        mr = ModelicaRunner()
+        mr._copy_over_docker_resources(
+            Path(self.run_path),
+            "BouncingBall.mo",
+            "BouncingBall",
+            start_time=0,
+            stop_time=60,
+            step_size=1,
+            tolerance=1e-4,
+        )
+        contents = (Path(self.run_path) / "simulate.mos").read_text()
+        assert "tolerance=0.0001" in contents
+
+    def test_no_tolerance_omitted_from_simulate_mos(self):
+        # When tolerance is not provided, it must be omitted so the model's experiment
+        # annotation value is used.
+        mr = ModelicaRunner()
+        mr._copy_over_docker_resources(
+            Path(self.run_path),
+            "BouncingBall.mo",
+            "BouncingBall",
+            start_time=0,
+            stop_time=60,
+            step_size=1,
+        )
+        contents = (Path(self.run_path) / "simulate.mos").read_text()
+        assert "tolerance=" not in contents
+
     @pytest.mark.simulation
     def test_run_in_docker_errors(self):
         mr = ModelicaRunner()

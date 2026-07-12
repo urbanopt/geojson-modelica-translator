@@ -435,6 +435,11 @@ def test_network_distribution_pump_uses_single_fallback_source_when_no_sources_p
     )
 
     assert "nSou=1" in rendered
+    # Distribution mass-flow command is low-pass filtered to damp step-load
+    # transients (prevents the pump forcing flow through transiently-closed
+    # ETS valves, which spikes head past dpMax at relaxed solver tolerances).
+    assert "Modelica.Blocks.Continuous.FirstOrder filDis" in rendered
+    assert "initType=Modelica.Blocks.Types.Init.SteadyState" in rendered
 
 
 def test_time_series_unidirectional_series_renders_fallback_tsouout_for_no_source_case():
@@ -602,6 +607,9 @@ def test_network_distribution_pump_connect_keeps_base_connections_when_no_source
     # No extra bypass connections for no-source case in this template
     assert "connect(expVes.ports[1], pumDis.port_a)" in rendered
     assert "connect(conPum.y, gai.u)" in rendered
+    # Mass-flow command is routed through the low-pass filter before the pump
+    assert "connect(gai.y, filDis.u)" in rendered
+    assert "connect(filDis.y, pumDis.m_flow_in)" in rendered
 
 
 def test_unidirectional_series_instance_treats_explicit_no_plant_boundary_like_no_plant_case():
