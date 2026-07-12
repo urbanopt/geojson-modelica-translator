@@ -1013,7 +1013,7 @@ class SystemParameters:
         source_side_volume_flow_rate = source_side_mass_flow_rate / WATER_DENSITY_KG_PER_M3
         ets_parameters["ets_pump_flow_rate"] = round(source_side_volume_flow_rate, 6)
 
-    def csv_to_sys_param(
+    def csv_to_sys_param(  # noqa: PLR0912
         self,
         model_type: str,
         scenario_dir: Path,

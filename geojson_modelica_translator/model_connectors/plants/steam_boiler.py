@@ -24,9 +24,7 @@ class SteamPlant(PlantBase):
         steam_params_path = "$.district_system.first_generation.central_steam_plant_parameters"
         template_data = {
             "nominal_values": {
-                "boiler_efficiency": self.system_parameters.get_param(
-                    f"{steam_params_path}.boiler_efficiency"
-                ),
+                "boiler_efficiency": self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency"),
                 "steam_pressure_setpoint": self.system_parameters.get_param(
                     f"{steam_params_path}.steam_pressure_setpoint"
                 ),
