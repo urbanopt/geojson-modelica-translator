@@ -21,7 +21,7 @@ partial model PartialSeries "Partial model for series network"
     Buildings.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(final mCon_flow_nominal=bui.ets.mSerWat_flow_nominal) "Design data"
     annotation (Placement(transformation(extent={{-340,220},{-320,240}})));
-  parameter Integer nBor = 300
+  parameter Integer nBor = {% endraw %}{{ data["number_of_boreholes"] }}{% raw %}
     "Number of boreholes";
   parameter Integer hBor = 350
     "Total height of borehole, meters";

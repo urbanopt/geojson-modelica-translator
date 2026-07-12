@@ -4,6 +4,7 @@ from pathlib import Path
 from modelica_builder.modelica_mos_file import ModelicaMOS
 
 from geojson_modelica_translator.modelica.GMT_Lib.DHC._flow_sizing import (
+    borehole_count,
     flow_rate_from_load,
     source_pump_dp_nominal,
     source_side_loads,
@@ -128,6 +129,11 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         source_flow_rate = flow_rate_from_load(source_load, delta_t)
         template_data["source_flow_rate"] = round(source_flow_rate, 3)  # type: ignore[arg-type]
         template_data["source_pump_dp_nominal"] = round(source_pump_dp_nominal(source_flow_rate))  # type: ignore[arg-type]
+        # Size the borefield to the source flow so the per-borehole flow (and thus
+        # the borefield pressure drop the storage pump must overcome) stays bounded
+        # as the district load grows. A fixed field trips the storage pump dpMax
+        # assertion at initialization for large loads.
+        template_data["number_of_boreholes"] = borehole_count(source_flow_rate)  # type: ignore[assignment]
 
         n_buildings = len(template_data["building_load_files"])
         template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)
