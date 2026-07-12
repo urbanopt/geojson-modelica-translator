@@ -4,6 +4,9 @@
   connect(pumDis.port_b, TDisSup_{{ coupling.id }}.port_a)
   {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-40,10}}, color={0,127,255}));
   {% endraw %}
+  connect(supGheRef_{{ coupling.id }}.ports[1], pumDis.port_b)
+  {% raw %}annotation (Line(points={{120,-190},{-44,-190},{-44,-50}}, color={0,127,255}));
+  {% endraw %}
   {% endif %}
 {% endif %}
 connect(TIn_{{ coupling.id }}.port_b, conSto_{{ coupling.plant.id }}.port_aDis)

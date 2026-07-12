@@ -116,7 +116,11 @@ model TimeSeriesBuilding
     annotation (Placement(transformation(extent={{-280,210},{-260,230}})));
   replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeHeating terUniHea(
     k=k,
-    Ti=Ti) if have_heaWat
+    Ti=Ti,
+    hex(
+      m2_flow(
+        min=-1e-6,
+        max=1e5+1e-6))) if have_heaWat
     constrainedby Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,
@@ -124,7 +128,7 @@ model TimeSeriesBuilding
       facMul=facMulHea,
       facMulZon=1,
       QHea_flow_nominal=QHea_flow_nominal/facMulHea,
-      mLoaHea_flow_nominal=mLoaHea_flow_nominal,
+      mLoaHea_flow_nominal=mLoaHea_flow_nominal/facMulHea,
       T_aHeaWat_nominal=T_aHeaWat_nominal,
       T_bHeaWat_nominal=T_bHeaWat_nominal,
       T_aLoaHea_nominal=T_aLoaHea_nominal)
@@ -133,6 +137,9 @@ model TimeSeriesBuilding
   Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=Medium,
     allowFlowReversal=allowFlowReversal,
+    pumFlo(
+      etaHyd(
+        min=-1e-6)),
     m_flow_nominal=mHeaWat_flow_nominal,
     have_pum=true,
     typCtr=Buildings.DHC.Loads.BaseClasses.Types.PumpControlType.ConstantHead,
@@ -144,6 +151,9 @@ model TimeSeriesBuilding
   Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=Medium,
     allowFlowReversal=allowFlowReversal,
+    pumFlo(
+      etaHyd(
+        min=-1e-6)),
     m_flow_nominal=mChiWat_flow_nominal,
     typDis=Buildings.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     have_pum=true,
@@ -153,12 +163,16 @@ model TimeSeriesBuilding
     nPorts_a1=1) if have_chiWat
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{120,-270},{140,-250}})));
-  replaceable Buildings.DHC.Loads.BaseClasses.Validation.BaseClasses.FanCoil2PipeCooling terUniCoo(
-    QHea_flow_nominal=QHea_flow_nominal/facMulHea,
+  {% endraw %}replaceable {{ data['cooling_terminal_model'] }} terUniCoo(
+    {% raw %}QHea_flow_nominal=QHea_flow_nominal/facMulHea,
     T_aLoaHea_nominal=T_aLoaHea_nominal,
     k=k,
     Ti=Ti,
-    QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
+    {% endraw %}{% if not data['use_dry_cooling_coil'] %}{% raw %}hexWetNtu(
+      SHR(
+        min=-1e-6,
+        max=1+1e-6)),
+    {% endraw %}{% endif %}{% raw %}QEnv_flow_nominal=-QCoo_flow_nominal/facMulCoo) if have_chiWat
     constrainedby Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit(
       redeclare package Medium1=Medium,
       redeclare package Medium2=Medium2,
@@ -166,7 +180,7 @@ model TimeSeriesBuilding
       facMul=facMulCoo,
       facMulZon=1,
       QCoo_flow_nominal=QCoo_flow_nominal/facMulCoo,
-      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal,
+      mLoaCoo_flow_nominal=mLoaCoo_flow_nominal/facMulCoo,
       T_aChiWat_nominal=T_aChiWat_nominal,
       T_bChiWat_nominal=T_bChiWat_nominal,
       T_aLoaCoo_nominal=T_aLoaCoo_nominal,
@@ -305,9 +319,29 @@ equation
 This is a simplified building model where the space heating and cooling loads
 are provided as time series.
 </p>
+<h4>Sizing</h4>
+<p>
+The nominal heating and cooling loads are read from the time-series metadata.
+Water and air mass flow rates are then derived from those loads and the
+nominal supply and return temperatures. Each replicated terminal unit receives
+the corresponding fraction of the load-side air flow. The multiplier parameters
+<code>facMulHea</code> and <code>facMulCoo</code> allow larger loads to be
+served by multiple terminal units while preserving the same load profile and
+terminal-unit equations.
+</p>
+<p>
+The cooling terminal is replaceable and is selected from the template data.
+This lets the generated building model use either the standard wet cooling
+terminal or a sensible-only dry terminal while keeping the same load profile,
+water-side sizing, and terminal-unit connections.
+</p>
 </html>",
       revisions="<html>
 <ul>
+<li>
+July 10, 2026, by Nicholas Long:<br/>
+Documented load-based sizing, terminal-unit multiplier behavior, and selectable cooling terminal behavior.
+</li>
 <li>
 October 20, 2020, by Hagar Elarga:<br/>
 The <code>mLoaHea_flow_nominal</code> and <code>mLoaCoo_flow_nominal</code> are
@@ -317,20 +351,10 @@ This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2201\
 <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2202\">issue 2202</a>.
 </li>
 <li>
-September 18, 2020, by Jianjun Hu:<br/>
-Changed flow distribution components and the terminal units to be conditional depending
-on if there is water-based heating, or cooling system.
-This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2147\">issue 2147</a>.
-</li>
-<li>
-February 21, 2020, by Antoine Gautier:<br/>
+August 24, 2020 by Antoine Gautier:<br/>
 First implementation.
 </li>
 </ul>
-</html>"),
-    Icon(
-      coordinateSystem(
-        preserveAspectRatio=false,
-        extent={{-300,-300},{300,300}})));
+</html>"));
 end TimeSeriesBuilding;
 {% endraw %}

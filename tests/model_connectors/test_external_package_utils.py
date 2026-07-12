@@ -79,6 +79,23 @@ def test_load_loop_order_writes_default_for_missing_file(tmp_path: Path):
     assert (tmp_path / "_loop_order.json").exists()
 
 
+def test_load_loop_order_prefers_named_sidecar_file(tmp_path: Path):
+    sys_params_path = tmp_path / "time_series_5g_no_plant_sys_params.json"
+    sys_params = {
+        "district_system": {"fifth_generation": {}},
+        "buildings": [{"geojson_id": "bldg-1"}, {"geojson_id": "bldg-2"}],
+    }
+    sys_params_path.write_text(json.dumps(sys_params, indent=2))
+    (tmp_path / "_loop_order.json").write_text(json.dumps([{"list_bldg_ids_in_group": ["bldg-1"]}]))
+    (tmp_path / "time_series_5g_no_plant_loop_order.json").write_text(
+        json.dumps([{"list_bldg_ids_in_group": ["bldg-2"]}])
+    )
+
+    loop_order = load_loop_order(sys_params_path)
+
+    assert loop_order == [{"list_bldg_ids_in_group": ["bldg-2"]}]
+
+
 def test_load_loop_order_raises_for_non_5g_when_missing(tmp_path: Path):
     sys_params_path = tmp_path / "sys_params_4g.json"
     sys_params = {

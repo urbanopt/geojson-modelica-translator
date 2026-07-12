@@ -157,6 +157,37 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert 'chown -R "$HOST_UID:$HOST_GID" "$PWD"' in cleanup_script
         assert 'chmod -R u+rwX "$PWD"' in cleanup_script
 
+    def test_run_in_docker_accepts_result_file_without_success_message(self):
+        mr = ModelicaRunner.__new__(ModelicaRunner)
+        mr.docker_configured = True
+        run_path = Path(self.run_path)
+        model_name = "BouncingBall"
+
+        def write_successful_outputs(*_args, **_kwargs):
+            (run_path / "stdout.log").write_text(
+                "record SimulationResult\n"
+                '    resultFile = "/mnt/shared/simdir/BouncingBall_res.mat",\n'
+                '    messages = ""\n'
+                "end SimulationResult;\n"
+            )
+            (run_path / f"{model_name}_res.mat").touch()
+            return 0
+
+        with (
+            patch.object(mr, "_copy_over_docker_resources"),
+            patch.object(mr, "_subprocess_call_to_docker", side_effect=write_successful_outputs),
+        ):
+            success, results_path = mr.run_in_docker(
+                "compile_and_run",
+                model_name,
+                file_to_load=run_path / "BouncingBall.mo",
+                run_path=run_path,
+            )
+
+        assert success is True
+        assert (Path(results_path) / "stdout.log").exists()
+        assert (Path(results_path) / f"{model_name}_res.mat").exists()
+
     @pytest.mark.compilation
     def test_compile_bouncing_ball_in_docker(self):
         # cleanup output path

@@ -140,6 +140,7 @@ def test_simulate_polynomial_boiler():
         run_path=package_output_dir,
         start_time=0,
         stop_time=86400,
+        step_size=300,
     )
 
     # -- Assert

@@ -80,4 +80,5 @@ markers = [
     "compilation: marks tests that are for compiling a simulation with docker/optimica (deselect with '-m \"not compilation\"'). All simulations now require MSL v4.",
     "dymola: mark tests that are for running only in Dymola, which requires a local install and license (deselect with '-m \"not dymola\"').",
     "docker: mark tests that are for testing Docker (deselect with '-m \"not docker\"').",
+    "xdist_group(name): groups tests onto the same pytest-xdist worker when they share filesystem state.",
 ]

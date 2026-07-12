@@ -354,6 +354,7 @@ class ModelicaRunner:
         )
 
         logger.debug("Checking stdout.log for errors")
+        result_file = verified_run_path / f"{model_name}_res.mat"
         with open(verified_run_path / "stdout.log") as f:
             stdout_log = f.read()
             if "Failed to build model" in stdout_log:
@@ -369,8 +370,14 @@ class ModelicaRunner:
                     "Model failed to run due to division by zero. Perhaps head pressure or flow rate are insufficient?"
                 )
                 exitcode = 1
+            elif "Simulation execution failed for model:" in stdout_log:
+                logger.error("Model failed to run")
+                exitcode = 1
             elif "The simulation finished successfully" in stdout_log:
                 logger.info("Model ran successfully")
+                exitcode = 0
+            elif exitcode == 0 and result_file.exists():
+                logger.info("Model ran successfully and produced a result file")
                 exitcode = 0
             elif action == "compile":
                 logger.info("Model compiled successfully -- no errors")
