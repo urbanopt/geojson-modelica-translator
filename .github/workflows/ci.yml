@@ -132,7 +132,15 @@ jobs:
             -f geojson_modelica_translator/modelica/lib/runner/Dockerfile \
             .
           docker run --rm gmt-om-runner:ci omc --version
-          docker run --rm gmt-om-runner:ci bash -lc 'ls -1 /root/.openmodelica/libraries'
+          # omc exits 0 even when installPackage fails, so assert the expected
+          # libraries actually landed in the image before we ship the artifact.
+          docker run --rm gmt-om-runner:ci bash -lc '
+            set -euo pipefail
+            libs=/root/.openmodelica/libraries
+            ls -1 "$libs"
+            ls -d "$libs"/Modelica\ * >/dev/null
+            ls -d "$libs"/Buildings\ * >/dev/null
+          '
           docker save gmt-om-runner:ci -o gmt-om-runner-ci.tar
       - name: Upload runner image artifact
         uses: actions/upload-artifact@v4

@@ -29,7 +29,7 @@ If you run the image directly with a bind mount, note that the image runs as `ro
 
 The GMT `ModelicaRunner` passes `HOST_UID`/`HOST_GID` into the container and `chown`s the mounted `/mnt/shared/<model_name>` directory at the end of the run so generated files are accessible on the host.
 
-The image starts from the OpenModelica base image and copies the known-good OpenModelica-maintained Modelica, ModelicaServices, Complex, and Buildings libraries from the previous GMT runner release. That keeps local and CI builds deterministic even when `libraries.openmodelica.org` is unavailable during `docker build`.
+The image starts from the OpenModelica base image and installs the Modelica Standard Library and the Modelica Buildings Library with OpenModelica's package manager (`installPackage`) at build time, so `docker build` pulls those libraries from `libraries.openmodelica.org`.
 
 ### Versioning
 
@@ -37,7 +37,7 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 | GTM Runner Version | OM Version | MSL Version | MBL Version |
 | ------------------ | ---------- | ----------- | ----------- |
-| 4.1.0              | 1.27.0     | 4.1.0       | 12.1.0      |
+| 4.1.0              | 1.27.0     | 4.1.0       | 12.1.1      |
 | 4.0.0              | 1.25.1     | 4.0.0       | 12.1.0      |
 | 3.0.0              | 1.24.0     | 4.0.0       | 11.0.0      |
 | 2.0.1              | 1.22.1     | 4.0.0       | 10.0.0      |
