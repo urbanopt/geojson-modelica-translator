@@ -29,6 +29,74 @@
         {% endraw %}
       {% endif %}
     {% endfor %}
+  {% else %}
+    {% set explicit_no_plant_boundary = false %}
+    {% if network_couplings.plant_couplings is defined and network_couplings.plant_couplings|length > 0 %}
+      {% set plant_model = graph.get_other_model(network_couplings.plant_couplings[0].id, coupling.network.id) %}
+      {% set explicit_no_plant_boundary = plant_model.id.startswith("noPla_") %}
+    {% endif %}
+    {% if network_couplings.plant_couplings is not defined or network_couplings.plant_couplings|length == 0 or explicit_no_plant_boundary %}
+    {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
+    {% for bldg_num in range(loop_order.data[group_num].list_bldg_ids_in_group|length) %}
+      {% if loop_order.data[group_num].list_bldg_ids_in_group[bldg_num][0].isnumeric() %}
+        {% set bldg_id = "TimeSerLoa_B" ~ loop_order.data[group_num].list_bldg_ids_in_group[bldg_num] %}
+      {% else %}
+        {% set bldg_id = "TimeSerLoa_" ~ loop_order.data[group_num].list_bldg_ids_in_group[bldg_num] %}
+      {% endif %}
+      {% if bldg_id == coupling.load.id %}
+        connect({{ coupling.network.id }}.ports_bCon[{{ bldg_num + 1 }}], {{ coupling.load.id }}.port_aSerAmb)
+        {% raw %}annotation (Line(points={{58,0},{58,6},{46,6},{46,30},{60,30}}, color={0,127,255}));
+        {% endraw %}
+        connect({{ coupling.load.id }}.port_bSerAmb, {{ coupling.network.id }}.ports_aCon[{{ bldg_num + 1 }}])
+        {% raw %}annotation (Line(points={{80,30},{92,30},{92,6},{82,6},{82,0}}, color={0,127,255}));
+        {% endraw %}
+        connect({{ coupling.load.id }}.QCoo_flow, conPum.QCoo_flow[{{ sum_bldg + bldg_num + 1 }}])
+        {% raw %}annotation (Line(points={{67,-12},{128,-12},{128,-112},{-124,-112},{-124,-96},{-121.692,-96}}, color={0,0,127}));
+        {% endraw %}
+      {% endif %}
+    {% endfor %}
+    {# Connect network TOut to pump controller TMix only once per network #}
+    {% if loop_order.data[group_num].list_bldg_ids_in_group[0][0].isnumeric() %}
+      {% set first_bldg_id = "TimeSerLoa_B" ~ loop_order.data[group_num].list_bldg_ids_in_group[0] %}
+    {% else %}
+      {% set first_bldg_id = "TimeSerLoa_" ~ loop_order.data[group_num].list_bldg_ids_in_group[0] %}
+    {% endif %}
+    {% if first_bldg_id == coupling.load.id %}
+      {% if explicit_no_plant_boundary %}
+        {% set no_plant_coupling_id = network_couplings.plant_couplings[0].id %}
+      connect(pumDis.port_b, heaNoPlant_{{ no_plant_coupling_id }}.port_a)
+      {% raw %}annotation (Line(points={{-44,-50},{-44,10},{-20,10},{-20,-180}}, color={0,127,255}));
+      {% endraw %}
+      connect(supNoPlant_{{ no_plant_coupling_id }}.ports[1], pumDis.port_b)
+      {% raw %}annotation (Line(points={{120,-190},{-44,-190},{-44,-50}}, color={0,127,255}));
+      {% endraw %}
+      connect(heaNoPlant_{{ no_plant_coupling_id }}.port_b, cooNoPlant_{{ no_plant_coupling_id }}.port_a)
+      {% raw %}annotation (Line(points={{0,-180},{10,-180}}, color={0,127,255}));
+      {% endraw %}
+      connect(cooNoPlant_{{ no_plant_coupling_id }}.port_b, {{ coupling.network.id }}.port_aDisSup)
+      {% raw %}annotation (Line(points={{30,-180},{50,-180},{50,10}}, color={0,127,255}));
+      {% endraw %}
+      {% else %}
+      connect(pumDis.port_b, {{ coupling.network.id }}.port_aDisSup)
+      {% raw %}annotation (Line(points={{-44,-50},{-44,10},{50,10}}, color={0,127,255}));
+      {% endraw %}
+      {% endif %}
+      connect({{ coupling.network.id }}.port_bDisSup, pumDis.port_a)
+      {% raw %}annotation (Line(points={{90,10},{100,10},{100,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
+      {% endraw %}
+      connect({{ coupling.network.id }}.TOut, conPum.TMix[{{ sum_bldg + 1 }}:{{ sum_bldg + loop_order.data[group_num].list_bldg_ids_in_group|length }}])
+      {% raw %}annotation (Line(points={{96,0},{96,-20},{-100,-20},{-100,-90}}, color={0,0,127}));
+      {% endraw %}
+      {% if loop_order.number_of_sources == 0 and group_num == 0 %}
+      connect(TSouIn_fallback_{{ coupling.network.id }}.y, conPum.TSouIn[1])
+      {% raw %}annotation (Line(points={{-98,-140},{-92,-140},{-92,-86},{-100,-86}}, color={0,0,127}));
+      {% endraw %}
+      connect(TSouOut_fallback_{{ coupling.network.id }}.y, conPum.TSouOut[1])
+      {% raw %}annotation (Line(points={{-98,-110},{-96,-110},{-96,-92},{-100,-92}}, color={0,0,127}));
+      {% endraw %}
+      {% endif %}
+    {% endif %}
+    {% endif %}
   {% endif %}
 {% endfor %}
 connect(THeaWatSupMinSet_{{ coupling.id }}.y, {{ coupling.load.id }}.THeaWatSupMinSet)

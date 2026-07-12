@@ -1,0 +1,74 @@
+  // Boundary condition for network heat loss (no-plant 5G)
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant TNoPlant_{{ coupling.id }}(
+    k={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 273.15)
+    "No-plant loop temperature set point [K]"
+{% raw %}    annotation (Placement(transformation(extent={{-20,-160},{0,-140}})));
+  {% endraw %}
+  Buildings.Fluid.HeatExchangers.Heater_T heaNoPlant_{{ coupling.id }}(
+    redeclare package Medium = {{ globals.medium_w }},
+    m_flow_nominal=datDes.mPumDis_flow_nominal,
+    dp_nominal=0,
+    T_start={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 273.15)
+    "Infinite heating source for no-plant 5G loop; heat flow output is in W"
+{% raw %}    annotation (Placement(transformation(extent={{-20,-190},{0,-170}})));
+  {% endraw %}
+  Buildings.Fluid.HeatExchangers.SensibleCooler_T cooNoPlant_{{ coupling.id }}(
+    redeclare package Medium = {{ globals.medium_w }},
+    m_flow_nominal=datDes.mPumDis_flow_nominal,
+    dp_nominal=0,
+    T_start={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 273.15)
+    "Infinite cooling sink for no-plant 5G loop; heat flow output is in W"
+{% raw %}    annotation (Placement(transformation(extent={{10,-190},{30,-170}})));
+  {% endraw %}
+  Buildings.Fluid.Sources.Boundary_pT supNoPlant_{{ coupling.id }}(
+    redeclare final package Medium = {{ globals.medium_w }},
+    p=101325,
+    T={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 273.15,
+    nPorts=1)
+    "Pressure boundary for the no-plant 5G supply side; p is in Pa and T is in K"
+{% raw %}    annotation (Placement(transformation(extent={{140,-200},{120,-180}})));
+  {% endraw %}
+  Modelica.Units.SI.HeatFlowRate qIdePlaRev_{{ coupling.id }}=max(
+    0,
+    -heaNoPlant_{{ coupling.id }}.m_flow)*(heaNoPlant_{{ coupling.id }}.port_a.h_outflow - heaNoPlant_{{ coupling.id }}.port_b.h_outflow)
+    "Reverse-flow no-plant heat rate; positive means cooling removed and negative means heating added [W]"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal source/sink"));
+  {% endraw %}
+  Modelica.Units.SI.Power pIdePlaHea_{{ coupling.id }}=max(
+    0,
+    heaNoPlant_{{ coupling.id }}.Q_flow) + max(
+    0,
+    -qIdePlaRev_{{ coupling.id }})
+    "Thermal power added by the ideal no-plant heating source, reported as positive heating [W]"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal source/sink"));
+  {% endraw %}
+  Modelica.Units.SI.Power pIdePlaCoo_{{ coupling.id }}=max(
+    0,
+    -cooNoPlant_{{ coupling.id }}.Q_flow) + max(
+    0,
+    qIdePlaRev_{{ coupling.id }})
+    "Thermal power removed by the ideal no-plant cooling sink, reported as positive cooling [W]"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal source/sink"));
+  {% endraw %}
+  parameter Modelica.Units.SI.Efficiency etaIdePumDis_{{ coupling.id }}(
+    min=Modelica.Constants.eps,
+    max=1)=0.7
+    "Ideal distribution pump efficiency for no-plant 5G pump power accounting [-]"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal pump accounting"));
+  {% endraw %}
+  final parameter Modelica.Units.SI.Density rhoIdePumDis_{{ coupling.id }}={{ globals.medium_w }}.density(
+    {{ globals.medium_w }}.setState_pTX(
+      p=101325,
+      T={{ sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature }} + 273.15))
+    "Density used for no-plant 5G ideal pump power accounting [kg/m3]";
+  Modelica.Units.SI.Power pIdePumDis_{{ coupling.id }}=max(
+    0,
+    pumDis.m_flow_actual)/rhoIdePumDis_{{ coupling.id }}*{{ sys_params.district_system.fifth_generation.central_pump_parameters.pump_design_head }}/etaIdePumDis_{{ coupling.id }}
+    "Ideal distribution pump electrical power for no-plant 5G accounting [W]"
+{% raw %}    annotation (Dialog(group="No-plant 5G ideal pump accounting"));
+  {% endraw %}
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature bound_heatPort_{{ coupling.id }}(
+    T=273.15 + {{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }})
+    "Boundary temperature for end-of-line pipe heat loss in no-plant 5G [K]"
+{% raw %}    annotation (Placement(transformation(extent={{140,-40},{160,-20}})));
+{% endraw %}

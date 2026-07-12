@@ -1,6 +1,7 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import json
 from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
@@ -54,8 +55,10 @@ class CLIIntegrationTest(TestCase):
     ) -> None:
         """Create the model required by a simulation test when it is not already present."""
         project_path = self.output_dir / project_name
-        if (project_path / "package.mo").exists():
+        if (project_path / "Districts" / "DistrictEnergySystem.mo").exists():
             return
+        if project_path.exists():
+            rmtree(project_path)
 
         sys_param_path.unlink(missing_ok=True)
         build_result = self.runner.invoke(
@@ -99,6 +102,29 @@ class CLIIntegrationTest(TestCase):
 
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
+
+    def test_cli_builds_5g_sys_params_with_no_plant_default(self):
+        self.sys_param_path.unlink(missing_ok=True)
+
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path),
+                str(self.scenario_file_path),
+                str(self.feature_file_path),
+                "5G",
+            ],
+        )
+
+        assert res.exit_code == 0
+        with open(self.sys_param_path) as f:
+            sys_params = json.load(f)
+
+        fifth_generation = sys_params["district_system"]["fifth_generation"]
+        assert "ghe_parameters" not in fifth_generation
+        assert "heat_source_parameters" not in fifth_generation
+        assert fifth_generation["no_central_plant"]["distribution_temperature"] == 18.3
 
     def test_cli_builds_sys_params_with_ghe(self):
         self.sys_param_path.unlink(missing_ok=True)

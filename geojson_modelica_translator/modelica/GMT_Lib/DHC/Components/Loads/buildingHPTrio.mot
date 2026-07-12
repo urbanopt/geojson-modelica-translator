@@ -10,12 +10,10 @@ model buildingHPTrio
       T_bHeaWat_nominal=ets.THeaWatRet_nominal,
       T_aChiWat_nominal=ets.TChiWatSup_nominal,
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
-      // Preserve legacy scaling behavior (10x heating, 40x cooling)
-      // while keeping a lower bound of 1 for robustness on very small loads.
       // Heating reference per-unit duty: 170 kW.
-      facMulHea=max(1, ceil(10*QHea_flow_nominal/(1.7E5))),
+      facMulHea=max(1, ceil(QHea_flow_nominal/(1.7E5))),
       // Cooling reference per-unit duty: 150 kW (QCoo_flow_nominal is negative).
-      facMulCoo=max(1, ceil(40*abs(QCoo_flow_nominal)/(1.5E5))),
+      facMulCoo=max(1, ceil(abs(QCoo_flow_nominal)/(1.5E5))),
       delTAirCoo=10,
       // Use a lower nominal heating air-side delta T for more robust
       // initialization of terminal-unit heat exchanger nominal effectiveness.

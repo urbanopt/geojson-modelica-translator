@@ -18,7 +18,9 @@
           "temp_hw_return": 35,
           "temp_hw_supply": 40,
           "temp_setpoint_cooling": 24,
-          "temp_setpoint_heating": 20
+          "temp_setpoint_heating": 20,
+          "use_dry_cooling_coil": false,
+          "use_wet_cooling_coil": false
         }
       },
       "ets_model": "Indirect Heating and Cooling",
@@ -63,7 +65,9 @@
           "temp_hw_return": 35,
           "temp_hw_supply": 40,
           "temp_setpoint_cooling": 24,
-          "temp_setpoint_heating": 20
+          "temp_setpoint_heating": 20,
+          "use_dry_cooling_coil": false,
+          "use_wet_cooling_coil": false
         }
       },
       "ets_model": "Fifth Gen Heat Pump",

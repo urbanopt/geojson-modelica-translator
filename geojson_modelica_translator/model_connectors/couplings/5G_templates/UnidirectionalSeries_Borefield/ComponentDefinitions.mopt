@@ -17,3 +17,15 @@ redeclare final package Medium = {{ globals.medium_w }},
 m_flow_nominal=datDes.mPumDis_flow_nominal)
 {% raw %}annotation (Placement(transformation(extent={{-10,10},{10,-10}},rotation=-90,origin={100,-30})));
 {% endraw %}
+{% if loop_order.data[0].list_ghe_ids_in_group is defined %}
+	{% if graph.get_ghe_id(coupling.id) == loop_order.data[0].list_ghe_ids_in_group[0] %}
+Buildings.Fluid.Sources.Boundary_pT supGheRef_{{ coupling.id }}(
+redeclare final package Medium = {{ globals.medium_w }},
+p=101325,
+T={{ sys_params.district_system.fifth_generation.soil.undisturbed_temp }} + 273.15,
+nPorts=1)
+"Pressure boundary for the GHE supply side; p is in Pa and T is in K"
+{% raw %}annotation (Placement(transformation(extent={{140,-200},{120,-180}})));
+{% endraw %}
+	{% endif %}
+{% endif %}
