@@ -48,22 +48,51 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 ### Releasing a new container for users
 
-Releasing is available through the GitHub Actions workflow `Publish GMT runner image`, which accepts the image tag to push to Docker Hub. The workflow still requires Docker Hub credentials with permission to push `nrel/gmt-om-runner`. It skips the push when the requested tag already exists on Docker Hub (so an unchanged/existing version is not re-pushed); re-run it with `force_push=true` to overwrite an existing tag.
+Releasing is done through the **`Publish GMT runner image`** GitHub Actions workflow
+(`.github/workflows/runner-image-release.yml`). It builds the multi-arch
+(`linux/amd64` + `linux/arm64`) image from this `Dockerfile` and pushes it to
+[Docker Hub](https://hub.docker.com/r/nrel/gmt-om-runner). To run it:
 
-Building for release is a bit different than development since you will need to handle multiple platforms (that is adding support for armhf to
-support OpenModelica as well as AMD64). See
-[docker's multi-platform images documentation](https://docs.docker.com/build/building/multi-platform/) on how to configure.
+1. Make sure the runner changes are on the branch you want to release from (the
+   workflow builds the current `Dockerfile` from the branch you pick when you run it).
+2. In the repository on GitHub, open the **Actions** tab, select **Publish GMT
+   runner image** from the left sidebar, and click the **Run workflow** button.
+3. Choose the branch to build from, then fill in the inputs:
+   - **`runner_tag`** – the tag to publish, e.g. `4.1.0`. Bump the **major**
+     version for a new MBL (Buildings) version and the **minor** version for an
+     OpenModelica update.
+   - **`publish_latest`** – also tag the image as `latest` (default `false`). Set
+     this to `true` when this release should become the new default `latest`.
+   - **`force_push`** – overwrite the tag if it already exists on Docker Hub
+     (default `false`). Leave it `false` for a normal release: the workflow skips
+     the push when the tag already exists, so an unchanged version is never re-pushed.
+4. Click **Run workflow** to start it.
+
+The workflow needs the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repository
+secrets, set to Docker Hub credentials that can push `nrel/gmt-om-runner`. It logs
+in, checks whether `runner_tag` already exists, and then either skips it (existing
+tag with `force_push=false`) or builds and pushes the multi-arch image.
+
+After the workflow succeeds, sign into
+[Docker Hub](https://hub.docker.com/repository/docker/nrel/gmt-om-runner/general)
+and update the version table in the Repository Overview section.
+
+#### Publishing manually (fallback)
+
+If you need to publish outside of CI, you can build and push the multi-arch image
+yourself. This handles multiple platforms (arm64 as well as amd64); see
+[docker's multi-platform images documentation](https://docs.docker.com/build/building/multi-platform/)
+on how to configure buildx.
 
 ```bash
 docker login
 
-# Build for more platforms on release due to newer macos, etc., etc.
+# Set up a buildx builder that can produce multiple platforms
 docker buildx create --use
 
-# update version of OMC and determine if the latest should be updated. Bump the major version of the GMT Runner for an MBL version,
+# Bump the major version of the GMT Runner for an MBL version,
 # and bump the minor version for OM minor version updates.
 docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:4.1.0 --push -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
 ```
 
-Sign into [Docker Hub](https://hub.docker.com/repository/docker/nrel/gmt-om-runner/general) and update the version
-table in the Repository Overview section
+Then update the Docker Hub version table as described above.
