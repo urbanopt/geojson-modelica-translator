@@ -56,6 +56,10 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
             partial_series_mo = f.read()
             dp_nominal_values = [float(value) for value in re.findall(r"dp_nominal=([0-9.+-eE]+)\)", partial_series_mo)]
             assert any(value == pytest.approx(35409) for value in dp_nominal_values)
+            # Borefield autosizes from the source flow (29.507 kg/s -> 300 boreholes for the base case).
+            nbor_match = re.search(r"nBor = (\d+)", partial_series_mo)
+            assert nbor_match is not None
+            assert int(nbor_match.group(1)) == 300
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hpdirectcooling_constantdist_simulation(self):
@@ -158,9 +162,14 @@ class GmtLibDesHpDirectCoolingTest(unittest.TestCase):
             assert "mPumDis_flow_nominal=22.95," in district_mo
             assert "mSto_flow_nominal=29.507," in district_mo
         with open(package_output_dir / package_name / "Districts" / "PartialSeries.mo") as f:
-            match = re.search(r"dp_nominal=([0-9.]+)\)", f.read())
+            partial_series_mo = f.read()
+            match = re.search(r"dp_nominal=([0-9.]+)\)", partial_series_mo)
             assert match is not None
             assert float(match.group(1)) == pytest.approx(35409, abs=1)
+            # Borefield autosizes from the source flow (29.507 kg/s -> 300 boreholes for the base case).
+            nbor_match = re.search(r"nBor = (\d+)", partial_series_mo)
+            assert nbor_match is not None
+            assert int(nbor_match.group(1)) == 300
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hpdirectcooling_variabledist_simulation(self):
