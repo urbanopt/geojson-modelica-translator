@@ -39,6 +39,22 @@ The command below is only an example; however, it will run if the repository is 
 uo_des build-sys-param sys_param.json baseline_scenario.csv example_project.json
 ```
 
+### First-Generation Steam Systems from the CLI
+
+The CLI supports first-generation district steam systems through `district_type=steam` in `build-sys-param`.
+
+Example:
+
+```bash
+uo_des build-sys-param sys_param_steam.json baseline_scenario.csv example_project.json steam
+uo_des create-model sys_param_steam.json example_project.json model_from_sdk_steam
+```
+
+In CLI terms, "first-generation" is selected with `steam`.
+
+Important: this first-generation steam path is heating-only. It does not generate a district cooling plant or cooling distribution loop.
+If your project requires district cooling, use a `4G`, `5G`, or `5G_ghe` workflow.
+
 ## MBL Installation
 
 The Modelica Buildings Library contains many models that are needed to assemble the district systems. Follow the instructions below to install the MBL needed for the GMT:
