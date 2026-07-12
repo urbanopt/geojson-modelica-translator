@@ -3,3 +3,4 @@
 
 from .chp import HeatingPlantWithOptionalCHP  # noqa: F401
 from .cooling_plant import CoolingPlant  # noqa: F401
+from .no_plant_boundary import NoPlantBoundary  # noqa: F401

@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from pathlib import Path
 
 from modelica_builder.modelica_mos_file import ModelicaMOS
@@ -17,23 +18,39 @@ def _build_default_loop_order(sys_param_data: dict) -> list | None:
         return None
 
     buildings = sys_param_data.get("buildings", [])
-    bldg_ids = [b.get("geojson_id") for b in buildings if b.get("geojson_id")]
+    bldg_ids = [str(b.get("geojson_id")) for b in buildings if b.get("geojson_id")]
     if not bldg_ids:
         return None
 
     loop_group = {"list_bldg_ids_in_group": bldg_ids}
 
     borefields = fg.get("ghe_parameters", {}).get("borefields", [])
-    ghe_ids = [b.get("ghe_id") for b in borefields if b.get("ghe_id")]
+    ghe_ids = [str(b.get("ghe_id")) for b in borefields if b.get("ghe_id")]
     if ghe_ids:
         loop_group["list_ghe_ids_in_group"] = [ghe_ids[0]]
 
     heat_sources = fg.get("heat_source_parameters", [])
-    source_ids = [s.get("heat_source_id") for s in heat_sources if s.get("heat_source_id")]
+    source_ids = [str(s.get("heat_source_id")) for s in heat_sources if s.get("heat_source_id")]
     if source_ids:
         loop_group["list_source_ids_in_group"] = [source_ids[0]]
 
     return [loop_group]
+
+
+def _loop_order_path(system_parameters_path: Path) -> Path:
+    named_loop_order_paths = [system_parameters_path.with_name(f"{system_parameters_path.stem}_loop_order.json")]
+    if system_parameters_path.stem.endswith("_sys_params"):
+        named_loop_order_paths.append(
+            system_parameters_path.with_name(
+                f"{system_parameters_path.stem.removesuffix('_sys_params')}_loop_order.json"
+            )
+        )
+
+    for named_loop_order_path in named_loop_order_paths:
+        if named_loop_order_path.is_file():
+            return named_loop_order_path
+
+    return system_parameters_path.parent / "_loop_order.json"
 
 
 def load_loop_order(system_parameters_file: Path) -> list:
@@ -44,9 +61,17 @@ def load_loop_order(system_parameters_file: Path) -> list:
     :param system_parameters_file: Path to the system parameters file
     :return: list of building & ghe ids in loop order
     """
-    loop_order_path = Path(system_parameters_file).parent / "_loop_order.json"
+    system_parameters_path = Path(system_parameters_file)
+    sys_param_data = json.loads(system_parameters_path.read_text())
+    max_buildings = os.environ.get("GMT_MAX_BUILDINGS")
+    buildings = sys_param_data.get("buildings", [])
+    if max_buildings:
+        buildings = buildings[: int(max_buildings)]
+
+    allowed_bldg_ids = {str(b.get("geojson_id")) for b in buildings if b.get("geojson_id")}
+
+    loop_order_path = _loop_order_path(system_parameters_path)
     if not loop_order_path.is_file():
-        sys_param_data = json.loads(Path(system_parameters_file).read_text())
         default_loop_order = _build_default_loop_order(sys_param_data)
         if default_loop_order is None:
             raise FileNotFoundError(f"Loop order file not found at {loop_order_path}")
@@ -55,8 +80,23 @@ def load_loop_order(system_parameters_file: Path) -> list:
             "Loop order file was missing. Wrote default loop-order structure to %s",
             loop_order_path,
         )
-        return default_loop_order
-    return json.loads(loop_order_path.read_text())
+        loop_order = default_loop_order
+    else:
+        loop_order = json.loads(loop_order_path.read_text())
+
+    if not allowed_bldg_ids:
+        return loop_order
+
+    filtered_loop_order = []
+    for group in loop_order:
+        filtered_group = dict(group)
+        filtered_group["list_bldg_ids_in_group"] = [
+            bldg_id for bldg_id in group.get("list_bldg_ids_in_group", []) if str(bldg_id) in allowed_bldg_ids
+        ]
+        if filtered_group.get("list_bldg_ids_in_group"):
+            filtered_loop_order.append(filtered_group)
+
+    return filtered_loop_order or loop_order
 
 
 def get_num_buildings_in_loop_order(loop_order: list) -> int:
