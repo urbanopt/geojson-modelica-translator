@@ -351,7 +351,7 @@ class ModelicaRunnerTest(unittest.TestCase):
     @pytest.mark.simulation
     @pytest.mark.skip(reason="MBL Spawn only runs on Intel chips")
     def test_simulate_mbl_spawn_in_docker(self):
-        # This is the E+ version used by MBLv12.1.1
+        # This is the E+ version used by MBLv12.1.0
         model_name = "Buildings.ThermalZones.EnergyPlus_24_2_0.Examples.SmallOffice.ASHRAE2006Winter"
 
         mr = ModelicaRunner()
