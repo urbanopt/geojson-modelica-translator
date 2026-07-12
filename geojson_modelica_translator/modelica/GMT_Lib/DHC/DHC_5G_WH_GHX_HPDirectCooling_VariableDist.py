@@ -2,15 +2,21 @@ import shutil
 from pathlib import Path
 
 from modelica_builder.modelica_mos_file import ModelicaMOS
-from modelica_builder.package_parser import PackageParser
 
+from geojson_modelica_translator.modelica.GMT_Lib.DHC._flow_sizing import (
+    borehole_count,
+    flow_rate_from_load,
+    source_pump_dp_nominal,
+    source_side_loads,
+)
 from geojson_modelica_translator.modelica.simple_gmt_base import SimpleGMTBase
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
 
 
-class DHC5GWasteHeatAndGHX(SimpleGMTBase):
-    """Generates a full Modelica package with the DHC 5G waste heat and GHX model."""
+class DHC5GWasteHeatGHXwithHPDirectCoolingVariableDist(SimpleGMTBase):
+    """Generates a full Modelica package with the DHC 5G waste heat and GHX model with a
+    controlled variable speed distribution pump.
+    """
 
     def __init__(self, system_parameters):
         self.system_parameters = system_parameters
@@ -27,18 +33,14 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         """
         template_data = {"project_name": project_name, "save_file_name": "district", "building_load_files": []}
 
-        # create the directory structure
-        scaffold = Scaffold(output_dir, project_name=project_name)
-        scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations"])
+        # create the directory structure (Districts is created by default)
+        scaffold = Scaffold(output_dir, project_name=project_name, overwrite=True)
+        scaffold.create(ignore_paths=["Loads", "Networks", "Plants", "Substations", "Schedules"])
 
-        # create the root package
-        package = PackageParser.new_from_template(
-            scaffold.project_path,
-            project_name,
-            order=[],
-            mbl_version=mbl_version(),
-        )
-        package.add_model("Districts")
+        # Verify districts_path was created
+        if scaffold.districts_path is None:
+            raise RuntimeError("Districts path must be created by scaffold")
+        districts_path = scaffold.districts_path  # Type narrowing for mypy
 
         # create the district package with the template_data from above
         files_to_copy = []
@@ -48,8 +50,8 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
         )
 
         # 1: grab all of the time series files and place them in the proper location
-        time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
         # If this is a dict, then there is only one building
+        time_series = self.system_parameters.get_param("$.buildings[?load_model=time_series]")
         if isinstance(time_series, dict):
             time_series = [time_series]
 
@@ -59,17 +61,20 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
                 {
                     "orig_file": building_load_file,
                     "geojson_id": building["geojson_id"],
-                    "save_path": f"{scaffold.districts_path.resources_dir}/{building['geojson_id']}",
+                    "save_path": f"{districts_path.resources_dir}/{building['geojson_id']}",
                     "save_filename": building_load_file.name,
                 }
             )
 
         # 2: Copy the files to the appropriate location and ensure uniqueness by putting into a unique directory
         #    (since OpenStudio creates all files with modelica.mos)
-        total_heating_load = 0
-        total_cooling_load = 0
-        total_swh_load = 0
-        for file_to_copy in files_to_copy:
+        total_heating_load = 0.0
+        total_cooling_load = 0.0
+        total_swh_load = 0.0
+        total_heating_extraction_load = 0.0
+        total_cooling_rejection_load = 0.0
+        total_swh_extraction_load = 0.0
+        for building, file_to_copy in zip(time_series, files_to_copy):
             # create the path if it doesn't exist
             Path(file_to_copy["save_path"]).mkdir(parents=True, exist_ok=True)
             save_filename = f"{file_to_copy['save_path']}/{file_to_copy['save_filename']}"
@@ -78,46 +83,70 @@ class DHC5GWasteHeatAndGHX(SimpleGMTBase):
             # 3: If the file is an MOS file and Peak water heating load is set to zero, then set it to a minimum value
             #    Also, store the total heating, cooling, and water loads which will be used for sizing.
             mos_file = ModelicaMOS(save_filename)
-            total_heating_load += mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
-            total_cooling_load += mos_file.retrieve_header_variable_value("Peak space cooling load", cast_type=float)
+            peak_heating_load = mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
+            peak_cooling_load = mos_file.retrieve_header_variable_value("Peak space cooling load", cast_type=float)
             peak_water = mos_file.retrieve_header_variable_value("Peak water heating load", cast_type=float)
-            total_swh_load += peak_water
+            total_heating_load += peak_heating_load
+            total_cooling_load += peak_cooling_load
             if peak_water == 0:
                 peak_heat = mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
                 peak_swh = max(peak_heat / 10, 5000)
 
                 mos_file.replace_header_variable_value("Peak water heating load", peak_swh)
                 mos_file.save()
+                peak_water = peak_swh
+            total_swh_load += peak_water
+            heating_extraction_load, cooling_rejection_load, swh_extraction_load = source_side_loads(
+                peak_heating_load,
+                peak_cooling_load,
+                peak_water,
+                building.get("fifth_gen_ets_parameters", {}),
+            )
+            total_heating_extraction_load += heating_extraction_load
+            total_cooling_rejection_load += cooling_rejection_load
+            total_swh_extraction_load += swh_extraction_load
 
             # 4: Add the path to the param data with Modelica friendly path names
-            rel_path_name = f"{project_name}/{scaffold.districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
+            rel_path_name = f"{project_name}/{districts_path.resources_relative_dir}/{file_to_copy['geojson_id']}/{file_to_copy['save_filename']}"  # noqa: E501
             template_data["building_load_files"].append(f"modelica://{rel_path_name}")  # type: ignore[attr-defined]
 
         # 5: Calculate the mass flow rates (kg/s) for the heating and cooling networks peak load (in Watts)
         #    (assuming 5C delta T [since 5G] and 4.18 Cp (kJ/kgK)). Add 1.5x the peak for oversizing
         delta_t = 5
-        heating_flow_rate = 1.5 * total_heating_load / (1000 * delta_t * 4.18)
-        cooling_flow_rate = 1.5 * total_cooling_load / (1000 * delta_t * 4.18)
-        swh_flow_rate = 1.5 * total_swh_load / (1000 * delta_t * 4.18)
+        heating_flow_rate = flow_rate_from_load(total_heating_load, delta_t)
+        # Cooling peaks are stored as negative heat flow rates in MOS files.
+        cooling_flow_rate = flow_rate_from_load(abs(total_cooling_load), delta_t)
+        swh_flow_rate = flow_rate_from_load(total_swh_load, delta_t)
 
         template_data["max_flow_rate"] = round(max(heating_flow_rate, cooling_flow_rate, swh_flow_rate), 3)  # type: ignore[arg-type]
+        source_load = max(total_cooling_rejection_load, total_heating_extraction_load + total_swh_extraction_load)
+        source_flow_rate = flow_rate_from_load(source_load, delta_t)
+        template_data["source_flow_rate"] = round(source_flow_rate, 3)  # type: ignore[arg-type]
+        template_data["source_pump_dp_nominal"] = round(source_pump_dp_nominal(source_flow_rate))  # type: ignore[arg-type]
+        # Size the borefield to the source flow so the per-borehole flow (and thus
+        # the borefield pressure drop the storage pump must overcome) stays bounded
+        # as the district load grows. A fixed field trips the storage pump dpMax
+        # assertion at initialization for large loads.
+        template_data["number_of_boreholes"] = borehole_count(source_flow_rate)  # type: ignore[assignment]
 
-        nbuildings = len(template_data["building_load_files"])
-        template_data["lDis"] = self.build_string("lDis = {", "0.5, ", nbuildings)
-        template_data["lCon"] = self.build_string("lCon = {", "0.5, ", nbuildings)
+        n_buildings = len(template_data["building_load_files"])
+        template_data["lDis"] = self.build_string("lDis = {", "0.5, ", n_buildings)
+        template_data["lCon"] = self.build_string("lCon = {", "0.5, ", n_buildings)
 
         # 6: generate the modelica files from the template
         self.to_modelica(
             output_dir=Path(scaffold.districts_path.files_dir),
-            model_name="DHC_5G_waste_heat_GHX",
+            model_name="DHC_5G_WH_GHX_HPDirectCooling_VariableDist",
             param_data=template_data,
             save_file_name="district.mo",
             generate_package=True,
             partial_files={"DHC_5G_partial": "PartialSeries"},
         )
 
-        # 7: save the root package.mo
-        package.save()
+        # 7: add the district model to the Districts package and save
+        scaffold.package.districts.add_model("PartialSeries", create_subpackage=False)
+        scaffold.package.districts.add_model("district", create_subpackage=False)
+        scaffold.package.save()
 
     def build_string(self, base_text: str, value: str, iterations: int) -> str:
         """Builds a string with a comma separated list of values.

@@ -1,0 +1,335 @@
+within {{ data["project_name"] }}.Loads.ETS;
+model PartialHeatPumpCooling
+  "Partial base class for subsystems containing a heat pump"
+  replaceable package Medium1=Modelica.Media.Interfaces.PartialMedium
+    "Medium model on condenser side"
+    annotation (choices(choice(redeclare package Medium=Buildings.Media.Water "Water"),
+    choice(redeclare package Medium =
+      Buildings.Media.Antifreeze.PropyleneGlycolWater (property_T=293.15,X_a=0.40)
+    "Propylene glycol water, 40% mass fraction")));
+  replaceable package Medium2=Modelica.Media.Interfaces.PartialMedium
+    "Medium model on evaporator side"
+    annotation (choices(choice(redeclare package Medium=Buildings.Media.Water "Water"),
+    choice(redeclare package Medium =
+      Buildings.Media.Antifreeze.PropyleneGlycolWater (property_T=293.15,X_a=0.40)
+    "Propylene glycol water, 40% mass fraction")));
+  parameter Real COP_nominal(unit="1")
+    "Heat pump COP"
+    annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.Units.SI.Temperature TCon_nominal
+    "Condenser outlet temperature used to compute COP_nominal"
+    annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.Units.SI.Temperature TEva_nominal
+    "Evaporator outlet temperature used to compute COP_nominal"
+    annotation (Dialog(group="Nominal condition"));
+
+  parameter Modelica.Units.SI.TemperatureDifference dT_nominal(min=0)=5
+    "Water temperature drop/increase across load and source-side HX (always positive)"
+    annotation (Dialog(group="Nominal condition"));
+  final parameter Modelica.Units.SI.MassFlowRate mCon_flow_nominal=chi.m1_flow_nominal
+    "Condenser mass flow rate";
+  final parameter Modelica.Units.SI.MassFlowRate mEva_flow_nominal=chi.m2_flow_nominal
+    "Evaporator mass flow rate";
+
+  parameter Boolean allowFlowReversal1=false
+    "Set to true to allow flow reversal on condenser side"
+    annotation (Dialog(tab="Assumptions"), Evaluate=true);
+  parameter Boolean allowFlowReversal2=false
+    "Set to true to allow flow reversal on evaporator side"
+    annotation (Dialog(tab="Assumptions"), Evaluate=true);
+  parameter Modelica.Units.SI.Pressure dp1_nominal(displayUnit="Pa")
+    "Pressure difference over condenser"
+    annotation (Dialog(group="Nominal condition"));
+  parameter Modelica.Units.SI.Pressure dp2_nominal(displayUnit="Pa")
+    "Pressure difference over evaporator"
+    annotation (Dialog(group="Nominal condition"));
+  // IO CONNECTORS
+  {% raw %}
+  Modelica.Fluid.Interfaces.FluidPort_a port_a2(
+    redeclare final package Medium = Medium2,
+    m_flow(min=if allowFlowReversal2 then -Modelica.Constants.inf else 0),
+    h_outflow(start=Medium2.h_default, nominal=Medium2.h_default))
+    "Fluid port for entering evaporator water (building return)" annotation (Placement(
+        transformation(extent={{190,-70},{210,-50}}), iconTransformation(extent=
+           {{90,-70},{110,-50}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_b2(
+    redeclare final package Medium = Medium2,
+    m_flow(max=if allowFlowReversal2 then +Modelica.Constants.inf else 0),
+    h_outflow(start=Medium2.h_default, nominal=Medium2.h_default))
+    "Fluid port for leaving evaporator water (building supply)" annotation (Placement(
+        transformation(extent={{-210,-70},{-190,-50}}),
+                                                    iconTransformation(extent={{-110,
+            -70},{-90,-50}})));
+  Modelica.Fluid.Interfaces.FluidPort_a port_a1(
+    redeclare final package Medium = Medium1,
+    m_flow(min=if allowFlowReversal1 then -Modelica.Constants.inf else 0),
+    h_outflow(start=Medium1.h_default, nominal=Medium1.h_default))
+    "Fluid port for entering condenser water (district supply)"      annotation (Placement(
+        transformation(extent={{-210,50},{-190,70}}),   iconTransformation(
+          extent={{-110,50},{-90,70}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_b1(
+    redeclare final package Medium = Medium1,
+    m_flow(max=if allowFlowReversal1 then +Modelica.Constants.inf else 0),
+    h_outflow(start=Medium1.h_default, nominal=Medium1.h_default))
+    "Fluid port for leaving condenser water (district return)"
+                                             annotation (Placement(
+        transformation(extent={{190,50},{210,70}}),   iconTransformation(extent={{90,50},
+            {110,70}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealOutput PHea(
+    final unit="W") "Heat pump power"
+    annotation (Placement(transformation(extent={{200,20},{240,60}}),
+    iconTransformation(extent={{100,10},{140,50}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealOutput PPum(
+    final unit="W") "Pump power"
+    annotation (Placement(transformation(extent={{200,-20},{240,20}}),
+    iconTransformation(extent={{100,-20},{140,20}})));
+  Buildings.Controls.OBC.CDL.Interfaces.RealOutput mCon_flow(final unit="kg/s")
+    "Condenser water mass flow rate"
+    annotation (Placement(transformation(
+      extent={{200,-60},{240,-20}}), iconTransformation(extent={{100,-50},{
+        140,-10}})));
+  // COMPONENTS
+  Buildings.Fluid.Chillers.Carnot_TEva  chi(
+    redeclare package Medium1 = Medium1,
+    redeclare package Medium2 = Medium2,
+    allowFlowReversal1=false,
+    allowFlowReversal2=false,
+    dTEva_nominal=-dT_nominal,
+    dTCon_nominal=dT_nominal,
+    use_eta_Carnot_nominal=false,
+    COP_nominal=COP_nominal,
+    TCon_nominal=TCon_nominal,
+    TEva_nominal=TEva_nominal,
+    final dp1_nominal=dp1_nominal,
+    final dp2_nominal=dp2_nominal,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial)
+    "Domestic hot water heat pump"
+    annotation (Placement(transformation(extent={{-10,44},{10,64}})));
+  Buildings.Fluid.Movers.Preconfigured.SpeedControlled_y pumCon(
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    redeclare package Medium = Medium1,
+    final allowFlowReversal=allowFlowReversal1,
+    addPowerToMedium=false,
+    m_flow_nominal=mCon_flow_nominal,
+    dp_nominal=dp1_nominal + 6000)
+    "Pump for heat pump condenser"
+    annotation (Placement(transformation(extent={{10,10},{-10,-10}},
+        rotation=180,
+        origin={-50,60})));
+
+  Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumEva(
+    redeclare final package Medium = Medium2,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    m_flow_nominal=mEva_flow_nominal,
+    riseTime=10,
+    dp_nominal=dp2_nominal)
+    "Heat pump evaporator water pump"
+    annotation (Placement(transformation(extent={{-40,-70},{-60,-50}})));
+
+  Modelica.Blocks.Math.Add addPPum "Electricity use for pumps"
+    annotation (Placement(transformation(extent={{0,-10},{20,10}})));
+  Buildings.Controls.OBC.CDL.Conversions.BooleanToReal floCon
+    "Condenser mass flow rate"
+    annotation (Placement(transformation(extent={{-100,110},{-80,130}})));
+  Buildings.Fluid.Actuators.Valves.ThreeWayEqualPercentageLinear valHeaPumCon(
+    redeclare package Medium = Medium1,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
+    m_flow_nominal=mCon_flow_nominal,
+    dpValve_nominal=6000) "Valve at heat pump condenser"
+    annotation (Placement(transformation(extent={{-100,70},{-80,50}})));
+  Buildings.Fluid.Sensors.TemperatureTwoPort senTDisRet(
+    redeclare final package Medium = Medium1,
+    final allowFlowReversal=allowFlowReversal1,
+    final m_flow_nominal=mCon_flow_nominal,
+    tau=0) "District return temperature sensor"   annotation (Placement(
+        transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=0,
+        origin={110,60})));
+  Buildings.Fluid.Sensors.TemperatureTwoPort senTDisSup(
+    redeclare final package Medium = Medium1,
+    final allowFlowReversal=allowFlowReversal1,
+    final m_flow_nominal=mCon_flow_nominal,
+    tau=0) "District supply temperature sensor" annotation (Placement(
+        transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=0,
+        origin={-130,60})));
+  Buildings.Controls.OBC.CDL.Reals.Subtract dT_retSup
+    "Temperature difference over heat pump connection"
+    annotation (Placement(transformation(extent={{-140,0},{-120,-20}})));
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant dTSet(k=dT_nominal)
+    "Set point for temperature difference over heat pump"
+    annotation (Placement(transformation(extent={{-140,10},{-120,30}})));
+  Buildings.Controls.OBC.CDL.Reals.PIDWithReset conPI(
+    k=0.1,
+    Ti=120,                                                  xi_start=0.2,
+    reverseActing=false)
+    "Controller to ensure dT_nominal over heat pump connection"
+    annotation (Placement(transformation(extent={{-100,10},{-80,30}})));
+  Buildings.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium =
+        Medium1) "Mass flow rate drawn from ETS"
+    annotation (Placement(transformation(extent={{-180,70},{-160,50}})));
+  Buildings.Controls.OBC.CDL.Interfaces.BooleanInput uEna(start=false)
+    "Enable signal"
+    annotation (
+      Placement(transformation(extent={{-240,100},{-200,140}}),
+        iconTransformation(extent={{-140,70},{-100,110}})));
+  Buildings.DHC.ETS.BaseClasses.Junction
+    junction(redeclare package Medium = Medium1, m_flow_nominal={
+        mCon_flow_nominal,-mCon_flow_nominal,mCon_flow_nominal})
+    annotation (Placement(transformation(extent={{140,70},{160,50}})));
+equation
+  connect(chi.P, PHea) annotation (Line(points={{11,54},{16,54},{16,40},{220,40}},
+                                  color={0,0,127}));
+  connect(conPI.u_s, dTSet.y)
+    annotation (Line(points={{-102,20},{-118,20}},
+                                               color={0,0,127}));
+  connect(dT_retSup.y, conPI.u_m)
+    annotation (Line(points={{-118,-10},{-90,-10},{-90,8}},  color={0,0,127}));
+  connect(senTDisSup.port_a, senMasFlo.port_b)
+    annotation (Line(points={{-140,60},{-160,60}}, color={0,127,255}));
+  connect(senMasFlo.m_flow,mCon_flow)
+    annotation (Line(points={{-170,49},{-170,-40},{220,-40}},color={0,0,127}));
+  connect(pumCon.P, addPPum.u1) annotation (Line(points={{-39,69},{-30,69},{-30,
+          6},{-2,6}},    color={0,0,127}));
+  connect(addPPum.u2, pumEva.P) annotation (Line(points={{-2,-6},{-64,-6},{-64,-51},
+          {-61,-51}},     color={0,0,127}));
+  connect(junction.port_1,senTDisRet. port_b)
+    annotation (Line(points={{140,60},{120,60}},     color={0,127,255}));
+  connect(chi.port_b2, pumEva.port_a) annotation (Line(points={{-10,48},{-22,48},
+          {-22,-60},{-40,-60}}, color={0,127,255}));
+  connect(port_a1, senMasFlo.port_a)
+    annotation (Line(points={{-200,60},{-180,60}}, color={0,127,255}));
+  connect(pumCon.port_b, chi.port_a1)
+    annotation (Line(points={{-40,60},{-10,60}}, color={0,127,255}));
+  connect(junction.port_2, port_b1)
+    annotation (Line(points={{160,60},{200,60}}, color={0,127,255}));
+  connect(chi.port_b1, senTDisRet.port_a)
+    annotation (Line(points={{10,60},{100,60}}, color={0,127,255}));
+  connect(senTDisRet.T, dT_retSup.u1) annotation (Line(points={{110,49},{110,-28},
+          {-146,-28},{-146,-16},{-142,-16}}, color={0,0,127}));
+  connect(senTDisSup.T, dT_retSup.u2) annotation (Line(points={{-130,49},{-130,40},
+          {-146,40},{-146,-4},{-142,-4}}, color={0,0,127}));
+  connect(valHeaPumCon.port_2, pumCon.port_a)
+    annotation (Line(points={{-80,60},{-60,60}}, color={0,127,255}));
+  connect(valHeaPumCon.port_3, junction.port_3) annotation (Line(points={{-90,70},
+          {-90,86},{150,86},{150,70}}, color={0,127,255}));
+  connect(senTDisSup.port_b, valHeaPumCon.port_1)
+    annotation (Line(points={{-120,60},{-100,60}}, color={0,127,255}));
+  connect(conPI.y, valHeaPumCon.y) annotation (Line(points={{-78,20},{-74,20},{-74,
+          48},{-90,48}}, color={0,0,127}));
+  connect(floCon.y, pumCon.y)
+    annotation (Line(points={{-78,120},{-50,120},{-50,72}}, color={0,0,127}));
+  annotation (
+  defaultComponentName="heaPum",
+  Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+        Rectangle(
+          extent={{-100,-100},{100,100}},
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-32,40},{40,-38}},
+          lineColor={0,0,255},
+          pattern=LinePattern.None,
+          fillColor={95,95,95},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-18,-20},{28,-28}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{-12,2},{-16,-6},{-8,-6},{-12,2}},
+          lineColor={0,0,0},
+          smooth=Smooth.None,
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{-12,2},{-16,10},{-8,10},{-12,2}},
+          lineColor={0,0,0},
+          smooth=Smooth.None,
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{18,20},{22,-20}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{12,8},{30,-10}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{20,8},{12,-4},{30,-4},{20,8}},
+          lineColor={0,0,0},
+          smooth=Smooth.None,
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-14,-6},{-10,-20}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-14,20},{-10,10}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-20,28},{26,20}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid)}), Diagram(
+        coordinateSystem(preserveAspectRatio=false, extent={{-200,-140},{200,140}})),
+    Documentation(info="<html>
+<p>
+This model represents a water-to-water heat pump, as described in
+<a href=\"modelica://Buildings.Fluid.HeatPumps.Carnot_TCon\">
+Buildings.Fluid.HeatPumps.Carnot_TCon</a>, the condenser pump, and the
+evaporator side hydronics and control.
+
+<h4>Evaporator Controls</h4>
+<p>
+The system is enabled when the input control signal <code>uEna</code> switches to
+<code>true</code>.
+When enabled,
+</p>
+<ul>
+<li>
+the evaporator pump is commanded on and supplies the nominal mass flow rate,
+</li>
+<li>
+a three-way diverging valve is used to bypass flow through the evaporator and
+is controlled by a PI controller to maintain <code>dT_nominal</code> across
+the district supply and return flows.
+</li>
+</ul>
+</html>", revisions="<html>
+<ul>
+<li>
+December 05, 2025, by Nicholas Long and Jing Wang:<br/>
+Templatized for use within the GMT framework.
+</li>
+<li>
+February 15, 2024, by Ettore Zanetti:<br/>
+Made heat pump model dynamic and added junction.
+</li>
+<li>
+November 15, 2023, by David Blum:<br/>
+Changed to partial base class with evaporator hydronics and control.
+</li>
+<li>
+November 16, 2022, by Michael Wetter:<br/>
+Set <code>pumEva.dp_nominal</code> to correct value.
+</li>
+<li>
+February 23, 2021, by Antoine Gautier:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end PartialHeatPumpCooling;
+{% endraw %}

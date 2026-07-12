@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 # from __future__ import annotations
@@ -7,7 +7,6 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Union
 
 from buildingspy.simulate.Dymola import Simulator
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -33,7 +32,7 @@ class ModelicaRunner:
         r = subprocess.call(["docker", "ps"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.docker_configured = r == 0
 
-    def _verify_docker_run_capability(self, file_to_load: Union[str, Path, None]):
+    def _verify_docker_run_capability(self, file_to_load: str | Path | None):
         """Verify that docker is configured on the host computer correctly before running
 
         Args:
@@ -51,9 +50,7 @@ class ModelicaRunner:
         if file_to_load and not Path(file_to_load).exists():
             raise SystemExit(f"File not found to run {file_to_load}")
 
-    def _verify_run_path_for_docker(
-        self, run_path: Union[str, Path, None], file_to_run: Union[str, Path, None]
-    ) -> Path:
+    def _verify_run_path_for_docker(self, run_path: str | Path | None, file_to_run: str | Path | None) -> Path:
         """If there is no run_path, then run it in the same directory as the
         file being run. This works fine for simple Modelica projects but typically
         the run_path needs to be a few levels higher in order to include other
@@ -83,8 +80,56 @@ class ModelicaRunner:
             )
         return new_run_path
 
+    def _docker_post_run_permissions_command(self) -> str:
+        """Return shell commands that make Docker-created outputs editable by the host user."""
+        return (
+            'if [[ -n "${HOST_UID:-}" && -n "${HOST_GID:-}" ]]; then '
+            'chown -R "$HOST_UID:$HOST_GID" "$PWD" 2>/dev/null || true ; '
+            'chmod -R u+rwX "$PWD" 2>/dev/null || true ; '
+            "fi"
+        )
+
+    def _host_user_ids(self) -> tuple[str | None, str | None]:
+        """Return the host UID/GID when available for Docker output ownership repair."""
+        if hasattr(os, "getuid") and hasattr(os, "getgid"):
+            return str(os.getuid()), str(os.getgid())
+        return None, None
+
+    def _restore_docker_output_permissions(self, run_path: Path, docker_image: str, stdout_log) -> None:
+        """Run a short Docker cleanup pass to repair ownership after interrupted runs."""
+        host_uid, host_gid = self._host_user_ids()
+        if host_uid is None or host_gid is None:
+            return
+
+        model_name = run_path.parts[-1]
+        exec_call = [
+            "docker",
+            "run",
+            "--rm",
+            "-e",
+            f"HOST_UID={host_uid}",
+            "-e",
+            f"HOST_GID={host_gid}",
+            "-v",
+            f"{run_path}:/mnt/shared/{model_name}",
+            "-w",
+            f"/mnt/shared/{model_name}",
+            f"{docker_image}",
+            "/bin/bash",
+            "-c",
+            self._docker_post_run_permissions_command(),
+        ]
+        logger.debug(f"Restoring Docker output permissions with {exec_call}")
+        subprocess.run(
+            exec_call,
+            stdout=stdout_log,
+            stderr=subprocess.STDOUT,
+            cwd=run_path,
+            check=False,
+        )
+
     def _copy_over_docker_resources(
-        self, run_path: Path, filename: Union[str, Path, None], model_name: str, **kwargs
+        self, run_path: Path, filename: str | Path | None, model_name: str, **kwargs
     ) -> None:
         """Copy over files needed to run the simulation, this includes
         the generation of the OpenModelica scripts to load and compile/run
@@ -103,6 +148,10 @@ class ModelicaRunner:
                 stop_time (int): stop time of the simulation, in seconds
                 step_size (int): step size of the simulation, in seconds
                 number_of_intervals (int): number of intervals to run the simulation
+                tolerance (float): solver relative tolerance. Defaults to the model's
+                                   experiment-annotation value when not provided. 1e-4 is
+                                   the recommended value for the 5G DES models; it is ~15x
+                                   faster than 1e-6 with <0.02% difference in energy KPIs.
                 output_variables (list[str]): limit Modelica .
         """
         # read in the start, stop, and step times
@@ -113,6 +162,7 @@ class ModelicaRunner:
         number_of_intervals = kwargs.get("number_of_intervals")
         output_variables = kwargs.get("output_variables")
         simulation_flags = kwargs.get("simulation_flags")
+        tolerance = kwargs.get("tolerance")
 
         if step_size and number_of_intervals:
             logger.error("step_size and number_of_intervals are mutually exclusive. Pass one or the other, not both.")
@@ -129,6 +179,8 @@ class ModelicaRunner:
             simulation_args += f", stepSize={step_size}"
         if number_of_intervals:
             simulation_args += f", numberOfIntervals={number_of_intervals}"
+        if tolerance:
+            simulation_args += f", tolerance={tolerance}"
         if output_variables:
             simulation_args += f', variableFilter="{output_variables.replace(",", "|")}"'
         if simulation_flags:
@@ -154,12 +206,25 @@ class ModelicaRunner:
         with open(run_path / "compile_fmu.mos", "w") as f:
             f.write(template.render(**model_data))
 
-    def _subprocess_call_to_docker(self, run_path: Path, action: str, compiler_flags: str | None = None) -> int:
+    def _subprocess_call_to_docker(
+        self,
+        run_path: Path,
+        action: str,
+        compiler_flags: str | None = None,
+        docker_image: str = "nrel/gmt-om-runner:4.0.0",
+    ) -> int:
         """Call out to a subprocess to run the command in docker
 
         Args:
-            run_path (Path): local path where the Modelica simulation or compilation will start
+            run_path (Path): local path where the Modelica simulation
+                             or compilation will start
             action (str):  action to run either compile_and_run, compile, or run
+            compiler_flags (str | None): Comma separated list of OpenModelica
+                                         compiler flags. For advanced users only
+            docker_image (str): Docker image to use for running the simulation.
+                                Defaults to latest nrel/gmt-om-runner. See more
+                                information on the docker hub page:
+                                https://hub.docker.com/r/nrel/gmt-om-runner
 
         Returns:
             int: exit code of the subprocess
@@ -169,25 +234,32 @@ class ModelicaRunner:
         os.chdir(run_path)
         stdout_log = open("stdout.log", "w")  # noqa: SIM115
         model_name = run_path.parts[-1]
-        image_name = "nrel/gmt-om-runner:4.0.0"
         mo_script = "compile_fmu" if action == "compile" else "simulate"
-        if compiler_flags is not None:
-            # Format compiler flags for OpenModelica
-            compiler_flags_for_modelica = compiler_flags.replace(",", " ")
-        else:
-            compiler_flags_for_modelica = ""
+        # Split compiler flags into a list for safe argument passing (avoids shell injection)
+        compiler_flags_list = (
+            [flag.strip() for flag in compiler_flags.split(",") if flag.strip()] if compiler_flags else []
+        )
 
         try:
             # create the command to call the open modelica compiler inside the docker image
+            host_uid, host_gid = self._host_user_ids()
+
             exec_call = [
                 "docker",
                 "run",
+                *(["-e", f"HOST_UID={host_uid}"] if host_uid is not None else []),
+                *(["-e", f"HOST_GID={host_gid}"] if host_gid is not None else []),
                 "-v",
                 f"{run_path}:/mnt/shared/{model_name}",
-                f"{image_name}",
+                "-w",
+                f"/mnt/shared/{model_name}",
+                f"{docker_image}",
                 "/bin/bash",
                 "-c",
-                f"cd mnt/shared/{model_name} && omc {mo_script}.mos {compiler_flags_for_modelica}",
+                (f'omc "$1.mos" "${{@:2}}" ; ret=$? ; {self._docker_post_run_permissions_command()} ; exit $ret'),
+                "--",
+                mo_script,
+                *compiler_flags_list,
             ]
             # execute the command that calls docker
             logger.debug(f"Calling {exec_call}")
@@ -205,19 +277,22 @@ class ModelicaRunner:
             logger.debug(
                 f"Subprocess command executed, waiting for completion... \nArgs used: {completed_process.args}"
             )
+            if completed_process.returncode in (130, 137):
+                self._restore_docker_output_permissions(run_path, docker_image, stdout_log)
         except KeyboardInterrupt:
             # List all containers and their images
             docker_containers_cmd = ["docker", "ps", "--format", "{{.ID}} {{.Image}}"]
             containers_list = subprocess.check_output(docker_containers_cmd, text=True).rstrip().split("\n")
 
             # Find containers from our image
-            for container_line in containers_list:
+            for container_line in [line for line in containers_list if line]:
                 container_id, container_image = container_line.split()
-                if container_image == image_name:
+                if container_image == docker_image:
                     logger.debug(f"Killing container: {container_id} (Image: {container_image})")
                     # Kill the container
                     kill_command = f"docker kill {container_id}"
                     subprocess.run(kill_command.split(), check=True, text=True)
+            self._restore_docker_output_permissions(run_path, docker_image, stdout_log)
             # Remind user why the simulation didn't complete
             raise SystemExit("Simulation stopped by user KeyboardInterrupt")
         finally:
@@ -231,10 +306,10 @@ class ModelicaRunner:
         self,
         action: str,
         model_name: str,
-        file_to_load: Union[str, Path, None] = None,
-        run_path: Union[str, Path, None] = None,
+        file_to_load: str | Path | None = None,
+        run_path: str | Path | None = None,
         **kwargs,
-    ) -> tuple[bool, Union[str, Path]]:
+    ) -> tuple[bool, str | Path]:
         """Run the Modelica project in a docker-based environment.
         The action will determine what type of run will be conducted.
         This method supports either a file path pointing to the package to load, or a modelica path which is a
@@ -257,6 +332,8 @@ class ModelicaRunner:
                 compiler_flags (str): Comma separated list of OpenModelica simulation flags. For advanced users only
                 simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
                 debug (bool): whether to run in debug mode or not, prevents files from being deleted
+                docker_image (str): Docker image to use for running the simulation.
+                                    Defaults to latest nrel/gmt-om-runner.
 
         Returns:
             tuple[bool, str]: success status and path to the results directory
@@ -270,9 +347,14 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
-        exitcode = self._subprocess_call_to_docker(verified_run_path, action, kwargs.get("compiler_flags"))
+        # When updating the GMT OM Runner, this is the location to bump the image.
+        docker_image = kwargs.get("docker_image", "nrel/gmt-om-runner:4.0.0")
+        exitcode = self._subprocess_call_to_docker(
+            verified_run_path, action, kwargs.get("compiler_flags"), docker_image=docker_image
+        )
 
         logger.debug("Checking stdout.log for errors")
+        result_file = verified_run_path / f"{model_name}_res.mat"
         with open(verified_run_path / "stdout.log") as f:
             stdout_log = f.read()
             if "Failed to build model" in stdout_log:
@@ -288,8 +370,14 @@ class ModelicaRunner:
                     "Model failed to run due to division by zero. Perhaps head pressure or flow rate are insufficient?"
                 )
                 exitcode = 1
+            elif "Simulation execution failed for model:" in stdout_log:
+                logger.error("Model failed to run")
+                exitcode = 1
             elif "The simulation finished successfully" in stdout_log:
                 logger.info("Model ran successfully")
+                exitcode = 0
+            elif exitcode == 0 and result_file.exists():
+                logger.info("Model ran successfully and produced a result file")
                 exitcode = 0
             elif action == "compile":
                 logger.info("Model compiled successfully -- no errors")
@@ -308,8 +396,8 @@ class ModelicaRunner:
         return (exitcode == 0, results_path)
 
     def run_in_dymola(
-        self, action: str, model_name: str, file_to_load: Union[str, Path], run_path: Union[str, Path], **kwargs
-    ) -> tuple[bool, Union[str, Path]]:
+        self, action: str, model_name: str, file_to_load: str | Path, run_path: str | Path, **kwargs
+    ) -> tuple[bool, str | Path]:
         """If running on Windows or Linux, you can run Dymola (assuming you have a license),
         using the BuildingsPy library. This is not supported on Mac.
 
@@ -325,7 +413,7 @@ class ModelicaRunner:
             openModel("/home/username/Dymola/config/Modelica 4.0.0/package.mo", changeDirectory=false);
 
             // Open MBL
-            openModel("/home/username/working/modelica-buildings/Buildings/package.mo", changeDirectory=false);
+            openModel("/home/username/modelica-buildings/Buildings/package.mo", changeDirectory=false);
 
             // Set the home directory
             cd("/home/username/working")
@@ -405,7 +493,7 @@ class ModelicaRunner:
 
         return True, run_path
 
-    def move_results(self, from_path: Path, to_path: Path, model_name: Union[str, None] = None) -> None:
+    def move_results(self, from_path: Path, to_path: Path, model_name: str | None = None) -> None:
         """This method moves the results of the simulation that are known for now.
         This method moves only specific files (stdout.log for now), plus all files and folders beginning
         with the "{project_name}_" name.

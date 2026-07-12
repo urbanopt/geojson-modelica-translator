@@ -59,7 +59,6 @@ class CombinedHeatingPowerTest(TestCaseBase):
         )
         self.district.to_modelica()
 
-    @pytest.mark.skip(reason="District steam systems have not been implemented yet.")
     def test_build_steam_system(self):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()

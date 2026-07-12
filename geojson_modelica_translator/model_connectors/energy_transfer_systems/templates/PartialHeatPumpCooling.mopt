@@ -91,6 +91,9 @@ within {{ project_name }}.Loads.ETS;
   Buildings.Fluid.Chillers.Carnot_TEva  chi(
     redeclare package Medium1 = Medium1,
     redeclare package Medium2 = Medium2,
+    yPL(min=-1e-6),
+    m1_flow(min=-1e-6, max=1e5 + 1e-6),
+    m2_flow(min=-1e-6, max=1e5 + 1e-6),
     allowFlowReversal1=false,
     allowFlowReversal2=false,
     dTEva_nominal=-dT_nominal,
@@ -107,9 +110,7 @@ within {{ project_name }}.Loads.ETS;
   Buildings.Fluid.Movers.Preconfigured.SpeedControlled_y pumCon(
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     redeclare package Medium = Medium1,
-    final allowFlowReversal=allowFlowReversal1,
-    addPowerToMedium=false,
-    use_riseTime=false,
+    etaHyd(min=-1e-6),
     m_flow_nominal=mCon_flow_nominal,
     dp_nominal=dp1_nominal + 6000)
     "Pump for heat pump condenser"
@@ -119,6 +120,7 @@ within {{ project_name }}.Loads.ETS;
 
    Buildings.Fluid.Movers.Preconfigured.FlowControlled_m_flow pumEva(
     redeclare final package Medium = Medium2,
+    etaHyd(min=-1e-6),
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     m_flow_nominal=mEva_flow_nominal,
     riseTime=10,
@@ -133,6 +135,9 @@ within {{ project_name }}.Loads.ETS;
     annotation (Placement(transformation(extent={{-100,110},{-80,130}})));
   Buildings.Fluid.Actuators.Valves.ThreeWayEqualPercentageLinear valHeaPumCon(
     redeclare package Medium = Medium1,
+    y(min=-1e-4, max=1 + 1e-4),
+    res1(y(min=-1e-4, max=1 + 1e-4)),
+    res3(y(min=-1e-4, max=1 + 1e-4)),
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyState,
     m_flow_nominal=mCon_flow_nominal,
     dpValve_nominal=6000) "Valve at heat pump condenser"
@@ -179,6 +184,10 @@ within {{ project_name }}.Loads.ETS;
     junction(redeclare package Medium = Medium1, m_flow_nominal={
         mCon_flow_nominal,-mCon_flow_nominal,mCon_flow_nominal})
     annotation (Placement(transformation(extent={{140,70},{160,50}})));
+  Buildings.Controls.OBC.CDL.Reals.LimitSlewRate ramLim
+    (y(min=-1e-4, max=1 + 1e-4))
+    "Rate limiter for valve control signal to improve stability"
+    annotation (Placement(transformation(extent={{-70,10},{-50,30}})));
 equation
   connect(chi.P, PHea) annotation (Line(points={{11,54},{16,54},{16,40},{220,40}},
                                   color={0,0,127}));
@@ -217,10 +226,12 @@ equation
           {-90,86},{150,86},{150,70}}, color={0,127,255}));
   connect(senTDisSup.port_b, valHeaPumCon.port_1)
     annotation (Line(points={{-120,60},{-100,60}}, color={0,127,255}));
-  connect(conPI.y, valHeaPumCon.y) annotation (Line(points={{-78,20},{-74,20},{-74,
-          48},{-90,48}}, color={0,0,127}));
   connect(floCon.y, pumCon.y)
-    annotation (Line(points={{-78,120},{-50,120},{-50,72}}, color={0,0,127}));
+  annotation (Line(points={{-78,120},{-50,120},{-50,72}}, color={0,0,127}));
+  connect(conPI.y, ramLim.u)
+  annotation (Line(points={{-78,20},{-72,20}}, color={0,0,127}));
+  connect(ramLim.y, valHeaPumCon.y) annotation (Line(points={{-48,20},{-40,20},{
+          -40,40},{-90,40},{-90,48}}, color={0,0,127}));
   annotation (
   defaultComponentName="heaPum",
   Icon(coordinateSystem(preserveAspectRatio=false), graphics={

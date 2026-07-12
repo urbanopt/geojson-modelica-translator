@@ -1,16 +1,50 @@
-  Buildings.Controls.OBC.CDL.Reals.Sources.Constant THeaWatSupMaxSet_{{ coupling.id }}(k=38 +
+  Buildings.Controls.OBC.CDL.Reals.Sources.Constant THeaWatSupMaxSet_{{ coupling.id }}(k={{ sys_params.building.fifth_gen_ets_parameters.heating_water_supply_temp }} +
         273.15) "Heating water supply temperature set point - Maximum value"
     {% raw %}annotation (Placement(transformation(extent={{-120,40},{-100,60}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant TChiWatSupSet_{{ coupling.id }}(k=18 + 273.15)
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant TChiWatSupSet_{{ coupling.id }}(k={{ sys_params.building.fifth_gen_ets_parameters.chilled_water_supply_temp }} + 273.15)
     "Chilled water supply temperature set point"
     {% raw %}annotation (Placement(transformation(extent={{-120,10},{-100,30}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant THeaWatSupMinSet_{{ coupling.id }}(k=28
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant THeaWatSupMinSet_{{ coupling.id }}(k={{ sys_params.building.fifth_gen_ets_parameters.heating_water_supply_temp }} - 10
          + 273.15) "Heating water supply temperature set point - Minimum value"
     {% raw %}annotation (Placement(transformation(extent={{-120,70},{-100,90}})));
-  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant THotWatSupSet_{{ coupling.id }}(k=63 + 273.15)
+  {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant THotWatSupSet_{{ coupling.id }}(k={{ sys_params.building.fifth_gen_ets_parameters.hot_water_supply_temp }} + 273.15)
     "Hot water supply temperature set point"
     {% raw %}annotation (Placement(transformation(extent={{-120,-20},{-100,0}})));
   {% endraw %}Buildings.Controls.OBC.CDL.Reals.Sources.Constant TColWat_{{ coupling.id }}(k=15 + 273.15)
     "Cold water temperature"
     {% raw %}annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
   {% endraw %}
+{% set network_couplings = graph.couplings_by_type(coupling.network.id) %}
+{% set explicit_no_plant_boundary = false %}
+{% if network_couplings.plant_couplings is defined and network_couplings.plant_couplings|length > 0 %}
+  {% set plant_model = graph.get_other_model(network_couplings.plant_couplings[0].id, coupling.network.id) %}
+  {% set explicit_no_plant_boundary = plant_model.id.startswith("noPla_") %}
+{% endif %}
+{% if network_couplings.plant_couplings is not defined or network_couplings.plant_couplings|length == 0 or explicit_no_plant_boundary %}
+  {% if loop_order.number_of_loops > 0 %}
+    {# Check if this is the first building coupling to this network in this group #}
+    {% set first_bldg_id = loop_order.data[0].list_bldg_ids_in_group[0] %}
+    {% if first_bldg_id[0].isnumeric() %}
+      {% set first_bldg_coupling_id = "TimeSerLoa_B" ~ first_bldg_id %}
+    {% else %}
+      {% set first_bldg_coupling_id = "TimeSerLoa_" ~ first_bldg_id %}
+    {% endif %}
+    {% if coupling.load.id == first_bldg_coupling_id %}
+      {% if loop_order.number_of_sources == 0 %}
+      {% if sys_params.district_system.fifth_generation.no_central_plant is defined %}
+        {% set fallback_temperature = sys_params.district_system.fifth_generation.no_central_plant.distribution_temperature %}
+      {% else %}
+        {% set fallback_temperature = sys_params.district_system.fifth_generation.soil.undisturbed_temp %}
+      {% endif %}
+      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouIn_fallback_{{ coupling.network.id }}(k={{ fallback_temperature }} + 273.15)
+        "Fallback source inlet temperature for no-source 5G systems"
+    {% raw %}        annotation (Placement(transformation(extent={{-120,-150},{-100,-130}})));
+      {% endraw %}
+      Buildings.Controls.OBC.CDL.Reals.Sources.Constant TSouOut_fallback_{{ coupling.network.id }}(k={{ fallback_temperature }} + 1 + 273.15)
+        "Fallback source outlet temperature for no-source 5G systems"
+    {% raw %}        annotation (Placement(transformation(extent={{-120,-120},{-100,-100}})));
+      {% endraw %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}

@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 from geojson_modelica_translator.model_connectors.networks.network_base import NetworkBase

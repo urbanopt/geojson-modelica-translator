@@ -1,0 +1,22 @@
+within {{ district_within_path }};
+model DistrictEnergySystem
+  "1st-generation (steam) district heating system.
+  This model extends the steam boiler plant model which contains the full
+  district heating system including plant, distribution network, and buildings."
+  extends {{ globals.project_name }}.Plants.SteamBoiler;
+  annotation (
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false)),
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+<p>
+District energy system model for a 1st-generation steam district heating
+system. The model extends <code>Plants.SteamBoiler</code> which wraps the
+MBL steam example <code>Buildings.Experimental.DHC.Examples.Steam.SingleBoiler</code>.
+</p>
+</html>"));
+end DistrictEnergySystem;

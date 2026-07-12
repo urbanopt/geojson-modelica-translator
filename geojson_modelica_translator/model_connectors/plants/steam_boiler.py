@@ -3,8 +3,6 @@
 
 from pathlib import Path
 
-from modelica_builder.package_parser import PackageParser
-
 from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
 from geojson_modelica_translator.utils import simple_uuid
 
@@ -23,11 +21,23 @@ class SteamPlant(PlantBase):
         :param scaffold: Scaffold object, Scaffold of the entire directory of the project.
         """
 
+        steam_params_path = "$.district_system.first_generation.central_steam_plant_parameters"
         template_data = {
             "nominal_values": {
-                "boiler_efficiency": self.system_parameters.get_param(
-                    "$.district_system.first_generation.central_steam_plant_parameters.boiler_efficiency"
-                )
+                "boiler_efficiency": self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency"),
+                "steam_pressure_setpoint": self.system_parameters.get_param(
+                    f"{steam_params_path}.steam_pressure_setpoint"
+                ),
+                "reduced_pressure_setpoint": self.system_parameters.get_param(
+                    f"{steam_params_path}.reduced_pressure_setpoint"
+                ),
+                "condensate_pressure_drop_nominal": self.system_parameters.get_param(
+                    f"{steam_params_path}.condensate_pressure_drop_nominal"
+                ),
+                "heat_flow_nominal_building": self.system_parameters.get_param(
+                    f"{steam_params_path}.heat_flow_nominal_building"
+                ),
+                "number_of_loads": len(self.system_parameters.get_param("$.buildings")),
             }
         }
 
@@ -43,21 +53,11 @@ class SteamPlant(PlantBase):
             dest_folder=scaffold.plants_path.files_dir, within=f"{scaffold.project_name}.Plants"
         )
 
-        package = PackageParser(scaffold.project_path)
-        if "Plants" not in package.order:
-            package.add_model("Plants")
-            package.save()
-
+        # Add models to Plants package using scaffold's PackageParser
         package_models = ["SteamBoiler"] + [Path(mo).stem for mo in self.required_mo_files]
-        plants_package = PackageParser(scaffold.plants_path.files_dir)
-        if plants_package.order_data is None:
-            plants_package = PackageParser.new_from_template(
-                path=scaffold.plants_path.files_dir, name="Plants", order=package_models, within=scaffold.project_name
-            )
-        else:
-            for model_name in package_models:
-                plants_package.add_model(model_name)
-        plants_package.save()
+        for model_name in package_models:
+            scaffold.package.plants.add_model(model_name, create_subpackage=False)
+        scaffold.package.save()
 
     def get_modelica_type(self, scaffold):
         return "Plants.SteamBoiler"

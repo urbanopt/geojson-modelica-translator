@@ -1,14 +1,16 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
+import shutil
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
-from modelica_builder.package_parser import PackageParser
 
 from geojson_modelica_translator.external_package_utils import (
+    get_num_buildings_in_loop_order,
     load_loop_order,
+    normalize_package_orders_recursively,
     set_loop_order_data_in_template_params,
     set_minimum_dhw_load,
 )
@@ -16,8 +18,8 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.model_connectors.plants.steam_boiler import SteamPlant
 from geojson_modelica_translator.scaffold import Scaffold
-from geojson_modelica_translator.utils import mbl_version
 
 logger = logging.getLogger(__name__)
 
@@ -60,14 +62,12 @@ class District:
         self._scaffold.create()
         self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
 
-        # create the root package
-        root_package = PackageParser.new_from_template(
-            self._scaffold.project_path,
-            self._scaffold.project_name,
-            order=[],
-            mbl_version=mbl_version(),
-        )
-        root_package.save()
+        district_system_params = self.system_parameters.get_param("$.district_system")
+
+        # 1st-generation (steam) district systems use a simplified generation path
+        if "first_generation" in district_system_params:
+            self._to_modelica_first_generation(district_system_params)
+            return
 
         # generate model modelica files
         for model in self._coupling_graph.models:
@@ -84,7 +84,21 @@ class District:
             "couplings": [],
             "models": [],
             "is_ghe_district": self.system_parameters.get_param("$.district_system.fifth_generation.ghe_parameters"),
+            "fluid": {
+                "fluid_name": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.fluid.fluid_name"
+                ),
+                "concentration_percent": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.fluid.concentration_percent"
+                ),
+                "temperature": self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.fluid.temperature"
+                ),
+            },
         }
+
+        # temporary number of buildings (unused for 4G but just a placeholder)
+        num_buildings = len(self.system_parameters.get_param("$.buildings"))
 
         common_template_params = {
             "globals": {
@@ -99,9 +113,38 @@ class District:
             "sys_params": {
                 "district_system": district_system_params,
                 # num_buildings counts the ports required for 5G systems
-                "num_buildings": len(self.system_parameters.get_param("$.buildings")),
+                "num_buildings": num_buildings,
             },
         }
+
+        if "fifth_generation" in district_system_params and self.gj:
+            if district_template_params["is_ghe_district"]:
+                # determine the maximum borefield flow rate in the district
+                borefields = self.system_parameters.get_param(
+                    "$.district_system.fifth_generation.ghe_parameters.borefields"
+                )
+                number_of_boreholes_dict = {}
+                for borefield in borefields:
+                    ghe_id = borefield["ghe_id"]
+                    if "pre_designed_borefield" not in borefield:
+                        num_boreholes = self.system_parameters.get_param_by_id(ghe_id, "$.*.number_of_boreholes")
+                    else:
+                        num_boreholes = len(borefield["pre_designed_borefield"]["borehole_x_coordinates"])
+                    number_of_boreholes_dict[ghe_id] = num_boreholes
+                common_template_params["number_of_boreholes"] = number_of_boreholes_dict
+                # Allow 5G systems that have ghe_parameters defined but no borefields listed.
+                # A zero default avoids crashing on max([]) and keeps template math deterministic.
+                common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values(), default=0)
+
+            # load loop order info from ThermalNetwork or generated fallback
+            loop_order = load_loop_order(self.system_parameters.filename)
+            # calculate number of connected buildings in loop order for 5G systems & reassign
+            common_template_params["sys_params"]["num_buildings"] = get_num_buildings_in_loop_order(loop_order)
+
+            # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
+            # or: Ensure TN is used for all networks, so loop order is generated that way.
+            feature_properties = self.gj.get_feature("$.features.[*].properties")
+            set_loop_order_data_in_template_params(common_template_params, feature_properties, loop_order)
 
         if "fifth_generation" in district_system_params:
             district_template_params["pressure_drop_per_meter"] = district_system_params["fifth_generation"][
@@ -113,32 +156,17 @@ class District:
             heat_pump_ets = HeatPumpETS(self.system_parameters, ets_templates_dir_path)
             heat_pump_ets.to_modelica(self._scaffold)
         else:
-            # Remove the empty ETS dir which isn't used in non-5G systems
-            Path(self._scaffold.heat_pump_ets_path.files_dir).rmdir()
-
-        if district_template_params["is_ghe_district"] and self.gj:
-            # determine the maximum borefield flow rate in the district
-            borefields = self.system_parameters.get_param(
-                "$.district_system.fifth_generation.ghe_parameters.borefields"
-            )
-            number_of_boreholes_dict = {}
-            for borefield in borefields:
-                ghe_id = borefield["ghe_id"]
-                if "pre_designed_borefield" not in borefield:
-                    num_boreholes = self.system_parameters.get_param_by_id(ghe_id, "$.*.number_of_boreholes")
-                else:
-                    num_boreholes = len(borefield["pre_designed_borefield"]["borehole_x_coordinates"])
-                number_of_boreholes_dict[ghe_id] = num_boreholes
-            common_template_params["number_of_boreholes"] = number_of_boreholes_dict
-            common_template_params["max_number_of_boreholes"] = max(number_of_boreholes_dict.values())
-
-            # load loop order info from ThermalNetwork
-            loop_order = load_loop_order(self.system_parameters.filename)
-
-            # TODO: determine loop order some other way, so thermal networks without GHEs can have horizontal piping
-            # or: Ensure TN is used for all networks, so loop order is generated that way.
-            feature_properties = self.gj.get_feature("$.features.[*].properties")
-            set_loop_order_data_in_template_params(common_template_params, feature_properties, loop_order)
+            # Remove the ETS dir which isn't used in non-5G systems
+            ets_path = Path(self._scaffold.heat_pump_ets_path.files_dir)
+            if ets_path.exists():
+                shutil.rmtree(ets_path)
+            # Also remove ETS from the Loads package order
+            if hasattr(self._scaffold.package, "loads") and "ETS" in self._scaffold.package.loads.order:
+                self._scaffold.package.loads.order.remove("ETS")
+            if hasattr(self._scaffold.package.loads, "_subpackages"):
+                self._scaffold.package.loads._subpackages.pop("ets", None)
+            elif hasattr(self._scaffold.package.loads, "ets"):
+                delattr(self._scaffold.package.loads, "ets")
 
         # render each coupling
         load_num = 1
@@ -191,22 +219,53 @@ class District:
             final_result = render_template("DistrictEnergySystem5G.mot", district_template_params)
         elif "fourth_generation" in common_template_params["sys_params"]["district_system"]:
             final_result = render_template("DistrictEnergySystem.mot", district_template_params)
+        else:
+            raise ValueError(
+                "No recognized district generation found in district_system params. "
+                "Expected 'fourth_generation' or 'fifth_generation' for the main to_modelica path."
+            )
         with open(self.district_model_filepath, "w") as f:
             f.write(final_result)
 
-        districts_package = PackageParser.new_from_template(
-            self._scaffold.districts_path.files_dir,
-            "Districts",
-            ["DistrictEnergySystem"],
-            within=f"{self._scaffold.project_name}",
-        )
-        districts_package.save()
-
-        root_package = PackageParser(self._scaffold.project_path)
-        if "Districts" not in root_package.order:
-            root_package.add_model("Districts")
-            root_package.save()
+        # Add DistrictEnergySystem to Districts package using scaffold's PackageParser
+        self._scaffold.package.districts.add_model("DistrictEnergySystem", create_subpackage=False)
+        self._scaffold.save()
 
         # Enforce minimum DHW load in Modelica model
         data_dir = Path(self._scaffold.project_path) / "Loads" / "Resources" / "Data"
         set_minimum_dhw_load(data_dir)
+
+        # Ensure package.order files include all generated local models/subpackages.
+        normalize_package_orders_recursively(self._scaffold.project_path)
+
+    def _to_modelica_first_generation(self, district_system_params):
+        """Generate modelica files for a 1st-generation (steam) district system.
+
+        1st-generation steam systems use a simplified generation path that does not
+        use the 4G/5G coupling diagram framework. The steam plant model is a
+        self-contained example that extends the MBL steam example directly.
+
+        :param district_system_params: dict, district_system section of sys_params
+        """
+        # Find and generate the steam plant model
+        for model in self._coupling_graph.models:
+            if isinstance(model, SteamPlant):
+                model.to_modelica(self._scaffold)
+
+        # Generate the district energy system model
+        first_gen_params = {
+            "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
+            "globals": {
+                "project_name": self._scaffold.project_name,
+            },
+        }
+        final_result = render_template("DistrictEnergySystem1G.mot", first_gen_params)
+        with open(self.district_model_filepath, "w") as f:
+            f.write(final_result)
+
+        # Add DistrictEnergySystem to Districts package using scaffold's PackageParser
+        self._scaffold.package.districts.add_model("DistrictEnergySystem", create_subpackage=False)
+        self._scaffold.save()
+
+        # Ensure package.order files include all generated local models/subpackages.
+        normalize_package_orders_recursively(self._scaffold.project_path)

@@ -87,7 +87,11 @@
   "district_system": {
     "first_generation": {
       "central_steam_plant_parameters": {
-        "boiler_efficiency": 0.65
+        "boiler_efficiency": 0.65,
+        "steam_pressure_setpoint": 500000,
+        "reduced_pressure_setpoint": 200000,
+        "condensate_pressure_drop_nominal": 6000,
+        "heat_flow_nominal_building": 20000
       }
     }
   }

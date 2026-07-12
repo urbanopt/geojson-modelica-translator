@@ -1,6 +1,7 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import json
 from pathlib import Path
 from shutil import rmtree
 from unittest import TestCase
@@ -44,6 +45,45 @@ class CLIIntegrationTest(TestCase):
         self.day_200_plus_a_thousand = 17280000 + 1000  # in seconds
         self.step_size_one_second = 1  # in seconds
 
+    def ensure_model_exists(
+        self,
+        project_name: str,
+        sys_param_path: Path,
+        scenario_file_path: Path,
+        feature_file_path: Path,
+        district_type: str = "4G",
+    ) -> None:
+        """Create the model required by a simulation test when it is not already present."""
+        project_path = self.output_dir / project_name
+        if (project_path / "Districts" / "DistrictEnergySystem.mo").exists():
+            return
+        if project_path.exists():
+            rmtree(project_path)
+
+        sys_param_path.unlink(missing_ok=True)
+        build_result = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(sys_param_path),
+                str(scenario_file_path),
+                str(feature_file_path),
+                district_type,
+            ],
+        )
+        assert build_result.exit_code == 0, build_result.output
+
+        create_result = self.runner.invoke(
+            cli,
+            [
+                "create-model",
+                str(sys_param_path),
+                str(feature_file_path),
+                str(project_path),
+            ],
+        )
+        assert create_result.exit_code == 0, create_result.output
+
     def test_cli_builds_sys_params(self):
         self.sys_param_path.unlink(missing_ok=True)
 
@@ -62,6 +102,29 @@ class CLIIntegrationTest(TestCase):
 
         # If this file exists, the cli command ran successfully
         assert self.sys_param_path.exists()
+
+    def test_cli_builds_5g_sys_params_with_no_plant_default(self):
+        self.sys_param_path.unlink(missing_ok=True)
+
+        res = self.runner.invoke(
+            cli,
+            [
+                "build-sys-param",
+                str(self.sys_param_path),
+                str(self.scenario_file_path),
+                str(self.feature_file_path),
+                "5G",
+            ],
+        )
+
+        assert res.exit_code == 0
+        with open(self.sys_param_path) as f:
+            sys_params = json.load(f)
+
+        fifth_generation = sys_params["district_system"]["fifth_generation"]
+        assert "ghe_parameters" not in fifth_generation
+        assert "heat_source_parameters" not in fifth_generation
+        assert fifth_generation["no_central_plant"]["distribution_temperature"] == 18.3
 
     def test_cli_builds_sys_params_with_ghe(self):
         self.sys_param_path.unlink(missing_ok=True)
@@ -407,6 +470,12 @@ class CLIIntegrationTest(TestCase):
     @pytest.mark.simulation
     def test_cli_runs_existing_4g_model(self):
         project_name = "modelica_project_4g"
+        self.ensure_model_exists(
+            project_name,
+            self.sys_param_path,
+            self.scenario_file_path,
+            self.feature_file_path,
+        )
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
@@ -434,6 +503,13 @@ class CLIIntegrationTest(TestCase):
     @pytest.mark.simulation
     def test_cli_runs_existing_5g_model(self):
         project_name = "modelica_project_5g"
+        self.ensure_model_exists(
+            project_name,
+            self.sys_param_path,
+            self.scenario_file_path,
+            self.feature_file_path_ghe,
+            "5G_ghe",
+        )
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
@@ -461,6 +537,13 @@ class CLIIntegrationTest(TestCase):
     @pytest.mark.simulation
     def test_cli_runs_existing_5g_model_with_specific_variables(self):
         project_name = "modelica_project_5g"
+        self.ensure_model_exists(
+            project_name,
+            self.sys_param_path,
+            self.scenario_file_path,
+            self.feature_file_path_ghe,
+            "5G_ghe",
+        )
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
@@ -490,6 +573,13 @@ class CLIIntegrationTest(TestCase):
     @pytest.mark.simulation
     def test_cli_runs_existing_5g_model_with_compiler_flags(self):
         project_name = "modelica_project_5g"
+        self.ensure_model_exists(
+            project_name,
+            self.sys_param_path,
+            self.scenario_file_path,
+            self.feature_file_path_ghe,
+            "5G_ghe",
+        )
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
@@ -521,6 +611,13 @@ class CLIIntegrationTest(TestCase):
     @pytest.mark.simulation
     def test_cli_runs_existing_5g_model_with_simulation_flags(self):
         project_name = "modelica_project_5g"
+        self.ensure_model_exists(
+            project_name,
+            self.sys_param_path,
+            self.scenario_file_path,
+            self.feature_file_path_ghe,
+            "5G_ghe",
+        )
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)
@@ -553,6 +650,13 @@ class CLIIntegrationTest(TestCase):
     @pytest.mark.simulation
     def test_cli_runs_existing_waste_heat_model(self):
         project_name = "modelica_project_waste_heat"
+        self.ensure_model_exists(
+            project_name,
+            self.sys_param_path_waste_heat,
+            self.scenario_file_path_waste_heat,
+            self.feature_file_path_waste_heat,
+            "5G_ghe",
+        )
         results_dir = f"{project_name}.Districts.DistrictEnergySystem_results"
         if (self.output_dir / project_name / results_dir).exists():
             rmtree(self.output_dir / project_name / results_dir)

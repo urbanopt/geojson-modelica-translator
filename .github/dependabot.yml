@@ -12,8 +12,10 @@ updates:
       prod-deps:
         dependency-type: "production"
     open-pull-requests-limit: 5
-    commit-message:
-      prefix: "deps"
+    ignore:
+      - dependency-name: "click"
+    labels:
+      - "dependabot"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -23,5 +25,5 @@ updates:
         patterns:
           - "*"
     open-pull-requests-limit: 5
-    commit-message:
-      prefix: "ci"
+    labels:
+      - "maintenance"

@@ -64,9 +64,12 @@ connect(TIn_wasHea_{{ coupling.id }}.port_b, conPla_{{ waste_heat_id }}.port_aDi
     {% else %}
       {% set next_dis_coupling_id = graph.couplings_by_type(ground_id).network_couplings[group_num+1].id %}
       {% set next_dis_id = graph.get_other_model(next_dis_coupling_id, ground_id).id %}
-      connect(TOut_wasHea_{{ coupling.id }}.port_b, TDisSup_{{ graph.couplings_by_type(next_dis_id).plant_couplings[0].id }}.port_a)
-      {% raw %}annotation (Line(points={{50,-130},{60,-130},{60,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
-      {% endraw %}
+      {% set next_dis_couplings = graph.couplings_by_type(next_dis_id) %}
+      {% if next_dis_couplings.plant_couplings is defined and next_dis_couplings.plant_couplings|length > 0 %}
+        connect(TOut_wasHea_{{ coupling.id }}.port_b, TDisSup_{{ next_dis_couplings.plant_couplings[0].id }}.port_a)
+        {% raw %}annotation (Line(points={{50,-130},{60,-130},{60,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
+        {% endraw %}
+      {% endif %}
     {% endif %}
   {% endif %}
 {% endfor %}

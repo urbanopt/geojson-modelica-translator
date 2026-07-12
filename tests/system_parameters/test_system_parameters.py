@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import json
@@ -384,6 +384,35 @@ class SystemParametersTest(unittest.TestCase):
         # ghe
         assert sys_param_data["district_system"]["fifth_generation"]["ghe_parameters"] is not False
 
+    def test_csv_to_sys_param_autosizes_5g_central_pump_flow(self):
+        output_sys_param_file = self.output_dir / "test_sys_param_5g.json"
+        sp = SystemParameters()
+        sp.csv_to_sys_param(
+            model_type="time_series",
+            scenario_dir=self.scenario_dir,
+            feature_file=self.feature_file,
+            district_type="5G",
+            sys_param_filename=output_sys_param_file,
+        )
+
+        with open(output_sys_param_file) as f:
+            sys_param_data = json.load(f)
+
+        building_flow_sum = sum(
+            building["fifth_gen_ets_parameters"]["ets_pump_flow_rate"] for building in sys_param_data["buildings"]
+        )
+        assert all(
+            building["fifth_gen_ets_parameters"]["ets_pump_flow_rate"] > 0.0005
+            for building in sys_param_data["buildings"]
+        )
+        assert sys_param_data["district_system"]["fifth_generation"]["central_pump_parameters"][
+            "pump_flow_rate"
+        ] == round(building_flow_sum, 6)
+        assert (
+            sys_param_data["district_system"]["fifth_generation"]["horizontal_piping_parameters"]["hydraulic_diameter"]
+            > 0.089
+        )
+
     def test_csv_to_sys_param_waste_heat(self):
         output_sys_param_file = self.output_dir / "test_sys_param_waste_heat.json"
         sp = SystemParameters()
@@ -504,3 +533,59 @@ class SystemParametersTest(unittest.TestCase):
             str(context.value) == "Malformed location, needs underscores of location "
             "(e.g., USA_NY_Buffalo-Greater.Buffalo.Intl.AP.725280_TMY3.mos)"
         )
+
+    def test_calculate_dimensions_valid_rectangle(self):
+        """Test calculate_dimensions with valid rectangle dimensions"""
+        sdp = SystemParameters()
+
+        # Test case: Normal rectangle (length > width)
+        area = 100
+        perimeter = 50  # Perfect rectangle: 15 x 6.67 (approximately)
+        length, width = sdp.calculate_dimensions(area, perimeter)
+
+        # Verify the results make sense
+        assert length > width
+        assert abs(length * width - area) < 0.01  # Area should match (within floating point precision)
+        assert abs(2 * (length + width) - perimeter) < 0.01  # Perimeter should match
+
+    def test_calculate_dimensions_near_square_tolerance(self):
+        """Test the 1% tolerance for near-square rectangles"""
+        sdp = SystemParameters()
+
+        # Test case: area=10227, perimeter=404
+        # This should be treated as a square due to the 1% tolerance
+        # 404.5 is technically the smallest perimeter possible, but we are within 1% of that
+        area = 10227
+        perimeter = 404
+
+        length, width = sdp.calculate_dimensions(area, perimeter)
+
+        # Should return exactly equal length and width (square)
+        assert length == width  # Should be exactly equal since we return square_side, square_side
+
+        # Both dimensions should be exactly sqrt(area)
+        expected_side = area**0.5  # sqrt(10227) ≈ 101.13
+        assert abs(length - expected_side) < 1e-10  # Should be exact within floating point precision
+        assert abs(width - expected_side) < 1e-10
+
+    def test_calculate_dimensions_perfect_square(self):
+        """Test calculate_dimensions with perfect square dimensions"""
+        sdp = SystemParameters()
+
+        area = 100
+        perimeter = 40  # Perfect square: 10 x 10
+        length, width = sdp.calculate_dimensions(area, perimeter)
+
+        # Should return equal dimensions
+        assert length == width
+
+    def test_calculate_dimensions_invalid_rectangle(self):
+        """Test calculate_dimensions with truly invalid dimensions (not near square)"""
+        sdp = SystemParameters()
+
+        # Test case: area too large for given perimeter (not within 1% tolerance)
+        area = 1000
+        perimeter = 50  # Way too small perimeter for this area
+
+        with pytest.raises(ValueError, match="No valid rectangle dimensions exist"):
+            sdp.calculate_dimensions(area, perimeter)

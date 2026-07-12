@@ -1,0 +1,2 @@
+{# Explicit no-plant marker model.
+   Physical no-plant behavior is provided by the UnidirectionalSeries_NoPlantBoundary coupling templates. #}

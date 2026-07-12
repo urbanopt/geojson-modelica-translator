@@ -21,7 +21,7 @@ partial model PartialSeries "Partial model for series network"
     Buildings.DHC.Examples.Combined.BaseClasses.DesignDataSeries
     datDes(final mCon_flow_nominal=bui.ets.mSerWat_flow_nominal) "Design data"
     annotation (Placement(transformation(extent={{-340,220},{-320,240}})));
-  parameter Integer nBor = 300
+  parameter Integer nBor = {% endraw %}{{ data["number_of_boreholes"] }}{% raw %}
     "Number of boreholes";
   parameter Integer hBor = 350
     "Total height of borehole, meters";
@@ -75,7 +75,8 @@ partial model PartialSeries "Partial model for series network"
         origin={112,-20})));
   Buildings.DHC.ETS.BaseClasses.Pump_m_flow pumSto(
     redeclare final package Medium = Medium,
-    m_flow_nominal=datDes.mSto_flow_nominal)
+    m_flow_nominal=datDes.mSto_flow_nominal,
+    dp_nominal={% endraw %}{{ data["source_pump_dp_nominal"] }}{% raw %})
     "Bore field pump"
     annotation (Placement(transformation(
       extent={{10,10},{-10,-10}},

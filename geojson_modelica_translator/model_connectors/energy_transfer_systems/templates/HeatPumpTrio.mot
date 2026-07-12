@@ -2,6 +2,8 @@ within {{ project_name }}.Loads.ETS;
 {% raw %}model HeatPumpTrio
   "Model of a substation with heating, hot water, and cooling heat pumps"
   extends Buildings.DHC.ETS.BaseClasses.PartialETS(
+    allowFlowReversalSer=true,
+    allowFlowReversalBui=true,
     final typ=Buildings.DHC.Types.DistrictSystemType.CombinedGeneration5,
     final have_weaBus=false,
     have_chiWat=true,
@@ -33,6 +35,9 @@ within {{ project_name }}.Loads.ETS;
   parameter Modelica.Units.SI.Temperature TDisWatMax
     "District water maximum temperature"
     annotation (Dialog(group="DHC system"));
+  parameter Modelica.Units.SI.Temperature TSerWat_start=MediumSer.T_default
+    "Start temperature for service water mixing volumes"
+    annotation (Dialog(tab="Initialization"));
   parameter Modelica.Units.SI.TemperatureDifference dT_nominal(
     min=0)=5
     "Water temperature drop/increase across load and source-side HX (always positive)"
@@ -166,6 +171,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare final package Medium=MediumSer,
     final nPorts=4,
     final m_flow_nominal=mSerWat_flow_nominal,
+    T_start=TSerWat_start,
     tau=600,
     final energyDynamics=mixingVolumeEnergyDynamics)
     "Mixing volume to break algebraic loops and to emulate the delay of the substation"
@@ -174,6 +180,7 @@ within {{ project_name }}.Loads.ETS;
     redeclare final package Medium=MediumSer,
     final nPorts=4,
     final m_flow_nominal=mSerWat_flow_nominal,
+    T_start=TSerWat_start,
     tau=600,
     final energyDynamics=mixingVolumeEnergyDynamics)
     "Mixing volume to break algebraic loops and to emulate the delay of the substation"
@@ -275,7 +282,33 @@ within {{ project_name }}.Loads.ETS;
     trueHoldDuration=15*60)
     "Enable heating"
     annotation (Placement(transformation(extent={{-140,150},{-120,170}})));
+  Buildings.Controls.OBC.CDL.Logical.TrueFalseHold enaCoo(
+    trueHoldDuration=15*60)
+    "Enable cooling"
+    annotation (Placement(transformation(extent={{-140,110},{-120,130}})));
   Buildings.DHC.ETS.Combined.Subsystems.HeatPump proHeaWat(
+    valHeaPumEva(
+      y(
+        min=-1e-4,
+        max=1+1e-4),
+      res1(
+        y(
+          min=-1e-4,
+          max=1+1e-4)),
+      res3(
+        y(
+          min=-1e-4,
+          max=1+1e-4))),
+    heaPum(
+      m2_flow(
+        min=-1e-6,
+        max=1e5+1e-6)),
+    pumCon(
+      etaHyd(
+        min=-1e-6)),
+    pumEva(
+      etaHyd(
+        min=-1e-6)),
     redeclare final package Medium1=MediumBui,
     redeclare final package Medium2=MediumSer,
     final have_varFloCon=have_varFloCon,
@@ -291,6 +324,28 @@ within {{ project_name }}.Loads.ETS;
     "Subsystem for heating water production"
     annotation (Placement(transformation(extent={{-10,204},{10,224}})));
   Buildings.DHC.ETS.Combined.Subsystems.HeatPump proHotWat(
+    valHeaPumEva(
+      y(
+        min=-1e-4,
+        max=1+1e-4),
+      res1(
+        y(
+          min=-1e-4,
+          max=1+1e-4)),
+      res3(
+        y(
+          min=-1e-4,
+          max=1+1e-4))),
+    heaPum(
+      m2_flow(
+        min=-1e-6,
+        max=1e5+1e-6)),
+    pumCon(
+      etaHyd(
+        min=-1e-6)),
+    pumEva(
+      etaHyd(
+        min=-1e-6)),
     redeclare final package Medium1=MediumBui,
     redeclare final package Medium2=MediumSer,
     final COP_nominal=COPHotWat_nominal,
@@ -545,8 +600,10 @@ equation
     annotation (Line(points={{-22,320},{-160,320},{-160,286},{-142,286}},color={0,0,127}));
   connect(loaHHW.y,conFloConHHW.loa)
     annotation (Line(points={{-118,280},{-102,280}},color={0,0,127}));
-  connect(uCoo,proChiWat.uEna)
-    annotation (Line(points={{-320,120},{-264,120},{-264,-344},{-138,-344},{-138,-345},{-12,-345}},color={255,0,255}));
+  connect(uCoo,enaCoo.u)
+    annotation (Line(points={{-320,120},{-142,120}},color={255,0,255}));
+  connect(enaCoo.y,proChiWat.uEna)
+    annotation (Line(points={{-118,120},{-100,120},{-100,-345},{-12,-345}},color={255,0,255}));
   connect(volChiWatRet.ports[2],proChiWat.port_a2)
     annotation (Line(points={{76,-288},{76,-330},{10,-330}},color={0,127,255}));
   connect(proChiWat.PPum,PPumCooTot.u[1])
@@ -679,6 +736,18 @@ of the heating and cooling systems. These approximate the dynamics
 of the substation, and they also generally avoid nonlinear systems
 of equations if multiple substations are connected to each other.
 </p>
+<h4>Sizing and initialization</h4>
+<p>
+Nominal service and building-side mass flow rates (kg/s) are derived from the
+heating, cooling, and hot-water design loads (W), the nominal temperature
+difference <code>dT_nominal</code> (K), and the heat pump COPs (-). The pressure drop
+parameter <code>dp_nominal</code> (Pa) remains a model input and is applied to each
+flow leg, so the same ETS template can be used with different project-level
+pump-head assumptions. The service-water mixing volumes use
+<code>TSerWat_start</code> (K) for their initial temperature. Callers can use this parameter to align the service-water initial condition
+with the surrounding district-loop initial condition without changing the ETS
+flow or pressure-drop sizing equations.
+</p>
 <h4>References</h4>
 <p>
 Sommer T., Sulzer M., Wetter M., Sotnikov A., Mennel S., Stettler C.
@@ -689,6 +758,19 @@ Energy, Volume 199, 15 May 2020, 117418.
 </html>",
       revisions="<html>
   <ul>
+<li>
+  July 11, 2026, by Nicholas Long:<br/>
+  Robustness: added a <code>TrueFalseHold</code> (15 min) on the cooling enable
+  (<code>uCoo</code>) so <code>proChiWat</code> honors the same minimum on/off
+  runtime as the heating and hot-water heat pumps. Previously <code>uCoo</code>
+  was wired directly to <code>proChiWat.uEna</code>, so the cooling heat pump
+  could chatter even though the documentation states cooling is held for 15
+  minutes. Mirrors the same fix in the GMT_Lib HeatPumpTrio model.
+  </li>
+  <li>
+  July 10, 2026, by Nicholas Long:<br/>
+  Documented flexible load-based sizing and configurable service-water volume initialization.
+</li>
 <li>
   April 11, 2025, by Nathan Moore:<br/>
   Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.
