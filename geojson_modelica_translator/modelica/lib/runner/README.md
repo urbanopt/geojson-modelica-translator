@@ -21,7 +21,7 @@ cd geojson_modelica_translator/modelica/lib/runner
 docker build -t nrel/gmt-om-runner:<tag> .
 ```
 
-The default tag will be `nrel/gmt-om-runner:4.1.0`, which is the default version used in the modelica_runner.py file.
+The default tag will be `nrel/gmt-om-runner:4.0.1`, which is the default version used in the modelica_runner.py file.
 
 If you run the image directly with a bind mount, note that the image runs as `root` so it can access the pre-installed Modelica libraries under `/root/.openmodelica`.
 
@@ -33,7 +33,7 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 | GTM Runner Version | OM Version | MSL Version | MBL Version |
 | ------------------ | ---------- | ----------- | ----------- |
-| 4.1.0              | 1.25.1     | 4.0.0       | 12.1.1      |
+| 4.0.1              | 1.25.1     | 4.0.0       | 12.1.1      |
 | 3.0.0              | 1.24.0     | 4.0.0       | 11.0.0      |
 | 2.0.1              | 1.22.1     | 4.0.0       | 10.0.0      |
 | 2.0.0              | 1.22.1     | 4.0.0       | 10.0.0      |
@@ -58,7 +58,7 @@ docker buildx create --use
 
 # update version of OMC and determine if the latest should be updated. Bump the major version of the GMT Runner for an MBL version,
 # and bump the minor version for OM minor version updates.
-docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:4.1.0 --push .
+docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:4.0.1 --push .
 ```
 
 Sign into [Docker Hub](https://hub.docker.com/repository/docker/nrel/gmt-om-runner/general) and update the version

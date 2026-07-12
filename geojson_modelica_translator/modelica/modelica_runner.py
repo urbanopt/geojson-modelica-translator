@@ -211,7 +211,7 @@ class ModelicaRunner:
         run_path: Path,
         action: str,
         compiler_flags: str | None = None,
-        docker_image: str = "nrel/gmt-om-runner:4.1.0",
+        docker_image: str = "nrel/gmt-om-runner:4.0.1",
     ) -> int:
         """Call out to a subprocess to run the command in docker
 
@@ -348,7 +348,7 @@ class ModelicaRunner:
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
         # When updating the GMT OM Runner, this is the location to bump the image.
-        docker_image = kwargs.get("docker_image", "nrel/gmt-om-runner:4.1.0")
+        docker_image = kwargs.get("docker_image", "nrel/gmt-om-runner:4.0.1")
         exitcode = self._subprocess_call_to_docker(
             verified_run_path, action, kwargs.get("compiler_flags"), docker_image=docker_image
         )
