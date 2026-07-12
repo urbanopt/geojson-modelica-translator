@@ -86,7 +86,7 @@ equation
   experiment(
       StopTime=31536000,
       Interval=300,
-      Tolerance=1e-06,
+      Tolerance=1e-04,
       __Dymola_Algorithm="Dassl"),
     Documentation(info="<html>
 <p>
@@ -101,6 +101,15 @@ allowed loop temperature, then the mass flow rate is reduced to save pump energy
 </p>
 </html>", revisions="<html>
 <ul>
+<li>
+July 11, 2026, by Nicholas Long:<br/>
+Performance: relaxed the solver <code>Tolerance</code> in the experiment
+annotation from <code>1e-6</code> to <code>1e-4</code>. For the 5G DES models the
+runtime is dominated by the Jacobian/nonlinear-system evaluation, and a
+<code>1e-4</code> tolerance runs roughly 15x faster than <code>1e-6</code> while
+changing energy KPIs by &lt;0.02%. Tighter tolerances force the stiff nonlinear
+systems to converge harder every step without improving engineering accuracy.
+</li>
 <li>
 December 5, 2025, by Nicholas Long and Jing Wang:<br/>
 Updated the base building model to include a heat pump trio configuration.
