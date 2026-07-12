@@ -308,6 +308,9 @@ model HeatPumpTrio
   Buildings.Controls.OBC.CDL.Logical.TrueFalseHold enaHea(
     trueHoldDuration=15*60) "Enable heating"
     annotation (Placement(transformation(extent={{-140,150},{-120,170}})));
+  Buildings.Controls.OBC.CDL.Logical.TrueFalseHold enaCoo(
+    trueHoldDuration=15*60) "Enable cooling"
+    annotation (Placement(transformation(extent={{-140,110},{-120,130}})));
   Buildings.DHC.ETS.Combined.Subsystems.HeatPump proHeaWat(
     heaPum(m1_flow_nominal=mHeaWat_flow_nominal),
     redeclare final package Medium1 = MediumBui,
@@ -597,8 +600,10 @@ equation
           -160,286},{-142,286}}, color={0,0,127}));
   connect(loaHHW.y, conFloConHHW.loa)
     annotation (Line(points={{-118,280},{-102,280}}, color={0,0,127}));
-  connect(uCoo, proChiWat.uEna) annotation (Line(points={{-320,120},{-264,120},{
-          -264,-344},{-138,-344},{-138,-345},{-12,-345}},  color={255,0,255}));
+  connect(uCoo, enaCoo.u) annotation (Line(points={{-320,120},{-142,120}},
+        color={255,0,255}));
+  connect(enaCoo.y, proChiWat.uEna) annotation (Line(points={{-118,120},{-100,
+          120},{-100,-345},{-12,-345}}, color={255,0,255}));
   connect(volChiWatRet.ports[2], proChiWat.port_a2) annotation (Line(points={{76,
           -288},{76,-330},{10,-330}}, color={0,127,255}));
   connect(proChiWat.PPum, PPumCooTot.u[1]) annotation (Line(points={{12,-336},{22,
@@ -742,6 +747,17 @@ Energy, Volume 199, 15 May 2020, 117418.
 </html>",
 revisions="<html>
 <ul>
+  <li>
+  July 11, 2026, by Nicholas Long:<br/>
+  Robustness: added a <code>TrueFalseHold</code> (15 min) on the cooling enable
+  (<code>uCoo</code>) so that <code>proChiWat</code> honors the same minimum
+  on/off runtime as the heating and hot-water heat pumps. Previously
+  <code>uCoo</code> was wired directly to <code>proChiWat.uEna</code>, so the
+  cooling heat pump could chatter on/off even though the documentation states
+  cooling is held for 15 minutes. This aligns the implementation with the
+  documented control intent and removes a primary source of near-zero
+  mass-flow assertion violations during long simulations.
+  </li>
   <li>
   December 05, 2025, by Nicholas Long and Jing Wang:<br/>
   Templatized for use within the GMT framework.

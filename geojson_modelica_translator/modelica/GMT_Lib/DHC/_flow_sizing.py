@@ -1,11 +1,25 @@
 """Shared 5G district flow sizing helpers."""
 
+import math
+
 CP_WATER_KJ_PER_KG_K = 4.18
 DEFAULT_HEATING_COP = 2.5
 DEFAULT_COOLING_COP = 3.5
 DEFAULT_SWH_COP = 2.5
 MIN_SOURCE_PUMP_DP_NOMINAL = 35000
 SOURCE_PUMP_DP_PER_KG_S = 1200
+
+# Design mass flow rate per borehole (kg/s). The borehole count is sized so that
+# the source-side flow divided across the field keeps the per-borehole flow at or
+# below this value. This value reproduces the historically stable reference field
+# (~300 boreholes for the reference district) while letting the field scale with
+# load. Keeping per-borehole flow bounded is what keeps the borefield pressure
+# drop bounded (see borehole_count).
+BOREHOLE_DESIGN_FLOW = 0.1
+# Boreholes are laid out on a 10-wide grid (see cooBor in the template), so the
+# count is rounded up to a whole number of rows.
+BOREHOLE_GRID_WIDTH = 10
+MIN_BOREHOLES = 10
 
 
 def flow_rate_from_load(load_watts: float, delta_t: float, oversize_factor: float = 1.5) -> float:
@@ -61,3 +75,41 @@ def source_pump_dp_nominal(source_flow_rate: float) -> float:
     drop.
     """
     return max(MIN_SOURCE_PUMP_DP_NOMINAL, SOURCE_PUMP_DP_PER_KG_S * source_flow_rate)
+
+
+def borehole_count(
+    source_flow_rate: float,
+    design_flow_per_borehole: float = BOREHOLE_DESIGN_FLOW,
+) -> int:
+    """Return the number of boreholes to use for the given source-side flow.
+
+    The borefield used to be a hard-coded 300-borehole field regardless of the
+    district load. That works for small, mild districts but is fragile for large
+    loads: the storage pump pushes the whole (load-scaled) source flow through a
+    fixed number of parallel boreholes, so the per-borehole flow grows with load
+    and the borefield pressure drop grows roughly with its square. Past a point,
+    the pressure the borefield demands exceeds the storage pump's ``dpMax`` and
+    the Buildings mover trips its assertion at initialization, so the model
+    cannot even start -- exactly the kind of brittleness seen when handing the
+    GMT large loads.
+
+    Sizing the field so that the per-borehole flow stays at or below a fixed
+    design value keeps the borefield pressure drop bounded (and therefore keeps
+    the storage pump inside its operating envelope) no matter how large the
+    district is. Large fields are expected and fine -- real sites use thousands
+    of boreholes -- so the count is only floored, never capped. Because the
+    source flow already scales with the load, a flow-based count also scales the
+    field's thermal capacity with the load, which helps long, extreme-weather
+    runs where a fixed field would otherwise saturate.
+
+    Args:
+        source_flow_rate: nominal storage/GHX (source-side) mass flow rate (kg/s).
+        design_flow_per_borehole: target maximum mass flow per borehole (kg/s).
+
+    Returns:
+        Number of boreholes, rounded up to a whole number of grid rows.
+    """
+    if design_flow_per_borehole <= 0:
+        raise ValueError("design_flow_per_borehole must be positive")
+    rows = math.ceil(source_flow_rate / design_flow_per_borehole / BOREHOLE_GRID_WIDTH)
+    return max(MIN_BOREHOLES, rows * BOREHOLE_GRID_WIDTH)

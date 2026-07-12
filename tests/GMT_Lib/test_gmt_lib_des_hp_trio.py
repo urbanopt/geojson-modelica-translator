@@ -54,6 +54,12 @@ class GmtLibDesHpTrioTest(unittest.TestCase):
             dp_nominal_match = re.search(r"dp_nominal=([-+]?\d*\.?\d+)\)", partial_series_mo)
             assert dp_nominal_match is not None
             assert float(dp_nominal_match.group(1)) == pytest.approx(35409.0)
+            # The borefield is autosized from the source flow so the per-borehole
+            # flow (and thus the borefield pressure drop) stays bounded as loads
+            # grow. The reference cooling-dominant district resolves to 300 boreholes.
+            nbor_match = re.search(r"nBor = (\d+)", partial_series_mo)
+            assert nbor_match is not None
+            assert int(nbor_match.group(1)) == 300
 
     @pytest.mark.simulation
     def test_dhc_5g_wh_ghx_hptrio_variabledist_simulation(self):
