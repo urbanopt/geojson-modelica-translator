@@ -10,7 +10,7 @@ CI builds this image once with `buildx` only when this `Dockerfile` changes (or 
 
 To build the docker container locally, follow the below instructions:
 
-1. If on the NREL network:
+1. If on the NLR network:
     - Disable Netskope temporarily
     - Disconnect from VPN
 2. Then run the following from the GMT repository root:
