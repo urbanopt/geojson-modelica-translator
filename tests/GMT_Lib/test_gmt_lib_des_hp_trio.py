@@ -79,6 +79,10 @@ class GmtLibDesHpTrioTest(unittest.TestCase):
 
         # # -- Act - with simulation
         runner = ModelicaRunner()
+        # step_size=300 (5-min output) keeps the result file small and the run fast:
+        # without it OpenModelica inherits the annual experiment-annotation interval count
+        # (105120), oversampling a short run to ~0.8 s spacing and writing a >2 GB .mat.
+        # Combined with the annotation Tolerance=1e-4, a 1-day run drops from ~12 min to ~20 s.
         success, _ = runner.run_in_docker(
             "compile_and_run",
             f"{package_name}.Districts.district",
@@ -86,6 +90,7 @@ class GmtLibDesHpTrioTest(unittest.TestCase):
             run_path=package_output_dir / package_name,
             start_time=0,
             stop_time=86400,
+            step_size=300,
         )
 
         assert success is True
