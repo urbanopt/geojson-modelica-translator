@@ -18,6 +18,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.model_connectors.plants.steam_boiler import SteamPlant
 from geojson_modelica_translator.scaffold import Scaffold
 
 logger = logging.getLogger(__name__)
@@ -60,6 +61,13 @@ class District:
         # scaffold the project
         self._scaffold.create()
         self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+
+        district_system_params = self.system_parameters.get_param("$.district_system")
+
+        # 1st-generation (steam) district systems use a simplified generation path
+        if "first_generation" in district_system_params:
+            self._to_modelica_first_generation(district_system_params)
+            return
 
         # generate model modelica files
         for model in self._coupling_graph.models:
@@ -211,6 +219,11 @@ class District:
             final_result = render_template("DistrictEnergySystem5G.mot", district_template_params)
         elif "fourth_generation" in common_template_params["sys_params"]["district_system"]:
             final_result = render_template("DistrictEnergySystem.mot", district_template_params)
+        else:
+            raise ValueError(
+                "No recognized district generation found in district_system params. "
+                "Expected 'fourth_generation' or 'fifth_generation' for the main to_modelica path."
+            )
         with open(self.district_model_filepath, "w") as f:
             f.write(final_result)
 
@@ -221,6 +234,38 @@ class District:
         # Enforce minimum DHW load in Modelica model
         data_dir = Path(self._scaffold.project_path) / "Loads" / "Resources" / "Data"
         set_minimum_dhw_load(data_dir)
+
+        # Ensure package.order files include all generated local models/subpackages.
+        normalize_package_orders_recursively(self._scaffold.project_path)
+
+    def _to_modelica_first_generation(self, district_system_params):
+        """Generate modelica files for a 1st-generation (steam) district system.
+
+        1st-generation steam systems use a simplified generation path that does not
+        use the 4G/5G coupling diagram framework. The steam plant model is a
+        self-contained example that extends the MBL steam example directly.
+
+        :param district_system_params: dict, district_system section of sys_params
+        """
+        # Find and generate the steam plant model
+        for model in self._coupling_graph.models:
+            if isinstance(model, SteamPlant):
+                model.to_modelica(self._scaffold)
+
+        # Generate the district energy system model
+        first_gen_params = {
+            "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
+            "globals": {
+                "project_name": self._scaffold.project_name,
+            },
+        }
+        final_result = render_template("DistrictEnergySystem1G.mot", first_gen_params)
+        with open(self.district_model_filepath, "w") as f:
+            f.write(final_result)
+
+        # Add DistrictEnergySystem to Districts package using scaffold's PackageParser
+        self._scaffold.package.districts.add_model("DistrictEnergySystem", create_subpackage=False)
+        self._scaffold.save()
 
         # Ensure package.order files include all generated local models/subpackages.
         normalize_package_orders_recursively(self._scaffold.project_path)

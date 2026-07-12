@@ -1054,6 +1054,16 @@
           "description": "Nominal pressure drop along the condensate return pipe. (Pa)",
           "type": "number",
           "default": 6000
+        },
+        "heat_flow_nominal_building": {
+          "description": "Nominal heat flow rate per building (W)",
+          "type": "number",
+          "default": 20000
+        },
+        "temp_setpoint_hhw": {
+          "description": "Heating hot water supply temperature setpoint for ETS (degrees Celsius)",
+          "type": "number",
+          "default": 100
         }
       }
     },

@@ -54,6 +54,14 @@ class ModelBase:
             self.num_buildings = len(buildings) if buildings is not None else 0
 
             district_params = self.system_parameters.get_param("district_system")
+            if "first_generation" in district_params:
+                # 1st generation (steam) district systems use a heating temperature setpoint
+                # for interfacing with building ETS models.
+                self.district_template_data = {
+                    "temp_setpoint_hhw": district_params["first_generation"]["central_steam_plant_parameters"].get(
+                        "temp_setpoint_hhw", 100
+                    ),
+                }
             if "fourth_generation" in district_params:
                 self.district_template_data = {
                     "temp_setpoint_hhw": district_params["fourth_generation"]["central_heating_plant_parameters"][

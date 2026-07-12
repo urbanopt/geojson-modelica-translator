@@ -5,18 +5,20 @@ model SteamBoiler
   parameter Real boiler_efficiency[:]={{ data["nominal_values"]["boiler_efficiency"] }}
     "Coefficients for boiler efficiency curve";
   // Steam properties
-  parameter Modelica.Units.SI.AbsolutePressure pSat_GMT={{data["Saturatation pressure"]}}
+  parameter Modelica.Units.SI.AbsolutePressure pSat_GMT={{ data["nominal_values"]["steam_pressure_setpoint"] }}
     "Saturation pressure, high pressure";
-  parameter Modelica.Units.SI.AbsolutePressure pLow_GMT={{data["Reduced pressure"]}}
+  parameter Modelica.Units.SI.AbsolutePressure pLow_GMT={{ data["nominal_values"]["reduced_pressure_setpoint"] }}
     "Reduced pressure, after PRV";
   parameter Modelica.Units.SI.Temperature TSat_GMT=MediumSte.saturationTemperature(
     pSat_GMT)
     "Saturation temperature, at high pressure";
   // Building
-  parameter Integer N_GMT={{data["number_of_loads"]}}
+  parameter Integer N_GMT={{ data["nominal_values"]["number_of_loads"] }}
     "Number of buildings";
+  parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal_GMT={{ data["nominal_values"]["heat_flow_nominal_building"] }}
+    "Nominal heat flow rate per building";
   // Distribution Network
-  parameter Modelica.Units.SI.PressureDifference dp_nominal_GMT={{data["condensate_pressure_drop_nominal"]}}
+  parameter Modelica.Units.SI.PressureDifference dp_nominal_GMT={{ data["nominal_values"]["condensate_pressure_drop_nominal"] }}
     "Pressure drop of distribution at nominal mass flow rate";
   extends Buildings.Experimental.DHC.Examples.Steam.SingleBoiler(
     // Central heating plant
