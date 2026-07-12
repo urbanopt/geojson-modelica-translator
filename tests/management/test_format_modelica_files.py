@@ -1,10 +1,11 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import re
-import shutil
+import tempfile
 import unittest
 from pathlib import Path
+from shutil import which
 
 import pytest
 
@@ -13,12 +14,13 @@ from management.format_modelica_files import SKIP_FILES, TEMPLATE_FILES, preproc
 
 class FormatModelicaFilesTest(unittest.TestCase):
     def setUp(self):
-        self.output_dir = Path(__file__).parent / "output"
-        if self.output_dir.exists():
-            shutil.rmtree(self.output_dir)
-        self.output_dir.mkdir(exist_ok=True)
+        self._temporary_directory = tempfile.TemporaryDirectory()
+        self.output_dir = Path(self._temporary_directory.name)
 
-    @pytest.mark.skipif(shutil.which("modelicafmt") is None, reason="Modelica formatter is not installed. Skipping.")
+    def tearDown(self):
+        self._temporary_directory.cleanup()
+
+    @pytest.mark.skipif(which("modelicafmt") is None, reason="Modelica formatter is not installed. Skipping.")
     def test_no_meaningful_diff_when_formatting_mot_files(self):
         """After applying formatter to .mot (Jinja) files, we expect the only differences to be in whitespace"""
         for file_ in TEMPLATE_FILES:

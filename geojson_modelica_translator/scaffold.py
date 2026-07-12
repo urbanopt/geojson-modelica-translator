@@ -1,13 +1,70 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
+import inspect
 import logging
+import os
 import shutil
+import stat
 from pathlib import Path
 
-from geojson_modelica_translator.utils import ModelicaPath
+from modelica_builder.package_parser import PackageParser
+
+from geojson_modelica_translator.utils import ModelicaPath, mbl_version
 
 _log = logging.getLogger(__name__)
+
+
+def _create_subpackage(package: PackageParser, model_name: str) -> PackageParser:
+    if package.path is None:
+        raise ValueError(f"Cannot create subpackage '{model_name}': PackageParser.path is None.")
+
+    subpackage_path = Path(package.path) / model_name
+    subpackage_path.mkdir(parents=True, exist_ok=True)
+    package_within = getattr(package, "within", None)
+    if package_within:
+        within = ".".join([*package_within, package.package_name])
+    else:
+        within = package.package_name
+
+    subpackage = PackageParser.new_from_template(
+        path=subpackage_path,
+        name=model_name,
+        order=[],
+        within=within,
+    )
+    subpackage.save()
+    if hasattr(package, "_subpackages"):
+        package._subpackages[model_name.lower()] = subpackage
+    else:
+        setattr(package, model_name.lower(), subpackage)
+    return subpackage
+
+
+def _save_package_tree(package: PackageParser) -> None:
+    package.save()
+    if hasattr(package, "_subpackages"):
+        subpackages = package._subpackages.values()
+    else:
+        subpackages = (
+            value for value in vars(package).values() if isinstance(value, PackageParser) and value is not package
+        )
+    for subpackage in subpackages:
+        _save_package_tree(subpackage)
+
+
+if "create_subpackage" not in inspect.signature(PackageParser.add_model).parameters:
+    _package_parser_add_model = PackageParser.add_model
+
+    def _add_model_with_create_subpackage(
+        self: PackageParser, new_model_name: str, insert_at: int = -1, create_subpackage: bool = False
+    ) -> PackageParser:
+        _package_parser_add_model(self, new_model_name, insert_at=insert_at)
+        if create_subpackage:
+            return _create_subpackage(self, new_model_name)
+        return self
+
+    PackageParser.add_model = _add_model_with_create_subpackage
 
 
 class Scaffold:
@@ -20,19 +77,34 @@ class Scaffold:
 
     Presently, the scaffold stops at the loads, substation, plant, districts, scripts path and does not
     create a list of all of the submodels (yet).
+
+    The scaffold now uses PackageParser for more flexible subpackage management.
     """
 
-    def __init__(self, root_dir: Path, project_name: str, overwrite: bool = False):
+    def __init__(self, root_dir: Path, project_name: str, overwrite: bool = False, mbl_version_str: str | None = None):
         """Initialize the scaffold. This will clear out the directory if it already exists, so use this
         with caution.
 
         :param root_dir: Path, Directory where to create the scaffold
         :param project_name: str, Name of the project to create (should contain no spaces)
         :param overwrite: boolean, overwrite the project if it already exists?
+        :param mbl_version_str: str, optional, the Modelica Buildings Library version to use. If None, auto-detects.
         """
         self.root_dir = Path(root_dir)
         self.project_name = project_name
         self.overwrite = overwrite
+        self._mbl_version = mbl_version_str or mbl_version()
+        self._package: PackageParser | None = None
+
+        # Dynamically created paths (set by create() method). These are
+        # used for mypy checks.
+        self.districts_path: ModelicaPath | None = None
+        self.loads_path: ModelicaPath | None = None
+        self.plants_path: ModelicaPath | None = None
+        self.substations_path: ModelicaPath | None = None
+        self.networks_path: ModelicaPath | None = None
+        self.schedules_path: ModelicaPath | None = None
+        self.heat_pump_ets_path: ModelicaPath | None = None
 
         # clear out the project path
         self.project_path = self.root_dir / self.project_name
@@ -41,39 +113,140 @@ class Scaffold:
             if not self.overwrite:
                 raise Exception(f"Directory already exists and overwrite is false for {self.project_path}")
             else:
-                shutil.rmtree(self.project_path)
+                # Use onerror handler to force deletion of read-only files
+                def handle_remove_readonly(func, path, _exc):
+                    """Error handler for Windows readonly files"""
+                    if not os.access(path, os.W_OK):
+                        os.chmod(path, stat.S_IWUSR)
+                        func(path)
+                    else:
+                        raise _exc[1]
 
-    def create(self, ignore_paths: list[str] = []) -> None:
-        """run the scaffolding to create the directory structure for DES systems
+                shutil.rmtree(self.project_path, onerror=handle_remove_readonly)
+
+    @property
+    def package(self) -> PackageParser:
+        """Get or create the root PackageParser for this scaffold."""
+        if self._package is None:
+            raise RuntimeError(
+                "Scaffold not yet created. Call the create() method before accessing the package property."
+            )
+        return self._package
+
+    @staticmethod
+    def _add_model(package: PackageParser, model_name: str, create_subpackage: bool = False) -> PackageParser:
+        try:
+            model_package = package.add_model(model_name, create_subpackage=create_subpackage)
+            if create_subpackage:
+                model_package.save()
+            return model_package
+        except TypeError as error:
+            if "create_subpackage" not in str(error):
+                raise
+
+        package.add_model(model_name)
+        if not create_subpackage:
+            return package
+
+        return _create_subpackage(package, model_name)
+
+    def create(self, ignore_paths: list[str] = [], subpackages: list[str] = []) -> None:
+        """Run the scaffolding to create the directory structure for DES systems.
+
+        Now uses PackageParser for dynamic subpackage creation. You can either use ignore_paths
+        to exclude default packages, or use subpackages to explicitly list what to create.
 
         Args:
             ignore_paths (list, optional): List of paths NOT to create.
-                Choose from Loads, Substations, Plants, Districts, Networks, Heat_Pump_ETSes. Defaults to [].
+                Choose from Loads, Substations, Plants, Districts, Networks, Heat_Pump_ETSes, Schedules. Defaults to [].
+            subpackages (list, optional): If provided, only create these subpackages
+                (overrides ignore_paths). Defaults to [].
         """
+        # Create the root package
+        self._package = PackageParser.new_from_template(
+            self.project_path, self.project_name, order=[], mbl_version=self._mbl_version
+        )
 
-        # leverage the ModelicaPath function
-        if "Schedules" not in ignore_paths:
-            self.schedules_path = ModelicaPath("Schedules", root_dir=self.project_path, overwrite=self.overwrite)
+        # Determine which subpackages to create
+        default_packages = ["Schedules", "Loads", "Loads/ETS", "Substations", "Plants", "Districts", "Networks"]
 
-        if "Loads" not in ignore_paths:
-            self.loads_path = ModelicaPath("Loads", root_dir=self.project_path, overwrite=self.overwrite)
+        if subpackages:
+            # If explicit list provided, use only those
+            packages_to_create = subpackages
+        else:
+            # Otherwise use defaults minus ignored ones
+            packages_to_create = [p for p in default_packages if p not in ignore_paths]
 
-        if "Heat_Pump_ETSes" not in ignore_paths:
-            self.heat_pump_ets_path = ModelicaPath(
-                "ETS", root_dir=self.project_path / "Loads", overwrite=self.overwrite
-            )
+        # If a nested package's parent is ignored, also ignore the nested package
+        filtered_packages = []
+        for pkg in packages_to_create:
+            if "/" in pkg:
+                parent_name = pkg.split("/", 1)[0]
+                if parent_name not in packages_to_create:
+                    continue  # Skip nested package if parent isn't being created
+            filtered_packages.append(pkg)
+        packages_to_create = filtered_packages
 
-        if "Substations" not in ignore_paths:
-            self.substations_path = ModelicaPath("Substations", root_dir=self.project_path, overwrite=self.overwrite)
+        # Create each subpackage using PackageParser's dynamic creation
+        for package_name in packages_to_create:
+            # Handle nested packages like "Loads/ETS"
+            if "/" in package_name:
+                parent_name, subpkg_name = package_name.split("/", 1)
+                parent_pkg = getattr(self._package, parent_name.lower())
+                self._add_model(parent_pkg, subpkg_name, create_subpackage=True)
 
-        if "Plants" not in ignore_paths:
-            self.plants_path = ModelicaPath("Plants", root_dir=self.project_path, overwrite=self.overwrite)
+                # Create ModelicaPath for nested package
+                setattr(
+                    self,
+                    "heat_pump_ets_path",
+                    ModelicaPath(subpkg_name, root_dir=self.project_path / parent_name, overwrite=True),
+                )
+            else:
+                self._add_model(self._package, package_name, create_subpackage=True)
 
-        if "Districts" not in ignore_paths:
-            self.districts_path = ModelicaPath("Districts", root_dir=self.project_path, overwrite=self.overwrite)
+                # Create ModelicaPath for backward compatibility
+                # Set overwrite=True since PackageParser already created the directory
+                getattr(self._package, package_name.lower())
+                setattr(
+                    self,
+                    f"{package_name.lower()}_path",
+                    ModelicaPath(package_name, root_dir=self.project_path, overwrite=True),
+                )
 
-        if "Networks" not in ignore_paths:
-            self.networks_path = ModelicaPath("Networks", root_dir=self.project_path, overwrite=self.overwrite)
+    def add_subpackage(self, name: str, parent: str | None = None) -> PackageParser:
+        """Add a new subpackage dynamically to the scaffold.
+
+        Args:
+            name (str): Name of the subpackage to create
+            parent (str, optional): Name of parent package. If None, creates at root level.
+
+        Returns:
+            PackageParser: The newly created subpackage
+
+        Example:
+            scaffold.add_subpackage('CustomModels')
+            scaffold.add_subpackage('MyModel', parent='Districts')
+        """
+        if self._package is None:
+            raise RuntimeError("Scaffold not yet created. Call create() first.")
+
+        if parent:
+            parent_pkg = getattr(self._package, parent.lower())
+            subpackage = self._add_model(parent_pkg, name, create_subpackage=True)
+        else:
+            subpackage = self._add_model(self._package, name, create_subpackage=True)
+
+        # Create ModelicaPath for the new subpackage
+        # Set overwrite=True since PackageParser already created the directory
+        parent_path = self.project_path / parent if parent else self.project_path
+        setattr(self, f"{name.lower()}_path", ModelicaPath(name, root_dir=parent_path, overwrite=True))
+
+        return subpackage
+
+    def save(self) -> None:
+        """Save all package files to disk."""
+        if self._package:
+            _save_package_tree(self._package)
 
     def clear_or_create_path(self, path, overwrite=False):
         if Path(path).exists():

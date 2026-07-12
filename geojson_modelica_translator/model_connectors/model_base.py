@@ -1,15 +1,14 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import logging
 import shutil
 from pathlib import Path
-from typing import Union
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, exceptions
 from modelica_builder.model import Model
 
-from geojson_modelica_translator.external_package_utils import load_loop_order
+from geojson_modelica_translator.external_package_utils import get_num_buildings_in_loop_order, load_loop_order
 from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
@@ -21,7 +20,7 @@ class ModelBase:
     """
 
     # model_name must be overridden in subclass
-    model_name: Union[str, None] = None
+    model_name: str | None = None
 
     def __init__(self, system_parameters, template_dir):
         """Base initializer
@@ -50,6 +49,10 @@ class ModelBase:
         # Read district-level system params. Used when templating ets mofiles, for instance in heating_indirect.py
         if system_parameters is not None:
             # TODO: DRY up this handling of different generations
+            # 4G num buildings (all buidlings in system params)
+            buildings = self.system_parameters.get_param("$.buildings")
+            self.num_buildings = len(buildings) if buildings is not None else 0
+
             district_params = self.system_parameters.get_param("district_system")
             if "fourth_generation" in district_params:
                 self.district_template_data = {
@@ -68,10 +71,11 @@ class ModelBase:
                     ],
                     "number_of_loops": 1,
                 }
-                if "ghe_parameters" in district_params["fifth_generation"]:
-                    self.loop_order = load_loop_order(self.system_parameters.filename)
-                    self.district_template_data["number_of_loops"] = len(self.loop_order)
-                    self.district_template_data["data"] = self.loop_order
+                self.loop_order = load_loop_order(self.system_parameters.filename)
+                # 5G num buildings (counted from loop order)
+                self.num_buildings = get_num_buildings_in_loop_order(self.loop_order)
+                self.district_template_data["number_of_loops"] = len(self.loop_order)
+                self.district_template_data["data"] = self.loop_order
 
     def ft2_to_m2(self, area_in_ft2: float) -> float:
         """Converts square feet to square meters

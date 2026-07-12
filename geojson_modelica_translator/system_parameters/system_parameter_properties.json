@@ -162,9 +162,6 @@
           }
         }
       },
-      "required": [
-        "weather"
-      ],
       "additionalProperties": false
     },
     "topology_def": {
@@ -817,6 +814,16 @@
           "type": "number",
           "default": 18,
           "format": "Celsius"
+        },
+        "use_dry_cooling_coil": {
+          "description": "Whether to use a sensible-only dry cooling coil for time-series cooling loads. Defaults to false; no-plant 5G systems use this behavior unless use_wet_cooling_coil is true.",
+          "type": "boolean",
+          "default": false
+        },
+        "use_wet_cooling_coil": {
+          "description": "Whether to opt into the standard wet cooling coil for no-plant 5G time-series cooling loads. Defaults to false so no-plant 5G systems use the dry coil unless this is explicitly set to true. Do not set this and use_dry_cooling_coil to true at the same time.",
+          "type": "boolean",
+          "default": false
         }
       },
       "required": [
@@ -1161,6 +1168,20 @@
         "roughness",
         "rho_cp",
         "buried_depth"
+      ]
+    },
+    "no_central_plant": {
+      "description": "Parameters for 5G systems without a central plant, ground heat exchanger, or heat source.",
+      "type": "object",
+      "properties": {
+        "distribution_temperature": {
+          "description": "Ideal no-central-plant distribution loop source/sink temperature.",
+          "type": "number",
+          "format": "Celsius"
+        }
+      },
+      "required": [
+        "distribution_temperature"
       ]
     },
     "diesel_generator_parameters": {
@@ -2105,6 +2126,13 @@
           "minimum": 1,
           "default": 100,
           "format": "Meters"
+        },
+        "width_of_ghe": {
+          "description": "Horizontal surface width allowed for the ground heat exchanger.",
+          "type": "number",
+          "minimum": 1,
+          "default": 100,
+          "format": "Meters"
         }
       },
       "required": [
@@ -2278,10 +2306,10 @@
           "default": "Water"
         },
         "concentration_percent": {
-          "description": "The concentration of circulation fluid in percent, from 0-60.",
+          "description": "The concentration of circulation fluid as a fraction, from 0.0 to 0.6 (where 0.6 represents 60%).",
           "type": "number",
           "minimum": 0,
-          "maximum": 60,
+          "maximum": 0.6,
           "default": 0
         },
         "temperature": {
@@ -2419,7 +2447,7 @@
           "format": "Pascals"
         },
         "pump_design_head_autosized": {
-          "description": "True if the pump head is autosized, false if set manually",
+          "description": "True if the pump head is autosized, false if set manually. Note: current GMT generation does not recalculate pump_design_head from loop geometry; provide or review pump_design_head in Pascals.",
           "type": "boolean",
           "default": true
         },
@@ -2493,6 +2521,9 @@
         },
         "horizontal_piping_parameters": {
           "$ref": "#/definitions/horizontal_piping_parameters"
+        },
+        "no_central_plant": {
+          "$ref": "#/definitions/no_central_plant"
         },
         "heat_source_parameters": {
           "$ref": "#/definitions/heat_source_parameters"

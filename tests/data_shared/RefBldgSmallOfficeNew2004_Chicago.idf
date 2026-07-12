@@ -51,9 +51,9 @@
 !***** opinions of authors expressed herein do not necessarily state or *****
 !***** reflect those of the United States government or any agency thereof. *****
 !***** Access to and use of the Reference Buildings imposes the following obligations *****
-!***** on the user. The user agrees to credit DOE, NREL, PNNL, and LBNL in *****
+!***** on the user. The user agrees to credit DOE, NLR, PNNL, and LBNL in *****
 !***** any publication(s) that that result from the use of Reference Buildings. *****
-!***** However, the names of DOE/NREL/PNNL/LBNL may not be used in any *****
+!***** However, the names of DOE/NLR/PNNL/LBNL may not be used in any *****
 !***** advertising or publicity that implies endorsement or promotion of any *****
 !***** products, services or commercial entities. *****
 ! Reference citation for the Commercial Reference Buildings:
@@ -2835,7 +2835,7 @@
 
 ! Deru and Torcellini 2007
 ! Source Energy and Emission Factors for Energy Use in Buildings
-! NREL/TP-550-38617
+! NLR/TP-550-38617
 ! source factor and Higher Heating Values from Table 5
 ! post-combustion emission factors for boiler from Table 9 (with factor of 1000 correction for natural gas)
 

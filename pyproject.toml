@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "geojson-modelica-translator"
-version = "0.12.0"
+version = "0.14.0"
 description = "Package for converting GeoJSON to Modelica models for urban scale analyses."
-authors = ["URBANopt DES Team <nicholas.long@nrel.gov>"]
+authors = ["URBANopt DES Team <nicholas.long@nlr.gov>"]
 license = "BSD-4-Clause"
 
 readme = "README.md"
@@ -31,32 +31,33 @@ packages = [
 # https://python-poetry.org/docs/dependency-specification/#version-constraints
 python = ">=3.10, <3.14"
 BuildingsPy = "^5.1"
-click = "^8.2"
+# Keep click <8.2 for compatibility with SEED (see SEED's requirements)
+click = "<8.2"
 geojson = "^3.1"
 jinja2 = "^3.1"
 jsonpath-ng = "^1.6"
 jsonschema = "^4.20"
-modelica-builder = "^0.6.0"
+modelica-builder = "^0.7.0"
 # modelica-builder = { path = "../modelica-builder", develop = true }
 # modelica-builder = { git = "https://github.com/urbanopt/modelica-builder.git", branch = "develop"}
 pandas = "^2.0"
 requests = "^2.28"
-teaser = "1.3.0"
+teaser = "1.3.1"
 # teaser = { git = "https://github.com/RWTH-EBC/TEASER.git", branch = "development" }
-# myst-parser = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
-rpds-py = ">=0.22,<0.28"
-mypy = "^1.17"
+rpds-py = ">=0.22,<0.31"
+mypy = ">=1.17,<3.0"
 pre-commit = "^4.0"
-pytest = "^8.3"
+pytest = ">=8.3,<10.0"
 pytest-cov = ">=6,<8"
+pytest-xdist = ">=3.6,<4.0"
 syrupy = ">=4.8,<6.0"
 # documentation - these are used during development of docs, not deployment
 markdown-include = "^0.8.1"
 mkdocs-material = "^9.5"
 mkdocs-schema-reader = "^0.11.1"
-mkdocstrings-python = ">=1.12.2,<1.19.0"
+mkdocstrings-python = ">=1.12.2,<2.1.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.1"]
@@ -79,4 +80,5 @@ markers = [
     "compilation: marks tests that are for compiling a simulation with docker/optimica (deselect with '-m \"not compilation\"'). All simulations now require MSL v4.",
     "dymola: mark tests that are for running only in Dymola, which requires a local install and license (deselect with '-m \"not dymola\"').",
     "docker: mark tests that are for testing Docker (deselect with '-m \"not docker\"').",
+    "xdist_group(name): groups tests onto the same pytest-xdist worker when they share filesystem state.",
 ]

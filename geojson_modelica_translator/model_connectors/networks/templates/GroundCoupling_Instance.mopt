@@ -1,5 +1,8 @@
+{% set model_couplings = graph.couplings_by_type(model.id) %}
 {{ model.modelica_type }} {{ model.id }}(
-  soiDat={{graph.couplings_by_type(model.id).plant_couplings[0].plant.id}}.borFieDat.soiDat,
+    {% if model_couplings.plant_couplings is defined and model_couplings.plant_couplings|length > 0 %}
+    soiDat={{ model_couplings.plant_couplings[0].plant.id }}.borFieDat.soiDat,
+    {% endif %}
   len=cat(
       1,
       datDes.lDis,

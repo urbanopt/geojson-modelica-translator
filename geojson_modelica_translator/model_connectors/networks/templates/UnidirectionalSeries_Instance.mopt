@@ -3,41 +3,64 @@
   show_TOut=true,
   final mDis_flow_nominal=datDes.mPipDis_flow_nominal,
   final dp_length_nominal=datDes.dp_length_nominal
-  {% if sys_params.district_system.fifth_generation.ghe_parameters is defined %}
+  {% if loop_order is defined %}
     ,
-    {% for group_num in range(loop_order.number_of_loops) %}
-      {% if loop_order.data[group_num].list_ghe_ids_in_group is defined %}
-        {% set plant_id = loop_order.data[group_num].list_ghe_ids_in_group[0] %}
-        {% set get_id_func = graph.get_ghe_id %}
-      {% else %}
-        {% set plant_id = loop_order.data[group_num].list_source_ids_in_group[0] %}
-        {% set get_id_func = graph.get_source_id %}
-      {% endif %}
-      {% if get_id_func(graph.couplings_by_type(model.id).plant_couplings[0].id) == plant_id %}
-        final nCon= {{ loop_order.data[group_num].list_bldg_ids_in_group|length }},
-        {% if group_num == 0 %}
-          final mCon_flow_nominal=datDes.mCon_flow_nominal[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
-          final lDis=datDes.lDis[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
-          final lCon=datDes.lCon[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
-          {% if loop_order.number_of_loops == 1 %}
-            final lEnd = datDes.lEnd,
+    {% set model_couplings = graph.couplings_by_type(model.id) %}
+    {% set explicit_no_plant_boundary = false %}
+    {% if model_couplings.plant_couplings is defined and model_couplings.plant_couplings|length > 0 %}
+      {% set plant_model = graph.get_other_model(model_couplings.plant_couplings[0].id, model.id) %}
+      {% set explicit_no_plant_boundary = plant_model.id.startswith("noPla_") %}
+    {% endif %}
+    {% set has_actual_plant_couplings = model_couplings.plant_couplings is defined and model_couplings.plant_couplings|length > 0 and not explicit_no_plant_boundary %}
+    {% if has_actual_plant_couplings %}
+      {% for group_num in range(loop_order.number_of_loops) %}
+        {% set plant_id = none %}
+        {% set get_id_func = none %}
+        {% if loop_order.data[group_num].list_ghe_ids_in_group is defined %}
+          {% set plant_id = loop_order.data[group_num].list_ghe_ids_in_group[0] %}
+          {% set get_id_func = graph.get_ghe_id %}
+        {% elif loop_order.data[group_num].list_source_ids_in_group is defined %}
+          {% set plant_id = loop_order.data[group_num].list_source_ids_in_group[0] %}
+          {% set get_id_func = graph.get_source_id %}
+        {% endif %}
+        {% if plant_id is not none and get_id_func(model_couplings.plant_couplings[0].id) == plant_id %}
+          final nCon= {{ loop_order.data[group_num].list_bldg_ids_in_group|length }},
+          {% if group_num == 0 %}
+            final mCon_flow_nominal=datDes.mCon_flow_nominal[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+            final lDis=datDes.lDis[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+            final lCon=datDes.lCon[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+            {% if loop_order.number_of_loops == 1 %}
+              final lEnd = datDes.lEnd,
+            {% else %}
+              final lEnd=datDes.lDis[{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}],
+            {% endif %}
           {% else %}
-            final lEnd=datDes.lDis[{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}],
-          {% endif %}
-        {% else %}
-          {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
-          final mCon_flow_nominal=datDes.mCon_flow_nominal[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
-          final lDis=datDes.lDis[{{ 1+group_num+sum_bldg }}:{{ group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
-          final lCon=datDes.lCon[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
-          {% if group_num == loop_order.number_of_loops-1 %}
-            final lEnd = datDes.lEnd,
-          {% else %}
-            final lEnd=datDes.lDis[{{ 1+group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+            {% set sum_bldg = loop_order.data[:group_num]|map(attribute='list_bldg_ids_in_group')|map('length')|sum %}
+            final mCon_flow_nominal=datDes.mCon_flow_nominal[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+            final lDis=datDes.lDis[{{ 1+group_num+sum_bldg }}:{{ group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+            final lCon=datDes.lCon[{{ 1+sum_bldg }}:{{ sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+            {% if group_num == loop_order.number_of_loops-1 %}
+              final lEnd = datDes.lEnd,
+            {% else %}
+              final lEnd=datDes.lDis[{{ 1+group_num+sum_bldg+loop_order.data[group_num].list_bldg_ids_in_group|length }}],
+            {% endif %}
           {% endif %}
         {% endif %}
+      {% endfor %}
+    {% else %}
+      {% if loop_order.number_of_loops > 0 %}
+        final nCon= {{ loop_order.data[0].list_bldg_ids_in_group|length }},
+        final mCon_flow_nominal=datDes.mCon_flow_nominal[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+        final lDis=datDes.lDis[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+        final lCon=datDes.lCon[1:{{ loop_order.data[0].list_bldg_ids_in_group|length }}],
+        {% if loop_order.number_of_loops == 1 %}
+          final lEnd = datDes.lEnd,
+        {% else %}
+          final lEnd=datDes.lDis[{{ 1+loop_order.data[0].list_bldg_ids_in_group|length }}],
+        {% endif %}
       {% endif %}
-    {% endfor %}
-  final allowFlowReversal=allowFlowReversalSer
+    {% endif %}
+    final allowFlowReversal=allowFlowReversalSer
   {% endif %}
   )
   {% raw %}"Ground coupling"

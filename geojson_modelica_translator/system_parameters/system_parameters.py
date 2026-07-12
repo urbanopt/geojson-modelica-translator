@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 import json
@@ -7,14 +7,21 @@ import math
 from contextlib import suppress
 from copy import deepcopy
 from pathlib import Path
-from typing import Union
 
 import pandas as pd
 import requests
 from jsonpath_ng.ext import parse
 from jsonschema import ValidationError, validate
+from modelica_builder.modelica_mos_file import ModelicaMOS
+
+from geojson_modelica_translator.modelica.GMT_Lib.DHC._flow_sizing import flow_rate_from_load, source_side_loads
 
 logger = logging.getLogger(__name__)
+
+WATER_DENSITY_KG_PER_M3 = 1000
+FIFTH_GENERATION_SOURCE_SIDE_DELTA_T_K = 5
+FIFTH_GENERATION_TARGET_PIPE_VELOCITY_M_PER_S = 2
+DEFAULT_NO_CENTRAL_PLANT_DISTRIBUTION_TEMPERATURE_C = 18.3
 
 
 class SystemParameters:
@@ -170,7 +177,7 @@ class SystemParameters:
             logger.error(f"Ensure your value is in the correct format: {error.schema.get('format', 'string')}")
             raise ValidationError("Invalid system parameter file.")
 
-    def download_weatherfile(self, filename, save_directory: str) -> Union[str, Path]:
+    def download_weatherfile(self, filename, save_directory: str) -> str | Path:
         """Download the MOS or EPW weather file from energyplus.net
 
         This routine downloads the weather file, either an MOS or EPW, which is selected based
@@ -859,6 +866,7 @@ class SystemParameters:
                 if measure_file_path.suffix == ".mos":
                     # if there is a relative path, then set the path relative
                     timeseries_load_file_path = measure_file_path.resolve()
+                    self.update_fifth_generation_building_pump_flow(district_type, building, timeseries_load_file_path)
                     if self.rel_path:
                         timeseries_load_file_path = timeseries_load_file_path.relative_to(self.rel_path)
 
@@ -908,15 +916,102 @@ class SystemParameters:
         return building_list, district_nominal_massflow_rate
 
     def calculate_dimensions(self, area, perimeter):
+        """
+        Calculate the dimensions of a rectangle given its area and perimeter.
+
+        :param area: area of the rectangle from geojson feature properties
+        :param perimeter: perimeter of the rectangle from geojson feature properties
+        :return: length and width of the rectangle
+
+        Special case to handle slight measurement errors for near-square rectangles:
+        If the discriminant is negative but the perimeter is within 1% of the
+        perimeter of a square with the given area, treat it
+        as a square and return equal length and width based on the area.
+
+        """
         discriminant = perimeter**2 - 16 * area
 
         if discriminant < 0:
-            raise ValueError("No valid rectangle dimensions exist for the given area and perimeter.")
+            # Check if we're close to a square (within 1% tolerance)
+            square_side = math.sqrt(area)
+            square_perimeter = 4 * square_side
+            perimeter_error = abs(perimeter - square_perimeter) / square_perimeter
+
+            if perimeter_error < 0.01:  # Within 1% of square perimeter
+                # Treat as a square and use the geometric mean of the implied dimensions
+                logger.warning(
+                    f"Rectangle dimensions (area={area}, perimeter={perimeter}) are very close to a square. "
+                    f"Using square dimensions with side length {square_side:.2f}"
+                )
+                return square_side, square_side
+            else:
+                raise ValueError(
+                    f"No valid rectangle dimensions exist for the given area ({area}) and perimeter ({perimeter}). "
+                    f"Minimum perimeter for this area is {square_perimeter:.2f}"
+                )
 
         length = (perimeter + math.sqrt(discriminant)) / 4
         width = (perimeter - 2 * length) / 2
 
         return length, width
+
+    def update_fifth_generation_central_pump_flow(self, district_type: str, building_list: list[dict]) -> None:
+        if "5G" not in district_type:
+            return
+
+        central_pump_parameters = self.param_template["district_system"]["fifth_generation"]["central_pump_parameters"]
+        if not central_pump_parameters.get("pump_flow_rate_autosized", False):
+            return
+
+        building_pump_flow_rate = sum(
+            float(building.get("fifth_gen_ets_parameters", {}).get("ets_pump_flow_rate", 0) or 0)
+            for building in building_list
+        )
+        if building_pump_flow_rate > 0:
+            central_pump_parameters["pump_flow_rate"] = round(building_pump_flow_rate, 6)
+
+        self.update_fifth_generation_horizontal_piping(building_pump_flow_rate)
+
+    def update_fifth_generation_horizontal_piping(self, pump_flow_rate: float) -> None:
+        horizontal_piping_parameters = self.param_template["district_system"]["fifth_generation"][
+            "horizontal_piping_parameters"
+        ]
+        if not horizontal_piping_parameters.get("hydraulic_diameter_autosized", False) or pump_flow_rate <= 0:
+            return
+
+        autosized_hydraulic_diameter = math.sqrt(
+            4 * pump_flow_rate / (math.pi * FIFTH_GENERATION_TARGET_PIPE_VELOCITY_M_PER_S)
+        )
+        horizontal_piping_parameters["hydraulic_diameter"] = round(autosized_hydraulic_diameter, 3)
+
+    def update_fifth_generation_building_pump_flow(self, district_type: str, building: dict, mos_path: Path) -> None:
+        if "5G" not in district_type:
+            return
+
+        ets_parameters = building.get("fifth_gen_ets_parameters")
+        if ets_parameters is None:
+            return
+
+        mos_file = ModelicaMOS(mos_path)
+        peak_heating_load = mos_file.retrieve_header_variable_value("Peak space heating load", cast_type=float)
+        peak_cooling_load = mos_file.retrieve_header_variable_value("Peak space cooling load", cast_type=float)
+        peak_water_load = mos_file.retrieve_header_variable_value("Peak water heating load", cast_type=float)
+        heating_extraction_load, cooling_rejection_load, swh_extraction_load = source_side_loads(
+            peak_heating_load,
+            peak_cooling_load,
+            peak_water_load,
+            ets_parameters,
+        )
+        design_source_side_load = max(heating_extraction_load + swh_extraction_load, cooling_rejection_load)
+        if design_source_side_load <= 0:
+            return
+
+        source_side_mass_flow_rate = flow_rate_from_load(
+            design_source_side_load,
+            FIFTH_GENERATION_SOURCE_SIDE_DELTA_T_K,
+        )
+        source_side_volume_flow_rate = source_side_mass_flow_rate / WATER_DENSITY_KG_PER_M3
+        ets_parameters["ets_pump_flow_rate"] = round(source_side_volume_flow_rate, 6)
 
     def csv_to_sys_param(
         self,
@@ -1015,6 +1110,8 @@ class SystemParameters:
             elif microgrid and feature_opt_file.exists():
                 self.process_building_microgrid_inputs(building, scenario_dir)
 
+        self.update_fifth_generation_central_pump_flow(district_type, building_list)
+
         # Add all buildings to the sys-param file
         self.param_template["buildings"] = building_list
 
@@ -1066,6 +1163,17 @@ class SystemParameters:
             case "steam":
                 del self.param_template["district_system"]["fourth_generation"]
                 del self.param_template["district_system"]["fifth_generation"]
+
+        fifth_generation = self.param_template["district_system"].get("fifth_generation")
+        if (
+            fifth_generation
+            and not fifth_generation.get("ghe_parameters")
+            and not fifth_generation.get("heat_source_parameters")
+        ):
+            fifth_generation.setdefault("no_central_plant", {}).setdefault(
+                "distribution_temperature",
+                DEFAULT_NO_CENTRAL_PLANT_DISTRIBUTION_TEMPERATURE_C,
+            )
 
         # save the file to disk
         self.save(self.sys_param_filename, self.param_template)

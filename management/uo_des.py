@@ -1,4 +1,4 @@
-# :copyright (c) URBANopt, Alliance for Sustainable Energy, LLC, and other contributors.
+# :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
 
 from pathlib import Path
@@ -207,6 +207,13 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     type=int,
 )
 @click.option(
+    "--tolerance",
+    default=None,
+    help="Solver relative tolerance (e.g. 1e-4). Defaults to the model annotation value. "
+    "Use 1e-4 for faster simulation.",
+    type=float,
+)
+@click.option(
     "-o",
     "--output_variables",
     default=None,
@@ -240,6 +247,7 @@ def run_model(
     stop_time: int,
     step_size: int,
     intervals: int,
+    tolerance: float,
     output_variables: str,
     compiler_flags: str,
     simulation_flags: str,
@@ -263,6 +271,7 @@ def run_model(
     :param stop_time (int): stop time of the simulation (seconds of a year)
     :param step_size (int): step size of the simulation (seconds)
     :param number_of_intervals (int): number of intervals to run the simulation
+    :param tolerance (float): solver relative tolerance; defaults to the model annotation value
     :param output_variables (str) Comma-separated list of specific output variables to capture from simulation
     :param compiler_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
     :param simulation_flags (str): Comma-separated list of OpenModelica simulation flags. For advanced users only
@@ -287,6 +296,7 @@ def run_model(
         stop_time=stop_time,
         step_size=step_size,
         number_of_intervals=intervals,
+        tolerance=tolerance,
         output_variables=output_variables,
         compiler_flags=compiler_flags,
         simulation_flags=simulation_flags,

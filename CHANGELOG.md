@@ -1,5 +1,88 @@
 # Change Log
 
+## Version 0.14.0
+
+## What's Changed
+
+### Improvements & Bug Fixes 🐛
+
+* Add the different fluid options to modelica templates by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/820>
+* Expose 4G DES Chiller Plant System Parameters in Templates by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/847>
+* Expose 4G DES Boiler Plant System Parameters in Templates by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/848>
+* Improve sizing for mass flows and borehole field when cooling increases [5G template] by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/849>
+* Allow null loop order by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/850>
+* Make facMulHea and facMulCoo dynamic in 5G Template model by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/852>
+
+### Bug Fixes 🐞
+
+* Update calculate_dimensions function to handle small geometry errors by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/816>
+* Add tests for pipe lengths order relative to loop order by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/817>
+* Ensure package.order exists and is correct by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/851>
+
+### Dependency Updates 📦
+
+* Bump mkdocstrings-python from 2.0.1 to 2.0.2 in the prod-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/814>
+* Update dependencies by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/834>
+* Update precommit and mypy dependencies by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/846>
+
+### Maintenance 🧹
+
+* Use updated GHA methods for deploying documentation by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/812>
+* Bump actions/upload-pages-artifact from 3 to 4 in the actions-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/813>
+* Bump the actions-deps group across 1 directory with 6 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/830>
+* Enforce line endings to be consistent using pre-commit by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/853>
+
+**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.13.0...v0.14.0>
+
+## Version 0.13.0
+
+## What's Changed
+
+### Exciting New Features 🎉
+
+* Use dynamic scaffolding, deprecate most PackageParser instances by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/785>
+* Add 5G Heat Pump Trio to GMT_Lib template by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/787>
+
+### Improvements & Bug Fixes 🐛
+
+* Support docker_image argument in OM Runner by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/772>
+* adds more robust result processing for GHP by @tanushree04 in <https://github.com/urbanopt/geojson-modelica-translator/pull/775>
+* Update fluid concentration to be a fractional percent by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/784>
+* Add undisturbed soil temp validation by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/796>
+* Improve HeatPumpTrio ETS robustness by @JingWang-CUB in <https://github.com/urbanopt/geojson-modelica-translator/pull/802>
+
+### Bug Fixes 🐞
+
+* Downgrade click to support python 3.9 by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/770>
+* Update result processing library for GHPs by @tanushree04 in <https://github.com/urbanopt/geojson-modelica-translator/pull/742>
+* Update method of counting number of buildings for 5G systems by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/808>
+
+### Dependency Updates 📦
+
+* ci: bump the actions-deps group with 2 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/765>
+* deps: bump the dev-deps group across 1 directory with 3 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/768>
+* deps: bump the prod-deps group across 1 directory with 2 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/769>
+* deps: bump rpds-py from 0.28.0 to 0.29.0 in the dev-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/773>
+* deps: bump pre-commit from 4.4.0 to 4.5.0 in the dev-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/776>
+* ci: bump actions/checkout from 5 to 6 in the actions-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/778>
+* deps: bump the dev-deps group with 2 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/779>
+* deps: bump mkdocstrings-python from 1.19.0 to 2.0.1 in the prod-deps group across 1 directory by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/782>
+* ci: bump the actions-deps group with 2 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/792>
+* deps: bump the prod-deps group across 1 directory with 3 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/798>
+* Bump syrupy from 5.0.0 to 5.1.0 in the dev-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/805>
+* Update modelica builder version and precommit by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/804>
+
+### Maintenance 🧹
+
+* Update changelog formatting by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/806>
+* Bump actions/github-script from 7 to 8 in the actions-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/807>
+* Add check to run documenation build on every commit by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/810>
+
+### Other Changes
+
+* Fix param schema for docs site by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/762>
+* Update copyright and names by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/809>
+
 ## Version 0.12.0
 
 ### Exciting New Features 🎉
