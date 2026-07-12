@@ -17,6 +17,12 @@
   Buildings.Controls.OBC.CDL.Reals.MultiplyByParameter gai(k=datDes.mPumDis_flow_nominal)
     "Scale with nominal mass flow rate"
     annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
+  Modelica.Blocks.Continuous.FirstOrder filDis(
+    T=300,
+    initType=Modelica.Blocks.Types.Init.SteadyState,
+    y_start=0)
+    "Low-pass filter on the distribution mass-flow command to damp step-load transients"
+    annotation (Placement(transformation(extent={{-52,-100},{-40,-88}})));
   {% endraw %}// expansion vessel
   Buildings.Fluid.Sources.Boundary_pT expVes(
     redeclare final package Medium = {{ globals.medium_w }},
