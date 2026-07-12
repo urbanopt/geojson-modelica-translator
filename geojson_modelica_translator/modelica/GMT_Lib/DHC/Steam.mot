@@ -27,7 +27,7 @@ model Steam "Example model for a complete steam district heating system with a
     "Nominal mass flow rate of entire district";
   parameter Modelica.Units.SI.HeatFlowRate QDis_flow_nominal=QBui_flow_nominal*N
     "Nominal heat flow rate of entire district";
-  parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal=20000
+  parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal={{ data["district_system"]["first_generation"]["central_steam_plant_parameters"].get("heat_flow_nominal_building", 20000) }}
     "Nominal heat flow rate of each building";
   parameter Modelica.Units.SI.PressureDifference dpPip={{ data["district_system"]["first_generation"]["central_steam_plant_parameters"]["condensate_pressure_drop_nominal"] }}
     "Pressure drop in the condensate return pipe";
@@ -100,6 +100,12 @@ equation
       Tolerance=1e-06),
     Documentation(revisions="<html>
 <ul>
+<li>
+July 12, 2026 by Nicholas Long:<br/>
+Templated steam-system documentation update and mapped
+<code>QBui_flow_nominal</code> from
+<code>district_system.first_generation.central_steam_plant_parameters.heat_flow_nominal_building</code>.
+</li>
 <li>
 September 15, 2023, by Kathryn Hinkelman:<br/>
 Added publication references.

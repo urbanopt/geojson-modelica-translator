@@ -612,6 +612,29 @@ def test_build_steam_example():
     assert linecount(package_output_dir / "Steam.mo") > 20
 
 
+def test_build_steam_example_has_distribution_and_steam_building_connections():
+    # -- Setup
+    package_output_dir = PARENT_DIR / "output" / "SteamExample"
+    package_output_dir.mkdir(parents=True, exist_ok=True)
+    sys_params = SystemParameters(STEAM_PARAMS)
+
+    # -- Act
+    steam = Steam(sys_params)
+    steam.build_from_template(package_output_dir)
+    steam_mo = (package_output_dir / "Steam.mo").read_text()
+
+    # -- Assert
+    # Verify the generated model includes steam building equipment, distribution loop,
+    # plant, and the key connect statements between them.
+    assert "Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS bld[N](" in steam_mo
+    assert "Buildings.DHC.Networks.Steam.DistributionCondensatePipe dis(" in steam_mo
+    assert "Buildings.DHC.Plants.Steam.SingleBoiler pla(" in steam_mo
+    assert "connect(dis.ports_bCon, bld.port_a)" in steam_mo
+    assert "connect(bld.port_b, dis.ports_aCon)" in steam_mo
+    assert "connect(pla.port_bSerHea, dis.port_aDisSup)" in steam_mo
+    assert "connect(dis.port_bDisRet, pla.port_aSerHea)" in steam_mo
+
+
 @pytest.mark.simulation
 def test_simulate_steam_example():
     # -- Setup

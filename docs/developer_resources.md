@@ -22,6 +22,25 @@ make test-all
 make test-resources-intensive-dymola
 ```
 
+### Steam Boiler Test Coverage
+
+Current steam-boiler coverage is split into two layers:
+
+- `tests/model_connectors/test_steam_boiler.py`
+  - `test_build_steam_system` verifies that a first-generation district model is generated.
+  - `test_simulate_steam_system` is currently marked `skip` with reason: "District steam systems have not been implemented yet."
+- `tests/GMT_Lib/test_gmt_lib.py`
+  - `test_build_steam_example` verifies generation of the GMT steam example.
+  - `test_simulate_steam_example` runs `compile_and_run` with `ModelicaRunner` and validates a successful OpenModelica run.
+
+Run only the steam-related tests with:
+
+```bash
+poetry run pytest -q tests/model_connectors/test_steam_boiler.py tests/GMT_Lib/test_gmt_lib.py -k steam
+```
+
+This means the repository currently demonstrates that the core steam example can simulate, but the district-level steam connector path is generation-tested only until the skipped simulation test is enabled.
+
 ## Snapshot Testing
 
 Some tests use [syrupy](https://github.com/tophat/syrupy) to compare generated modelica models to saved "snapshots" of the models (saved as .ambr files).

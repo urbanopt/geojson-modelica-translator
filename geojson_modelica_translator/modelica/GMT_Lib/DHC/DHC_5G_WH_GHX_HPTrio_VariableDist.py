@@ -23,7 +23,7 @@ class DHC5GWasteHeatGHXwithHPTrioVariableDist(SimpleGMTBase):
         self.template_dir = Path(__file__).parent
         super().__init__(self.system_parameters, self.template_dir)
 
-    def build_from_template(self, output_dir: Path, project_name: str) -> None:  # noqa: PLR0915
+    def build_from_template(self, output_dir: Path, project_name: str) -> None:
         """This is a bit past being a simple template as it is exporting an entire scaffolded package
         that can be loaded and simulated in Modelica. The scaffold is very specific to DES.
 

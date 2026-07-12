@@ -18,5 +18,13 @@ District energy system model for a 1st-generation steam district heating
 system. The model extends <code>Plants.SteamBoiler</code> which wraps the
 MBL steam example <code>Buildings.Experimental.DHC.Examples.Steam.SingleBoiler</code>.
 </p>
-</html>"));
+    </html>",
+      revisions="<html>
+    <ul>
+    <li>
+    July 12, 2026 by Nicholas Long:<br/>
+    Templated this first-generation steam district system documentation.
+    </li>
+    </ul>
+    </html>"));
 end DistrictEnergySystem;

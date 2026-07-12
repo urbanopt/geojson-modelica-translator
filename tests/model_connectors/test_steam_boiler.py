@@ -63,6 +63,16 @@ class CombinedHeatingPowerTest(TestCaseBase):
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
         assert (root_path / "DistrictEnergySystem.mo").exists()
 
+    def test_steam_system_uses_steam_boiler_wrapper_model(self):
+        district_model = Path(self.district._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+        steam_boiler_model = Path(self.district._scaffold.plants_path.files_dir) / "SteamBoiler.mo"
+
+        district_mo = district_model.read_text()
+        steam_boiler_mo = steam_boiler_model.read_text()
+
+        assert "extends steam_boiler.Plants.SteamBoiler;" in district_mo
+        assert "extends Buildings.Experimental.DHC.Examples.Steam.SingleBoiler(" in steam_boiler_mo
+
     @pytest.mark.simulation
     @pytest.mark.skip(reason="District steam systems have not been implemented yet.")
     def test_simulate_steam_system(self):

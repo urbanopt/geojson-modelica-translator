@@ -48,10 +48,22 @@ model SteamBoiler
 <a href=\"Buildings.Experimental.DHC.Examples.Steam.SingleBoiler.mo\">
 Buildings.Experimental.DHC.Examples.Steam.SingleBoiler.mot</a>.
 </p>
+    <p>
+    Template-to-sysparam mapping:
+    <code>boiler_efficiency</code>, <code>steam_pressure_setpoint</code>,
+    <code>reduced_pressure_setpoint</code>, <code>condensate_pressure_drop_nominal</code>, and
+    <code>heat_flow_nominal_building</code> are sourced from
+    <code>district_system.first_generation.central_steam_plant_parameters</code>.
+    The number of buildings comes from <code>buildings</code> length.
+    </p>
 </html>",
       revisions="<html>
 <ul>
 <li>
+    July 12, 2026 by Nicholas Long:<br/>
+    Templated steam-system documentation update and sysparam mapping notes.
+    </li>
+    <li>
 
 February 01, 2024 by Zhanwei He:<br/>
 First implementation.
