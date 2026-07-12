@@ -10,7 +10,7 @@ CI now builds the runner image from this Dockerfile and runs the Docker-based te
 
 To build the docker container locally, follow the below instructions:
 
-1. If on the NLR network:
+1. If on the NREL network:
     - Disable Netskope temporarily
     - Disconnect from VPN
 2. Then run the following from the GMT repository root:
