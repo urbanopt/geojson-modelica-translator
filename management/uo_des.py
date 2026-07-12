@@ -210,7 +210,7 @@ def create_model(sys_param_file: Path, geojson_feature_file: Path, project_path:
     "--tolerance",
     default=None,
     help="Solver relative tolerance (e.g. 1e-4). Defaults to the model annotation value. "
-    "1e-4 runs ~15x faster than 1e-6 with <0.02% difference in energy KPIs.",
+    "Use 1e-4 for faster simulation.",
     type=float,
 )
 @click.option(
