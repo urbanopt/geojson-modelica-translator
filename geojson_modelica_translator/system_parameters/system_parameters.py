@@ -1175,6 +1175,17 @@ class SystemParameters:
                 DEFAULT_NO_CENTRAL_PLANT_DISTRIBUTION_TEMPERATURE_C,
             )
 
+        fifth_generation = self.param_template["district_system"].get("fifth_generation")
+        if (
+            fifth_generation
+            and not fifth_generation.get("ghe_parameters")
+            and not fifth_generation.get("heat_source_parameters")
+        ):
+            fifth_generation.setdefault("no_central_plant", {}).setdefault(
+                "distribution_temperature",
+                DEFAULT_NO_CENTRAL_PLANT_DISTRIBUTION_TEMPERATURE_C,
+            )
+
         # save the file to disk
         self.save(self.sys_param_filename, self.param_template)
 
