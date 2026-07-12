@@ -1,7 +1,8 @@
 ARG SEED_GMT_OM_RUNNER_IMAGE=nrel/gmt-om-runner:4.0.0
+ARG OPENMODELICA_IMAGE=openmodelica/openmodelica:v1.27.0-minimal
+
 FROM ${SEED_GMT_OM_RUNNER_IMAGE} AS seed-libraries
 
-ARG OPENMODELICA_IMAGE=openmodelica/openmodelica:v1.27.0-minimal
 FROM ${OPENMODELICA_IMAGE}
 
 # These libraries help compile and simulate separately.
