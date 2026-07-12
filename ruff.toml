@@ -15,7 +15,7 @@ extend-ignore-names = ["test_*"]
 # system_parameters.py has many file lookups that necessitate nested statements & branches
 # Raise the allowed limits the least possible amount https://docs.astral.sh/ruff/settings/#pylint-max-branches
 max-statements = 75
-max-branches = 24
+max-branches = 30
 
 [lint.per-file-ignores]
 "tests/*" = ["S101"] # assert statements are allowed in tests, and paths are safe
