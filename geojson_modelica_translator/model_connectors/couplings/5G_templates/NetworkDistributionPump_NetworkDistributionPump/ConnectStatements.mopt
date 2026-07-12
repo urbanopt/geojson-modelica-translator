@@ -3,6 +3,8 @@
     annotation (Line(points={{-20,-100},{-20,-80},{-44,-80},{-44,-70}}, color={0,127,255}));
   connect(conPum.y, gai.u)
     annotation (Line(points={{-98,-90},{-82,-90}}, color={0,0,127}));
-  connect(gai.y, pumDis.m_flow_in)
-   annotation (Line(points={{-58,-90},{-26,-90},{-26,-60},{-32,-60}}, color={0,0,127}));
+  connect(gai.y, filDis.u)
+    annotation (Line(points={{-58,-90},{-53.2,-90}}, color={0,0,127}));
+  connect(filDis.y, pumDis.m_flow_in)
+   annotation (Line(points={{-39.4,-94},{-26,-94},{-26,-60},{-32,-60}}, color={0,0,127}));
   {% endraw %}

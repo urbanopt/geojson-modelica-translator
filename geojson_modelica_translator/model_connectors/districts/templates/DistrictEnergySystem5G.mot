@@ -60,13 +60,21 @@ model DistrictEnergySystem
   experiment(
     StopTime=86400,
     Interval=3600,
-    Tolerance=1e-06),
+    Tolerance=1e-04),
   Diagram(
     coordinateSystem(
       preserveAspectRatio=false,
       extent={{ diagram.extent }})),
   Documentation(
     revisions="<html>
+ <li>
+ July 11, 2026, by Nicholas Long:<br/>
+ Performance: relaxed the solver Tolerance in the experiment annotation from
+ <code>1e-6</code> to <code>1e-4</code>. For the 5G DES models runtime is
+ dominated by the Jacobian/nonlinear-system evaluation, and a <code>1e-4</code>
+ tolerance runs roughly 15x faster than <code>1e-6</code> while changing energy
+ KPIs by &lt;0.02%. Mirrors the same change in the GMT_Lib DHC_5G templates.
+</li>
  <li>
  May 10, 2020: Hagar Elarga<br/>
 Updated implementation to handle template needed for GeoJSON to Modelica.
