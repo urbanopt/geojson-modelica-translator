@@ -74,7 +74,7 @@ Follow the instructions below in order to configure your local environment:
 make test-all
 ```
 
-The Docker-based CI job now builds the GMT runner image from
+The Docker-based CI job builds the GMT runner image from
 `geojson_modelica_translator/modelica/lib/runner/Dockerfile` and runs the
 resource-intensive tests against that local image. To reproduce that flow
 locally, build the image yourself and point the runner at it:

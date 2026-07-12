@@ -6,7 +6,7 @@ The OpenModelica docker container provides compilation and simulation capabiliti
 includes Modelica Standards Library and a version of the Modelica Buildings Library. The table below shows the versions of the dependencies.
 
 The GMT requires a locally built image or a version from Docker hub to run tests. The public use image is hosted on [Docker hub](https://hub.docker.com/r/nrel/gmt-om-runner).
-CI now builds the runner image from this Dockerfile and runs the Docker-based test suite against that freshly built image.
+CI builds the runner image from this Dockerfile and runs the Docker-based test suite against that freshly built image.
 
 To build the docker container locally, follow the below instructions:
 
@@ -16,7 +16,6 @@ To build the docker container locally, follow the below instructions:
 2. Then run the following from the GMT repository root:
 
 ```bash
-# <from gmt root directory>
 docker build -t gmt-om-runner:local -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
 
 # Optional: point GMT and pytest at the local image instead of Docker Hub
@@ -30,7 +29,7 @@ If you run the image directly with a bind mount, note that the image runs as `ro
 
 The GMT `ModelicaRunner` passes `HOST_UID`/`HOST_GID` into the container and `chown`s the mounted `/mnt/shared/<model_name>` directory at the end of the run so generated files are accessible on the host.
 
-The image now starts from the latest OpenModelica base image and copies the known-good OpenModelica-maintained Modelica, ModelicaServices, Complex, and Buildings libraries from the previous GMT runner release. That keeps local and CI builds deterministic even when `libraries.openmodelica.org` is unavailable during `docker build`.
+The image starts from the OpenModelica base image and copies the known-good OpenModelica-maintained Modelica, ModelicaServices, Complex, and Buildings libraries from the previous GMT runner release. That keeps local and CI builds deterministic even when `libraries.openmodelica.org` is unavailable during `docker build`.
 
 ### Versioning
 
