@@ -77,8 +77,8 @@ model building
     "Normalized heating load"
     annotation (Placement(transformation(extent={{-200,-110},{-180,-90}})));
   Buildings.Controls.OBC.CDL.Reals.Hysteresis enaHeaCoo[2](
-    each uLow={% endraw %}{{ data['heat_cool_enable_threshold'] }}{% raw %},
-    each uHigh={% endraw %}{{ 10 * data['heat_cool_enable_threshold'] }}{% raw %})
+    each uLow={% endraw %}{{ data['heat_cool_enable_threshold'] }} {% raw %},
+    each uHigh={% endraw %}{{ 10 * data['heat_cool_enable_threshold'] }} {% raw %})
     "Deadband (hysteresis) on normalized load to enable heating and cooling; uLow=configured enable threshold, uHigh=10x to avoid on/off chatter when the load hovers near zero"
     annotation (Placement(transformation(extent={{-110,-130},{-90,-110}})));
   Modelica.Blocks.Sources.BooleanConstant enaSHW(

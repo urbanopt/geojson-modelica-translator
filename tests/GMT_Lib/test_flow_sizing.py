@@ -50,5 +50,5 @@ class TestFlowSizing:
             assert borehole_count(flow) % 10 == 0
 
     def test_borehole_count_rejects_nonpositive_design_flow(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="design_flow_per_borehole must be positive"):
             borehole_count(30, design_flow_per_borehole=0)
