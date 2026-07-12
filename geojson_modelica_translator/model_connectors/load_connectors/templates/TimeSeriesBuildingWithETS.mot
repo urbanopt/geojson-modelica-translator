@@ -76,9 +76,10 @@ model building
     k=1/QHea_flow_nominal)
     "Normalized heating load"
     annotation (Placement(transformation(extent={{-200,-110},{-180,-90}})));
-  Buildings.Controls.OBC.CDL.Reals.GreaterThreshold enaHeaCoo[2](
-    each t={% endraw %}{{ data['heat_cool_enable_threshold'] }} {% raw %})
-    "Threshold comparison to enable heating and cooling"
+  Buildings.Controls.OBC.CDL.Reals.Hysteresis enaHeaCoo[2](
+    each uLow={% endraw %}{{ data['heat_cool_enable_threshold'] }} {% raw %},
+    each uHigh={% endraw %}{{ 10 * data['heat_cool_enable_threshold'] }} {% raw %})
+    "Deadband (hysteresis) on normalized load to enable heating and cooling; uLow=configured enable threshold, uHigh=10x to avoid on/off chatter when the load hovers near zero"
     annotation (Placement(transformation(extent={{-110,-130},{-90,-110}})));
   Modelica.Blocks.Sources.BooleanConstant enaSHW(
     final k=true) if have_hotWat
@@ -150,6 +151,16 @@ defined by the district coupling templates.
 </html>",
       revisions="<html>
 <ul>
+<li>
+July 11, 2026, by Nicholas Long:<br/>
+Robustness: replaced the zero-deadband heating/cooling enable
+(<code>GreaterThreshold</code>) with a <code>Hysteresis</code> block
+(<code>uLow</code>=configured <code>heat_cool_enable_threshold</code>,
+<code>uHigh</code>=10x that, on normalized load) so the building no longer
+chatters the ETS heating/cooling enable on and off when a load hovers near
+zero, while preserving the configurable, coil-aware enable threshold. Mirrors
+the same fix in the GMT_Lib buildingHPTrio model.
+</li>
 <li>
 July 10, 2026, by Nicholas Long:<br/>
 Documented flexible load-based sizing and configurable service-water initialization.

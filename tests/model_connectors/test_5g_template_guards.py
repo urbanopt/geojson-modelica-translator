@@ -163,7 +163,8 @@ def test_time_series_building_with_ets_uses_larger_enable_threshold_for_dry_coil
         data=_time_series_template_data(use_dry_cooling_coil=True),
     )
 
-    assert "each t=0.01" in rendered
+    assert "each uLow=0.01" in rendered
+    assert "each uHigh=0.1" in rendered
     assert "final TSerWat_start=293.15" in rendered
     assert "ceil(\n          QHea_flow_nominal/(1.7E5))" in rendered
     assert "ceil(\n          abs(\n            QCoo_flow_nominal)/(1.5E5))" in rendered
