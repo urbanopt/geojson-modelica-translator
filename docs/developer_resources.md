@@ -74,6 +74,17 @@ Follow the instructions below in order to configure your local environment:
 make test-all
 ```
 
+The Docker-based CI job builds the GMT runner image from
+`geojson_modelica_translator/modelica/lib/runner/Dockerfile` and runs the
+resource-intensive tests against that local image. To reproduce that flow
+locally, build the image yourself and point the runner at it:
+
+```bash
+docker build -t gmt-om-runner:local -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
+export GMT_OM_RUNNER_IMAGE=gmt-om-runner:local
+make test-resource-intensive
+```
+
 The tests should all pass assuming the libraries, Docker, and all dependencies are installed correctly on your computer. Also, there will be a set
 of Modelica models that are created, simulated, and persisted into the `tests/GMT_Lib/output` folder and the
 `tests/model_connectors/output` folder.
