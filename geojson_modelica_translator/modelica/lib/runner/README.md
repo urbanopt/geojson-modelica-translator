@@ -22,7 +22,7 @@ docker build -t gmt-om-runner:local -f geojson_modelica_translator/modelica/lib/
 export GMT_OM_RUNNER_IMAGE=gmt-om-runner:local
 ```
 
-The default tag is `nrel/gmt-om-runner:4.1.0`, which is the default version used in `modelica_runner.py`.
+The default tag is `nrel/gmt-om-runner:4.1.1`, which is the default version used in `modelica_runner.py`.
 If `GMT_OM_RUNNER_IMAGE` is set, the runner uses that image instead.
 
 If you run the image directly with a bind mount, note that the image runs as `root` so it can access the pre-installed Modelica libraries under `/root/.openmodelica`.
@@ -37,7 +37,8 @@ In GMT Runner Version 2.0.0 we detached the OM version from the GMT Runner versi
 
 | GTM Runner Version | OM Version | MSL Version | MBL Version |
 | ------------------ | ---------- | ----------- | ----------- |
-| 4.1.0              | 1.27.0     | 4.1.0       | 12.1.0      |
+| 4.1.1              | 1.27.0     | 4.1.0       | 12.1.1      |
+| 4.1.0              | 1.25.1     | 4.0.0       | 12.1.0      |
 | 4.0.0              | 1.25.1     | 4.0.0       | 12.1.0      |
 | 3.0.0              | 1.24.0     | 4.0.0       | 11.0.0      |
 | 2.0.1              | 1.22.1     | 4.0.0       | 10.0.0      |
@@ -58,7 +59,7 @@ Releasing is done through the **`Publish GMT runner image`** GitHub Actions work
 2. In the repository on GitHub, open the **Actions** tab, select **Publish GMT
    runner image** from the left sidebar, and click the **Run workflow** button.
 3. Choose the branch to build from, then fill in the inputs:
-   - **`runner_tag`** – the tag to publish, e.g. `4.1.0`. Bump the **major**
+   - **`runner_tag`** – the tag to publish, e.g. `4.1.1`. Bump the **major**
      version for a new MBL (Buildings) version and the **minor** version for an
      OpenModelica update.
    - **`publish_latest`** – also tag the image as `latest` (default `false`). Set
@@ -92,7 +93,7 @@ docker buildx create --use
 
 # Bump the major version of the GMT Runner for an MBL version,
 # and bump the minor version for OM minor version updates.
-docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:4.1.0 --push -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t nrel/gmt-om-runner:4.1.1 --push -f geojson_modelica_translator/modelica/lib/runner/Dockerfile .
 ```
 
 Then update the Docker Hub version table as described above.

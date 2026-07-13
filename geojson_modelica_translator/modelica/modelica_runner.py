@@ -15,7 +15,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_GMT_OM_RUNNER_IMAGE = "nrel/gmt-om-runner:4.1.0"
+DEFAULT_GMT_OM_RUNNER_IMAGE = "nrel/gmt-om-runner:4.1.1"
 GMT_OM_RUNNER_IMAGE_ENV_VAR = "GMT_OM_RUNNER_IMAGE"
 
 
@@ -355,6 +355,7 @@ class ModelicaRunner:
 
         self._copy_over_docker_resources(verified_run_path, file_to_load, model_name, **kwargs)
 
+        # When updating the GMT OM Runner, this is the location to bump the image.
         docker_image = kwargs.get("docker_image") or self.default_docker_image()
         exitcode = self._subprocess_call_to_docker(
             verified_run_path, action, kwargs.get("compiler_flags"), docker_image=docker_image

@@ -24,6 +24,7 @@
 * Bump mkdocstrings-python from 2.0.1 to 2.0.2 in the prod-deps group by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/814>
 * Update dependencies by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/834>
 * Update precommit and mypy dependencies by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/846>
+* Update Modelica Buildings Library (MBL) to v12.1.1
 
 ### Maintenance 🧹
 

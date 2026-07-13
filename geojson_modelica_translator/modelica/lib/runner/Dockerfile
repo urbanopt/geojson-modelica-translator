@@ -15,9 +15,9 @@ RUN echo \
   omc /tmp/installMSL.mos && \
   rm /tmp/installMSL.mos
 
-# Install MBL 12.1.0
+# Install MBL 12.1.1
 # ALERT: Update the version in utils.py when updating the version here
 RUN echo \
-  "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"12.1.0\", exactMatch=true); getErrorString();" >> /tmp/installMBL.mos && \
+  "updatePackageIndex(); getErrorString(); installPackage(Buildings, \"12.1.1\", exactMatch=false); getErrorString();" >> /tmp/installMBL.mos && \
   omc /tmp/installMBL.mos && \
   rm /tmp/installMBL.mos
