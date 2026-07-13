@@ -93,7 +93,7 @@ equation
             140}})),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,-80},{140,
             140}})),
-    uses(                            Modelica(version="4.0.0"),
-      ModelicaServices(version="4.0.0"),
-      Buildings(version="12.1.0")));
+    uses(Modelica(version="4.1.0"),
+      ModelicaServices(version="4.1.0"),
+      Buildings(version="12.1.1")));
 {% endraw %}end PVsubsystem;

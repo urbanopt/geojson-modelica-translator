@@ -1,0 +1,74 @@
+name: Publish GMT runner image
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner_tag:
+        description: Docker tag to publish for nrel/gmt-om-runner
+        required: true
+        default: "4.1.1"
+      publish_latest:
+        description: Also publish the latest tag
+        required: true
+        type: boolean
+        default: false
+      force_push:
+        description: Push even if the tag already exists on Docker Hub
+        required: true
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up Docker Buildx
+        run: |
+          docker buildx create --use --name gmt-runner-builder
+          docker buildx inspect --bootstrap
+      - name: Log in to Docker Hub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          test -n "$DOCKERHUB_USERNAME"
+          test -n "$DOCKERHUB_TOKEN"
+          echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      - name: Check whether the tag already exists
+        id: existing
+        env:
+          RUNNER_TAG: ${{ inputs.runner_tag }}
+        run: |
+          if docker buildx imagetools inspect "nrel/gmt-om-runner:${RUNNER_TAG}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "nrel/gmt-om-runner:${RUNNER_TAG} already exists on Docker Hub."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "nrel/gmt-om-runner:${RUNNER_TAG} is new."
+          fi
+      - name: Skip publishing an existing tag
+        if: ${{ steps.existing.outputs.exists == 'true' && !inputs.force_push }}
+        run: |
+          echo "::notice::nrel/gmt-om-runner:${{ inputs.runner_tag }} already exists; skipping push. Re-run with force_push=true to overwrite it."
+      - name: Build and push multi-arch runner image
+        if: ${{ steps.existing.outputs.exists != 'true' || inputs.force_push }}
+        env:
+          PUBLISH_LATEST: ${{ inputs.publish_latest }}
+          RUNNER_TAG: ${{ inputs.runner_tag }}
+        run: |
+          tags=(-t "nrel/gmt-om-runner:${RUNNER_TAG}")
+          if [[ "${PUBLISH_LATEST}" == "true" ]]; then
+            tags+=(-t "nrel/gmt-om-runner:latest")
+          fi
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            "${tags[@]}" \
+            --push \
+            -f geojson_modelica_translator/modelica/lib/runner/Dockerfile \
+            .

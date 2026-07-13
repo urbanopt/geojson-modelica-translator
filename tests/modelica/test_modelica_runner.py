@@ -157,6 +157,10 @@ class ModelicaRunnerTest(unittest.TestCase):
         assert 'chown -R "$HOST_UID:$HOST_GID" "$PWD"' in cleanup_script
         assert 'chmod -R u+rwX "$PWD"' in cleanup_script
 
+    def test_default_docker_image_prefers_env_override(self):
+        with patch.dict(os.environ, {"GMT_OM_RUNNER_IMAGE": "gmt-om-runner:ci"}):
+            assert ModelicaRunner.default_docker_image() == "gmt-om-runner:ci"
+
     def test_run_in_docker_accepts_result_file_without_success_message(self):
         mr = ModelicaRunner.__new__(ModelicaRunner)
         mr.docker_configured = True
@@ -347,7 +351,7 @@ class ModelicaRunnerTest(unittest.TestCase):
     @pytest.mark.simulation
     @pytest.mark.skip(reason="MBL Spawn only runs on Intel chips")
     def test_simulate_mbl_spawn_in_docker(self):
-        # This is the E+ version used by MBLv12.1.0
+        # This is the E+ version used by MBLv12.1.1
         model_name = "Buildings.ThermalZones.EnergyPlus_24_2_0.Examples.SmallOffice.ASHRAE2006Winter"
 
         mr = ModelicaRunner()
