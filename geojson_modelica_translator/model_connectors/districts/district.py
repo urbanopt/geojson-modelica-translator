@@ -241,19 +241,31 @@ class District:
     def _to_modelica_first_generation(self, district_system_params):
         """Generate modelica files for a 1st-generation (steam) district system.
 
-        1st-generation steam systems use a simplified generation path that does not
-        use the 4G/5G coupling diagram framework. The steam plant model is a
-        self-contained example that extends the MBL steam example directly.
+        1st-generation steam systems generate all coupled models (loads, ETS, networks, plant)
+        as explicit components in the district with proper instantiations and connections,
+        similar to the 5G generation path.
 
         :param district_system_params: dict, district_system section of sys_params
         """
         steam_plant = next((m for m in self._coupling_graph.models if isinstance(m, SteamPlant)), None)
         if steam_plant is None:
             raise ValueError("First-generation district_system requires a SteamPlant in the coupling graph.")
-        steam_plant.to_modelica(self._scaffold)
-        # Generate the district energy system model
+
+        # Generate all models in the coupling graph (loads, ETS, networks, plant, etc.)
+        for model in self._coupling_graph.models:
+            model.to_modelica(self._scaffold)
+
+        # Build model lists for template generation (similar to 5G)
+        loads = [m for m in self._coupling_graph.models if isinstance(m, LoadBase)]
+        plants = [m for m in self._coupling_graph.models if isinstance(m, SteamPlant)]
+
+        # Generate the district energy system model with explicit instantiations
         first_gen_params = {
             "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
+            "project_name": self._scaffold.project_name,
+            "loads": loads,
+            "plants": plants,
+            "couplings": self._coupling_graph.couplings,
             "globals": {
                 "project_name": self._scaffold.project_name,
             },

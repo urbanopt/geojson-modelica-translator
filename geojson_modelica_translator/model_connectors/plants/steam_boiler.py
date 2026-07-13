@@ -22,6 +22,10 @@ class SteamPlant(PlantBase):
         """
 
         steam_params_path = "$.district_system.first_generation.central_steam_plant_parameters"
+
+        # Get number_of_boilers, default to 1 if not specified
+        number_of_boilers = self.system_parameters.get_param(f"{steam_params_path}.number_of_boilers") or 1
+
         template_data = {
             "nominal_values": {
                 "boiler_efficiency": self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency"),
@@ -38,6 +42,7 @@ class SteamPlant(PlantBase):
                     f"{steam_params_path}.heat_flow_nominal_building"
                 ),
                 "number_of_loads": len(self.system_parameters.get_param("$.buildings")),
+                "number_of_boilers": number_of_boilers,
             }
         }
 

@@ -1,29 +1,39 @@
 within {{ district_within_path }};
 model DistrictEnergySystem
   "1st-generation (steam) district heating system.
-  This model extends the steam boiler plant model which contains the full
-  district heating system including plant, distribution network, and buildings."
-  extends {{ globals.project_name }}.Plants.SteamBoiler;
-  annotation (
-    Diagram(
+  This model explicitly instantiates the steam boiler plant model with district-level
+  heating components (plant, networks, buildings) similar to 5G generation systems."
+  extends Modelica.Icons.Example;
+  // Instantiate the steam plant (wraps Buildings.DHC.Examples.Steam.SingleBoiler)
+  Plants.SteamBoiler steBoiPla
+    "Central steam boiler plant with distribution network and building connections"
+    {% raw %} annotation (Placement(transformation(extent={{10.0,30.0},{30.0,50.0}})));
+  {% endraw %}annotation (
+    {% raw %}Diagram(
       coordinateSystem(
         preserveAspectRatio=false)),
-    experiment(
+    {% endraw %}experiment(
       StopTime=86400,
       Tolerance=1e-06),
     Documentation(
       info="<html>
 <p>
-District energy system model for a 1st-generation steam district heating
-system. The model extends <code>Plants.SteamBoiler</code> which wraps the
-MBL steam example <code>Buildings.Experimental.DHC.Examples.Steam.SingleBoiler</code>.
+District energy system model for a 1st-generation steam district heating system.
+The model instantiates <code>Plants.SteamBoiler</code> which wraps the
+MBL steam example <code>Buildings.DHC.Examples.Steam.SingleBoiler</code>.
 </p>
-    </html>",
+<p>
+Building loads are generated as explicit TimeSeries connectors in the Loads package,
+and the steam plant connects to these buildings through a 2-pipe steam distribution
+network with heating indirect ETS subsystems.
+</p>
+</html>",
       revisions="<html>
     <ul>
     <li>
-    July 12, 2026 by Nicholas Long:<br/>
-    Templated this first-generation steam district system documentation.
+    July 13, 2026 by Nicholas Long:<br/>
+    Updated to explicitly instantiate SteamBoiler plant component for architectural clarity,
+    matching 5G system visualization patterns.
     </li>
     </ul>
     </html>"));

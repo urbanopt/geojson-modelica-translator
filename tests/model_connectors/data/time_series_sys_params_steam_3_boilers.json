@@ -92,7 +92,7 @@
         "reduced_pressure_setpoint": 200000,
         "condensate_pressure_drop_nominal": 6000,
         "heat_flow_nominal_building": 20000,
-        "number_of_boilers": 1
+        "number_of_boilers": 3
       }
     }
   }
