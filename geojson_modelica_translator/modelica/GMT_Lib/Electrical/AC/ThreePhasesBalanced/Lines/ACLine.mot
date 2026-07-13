@@ -1,48 +1,50 @@
 model AC{{ data["model_name"] }}
   "Isolated AC distribution line template model for GMT level 1 testing"
-  parameter Real safety_factor=1.2;
+  parameter Real safety_factor = 1.2;
   parameter Modelica.Units.SI.Length l={{ data["length"] }};
   parameter Modelica.Units.SI.Power P_nominal={{ data["ampacity"] }}*{{ data["nominal_voltage"] }}*safety_factor;
   parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }};
-  parameter {{ data["commercial_line_type"] }} cable;
-  {% raw %}extends Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
-    line_1(
+  parameter {{ data["commercial_line_type"] }} cable;{% raw %}
+  extends
+    Buildings.Electrical.AC.ThreePhasesBalanced.Lines.Examples.ACLineMedium(
+  line_1(
       mode=Buildings.Electrical.Types.CableMode.commercial,
-      l=l,
-      commercialCable=cable,
-      P_nominal=P_nominal,
-      V_nominal=V_nominal),
-    line_2a(
+  l=l,
+  commercialCable=cable,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_2a(
       mode=Buildings.Electrical.Types.CableMode.commercial,
-      l=l,
-      commercialCable=cable,
-      P_nominal=P_nominal,
-      V_nominal=V_nominal),
-    line_2b(
+  l=l,
+  commercialCable=cable,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_2b(
       mode=Buildings.Electrical.Types.CableMode.commercial,
-      l=l,
-      commercialCable=cable,
-      P_nominal=P_nominal,
-      V_nominal=V_nominal),
-    line_3a(
+  l=l,
+  commercialCable=cable,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_3a(
       mode=Buildings.Electrical.Types.CableMode.commercial,
-      l=l,
-      commercialCable=cable,
-      P_nominal=P_nominal,
-      V_nominal=V_nominal),
-    line_3b(
+  l=l,
+  commercialCable=cable,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_3b(
       mode=Buildings.Electrical.Types.CableMode.commercial,
-      l=l,
-      commercialCable=cable,
-      P_nominal=P_nominal,
-      V_nominal=V_nominal),
-    line_sc(
+  l=l,
+  commercialCable=cable,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal),
+  line_sc(
       mode=Buildings.Electrical.Types.CableMode.commercial,
-      l=l,
-      commercialCable=cable,
-      P_nominal=P_nominal,
-      V_nominal=V_nominal));
-  annotation (
+  l=l,
+  commercialCable=cable,
+  P_nominal=P_nominal,
+  V_nominal=V_nominal)
+  );
+annotation (
     Icon(
       coordinateSystem(
         preserveAspectRatio=false)),

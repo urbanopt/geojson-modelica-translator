@@ -302,11 +302,9 @@ jobs:
           poetry self add setuptools
           poetry install
       - name: Install modelicafmt
-        env:
-          MODELICA_FMT_VERSION: v0.3.0
         run: |
-          curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/${MODELICA_FMT_VERSION}/modelica-fmt_Linux_x86_64.tar.gz"
-          tar --exclude='README.md' --exclude='CHANGELOG.md' -xzf modelica-fmt_Linux_x86_64.tar.gz
+          curl -SLO "https://github.com/urbanopt/modelica-fmt/releases/download/v0.2-pr.2/modelica-fmt_0.2-pr.2_Linux_x86_64.tar.gz"
+          tar --exclude='README.md' --exclude='CHANGELOG.md' -xzf modelica-fmt_0.2-pr.2_Linux_x86_64.tar.gz
           chmod +x modelicafmt
           sudo mv modelicafmt /usr/local/bin/
       - name: Run pre-commit
