@@ -95,5 +95,5 @@ equation
             140}})),
     uses(                            Modelica(version="4.1.0"),
       ModelicaServices(version="4.1.0"),
-      Buildings(version="12.1.1")));
+      Buildings(version="12.1.0")));
 {% endraw %}end PVsubsystem;
