@@ -18,7 +18,7 @@ from geojson_modelica_translator.system_parameters.system_parameters import Syst
 from tests.base_test_case import TestCaseBase
 
 
-class CombinedHeatingPowerTest(TestCaseBase):
+class SteamBoilerTest(TestCaseBase):
     def setUp(self):
         super().setUp()
 
@@ -27,7 +27,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
 
         # load in the example geojson with a single office building
         filename = Path(self.data_dir) / "time_series_ex1.json"
-        self.gj = self.gj = UrbanOptGeoJson(filename)
+        self.gj = UrbanOptGeoJson(filename)
 
         # load system parameter data
         filename = Path(self.data_dir) / "time_series_sys_params_steam.json"
@@ -37,7 +37,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         network = Network2Pipe(self.sys_params)
         heating_plant = SteamPlant(self.sys_params)
 
-        # create our our load/ets/stubs
+        # create our load/ets/stubs
         all_couplings = [Coupling(network, heating_plant)]
         for geojson_load in self.gj.buildings:
             time_series_load = TimeSeries(self.sys_params, geojson_load)
@@ -74,7 +74,7 @@ class CombinedHeatingPowerTest(TestCaseBase):
         assert "extends Buildings.Experimental.DHC.Examples.Steam.SingleBoiler(" in steam_boiler_mo
 
     @pytest.mark.simulation
-    @pytest.mark.skip(reason="District steam systems have not been implemented yet.")
+    @pytest.mark.skip(reason="District steam system simulation is not implemented yet.")
     def test_simulate_steam_system(self):
         self.run_and_assert_in_docker(
             f"{self.district._scaffold.project_name}.Districts.DistrictEnergySystem",

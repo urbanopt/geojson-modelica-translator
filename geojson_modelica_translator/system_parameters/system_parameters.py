@@ -846,7 +846,7 @@ class SystemParameters:
         for building in building_ids:
             if "steam" in district_type:
                 building_params = deepcopy(self.param_template["buildings"][0])
-            if "4G" in district_type:
+            elif "4G" in district_type:
                 building_params = deepcopy(self.param_template["buildings"][1])
             elif "5G" in district_type:
                 building_params = deepcopy(self.param_template["buildings"][2])

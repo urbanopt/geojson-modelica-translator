@@ -247,11 +247,10 @@ class District:
 
         :param district_system_params: dict, district_system section of sys_params
         """
-        # Find and generate the steam plant model
-        for model in self._coupling_graph.models:
-            if isinstance(model, SteamPlant):
-                model.to_modelica(self._scaffold)
-
+        steam_plant = next((m for m in self._coupling_graph.models if isinstance(m, SteamPlant)), None)
+        if steam_plant is None:
+            raise ValueError("First-generation district_system requires a SteamPlant in the coupling graph.")
+        steam_plant.to_modelica(self._scaffold)
         # Generate the district energy system model
         first_gen_params = {
             "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),

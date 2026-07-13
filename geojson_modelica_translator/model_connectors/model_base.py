@@ -62,7 +62,7 @@ class ModelBase:
                         "temp_setpoint_hhw", 100
                     ),
                 }
-            if "fourth_generation" in district_params:
+            elif "fourth_generation" in district_params:
                 self.district_template_data = {
                     "temp_setpoint_hhw": district_params["fourth_generation"]["central_heating_plant_parameters"][
                         "temp_setpoint_hhw"

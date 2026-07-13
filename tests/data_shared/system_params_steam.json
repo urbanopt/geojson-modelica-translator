@@ -1,5 +1,5 @@
 {
-  "weather": "../../data_shared/USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
+  "weather": "./USA_CA_San.Francisco.Intl.AP.724940_TMY3.mos",
   "buildings": [
     {
       "geojson_id": "1",
