@@ -29,7 +29,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Set up Docker Buildx
-        run: docker buildx create --use --name gmt-runner-builder
+        run: |
+          docker buildx create --use --name gmt-runner-builder
+          docker buildx inspect --bootstrap
       - name: Log in to Docker Hub
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
