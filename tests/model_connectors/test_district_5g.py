@@ -19,7 +19,7 @@ class DistrictSystemTest(TestCaseBase):
     def setUp(self):
         super().setUp()
 
-        project_name = "fifth_generation_district"
+        project_name = "district_fifth_generation"
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, project_name)
 
         # load in the example geojson with a single office building

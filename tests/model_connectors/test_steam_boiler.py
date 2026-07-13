@@ -22,7 +22,7 @@ class SteamBoilerTest(TestCaseBase):
     def setUp(self):
         super().setUp()
 
-        self.project_name = "steam_boiler"
+        self.project_name = "district_steam_with_boiler"
         self.data_dir, self.output_dir = self.set_up(Path(__file__).parent, self.project_name)
 
         # load in the example geojson with a single office building
@@ -70,7 +70,7 @@ class SteamBoilerTest(TestCaseBase):
         district_mo = district_model.read_text()
         steam_boiler_mo = steam_boiler_model.read_text()
 
-        assert "extends steam_boiler.Plants.SteamBoiler;" in district_mo
+        assert "extends district_steam_with_boiler.Plants.SteamBoiler;" in district_mo
         assert "extends Buildings.Experimental.DHC.Examples.Steam.SingleBoiler(" in steam_boiler_mo
 
     @pytest.mark.simulation
