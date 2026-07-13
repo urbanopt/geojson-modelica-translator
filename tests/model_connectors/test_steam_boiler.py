@@ -142,7 +142,8 @@ class FullSteamDistrictTest(TestCaseBase):
         assert "Plants.SteamBoiler pla" in district_mo
         # One GMT-wrapped steam building (with integrated ETS) per geojson building (ex2 has 2)
         assert district_mo.count(".building bld") == 2
-        assert "bld1(" in district_mo and "bld2(" in district_mo
+        assert "bld1(" in district_mo
+        assert "bld2(" in district_mo
 
         # ...and wired together: plant -> distribution -> buildings (with steam), per connection index
         assert "connect(dis.ports_bCon[1], bld1.port_a);" in district_mo

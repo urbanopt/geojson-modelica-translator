@@ -576,4 +576,3 @@ Sizing notes:
 
 4. **Single boiler.** The current plant model is single-boiler. `number_of_boilers`
    is carried for documentation but does not change the generated model.
-

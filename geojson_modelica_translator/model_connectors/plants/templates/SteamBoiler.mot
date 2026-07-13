@@ -16,7 +16,8 @@ model SteamBoiler
     "Steam pressure setpoint (saturation pressure, high pressure)";
   extends Buildings.DHC.Plants.Steam.SingleBoiler(
     pSteSet=pSteSet_nominal,
-    boi(a={ {{ data["nominal_values"]["boiler_efficiency"] }} }));
+    boi(
+      a={{{ data["nominal_values"]["boiler_efficiency"] }}}));
   annotation (
     Documentation(
       info="<html>

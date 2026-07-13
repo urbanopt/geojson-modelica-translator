@@ -14,14 +14,15 @@ model building
     final Q_flow_nominal=QHea_flow_nominal,
     final tableOnFile=true,
     final tableName="tab1",
-    final fileName=Modelica.Utilities.Files.loadResource(filNam),
+    final fileName=Modelica.Utilities.Files.loadResource(
+      filNam),
     final columns={3},
     final smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
     final timeScale=1,
     final energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    QHea(offset={QMin_flow}));
-  parameter String filNam=
-    "modelica://{{ project_name }}/Loads/{{ data['load_resources_path'] }}/{{ data['time_series']['filename'] }}"
+    QHea(
+      offset={QMin_flow}));
+  parameter String filNam="modelica://{{ project_name }}/Loads/{{ data['load_resources_path'] }}/{{ data['time_series']['filename'] }}"
     "Library path of the file with the building heating load as a time series";
   final parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal(
     min=Modelica.Constants.eps)=Buildings.DHC.Loads.BaseClasses.getPeakLoad(

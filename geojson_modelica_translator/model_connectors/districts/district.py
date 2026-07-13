@@ -283,9 +283,7 @@ class District:
         # plant -> distribution -> buildings steam components in the district model.
         steam_params_path = "$.district_system.first_generation.central_steam_plant_parameters"
         steam = {
-            "steam_pressure_setpoint": self.system_parameters.get_param(
-                f"{steam_params_path}.steam_pressure_setpoint"
-            ),
+            "steam_pressure_setpoint": self.system_parameters.get_param(f"{steam_params_path}.steam_pressure_setpoint"),
             "reduced_pressure_setpoint": self.system_parameters.get_param(
                 f"{steam_params_path}.reduced_pressure_setpoint"
             ),
