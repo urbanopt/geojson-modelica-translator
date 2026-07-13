@@ -59,7 +59,7 @@ Releasing is done through the **`Publish GMT runner image`** GitHub Actions work
 2. In the repository on GitHub, open the **Actions** tab, select **Publish GMT
    runner image** from the left sidebar, and click the **Run workflow** button.
 3. Choose the branch to build from, then fill in the inputs:
-   - **`runner_tag`** – the tag to publish, e.g. `4.1.0`. Bump the **major**
+   - **`runner_tag`** – the tag to publish, e.g. `4.1.1`. Bump the **major**
      version for a new MBL (Buildings) version and the **minor** version for an
      OpenModelica update.
    - **`publish_latest`** – also tag the image as `latest` (default `false`). Set

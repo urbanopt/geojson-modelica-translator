@@ -15,7 +15,7 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_GMT_OM_RUNNER_IMAGE = "nrel/gmt-om-runner:4.1.0"
+DEFAULT_GMT_OM_RUNNER_IMAGE = "nrel/gmt-om-runner:4.1.1"
 GMT_OM_RUNNER_IMAGE_ENV_VAR = "GMT_OM_RUNNER_IMAGE"
 
 
