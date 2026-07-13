@@ -1,17 +1,21 @@
 model {{ data["model_name"] }}
   "Isolated wind turbine template model for GMT level 1 testing"
-  parameter Real scale={{ data["scaling_factor"] }} "Scale factor";
-  parameter Modelica.Units.SI.Length h={{ data["height_over_ground"] }} "Height over ground";
-  parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }} "Nominal voltage";
-  parameter Real table[:,2]={{ data["power_curve"] }} "Table of generated power (first column is wind speed, second column is power)";
+  parameter Real scale={{ data["scaling_factor"] }}
+    "Scale factor";
+  parameter Modelica.Units.SI.Length h={{ data["height_over_ground"] }}
+    "Height over ground";
+  parameter Modelica.Units.SI.Voltage V_nominal={{ data["nominal_voltage"] }}
+    "Nominal voltage";
+  parameter Real table[:,2]={{ data["power_curve"] }}
+    "Table of generated power (first column is wind speed, second column is power)";
   {% raw %}
   extends Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.WindTurbine(
-  tur(
-  scale=scale,
-  h=h,
-  table=table,
-  V_nominal=V_nominal));
-annotation (
+    tur(
+      scale=scale,
+      h=h,
+      table=table,
+      V_nominal=V_nominal));
+  annotation (
     Icon(
       coordinateSystem(
         preserveAspectRatio=false)),

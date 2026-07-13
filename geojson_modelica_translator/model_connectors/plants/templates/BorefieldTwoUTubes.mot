@@ -60,7 +60,7 @@ within {{ project_name }}.Plants.{{ model_name }};
       rTub={{ghe_data["tube"]["outer_diameter"]}}/2,
       kTub={{ghe_data["tube"]["conductivity"]}},
       eTub={{ghe_data["tube"]["thickness"]}},
-      xC={{ghe_data["tube"]["shank_spacing"]}} {% raw %}))
+      xC={{ghe_data["tube"]["shank_spacing"]}}{% raw %}))
     "Borefield data"
     annotation (choicesAllMatching=true,Placement(transformation(extent={{-80,-80},{-60,-60}})));
   // Temperature gradient in undisturbed soil

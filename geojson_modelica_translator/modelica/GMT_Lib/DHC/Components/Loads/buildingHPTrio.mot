@@ -11,20 +11,33 @@ model buildingHPTrio
       T_aChiWat_nominal=ets.TChiWatSup_nominal,
       T_bChiWat_nominal=ets.TChiWatRet_nominal,
       // Heating reference per-unit duty: 170 kW.
-      facMulHea=max(1, ceil(QHea_flow_nominal/(1.7E5))),
+      facMulHea=max(
+        1,
+        ceil(
+          QHea_flow_nominal/(1.7E5))),
       // Cooling reference per-unit duty: 150 kW (QCoo_flow_nominal is negative).
-      facMulCoo=max(1, ceil(abs(QCoo_flow_nominal)/(1.5E5))),
+      facMulCoo=max(
+        1,
+        ceil(
+          abs(
+            QCoo_flow_nominal)/(1.5E5))),
       delTAirCoo=10,
       // Use a lower nominal heating air-side delta T for more robust
       // initialization of terminal-unit heat exchanger nominal effectiveness.
       delTAirHea=10),
     redeclare {{ data["project_name"] }}.Loads.ETS.HeatPumpTrio ets(
-      proHeaWat(heaPum(use_eta_Carnot_nominal=use_eta_Carnot_nominal,
-            etaCarnot_nominal=etaCarnot_heaPumHeaWat_nominal)),
-      proHotWat(heaPum(use_eta_Carnot_nominal=use_eta_Carnot_nominal,
-            etaCarnot_nominal=etaCarnot_heaPumHotWat_nominal)),
-      proChiWat(chi(use_eta_Carnot_nominal=use_eta_Carnot_nominal,
-            etaCarnot_nominal=etaCarnot_chiCHiWat_nominal)),
+      proHeaWat(
+        heaPum(
+          use_eta_Carnot_nominal=use_eta_Carnot_nominal,
+          etaCarnot_nominal=etaCarnot_heaPumHeaWat_nominal)),
+      proHotWat(
+        heaPum(
+          use_eta_Carnot_nominal=use_eta_Carnot_nominal,
+          etaCarnot_nominal=etaCarnot_heaPumHotWat_nominal)),
+      proChiWat(
+        chi(
+          use_eta_Carnot_nominal=use_eta_Carnot_nominal,
+          etaCarnot_nominal=etaCarnot_chiCHiWat_nominal)),
       final dT_nominal=dT_nominal,
       final TDisWatMin=TDisWatMin,
       final TDisWatMax=TDisWatMax,
@@ -40,25 +53,23 @@ model buildingHPTrio
       QChiWat_flow_nominal=QCoo_flow_nominal,
       QHeaWat_flow_nominal=QHea_flow_nominal,
       QHotWat_flow_nominal=QHot_flow_nominal));
-
-  parameter Real etaCarnot_heaPumHeaWat_nominal(unit="1")=0.494805
+  parameter Real etaCarnot_heaPumHeaWat_nominal(
+    unit="1")=0.494805
     "Carnot effectiveness (=COP/COP_Carnot) used during simulation if use_eta_Carnot_nominal = true"
-    annotation (Dialog(group="Efficiency", enable=use_eta_Carnot_nominal));
-
-  parameter Real etaCarnot_heaPumHotWat_nominal(unit="1")=0.3
+    annotation (Dialog(group="Efficiency",enable=use_eta_Carnot_nominal));
+  parameter Real etaCarnot_heaPumHotWat_nominal(
+    unit="1")=0.3
     "Carnot effectiveness (=COP/COP_Carnot) used during simulation if use_eta_Carnot_nominal = true"
-    annotation (Dialog(group="Efficiency", enable=use_eta_Carnot_nominal));
-
-  parameter Real etaCarnot_chiCHiWat_nominal(unit="1")=0.315046
+    annotation (Dialog(group="Efficiency",enable=use_eta_Carnot_nominal));
+  parameter Real etaCarnot_chiCHiWat_nominal(
+    unit="1")=0.315046
     "Carnot effectiveness (=COP/COP_Carnot) used during simulation if use_eta_Carnot_nominal = true"
-    annotation (Dialog(group="Efficiency", enable=use_eta_Carnot_nominal));
-
-  parameter Boolean use_eta_Carnot_nominal = true
+    annotation (Dialog(group="Efficiency",enable=use_eta_Carnot_nominal));
+  parameter Boolean use_eta_Carnot_nominal=true
     "Set to true to use Carnot effectiveness etaCarnot_nominal rather than COP_nominal"
-    annotation(Dialog(group="Efficiency"));
-
+    annotation (Dialog(group="Efficiency"));
   parameter String filNam
-     "Library path of the file with loads as time series. Received from parent class.";
+    "Library path of the file with loads as time series. Received from parent class.";
   final parameter Modelica.Units.SI.HeatFlowRate QCoo_flow_nominal(
     max=-Modelica.Constants.eps)=bui.facMul*bui.QCoo_flow_nominal
     "Space cooling design load (<=0)"
@@ -73,7 +84,8 @@ model buildingHPTrio
     filNam=Modelica.Utilities.Files.loadResource(filNam))
     "Hot water design load (>=0)"
     annotation (Dialog(group="Design parameter"));
-  parameter Real COPChiWat_nominal(unit="1")=5
+  parameter Real COPChiWat_nominal(
+    unit="1")=5
     "COP of heat pump for heating water production"
     annotation (Dialog(group="ETS model parameters"));
   Buildings.Controls.OBC.CDL.Interfaces.RealInput THotWatSupSet(

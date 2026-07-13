@@ -1,10 +1,10 @@
 within {{ data["project_name"] }}.Districts;
 model district
   "Series connection with constant district water mass flow rate, heating from heat pump, and direct cooling through HX"
-  extends
-    PartialSeries(redeclare
-      Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS
-      bui[nBui](final filNam=filNam), datDes(
+  extends PartialSeries(
+    redeclare Buildings.DHC.Loads.Combined.BuildingTimeSeriesWithETS bui[nBui](
+      final filNam=filNam),
+    datDes(
       nBui={{ data["building_load_files"] | count }},
       mPumDis_flow_nominal={{ data["max_flow_rate"] }},
       mPla_flow_nominal={{ data["max_flow_rate"] }},
@@ -12,13 +12,9 @@ model district
       dp_length_nominal={{ data["pressure_drop_per_meter"] }},
       epsPla=0.935,
       {{ data['lDis'] }},
-      {{ data['lCon'] }}
-      )
-      );
-  parameter String filNam[nBui]={
-    {% for building in data["building_load_files"] %}
-    "{{ building }}"{% if not loop.last %},{% endif %}
-    {% endfor %}{% raw %}}
+      {{ data['lCon'] }}));
+  parameter String filNam[nBui]={ {% for building in data["building_load_files"] %}
+  "{{ building }}" {% if not loop.last %},{% endif %} {% endfor %} {% raw %}}
     "Library paths of the files with thermal loads as time series";
   Modelica.Blocks.Sources.Constant masFloMaiPum(
     k=datDes.mPumDis_flow_nominal)
@@ -33,33 +29,40 @@ model district
     "Storage/GHX pump mass flow rate"
     annotation (Placement(transformation(extent={{-300,-108},{-280,-88}})));
   Buildings.Controls.OBC.CDL.Reals.Sources.Constant THotWatSupSet[nBui](
-    k=fill(63 + 273.15, nBui))
+    k=fill(
+      63+273.15,
+      nBui))
     "Hot water supply temperature set point"
     annotation (Placement(transformation(extent={{-190,170},{-170,190}})));
   Buildings.Controls.OBC.CDL.Reals.Sources.Constant TColWat[nBui](
-    k=fill(15 + 273.15, nBui))
+    k=fill(
+      15+273.15,
+      nBui))
     "Cold water temperature"
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
 equation
-  connect(masFloMaiPum.y, pumDis.m_flow_in) annotation (Line(points={{-279,-60},
-          {-106,-60},{68,-60}}, color={0,0,127}));
-  connect(masFloStoPum.y, pumSto.m_flow_in) annotation (Line(points={{-279,-98},
-          {-238,-98},{-238,-66},{-180,-66}},  color={0,0,127}));
-  connect(masFloDisPla.y, pla.mPum_flow) annotation (Line(points={{-279,4},{
-          -161.333,4},{-161.333,4.66667}}, color={0,0,127}));
-  connect(THotWatSupSet.y, bui.THotWatSupSet) annotation (Line(points={{-168,
-          180},{-24,180},{-24,183},{-12,183}}, color={0,0,127}));
-  connect(TColWat.y, bui.TColWat) annotation (Line(points={{-138,160},{-40,160},
-          {-40,164},{-8,164},{-8,168}}, color={0,0,127}));
+  connect(masFloMaiPum.y,pumDis.m_flow_in)
+    annotation (Line(points={{-279,-60},{-106,-60},{68,-60}},color={0,0,127}));
+  connect(masFloStoPum.y,pumSto.m_flow_in)
+    annotation (Line(points={{-279,-98},{-238,-98},{-238,-66},{-180,-66}},color={0,0,127}));
+  connect(masFloDisPla.y,pla.mPum_flow)
+    annotation (Line(points={{-279,4},{-161.333,4},{-161.333,4.66667}},color={0,0,127}));
+  connect(THotWatSupSet.y,bui.THotWatSupSet)
+    annotation (Line(points={{-168,180},{-24,180},{-24,183},{-12,183}},color={0,0,127}));
+  connect(TColWat.y,bui.TColWat)
+    annotation (Line(points={{-138,160},{-40,160},{-40,164},{-8,164},{-8,168}},color={0,0,127}));
   annotation (
-  Diagram(
-  coordinateSystem(preserveAspectRatio=false, extent={{-360,-260},{360,260}})),
-  experiment(
+    Diagram(
+      coordinateSystem(
+        preserveAspectRatio=false,
+        extent={{-360,-260},{360,260}})),
+    experiment(
       StopTime=31536000,
       Interval=300,
       Tolerance=1e-04,
       __Dymola_Algorithm="Dassl"),
-    Documentation(info="<html>
+    Documentation(
+      info="<html>
 <p>
 This is a model of a so-called \"reservoir network\" (Sommer 2020), i.e., a fifth
 generation district system with unidirectional mass flow rate in the
@@ -79,7 +82,8 @@ Sommer T., Sulzer M., Wetter M., Sotnikov A., Mennel S., Stettler C.
 and cooling.</i>
 Energy, Volume 199, 15 May 2020, 117418.
 </p>
-</html>", revisions="<html>
+</html>",
+      revisions="<html>
 <ul>
 <li>
 December 02, 2025, by Nicholas Long:<br/>
@@ -105,6 +109,6 @@ Added documentation.
 </li>
 </ul>
 </html>"),
-      __Dymola_experimentSetupOutput);
+    __Dymola_experimentSetupOutput);
 end district;
 {% endraw %}
