@@ -29,6 +29,9 @@ class SteamPlant(PlantBase):
         template_data = {
             "nominal_values": {
                 "boiler_efficiency": self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency"),
+                "steam_pressure_setpoint": self.system_parameters.get_param(
+                    f"{steam_params_path}.steam_pressure_setpoint"
+                ),
                 "number_of_boilers": number_of_boilers,
             }
         }

@@ -11,6 +11,32 @@ First-generation systems are represented as `district_system.first_generation` i
 
 Current scope for first-generation steam is district heating only. GMT does not currently generate district cooling equipment or a district cooling loop for this mode.
 
+### Generated architecture
+
+GMT generates a decomposed steam district that explicitly instantiates and connects the native Modelica Buildings Library (MBL) steam components:
+
+- a single-boiler steam plant (`Plants.SteamBoiler`, wrapping `Buildings.DHC.Plants.Steam.SingleBoiler`),
+- a steam distribution network with steam supply and condensate return (`Buildings.DHC.Networks.Steam.DistributionCondensatePipe`), and
+- one building per geojson building (`Loads.<building>.building`, wrapping `Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS`), each with an integrated energy transfer station (pressure reducing valve + heat exchanger).
+
+Each building reads its own heating load from the building's time-series (`.mos`) file (the space-heating column), so the number of buildings and the per-building loads come from the geojson/sys-param inputs rather than a single hard-coded profile.
+
+### Configurable parameters
+
+All steam parameters live under `district_system.first_generation.central_steam_plant_parameters`. Every key has a default (shown in the schema), so existing sys-param files continue to work:
+
+- `boiler_efficiency` — boiler efficiency (fraction).
+- `steam_pressure_setpoint` — saturation (high) pressure setpoint, `Pa`.
+- `reduced_pressure_setpoint` — reduced pressure downstream of the building pressure reducing valve, `Pa`.
+- `condensate_pressure_drop_nominal` — nominal condensate/distribution pressure drop, `Pa`.
+- `boiler_control_gain` / `boiler_control_time_constant` — boiler pressure PI controller tuning (`kBoi`, `TiBoi` in seconds).
+- `pump_control_gain` / `pump_control_time_constant` — feedwater pump PI controller tuning (`kPum`, `TiPum` in seconds).
+- `boiler_drum_volume` — boiler drum (water) volume, `m^3` (`VBoi`). Smaller values reduce the cold-start warm-up transient.
+- `boiler_capacity_scale` — boiler heat-capacity scaling factor (`boiSca`). Larger values oversize the firing rate and shorten warm-up.
+- `distribution_flow_safety_factor` — oversizing multiplier applied to the sum of building nominal flows when sizing the district nominal mass flow rate.
+- `minimum_load_fraction` — minimum (standby) building heating load as a fraction of the building peak load. Because the MBL steam pressure reducing valve and condensate pump are not numerically well posed at exactly zero steam flow, GMT maintains this minimum standby load so the district simulates through overnight/low-demand hours. Set it lower for a smaller standby load; a value of `0` is not recommended.
+- `number_of_boilers` — informational only. The current plant model is single-boiler, so this value does not change the generated model.
+
 ## 5GDHC without a ground heat exchanger
 
 GMT can generate a 5GDHC model when the system parameters do not include `district_system.fifth_generation.ghe_parameters`. In this topology, the generated district does not include a borefield or other ground heat exchanger plant. Instead, GMT creates an explicit no-plant boundary in the coupling graph and renders fixed-temperature heating and cooling components for the ambient loop. These components are the thermal infinite source/sink for the 5G distribution loop.

@@ -63,7 +63,6 @@ model DistrictEnergySystem
     redeclare final package Medium = MediumWat,
     redeclare final package MediumHea_b = MediumSte,
     final m_flow_nominal=mDis_flow_nominal,
-    final pSteSet=pSat,
     final Q_flow_nominal=QDis_flow_nominal,
     final per=perPumFW,
     energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,

@@ -3,16 +3,19 @@ model SteamBoiler
   "Single-boiler steam plant for 1st-generation (steam) district heating.
 
   This is a thin wrapper around Buildings.DHC.Plants.Steam.SingleBoiler that fixes the
-  boiler efficiency from the system parameters and exposes the plant service ports so the
-  plant can be wired to a steam distribution network in the district model:
+  boiler efficiency and steam pressure setpoint from the system parameters and exposes the
+  plant service ports so the plant can be wired to a steam distribution network in the
+  district model:
     - port_aSerHea : condensate (water) return inlet from the distribution network
     - port_bSerHea : saturated steam supply outlet to the distribution network
-  The fluid media (Medium = water/condensate, MediumHea_b = steam), nominal flow/heat,
-  pump performance, and steam pressure setpoint are supplied by the instantiating
-  district model."
+  The fluid media (Medium = water/condensate, MediumHea_b = steam), nominal flow/heat, and
+  pump performance are supplied by the instantiating district model."
   parameter Integer n_boilers={{ data["nominal_values"]["number_of_boilers"] }}
     "Number of parallel steam boilers in the plant";
+  parameter Modelica.Units.SI.AbsolutePressure pSteSet_nominal={{ data["nominal_values"]["steam_pressure_setpoint"] }}
+    "Steam pressure setpoint (saturation pressure, high pressure)";
   extends Buildings.DHC.Plants.Steam.SingleBoiler(
+    pSteSet=pSteSet_nominal,
     boi(a={ {{ data["nominal_values"]["boiler_efficiency"] }} }));
   annotation (
     Documentation(

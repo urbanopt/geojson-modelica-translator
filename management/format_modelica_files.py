@@ -15,7 +15,7 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 
 
-SKIP_FILES = ["DistrictEnergySystem.mot", "DistrictEnergySystem5G.mot"]
+SKIP_FILES = ["DistrictEnergySystem4G.mot", "DistrictEnergySystem5G.mot"]
 TEMPLATE_FILES = Path("geojson_modelica_translator/model_connectors").glob("**/templates/*")
 
 

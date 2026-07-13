@@ -219,7 +219,7 @@ class District:
         if "fifth_generation" in common_template_params["sys_params"]["district_system"]:
             final_result = render_template("DistrictEnergySystem5G.mot", district_template_params)
         elif "fourth_generation" in common_template_params["sys_params"]["district_system"]:
-            final_result = render_template("DistrictEnergySystem.mot", district_template_params)
+            final_result = render_template("DistrictEnergySystem4G.mot", district_template_params)
         else:
             raise ValueError(
                 "No recognized district generation found in district_system params. "

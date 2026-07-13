@@ -6,6 +6,7 @@
 
 ### Improvements & Bug Fixes 🐛
 
+* Support steam boilers (1st-generation district systems): generate a decomposed steam district (plant &rarr; distribution &rarr; buildings-with-ETS) that reads per-building loads and exposes configurable steam plant parameters by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/624>
 * Add the different fluid options to modelica templates by @kflemin in <https://github.com/urbanopt/geojson-modelica-translator/pull/820>
 * Expose 4G DES Chiller Plant System Parameters in Templates by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/847>
 * Expose 4G DES Boiler Plant System Parameters in Templates by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/848>
