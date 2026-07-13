@@ -28,6 +28,10 @@ jobs:
     permissions: read-all
     steps:
       - uses: actions/checkout@v7
+      - name: Set up Docker Buildx
+        run: |
+          docker buildx create --use --name gmt-runner-builder
+          docker buildx inspect --bootstrap
       - name: Log in to Docker Hub
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -58,7 +62,6 @@ jobs:
           PUBLISH_LATEST: ${{ inputs.publish_latest }}
           RUNNER_TAG: ${{ inputs.runner_tag }}
         run: |
-          docker buildx create --use --name gmt-runner-builder
           tags=(-t "nrel/gmt-om-runner:${RUNNER_TAG}")
           if [[ "${PUBLISH_LATEST}" == "true" ]]; then
             tags+=(-t "nrel/gmt-om-runner:latest")
