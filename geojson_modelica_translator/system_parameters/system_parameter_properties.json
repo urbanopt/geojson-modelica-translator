@@ -1060,6 +1060,51 @@
           "type": "number",
           "default": 20000
         },
+        "number_of_boilers": {
+          "description": "Number of parallel steam boilers in the central plant. Note: the current model is single-boiler, so this is informational only.",
+          "type": "integer",
+          "default": 1
+        },
+        "boiler_control_gain": {
+          "description": "Proportional gain of the boiler pressure PI controller (kBoi).",
+          "type": "number",
+          "default": 600
+        },
+        "boiler_control_time_constant": {
+          "description": "Integrator time constant of the boiler pressure PI controller, in seconds (TiBoi).",
+          "type": "number",
+          "default": 120
+        },
+        "pump_control_gain": {
+          "description": "Proportional gain of the feedwater pump PI controller (kPum).",
+          "type": "number",
+          "default": 200
+        },
+        "pump_control_time_constant": {
+          "description": "Integrator time constant of the feedwater pump PI controller, in seconds (TiPum).",
+          "type": "number",
+          "default": 1000
+        },
+        "boiler_drum_volume": {
+          "description": "Total drum (water) volume of the steam boiler, in m^3 (VBoi). Smaller values reduce the cold-start warm-up transient.",
+          "type": "number",
+          "default": 3
+        },
+        "boiler_capacity_scale": {
+          "description": "Boiler heat-capacity scaling factor (boiSca). Larger values oversize the firing rate and shorten warm-up.",
+          "type": "number",
+          "default": 1.25
+        },
+        "distribution_flow_safety_factor": {
+          "description": "Oversizing multiplier applied to the sum of building nominal flows to size the district nominal mass flow rate.",
+          "type": "number",
+          "default": 1.2
+        },
+        "minimum_load_fraction": {
+          "description": "Minimum (standby) building heating load as a fraction of the building peak load. Maintains a minimum steam flow so the pressure reducing valve and condensate pump remain numerically well posed when the time-series demand drops to zero.",
+          "type": "number",
+          "default": 0.02
+        },
         "temp_setpoint_hhw": {
           "description": "Heating hot water supply temperature setpoint for ETS (degrees Celsius)",
           "type": "number",

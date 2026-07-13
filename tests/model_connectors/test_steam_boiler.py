@@ -3,15 +3,18 @@
 #
 # Test suite for 1st-generation (steam) district energy systems.
 #
-# All tests generate explicit Modelica models for buildings, loads, ETS, network, and plant
-# components from coupling graph definitions in the test setup.
+# The 1st-generation district model instantiates the native MBL steam stack explicitly and
+# wires it with steam connections: a single-boiler steam plant (Plants.SteamBoiler) ->
+# steam distribution network (Buildings.DHC.Networks.Steam.DistributionCondensatePipe) ->
+# buildings with integrated steam energy transfer stations
+# (Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS). The number of buildings comes from
+# the system parameters, and the central plant parameters drive the plant/network sizing.
 #
 # - SteamPlantMultipleTest: Tests a steam district with 2 buildings (time_series_ex1.json)
-#   and 3 parallel boilers via time_series_sys_params_steam_3_boilers.json (number_of_boilers=3).
+#   and number_of_boilers=3 via time_series_sys_params_steam_3_boilers.json.
 #
 # - FullSteamDistrictTest: Tests a complete district with 3 buildings (time_series_ex2.json).
-#   All buildings are coupled as TimeSeries loads → HeatingIndirect ETS → Network2Pipe.
-#   Plant: 1-boiler SteamBoiler (default). All components generated explicitly.
+#   Plant: 1-boiler SteamBoiler (default).
 
 from pathlib import Path
 
@@ -21,9 +24,6 @@ from geojson_modelica_translator.geojson.urbanopt_geojson import UrbanOptGeoJson
 from geojson_modelica_translator.model_connectors.couplings.coupling import Coupling
 from geojson_modelica_translator.model_connectors.couplings.graph import CouplingGraph
 from geojson_modelica_translator.model_connectors.districts.district import District
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.ets_cold_water_stub import EtsColdWaterStub
-from geojson_modelica_translator.model_connectors.energy_transfer_systems.heating_indirect import HeatingIndirect
-from geojson_modelica_translator.model_connectors.load_connectors.time_series import TimeSeries
 from geojson_modelica_translator.model_connectors.networks.network_2_pipe import Network2Pipe
 from geojson_modelica_translator.model_connectors.plants.steam_boiler import SteamPlant
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
@@ -51,16 +51,10 @@ class SteamPlantMultipleTest(TestCaseBase):
         network = Network2Pipe(self.sys_params)
         heating_plant = SteamPlant(self.sys_params)
 
-        # create our load/ets/stubs
+        # The 1st-generation district model instantiates the decomposed steam stack
+        # (plant -> distribution -> buildings) directly, so only the plant coupling is
+        # needed to build a valid coupling graph.
         all_couplings = [Coupling(network, heating_plant)]
-        for geojson_load in self.gj.buildings:
-            time_series_load = TimeSeries(self.sys_params, geojson_load)
-            geojson_load_id = geojson_load.feature.properties["id"]
-            heating_indirect_system = HeatingIndirect(self.sys_params, geojson_load_id)
-            cold_water_stub = EtsColdWaterStub(self.sys_params)
-            all_couplings.append(Coupling(time_series_load, heating_indirect_system))
-            all_couplings.append(Coupling(time_series_load, cold_water_stub))
-            all_couplings.append(Coupling(heating_indirect_system, network))
 
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
@@ -70,6 +64,7 @@ class SteamPlantMultipleTest(TestCaseBase):
             project_name=self.project_name,
             system_parameters=self.sys_params,
             coupling_graph=graph,
+            geojson_file=self.gj,
         )
         self.district.to_modelica()
 
@@ -116,16 +111,10 @@ class FullSteamDistrictTest(TestCaseBase):
         network = Network2Pipe(self.sys_params)
         heating_plant = SteamPlant(self.sys_params)
 
-        # create our load/ets/stubs for all 3 buildings
+        # The 1st-generation district model instantiates the decomposed steam stack
+        # (plant -> distribution -> buildings) directly, so only the plant coupling is
+        # needed to build a valid coupling graph.
         all_couplings = [Coupling(network, heating_plant)]
-        for geojson_load in self.gj.buildings:
-            time_series_load = TimeSeries(self.sys_params, geojson_load)
-            geojson_load_id = geojson_load.feature.properties["id"]
-            heating_indirect_system = HeatingIndirect(self.sys_params, geojson_load_id)
-            cold_water_stub = EtsColdWaterStub(self.sys_params)
-            all_couplings.append(Coupling(time_series_load, heating_indirect_system))
-            all_couplings.append(Coupling(time_series_load, cold_water_stub))
-            all_couplings.append(Coupling(heating_indirect_system, network))
 
         # create the couplings and graph
         graph = CouplingGraph(all_couplings)
@@ -135,34 +124,60 @@ class FullSteamDistrictTest(TestCaseBase):
             project_name=self.project_name,
             system_parameters=self.sys_params,
             coupling_graph=graph,
+            geojson_file=self.gj,
         )
         self.district.to_modelica()
 
     def test_build_large_steam_district(self):
-        """Verify that a 3-building district can be generated"""
+        """Verify that a 3-building district can be generated with connected steam components"""
         root_path = Path(self.district._scaffold.districts_path.files_dir).resolve()
-        assert (root_path / "DistrictEnergySystem.mo").exists()
+        district_file = root_path / "DistrictEnergySystem.mo"
+        assert district_file.exists()
+
+        district_mo = district_file.read_text()
+
+        # The decomposed steam components must be instantiated: per-building wrapped loads,
+        # the steam distribution network, and the steam plant.
+        assert "Buildings.DHC.Networks.Steam.DistributionCondensatePipe dis" in district_mo
+        assert "Plants.SteamBoiler pla" in district_mo
+        # One GMT-wrapped steam building (with integrated ETS) per geojson building (ex2 has 2)
+        assert district_mo.count(".building bld") == 2
+        assert "bld1(" in district_mo and "bld2(" in district_mo
+
+        # ...and wired together: plant -> distribution -> buildings (with steam), per connection index
+        assert "connect(dis.ports_bCon[1], bld1.port_a);" in district_mo
+        assert "connect(bld1.port_b, dis.ports_aCon[1]);" in district_mo
+        assert "connect(dis.ports_bCon[2], bld2.port_a);" in district_mo
+        assert "connect(pla.port_bSerHea, dis.port_aDisSup);" in district_mo
+        assert "connect(dis.port_bDisRet, pla.port_aSerHea);" in district_mo
 
     def test_large_district_has_correct_building_count(self):
-        """Verify that the steam boiler model reflects 3 buildings"""
-        steam_boiler_model = Path(self.district._scaffold.plants_path.files_dir) / "SteamBoiler.mo"
-        steam_boiler_mo = steam_boiler_model.read_text()
+        """Verify that the district model reflects the geojson buildings"""
+        district_file = Path(self.district._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+        district_mo = district_file.read_text()
 
-        # Verify N_GMT=3 for 3 buildings (ex2 has 3 buildings)
-        assert "parameter Integer N_GMT=3" in steam_boiler_mo
-        # Total heat flow should be 60,000 (20,000 per building * 3)
-        assert "parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal_GMT=20000" in steam_boiler_mo
+        # Verify N=2 (ex2 geojson has 2 buildings)
+        assert "parameter Integer N=2" in district_mo
+        # Each building's steam load instance should be connected to the network
+        assert district_mo.count("connect(dis.ports_bCon[") == 2
 
     def test_full_district_has_all_components(self):
-        """Verify that the full district includes Loads, ETS, and Network packages"""
-        loads_path = Path(self.district._scaffold.loads_path.files_dir)
-        networks_path = Path(self.district._scaffold.networks_path.files_dir)
+        """Verify that the district includes the Loads, Plants and Districts packages"""
+        districts_path = Path(self.district._scaffold.districts_path.files_dir)
         plants_path = Path(self.district._scaffold.plants_path.files_dir)
+        loads_path = Path(self.district._scaffold.loads_path.files_dir)
 
-        # Verify all component packages exist
-        assert (loads_path / "package.mo").exists(), "Loads package should exist"
-        assert (networks_path / "package.mo").exists(), "Network package should exist"
+        # Verify component packages exist
+        assert (districts_path / "package.mo").exists(), "Districts package should exist"
         assert (plants_path / "package.mo").exists(), "Plants package should exist"
+        assert (loads_path / "package.mo").exists(), "Loads package should exist"
+
+        # The steam plant wrapper model should be generated in the Plants package
+        assert (plants_path / "SteamBoiler.mo").exists(), "SteamBoiler plant model should exist"
+
+        # Each geojson building should have a generated GMT-wrapped steam building model
+        building_models = list(loads_path.glob("*/building.mo"))
+        assert len(building_models) == 2, "Each building should have a generated building.mo model"
 
     @pytest.mark.simulation
     def test_simulate_full_steam_district_one_day(self):

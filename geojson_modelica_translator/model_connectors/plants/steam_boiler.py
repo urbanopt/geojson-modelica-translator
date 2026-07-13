@@ -29,19 +29,6 @@ class SteamPlant(PlantBase):
         template_data = {
             "nominal_values": {
                 "boiler_efficiency": self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency"),
-                "steam_pressure_setpoint": self.system_parameters.get_param(
-                    f"{steam_params_path}.steam_pressure_setpoint"
-                ),
-                "reduced_pressure_setpoint": self.system_parameters.get_param(
-                    f"{steam_params_path}.reduced_pressure_setpoint"
-                ),
-                "condensate_pressure_drop_nominal": self.system_parameters.get_param(
-                    f"{steam_params_path}.condensate_pressure_drop_nominal"
-                ),
-                "heat_flow_nominal_building": self.system_parameters.get_param(
-                    f"{steam_params_path}.heat_flow_nominal_building"
-                ),
-                "number_of_loads": len(self.system_parameters.get_param("$.buildings")),
                 "number_of_boilers": number_of_boilers,
             }
         }

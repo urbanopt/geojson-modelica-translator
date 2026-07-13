@@ -1,76 +1,49 @@
 within {{ project_name }}.Plants;
 model SteamBoiler
-  "Steam boiler model for district heating applications"
-  // Central heating plant
-  parameter Real boiler_efficiency={{ data["nominal_values"]["boiler_efficiency"] }}
-    "Boiler efficiency coefficient";
-  // Steam properties
-  parameter Modelica.Units.SI.AbsolutePressure pSat_GMT={{ data["nominal_values"]["steam_pressure_setpoint"] }}
-    "Saturation pressure, high pressure";
-  parameter Modelica.Units.SI.AbsolutePressure pLow_GMT={{ data["nominal_values"]["reduced_pressure_setpoint"] }}
-    "Reduced pressure, after PRV";
-  parameter Modelica.Units.SI.Temperature TSat_GMT=MediumSte.saturationTemperature(
-    pSat_GMT)
-    "Saturation temperature, at high pressure";
-  // Building
-  parameter Integer N_GMT={{ data["nominal_values"]["number_of_loads"] }}
-    "Number of buildings";
-  parameter Modelica.Units.SI.HeatFlowRate QBui_flow_nominal_GMT={{ data["nominal_values"]["heat_flow_nominal_building"] }}
-    "Nominal heat flow rate per building";
-  // Distribution Network
-  parameter Modelica.Units.SI.PressureDifference dp_nominal_GMT={{ data["nominal_values"]["condensate_pressure_drop_nominal"] }}
-    "Pressure drop of distribution at nominal mass flow rate";
-  // Multiple boilers support
+  "Single-boiler steam plant for 1st-generation (steam) district heating.
+
+  This is a thin wrapper around Buildings.DHC.Plants.Steam.SingleBoiler that fixes the
+  boiler efficiency from the system parameters and exposes the plant service ports so the
+  plant can be wired to a steam distribution network in the district model:
+    - port_aSerHea : condensate (water) return inlet from the distribution network
+    - port_bSerHea : saturated steam supply outlet to the distribution network
+  The fluid media (Medium = water/condensate, MediumHea_b = steam), nominal flow/heat,
+  pump performance, and steam pressure setpoint are supplied by the instantiating
+  district model."
   parameter Integer n_boilers={{ data["nominal_values"]["number_of_boilers"] }}
     "Number of parallel steam boilers in the plant";
-  extends Buildings.DHC.Examples.Steam.SingleBoiler(
-    // Central heating plant
-    pla(
-      boi(
-        a={boiler_efficiency}
-          "Boiler efficiency")),
-    pSat=pSat_GMT,
-    pLow=pLow_GMT,
-    TSat=TSat_GMT,
-    QBui_flow_nominal=QBui_flow_nominal_GMT,
-    N=N_GMT,
-    dp_nominal=dp_nominal_GMT);
+  extends Buildings.DHC.Plants.Steam.SingleBoiler(
+    boi(a={ {{ data["nominal_values"]["boiler_efficiency"] }} }));
   annotation (
-    Icon(
-      coordinateSystem(
-        preserveAspectRatio=false)),
-    Diagram(
-      coordinateSystem(
-        preserveAspectRatio=false)),
-    experiment(
-      StopTime=86400,
-      Tolerance=1e-06),
     Documentation(
       info="<html>
-      <p>This model validates the steam boiler in district heating system template model implemented in
-<a href=\"Buildings.DHC.Examples.Steam.SingleBoiler.mo\">
-Buildings.DHC.Examples.Steam.SingleBoiler.mo</a>.
+<p>
+Steam plant component for 1st-generation (steam) district heating systems. It wraps
+<a href=\"modelica://Buildings.DHC.Plants.Steam.SingleBoiler\">
+Buildings.DHC.Plants.Steam.SingleBoiler</a> and constrains the boiler efficiency curve
+coefficient to <code>boiler_efficiency</code> from
+<code>district_system.first_generation.central_steam_plant_parameters</code>.
 </p>
-    <p>
-    Template-to-sysparam mapping:
-    <code>boiler_efficiency</code>, <code>steam_pressure_setpoint</code>,
-    <code>reduced_pressure_setpoint</code>, <code>condensate_pressure_drop_nominal</code>, and
-    <code>heat_flow_nominal_building</code> are sourced from
-    <code>district_system.first_generation.central_steam_plant_parameters</code>.
-    The number of buildings comes from <code>buildings</code> length.
-    </p>
+<p>
+The plant exposes the heating service ports (<code>port_aSerHea</code> condensate return,
+<code>port_bSerHea</code> steam supply) inherited from the plant base class so it can be
+connected to a
+<a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\">
+Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a> distribution network in the
+district model.
+</p>
 </html>",
       revisions="<html>
 <ul>
 <li>
-    July 13, 2026 by Nicholas Long:<br/>
-    Templated steam-system documentation update and sysparam mapping notes.
-    Fixed steam boiler model to extend Buildings.DHC.Examples.Steam.SingleBoiler (corrected package path from non-existent Buildings.Experimental).
-    </li>
+July 13, 2026 by Nicholas Long:<br/>
+Refactored SteamBoiler to wrap the plant-only Buildings.DHC.Plants.Steam.SingleBoiler so
+the district model can explicitly connect plant &rarr; distribution &rarr; buildings.
+</li>
 <li>
-    February 01, 2024 by Zhanwei He:<br/>
-    First implementation.
-    </li>
+February 01, 2024 by Zhanwei He:<br/>
+First implementation.
+</li>
 </ul>
 </html>"));
 end SteamBoiler;
