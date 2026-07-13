@@ -1,4 +1,4 @@
-loadModel(Modelica, {"4.0.0"});
+loadModel(Modelica, {"4.1.0"});
 loadModel(Buildings);
 
 {% if not project_in_library %}

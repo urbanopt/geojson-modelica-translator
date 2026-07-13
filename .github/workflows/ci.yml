@@ -56,8 +56,105 @@ jobs:
         if: matrix.os != 'ubuntu-latest' || matrix.python-version != '3.13'
         run: make test-fast PYTEST_EXTRA_ARGS=-v
 
+  # Decide whether the runner image needs to be built. We only build when the
+  # runner Dockerfile actually changed relative to the default branch, or when the
+  # published nrel/gmt-om-runner image the tests fall back to is unavailable. When
+  # neither is true the Docker tests reuse the published image, saving several
+  # minutes per run.
+  detect-runner-changes:
+    name: Detect runner image changes
+    runs-on: ubuntu-latest
+    permissions: read-all
+    outputs:
+      build-needed: ${{ steps.decision.outputs.build-needed }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Decide whether to build the runner image
+        id: decision
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          BEFORE_SHA: ${{ github.event.before }}
+          RUNNER_DOCKERFILE: geojson_modelica_translator/modelica/lib/runner/Dockerfile
+        run: |
+          # Consider the Dockerfile changed if it differs from the default branch
+          # tip (covers PR branches) or from the commit this push started at
+          # (covers direct pushes to the default branch).
+          dockerfile_changed=false
+          git fetch --no-tags --depth=1 origin "$DEFAULT_BRANCH"
+          if ! git diff --quiet FETCH_HEAD HEAD -- "$RUNNER_DOCKERFILE"; then
+            dockerfile_changed=true
+          fi
+          if [ -n "$BEFORE_SHA" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            if git fetch --no-tags --depth=1 origin "$BEFORE_SHA" 2>/dev/null \
+              && ! git diff --quiet "$BEFORE_SHA" HEAD -- "$RUNNER_DOCKERFILE"; then
+              dockerfile_changed=true
+            fi
+          fi
+
+          # Read the default published image the tests fall back to straight from
+          # the source so this stays in sync with modelica_runner.py.
+          default_image="$(sed -nE 's/^DEFAULT_GMT_OM_RUNNER_IMAGE = "([^"]+)".*/\1/p' geojson_modelica_translator/modelica/modelica_runner.py)"
+          if [ -n "$default_image" ] && docker buildx imagetools inspect "$default_image" >/dev/null 2>&1; then
+            image_available=true
+          else
+            image_available=false
+          fi
+
+          if [ "$dockerfile_changed" = "true" ] || [ "$image_available" != "true" ]; then
+            build_needed=true
+          else
+            build_needed=false
+          fi
+          echo "Dockerfile changed: $dockerfile_changed"
+          echo "Published default image ($default_image) available: $image_available"
+          echo "Runner image build needed: $build_needed"
+          echo "build-needed=$build_needed" >> "$GITHUB_OUTPUT"
+
+  # Build the Linux runner image a single time with buildx and export it as an
+  # artifact. Both the Linux and the Windows/WSL2 test jobs load this same image,
+  # so the image is never built twice (and never built inside WSL2).
+  build-runner-image:
+    name: Build GMT runner image
+    needs: detect-runner-changes
+    if: needs.detect-runner-changes.outputs.build-needed == 'true'
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and export the runner image
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            -t gmt-om-runner:ci \
+            --load \
+            -f geojson_modelica_translator/modelica/lib/runner/Dockerfile \
+            .
+          docker run --rm gmt-om-runner:ci omc --version
+          # omc exits 0 even when installPackage fails, so assert the expected
+          # libraries actually landed in the image before we ship the artifact.
+          docker run --rm gmt-om-runner:ci bash -lc '
+            set -euo pipefail
+            libs=/root/.openmodelica/libraries
+            ls -1 "$libs"
+            ls -d "$libs"/Modelica\ * >/dev/null
+            ls -d "$libs"/Buildings\ * >/dev/null
+          '
+          docker save gmt-om-runner:ci -o gmt-om-runner-ci.tar
+      - name: Upload runner image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gmt-om-runner-ci-image
+          path: gmt-om-runner-ci.tar
+          retention-days: 1
+
   resource-intensive-tests:
     name: Docker simulations and compilations (${{ matrix.os }})
+    needs: [detect-runner-changes, build-runner-image]
+    # Run even when build-runner-image is skipped (Dockerfile unchanged), but not
+    # when it failed or the pipeline was cancelled.
+    if: ${{ !cancelled() && needs.detect-runner-changes.result == 'success' && needs.build-runner-image.result != 'failure' }}
     strategy:
       fail-fast: false
       matrix:
@@ -108,21 +205,43 @@ jobs:
       - name: Set MODELICAPATH
         if: runner.os == 'Linux'
         run: echo "MODELICAPATH=${{ github.workspace }}/modelica-buildings" >> "$GITHUB_ENV"
+      # Pull the image built once by build-runner-image. Absent when no build was
+      # needed, in which case the tests use the published runner image.
+      - name: Download runner image artifact
+        if: needs.detect-runner-changes.outputs.build-needed == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: gmt-om-runner-ci-image
       # Keep this as one non-xdist invocation so Docker workloads run in series.
       - name: Run resource-intensive tests in series on Linux
         if: runner.os == 'Linux'
-        run: make test-resource-intensive PYTEST_EXTRA_ARGS=-v
+        run: |
+          if [ -f gmt-om-runner-ci.tar ]; then
+            docker load --input gmt-om-runner-ci.tar
+          fi
+          if docker image inspect gmt-om-runner:ci >/dev/null 2>&1; then
+            export GMT_OM_RUNNER_IMAGE=gmt-om-runner:ci
+          fi
+          make test-resource-intensive PYTEST_EXTRA_ARGS=-v
       # The GMT runner image is Linux-only. On a Windows host, run it with the
-      # Linux Docker daemon in WSL2, as Docker Desktop does for local users.
+      # Linux Docker daemon in WSL2, as Docker Desktop does for local users. The
+      # image is loaded from the artifact built once on Linux, so it is never
+      # built inside WSL2.
       - name: Run resource-intensive tests in series on Windows
         if: runner.os == 'Windows'
         shell: wsl-bash {0}
         run: |
           sudo service docker start
+          if [ -f gmt-om-runner-ci.tar ]; then
+            docker load --input gmt-om-runner-ci.tar
+          fi
           python3 -m venv /tmp/gmt-ci
           /tmp/gmt-ci/bin/pip install poetry
           export PATH="/tmp/gmt-ci/bin:$PATH"
           export MODELICAPATH="$PWD/modelica-buildings"
+          if docker image inspect gmt-om-runner:ci >/dev/null 2>&1; then
+            export GMT_OM_RUNNER_IMAGE=gmt-om-runner:ci
+          fi
           poetry self add setuptools
           poetry install
           python --version
