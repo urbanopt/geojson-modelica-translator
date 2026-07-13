@@ -39,7 +39,7 @@ repos:
       - id: modelica-fmt
         name: Modelica Formatter
         types: [file]
-        files: \.(mo|mot)$
+        files: \.(mo|mot|mopt)$
         entry: modelicafmt
         args: ["-w", "-wrap-arrays"]
         language: system
