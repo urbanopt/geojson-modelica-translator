@@ -39,10 +39,10 @@ repos:
       - id: modelica-fmt
         name: Modelica Formatter
         types: [file]
-        files: \.(mo|mot)$
-        entry: poetry run format_modelica_files
+        files: \.(mo|mot|mopt)$
+        entry: modelicafmt
+        args: ["-w", "-wrap-arrays"]
         language: system
-        pass_filenames: false
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.13

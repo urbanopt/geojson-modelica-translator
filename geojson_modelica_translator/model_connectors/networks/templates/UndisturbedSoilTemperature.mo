@@ -20,6 +20,7 @@ model UndisturbedSoilTemperature
     "Second phase lag of soil surface temperature, in days";
   Modelica.Units.SI.Temperature T
     "Undisturbed soil temperature at depth dep";
+
 protected
   constant Modelica.Units.SI.Angle pi=Modelica.Constants.pi;
   constant Modelica.Units.SI.Duration Year=365
@@ -30,12 +31,9 @@ protected
     "First phase angle of ground temperature sinusoid";
   parameter Real pha2=-dep*(2*pi/soiDif/Year)^0.5
     "Second phase angle of ground temperature sinusoid";
+
 equation
-  T=TSurMea-TSurAmp1*exp(
-    pha1)*cos(
-    2*pi*(time/60/60/24-cosPha1)/Year+pha1)-TSurAmp2*exp(
-    pha2)*cos(
-    4*pi*(time/60/60/24-cosPha2)/Year+pha2);
+  T=TSurMea-TSurAmp1*exp(pha1)*cos(2*pi*(time/60/60/24-cosPha1)/Year+pha1)-TSurAmp2*exp(pha2)*cos(4*pi*(time/60/60/24-cosPha2)/Year+pha2);
   annotation (
     Placement(
       transformation(

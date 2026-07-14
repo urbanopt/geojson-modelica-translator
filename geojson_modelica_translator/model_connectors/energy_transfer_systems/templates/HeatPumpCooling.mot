@@ -33,6 +33,7 @@ model HeatPumpCooling
   Buildings.Controls.OBC.CDL.Reals.Multiply floEva
     "Zero flow rate if not enabled"
     annotation (Placement(transformation(extent={{-132,90},{-112,110}})));
+
 equation
   connect(addPPum.y,PPum)
     annotation (Line(points={{21,0},{174,0},{174,0},{220,0}},color={0,0,127}));

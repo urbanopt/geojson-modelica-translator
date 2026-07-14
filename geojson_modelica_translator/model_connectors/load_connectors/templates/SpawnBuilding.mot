@@ -80,12 +80,9 @@ model building
     "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{40,-20},{80,20}})));
   {% endraw %}{% endfor %}{% raw %}inner Buildings.ThermalZones.EnergyPlus_24_2_0.Building building(
-    idfName=Modelica.Utilities.Files.loadResource(
-      idfName),
-    epwName=Modelica.Utilities.Files.loadResource(
-      epwName),
-    weaName=Modelica.Utilities.Files.loadResource(
-      weaName))
+    idfName=Modelica.Utilities.Files.loadResource(idfName),
+    epwName=Modelica.Utilities.Files.loadResource(epwName),
+    weaName=Modelica.Utilities.Files.loadResource(weaName))
     "Building outer component"
     annotation (Placement(transformation(extent={{40,60},{60,80}})));
   Buildings.Controls.OBC.CDL.Reals.MultiSum mulSum(
@@ -115,8 +112,7 @@ model building
   Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
     allowFlowReversal=true,
-    m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni.facMulZon),
+    m_flow_nominal=sum(terUni.mHeaWat_flow_nominal .* terUni.facMulZon),
     have_pum=have_pum,
     dp_nominal=100000,
     nPorts_a1=nZon,
@@ -126,8 +122,7 @@ model building
   Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
     allowFlowReversal=true,
-    m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni.facMulZon),
+    m_flow_nominal=sum(terUni.mChiWat_flow_nominal .* terUni.facMulZon),
     typDis=Buildings.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     dp_nominal=100000,
     have_pum=have_pum,
@@ -135,6 +130,7 @@ model building
     nPorts_b1=nZon)
     "Chilled water distribution system"
     annotation (Placement(transformation(extent={{-160,-230},{-140,-210}})));
+
 {% endraw %}equation
   {% raw %} connect(qRadGai_flow.y,multiplex3_1.u1[1])
     annotation (Line(points={{-45,178},{-26,178},{-26,145},{-22,145}},color={0,0,127},smooth=Smooth.None));
