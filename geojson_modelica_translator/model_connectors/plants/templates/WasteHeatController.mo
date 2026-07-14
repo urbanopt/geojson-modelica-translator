@@ -64,8 +64,7 @@ block WasteHeatController
     T=MediumSer.T_default,
     p=MediumSer.p_default,
     X=MediumSer.X_default);
-  parameter Modelica.Units.SI.SpecificHeatCapacity cp_defaultSer=MediumSer.specificHeatCapacityCp(
-    sta_defaultSer)
+  parameter Modelica.Units.SI.SpecificHeatCapacity cp_defaultSer=MediumSer.specificHeatCapacityCp(sta_defaultSer)
     "Specific heat capacity of waste heat side medium at default medium state [J/kg-K]";
   Modelica.Blocks.Sources.RealExpression cp_defaultSer_s(
     y(
@@ -285,6 +284,7 @@ block WasteHeatController
     final nout=2)
     "Replicate real number"
     annotation (Placement(transformation(extent={{-160,-246},{-140,-226}})));
+
 equation
   connect(T_disRet,dT_wasHeaIsSou.u1)
     annotation (Line(points={{-320,140},{-280,140},{-280,116},{-262,116}},color={0,0,127}));

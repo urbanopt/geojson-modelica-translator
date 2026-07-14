@@ -18,8 +18,7 @@ model FanCoil2PipeCoolingDry
     final have_TSen=false,
     final have_weaBus=false,
     final have_pum=false,
-    mChiWat_flow_nominal=abs(
-      QCoo_flow_nominal/cpChiWat_nominal/(T_aChiWat_nominal-T_bChiWat_nominal)));
+    mChiWat_flow_nominal=abs(QCoo_flow_nominal/cpChiWat_nominal/(T_aChiWat_nominal-T_bChiWat_nominal)));
   import hexConfiguration=Buildings.Fluid.Types.HeatExchangerConfiguration;
   parameter Real k(
     min=0)=1
@@ -134,6 +133,7 @@ model FanCoil2PipeCoolingDry
   Buildings.Controls.OBC.CDL.Reals.Switch swi
     "Logical switch"
     annotation (Placement(transformation(extent={{26,170},{46,190}})));
+
 equation
   connect(gaiFloNom2.y,fan.m_flow_in)
     annotation (Line(points={{74,180},{80,180},{80,20},{40,20},{40,12}},color={0,0,127}));

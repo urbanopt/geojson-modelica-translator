@@ -56,21 +56,13 @@ model CoolingTowerWithBypass
     annotation (Dialog(enable=(controllerType == Modelica.Blocks.Types.SimpleController.PD or controllerType == Modelica.Blocks.Types.SimpleController.PID),group="Control Settings"));
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
-    noEvent(
-      actualStream(
-        port_a.h_outflow)),
-    noEvent(
-      actualStream(
-        port_a.Xi_outflow))) if show_T
+    noEvent(actualStream(port_a.h_outflow)),
+    noEvent(actualStream(port_a.Xi_outflow))) if show_T
     "Medium properties in port_a";
   Medium.ThermodynamicState sta_b=Medium.setState_phX(
     port_b.p,
-    noEvent(
-      actualStream(
-        port_b.h_outflow)),
-    noEvent(
-      actualStream(
-        port_b.Xi_outflow))) if show_T
+    noEvent(actualStream(port_b.h_outflow)),
+    noEvent(actualStream(port_b.Xi_outflow))) if show_T
     "Medium properties in port_b";
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
     redeclare package Medium=Medium)
@@ -172,6 +164,7 @@ model CoolingTowerWithBypass
   Modelica.Blocks.Math.RealToBoolean reaToBoo
     "Real to boolean signal"
     annotation (Placement(transformation(extent={{-90,-90},{-70,-70}})));
+
 equation
   connect(cooTowSys.TWetBul,TWetBul)
     annotation (Line(points={{-12,-6},{-40,-6},{-40,-20},{-120,-20}},color={0,0,127}));

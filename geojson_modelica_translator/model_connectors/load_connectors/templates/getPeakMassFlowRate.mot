@@ -8,6 +8,7 @@ function getPeakMassFlowRate
     annotation (Dialog(loadSelector(filter="Load file (*.mos)",caption="Select load file")));
   output Real number
     "Number that is read from the file";
+
 protected
   String lin
     "Line that is used in parser";
@@ -25,6 +26,7 @@ protected
     "Flag, true if EOF has been reached";
   String del
     "Found delimiter";
+
 algorithm
   // Get line that contains 'string'
   iLin := 0;

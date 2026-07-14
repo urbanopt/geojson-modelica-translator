@@ -47,9 +47,9 @@ model GroundCoupling
     final cosPha1=cosPha1,
     final cosPha2=cosPha2)
     "Soil temperature";
+
 protected
-  parameter Modelica.Units.SI.Length depMea=sum(
-    dep)/nPip
+  parameter Modelica.Units.SI.Length depMea=sum(dep)/nPip
     "Average depth";
   parameter Real P[nPip,nPip]=Buildings.Fluid.FixedResistances.BuriedPipes.BaseClasses.groundCouplingFactors(
     nPip,
@@ -57,6 +57,7 @@ protected
     pos,
     rad)
     "Thermal coupling geometric factors";
+
 equation
   for seg in 1:nSeg loop
     ports[:,seg].T .- soi.T=P*ports[:,seg].Q_flow/(2*Modelica.Constants.pi*soiDat.kSoi*len[seg]);
