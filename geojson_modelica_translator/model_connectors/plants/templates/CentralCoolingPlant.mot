@@ -342,20 +342,21 @@ equation
       __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput,
     Documentation(
-      info="<html>
-<p>The schematic drawing of the Lejeune plant is shown as following.</p>
-<p><img src=\"Resources/Images/lejeunePlant/lejeune_schematic_drawing.jpg\" alt=\"image\"/> </p>
-<p>In addition, the parameters are listed as below.</p>
-<p>The parameters for the chiller plant.</p>
-<p><img src=\"Resources/Images/lejeunePlant/Chiller.png\" alt=\"image\"/> </p>
-<p>The parameters for the primary chilled water pump.</p>
-<p><img src=\"Resources/Images/lejeunePlant/PriCHWPum.png\" alt=\"image\"/> </p>
-<p>The parameters for the secondary chilled water pump.</p>
-<p><img src=\"Resources/Images/lejeunePlant/SecCHWPum1.png\" alt=\"image\"/> </p>
-<p><img src=\"Resources/Images/lejeunePlant/SecCHWPum2.png\" alt=\"image\"/> </p>
-<p>The parameters for the condenser water pump.</p>
-<p><img src=\"Resources/Images/lejeunePlant/CWPum.png\" alt=\"image\"/> </p>
-</html>"),
+      info="
+        <html>
+          <p>The schematic drawing of the Lejeune plant is shown as following.</p>
+          <p><img src=\"Resources/Images/lejeunePlant/lejeune_schematic_drawing.jpg\" alt=\"image\"/></p>
+          <p>In addition, the parameters are listed as below.</p>
+          <p>The parameters for the chiller plant.</p>
+          <p><img src=\"Resources/Images/lejeunePlant/Chiller.png\" alt=\"image\"/></p>
+          <p>The parameters for the primary chilled water pump.</p>
+          <p><img src=\"Resources/Images/lejeunePlant/PriCHWPum.png\" alt=\"image\"/></p>
+          <p>The parameters for the secondary chilled water pump.</p>
+          <p><img src=\"Resources/Images/lejeunePlant/SecCHWPum1.png\" alt=\"image\"/></p>
+          <p><img src=\"Resources/Images/lejeunePlant/SecCHWPum2.png\" alt=\"image\"/></p>
+          <p>The parameters for the condenser water pump.</p>
+          <p><img src=\"Resources/Images/lejeunePlant/CWPum.png\" alt=\"image\"/></p>
+        </html>"),
     Icon(
       coordinateSystem(
         extent={{-100,-100},{100,100}}),

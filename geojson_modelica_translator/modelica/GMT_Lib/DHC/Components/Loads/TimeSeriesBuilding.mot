@@ -293,38 +293,26 @@ equation
   annotation (
     Documentation(
       info="
-<html>
-<p>
-This is a simplified building model where the space heating and cooling loads
-are provided as time series.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-December 05, 2025, by Nicholas Long and Jing Wang:<br/>
-Templatized for use within the GMT framework for the HeatPumpTrio.
-</li>
-<li>
-October 20, 2020, by Hagar Elarga:<br/>
-The <code>mLoaHea_flow_nominal</code> and <code>mLoaCoo_flow_nominal</code> are
-evaluated as a function of <code> QHea_flow_nominal</code> and
-<code>QCoo_flow_nominal</code> respectively.
-This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2201\">issue 2201</a> and
-<a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2202\">issue 2202</a>.
-</li>
-<li>
-September 18, 2020, by Jianjun Hu:<br/>
-Changed flow distribution components and the terminal units to be conditional depending
-on if there is water-based heating, or cooling system.
-This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2147\">issue 2147</a>.
-</li>
-<li>
-February 21, 2020, by Antoine Gautier:<br/>
-First implementation.
-</li>
-</ul>
-</html>"),
+        <html>
+          <p>This is a simplified building model where the space heating and cooling loads are provided as time series.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              December 05, 2025, by Nicholas Long and Jing Wang:<br/> Templatized for use within the GMT framework for the HeatPumpTrio.
+            </li>
+            <li>
+              October 20, 2020, by Hagar Elarga:<br/> The <code>mLoaHea_flow_nominal</code> and <code>mLoaCoo_flow_nominal</code> are evaluated as a function of <code> QHea_flow_nominal</code> and <code>QCoo_flow_nominal</code> respectively. This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2201\">issue 2201</a> and <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2202\">issue 2202</a>.
+            </li>
+            <li>
+              September 18, 2020, by Jianjun Hu:<br/> Changed flow distribution components and the terminal units to be conditional depending on if there is water-based heating, or cooling system. This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/2147\">issue 2147</a>.
+            </li>
+            <li>
+              February 21, 2020, by Antoine Gautier:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"),
     Icon(
       coordinateSystem(
         preserveAspectRatio=false,

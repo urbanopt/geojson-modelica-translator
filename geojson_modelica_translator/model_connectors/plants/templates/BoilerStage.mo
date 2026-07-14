@@ -179,12 +179,12 @@ equation
           textString="%name",
           lineColor={0,0,255})}),
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-September 01, 2020 by Hagar Elarga:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      revisions="
+        <html>
+          <ul>
+            <li>
+              September 01, 2020 by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end BoilerStage;

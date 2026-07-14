@@ -123,58 +123,30 @@ equation
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right),
     Documentation(
-      info="<html>
-<p>
-This model is composed of a heat pump based energy transfer station model
-<a href=\"modelica://Buildings.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger\">
-Buildings.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger</a>
-connected to a simplified building model where the space heating, cooling
-and hot water loads are provided as time series.
-</p>
-<h4>Sizing and initialization</h4>
-<p>
-The design heating, cooling, and service hot water loads (W) are read from the
-time-series metadata and propagated to the internal ETS. Terminal-unit
-multipliers are computed from those loads so larger buildings can be split
-across multiple terminal units without changing the generated model structure.
-The ETS pressure drop is supplied through <code>dp_nominal</code> (Pa), and the
-service-water volume start temperature is supplied through
-<code>TSerWat_start</code> (K). This keeps service-water volume initialization
-configurable from the template data while leaving flow and pressure-drop sizing
-governed by <code>dp_nominal</code> and the load-derived ETS design values.
-</p>
-<p>
-This wrapper passes the service-water start temperature into the ETS model;
-district-topology-specific boundary conditions and reporting variables are
-defined by the district coupling templates.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-July 11, 2026, by Nicholas Long:<br/>
-Robustness: replaced the zero-deadband heating/cooling enable
-(<code>GreaterThreshold</code>) with a <code>Hysteresis</code> block
-(<code>uLow</code>=configured <code>heat_cool_enable_threshold</code>,
-<code>uHigh</code>=10x that, on normalized load) so the building no longer
-chatters the ETS heating/cooling enable on and off when a load hovers near
-zero, while preserving the configurable, coil-aware enable threshold. Mirrors
-the same fix in the GMT_Lib buildingHPTrio model.
-</li>
-<li>
-July 10, 2026, by Nicholas Long:<br/>
-Documented flexible load-based sizing and configurable service-water initialization.
-</li>
-<li>
-April 11, 2025, by Nathan Moore:<br/>
-GMT template updated to read additional data from system-parameter file.
-</li>
-<li>
-February 23, 2021, by Antoine Gautier:<br/>
-First implementation.
-</li>
-</ul>
-</html>"),
+      info="
+        <html>
+          <p>This model is composed of a heat pump based energy transfer station model <a href=\"modelica://Buildings.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger\"> Buildings.DHC.EnergyTransferStations.Combined.HeatPumpHeatExchanger</a> connected to a simplified building model where the space heating, cooling and hot water loads are provided as time series.</p>
+          <h4>Sizing and initialization</h4>
+          <p>The design heating, cooling, and service hot water loads (W) are read from the time-series metadata and propagated to the internal ETS. Terminal-unit multipliers are computed from those loads so larger buildings can be split across multiple terminal units without changing the generated model structure. The ETS pressure drop is supplied through <code>dp_nominal</code> (Pa), and the service-water volume start temperature is supplied through <code>TSerWat_start</code> (K). This keeps service-water volume initialization configurable from the template data while leaving flow and pressure-drop sizing governed by <code>dp_nominal</code> and the load-derived ETS design values.</p>
+          <p>This wrapper passes the service-water start temperature into the ETS model; district-topology-specific boundary conditions and reporting variables are defined by the district coupling templates.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              July 11, 2026, by Nicholas Long:<br/> Robustness: replaced the zero-deadband heating/cooling enable (<code>GreaterThreshold</code>) with a <code>Hysteresis</code> block (<code>uLow</code>=configured <code>heat_cool_enable_threshold</code>, <code>uHigh</code>=10x that, on normalized load) so the building no longer chatters the ETS heating/cooling enable on and off when a load hovers near zero, while preserving the configurable, coil-aware enable threshold. Mirrors the same fix in the GMT_Lib buildingHPTrio model.
+            </li>
+            <li>
+              July 10, 2026, by Nicholas Long:<br/> Documented flexible load-based sizing and configurable service-water initialization.
+            </li>
+            <li>
+              April 11, 2025, by Nathan Moore:<br/> GMT template updated to read additional data from system-parameter file.
+            </li>
+            <li>
+              February 23, 2021, by Antoine Gautier:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"),
     Diagram(
       coordinateSystem(
         preserveAspectRatio=false,

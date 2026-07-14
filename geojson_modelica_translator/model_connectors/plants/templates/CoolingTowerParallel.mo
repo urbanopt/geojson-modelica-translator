@@ -272,20 +272,17 @@ equation
           color={255,0,0},
           thickness=0.5)}),
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-May 19, 2020 by Jing Wang:<br/>
-First implementation.
-</li>
-</ul>
-</html>",
-      info="<html>
-<p>
-This model implements a parallel cooling tower system with <code>num</code> identical cooling towers.
-The cooling tower type is replacable.
-<a href=\"modelica://Buildings.Fluid.HeatExchangers.CoolingTowers.Merkel\">Buildings.Fluid.HeatExchangers.CoolingTowers.Merkel</a> is currently used in this model.
-</p>
-</html>"),
+      revisions="
+        <html>
+          <ul>
+            <li>
+              May 19, 2020 by Jing Wang:<br/> First implementation.
+            </li>
+          </ul>
+        </html>",
+      info="
+        <html>
+          <p>This model implements a parallel cooling tower system with <code>num</code> identical cooling towers. The cooling tower type is replacable. <a href=\"modelica://Buildings.Fluid.HeatExchangers.CoolingTowers.Merkel\">Buildings.Fluid.HeatExchangers.CoolingTowers.Merkel</a> is currently used in this model.</p>
+        </html>"),
     __Dymola_Commands);
 end CoolingTowerParallel;

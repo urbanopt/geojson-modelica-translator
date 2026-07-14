@@ -82,66 +82,25 @@ equation
       coordinateSystem(
         preserveAspectRatio=false)),
     Documentation(
-      info="<html>
-<p>
-This model provides a prescribed temperature boundary condition for buried objects,
-where the temperature is computed per the ASCE (1996) equation:
-</p>
-<p>
-<img alt=\"image\" src=\"modelica://Buildings/Resources/Images/BoundaryConditions/GroundTemperature/UndisturbedSoilTemperature.svg\" />
-</p>
-<p>
-where: <br>
-<i>T<sub>s,z</sub></i> = ground temperature at depth <i>z</i>,<br>
-<i>&tau;</i> = annual period length (constant 365.25 days),<br>
-<i>&alpha;</i> = soil thermal diffusivity (assumed constant throughout the year), <br>
-<i>t</i> = time, <br>
-<i>T<sub>ms</sub></i> = mean annual surface temperature, <br>
-<i>A<sub>s</sub></i> = temperature amplitude throughout the year (max - min), <br>
-<i>t<sub>lag</sub></i> = phase lag of the surface temperature sinusoid
-</p>
-
-<h4>Corrections</h4>
-
-<p>
-Without correction, this model assumes that the surface temperature (depth = 0) is
-equal to the air temperature, which is acceptable for most design calculations.<br>
-For more accurate calculation, this model provides methods to compensate for
-the convective thermal resistance and the impact of surface cover.
-</p>
-<p>
-The convective thermal resistance can be modeled as a virtual equivalent soil layer
-by setting the flag <i>useCon</i> to <code>true</code> and specifying the
-heat transfer coefficient <i>hSur</i>.<br/>
-This correction would result in a larger delay and dampening of the
-resulting sinusoid.
-</p>
-<p>
-The impact of surface cover on soil temperature can be modeled using
-<i>n</i>-factors by setting the flag <i>useNFac</i> to <code>true</code> and
-specifying the thawing and freezing <i>n</i>-factors at the surface. <br>
-
-More information about <i>n</i>-factors correction can be found in the documentation
-for <a href=\"modelica://Buildings.BoundaryConditions.GroundTemperature.BaseClasses.surfaceTemperature\">
-Buildings.BoundaryConditions.GroundTemperature.BaseClasses.surfaceTemperature</a>.
-</p>
-<p>
-Since <i>n</i>-factors incorporate the effect of surface convection,
-both corrections would typically not be applied simultaneously. <br>
-</p>
-
-<h4>References</h4>
-<p>
-ASCE (1996). <i>Cold Regions Utilities Monograph</i>. D.W. Smith, Technical Editor.
-</p>
-
-</html>",
-      revisions="<html>
-<ul>
-<li>
-March 17, 2021, by Baptiste Ravache:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This model provides a prescribed temperature boundary condition for buried objects, where the temperature is computed per the ASCE (1996) equation:</p>
+          <p><img alt=\"image\" src=\"modelica://Buildings/Resources/Images/BoundaryConditions/GroundTemperature/UndisturbedSoilTemperature.svg\" /></p>
+          <p>where: <br> <i>T<sub>s,z</sub></i> = ground temperature at depth <i>z</i>,<br> <i>&tau;</i> = annual period length (constant 365.25 days),<br> <i>&alpha;</i> = soil thermal diffusivity (assumed constant throughout the year), <br> <i>t</i> = time, <br> <i>T<sub>ms</sub></i> = mean annual surface temperature, <br> <i>A<sub>s</sub></i> = temperature amplitude throughout the year (max - min), <br> <i>t<sub>lag</sub></i> = phase lag of the surface temperature sinusoid</p>
+          <h4>Corrections</h4>
+          <p>Without correction, this model assumes that the surface temperature (depth = 0) is equal to the air temperature, which is acceptable for most design calculations.<br> For more accurate calculation, this model provides methods to compensate for the convective thermal resistance and the impact of surface cover.</p>
+          <p>The convective thermal resistance can be modeled as a virtual equivalent soil layer by setting the flag <i>useCon</i> to <code>true</code> and specifying the heat transfer coefficient <i>hSur</i>.<br/> This correction would result in a larger delay and dampening of the resulting sinusoid.</p>
+          <p>The impact of surface cover on soil temperature can be modeled using <i>n</i>-factors by setting the flag <i>useNFac</i> to <code>true</code> and specifying the thawing and freezing <i>n</i>-factors at the surface. <br> More information about <i>n</i>-factors correction can be found in the documentation for <a href=\"modelica://Buildings.BoundaryConditions.GroundTemperature.BaseClasses.surfaceTemperature\"> Buildings.BoundaryConditions.GroundTemperature.BaseClasses.surfaceTemperature</a>.</p>
+          <p>Since <i>n</i>-factors incorporate the effect of surface convection, both corrections would typically not be applied simultaneously. <br></p>
+          <h4>References</h4>
+          <p>ASCE (1996). <i>Cold Regions Utilities Monograph</i>. D.W. Smith, Technical Editor.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 17, 2021, by Baptiste Ravache:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end UndisturbedSoilTemperature;

@@ -187,24 +187,17 @@ equation
     annotation (Line(points={{12,140},{18,140},{18,172},{24,172}},color={0,0,127}));
   annotation (
     Documentation(
-      info="<html>
-<p>
-This sensible-only two-pipe cooling terminal was added as a selectable
-alternative to the standard wet cooling terminal for time-series buildings.
-The chilled-water mass flow rate (kg/s) is derived from the cooling design load (W) and
-nominal chilled-water temperature difference (K), while the load-side air flow (kg/s) and
-fan pressure drop (Pa) remain configurable through the existing nominal parameters.
-The component does not define district-loop boundary conditions; it only
-models the local dry terminal response.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-July 10, 2026, by Nicholas Long:<br/>
-Documented why the dry sensible coil component was added and how it is sized.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This sensible-only two-pipe cooling terminal was added as a selectable alternative to the standard wet cooling terminal for time-series buildings. The chilled-water mass flow rate (kg/s) is derived from the cooling design load (W) and nominal chilled-water temperature difference (K), while the load-side air flow (kg/s) and fan pressure drop (Pa) remain configurable through the existing nominal parameters. The component does not define district-loop boundary conditions; it only models the local dry terminal response.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              July 10, 2026, by Nicholas Long:<br/> Documented why the dry sensible coil component was added and how it is sized.
+            </li>
+          </ul>
+        </html>"));
 end FanCoil2PipeCoolingDry;
 {% endraw %}

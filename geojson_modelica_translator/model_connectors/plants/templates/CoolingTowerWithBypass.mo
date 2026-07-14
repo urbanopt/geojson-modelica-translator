@@ -370,12 +370,12 @@ equation
           fillColor={0,0,127},
           fillPattern=FillPattern.Solid)}),
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-March 30, 2014 by Sen Huang:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 30, 2014 by Sen Huang:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end CoolingTowerWithBypass;

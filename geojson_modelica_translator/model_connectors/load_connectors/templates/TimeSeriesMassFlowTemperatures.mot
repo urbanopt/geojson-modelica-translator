@@ -197,21 +197,17 @@ equation
       Tolerance=1e-6,
       StopTime=31534200),
     Documentation(
-      info="<html>
-<p>
-This example connects the building side (time series CSV file generated from
-energyPlus of heating/cooling water mass flow rate and temperature's)
-with the district side (infinite sources of cooling and heating) through
-an indirect heating and cooling energy transfer station (ETS, a heat exchanger).
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-August 25, 2020, by Hagar Elarga:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This example connects the building side (time series CSV file generated from energyPlus of heating/cooling water mass flow rate and temperature's) with the district side (infinite sources of cooling and heating) through an indirect heating and cooling energy transfer station (ETS, a heat exchanger).</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              August 25, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end building;
 {% endraw %}

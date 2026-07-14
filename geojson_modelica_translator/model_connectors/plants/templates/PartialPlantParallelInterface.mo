@@ -17,14 +17,15 @@ partial model PartialPlantParallelInterface
           fillColor={95,95,95},
           fillPattern=FillPattern.Solid)}),
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-August 25, 2020, by Hagar Elarga:<br/>
-First implementation.
-</li>
-</ul>
-</html>",
-      info="<html>
-</html>"));
+      revisions="
+        <html>
+          <ul>
+            <li>
+              August 25, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>",
+      info="
+        <html>
+        </html>"));
 end PartialPlantParallelInterface;

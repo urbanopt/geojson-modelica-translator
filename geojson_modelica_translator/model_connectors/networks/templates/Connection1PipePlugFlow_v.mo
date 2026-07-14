@@ -43,28 +43,19 @@ equation
     annotation (Line(points={{-70,-30},{-70,80},{-100,80}},color={191,0,0}));
   annotation (
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-March 15, 2024, by David Blum:<br/>
-Renamed.
-This is for
-<a href=\"https://github.com/lbl-srg/modelica-buildings/issues/3712\">issue 3712</a>.
-</li>
-<li>
-December 10, 2023, by Ettore Zanetti:<br/>
-First implementation.
-</li>
-</ul>
-</html>",
-      info="<html>
-<p>
-This model represents the supply and return lines to connect an
-agent (e.g., an energy transfer station) to a one-pipe main distribution
-system.  A plug flow pipe model <a href=\"modelica://Buildings.Fluid.FixedResistances.PlugFlowPipe\">
-Buildings.Fluid.FixedResistances.PlugFlowPipe</a> that includes pressure drop, heat transfer, and transport
-delays is used in the main distribution line,
-but not in the connection to the building, as the latter is typically short.
-</p>
-</html>"));
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 15, 2024, by David Blum:<br/> Renamed. This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/3712\">issue 3712</a>.
+            </li>
+            <li>
+              December 10, 2023, by Ettore Zanetti:<br/> First implementation.
+            </li>
+          </ul>
+        </html>",
+      info="
+        <html>
+          <p>This model represents the supply and return lines to connect an agent (e.g., an energy transfer station) to a one-pipe main distribution system. A plug flow pipe model <a href=\"modelica://Buildings.Fluid.FixedResistances.PlugFlowPipe\"> Buildings.Fluid.FixedResistances.PlugFlowPipe</a> that includes pressure drop, heat transfer, and transport delays is used in the main distribution line, but not in the connection to the building, as the latter is typically short.</p>
+        </html>"));
 end Connection1PipePlugFlow_v;

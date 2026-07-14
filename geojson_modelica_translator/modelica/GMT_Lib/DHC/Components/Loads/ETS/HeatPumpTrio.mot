@@ -620,141 +620,70 @@ equation
   annotation (
     defaultComponentName="ets",
     Documentation(
-      info="<html>
-<p>
-This model represents an energy transfer station as described in Sommer (2020).
-</p>
-<ul>
-<li>
-The cooling function is provided in a compressor-less mode by a heat exchanger
-connected to the service line.
-The chilled water is typically produced at high temperature and distributed
-to radiant cooling systems, for instance at 19&deg;C.
-</li>
-<li>
-The heating functions are provided by water-to-water heat pumps.
-<ul>
-<li>
-By default the condenser and evaporator loops are operated
-with variable mass flow rate, with a lower limit specified by the ratio
-<code>ratFloMin</code>.
-The model can also represent constant flow condenser and evaporator loops
-by setting <code>have_varFloCon</code> and <code>have_varFloEva</code>
-to <code>false</code>.
-</li>
-<li>
-The evaporator water is supplied by mixing the flow rate from the direct connection
-to the service line to the flow rate from the primary side of the cooling
-heat exchanger.
-The hydronic arrangement modeled in
-<a href=\"modelica://Buildings.DHC.ETS.Combined.Subsystems.SwitchBox\">
-Buildings.Experimental.DHC.EnergyTransferStations.Combined.Subsystems.SwitchBox</a>
-ensures that the resulting fluid stream in the service line always flows
-in the same direction.
-</li>
-<li>
-The heating hot water is typically produced at low temperature,
-for instance 40&deg;C.
-</li>
-</ul>
-</li>
-</ul>
-<h4>Controls</h4>
-<p>
-Heating (resp. cooling) is enabled based on the input signal <code>uHea</code>
-(resp. <code>uCoo</code>) which is held for <i>15</i> minutes, meaning that,
-when enabled, the mode remains active for at least <i>15</i> minutes and,
-when disabled, the mode cannot be enabled again for at least <i>15</i> minutes.
-The heating and cooling enable signals should be computed externally based
-on a schedule (to lock out the system during off-hours), ideally in conjunction
-with the number of requests yielded by the terminal unit controllers, or any
-other signal representative of the load.
-</p>
-<p>
-When enabled,
-</p>
-<ul>
-<li>
-the heat pumps and the evaporator and condenser water pumps are controlled
-based on the principles described in
-<a href=\"modelica://Buildings.DHC.ETS.Combined.Subsystems.HeatPump\">
-Buildings.Experimental.DHC.EnergyTransferStations.Combined.Subsystems.HeatPump</a>.
-The evaporator and condenser water mass flow rates are computed based on the
-logic described in
-<a href=\"modelica://Buildings.DHC.ETS.Combined.Controls.PrimaryVariableFlow\">
-Buildings.Experimental.DHC.EnergyTransferStations.Combined.Controls.PrimaryVariableFlow</a>.
-</li>
-<li>
-the cooling heat exchanger primary pump is modulated based on a PI control
-loop tracking the chilled water supply temperature at the outlet of the heat exchanger
-secondary side.
-</li>
-</ul>
-<h4>Modeling considerations</h4>
-<p>
-There is a control volume at each of the two fluid ports that serve as inlet and outlet
-of the heating and cooling systems. These approximate the dynamics
-of the substation, and they also generally avoid nonlinear systems
-of equations if multiple substations are connected to each other.
-</p>
-<h4>References</h4>
-<p>
-Sommer T., Sulzer M., Wetter M., Sotnikov A., Mennel S., Stettler C.
-<i>The reservoir network: A new network topology for district heating
-and cooling.</i>
-Energy, Volume 199, 15 May 2020, 117418.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-  <li>
-  July 11, 2026, by Nicholas Long:<br/>
-  Robustness: added a <code>TrueFalseHold</code> (15 min) on the cooling enable
-  (<code>uCoo</code>) so that <code>proChiWat</code> honors the same minimum
-  on/off runtime as the heating and hot-water heat pumps. Previously
-  <code>uCoo</code> was wired directly to <code>proChiWat.uEna</code>, so the
-  cooling heat pump could chatter on/off even though the documentation states
-  cooling is held for 15 minutes. This aligns the implementation with the
-  documented control intent and removes a primary source of near-zero
-  mass-flow assertion violations during long simulations.
-  </li>
-  <li>
-  December 05, 2025, by Nicholas Long and Jing Wang:<br/>
-  Templatized for use within the GMT framework.
-  </li>
-  <li>
-  Jun 12, 2024, by Julia Ho:<br/>
-  Removed gain component from <code>heaFloConCHW.u2</code> in chilled water heat pump controls.<br/>
-  Removed condition that <code>have_hotWat = true</code> from <code>toSub1</code> component for heating water heat pump controls.<br/>
-  </li>
-  <li>
-  Jun 11, 2024, by Julia Ho:<br/>
-  Replaced chilled water heat exchanger with a heat pump.<br/>
-  Added mass flow controls identical to heating water heat pump but with chilled water parameters.<br/>
-  </li>
-  <li>
-  May 17, 2023, by David Blum:<br/>
-  Assigned dp_nominal to <code>pum1HexChi</code>.<br/>
-  Corrected calculation of heat pump evaporator mass flow control.<br/>
-  This is for
-  <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/3379\">
-  issue 3379</a>.
-  </li>
-  <li>
-  February 23, 2021, by Antoine Gautier:<br/>
-  Refactored with subsystem models and partial ETS base class.<br/>
-  This is for
-  <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/1769\">
-  issue 1769</a>.
-  </li>
-  <li>
-  December 12, 2017, by Michael Wetter:<br/>
-  Removed call to <code>Modelica.Utilities.Files.loadResource</code>.<br/>
-  This is for
-  <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/1097\">issue 1097</a>.
-  </li>
-</ul>
-</html>"),
+      info="
+        <html>
+          <p>This model represents an energy transfer station as described in Sommer (2020).</p>
+          <ul>
+            <li>
+              The cooling function is provided in a compressor-less mode by a heat exchanger connected to the service line. The chilled water is typically produced at high temperature and distributed to radiant cooling systems, for instance at 19&deg;C.
+            </li>
+            <li>
+              The heating functions are provided by water-to-water heat pumps.
+              <ul>
+                <li>
+                  By default the condenser and evaporator loops are operated with variable mass flow rate, with a lower limit specified by the ratio <code>ratFloMin</code>. The model can also represent constant flow condenser and evaporator loops by setting <code>have_varFloCon</code> and <code>have_varFloEva</code> to <code>false</code>.
+                </li>
+                <li>
+                  The evaporator water is supplied by mixing the flow rate from the direct connection to the service line to the flow rate from the primary side of the cooling heat exchanger. The hydronic arrangement modeled in <a href=\"modelica://Buildings.DHC.ETS.Combined.Subsystems.SwitchBox\"> Buildings.Experimental.DHC.EnergyTransferStations.Combined.Subsystems.SwitchBox</a> ensures that the resulting fluid stream in the service line always flows in the same direction.
+                </li>
+                <li>
+                  The heating hot water is typically produced at low temperature, for instance 40&deg;C.
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <h4>Controls</h4>
+          <p>Heating (resp. cooling) is enabled based on the input signal <code>uHea</code> (resp. <code>uCoo</code>) which is held for <i>15</i> minutes, meaning that, when enabled, the mode remains active for at least <i>15</i> minutes and, when disabled, the mode cannot be enabled again for at least <i>15</i> minutes. The heating and cooling enable signals should be computed externally based on a schedule (to lock out the system during off-hours), ideally in conjunction with the number of requests yielded by the terminal unit controllers, or any other signal representative of the load.</p>
+          <p>When enabled,</p>
+          <ul>
+            <li>
+              the heat pumps and the evaporator and condenser water pumps are controlled based on the principles described in <a href=\"modelica://Buildings.DHC.ETS.Combined.Subsystems.HeatPump\"> Buildings.Experimental.DHC.EnergyTransferStations.Combined.Subsystems.HeatPump</a>. The evaporator and condenser water mass flow rates are computed based on the logic described in <a href=\"modelica://Buildings.DHC.ETS.Combined.Controls.PrimaryVariableFlow\"> Buildings.Experimental.DHC.EnergyTransferStations.Combined.Controls.PrimaryVariableFlow</a>.
+            </li>
+            <li>
+              the cooling heat exchanger primary pump is modulated based on a PI control loop tracking the chilled water supply temperature at the outlet of the heat exchanger secondary side.
+            </li>
+          </ul>
+          <h4>Modeling considerations</h4>
+          <p>There is a control volume at each of the two fluid ports that serve as inlet and outlet of the heating and cooling systems. These approximate the dynamics of the substation, and they also generally avoid nonlinear systems of equations if multiple substations are connected to each other.</p>
+          <h4>References</h4>
+          <p>Sommer T., Sulzer M., Wetter M., Sotnikov A., Mennel S., Stettler C. <i>The reservoir network: A new network topology for district heating and cooling.</i> Energy, Volume 199, 15 May 2020, 117418.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              July 11, 2026, by Nicholas Long:<br/> Robustness: added a <code>TrueFalseHold</code> (15 min) on the cooling enable (<code>uCoo</code>) so that <code>proChiWat</code> honors the same minimum on/off runtime as the heating and hot-water heat pumps. Previously <code>uCoo</code> was wired directly to <code>proChiWat.uEna</code>, so the cooling heat pump could chatter on/off even though the documentation states cooling is held for 15 minutes. This aligns the implementation with the documented control intent and removes a primary source of near-zero mass-flow assertion violations during long simulations.
+            </li>
+            <li>
+              December 05, 2025, by Nicholas Long and Jing Wang:<br/> Templatized for use within the GMT framework.
+            </li>
+            <li>
+              Jun 12, 2024, by Julia Ho:<br/> Removed gain component from <code>heaFloConCHW.u2</code> in chilled water heat pump controls.<br/> Removed condition that <code>have_hotWat = true</code> from <code>toSub1</code> component for heating water heat pump controls.<br/>
+            </li>
+            <li>
+              Jun 11, 2024, by Julia Ho:<br/> Replaced chilled water heat exchanger with a heat pump.<br/> Added mass flow controls identical to heating water heat pump but with chilled water parameters.<br/>
+            </li>
+            <li>
+              May 17, 2023, by David Blum:<br/> Assigned dp_nominal to <code>pum1HexChi</code>.<br/> Corrected calculation of heat pump evaporator mass flow control.<br/> This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/3379\"> issue 3379</a>.
+            </li>
+            <li>
+              February 23, 2021, by Antoine Gautier:<br/> Refactored with subsystem models and partial ETS base class.<br/> This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/1769\"> issue 1769</a>.
+            </li>
+            <li>
+              December 12, 2017, by Michael Wetter:<br/> Removed call to <code>Modelica.Utilities.Files.loadResource</code>.<br/> This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/1097\">issue 1097</a>.
+            </li>
+          </ul>
+        </html>"),
     Diagram(
       coordinateSystem(
         extent={{-300,-420},{300,440}})),

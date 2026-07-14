@@ -129,12 +129,12 @@ equation
           textString="%name",
           lineColor={0,0,255})}),
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-March 19, 2014 by Sen Huang:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 19, 2014 by Sen Huang:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end ChillerStage;
