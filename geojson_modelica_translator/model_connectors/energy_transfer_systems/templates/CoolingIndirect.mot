@@ -212,15 +212,16 @@ model {{ model_filename }}
     each k2=+1)
     "Temperatur difference on the district side"
     annotation (Placement(transformation(extent={{-60,106},{-40,126}})));
+
 protected
   final parameter Medium.ThermodynamicState sta_default=Medium.setState_pTX(
     T=Medium.T_default,
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
-    sta_default)
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(sta_default)
     "Specific heat capacity of the fluid";
+
 {% endraw %}equation
   {% raw %} connect(hex.port_a2,port_a2)
     annotation (Line(points={{40,-6},{60,-6},{60,-60},{100,-60}},color={0,127,255}));

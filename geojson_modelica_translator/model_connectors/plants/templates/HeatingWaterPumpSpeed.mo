@@ -103,6 +103,7 @@ model HeatingWaterPumpSpeed
         mMin_flow))
     "Normalised decoupler line measured mass flow rate."
     annotation (Placement(transformation(extent={{42,-84},{22,-64}})));
+
 equation
   connect(ON,pumStaCon.on);
   connect(pumStaCon.masFloPum,masFloPum)

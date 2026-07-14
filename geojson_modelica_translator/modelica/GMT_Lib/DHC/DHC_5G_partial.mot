@@ -197,6 +197,7 @@ within {{ data['project_name'] }}.Districts;
     final nu=3+nBui)
     "Check if loop temperatures are within given range"
     annotation (Placement(transformation(extent={{320,10},{340,30}})));
+
 equation
   connect(dis.TOut,conVio.u[4:4+nBui-1]);
   connect(bou.ports[1],pumDis.port_a)

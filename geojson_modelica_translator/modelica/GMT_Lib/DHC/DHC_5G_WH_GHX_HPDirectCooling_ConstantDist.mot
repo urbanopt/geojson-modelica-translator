@@ -40,6 +40,7 @@ model district
       nBui))
     "Cold water temperature"
     annotation (Placement(transformation(extent={{-160,150},{-140,170}})));
+
 equation
   connect(masFloMaiPum.y,pumDis.m_flow_in)
     annotation (Line(points={{-279,-60},{-106,-60},{68,-60}},color={0,0,127}));

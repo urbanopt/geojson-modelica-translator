@@ -112,6 +112,7 @@ model BoilerStage
     unit="W")
     "Total heating loads"
     annotation (Placement(transformation(extent={{100,70},{120,90}}),iconTransformation(extent={{100,70},{120,90}})));
+
 equation
   connect(off.outPort[1],offToOne.inPort)
     annotation (Line(points={{-52,45.5},{-52,30}},color={0,0,0}));

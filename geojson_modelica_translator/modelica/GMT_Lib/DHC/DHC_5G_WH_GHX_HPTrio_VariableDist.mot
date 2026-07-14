@@ -49,6 +49,7 @@ model district
     k=datDes.mSto_flow_nominal)
     "Scale with nominal mass flow rate for storage GHX pump"
     annotation (Placement(transformation(extent={{-240,-112},{-220,-92}})));
+
 equation
   connect(masFloDisPla.y,pla.mPum_flow)
     annotation (Line(points={{-229,20},{-184,20},{-184,4.66667},{-161.333,4.66667}},color={0,0,127}));

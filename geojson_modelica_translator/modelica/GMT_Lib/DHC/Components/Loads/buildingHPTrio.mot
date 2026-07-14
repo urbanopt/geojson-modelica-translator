@@ -13,14 +13,11 @@ model buildingHPTrio
       // Heating reference per-unit duty: 170 kW.
       facMulHea=max(
         1,
-        ceil(
-          QHea_flow_nominal/(1.7E5))),
+        ceil(QHea_flow_nominal/(1.7E5))),
       // Cooling reference per-unit duty: 150 kW (QCoo_flow_nominal is negative).
       facMulCoo=max(
         1,
-        ceil(
-          abs(
-            QCoo_flow_nominal)/(1.5E5))),
+        ceil(abs(QCoo_flow_nominal)/(1.5E5))),
       delTAirCoo=10,
       // Use a lower nominal heating air-side delta T for more robust
       // initialization of terminal-unit heat exchanger nominal effectiveness.
@@ -116,6 +113,7 @@ model buildingHPTrio
     k=1/QCoo_flow_nominal)
     "Normalized cooling load"
     annotation (Placement(transformation(extent={{-200,-150},{-180,-130}})));
+
 equation
   connect(bui.QReqHotWat_flow,ets.QReqHotWat_flow)
     annotation (Line(points={{28,4},{28,-10},{-64,-10},{-64,-74},{-34,-74}},color={0,0,127}));

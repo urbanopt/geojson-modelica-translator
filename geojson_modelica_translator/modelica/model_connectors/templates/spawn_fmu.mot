@@ -4,11 +4,9 @@ model building
   extends Modelica.Icons.Example;
   package Medium=Buildings.Media.Air
     "Medium model";
-  parameter String idfName=Modelica.Utilities.Files.loadResource(
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}")
+  parameter String idfName=Modelica.Utilities.Files.loadResource("modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['idf']['filename']}}")
     "Name of the IDF file";
-  parameter String weaName=Modelica.Utilities.Files.loadResource(
-    "modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['epw']['filename']}}")
+  parameter String weaName=Modelica.Utilities.Files.loadResource("modelica://{{project_name}}/Loads/{{data['load_resources_path']}}/{{data['epw']['filename']}}")
     "Name of the weather file";
   {% raw %}Modelica.Blocks.Sources.Constant qConGai_flow(
     k=0)
@@ -31,11 +29,11 @@ model building
     idfName=idfName,
     weaName=weaName,
     usePrecompiledFMU=false,
-    fmuName=Modelica.Utilities.Files.loadResource(
-      "modelica://Buildings/Resources/src/EnergyPlus/FMUs/Zones1.fmu"),
+    fmuName=Modelica.Utilities.Files.loadResource("modelica://Buildings/Resources/src/EnergyPlus/FMUs/Zones1.fmu"),
     zoneName="{{zone['spawn_object_name']}}")
     "Thermal zone"
     {% raw %} annotation (Placement(transformation(extent={{20,40},{60,80}})));
+
 {% endraw %}
 {% endfor %}
 {% raw %}

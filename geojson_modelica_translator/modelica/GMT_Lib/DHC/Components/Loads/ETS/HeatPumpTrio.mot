@@ -60,18 +60,15 @@ model HeatPumpTrio
     "Pressure difference at nominal flow rate (for each flow leg)"
     annotation (Dialog(group="Nominal condition"));
   final parameter Modelica.Units.SI.MassFlowRate mHeaWat_flow_nominal(
-    min=0)=abs(
-    QHeaWat_flow_nominal/cpBui_default/(THeaWatSup_nominal-THeaWatRet_nominal))
+    min=0)=abs(QHeaWat_flow_nominal/cpBui_default/(THeaWatSup_nominal-THeaWatRet_nominal))
     "Heating water mass flow rate"
     annotation (Dialog(group="Nominal condition"));
   final parameter Modelica.Units.SI.MassFlowRate mChiWat_flow_nominal(
-    min=0)=abs(
-    QChiWat_flow_nominal/cpBui_default/(TChiWatSup_nominal-TChiWatRet_nominal))
+    min=0)=abs(QChiWat_flow_nominal/cpBui_default/(TChiWatSup_nominal-TChiWatRet_nominal))
     "Chilled water mass flow rate"
     annotation (Dialog(group="Nominal conditions"));
   final parameter Modelica.Units.SI.MassFlowRate mConHotWat_flow_nominal(
-    min=0)=abs(
-    QHotWat_flow_nominal/cpBui_default/dT_nominal)
+    min=0)=abs(QHotWat_flow_nominal/cpBui_default/dT_nominal)
     "Condenser hot water mass flow rate"
     annotation (Dialog(group="Nominal condition"));
   final parameter Modelica.Units.SI.MassFlowRate mEvaHotWat_flow_nominal(
@@ -84,15 +81,13 @@ model HeatPumpTrio
     proChiWat.mCon_flow_nominal)
     "Service water mass flow rate"
     annotation (Dialog(group="Nominal condition"));
-  constant Modelica.Units.SI.SpecificHeatCapacity cpBui_default=MediumBui.specificHeatCapacityCp(
-    MediumBui.setState_pTX(
-      p=MediumBui.p_default,
-      T=MediumBui.T_default))
+  constant Modelica.Units.SI.SpecificHeatCapacity cpBui_default=MediumBui.specificHeatCapacityCp(MediumBui.setState_pTX(
+    p=MediumBui.p_default,
+    T=MediumBui.T_default))
     "Specific heat capacity of the fluid";
-  constant Modelica.Units.SI.SpecificHeatCapacity cpSer_default=MediumSer.specificHeatCapacityCp(
-    MediumSer.setState_pTX(
-      p=MediumSer.p_default,
-      T=MediumSer.T_default))
+  constant Modelica.Units.SI.SpecificHeatCapacity cpSer_default=MediumSer.specificHeatCapacityCp(MediumSer.setState_pTX(
+    p=MediumSer.p_default,
+    T=MediumSer.T_default))
     "Specific heat capacity of the fluid";
   // Heat pump for heating water production
   parameter Real COPHeaWat_nominal(
@@ -111,13 +106,11 @@ model HeatPumpTrio
     annotation (Dialog(group="Nominal condition",enable=have_chiWat));
   // District HX
   final parameter Modelica.Units.SI.MassFlowRate m1HexChi_flow_nominal(
-    min=0)=abs(
-    QChiWat_flow_nominal/cpSer_default/dT_nominal)
+    min=0)=abs(QChiWat_flow_nominal/cpSer_default/dT_nominal)
     "CHW HX primary mass flow rate"
     annotation (Dialog(group="Nominal condition"));
   final parameter Modelica.Units.SI.MassFlowRate m2HexChi_flow_nominal(
-    min=0)=abs(
-    QChiWat_flow_nominal/cpSer_default/(THeaWatSup_nominal-THeaWatRet_nominal))
+    min=0)=abs(QChiWat_flow_nominal/cpSer_default/(THeaWatSup_nominal-THeaWatRet_nominal))
     "CHW HX secondary mass flow rate"
     annotation (Dialog(group="Nominal condition"));
   // Dynamics
@@ -436,6 +429,7 @@ model HeatPumpTrio
     final allowFlowReversal=allowFlowReversalBui)
     "Primary cooling water mass flow rate"
     annotation (Placement(transformation(extent={{40,-314},{60,-334}})));
+
 equation
   connect(PPumHeaTot.y,PPumTot.u[1])
     annotation (Line(points={{212,420},{216,420},{216,399.5},{218,399.5}},color={0,0,127}));
