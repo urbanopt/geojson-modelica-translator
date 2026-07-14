@@ -629,10 +629,10 @@ def test_build_steam_example_has_distribution_and_steam_building_connections():
     assert "Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS bld[N](" in steam_mo
     assert "Buildings.DHC.Networks.Steam.DistributionCondensatePipe dis(" in steam_mo
     assert "Buildings.DHC.Plants.Steam.SingleBoiler pla(" in steam_mo
-    assert "connect(dis.ports_bCon, bld.port_a)" in steam_mo
-    assert "connect(bld.port_b, dis.ports_aCon)" in steam_mo
-    assert "connect(pla.port_bSerHea, dis.port_aDisSup)" in steam_mo
-    assert "connect(dis.port_bDisRet, pla.port_aSerHea)" in steam_mo
+    assert "connect(dis.ports_bCon,bld.port_a)" in steam_mo
+    assert "connect(bld.port_b,dis.ports_aCon)" in steam_mo
+    assert "connect(pla.port_bSerHea,dis.port_aDisSup)" in steam_mo
+    assert "connect(dis.port_bDisRet,pla.port_aSerHea)" in steam_mo
 
 
 @pytest.mark.simulation
