@@ -170,8 +170,11 @@ def test_time_series_building_with_ets_uses_larger_enable_threshold_for_dry_coil
     assert "each uLow=0.01" in rendered
     assert "each uHigh=0.1" in rendered
     assert "final TSerWat_start=293.15" in rendered
-    assert "ceil(\n          QHea_flow_nominal/(1.7E5))" in rendered
-    assert "ceil(\n          abs(\n            QCoo_flow_nominal)/(1.5E5))" in rendered
+    assert re.search(r"ceil\s*\(\s*QHea_flow_nominal\s*/\s*\(\s*1\.7E5\s*\)\s*\)", rendered)
+    assert re.search(
+        r"ceil\s*\(\s*abs\s*\(\s*QCoo_flow_nominal\s*\)\s*/\s*\(\s*1\.5E5\s*\)\s*\)",
+        rendered,
+    )
 
 
 def test_copy_mos_with_zero_start_inserts_zero_load_row_and_updates_count(tmp_path):
