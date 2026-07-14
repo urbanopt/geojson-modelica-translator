@@ -54,18 +54,18 @@ equation
   {% raw %}
   annotation (
     Documentation(
-      info="<html>
-<p>
-Template to connect n-thermal zones using GeoJSON to Modelica Translator
-</p>
-</html>",
-      revisions="<html>
-<ul><li>
-March 24, 2019: Nicholas Long<br/>
-First implementation.
-</li>
-</ul>
-</html>"),
+      info="
+        <html>
+          <p>Template to connect n-thermal zones using GeoJSON to Modelica Translator</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 24, 2019: Nicholas Long<br/> First implementation.
+            </li>
+          </ul>
+        </html>"),
     __Dymola_Commands(
       file="modelica://Buildings/Resources/Scripts/Dymola/Experimental/EnergyPlus/Validation/RefBldgSmallOffice.mos" "Simulate and plot"),
     experiment(

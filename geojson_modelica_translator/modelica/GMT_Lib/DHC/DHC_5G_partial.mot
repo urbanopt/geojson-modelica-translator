@@ -276,45 +276,32 @@ equation
         preserveAspectRatio=false,
         extent={{-360,-260},{360,260}})),
     Documentation(
-      revisions="<html>
-<ul>
-<li>
-March 3, 2024, by Nicholas Long:<br/>
-Exposed underlying borehole field data for easy access within
-Modelica Builder.
-</li>
-<li>
-November 16, 2023, by Nicholas Long:<br/>
-Default the facMul to 1. The loads for the GMT are coming from real buildings
-and we do not need to multiply the QHea/QCoo.
-</li>
-<li>
-April 12, 2023, by Nicholas Long:<br/>
-Templatized for direct use in GMT with n-building connectors.
-</li>
-<li>
-November 16, 2022, by Michael Wetter:<br/>
-Set correct nominal pressure for distribution pump.
-</li>
-<li>
-February 23, 2021, by Antoine Gautier:<br/>
-Refactored with base classes from the <code>DHC</code> package.<br/>
-This is for
-<a href=\"https://github.com/lbl-srg/modelica-buildings/issues/1769\">
-issue 1769</a>.
-</li>
-<li>
-January 16, 2020, by Michael Wetter:<br/>
-Added documentation.
-</li>
-</ul>
-</html>",
-      info="<html>
-<p>
-Partial model that is used by the reservoir network models.
-The reservoir network models extend this model, add controls,
-and configure some component sizes.
-</p>
-</html>"));
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 3, 2024, by Nicholas Long:<br/> Exposed underlying borehole field data for easy access within Modelica Builder.
+            </li>
+            <li>
+              November 16, 2023, by Nicholas Long:<br/> Default the facMul to 1. The loads for the GMT are coming from real buildings and we do not need to multiply the QHea/QCoo.
+            </li>
+            <li>
+              April 12, 2023, by Nicholas Long:<br/> Templatized for direct use in GMT with n-building connectors.
+            </li>
+            <li>
+              November 16, 2022, by Michael Wetter:<br/> Set correct nominal pressure for distribution pump.
+            </li>
+            <li>
+              February 23, 2021, by Antoine Gautier:<br/> Refactored with base classes from the <code>DHC</code> package.<br/> This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/1769\"> issue 1769</a>.
+            </li>
+            <li>
+              January 16, 2020, by Michael Wetter:<br/> Added documentation.
+            </li>
+          </ul>
+        </html>",
+      info="
+        <html>
+          <p>Partial model that is used by the reservoir network models. The reservoir network models extend this model, add controls, and configure some component sizes.</p>
+        </html>"));
 end PartialSeries;
 {% endraw %}
