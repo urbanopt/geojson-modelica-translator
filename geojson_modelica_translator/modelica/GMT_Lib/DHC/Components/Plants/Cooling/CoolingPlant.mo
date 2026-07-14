@@ -30,8 +30,7 @@ model CoolingPlant
     Documentation(
       info="<html>
       <p>This model validates the district central cooling plant template model
-GMT_Lib.DHC.Components.CentralPlants.Cooling.Cooling.mot</a>.
-</p>
+GMT_Lib.DHC.Components.CentralPlants.Cooling.Cooling.mot.</p>
 </html>",
       revisions="<html>
 <ul>
