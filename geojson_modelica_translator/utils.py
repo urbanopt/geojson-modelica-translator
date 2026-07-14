@@ -39,6 +39,21 @@ def linecount(filename: Path) -> int:
     return filelength
 
 
+def modelica_array_literal(value):
+    """Format a scalar or a list/tuple of numbers as a Modelica array literal string,
+    e.g., ``{0.7}`` or ``{0.9, 0.005, -0.0001}``.
+
+    This is useful for system parameters that are documented (and validated by the schema)
+    as either a single number or an array of numbers, but need to be assigned to a Modelica
+    ``Real[:]`` parameter, which always requires array literal syntax.
+
+    :param value: number, or list/tuple of numbers
+    :return: str, Modelica array literal
+    """
+    values = value if isinstance(value, (list, tuple)) else [value]
+    return "{" + ", ".join(str(v) for v in values) + "}"
+
+
 def mbl_version():
     """Returns the version of the Modelica Buildings Library (MBL) used by the
     geojson-modelica-translator.

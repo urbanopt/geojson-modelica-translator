@@ -25,7 +25,7 @@ Each building reads its own heating load from the building's time-series (`.mos`
 
 All steam parameters live under `district_system.first_generation.central_steam_plant_parameters`. Every key has a default (shown in the schema), so existing sys-param files continue to work:
 
-- `boiler_efficiency` — boiler efficiency (fraction).
+- `boiler_efficiency` — boiler efficiency. Either a single number (constant fraction, e.g. `0.7`) or an array of numbers (coefficients for the boiler efficiency curve, e.g. `[0.9, 0.005, -0.0001]`).
 - `steam_pressure_setpoint` — saturation (high) pressure setpoint, `Pa`.
 - `reduced_pressure_setpoint` — reduced pressure downstream of the building pressure reducing valve, `Pa`.
 - `condensate_pressure_drop_nominal` — nominal condensate/distribution pressure drop, `Pa`.

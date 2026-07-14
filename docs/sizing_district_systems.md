@@ -537,7 +537,8 @@ has a default, so an existing file keeps working, but the following are worth
 reviewing:
 
 ```text
-boiler_efficiency                – boiler efficiency (fraction)
+boiler_efficiency                – boiler efficiency: a number (constant fraction) or an
+                                    array of numbers (efficiency curve coefficients)
 steam_pressure_setpoint          – saturation/high pressure setpoint, Pa
 reduced_pressure_setpoint        – reduced pressure after the building PRV, Pa
 condensate_pressure_drop_nominal – nominal distribution/condensate pressure drop, Pa

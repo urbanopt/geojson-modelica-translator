@@ -1036,8 +1036,19 @@
       "type": "object",
       "properties": {
         "boiler_efficiency": {
-          "description": "Boiler efficiency (fraction)",
-          "type": "number",
+          "description": "Boiler efficiency (fraction). May be a single number for a constant efficiency, or an array of numbers for the coefficients of the boiler efficiency curve (Buildings.Fluid.Boilers.BoilerPolynomial 'a' coefficients).",
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 1
+            }
+          ],
           "default": 0.7
         },
         "steam_pressure_setpoint": {

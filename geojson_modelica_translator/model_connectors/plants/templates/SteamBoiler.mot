@@ -17,7 +17,7 @@ model SteamBoiler
   extends Buildings.DHC.Plants.Steam.SingleBoiler(
     pSteSet=pSteSet_nominal,
     boi(
-      a={ {{ data["nominal_values"]["boiler_efficiency"] }} }));
+      a={{ data["nominal_values"]["boiler_efficiency"] }}));
   annotation (
     Documentation(
       info="<html>

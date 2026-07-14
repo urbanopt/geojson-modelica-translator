@@ -4,7 +4,7 @@
 from pathlib import Path
 
 from geojson_modelica_translator.model_connectors.plants.plant_base import PlantBase
-from geojson_modelica_translator.utils import simple_uuid
+from geojson_modelica_translator.utils import modelica_array_literal, simple_uuid
 
 
 class SteamPlant(PlantBase):
@@ -26,9 +26,17 @@ class SteamPlant(PlantBase):
         # Get number_of_boilers, default to 1 if not specified
         number_of_boilers = self.system_parameters.get_param(f"{steam_params_path}.number_of_boilers") or 1
 
+        # boiler_efficiency may be provided as a single number (constant efficiency) or as a
+        # list of numbers (coefficients for the boiler efficiency curve), per the schema.
+        # The underlying Modelica parameter (boi.a) is always Real[:], so normalize either
+        # form into a valid Modelica array literal, e.g. "{0.7}" or "{0.9, 0.005, -0.0001}".
+        boiler_efficiency = self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency")
+        if boiler_efficiency is None:
+            boiler_efficiency = 0.7  # schema default
+
         template_data = {
             "nominal_values": {
-                "boiler_efficiency": self.system_parameters.get_param(f"{steam_params_path}.boiler_efficiency"),
+                "boiler_efficiency": modelica_array_literal(boiler_efficiency),
                 "steam_pressure_setpoint": self.system_parameters.get_param(
                     f"{steam_params_path}.steam_pressure_setpoint"
                 ),
