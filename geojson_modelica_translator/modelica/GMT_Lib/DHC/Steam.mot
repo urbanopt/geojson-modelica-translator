@@ -87,13 +87,13 @@ model Steam
     annotation (Placement(transformation(extent={{-50,20},{-30,40}})));
 
 equation
-  connect(dis.ports_bCon, bld.port_a)
+  connect(dis.ports_bCon,bld.port_a)
     annotation (Line(points={{8,0},{8,30},{40,30}},color={0,127,255}));
-  connect(bld.port_b, dis.ports_aCon)
+  connect(bld.port_b,dis.ports_aCon)
     annotation (Line(points={{40,24},{32,24},{32,0}},color={0,127,255}));
-  connect(pla.port_bSerHea, dis.port_aDisSup)
+  connect(pla.port_bSerHea,dis.port_aDisSup)
     annotation (Line(points={{-30,30},{-20,30},{-20,-10},{0,-10}},color={0,127,255}));
-  connect(dis.port_bDisRet, pla.port_aSerHea)
+  connect(dis.port_bDisRet,pla.port_aSerHea)
     annotation (Line(points={{0,-16},{-60,-16},{-60,30},{-50,30}},color={0,127,255}));
   annotation (
     Icon(
