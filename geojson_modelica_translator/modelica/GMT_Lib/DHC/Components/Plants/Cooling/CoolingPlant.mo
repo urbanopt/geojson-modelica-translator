@@ -28,18 +28,18 @@ model CoolingPlant
       StopTime=86400,
       Tolerance=1e-06),
     Documentation(
-      info="
-        <html>
-          <p>This model validates the district central cooling plant template model GMT_Lib.DHC.Components.CentralPlants.Cooling.Cooling.mot.</p>
-        </html>",
-      revisions="
-        <html>
-          <ul>
-            <li>
-              October 20, 2021 by Chengnan Shi:<br/> First implementation.
-            </li>
-          </ul>
-        </html>"),
+      info="<html>
+      <p>This model validates the district central cooling plant template model
+GMT_Lib.DHC.Components.CentralPlants.Cooling.Cooling.mot.</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+October 20, 2021 by Chengnan Shi:<br/>
+First implementation.
+</li>
+</ul>
+</html>"),
     __Dymola_Commands(
       file="CoolingPlant.mos" "Simulate and Plot"));
 end CoolingPlant;

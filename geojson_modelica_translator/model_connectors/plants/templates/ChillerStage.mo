@@ -78,6 +78,7 @@ model ChillerStage
     annotation (Placement(transformation(extent={{70,-60},{90,-40}})));
   Buildings.Controls.OBC.CDL.Conversions.IntegerToReal intToRea
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+
 equation
   connect(off.outPort[1],offToOne.inPort)
     annotation (Line(points={{-50,59.5},{-50,44}},color={0,0,0}));

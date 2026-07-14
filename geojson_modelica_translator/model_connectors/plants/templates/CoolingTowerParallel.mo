@@ -37,21 +37,13 @@ model CoolingTowerParallel
     annotation (Dialog(group="Fan"));
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
-    noEvent(
-      actualStream(
-        port_a.h_outflow)),
-    noEvent(
-      actualStream(
-        port_a.Xi_outflow))) if show_T
+    noEvent(actualStream(port_a.h_outflow)),
+    noEvent(actualStream(port_a.Xi_outflow))) if show_T
     "Medium properties in port_a";
   Medium.ThermodynamicState sta_b=Medium.setState_phX(
     port_b.p,
-    noEvent(
-      actualStream(
-        port_b.h_outflow)),
-    noEvent(
-      actualStream(
-        port_b.Xi_outflow))) if show_T
+    noEvent(actualStream(port_b.h_outflow)),
+    noEvent(actualStream(port_b.Xi_outflow))) if show_T
     "Medium properties in port_b";
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
     redeclare package Medium=Medium)
@@ -105,6 +97,7 @@ model CoolingTowerParallel
     each final dpValve_nominal=dp_nominal)
     "Cooling tower valves"
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+
 equation
   for i in 1:num loop
     connect(port_a,val[i].port_a)

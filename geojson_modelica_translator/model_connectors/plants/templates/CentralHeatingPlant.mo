@@ -42,21 +42,13 @@ model CentralHeatingPlant
   // diagnostics
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
-    noEvent(
-      actualStream(
-        port_a.h_outflow)),
-    noEvent(
-      actualStream(
-        port_a.Xi_outflow))) if show_T
+    noEvent(actualStream(port_a.h_outflow)),
+    noEvent(actualStream(port_a.Xi_outflow))) if show_T
     "MediumW properties in port_a";
   Medium.ThermodynamicState sta_b=Medium.setState_phX(
     port_b.p,
-    noEvent(
-      actualStream(
-        port_b.h_outflow)),
-    noEvent(
-      actualStream(
-        port_b.Xi_outflow))) if show_T
+    noEvent(actualStream(port_b.h_outflow)),
+    noEvent(actualStream(port_b.Xi_outflow))) if show_T
     "MediumW properties in port_b";
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
     redeclare package Medium=Medium)
@@ -144,8 +136,7 @@ model CentralHeatingPlant
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
-    sta_default)
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(sta_default)
     "Specific heat capacity of the fluid";
   Buildings.Fluid.Sources.Boundary_pT expTanHW(
     redeclare package Medium=Medium,
@@ -160,6 +151,7 @@ model CentralHeatingPlant
   Modelica.Blocks.Math.Product pumOn[numBoi]
     "Output pump speed"
     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
+
 equation
   connect(on,heaWatPumCon.ON);
   connect(THeaSet,boiHotWat.THeaWatSet)

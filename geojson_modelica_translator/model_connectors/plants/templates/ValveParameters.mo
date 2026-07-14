@@ -48,52 +48,40 @@ partial model ValveParameters
   parameter Modelica.Units.SI.Density rhoStd
     "Inlet density for which valve coefficients are defined"
     annotation (Dialog(group="Two-way valve",tab="Advanced"));
+
 protected
   parameter Real Kv_SI(
     each min=0,
     each fixed=false)
     "Flow coefficient for fully open valve in SI units, Kv=m_flow/sqrt(dp) [kg/s/(Pa)^(1/2)]"
     annotation (Dialog(group="Two-way valve",enable=(CvData == Buildings.Fluid.Types.CvTypes.OpPoint)));
+
 initial equation
   if CvData == Buildings.Fluid.Types.CvTypes.OpPoint then
-    Kv_SI=m_flow_nominal ./ sqrt(
-      dpValve_nominal);
-    Kv=Kv_SI ./(rhoStd/3600/sqrt(
-      1E5));
-    Cv=Kv_SI ./(rhoStd*0.0631/1000/sqrt(
-      6895));
-    Av=Kv_SI ./ sqrt(
-      rhoStd);
+    Kv_SI=m_flow_nominal ./ sqrt(dpValve_nominal);
+    Kv=Kv_SI ./(rhoStd/3600/sqrt(1E5));
+    Cv=Kv_SI ./(rhoStd*0.0631/1000/sqrt(6895));
+    Av=Kv_SI ./ sqrt(rhoStd);
   elseif CvData == Buildings.Fluid.Types.CvTypes.Kv then
-    Kv_SI=Kv .* rhoStd/3600/sqrt(
-      1E5)
+    Kv_SI=Kv .* rhoStd/3600/sqrt(1E5)
       "Unit conversion m3/(h*sqrt(bar)) to kg/(s*sqrt(Pa))";
-    Cv=Kv_SI ./(rhoStd*0.0631/1000/sqrt(
-      6895));
-    Av=Kv_SI ./ sqrt(
-      rhoStd);
+    Cv=Kv_SI ./(rhoStd*0.0631/1000/sqrt(6895));
+    Av=Kv_SI ./ sqrt(rhoStd);
     dpValve_nominal=(m_flow_nominal ./ Kv_SI) .^ 2;
   elseif CvData == Buildings.Fluid.Types.CvTypes.Cv then
-    Kv_SI=Cv .* rhoStd*0.0631/1000/sqrt(
-      6895)
+    Kv_SI=Cv .* rhoStd*0.0631/1000/sqrt(6895)
       "Unit conversion USG/(min*sqrt(psi)) to kg/(s*sqrt(Pa))";
-    Kv=Kv_SI ./(rhoStd/3600/sqrt(
-      1E5));
-    Av=Kv_SI ./ sqrt(
-      rhoStd);
+    Kv=Kv_SI ./(rhoStd/3600/sqrt(1E5));
+    Av=Kv_SI ./ sqrt(rhoStd);
     dpValve_nominal=(m_flow_nominal ./ Kv_SI) .^ 2;
   else
     assert(
       CvData == Buildings.Fluid.Types.CvTypes.Av,
       "Invalid value for CvData.
-Obtained CvData = "+String(
-        CvData)+".");
-    Kv_SI=Av .* sqrt(
-      rhoStd);
-    Kv=Kv_SI ./(rhoStd/3600/sqrt(
-      1E5));
-    Cv=Kv_SI ./(rhoStd*0.0631/1000/sqrt(
-      6895));
+Obtained CvData = "+String(CvData)+".");
+    Kv_SI=Av .* sqrt(rhoStd);
+    Kv=Kv_SI ./(rhoStd/3600/sqrt(1E5));
+    Cv=Kv_SI ./(rhoStd*0.0631/1000/sqrt(6895));
     dpValve_nominal=(m_flow_nominal ./ Kv_SI) .^ 2;
   end if;
   annotation (

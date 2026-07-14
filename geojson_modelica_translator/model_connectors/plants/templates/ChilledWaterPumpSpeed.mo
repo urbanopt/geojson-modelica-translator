@@ -70,6 +70,7 @@ model ChilledWaterPumpSpeed
     "Scaled differential pressure setpoint"
     annotation (Placement(transformation(extent={{-100,-10},{-80,10}})));
   Modelica.Blocks.Interfaces.BooleanInput u;
+
 equation
   connect(u,pumStaCon.on);
   connect(pumStaCon.masFloPum,masFloPum)

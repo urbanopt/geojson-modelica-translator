@@ -12,8 +12,7 @@ model GroundTemperatureResponse
   parameter Buildings.Fluid.Geothermal.Borefields.Data.Borefield.Template borFieDat
     "Record containing all the parameters of the borefield model"
     annotation (choicesAllMatching=true,Placement(transformation(extent={{-80,-80},{-60,-60}})));
-  parameter String gFunFilNam=Modelica.Utilities.Files.loadResource(
-    "modelica://GHP/Resources/Data/System/SampleGFunction.mat")
+  parameter String gFunFilNam=Modelica.Utilities.Files.loadResource("modelica://GHP/Resources/Data/System/SampleGFunction.mat")
     "File name of g-function data file in MAT format";
   parameter Integer nTimTot=76
     "Total length of g-function vector";
@@ -27,6 +26,7 @@ model GroundTemperatureResponse
     unit="W")
     "Heat flow from all boreholes combined (positive if heat from fluid into soil)"
     annotation (Placement(transformation(extent={{-120,-10},{-100,10}}),iconTransformation(extent={{-120,-10},{-100,10}})));
+
 protected
   constant Integer nSegMax=1500
     "Max total number of segments in g-function calculation";
@@ -34,13 +34,11 @@ protected
     if 12*borFieDat.conDat.nBor < nSegMax then
       12
     else
-      floor(
-        nSegMax/borFieDat.conDat.nBor))
+      floor(nSegMax/borFieDat.conDat.nBor))
     "Number of segments per borehole for g-function calculation";
   //constant Integer nTimSho = 20 "Number of time steps in short time region";
   //constant Integer nTimLon = 56 "Number of time steps in long time region";
-  constant Real ttsMax=exp(
-    5)
+  constant Real ttsMax=exp(5)
     "Maximum non-dimensional time for g-function calculation";
   //constant Integer nTimTot = nTimSho+nTimLon
   //  "Total length of g-function vector";
@@ -101,9 +99,9 @@ protected
     "Accumulated heat flow from all boreholes";
   discrete Modelica.Units.SI.Heat U_old
     "Accumulated heat flow from all boreholes at last aggregation step";
+
 initial equation
-  QAgg_flow=zeros(
-    i);
+  QAgg_flow=zeros(i);
   curCel=1;
   delTBor=0;
   QAggShi_flow=QAgg_flow;
@@ -129,6 +127,7 @@ initial equation
     matrixName="TStep",
     nrow=nTimTot,
     ncol=2);
+
 /*
   timSer =
     Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.temperatureResponseMatrix(
@@ -147,20 +146,17 @@ initial equation
       sha=SHAgfun,
       forceGFunCalc=forceGFunCalc);
 */algorithm
-  Modelica.Utilities.Files.createDirectory(
-    "tmp");
-  Modelica.Utilities.Files.createDirectory(
-    "tmp/temperatureResponseMatrix");
+  Modelica.Utilities.Files.createDirectory("tmp");
+  Modelica.Utilities.Files.createDirectory("tmp/temperatureResponseMatrix");
   writegFun := Modelica.Utilities.Streams.writeRealMatrix(
     fileName="tmp/temperatureResponseMatrix/TStep.mat",
     matrixName="TStep",
     matrix=timSer,
     append=false);
+
 equation
-  der(
-    delTBor)=dTStepdt*QBor_flow+derDelTBor0;
-  der(
-    U)=QBor_flow;
+  der(delTBor)=dTStepdt*QBor_flow+derDelTBor0;
+  der(U)=QBor_flow;
   when sample(
     t_start,
     tLoaAgg) then
@@ -171,8 +167,7 @@ equation
     QAgg_flow=cat(
       1,
       {(U-pre(U_old))/tLoaAgg},
-      pre(
-        QAggShi_flow[2:end]));
+      pre(QAggShi_flow[2:end]));
     // Shift loads in aggregation cells
     (curCel,QAggShi_flow)=Buildings.Fluid.Geothermal.Borefields.BaseClasses.HeatTransfer.LoadAggregation.shiftAggregationCells(
       i=i,

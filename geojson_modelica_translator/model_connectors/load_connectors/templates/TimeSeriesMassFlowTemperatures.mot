@@ -18,8 +18,7 @@ model building
   Modelica.Blocks.Sources.CombiTimeTable buiMasTem(
     tableOnFile=true,
     tableName="modelica",
-    fileName=Modelica.Utilities.Files.loadResource(
-      filNam),
+    fileName=Modelica.Utilities.Files.loadResource(filNam),
     extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
     columns=2:7,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
@@ -81,6 +80,7 @@ model building
     annotation (Placement(visible=true,transformation(origin={308,146},extent={{-10,-10},{10,10}},rotation=0),iconTransformation(origin={416,152},extent={{-10,-10},{10,10}},rotation=0)));
   Modelica.Blocks.Interfaces.RealOutput realOutput
     annotation (Placement(visible=true,transformation(origin={312,110},extent={{-10,-10},{10,10}},rotation=0),iconTransformation(origin={416,152},extent={{-10,-10},{10,10}},rotation=0)));
+
 equation
   connect(buiMasTem.y[2],y)
     annotation (Line(points={{100,-10},{96,-10},{96,146},{308,146}},color={0,0,127}));

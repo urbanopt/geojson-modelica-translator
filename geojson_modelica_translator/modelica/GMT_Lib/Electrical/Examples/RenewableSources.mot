@@ -123,17 +123,19 @@ within {{ project_name }}.RenewableSources;
       StopTime=86400,
       Tolerance=1e-06),
     Documentation(
-      info="
-        <html>
-          <p>This model validates the system template model implemented in <a href=\"Buildings.Electrical.Examples.RenewableSources.mo\"> Buildings.Electrical.Examples.RenewableSources.mot</a>.</p>
-        </html>",
-      revisions="
-        <html>
-          <ul>
-            <li>
-              March 8, 2022 by Mingzhe Liu:<br/> First implementation.
-            </li>
-          </ul>
-        </html>"));
+      info="<html>
+      <p>This model validates the system template model implemented in
+<a href=\"Buildings.Electrical.Examples.RenewableSources.mo\">
+Buildings.Electrical.Examples.RenewableSources.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+March 8, 2022 by Mingzhe Liu:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
 end RenewableSources;
 {% endraw %}

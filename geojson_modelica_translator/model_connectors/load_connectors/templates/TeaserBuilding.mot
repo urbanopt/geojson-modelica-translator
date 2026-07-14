@@ -21,8 +21,7 @@ model building
     calTSky=Buildings.BoundaryConditions.Types.SkyTemperatureCalculation.HorizontalRadiation,
     pAtm(
       displayUnit="Pa")=101339,
-    filNam=Modelica.Utilities.Files.loadResource(
-      weaName),
+    filNam=Modelica.Utilities.Files.loadResource(weaName),
     computeWetBulbTemperature=true)
     "Weather data reader"
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},rotation=90,origin={56,96})));
@@ -67,8 +66,7 @@ model building
     {% raw %} annotation (Placement(transformation(extent={{-200,-60},{-180,-40}})));
   {% endraw %}Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloHea(
     redeclare package Medium=MediumW,
-    m_flow_nominal=sum(
-      terUni.mHeaWat_flow_nominal .* terUni.facMul),
+    m_flow_nominal=sum(terUni.mHeaWat_flow_nominal .* terUni.facMul),
     dp_nominal(
       displayUnit="Pa")=100000,
     have_pum=have_pum,
@@ -78,8 +76,7 @@ model building
     {% raw %} annotation (Placement(transformation(extent={{-140,-100},{-120,-80}})));
   {% endraw %}Buildings.DHC.Loads.BaseClasses.FlowDistribution disFloCoo(
     redeclare package Medium=MediumW,
-    m_flow_nominal=sum(
-      terUni.mChiWat_flow_nominal .* terUni.facMul),
+    m_flow_nominal=sum(terUni.mChiWat_flow_nominal .* terUni.facMul),
     typDis=Buildings.DHC.Loads.BaseClasses.Types.DistributionType.ChilledWater,
     dp_nominal(
       displayUnit="Pa")=100000,
@@ -88,6 +85,7 @@ model building
     nPorts_b1=nZon)
     "Chilled water distribution system"
     {% raw %} annotation (Placement(transformation(extent={{-140,-160},{-120,-140}})));
+
 {% endraw %}equation
   {% raw %} connect(disFloHea.port_b,ports_bHeaWat[1])
     annotation (Line(points={{-120,-90},{248,-90},{248,-60},{300,-60}},color={0,127,255}));

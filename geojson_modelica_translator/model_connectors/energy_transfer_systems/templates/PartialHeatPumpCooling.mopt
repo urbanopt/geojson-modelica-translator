@@ -218,6 +218,7 @@ within {{ project_name }}.Loads.ETS;
       max=1+1e-4))
     "Rate limiter for valve control signal to improve stability"
     annotation (Placement(transformation(extent={{-70,10},{-50,30}})));
+
 equation
   connect(chi.P,PHea)
     annotation (Line(points={{11,54},{16,54},{16,40},{220,40}},color={0,0,127}));

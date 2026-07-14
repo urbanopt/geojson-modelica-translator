@@ -59,6 +59,7 @@ model UnidirectionalSeries
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortGro[nCon+1]
     "Heat transfer to or from surroundings (positive if pipe is colder than surrounding)"
     annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+
 equation
   connect(con.heatPortDis,heatPortGro[1:nCon])
     annotation (Line(points={{-10,0},{-20,0},{-20,-86},{0,-86},{0,-100}},color={191,0,0}));

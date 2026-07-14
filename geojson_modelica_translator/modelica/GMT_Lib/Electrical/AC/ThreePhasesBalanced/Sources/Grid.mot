@@ -20,16 +20,18 @@ model Grid
       StopTime=86400,
       Tolerance=1e-06),
     Documentation(
-      info="
-        <html>
-          <p>This model validates the grid template model implemented in <a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mo\"> Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mot</a>.</p>
-        </html>",
-      revisions="
-        <html>
-          <ul>
-            <li>
-              April 20, 2023 by Zhanwei He:<br/> First implementation.
-            </li>
-          </ul>
-        </html>"));
+      info="<html>
+      <p>This model validates the grid template model implemented in
+<a href=\"Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mo\">
+Buildings.Electrical.AC.ThreePhasesBalanced.Sources.Examples.VariablePowerSource.mot</a>.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+April 20, 2023 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
 end Grid;

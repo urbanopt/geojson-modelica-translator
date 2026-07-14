@@ -21,8 +21,7 @@ partial model PartialPlantParallel
     annotation (Dialog(group="Two-way valve"));
   parameter Real kFixed(
     unit="",
-    min=0)=m_flow_nominal ./ sqrt(
-    dp_nominal)
+    min=0)=m_flow_nominal ./ sqrt(dp_nominal)
     "Flow coefficient of fixed resistance that may be in series with valve 1, k=m_flow/sqrt(dp), with unit=(kg.m)^(1/2)."
     annotation (Dialog(group="Two-way valve"));
   parameter Integer num=2
@@ -53,11 +52,13 @@ partial model PartialPlantParallel
     each from_dp=true,
     each T_start=293.15)
     annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
+
 initial equation
   assert(
     homotopyInitialization,
     "In "+getInstanceName()+": The constant homotopyInitialization has been modified from its default value. This constant will be removed in future releases.",
     level=AssertionLevel.warning);
+
 equation
   connect(y_actual,val.y)
     annotation (Line(points={{-20,74},{46,74},{46,12}},color={0,0,127}));

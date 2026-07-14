@@ -38,6 +38,7 @@ model Connection1PipePlugFlow_v
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPortDis
     "Heat transfer to and from the distribution pipe"
     annotation (Placement(transformation(extent={{-110,70},{-90,90}}),iconTransformation(extent={{-60,16},{-40,36}})));
+
 equation
   connect(pipDis.heatPort,heatPortDis)
     annotation (Line(points={{-70,-30},{-70,80},{-100,80}},color={191,0,0}));

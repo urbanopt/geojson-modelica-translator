@@ -38,8 +38,7 @@ record DesignDataSeries
     10,
     nBui)
     "Length of each connection pipe (supply only, not counting return line)";
-  parameter Modelica.Units.SI.Length lEnd=sum(
-    lDis)
+  parameter Modelica.Units.SI.Length lEnd=sum(lDis)
     "Length of the end of the distribution line (after last connection)";
   annotation (
     defaultComponentName="datDes",

@@ -79,19 +79,16 @@ model TimeSeriesBuilding
   parameter Modelica.Units.SI.Time Ti(
     min=Modelica.Constants.small)=10
     "Time constant of integrator block";
-  parameter Modelica.Units.SI.MassFlowRate mChiWat_flow_nominal=abs(
-    QCoo_flow_nominal/cp_default/(T_aChiWat_nominal-T_bChiWat_nominal))
+  parameter Modelica.Units.SI.MassFlowRate mChiWat_flow_nominal=abs(QCoo_flow_nominal/cp_default/(T_aChiWat_nominal-T_bChiWat_nominal))
     "Chilled water mass flow rate at nominal conditions (all units)"
     annotation (Dialog(group="Nominal condition"));
-  parameter Modelica.Units.SI.MassFlowRate mHeaWat_flow_nominal=abs(
-    QHea_flow_nominal/cp_default/(T_aHeaWat_nominal-T_bHeaWat_nominal))
+  parameter Modelica.Units.SI.MassFlowRate mHeaWat_flow_nominal=abs(QHea_flow_nominal/cp_default/(T_aHeaWat_nominal-T_bHeaWat_nominal))
     "Heating water mass flow rate at nominal conditions (all units)"
     annotation (Dialog(group="Nominal condition"));
   Modelica.Blocks.Sources.CombiTimeTable loa(
     tableOnFile=true,
     tableName="tab1",
-    fileName=Modelica.Utilities.Files.loadResource(
-      filNam),
+    fileName=Modelica.Utilities.Files.loadResource(filNam),
     extrapolation=Modelica.Blocks.Types.Extrapolation.Periodic,
     y(
       each unit="W"),
@@ -233,19 +230,19 @@ model TimeSeriesBuilding
     k=facMul) if have_heaLoa
     "Scaling"
     annotation (Placement(transformation(extent={{270,-130},{290,-110}})));
+
 protected
   parameter Modelica.Units.SI.SpecificHeatCapacity cp_air=1005
     "Air specific heat capacity";
-  parameter Modelica.Units.SI.SpecificHeatCapacity cpHeaWat_nominal=Medium.specificHeatCapacityCp(
-    Medium.setState_pTX(
-      Medium.p_default,
-      T_aHeaWat_nominal))
+  parameter Modelica.Units.SI.SpecificHeatCapacity cpHeaWat_nominal=Medium.specificHeatCapacityCp(Medium.setState_pTX(
+    Medium.p_default,
+    T_aHeaWat_nominal))
     "Heating water specific heat capacity at nominal conditions";
-  parameter Modelica.Units.SI.SpecificHeatCapacity cpChiWat_nominal=Medium.specificHeatCapacityCp(
-    Medium.setState_pTX(
-      Medium.p_default,
-      T_aChiWat_nominal))
+  parameter Modelica.Units.SI.SpecificHeatCapacity cpChiWat_nominal=Medium.specificHeatCapacityCp(Medium.setState_pTX(
+    Medium.p_default,
+    T_aChiWat_nominal))
     "Chilled water specific heat capacity at nominal conditions";
+
 equation
   connect(terUniHea.port_bHeaWat,disFloHea.ports_a1[1])
     annotation (Line(points={{90,-32.3333},{90,-32},{146,-32},{146,-64},{140,-64}},color={0,127,255}));

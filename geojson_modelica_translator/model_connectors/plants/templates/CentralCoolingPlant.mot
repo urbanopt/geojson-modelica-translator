@@ -73,29 +73,20 @@ within {{ project_name }}.Plants;
     annotation (Dialog(group="Control Settings"));
   Buildings.BoundaryConditions.WeatherData.ReaderTMY3 weaDat(
     final computeWetBulbTemperature=true,
-    filNam=Modelica.Utilities.Files.loadResource(
-      "{{ data['wet_bulb_calc']['modelica_path'] }}"))
+    filNam=Modelica.Utilities.Files.loadResource("{{ data['wet_bulb_calc']['modelica_path'] }}"))
     {% raw %} annotation (Placement(transformation(extent={{-140,-80},{-120,-60}})));
   Buildings.BoundaryConditions.WeatherData.Bus weaBus
     "Weather data bus"
     annotation (Placement(transformation(extent={{-110,-62},{-90,-42}}),iconTransformation(extent={{-110,-62},{-90,-42}})));
   Medium.ThermodynamicState sta_a=Medium.setState_phX(
     port_a.p,
-    noEvent(
-      actualStream(
-        port_a.h_outflow)),
-    noEvent(
-      actualStream(
-        port_a.Xi_outflow))) if show_T
+    noEvent(actualStream(port_a.h_outflow)),
+    noEvent(actualStream(port_a.Xi_outflow))) if show_T
     "Medium properties in port_a";
   Medium.ThermodynamicState sta_b=Medium.setState_phX(
     port_b.p,
-    noEvent(
-      actualStream(
-        port_b.h_outflow)),
-    noEvent(
-      actualStream(
-        port_b.Xi_outflow))) if show_T
+    noEvent(actualStream(port_b.h_outflow)),
+    noEvent(actualStream(port_b.Xi_outflow))) if show_T
     "Medium properties in port_b";
   Modelica.Fluid.Interfaces.FluidPort_a port_a(
     redeclare package Medium=Medium)
@@ -248,15 +239,16 @@ within {{ project_name }}.Plants;
     k=1)
     "Scaled bypass valve mass flow setpoint"
     annotation (Placement(transformation(extent={{90,10},{110,30}})));
+
 protected
   final parameter Medium.ThermodynamicState sta_default=Medium.setState_pTX(
     T=Medium.T_default,
     p=Medium.p_default,
     X=Medium.X_default)
     "Medium state at default properties";
-  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(
-    sta_default)
+  final parameter Modelica.Units.SI.SpecificHeatCapacity cp_default=Medium.specificHeatCapacityCp(sta_default)
     "Specific heat capacity of the fluid";
+
 equation
   connect(on,CHWPumCon.u);
   connect(weaDat.weaBus,weaBus)

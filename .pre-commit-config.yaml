@@ -41,7 +41,7 @@ repos:
         types: [file]
         files: \.(mo|mot|mopt)$
         entry: modelicafmt
-        args: ["-w", "-wrap-arrays", "-format-html"]
+        args: ["-w", "-wrap-arrays"]
         language: system
   # https://docs.astral.sh/ruff/integrations/#pre-commit
   - repo: https://github.com/astral-sh/ruff-pre-commit

@@ -53,6 +53,7 @@ model Boiler_TParallel
   Modelica.Blocks.Interfaces.RealInput THeaWatSet
     "Heating water set point."
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},rotation=0,origin={-110,-60}),iconTransformation(extent={{-10,-10},{10,10}},rotation=0,origin={-110,-60})));
+
 equation
   for i in 1:numBoi loop
     connect(port_a,boi[i].port_a)

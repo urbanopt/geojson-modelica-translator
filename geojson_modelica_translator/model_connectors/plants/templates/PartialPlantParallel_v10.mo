@@ -19,8 +19,7 @@ partial model PartialPlantParallel_v10
     annotation (Dialog(group="Two-way valve"));
   parameter Real kFixed(
     unit="",
-    min=0)=m_flow_nominal ./ sqrt(
-    dp_nominal)
+    min=0)=m_flow_nominal ./ sqrt(dp_nominal)
     "Flow coefficient of fixed resistance that may be in series with valve 1, k=m_flow/sqrt(dp), with unit=(kg.m)^(1/2)."
     annotation (Dialog(group="Two-way valve"));
   parameter Integer num=2
@@ -50,6 +49,7 @@ partial model PartialPlantParallel_v10
     each from_dp=true,
     each T_start=293.15)
     annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
+
 initial equation
   assert(
     homotopyInitialization,
