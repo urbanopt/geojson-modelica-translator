@@ -1,0 +1,10 @@
+  connect({{ coupling.plant.id }}.port_a,{{ coupling.network.id }}.port_bDisRet)
+    annotation ({{ diagram.line.ste_boi.port_a.two_pipe.port_b_dis_ret }});
+  connect({{ coupling.network.id }}.dp,{{ coupling.plant.id }}.dpMea)
+    annotation ({{ diagram.line.two_pipe.dp.ste_boi.dp_mea }});
+  connect({{ coupling.plant.id }}.port_b,{{ coupling.network.id }}.port_aDisSup)
+    annotation ({{ diagram.line.ste_boi.port_b.two_pipe.port_a_dis_sup }});
+  connect(mPum_flow_{{ coupling.id }}.y,{{ coupling.plant.id }}.on)
+    annotation ({{ diagram.line.m_pum_flow.y.ste_boi.on }});
+  connect(TDisSetHeaWat_{{ coupling.id }}.y,{{ coupling.plant.id }}.THeaSet)
+    annotation ({{ diagram.line.t_dis_set_hea_wat.y.ste_boi.t_hea_set }});

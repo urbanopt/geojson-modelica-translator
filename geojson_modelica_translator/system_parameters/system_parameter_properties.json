@@ -22,6 +22,9 @@
           "type": "object",
           "oneOf": [
             {
+              "$ref": "#/definitions/first_generation_def"
+            },
+            {
               "$ref": "#/definitions/fourth_generation_def"
             },
             {
@@ -260,9 +263,10 @@
           ]
         },
         "ets_model": {
-          "description": "Energy transfer station model. One side is connected to the district water loops and the other side is connected to the building water loops.",
+          "description": "Energy transfer station model. One side is connected to the district loop and the other side is connected to the building loops.",
           "type": "string",
           "enum": [
+            "Steam",
             "Indirect Heating and Cooling",
             "Fifth Gen Heat Pump"
           ]
@@ -276,6 +280,9 @@
             },
             {
               "$ref": "#/definitions/fifth_gen_ets_parameters"
+            },
+            {
+              "$ref": "#/definitions/steam_ets_parameters"
             }
           ]
         },
@@ -330,6 +337,11 @@
         {
           "required": [
             "fifth_gen_ets_parameters"
+          ]
+        },
+        {
+          "required": [
+            "steam_ets_parameters"
           ]
         }
       ],
@@ -404,6 +416,17 @@
         }
       },
       "additionalProperties": false
+    },
+    "steam_ets_parameters": {
+      "description": "The parameters associated with the steam energy transfer station.",
+      "type": "object",
+      "properties": {
+        "heat_flow_nominal": {
+          "description": "Nominal heat flow rate. (W)",
+          "type": "number",
+          "default": 10000
+        }
+      }
     },
     "ets_indirect_parameters": {
       "description": "The parameters associated with the indirect energy transfer station.",
@@ -1008,6 +1031,98 @@
         }
       }
     },
+    "central_steam_plant_parameters": {
+      "description": "Central steam heating plant.",
+      "type": "object",
+      "properties": {
+        "boiler_efficiency": {
+          "description": "Boiler efficiency (fraction). May be a single number for a constant efficiency, or an array of numbers for the coefficients of the boiler efficiency curve (Buildings.Fluid.Boilers.BoilerPolynomial 'a' coefficients).",
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 1
+            }
+          ],
+          "default": 0.7
+        },
+        "steam_pressure_setpoint": {
+          "description": "The saturation pressure, high pressure setpoint. (Pa)",
+          "type": "number",
+          "default": 500000
+        },
+        "reduced_pressure_setpoint": {
+          "description": "The reduced pressure, after the PRV. (Pa)",
+          "type": "number",
+          "default": 200000
+        },
+        "condensate_pressure_drop_nominal": {
+          "description": "Nominal pressure drop along the condensate return pipe. (Pa)",
+          "type": "number",
+          "default": 6000
+        },
+        "heat_flow_nominal_building": {
+          "description": "Nominal heat flow rate per building (W)",
+          "type": "number",
+          "default": 20000
+        },
+        "number_of_boilers": {
+          "description": "Number of parallel steam boilers in the central plant. Note: the current model is single-boiler, so this is informational only.",
+          "type": "integer",
+          "default": 1
+        },
+        "boiler_control_gain": {
+          "description": "Proportional gain of the boiler pressure PI controller (kBoi).",
+          "type": "number",
+          "default": 600
+        },
+        "boiler_control_time_constant": {
+          "description": "Integrator time constant of the boiler pressure PI controller, in seconds (TiBoi).",
+          "type": "number",
+          "default": 120
+        },
+        "pump_control_gain": {
+          "description": "Proportional gain of the feedwater pump PI controller (kPum).",
+          "type": "number",
+          "default": 200
+        },
+        "pump_control_time_constant": {
+          "description": "Integrator time constant of the feedwater pump PI controller, in seconds (TiPum).",
+          "type": "number",
+          "default": 1000
+        },
+        "boiler_drum_volume": {
+          "description": "Total drum (water) volume of the steam boiler, in m^3 (VBoi). Smaller values reduce the cold-start warm-up transient.",
+          "type": "number",
+          "default": 3
+        },
+        "boiler_capacity_scale": {
+          "description": "Boiler heat-capacity scaling factor (boiSca). Larger values oversize the firing rate and shorten warm-up.",
+          "type": "number",
+          "default": 1.25
+        },
+        "distribution_flow_safety_factor": {
+          "description": "Oversizing multiplier applied to the sum of building nominal flows to size the district nominal mass flow rate.",
+          "type": "number",
+          "default": 1.2
+        },
+        "minimum_load_fraction": {
+          "description": "Minimum (standby) building heating load as a fraction of the building peak load. Maintains a minimum steam flow so the pressure reducing valve and condensate pump remain numerically well posed when the time-series demand drops to zero.",
+          "type": "number",
+          "default": 0.02
+        },
+        "temp_setpoint_hhw": {
+          "description": "Heating hot water supply temperature setpoint for ETS (degrees Celsius)",
+          "type": "number",
+          "default": 100
+        }
+      }
+    },
     "ghe_parameters": {
       "description": "Parameters associated with Ground Heat Exchangers.",
       "type": "object",
@@ -1398,10 +1513,65 @@
         }
       }
     },
+    "first_generation_def": {
+      "properties": {
+        "first_generation": {
+          "properties": {
+            "central_steam_plant_parameters": {
+              "$ref": "#/definitions/central_steam_plant_parameters"
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "first_generation"
+      ]
+    },
     "fourth_generation_def": {
       "properties": {
         "fourth_generation": {
-          "$ref": "#/definitions/fourth_generation"
+          "properties": {
+            "central_cooling_plant_parameters": {
+              "$ref": "#/definitions/central_cooling_plant_parameters"
+            },
+            "central_heating_plant_parameters": {
+              "$ref": "#/definitions/central_heating_plant_parameters"
+            },
+            "combined_heat_and_power_parameters": {
+              "$ref": "#/definitions/combined_heat_and_power_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            }
+          }
         }
       },
       "required": [
@@ -1411,7 +1581,35 @@
     "fifth_generation_def": {
       "properties": {
         "fifth_generation": {
-          "$ref": "#/definitions/fifth_generation"
+          "properties": {
+            "ghe_parameters": {
+              "$ref": "#/definitions/ghe_parameters"
+            },
+            "connected_buildings": {
+              "items": [
+                {
+                  "properties": {
+                    "building_id": {
+                      "description": "This is the geojson_id that is defined in the building object."
+                    }
+                  }
+                }
+              ]
+            },
+            "central_pump_parameters": {
+              "description": "Parameters for central pump",
+              "type": "object",
+              "properties": {
+                "pump_design_head": {
+                  "description": "Central pump nominal pressure (Pa)",
+                  "type": "number"
+                }
+              }
+            },
+            "horizontal_piping_parameters": {
+              "$ref": "#/definitions/horizontal_piping_parameters"
+            }
+          }
         }
       },
       "required": [

@@ -1,0 +1,53 @@
+within {{ project_name }}.Plants;
+model SteamBoiler
+  "Single-boiler steam plant for 1st-generation (steam) district heating.
+
+  This is a thin wrapper around Buildings.DHC.Plants.Steam.SingleBoiler that fixes the
+  boiler efficiency and steam pressure setpoint from the system parameters and exposes the
+  plant service ports so the plant can be wired to a steam distribution network in the
+  district model:
+    - port_aSerHea : condensate (water) return inlet from the distribution network
+    - port_bSerHea : saturated steam supply outlet to the distribution network
+  The fluid media (Medium = water/condensate, MediumHea_b = steam), nominal flow/heat, and
+  pump performance are supplied by the instantiating district model."
+  parameter Integer n_boilers={{ data["nominal_values"]["number_of_boilers"] }}
+    "Number of parallel steam boilers in the plant";
+  parameter Modelica.Units.SI.AbsolutePressure pSteSet_nominal={{ data["nominal_values"]["steam_pressure_setpoint"] }}
+    "Steam pressure setpoint (saturation pressure, high pressure)";
+  extends Buildings.DHC.Plants.Steam.SingleBoiler(
+    pSteSet=pSteSet_nominal,
+    boi(
+      a={{ data["nominal_values"]["boiler_efficiency"] }}));
+  annotation (
+    Documentation(
+      info="<html>
+<p>
+Steam plant component for 1st-generation (steam) district heating systems. It wraps
+<a href=\"modelica://Buildings.DHC.Plants.Steam.SingleBoiler\">
+Buildings.DHC.Plants.Steam.SingleBoiler</a> and constrains the boiler efficiency curve
+coefficient to <code>boiler_efficiency</code> from
+<code>district_system.first_generation.central_steam_plant_parameters</code>.
+</p>
+<p>
+The plant exposes the heating service ports (<code>port_aSerHea</code> condensate return,
+<code>port_bSerHea</code> steam supply) inherited from the plant base class so it can be
+connected to a
+<a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\">
+Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a> distribution network in the
+district model.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+July 13, 2026 by Nicholas Long:<br/>
+Refactored SteamBoiler to wrap the plant-only Buildings.DHC.Plants.Steam.SingleBoiler so
+the district model can explicitly connect plant &rarr; distribution &rarr; buildings.
+</li>
+<li>
+February 01, 2024 by Zhanwei He:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end SteamBoiler;

@@ -22,6 +22,32 @@ make test-all
 make test-resources-intensive-dymola
 ```
 
+### Steam Boiler Test Coverage
+
+Steam (1st-generation district heating) coverage is split into two layers, and both include
+generation and simulation tests:
+
+- `tests/model_connectors/test_steam_boiler.py`
+  - Generation tests verify that a decomposed first-generation district model is produced,
+    including the steam plant (`Plants.SteamBoiler`), the steam distribution network
+    (`Buildings.DHC.Networks.Steam.DistributionCondensatePipe`), one GMT-wrapped building per
+    geojson building (`Loads.<building>.building`), and the steam `connect()` statements that
+    wire plant &rarr; distribution &rarr; buildings.
+  - Simulation tests (`@pytest.mark.simulation`) compile and run the generated district in
+    OpenModelica (via `ModelicaRunner`/Docker) and validate a successful run.
+- `tests/GMT_Lib/test_gmt_lib.py`
+  - `test_build_steam_example` verifies generation of the GMT steam example.
+  - `test_simulate_steam_example` runs `compile_and_run` with `ModelicaRunner` and validates a successful OpenModelica run.
+
+Run only the steam-related tests with:
+
+```bash
+poetry run pytest -q tests/model_connectors/test_steam_boiler.py tests/GMT_Lib/test_gmt_lib.py -k steam
+```
+
+The simulation tests require Docker and the OpenModelica runner image; they are skipped when
+run without the `simulation` marker selected.
+
 ## Snapshot Testing
 
 Some tests use [syrupy](https://github.com/tophat/syrupy) to compare generated modelica models to saved "snapshots" of the models (saved as .ambr files).
@@ -141,7 +167,7 @@ When rendering the district system model file, it must:
 3. render the model instance definition (ie the Modelica code which instantiates the model)
 4. insert the coupling partials and model instance definitions into the district Modelica file
 
-Refer to [the district template](https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/templates/DistrictEnergySystem.mot) and [the district code](https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/district.py) for reference.
+Refer to [the district template](https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/templates/DistrictEnergySystem4G.mot) and [the district code](https://github.com/urbanopt/geojson-modelica-translator/blob/develop/geojson_modelica_translator/model_connectors/districts/district.py) for reference.
 
 Each templating step has access to a particular set of variables, which is defined below.
 

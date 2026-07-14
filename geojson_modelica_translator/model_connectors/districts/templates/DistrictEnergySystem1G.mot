@@ -1,0 +1,122 @@
+within {{ district_within_path }};
+model DistrictEnergySystem
+  "1st-generation (steam) district heating system.
+
+  This model explicitly instantiates and connects the decomposed steam components:
+    steam plant (Plants.SteamBoiler) -> steam distribution network
+    (Buildings.DHC.Networks.Steam.DistributionCondensatePipe) -> buildings with
+    integrated steam energy transfer stations
+    (Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS).
+  Steam is supplied by the plant on the supply side and returned to the plant as
+  condensate on the return side."
+  extends Modelica.Icons.Example;
+
+  package MediumSte = Buildings.Media.Steam (
+    p_default=400000,
+    T_default=273.15 + 143.61,
+    h_default=2738100)
+    "Steam medium (distribution supply side)";
+  package MediumWat = Buildings.Media.Specialized.Water.TemperatureDependentDensity (
+    p_default=101325,
+    T_default=100 + 273.15,
+    h_default=2738100)
+    "Water/condensate medium (distribution return side)";
+
+  parameter Modelica.Units.SI.AbsolutePressure pSat={{ steam.steam_pressure_setpoint }}
+    "Saturation pressure, high pressure";
+  parameter Modelica.Units.SI.AbsolutePressure pLow={{ steam.reduced_pressure_setpoint }}
+    "Reduced pressure, after the building pressure reducing valve";
+  parameter Integer N={{ steam.number_of_loads }}
+    "Number of buildings";
+  parameter Modelica.Units.SI.HeatFlowRate QDis_flow_nominal={% for b in steam_buildings %}{{ b.instance }}.Q_flow_nominal{% if not loop.last %} + {% endif %}{% endfor %}
+    "Nominal heat flow rate of the entire district (sum of building peak heating loads)";
+  parameter Modelica.Units.SI.MassFlowRate mDis_flow_nominal=({% for b in steam_buildings %}{{ b.instance }}.m_flow_nominal{% if not loop.last %} + {% endif %}{% endfor %})*{{ steam.distribution_flow_safety_factor }}
+    "Nominal mass flow rate of the entire district";
+  parameter Modelica.Units.SI.PressureDifference dpPip={{ steam.condensate_pressure_drop_nominal }}
+    "Pressure drop in the condensate return pipe";
+  parameter Modelica.Units.SI.PressureDifference dp_nominal={{ steam.condensate_pressure_drop_nominal }}
+    "Pressure drop of distribution at nominal mass flow rate";
+  parameter Buildings.Fluid.Movers.Data.Generic perPumFW(
+    pressure(
+      V_flow=(mDis_flow_nominal/1000)*{0,1,2},
+      dp=(pSat - 101325)*{2,1,0}))
+    "Performance data for the feedwater pump at the plant";
+
+{% for b in steam_buildings %}
+  {{ b.type }} {{ b.instance }}(
+    redeclare final package MediumSte = MediumSte,
+    redeclare final package MediumWat = MediumWat,
+    final dp_nominal=dpPip/2,
+    final pSte_nominal=pSat,
+    final pLow_nominal=pLow)
+    "Building {{ loop.index }} ({{ b.name }}) with integrated steam energy transfer station";
+{% endfor %}
+  Buildings.DHC.Networks.Steam.DistributionCondensatePipe dis(
+    redeclare final package MediumSup = MediumSte,
+    redeclare final package MediumRet = MediumWat,
+    final dp_nominal=dp_nominal,
+    final nCon=N,
+    final mDis_flow_nominal=mDis_flow_nominal,
+    final mCon_flow_nominal={ {% for b in steam_buildings %}{{ b.instance }}.m_flow_nominal{% if not loop.last %}, {% endif %}{% endfor %} })
+    "Steam distribution network (steam supply, condensate return)";
+  Plants.SteamBoiler pla(
+    redeclare final package Medium = MediumWat,
+    redeclare final package MediumHea_b = MediumSte,
+    final m_flow_nominal=mDis_flow_nominal,
+    final Q_flow_nominal=QDis_flow_nominal,
+    final per=perPumFW,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    VBoi={{ steam.boiler_drum_volume }},
+    boiSca={{ steam.boiler_capacity_scale }},
+    kBoi={{ steam.boiler_control_gain }},
+    TiBoi(displayUnit="min") = {{ steam.boiler_control_time_constant }},
+    kPum={{ steam.pump_control_gain }},
+    TiPum={{ steam.pump_control_time_constant }})
+    "Central steam plant";
+equation
+{% for b in steam_buildings %}
+  connect(dis.ports_bCon[{{ loop.index }}], {{ b.instance }}.port_a);
+  connect({{ b.instance }}.port_b, dis.ports_aCon[{{ loop.index }}]);
+{% endfor %}
+  connect(pla.port_bSerHea, dis.port_aDisSup);
+  connect(dis.port_bDisRet, pla.port_aSerHea);
+  annotation (
+    experiment(
+      StopTime=86400,
+      Tolerance=1e-06),
+    Documentation(
+      info="<html>
+<p>
+District energy system model for a 1st-generation (steam) district heating system.
+The plant (<code>Plants.SteamBoiler</code>, a single-boiler steam plant) supplies
+saturated steam to a
+<a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\">
+Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a> distribution network, which
+serves <code>N</code> buildings modeled with GMT-wrapped
+<a href=\"modelica://Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS\">
+Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS</a> load models
+(<code>Loads.&lt;building&gt;.building</code>), each reading its own time-series heating
+load. Each building includes an integrated steam energy transfer station (pressure
+reducing valve and heat exchanger). Condensate returns to the plant on the network
+return side.
+</p>
+<p>
+The connections wire plant &rarr; distribution &rarr; buildings:
+</p>
+<ul>
+<li><code>dis.ports_bCon[i] &harr; bld&lt;i&gt;.port_a</code>: network steam supply to each building</li>
+<li><code>bld&lt;i&gt;.port_b &harr; dis.ports_aCon[i]</code>: building condensate return to network</li>
+<li><code>pla.port_bSerHea &harr; dis.port_aDisSup</code>: plant steam supply to network</li>
+<li><code>dis.port_bDisRet &harr; pla.port_aSerHea</code>: network condensate return to plant</li>
+</ul>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+July 13, 2026 by Nicholas Long:<br/>
+Decomposed the 1st-generation steam district into explicit plant, distribution network,
+and building components with steam connections, replacing the previous monolithic wrapper.
+</li>
+</ul>
+</html>"));
+end DistrictEnergySystem;

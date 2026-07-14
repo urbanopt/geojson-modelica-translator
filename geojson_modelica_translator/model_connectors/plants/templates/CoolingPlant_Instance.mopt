@@ -8,9 +8,9 @@
   docs/sizing_district_systems.md for how to size these.
 
   Still TODO (out of scope here, see docs/sizing_district_systems.md):
-    * `numberofchillers` is still hard-coded in DistrictEnergySystem.mot. Add a
+    * `numberofchillers` is still hard-coded in DistrictEnergySystem4G.mot. Add a
       `num_chillers` field to the sys_params schema and wire it through to
-      DistrictEnergySystem.mot so plants with !=2 chillers can be modelled.
+      DistrictEnergySystem4G.mot so plants with !=2 chillers can be modelled.
     * The chiller catalog record `ElectricEIRChiller_Carrier_19EX_5208kW_…`
       is still hard-coded below. Add a `chiller_performance_data` sys_params
       field that lets the user redeclare any record from

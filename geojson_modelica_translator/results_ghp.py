@@ -1,6 +1,5 @@
 # :copyright (c) URBANopt, Alliance for Energy Innovation, LLC, and other contributors.
 # See also https://github.com/urbanopt/geojson-modelica-translator/blob/develop/LICENSE.md
-# ruff: noqa: PLR0915
 
 import re
 from datetime import datetime, timezone

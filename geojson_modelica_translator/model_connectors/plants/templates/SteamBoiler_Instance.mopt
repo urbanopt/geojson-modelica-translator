@@ -1,0 +1,6 @@
+{#- Steam boiler instance for 1st-generation district heating.
+   The SteamBoiler model extends the complete MBL steam example and acts as a
+   self-contained district heating system, so no separate instantiation inside
+   DistrictEnergySystem is needed here. The transformation is still declared
+   so the diagram layout correctly places the adjacent network node. #}
+  {# {{ diagram.transformation.ste_boi.plant }} #}

@@ -24,7 +24,7 @@ to it. Read on.
 ## 1. The shape of the central cooling plant
 
 The GMT 4G cooling plant is a parallel arrangement of `numChi` water-cooled
-electric chillers (currently hard-coded to 2 in `DistrictEnergySystem.mot`),
+electric chillers (currently hard-coded to 2 in `DistrictEnergySystem4G.mot`),
 each connected to a parallel arrangement of `numChi` cooling-tower cells and a
 common pair of pump headers:
 
@@ -253,7 +253,7 @@ Once you've filled in the values, sanity-check the consistency:
 There are still some parameters that stay hard-coded and
 may require either editing the templates manually or extending the schema:
 
-1. **`numberofchillers`** is fixed at 2 in `DistrictEnergySystem.mot`. To run
+1. **`numberofchillers`** is fixed at 2 in `DistrictEnergySystem4G.mot`. To run
    a plant with 1 or 3+ chillers you must edit that file directly (or add
    `num_chillers` to the schema and wire it through).
 
@@ -518,3 +518,62 @@ chp_thermal_following                        – bool (only if chp_installed = t
 All of these flow through with the `2026-05-20` template patch applied.
 Without the patch, `Q_flow_nominal` was hard-coded to `1 000 000 × 2` and
 `dpBoi_nominal` to `10 000`, regardless of what your sys_params said.
+
+---
+
+## 8. First-generation (steam) plant parameters
+
+First-generation steam systems (`district_type=steam`,
+`district_system.first_generation`) size very differently from the 4G plants
+above. The generated district is decomposed into an explicit steam plant, a
+steam distribution/condensate network, and one building-with-ETS per geojson
+building, each reading its own heating load from its time-series `.mos` file.
+The plant and network are therefore sized automatically from the sum of the
+building peak loads — you do not enter plant flow rates directly.
+
+The tunable inputs live under
+`district_system.first_generation.central_steam_plant_parameters`. Every key
+has a default, so an existing file keeps working, but the following are worth
+reviewing:
+
+```text
+boiler_efficiency                – boiler efficiency: a number (constant fraction) or an
+                                    array of numbers (efficiency curve coefficients)
+steam_pressure_setpoint          – saturation/high pressure setpoint, Pa
+reduced_pressure_setpoint        – reduced pressure after the building PRV, Pa
+condensate_pressure_drop_nominal – nominal distribution/condensate pressure drop, Pa
+boiler_control_gain              – boiler pressure PI gain (kBoi)
+boiler_control_time_constant     – boiler pressure PI time constant, s (TiBoi)
+pump_control_gain                – feedwater pump PI gain (kPum)
+pump_control_time_constant       – feedwater pump PI time constant, s (TiPum)
+boiler_drum_volume               – boiler drum water volume, m^3 (VBoi)
+boiler_capacity_scale            – boiler heat-capacity scaling factor (boiSca)
+distribution_flow_safety_factor  – oversizing multiplier on summed building flow
+minimum_load_fraction            – standby load as a fraction of building peak load
+number_of_boilers                – informational only (single-boiler model)
+```
+
+Sizing notes:
+
+1. **Nominal flow and heat are derived, not entered.** The district nominal
+   mass flow rate is `distribution_flow_safety_factor × Σ(building nominal
+   flows)`, and the plant nominal heat is the sum of the building peak heating
+   loads read from the `.mos` files.
+
+2. **Warm-up transient.** A first-generation steam plant cold-starts the boiler
+   from atmospheric conditions, so the first hours of a run include a warm-up
+   during which fuel is consumed while little steam is delivered. `boiler_drum_volume`
+   (less water mass to heat) and `boiler_capacity_scale` (more firing rate)
+   are the two knobs that shorten this transient. Reducing `VBoi` and/or
+   raising `boiSca` moves the plant to steady operation faster; the defaults
+   (`3 m^3`, `1.25`) match the MBL steam example.
+
+3. **Minimum standby load.** The MBL steam pressure reducing valve and
+   condensate pump are not numerically well posed at exactly zero steam flow.
+   GMT therefore maintains a minimum standby load of
+   `minimum_load_fraction × building_peak_load` so the model simulates through
+   overnight/low-demand hours. Lower it for a smaller standby load; `0` is not
+   recommended.
+
+4. **Single boiler.** The current plant model is single-boiler. `number_of_boilers`
+   is carried for documentation but does not change the generated model.

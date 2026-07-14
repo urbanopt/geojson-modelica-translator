@@ -18,6 +18,8 @@ from geojson_modelica_translator.jinja_filters import ALL_CUSTOM_FILTERS
 from geojson_modelica_translator.model_connectors.couplings.diagram import Diagram
 from geojson_modelica_translator.model_connectors.energy_transfer_systems.heat_pump_ets import HeatPumpETS
 from geojson_modelica_translator.model_connectors.load_connectors.load_base import LoadBase
+from geojson_modelica_translator.model_connectors.load_connectors.steam_building import SteamBuilding
+from geojson_modelica_translator.model_connectors.plants.steam_boiler import SteamPlant
 from geojson_modelica_translator.scaffold import Scaffold
 
 logger = logging.getLogger(__name__)
@@ -60,6 +62,13 @@ class District:
         # scaffold the project
         self._scaffold.create()
         self.district_model_filepath = Path(self._scaffold.districts_path.files_dir) / "DistrictEnergySystem.mo"
+
+        district_system_params = self.system_parameters.get_param("$.district_system")
+
+        # 1st-generation (steam) district systems use a simplified generation path
+        if "first_generation" in district_system_params:
+            self._to_modelica_first_generation(district_system_params)
+            return
 
         # generate model modelica files
         for model in self._coupling_graph.models:
@@ -210,7 +219,12 @@ class District:
         if "fifth_generation" in common_template_params["sys_params"]["district_system"]:
             final_result = render_template("DistrictEnergySystem5G.mot", district_template_params)
         elif "fourth_generation" in common_template_params["sys_params"]["district_system"]:
-            final_result = render_template("DistrictEnergySystem.mot", district_template_params)
+            final_result = render_template("DistrictEnergySystem4G.mot", district_template_params)
+        else:
+            raise ValueError(
+                "No recognized district generation found in district_system params. "
+                "Expected 'fourth_generation' or 'fifth_generation' for the main to_modelica path."
+            )
         with open(self.district_model_filepath, "w") as f:
             f.write(final_result)
 
@@ -221,6 +235,101 @@ class District:
         # Enforce minimum DHW load in Modelica model
         data_dir = Path(self._scaffold.project_path) / "Loads" / "Resources" / "Data"
         set_minimum_dhw_load(data_dir)
+
+        # Ensure package.order files include all generated local models/subpackages.
+        normalize_package_orders_recursively(self._scaffold.project_path)
+
+    def _to_modelica_first_generation(self, district_system_params):
+        """Generate modelica files for a 1st-generation (steam) district system.
+
+        1st-generation steam systems generate all coupled models (loads, ETS, networks, plant)
+        as explicit components in the district with proper instantiations and connections,
+        similar to the 5G generation path.
+
+        :param district_system_params: dict, district_system section of sys_params
+        """
+        steam_plant = next((m for m in self._coupling_graph.models if isinstance(m, SteamPlant)), None)
+        if steam_plant is None:
+            raise ValueError("First-generation district_system requires a SteamPlant in the coupling graph.")
+
+        if self.gj is None:
+            raise ValueError(
+                "First-generation district_system requires a geojson_file so that per-building steam "
+                "loads (Loads.<building>.building) can be generated with their time-series load files."
+            )
+
+        # Generate all models in the coupling graph (networks, plant, etc.)
+        for model in self._coupling_graph.models:
+            model.to_modelica(self._scaffold)
+
+        # Generate a GMT-wrapped steam building (with integrated ETS) for each building. Each wraps
+        # Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS and reads its own time-series load file.
+        steam_buildings = []
+        for index, geojson_load in enumerate(self.gj.buildings, start=1):
+            steam_building = SteamBuilding(self.system_parameters, geojson_load)
+            steam_building.to_modelica(self._scaffold)
+            steam_buildings.append(
+                {
+                    "instance": f"bld{index}",
+                    "type": steam_building.get_modelica_type(self._scaffold),
+                    "name": steam_building.building_name,
+                }
+            )
+
+        # Build model lists for template generation (similar to 5G)
+        plants = [m for m in self._coupling_graph.models if isinstance(m, SteamPlant)]
+
+        # Collect the central steam plant parameters that drive the decomposed
+        # plant -> distribution -> buildings steam components in the district model.
+        steam_params_path = "$.district_system.first_generation.central_steam_plant_parameters"
+        steam = {
+            "steam_pressure_setpoint": self.system_parameters.get_param(f"{steam_params_path}.steam_pressure_setpoint"),
+            "reduced_pressure_setpoint": self.system_parameters.get_param(
+                f"{steam_params_path}.reduced_pressure_setpoint"
+            ),
+            "condensate_pressure_drop_nominal": self.system_parameters.get_param(
+                f"{steam_params_path}.condensate_pressure_drop_nominal"
+            ),
+            "number_of_loads": len(steam_buildings),
+            # Plant controller tuning and sizing (defaults match the MBL steam example)
+            "boiler_control_gain": self.system_parameters.get_param(f"{steam_params_path}.boiler_control_gain") or 600,
+            "boiler_control_time_constant": self.system_parameters.get_param(
+                f"{steam_params_path}.boiler_control_time_constant"
+            )
+            or 120,
+            "pump_control_gain": self.system_parameters.get_param(f"{steam_params_path}.pump_control_gain") or 200,
+            "pump_control_time_constant": self.system_parameters.get_param(
+                f"{steam_params_path}.pump_control_time_constant"
+            )
+            or 1000,
+            "boiler_drum_volume": self.system_parameters.get_param(f"{steam_params_path}.boiler_drum_volume") or 3,
+            "boiler_capacity_scale": self.system_parameters.get_param(f"{steam_params_path}.boiler_capacity_scale")
+            or 1.25,
+            "distribution_flow_safety_factor": self.system_parameters.get_param(
+                f"{steam_params_path}.distribution_flow_safety_factor"
+            )
+            or 1.2,
+        }
+
+        # Generate the district energy system model with explicit instantiations
+        first_gen_params = {
+            "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
+            "project_name": self._scaffold.project_name,
+            "plants": plants,
+            "steam_buildings": steam_buildings,
+            "couplings": self._coupling_graph.couplings,
+            "steam": steam,
+            "globals": {
+                "project_name": self._scaffold.project_name,
+            },
+        }
+        final_result = render_template("DistrictEnergySystem1G.mot", first_gen_params)
+        with open(self.district_model_filepath, "w") as f:
+            f.write(final_result)
+
+        # Add DistrictEnergySystem to Districts package using scaffold's PackageParser
+        self._scaffold.package.districts.add_model("DistrictEnergySystem", create_subpackage=False)
+        self._scaffold.save()
 
         # Ensure package.order files include all generated local models/subpackages.
         normalize_package_orders_recursively(self._scaffold.project_path)

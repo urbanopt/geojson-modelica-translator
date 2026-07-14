@@ -1,0 +1,64 @@
+within {{ project_name }}.Loads.{{ model_name }};
+model building
+  "Steam heating building with an integrated energy transfer station (ETS).
+
+  Wraps Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS and supplies the building
+  heating load as a time series read from the building's load file. The building
+  connects to a steam distribution network via:
+    - port_a : steam supply inlet (steam medium)
+    - port_b : condensate return outlet (water medium)
+  The steam/condensate media, nominal steam pressure, reduced (post-PRV) pressure, and
+  ETS pressure drop are supplied by the instantiating district model."
+  extends Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS(
+    final have_prv=true,
+    final Q_flow_nominal=QHea_flow_nominal,
+    final tableOnFile=true,
+    final tableName="tab1",
+    final fileName=Modelica.Utilities.Files.loadResource(filNam),
+    final columns={3},
+    final smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
+    final timeScale=1,
+    final energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    QHea(
+      offset={QMin_flow}));
+  parameter String filNam="modelica://{{ project_name }}/Loads/{{ data['load_resources_path'] }}/{{ data['time_series']['filename'] }}"
+    "Library path of the file with the building heating load as a time series";
+  final parameter Modelica.Units.SI.HeatFlowRate QHea_flow_nominal(
+    min=Modelica.Constants.eps)=Buildings.DHC.Loads.BaseClasses.getPeakLoad(
+    string="#Peak space heating load",
+    filNam=Modelica.Utilities.Files.loadResource(filNam))
+    "Nominal (peak) building heating load, read from the time-series file";
+  parameter Modelica.Units.SI.HeatFlowRate QMin_flow={{ data['minimum_load_fraction'] }}*QHea_flow_nominal
+    "Minimum (standby) building heating load; keeps a minimum steam flow so the
+    self-acting pressure reducing valve and condensate pump remain numerically well
+    posed when the time-series heating demand drops to zero";
+  annotation (
+    Documentation(
+      info="<html>
+<p>
+Steam heating building with an integrated energy transfer station for 1st-generation
+(steam) district heating systems. It wraps
+<a href=\"modelica://Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS\">
+Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS</a> and reads the building heating
+load from the third column (space heating, in Watts) of the building's time-series load
+file. The nominal (peak) load is read from the <code>#Peak space heating load</code>
+metadata in the same file.
+</p>
+<p>
+The building exposes the steam service ports (<code>port_a</code> steam supply,
+<code>port_b</code> condensate return) so it can be connected to a
+<a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\">
+Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a> distribution network in the
+district model.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+July 13, 2026 by Nicholas Long:<br/>
+First implementation. GMT wrapper around the MBL steam building-at-ETS model that reads
+per-building loads from the building's time-series file.
+</li>
+</ul>
+</html>"));
+end building;
