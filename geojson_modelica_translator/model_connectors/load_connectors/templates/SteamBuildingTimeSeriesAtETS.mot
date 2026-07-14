@@ -14,8 +14,7 @@ model building
     final Q_flow_nominal=QHea_flow_nominal,
     final tableOnFile=true,
     final tableName="tab1",
-    final fileName=Modelica.Utilities.Files.loadResource(
-      filNam),
+    final fileName=Modelica.Utilities.Files.loadResource(filNam),
     final columns={3},
     final smoothness=Modelica.Blocks.Types.Smoothness.MonotoneContinuousDerivative1,
     final timeScale=1,
