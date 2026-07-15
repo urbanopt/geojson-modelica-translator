@@ -1,5 +1,39 @@
 # Change Log
 
+## Version 0.15.0
+
+<!-- Release notes generated using configuration in .github/release.yml at develop -->
+
+## What's Changed
+
+### Exciting New Features 🎉
+
+* Support 5G without plant by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/868>
+* Speed up 5G DES simulations: relax solver tolerance + tolerance passthrough by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/870>
+* Update GMT runner to OpenModelica 1.27 / Modelica 4.1 and make CI test the built image by @nllong with @Copilot in <https://github.com/urbanopt/geojson-modelica-translator/pull/872>
+* Update Modelica Buildings Library to v12.1.1 by @nllong with @Copilot in <https://github.com/urbanopt/geojson-modelica-translator/pull/871>
+* Add steam boilers and 1G system by @vtnate in <https://github.com/urbanopt/geojson-modelica-translator/pull/624>
+
+### Improvements & Bug Fixes 🐛
+
+* Harden 5G DES models: controls + borefield autosizing by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/869>
+
+### Bug Fixes 🐞
+
+* Fix modelica runner file ownership by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/861>
+
+### Maintenance 🧹
+
+* Bump the actions-deps group with 2 updates by @dependabot[bot] in <https://github.com/urbanopt/geojson-modelica-translator/pull/865>
+* Fix docker build for get-runner by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/875>
+* Migrate mot file formatting into latest modelica-fmt by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/876>
+
+### Other Changes
+
+* Update documentation instructions by @nllong in <https://github.com/urbanopt/geojson-modelica-translator/pull/855>
+
+**Full Changelog**: <https://github.com/urbanopt/geojson-modelica-translator/compare/v0.14.0...v0.15.0>
+
 ## Version 0.14.0
 
 ## What's Changed
