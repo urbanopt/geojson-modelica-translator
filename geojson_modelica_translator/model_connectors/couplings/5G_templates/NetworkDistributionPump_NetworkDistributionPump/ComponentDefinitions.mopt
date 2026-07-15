@@ -1,3 +1,0 @@
-  parameter Boolean allowFlowReversalSer = true
-    "Set to true to allow flow reversal in the service lines"
-    annotation(Dialog(tab="Assumptions"), Evaluate=true);

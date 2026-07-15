@@ -1,3 +1,0 @@
-# License
-
-{!LICENSE.md!}

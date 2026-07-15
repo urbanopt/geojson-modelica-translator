@@ -1,0 +1,1118 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../getting_started/">
+      
+      
+        <link rel="next" href="../sizing_district_systems/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Input File Documentation - Geojson to Modelica Translator</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#input-file-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Geojson to Modelica Translator" class="md-header__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Geojson to Modelica Translator
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Input File Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Geojson to Modelica Translator" class="md-nav__button md-logo" aria-label="Geojson to Modelica Translator" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Geojson to Modelica Translator
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/urbanopt/geojson-modelica-translator" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input File Documentation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input File Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#first-generation-steam-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-Generation Steam Scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="First-Generation Steam Scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generated-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurable-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configurable parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5gdhc-without-a-ground-heat-exchanger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5GDHC without a ground heat exchanger
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geojson-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GeoJSON Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GeoJSON Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#building-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-parameters-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Parameters Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sizing_district_systems/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sizing District Systems
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer_resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Schema
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/system_parameter_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    system_parameter_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/district_system_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    district_system_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/thermal_junction_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thermal_junction_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/region_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    region_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/building_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    building_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/electrical_junction_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    electrical_junction_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/site_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    site_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/thermal_connector_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thermal_connector_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schema/electrical_connector_properties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    electrical_connector_properties
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#first-generation-steam-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-Generation Steam Scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="First-Generation Steam Scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generated-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generated architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurable-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configurable parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5gdhc-without-a-ground-heat-exchanger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5GDHC without a ground heat exchanger
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geojson-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GeoJSON Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GeoJSON Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#building-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-parameters-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Parameters Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="input-file-documentation">Input File Documentation</h1>
+<p>There are two key input files that need to be defined to use the GeoJSON to Modelica Translator: a GeoJSON file and
+a System Parameters file.</p>
+<p>As an aside, 5GDHC systems also require a <code>loop_order</code> JSON file, which is automatically generated by the <a href="https://natlabrockies.github.io/ThermalNetwork/">ThermalNetwork</a> package and used without any human input.</p>
+<h2 id="first-generation-steam-scope">First-Generation Steam Scope</h2>
+<p>First-generation systems are represented as <code>district_system.first_generation</code> in the system parameters and are created from the CLI using <code>district_type=steam</code> in <code>uo_des build-sys-param</code>.</p>
+<p>Current scope for first-generation steam is district heating only. GMT does not currently generate district cooling equipment or a district cooling loop for this mode.</p>
+<h3 id="generated-architecture">Generated architecture</h3>
+<p>GMT generates a decomposed steam district that explicitly instantiates and connects the native Modelica Buildings Library (MBL) steam components:</p>
+<ul>
+<li>a single-boiler steam plant (<code>Plants.SteamBoiler</code>, wrapping <code>Buildings.DHC.Plants.Steam.SingleBoiler</code>),</li>
+<li>a steam distribution network with steam supply and condensate return (<code>Buildings.DHC.Networks.Steam.DistributionCondensatePipe</code>), and</li>
+<li>one building per geojson building (<code>Loads.&lt;building&gt;.building</code>, wrapping <code>Buildings.DHC.Loads.Steam.BuildingTimeSeriesAtETS</code>), each with an integrated energy transfer station (pressure reducing valve + heat exchanger).</li>
+</ul>
+<p>Each building reads its own heating load from the building's time-series (<code>.mos</code>) file (the space-heating column), so the number of buildings and the per-building loads come from the geojson/sys-param inputs rather than a single hard-coded profile.</p>
+<h3 id="configurable-parameters">Configurable parameters</h3>
+<p>All steam parameters live under <code>district_system.first_generation.central_steam_plant_parameters</code>. Every key has a default (shown in the schema), so existing sys-param files continue to work:</p>
+<ul>
+<li><code>boiler_efficiency</code> — boiler efficiency. Either a single number (constant fraction, e.g. <code>0.7</code>) or an array of numbers (coefficients for the boiler efficiency curve, e.g. <code>[0.9, 0.005, -0.0001]</code>).</li>
+<li><code>steam_pressure_setpoint</code> — saturation (high) pressure setpoint, <code>Pa</code>.</li>
+<li><code>reduced_pressure_setpoint</code> — reduced pressure downstream of the building pressure reducing valve, <code>Pa</code>.</li>
+<li><code>condensate_pressure_drop_nominal</code> — nominal condensate/distribution pressure drop, <code>Pa</code>.</li>
+<li><code>boiler_control_gain</code> / <code>boiler_control_time_constant</code> — boiler pressure PI controller tuning (<code>kBoi</code>, <code>TiBoi</code> in seconds).</li>
+<li><code>pump_control_gain</code> / <code>pump_control_time_constant</code> — feedwater pump PI controller tuning (<code>kPum</code>, <code>TiPum</code> in seconds).</li>
+<li><code>boiler_drum_volume</code> — boiler drum (water) volume, <code>m^3</code> (<code>VBoi</code>). Smaller values reduce the cold-start warm-up transient.</li>
+<li><code>boiler_capacity_scale</code> — boiler heat-capacity scaling factor (<code>boiSca</code>). Larger values oversize the firing rate and shorten warm-up.</li>
+<li><code>distribution_flow_safety_factor</code> — oversizing multiplier applied to the sum of building nominal flows when sizing the district nominal mass flow rate.</li>
+<li><code>minimum_load_fraction</code> — minimum (standby) building heating load as a fraction of the building peak load. Because the MBL steam pressure reducing valve and condensate pump are not numerically well posed at exactly zero steam flow, GMT maintains this minimum standby load so the district simulates through overnight/low-demand hours. Set it lower for a smaller standby load; a value of <code>0</code> is not recommended.</li>
+<li><code>number_of_boilers</code> — informational only. The current plant model is single-boiler, so this value does not change the generated model.</li>
+</ul>
+<h2 id="5gdhc-without-a-ground-heat-exchanger">5GDHC without a ground heat exchanger</h2>
+<p>GMT can generate a 5GDHC model when the system parameters do not include <code>district_system.fifth_generation.ghe_parameters</code>. In this topology, the generated district does not include a borefield or other ground heat exchanger plant. Instead, GMT creates an explicit no-plant boundary in the coupling graph and renders fixed-temperature heating and cooling components for the ambient loop. These components are the thermal infinite source/sink for the 5G distribution loop.</p>
+<p>The source/sink temperature is set by <code>district_system.fifth_generation.no_central_plant.distribution_temperature</code> in degrees Celsius (<code>degC</code>) in the system parameters JSON. GMT converts this value to Kelvin (<code>K</code>) in the generated Modelica model. This value must be provided for no-GHE 5GDHC systems. It is the ideal no-central-plant distribution loop temperature, not a hidden ground heat exchanger design. The soil properties, including <code>district_system.fifth_generation.soil.undisturbed_temp</code>, remain soil/pipe heat-loss inputs and are not used as the no-plant loop temperature.</p>
+<p>Because the no-plant source/sink is thermally ideal, GMT also adds a hydraulic pressure reference on the no-plant supply side. The generated <code>supNoPlant_*</code> <code>Boundary_pT</code> is connected to the distribution pump discharge (<code>pumDis.port_b</code>) at atmospheric pressure (<code>101325 Pa</code>) and the no-plant source/sink temperature (<code>K</code>). This boundary is only a pressure datum, analogous to an expansion or pressure-maintenance reference point. It does not add pump head (<code>Pa</code>), size the loop, or represent a physical plant. The pump, distribution network, ETS pressure drops (<code>Pa</code>), and load-derived nominal flow rates (<code>kg/s</code>) still determine hydraulic sizing and operation.</p>
+<p>GMT reports the thermal output of the ideal no-plant source/sink with <code>pIdePlaHea_*</code> and <code>pIdePlaCoo_*</code> variables in the generated district model. Both are powers in watts (<code>W</code>) and are reported as positive values. When flow through the ideal no-plant heater/cooler is in the components' design direction, GMT uses the Buildings component heat-flow outputs. In the no-plant pressure-reference topology, flow through those ideal components can be reversed; Buildings reports <code>Q_flow = 0 W</code> in that case. GMT therefore also computes <code>qIdePlaRev_*</code> (<code>W</code>) from the reverse-flow mass flow (<code>kg/s</code>) and enthalpy difference (<code>J/kg</code>) across the ideal no-plant path. Positive <code>qIdePlaRev_*</code> is reported as cooling in <code>pIdePlaCoo_*</code>; negative <code>qIdePlaRev_*</code> is reported as heating in <code>pIdePlaHea_*</code>. These variables are thermal source/sink power, not distribution pump power.</p>
+<p>GMT also reports <code>pIdePumDis_*</code>, an idealized distribution pump electrical power in watts (<code>W</code>) for no-plant 5G accounting. This value is computed from the actual commanded distribution-pump mass flow (<code>kg/s</code>), the fifth-generation central pump design head (<code>Pa</code>), the loop-fluid density at the no-plant reference temperature (<code>kg/m3</code>), and an ideal pump efficiency parameter <code>etaIdePumDis_*</code> (dimensionless, <code>0 &lt; eta &lt;= 1</code>) that defaults to <code>0.7</code>. This reported value is separate from <code>pumDis.P</code> (<code>W</code>). In the ideal no-plant hydraulic topology, the pressure references can cause the Buildings mover to see a negative machine pressure rise (<code>Pa</code>) and report zero electrical power (<code>W</code>) even while flow is circulating. <code>pIdePumDis_*</code> is therefore an accounting variable for the intended pump work, not an additional hydraulic boundary condition.</p>
+<p>GMT does not currently calculate <code>district_system.fifth_generation.central_pump_parameters.pump_design_head</code> from the loop geometry. The <code>pump_design_head</code> value in the system parameters JSON is used directly as the distribution pump nominal head (<code>pumDis.dp_nominal</code>) and as the pressure rise (<code>Pa</code>) in <code>pIdePumDis_*</code>. The <code>pump_design_head_autosized</code> flag is therefore not a substitute for providing or reviewing this value. Use Pascals (<code>Pa</code>) and estimate the design head from the design path pressure losses, for example:</p>
+<pre><code class="language-text">pump_design_head [Pa] ~= pressure_drop_per_meter [Pa/m] * design_flow_path_length [m]
+      + connection/ETS/source-side allowances [Pa]
+      + design safety margin [Pa]
+</code></pre>
+<p>The design flow path length should represent the active distribution path at design flow, including the main one-pipe distribution segments and end segment used by the generated network (<code>lDis</code> and <code>lEnd</code>, in meters). The <code>pressure_drop_per_meter</code> input is under <code>district_system.fifth_generation.horizontal_piping_parameters</code> and is in <code>Pa/m</code>. If detailed connection or equipment pressure drops are known, include them as additional <code>Pa</code> terms. If they are not known, use a conservative engineering allowance and document the assumption. For no-plant 5G examples generated from the default template, <code>pump_design_head</code> is often initialized to <code>200000 Pa</code>, but project-specific geometry and flow can justify a different value.</p>
+<p>For time-series loads with an internal ETS, GMT initializes the ETS service-water mixing volumes at the no-plant source/sink temperature (<code>K</code>). This keeps the ETS service side consistent with the ambient-loop thermal reference at the start of the simulation without adding artificial load (<code>W</code>), fixed flow (<code>kg/s</code>), or an implied ground heat exchanger.</p>
+<p>For no-GHE 5GDHC systems, GMT uses a sensible-only dry cooling coil for time-series building loads by default. Other time-series systems keep the previous wet-coil cooling model by default. To opt into the dry cooling coil explicitly, set the Boolean flag <code>load_model_parameters.time_series.use_dry_cooling_coil</code> to <code>true</code> for a building in the system parameters JSON. To opt into the wet cooling coil for a no-GHE 5GDHC building, set the Boolean flag <code>load_model_parameters.time_series.use_wet_cooling_coil</code> to <code>true</code> and leave <code>use_dry_cooling_coil</code> false.</p>
+<p>When using a hand-authored loop-order file for no-GHE 5GDHC tests or examples, GMT can read a sidecar file named after the system parameters file, such as <code>time_series_5g_no_plant_sys_params.json</code> with <code>time_series_5g_no_plant_loop_order.json</code>. This avoids conflicts with the legacy <code>_loop_order.json</code> file in the same data directory.</p>
+<h2 id="geojson-documentation">GeoJSON Documentation</h2>
+<p>Presently only the building_properties.json of URBANopt's GeoJSON schemas is leveraged in the GMT.</p>
+<h3 id="building-properties">Building Properties</h3>
+<p>The building properties for the geojson file can be found in the <code>Schema</code> section of this documentation</p>
+<h2 id="system-parameters-schema">System Parameters Schema</h2>
+<p>The system parameter properties can be found in the <code>Schema</code> section of this documentation</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
