@@ -71,5 +71,10 @@ During development we can [serve docs locally](https://squidfunk.github.io/mkdoc
    1. `poetry run mkdocs serve`
    1. Point browser to [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-- To deploy, push a commit in the `docs` folder to the `main` branch
-- Wait a few minutes, then verify the new documentation on the [docs website](https://docs.urbanopt.net/geojson-modelica-translator/)
+Documentation builds and deployments are automated with the [Documentation GitHub Actions workflow](.github/workflows/documentation.yml):
+
+- On every push, the workflow builds the docs with `mkdocs build --strict`, so broken links or invalid references fail the build before merging.
+- On pushes to the `main` branch, the workflow additionally deploys the freshly built site to the `gh-pages` branch, which publishes it to the [docs website](https://docs.urbanopt.net/geojson-modelica-translator/).
+- After merging to `main`, wait a few minutes, then verify the new documentation on the [docs website](https://docs.urbanopt.net/geojson-modelica-translator/).
+
+If you ever need to build or deploy the documentation by hand, see the [Manual Documentation Build and Deployment](docs/developer_resources.md) instructions in the developer resources.
