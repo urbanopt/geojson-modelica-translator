@@ -201,28 +201,19 @@ model building
           extent={{-72,-88},{50,55}},
           fileName="modelica://Buildings/Resources/Images/ThermalZones/EnergyPlus/EnergyPlusLogo.png")}),
     Documentation(
-      info="<html>
-<p>
- This is a simplified building model based on EnergyPlus
- building envelope model.
- It was generated from translating a GeoJSON model specified within URBANopt UI.
- The heating and cooling loads are computed with a four-pipe
- fan coil unit model derived from
- <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit\">
- Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
- and connected to the room model by means of fluid ports.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-March 12, 2020: Hagar Elarga<br/>
-Updated implementation to handle template needed for GeoJSON to Modelica.
-</li>
-<li>
-February 21, 2020, by Antoine Gautier:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This is a simplified building model based on EnergyPlus building envelope model. It was generated from translating a GeoJSON model specified within URBANopt UI. The heating and cooling loads are computed with a four-pipe fan coil unit model derived from <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit\"> Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit</a> and connected to the room model by means of fluid ports.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 12, 2020: Hagar Elarga<br/> Updated implementation to handle template needed for GeoJSON to Modelica.
+            </li>
+            <li>
+              February 21, 2020, by Antoine Gautier:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 {% endraw %}end building;

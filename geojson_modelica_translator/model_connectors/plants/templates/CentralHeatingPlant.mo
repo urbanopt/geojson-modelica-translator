@@ -287,17 +287,16 @@ equation
           lineColor={0,0,255},
           textString="%name")}),
     Documentation(
-      info="<html>
-   <p>
-   This model presents a heating water central plant for the district systems application.
-   </p>
-   </html>",
-      revisions="<html>
-   <ul>
-   <li>
-   June 30, 2020, by Hagar Elarga:<br/>
-   First implementation.
-   </li>
-   </ul>
-   </html>"));
+      info="
+        <html>
+          <p>This model presents a heating water central plant for the district systems application.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              June 30, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end CentralHeatingPlant;

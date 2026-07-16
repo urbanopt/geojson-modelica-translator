@@ -86,24 +86,17 @@ Obtained CvData = "+String(CvData)+".");
   end if;
   annotation (
     Documentation(
-      info="<html>
-<p>
-Model that computes the flow coefficients of vectored valves. The number of vectored valves is
-defined by the parameter <code>numVal</code>.
-</p>
-<p>
-Note that the <code>numVal</code> valves have the same modelling option that can specify the valve
-flow coefficient in fully open conditions. Details can be found in
-<a href=\"modelica://Buildings.Fluid.Actuators.BaseClasses.ValveParameters\">
-Buildings.Fluid.Actuators.BaseClasses.ValveParameters</a>.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-June 30, 2017, by Yangyang Fu:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>Model that computes the flow coefficients of vectored valves. The number of vectored valves is defined by the parameter <code>numVal</code>.</p>
+          <p>Note that the <code>numVal</code> valves have the same modelling option that can specify the valve flow coefficient in fully open conditions. Details can be found in <a href=\"modelica://Buildings.Fluid.Actuators.BaseClasses.ValveParameters\"> Buildings.Fluid.Actuators.BaseClasses.ValveParameters</a>.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              June 30, 2017, by Yangyang Fu:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end ValveParameters;

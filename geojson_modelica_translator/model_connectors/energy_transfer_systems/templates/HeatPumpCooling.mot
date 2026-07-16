@@ -122,63 +122,39 @@ equation
         preserveAspectRatio=false,
         extent={{-200,-140},{200,140}})),
     Documentation(
-      info="<html>
-<p>
-This model represents a water-to-water heat pump, an evaporator water pump,
-and a condenser water pump.
-The heat pump model is described in
-<a href=\"modelica://Buildings.Fluid.HeatPumps.Carnot_TCon\">
-Buildings.Fluid.HeatPumps.Carnot_TCon</a>.
-By default, a variable speed condenser pump is considered, but a constant speed
-pump may also be represented by setting <code>have_varFloCon</code> to <code>false</code>.
-The evaporator hydronics and control are described in
-<a href=\"modelica://Buildings.DHC.ETS.Combined.Subsystems.BaseClasses.PartialHeatPump\">
-Buildings.DHC.ETS.Combined.Subsystems.BaseClasses.PartialHeatPump</a>.
-</p>
-<h4>Condenser Controls</h4>
-<p>
-The system is enabled when the input control signal <code>uEna</code> switches to
-<code>true</code>.
-When enabled, on the condenser side,
-</p>
-<ul>
-<li>
-the condenser water pumps are commanded on and supply either
-the condenser mass flow rate set point provided as an input in the case of the variable speed condenser pump,
-or the nominal mass flow rate in the case of the constant speed condenser pump,
-</li>
-<li>
-the heat pump controller—idealized in this model—tracks the
-supply temperature set point at the condenser outlet.
-</li>
-</ul>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-April 11, 2025, by Nathan Moore:<br/>
-Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.
-</li>
-<li>
-November 15, 2023, by David Blum:<br/>
-Changed to extend partial base class with added condenser hydronics and control.
-</li>
-<li>
-May 3, 2023, by David Blum:<br/>
-Assigned <code>dp_nominal</code> to condenser pump.<br/>
-This is for
-<a href=\"https://github.com/lbl-srg/modelica-buildings/issues/3379\">
-issue 3379</a>.
-</li>
-<li>
-November 16, 2022, by Michael Wetter:<br/>
-Set <code>pumEva.dp_nominal</code> to correct value.
-</li>
-<li>
-February 23, 2021, by Antoine Gautier:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This model represents a water-to-water heat pump, an evaporator water pump, and a condenser water pump. The heat pump model is described in <a href=\"modelica://Buildings.Fluid.HeatPumps.Carnot_TCon\"> Buildings.Fluid.HeatPumps.Carnot_TCon</a>. By default, a variable speed condenser pump is considered, but a constant speed pump may also be represented by setting <code>have_varFloCon</code> to <code>false</code>. The evaporator hydronics and control are described in <a href=\"modelica://Buildings.DHC.ETS.Combined.Subsystems.BaseClasses.PartialHeatPump\"> Buildings.DHC.ETS.Combined.Subsystems.BaseClasses.PartialHeatPump</a>.</p>
+          <h4>Condenser Controls</h4>
+          <p>The system is enabled when the input control signal <code>uEna</code> switches to <code>true</code>. When enabled, on the condenser side,</p>
+          <ul>
+            <li>
+              the condenser water pumps are commanded on and supply either the condenser mass flow rate set point provided as an input in the case of the variable speed condenser pump, or the nominal mass flow rate in the case of the constant speed condenser pump,
+            </li>
+            <li>
+              the heat pump controller—idealized in this model—tracks the supply temperature set point at the condenser outlet.
+            </li>
+          </ul>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              April 11, 2025, by Nathan Moore:<br/> Model updated to include a chiller by Shadi Abdel-Haleem, and templatized for the GMT by Nathan Moore.
+            </li>
+            <li>
+              November 15, 2023, by David Blum:<br/> Changed to extend partial base class with added condenser hydronics and control.
+            </li>
+            <li>
+              May 3, 2023, by David Blum:<br/> Assigned <code>dp_nominal</code> to condenser pump.<br/> This is for <a href=\"https://github.com/lbl-srg/modelica-buildings/issues/3379\"> issue 3379</a>.
+            </li>
+            <li>
+              November 16, 2022, by Michael Wetter:<br/> Set <code>pumEva.dp_nominal</code> to correct value.
+            </li>
+            <li>
+              February 23, 2021, by Antoine Gautier:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end HeatPumpCooling;
 {% endraw %}

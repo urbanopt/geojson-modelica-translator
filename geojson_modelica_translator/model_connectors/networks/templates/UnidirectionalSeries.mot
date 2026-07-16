@@ -67,31 +67,19 @@ equation
     annotation (Line(points={{50,10},{32,10},{32,-86},{0,-86},{0,-100}},color={191,0,0}));
   annotation (
     Documentation(
-      info="<html>
-<p>
-This model represents a one-pipe distribution network with built-in computation
-of the pipe diameter based on the pressure drop per pipe length
-at nominal flow rate.
-</p>
-<h4>Modeling considerations</h4>
-<p>
-Note that <code>dhDis</code> needs to be vectorized, even if the same value
-is computed for each array element in case of a one-pipe network.
-This is because the pipe diameter is computed at initialization by the model
-<a href=\"modelica://Buildings.DHC.Networks.Combined.BaseClasses.ConnectionSeriesAutosize\">
-Buildings.DHC.Networks.Combined.BaseClasses.ConnectionSeriesAutosize</a>
-which is instantiated for each connection.
-So the initialization system of equations would be overdetermined if using
-a parameter binding with a scalar variable.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-February 23, 2021, by Antoine Gautier:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This model represents a one-pipe distribution network with built-in computation of the pipe diameter based on the pressure drop per pipe length at nominal flow rate.</p>
+          <h4>Modeling considerations</h4>
+          <p>Note that <code>dhDis</code> needs to be vectorized, even if the same value is computed for each array element in case of a one-pipe network. This is because the pipe diameter is computed at initialization by the model <a href=\"modelica://Buildings.DHC.Networks.Combined.BaseClasses.ConnectionSeriesAutosize\"> Buildings.DHC.Networks.Combined.BaseClasses.ConnectionSeriesAutosize</a> which is instantiated for each connection. So the initialization system of equations would be overdetermined if using a parameter binding with a scalar variable.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              February 23, 2021, by Antoine Gautier:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end UnidirectionalSeries;
 {% endraw %}

@@ -275,64 +275,41 @@ equation
           color={0,0,0},
           thickness=0.5)}),
     Documentation(
-      info="<html>
-<p>
-This model simulates the heat transfer between multiple buried pipes and the
-ground, using climate and soil information and the geometry of the pipes
-network.
-</p>
-<p>
-The model can take any number of pipes, and can be discretized axially
-in any number of segments. Currently, the model only allows for pipes
-that run co-axially and parallel to the ground, and the axial segmentation
-must be the same for each pipe.
-</p>
-<p>
-The heat transfer solution is based upon the potential flow theory and
-obtained by the use of \"mirror-image\" technique suggested by Eckert (1959).
-This technique is extended to a network with multiple pipes by Kusuda (1981)
-in the equation:
-</p>
-<p>
-<img alt=\"image\" src=\"modelica://Buildings/Resources/Images/Fluid/Geothermal/BuriedPipes/GroundCoupling.svg\" />
-</p>
-<p>
-where: <br>
-<i>L</i> = pipe length [m] <br>
-<i>k<sub>s</sub></i> = soil thermal conductivity [W/(m.K)] <br>
-<i>P<sub>ij</sub></i> = geometric factor (see
-<a href=\"modelica://Buildings.Fluid.Geothermal.BuriedPipes.BaseClasses.groundCouplingFactors\">
-Buildings.Fluid.Geothermal.BuriedPipes.BaseClasses.groundCouplingFactors</a>
-for more information) <br>
-<i>Q<sub>i</sub></i> = net heat transfer from pipe <i>i</i> [W]<br>
-<i>T<sub>i</sub></i> = temperature at the exterior surface of pipe <i>i</i> [degC]<br>
-<i>T<sub>g</sub></i> = undisturbed ground temperature at the depth of the
-network. [degC]
-</p>
-<p>
-This model relies on the following assumptions.
-</p>
-<ul>
-<li>Heat transfer is in steady state.</li>
-<li>The heat transfer is radial (no axial diffusion).</li>
-<li>The exterior surfaces for each pipe segment are isothermic planes.</li>
-<li>The ground surface is an isothermic plane.</li>
-<li>The soil conductivity is homogeneous and isotropic.</li>
-</ul>
-<h4>References</h4>
-<p>
-Eckert, E. R. G. (1959). <i>Heat and Mass Transfer</i>. McGraw-Hill Book Company.<br/>
-Kusuda, T. (1981). <i>Heat transfer analysis of underground heat
-and chilled-water distribution systems</i>. National Bureau of Standards.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-March 17, 2021, by Baptiste Ravache:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This model simulates the heat transfer between multiple buried pipes and the ground, using climate and soil information and the geometry of the pipes network.</p>
+          <p>The model can take any number of pipes, and can be discretized axially in any number of segments. Currently, the model only allows for pipes that run co-axially and parallel to the ground, and the axial segmentation must be the same for each pipe.</p>
+          <p>The heat transfer solution is based upon the potential flow theory and obtained by the use of \"mirror-image\" technique suggested by Eckert (1959). This technique is extended to a network with multiple pipes by Kusuda (1981) in the equation:</p>
+          <p><img alt=\"image\" src=\"modelica://Buildings/Resources/Images/Fluid/Geothermal/BuriedPipes/GroundCoupling.svg\" /></p>
+          <p>where: <br> <i>L</i> = pipe length [m] <br> <i>k<sub>s</sub></i> = soil thermal conductivity [W/(m.K)] <br> <i>P<sub>ij</sub></i> = geometric factor (see <a href=\"modelica://Buildings.Fluid.Geothermal.BuriedPipes.BaseClasses.groundCouplingFactors\"> Buildings.Fluid.Geothermal.BuriedPipes.BaseClasses.groundCouplingFactors</a> for more information) <br> <i>Q<sub>i</sub></i> = net heat transfer from pipe <i>i</i> [W]<br> <i>T<sub>i</sub></i> = temperature at the exterior surface of pipe <i>i</i> [degC]<br> <i>T<sub>g</sub></i> = undisturbed ground temperature at the depth of the network. [degC]</p>
+          <p>This model relies on the following assumptions.</p>
+          <ul>
+            <li>
+              Heat transfer is in steady state.
+            </li>
+            <li>
+              The heat transfer is radial (no axial diffusion).
+            </li>
+            <li>
+              The exterior surfaces for each pipe segment are isothermic planes.
+            </li>
+            <li>
+              The ground surface is an isothermic plane.
+            </li>
+            <li>
+              The soil conductivity is homogeneous and isotropic.
+            </li>
+          </ul>
+          <h4>References</h4>
+          <p>Eckert, E. R. G. (1959). <i>Heat and Mass Transfer</i>. McGraw-Hill Book Company.<br/> Kusuda, T. (1981). <i>Heat transfer analysis of underground heat and chilled-water distribution systems</i>. National Bureau of Standards.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 17, 2021, by Baptiste Ravache:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end GroundCoupling;
 {% endraw %}

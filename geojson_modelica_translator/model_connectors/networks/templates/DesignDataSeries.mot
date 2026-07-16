@@ -44,9 +44,8 @@ record DesignDataSeries
     defaultComponentName="datDes",
     defaultComponentPrefixes="inner",
     Documentation(
-      info="<html>
-<p>
-This record contains parameter declarations used in example models of DHC systems.
-</p>
-</html>"));
+      info="
+        <html>
+          <p>This record contains parameter declarations used in example models of DHC systems.</p>
+        </html>"));
 end DesignDataSeries;

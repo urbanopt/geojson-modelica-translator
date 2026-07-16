@@ -148,17 +148,16 @@ equation
       coordinateSystem(
         preserveAspectRatio=false)),
     Documentation(
-      info="<html>
-<p>
-the model represents variable speed parallel pumps controller.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-May 3, 2020, by Hagar Elarga:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>the model represents variable speed parallel pumps controller.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              May 3, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end HeatingWaterPumpSpeed;

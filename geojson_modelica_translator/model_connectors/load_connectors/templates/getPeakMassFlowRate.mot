@@ -58,14 +58,11 @@ algorithm
     message="Failed to read double value when reading water mass flow rate in '"+filNam+"'.");
   annotation (
     Documentation(
-      info="<html>
-<p>
-This Function that reads a double value from a text file.
-</p>
-<p>
-This function scans a file that has a format such as
-</p>
-<pre>
+      info="
+        <html>
+          <p>This Function that reads a double value from a text file.</p>
+          <p>This function scans a file that has a format such as</p>
+          <pre>
 #1
 #Some other text
 #Nominal chilled water mass flow rate = 17.41  kg/s
@@ -75,29 +72,15 @@ double tab1(35041,7)
 900,42.63,55.0,15.74,6.67,9.98,0.15
 ...
 </pre>
-<p>
-The parameter <code>string</code> is a string that the function
-searches for, starting at the first line.
-If it finds the string, it expects an equality sign, and
-returns the double value after this equality sign.
-If the function encounters the end of the file, it
-terminates the simulation with an assertion.
-</p>
-<p>
-See
-<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate\">
-Buildings.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate</a>
-for how to invoke this function.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-August 20, 2020, by Hagar Elarga:<br/>
-First implementation based on the implementation of
-<a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakLoad\">
-Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakLoad</a> function.
-</li>
-</ul>
-</html>"));
+          <p>The parameter <code>string</code> is a string that the function searches for, starting at the first line. If it finds the string, it expects an equality sign, and returns the double value after this equality sign. If the function encounters the end of the file, it terminates the simulation with an assertion.</p>
+          <p>See <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate\"> Buildings.DHC.Loads.BaseClasses.Validation.GetPeakMassFlowRate</a> for how to invoke this function.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              August 20, 2020, by Hagar Elarga:<br/> First implementation based on the implementation of <a href=\"modelica://Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakLoad\"> Buildings.Experimental.DHC.Loads.BaseClasses.Validation.GetPeakLoad</a> function.
+            </li>
+          </ul>
+        </html>"));
 end getPeakMassFlowRate;

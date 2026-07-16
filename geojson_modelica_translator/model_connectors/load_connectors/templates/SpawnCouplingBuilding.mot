@@ -80,44 +80,28 @@ model coupling
       StopTime=604800,
       Tolerance=1e-06),
     Documentation(
-      info="<html>
-<p>
-This example illustrates the use of
-<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialBuilding\">
-Buildings.DHC.Loads.BaseClasses.PartialBuilding</a>,
-<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit\">
-Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit</a>
-and
-<a href=\"modelica://Buildings.DHC.Loads.BaseClasses.FlowDistribution\">
-Buildings.DHC.Loads.BaseClasses.FlowDistribution</a>
-in a configuration with:
-</p>
-<ul>
-<li>
-six-zone building model based on EnergyPlus envelope model (from
-GeoJSON export),
-</li>
-<li>
-secondary pumps.
-</li>
-</ul>
-<p>
-Simulation with Dymola requires minimum version 2020x and setting
-<code>Hidden.AvoidDoubleComputation=true</code>, see
-<a href=\"modelica://Buildings.ThermalZones.EnergyPlus_9_6_0.UsersGuide\">
-Buildings.ThermalZones.EnergyPlus_9_6_0.UsersGuide</a>.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-March 21, 2020, by Hagar Elarga:<br/>
-GeoJson-Modelica translator template first implementation, infinite source to building (no ETS).
-</li>
-<li>
-February 21, 2020, by Antoine Gautier:<br/>
-Model first implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This example illustrates the use of <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialBuilding\"> Buildings.DHC.Loads.BaseClasses.PartialBuilding</a>, <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit\"> Buildings.DHC.Loads.BaseClasses.PartialTerminalUnit</a> and <a href=\"modelica://Buildings.DHC.Loads.BaseClasses.FlowDistribution\"> Buildings.DHC.Loads.BaseClasses.FlowDistribution</a> in a configuration with:</p>
+          <ul>
+            <li>
+              six-zone building model based on EnergyPlus envelope model (from GeoJSON export),
+            </li>
+            <li>
+              secondary pumps.
+            </li>
+          </ul>
+          <p>Simulation with Dymola requires minimum version 2020x and setting <code>Hidden.AvoidDoubleComputation=true</code>, see <a href=\"modelica://Buildings.ThermalZones.EnergyPlus_9_6_0.UsersGuide\"> Buildings.ThermalZones.EnergyPlus_9_6_0.UsersGuide</a>.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              March 21, 2020, by Hagar Elarga:<br/> GeoJson-Modelica translator template first implementation, infinite source to building (no ETS).
+            </li>
+            <li>
+              February 21, 2020, by Antoine Gautier:<br/> Model first implementation.
+            </li>
+          </ul>
+        </html>"));
 {% endraw %}end coupling;

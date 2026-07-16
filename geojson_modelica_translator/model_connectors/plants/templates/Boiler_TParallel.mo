@@ -85,20 +85,18 @@ equation
     annotation (Line(points={{-110,-60},{-92,-60},{-92,-30},{-74,-30}},color={0,0,127}));
   annotation (
     Documentation(
-      info="<html>
-  <p>
-  This model implements a heating water parallel boilers. For the boiler model please see
-  <a href=\"modelica://Buildings.Fluid.Boilers.BoilerPolynomial\">Buildings.Fluid.Boilers.BoilerPolynomial</a>.
-  </p>
-  </html>",
-      revisions="<html>
-  <ul>
-  <li>
-  June 30, 2020, by Hagar Elarga:<br/>
-  First implementation.
-  </li>
-  </ul>
-  </html>"),
+      info="
+        <html>
+          <p>This model implements a heating water parallel boilers. For the boiler model please see <a href=\"modelica://Buildings.Fluid.Boilers.BoilerPolynomial\">Buildings.Fluid.Boilers.BoilerPolynomial</a>.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              June 30, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"),
     Icon(
       graphics={
         Line(

@@ -18,18 +18,16 @@ model {{ data['model_name'] }}
       StopTime=86400,
       Tolerance=1e-06),
     Documentation(
-      info="<html>
-      <p>This model validates the inductive load template model implemented in
-<a href=\"  Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads.mo\">
-Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads.mot</a>.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-April 20, 2023 by Zhanwei He:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This model validates the inductive load template model implemented in <a href=\"  Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads.mo\"> Buildings.Electrical.AC.ThreePhasesBalanced.Loads.Examples.ParallelLoads.mot</a>.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              April 20, 2023 by Zhanwei He:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end {{ data['model_name']}};

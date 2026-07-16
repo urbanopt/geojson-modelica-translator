@@ -57,18 +57,16 @@ initial equation
     level=AssertionLevel.warning);
   annotation (
     Documentation(
-      info="<html>
-<p>
-A partial model of parallel connected heating water boilers. Each boiler is isolated
-with an on/off two way valve.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-August 20, 2020, by Hagar Elarga:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>A partial model of parallel connected heating water boilers. Each boiler is isolated with an on/off two way valve.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              August 20, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end PartialPlantParallel_v10;

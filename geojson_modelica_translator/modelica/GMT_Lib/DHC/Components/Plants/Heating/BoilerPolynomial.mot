@@ -29,26 +29,22 @@ identify the relationship of m and Q from GMT top level user inputs)";
       Tolerance=1e-6,
       StopTime=3600),
     Documentation(
-      info="<html>
-    <p>This model validates the hot water boiler template model implemented in
-<a href=\"Buildings.Fluid.Boilers.Examples.BoilerPolynomial\">
-Buildings.Fluid.Boilers.Examples.BoilerPolynomial.mot</a>.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-September 25, 2023 by Nathan Moore:<br/>
-Templated for the GMT
-</li>
-<li>
-September 22, 2023 by Zhanwei He:<br/>
-Parameters name revision
-</li>
-<li>
-September 10, 2023 by Saranya Anbarasu:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>This model validates the hot water boiler template model implemented in <a href=\"Buildings.Fluid.Boilers.Examples.BoilerPolynomial\"> Buildings.Fluid.Boilers.Examples.BoilerPolynomial.mot</a>.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              September 25, 2023 by Nathan Moore:<br/> Templated for the GMT
+            </li>
+            <li>
+              September 22, 2023 by Zhanwei He:<br/> Parameters name revision
+            </li>
+            <li>
+              September 10, 2023 by Saranya Anbarasu:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end BoilerPolynomial;

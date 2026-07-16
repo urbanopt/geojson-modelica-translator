@@ -64,18 +64,16 @@ equation
     annotation (Line(points={{-20,74},{46,74},{46,12}},color={0,0,127}));
   annotation (
     Documentation(
-      info="<html>
-<p>
-A partial model of parallel connected heating water boilers. Each boiler is isolated
-with an on/off two way valve.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-August 20, 2020, by Hagar Elarga:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>A partial model of parallel connected heating water boilers. Each boiler is isolated with an on/off two way valve.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              August 20, 2020, by Hagar Elarga:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end PartialPlantParallel;
