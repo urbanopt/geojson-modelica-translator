@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Poetry
@@ -166,7 +166,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Set up Python 3.13
         if: runner.os == 'Linux'
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Display system info
@@ -269,7 +269,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Poetry
@@ -290,7 +290,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Set up Python 3.13
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Install Poetry
