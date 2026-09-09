@@ -766,14 +766,14 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitpython"
-version = "3.1.51"
+version = "3.1.59"
 description = "GitPython is a Python library used to interact with Git repositories"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "gitpython-3.1.51-py3-none-any.whl", hash = "sha256:d5b29685708f3c80a56db040b665bfd69492c8e150b5848532af8013b686c5a4"},
-    {file = "gitpython-3.1.51.tar.gz", hash = "sha256:22c9c94bb6b0b9f3c7157c684fece45a414cea204586b600beae6cd4570dcd6d"},
+    {file = "gitpython-3.1.59-py3-none-any.whl", hash = "sha256:67a82f537384578643624c8b2c531938a9b82be431663e575dcf638526631d4c"},
+    {file = "gitpython-3.1.59.tar.gz", hash = "sha256:0a1475cfdc38a5bfba1a3e9a4a9da52a39749ecec322b772915c019f94e5b7e4"},
 ]
 
 [package.dependencies]
@@ -781,7 +781,7 @@ gitdb = ">=4.0.1,<5"
 
 [package.extras]
 doc = ["sphinx (>=7.4.7,<8)", "sphinx-autodoc-typehints", "sphinx_rtd_theme"]
-test = ["coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock ; python_version < \"3.8\"", "mypy (==1.18.2) ; python_version >= \"3.9\"", "pre-commit", "pytest (>=7.3.1)", "pytest-cov", "pytest-instafail", "pytest-mock", "pytest-sugar", "typing-extensions ; python_version < \"3.11\""]
+test = ["basedpyright (==1.39.9) ; python_version >= \"3.9\" and sys_platform != \"cygwin\"", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mock ; python_version < \"3.8\"", "mypy (==1.18.2) ; python_version >= \"3.9\"", "pre-commit", "pytest (>=7.3.1)", "pytest-cov", "pytest-instafail", "pytest-mock", "pytest-sugar", "typing-extensions ; python_version < \"3.11\""]
 
 [[package]]
 name = "griffelib"
