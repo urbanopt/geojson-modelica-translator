@@ -1,0 +1,192 @@
+within {{ project_name }}.Networks;
+model SteamLossAndMakeup
+  "Steam distribution losses, condensate discharge and make-up water for a 1st-generation steam district"
+  replaceable package MediumSte = Buildings.Media.Steam
+    constrainedby Modelica.Media.Interfaces.PartialMedium
+    "Steam medium (supply side)";
+  replaceable package MediumWat = Buildings.Media.Specialized.Water.TemperatureDependentDensity
+    constrainedby Modelica.Media.Interfaces.PartialMedium
+    "Water medium (condensate return side)";
+  parameter Modelica.Units.SI.AbsolutePressure pSte
+    "Steam supply (saturation) pressure";
+  parameter Modelica.Units.SI.MassFlowRate mLea_flow_nominal(min=0)=0
+    "Steam leak mass flow rate (leaks, failed-open traps, vents), constant while pressurized";
+  parameter Modelica.Units.SI.HeatFlowRate QLos_flow_nominal(min=0)=0
+    "Heat loss of the steam supply mains, constant while pressurized";
+  parameter Real fRet(min=0, max=1, unit="1")=1
+    "Fraction of the condensate that is returned to the plant (0: no condensate return)";
+  parameter Modelica.Units.SI.Temperature TMak=285.15
+    "Make-up water temperature";
+  parameter Modelica.Units.SI.Temperature TDri=373.15
+    "Temperature of the drip condensate formed by the supply main heat loss";
+  parameter Modelica.Units.SI.Time tLosSta=3600
+    "Time at which the losses start to ramp in";
+  parameter Modelica.Units.SI.Time tLosRam(min=1)=3600
+    "Duration of the ramp of the losses";
+  parameter Modelica.Units.SI.Density rhoWat=1000
+    "Water density used to report volumes";
+  final parameter Modelica.Units.SI.SpecificEnthalpy hSte=MediumSte.specificEnthalpy(
+    MediumSte.setState_pTX(
+      p=pSte,
+      T=MediumSte.saturationTemperature(pSte),
+      X=MediumSte.X_default))
+    "Specific enthalpy of the saturated supply steam";
+  final parameter Modelica.Units.SI.SpecificEnthalpy hDri=MediumWat.specificEnthalpy(
+    MediumWat.setState_pTX(
+      p=MediumWat.p_default,
+      T=TDri,
+      X=MediumWat.X_default))
+    "Specific enthalpy of the drip condensate";
+  final parameter Modelica.Units.SI.MassFlowRate mDri_flow_nominal=QLos_flow_nominal/(hSte - hDri)
+    "Drip condensate mass flow rate that removes QLos_flow_nominal from the steam";
+  Modelica.Fluid.Interfaces.FluidPort_a port_aSte(
+    redeclare final package Medium=MediumSte)
+    "Steam inlet (from the plant)";
+  Modelica.Fluid.Interfaces.FluidPort_b port_bSte(
+    redeclare final package Medium=MediumSte)
+    "Steam outlet (to the distribution network)";
+  Modelica.Fluid.Interfaces.FluidPort_a port_aWat(
+    redeclare final package Medium=MediumWat)
+    "Condensate inlet (from the distribution network)";
+  Modelica.Fluid.Interfaces.FluidPort_b port_bWat(
+    redeclare final package Medium=MediumWat)
+    "Condensate and make-up water outlet (to the plant)";
+  Modelica.Units.SI.HeatFlowRate QLos_flow
+    "Heat loss of the steam supply mains";
+  Modelica.Units.SI.MassFlowRate mLea_flow
+    "Steam leak mass flow rate";
+  Modelica.Units.SI.MassFlowRate mDri_flow
+    "Drip condensate mass flow rate";
+  Modelica.Units.SI.MassFlowRate mDum_flow
+    "Discharged (not returned) condensate mass flow rate";
+  Modelica.Units.SI.MassFlowRate mMak_flow
+    "Make-up water mass flow rate";
+  Modelica.Units.SI.Volume VMak(start=0, fixed=true)
+    "Cumulative make-up water volume";
+  Modelica.Units.SI.Volume VDum(start=0, fixed=true)
+    "Cumulative discharged condensate volume";
+  Modelica.Units.SI.Mass mLea(start=0, fixed=true)
+    "Cumulative leaked steam mass";
+  Modelica.Units.SI.Energy ELos(start=0, fixed=true)
+    "Cumulative heat loss of the steam supply mains";
+  Modelica.Blocks.Sources.Ramp ram(
+    final height=1,
+    final duration=tLosRam,
+    final startTime=tLosSta)
+    "Ramps the losses in after the plant warm-up";
+  Buildings.Fluid.Sources.MassFlowSource_h sinSte(
+    redeclare final package Medium=MediumSte,
+    final use_m_flow_in=true,
+    final nPorts=1)
+    "Removes the leaked steam and the steam condensed in the supply mains";
+  Buildings.Fluid.Sources.MassFlowSource_T souDri(
+    redeclare final package Medium=MediumWat,
+    final use_m_flow_in=true,
+    final T=TDri,
+    final nPorts=1)
+    "Adds the drip condensate to the condensate return";
+  Buildings.Fluid.Sensors.MassFlowRate senMasRet(
+    redeclare final package Medium=MediumWat)
+    "Condensate mass flow rate arriving at the plant";
+  Buildings.Fluid.Sources.MassFlowSource_T sinDum(
+    redeclare final package Medium=MediumWat,
+    final use_m_flow_in=true,
+    final nPorts=1)
+    "Removes the condensate that is not returned";
+  Buildings.Fluid.Sources.MassFlowSource_T souMak(
+    redeclare final package Medium=MediumWat,
+    final use_m_flow_in=true,
+    final T=TMak,
+    final nPorts=1)
+    "Adds make-up water";
+  Modelica.Blocks.Sources.RealExpression mSteOut_flow(
+    y=-(mLea_flow + mDri_flow))
+    "Steam removed from the supply (negative: out of the system)";
+  Modelica.Blocks.Sources.RealExpression mDriIn_flow(
+    y=mDri_flow)
+    "Drip condensate added to the return";
+  Modelica.Blocks.Sources.RealExpression mDumOut_flow(
+    y=-mDum_flow)
+    "Condensate discharged (negative: out of the system)";
+  Modelica.Blocks.Sources.RealExpression mMakIn_flow(
+    y=mMak_flow)
+    "Make-up water added";
+equation
+  QLos_flow=ram.y*QLos_flow_nominal;
+  mLea_flow=ram.y*mLea_flow_nominal;
+  mDri_flow=ram.y*mDri_flow_nominal;
+  mDum_flow=(1 - fRet)*Buildings.Utilities.Math.Functions.smoothMax(
+    x1=senMasRet.m_flow,
+    x2=0,
+    deltaX=1E-4);
+  mMak_flow=mLea_flow + mDum_flow;
+  der(VMak)=mMak_flow/rhoWat;
+  der(VDum)=mDum_flow/rhoWat;
+  der(mLea)=mLea_flow;
+  der(ELos)=QLos_flow;
+  // Steam side: plant -> network, with the leaked and condensed steam removed in between
+  connect(port_aSte, port_bSte);
+  connect(sinSte.ports[1], port_aSte);
+  connect(mSteOut_flow.y, sinSte.m_flow_in);
+  // Water side: network -> (drip condensate added) -> sensor -> (condensate discharged, make-up added) -> plant
+  connect(souDri.ports[1], port_aWat);
+  connect(mDriIn_flow.y, souDri.m_flow_in);
+  connect(port_aWat, senMasRet.port_a);
+  connect(senMasRet.port_b, port_bWat);
+  connect(sinDum.ports[1], port_bWat);
+  connect(mDumOut_flow.y, sinDum.m_flow_in);
+  connect(souMak.ports[1], port_bWat);
+  connect(mMakIn_flow.y, souMak.m_flow_in);
+  annotation (
+    Documentation(
+      info="<html>
+<p>
+Steam distribution losses, condensate discharge and make-up water for a
+1st-generation (steam) district heating system. The model is placed between the steam
+plant and the steam distribution network
+(<a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\">
+Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a>, which is lossless).
+</p>
+<ul>
+<li>
+<b>Steam leaks</b> (leaks, failed-open steam traps, vents) remove the constant mass flow rate
+<code>mLea_flow_nominal</code> of steam from the supply. The leaked mass is replaced by make-up water.
+</li>
+<li>
+<b>Supply main heat loss</b> <code>QLos_flow_nominal</code> is represented as drip condensate:
+the mass flow rate <code>QLos_flow_nominal/(hSte - hDri)</code> is removed from the steam supply
+and added to the condensate return at <code>TDri</code>. The net energy removed from the system is
+<code>QLos_flow_nominal</code>.
+</li>
+<li>
+<b>Condensate discharge</b>: the fraction <code>1 - fRet</code> of the condensate arriving at the
+plant (building condensate plus drip condensate) is discharged and replaced by make-up water.
+<code>fRet = 0</code> represents a system without condensate return.
+</li>
+<li>
+<b>Make-up water</b> at <code>TMak</code> replaces the leaked steam and the discharged condensate,
+so that the mass of water in the system is conserved. The boiler then heats the make-up water from
+<code>TMak</code>, which is the fuel penalty of the losses.
+</li>
+</ul>
+<p>
+Leaks and heat loss are constant (they do not scale with the building load) and are ramped in
+between <code>tLosSta</code> and <code>tLosSta + tLosRam</code> to avoid disturbing the plant warm-up.
+Cumulative make-up water <code>VMak</code>, discharged condensate <code>VDum</code>,
+leaked steam <code>mLea</code> and heat loss <code>ELos</code> are reported.
+</p>
+<p>
+Assumptions: flash steam at the drip traps is neglected, the building condensate return pumps
+still operate when condensate is discharged (the discharge happens at the plant inlet), and
+boiler blowdown is not included.
+</p>
+</html>",
+      revisions="<html>
+<ul>
+<li>
+October 30, 2026 by Nicholas Long:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
+end SteamLossAndMakeup;

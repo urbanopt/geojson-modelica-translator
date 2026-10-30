@@ -20,6 +20,7 @@ from geojson_modelica_translator.model_connectors.plants import CoolingPlant
 from geojson_modelica_translator.model_connectors.plants.borefield import Borefield
 from geojson_modelica_translator.model_connectors.plants.chp import HeatingPlantWithOptionalCHP
 from geojson_modelica_translator.model_connectors.plants.no_plant_boundary import NoPlantBoundary
+from geojson_modelica_translator.model_connectors.plants.steam_boiler import SteamPlant
 from geojson_modelica_translator.model_connectors.plants.waste_heat import WasteHeat
 from geojson_modelica_translator.modelica.modelica_runner import ModelicaRunner
 from geojson_modelica_translator.system_parameters.system_parameters import SystemParameters
@@ -34,6 +35,16 @@ LOAD_MODEL_TO_CLASS = {
     "time_series": TimeSeries,
     "time_series_massflow_temperature": TimeSeriesMFT,
 }
+
+
+def _parse_first_generation_couplings(sys_params: SystemParameters) -> list[Coupling]:
+    """1st-generation (steam) district couplings.
+
+    The 1G district model instantiates the steam stack (plant -> distribution -> buildings, plus the optional
+    SteamLossAndMakeup component) explicitly in DistrictEnergySystem1G.mot. Only the plant coupling is needed
+    in the coupling graph; the buildings come from the GeoJSON.
+    """
+    return [Coupling(Network2Pipe(sys_params), SteamPlant(sys_params))]
 
 
 def _parse_fourth_generation_couplings(geojson: UrbanOptGeoJson, sys_params: SystemParameters) -> list[Coupling]:
@@ -202,9 +213,12 @@ def _parse_couplings(
 
     :param geojson: UrbanOptGeoJson
     :param sys_params: SystemParameters
-    :param sys_param_district_type: str - type of district ["fourth_generation", "fifth_generation"]
+    :param sys_param_district_type: str - type of district ["first_generation", "fourth_generation", "fifth_generation"]
     :return: list[Coupling], list of couplings to be passed to CouplingGraph
     """
+    if sys_param_district_type == "first_generation":
+        return _parse_first_generation_couplings(sys_params)
+
     if sys_param_district_type == "fourth_generation":
         return _parse_fourth_generation_couplings(geojson, sys_params)
 
@@ -290,7 +304,8 @@ class GeoJsonModelicaTranslator:
         self._root_dir = root_dir
         self._project_name = project_name
         self._coupling_graph = CouplingGraph(self._couplings)
-        if sys_param_district_type == "fifth_generation":
+        if sys_param_district_type in ("first_generation", "fifth_generation"):
+            # 1G and 5G districts generate per-building models from the GeoJSON
             self._district = District(
                 self._root_dir, self._project_name, self._system_parameters, self._coupling_graph, self._geojson
             )

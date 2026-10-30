@@ -1120,6 +1120,47 @@
           "description": "Heating hot water supply temperature setpoint for ETS (degrees Celsius)",
           "type": "number",
           "default": 100
+        },
+        "steam_leak_fraction": {
+          "description": "Steam leaks, failed-open steam traps and vents, as a fraction of the district nominal steam mass flow rate (mDis_flow_nominal). The leak is constant whenever the system is pressurized (it does not scale with load). The leaked mass is replaced by make-up water at the plant. Default 0 (no leaks).",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "distribution_heat_loss_fraction": {
+          "description": "Heat loss of the steam supply mains as a fraction of the district nominal heat flow rate (QDis_flow_nominal). The loss is constant whenever the system is pressurized. It is modeled as drip condensate formed in the mains, which is removed from the steam and returned with the condensate. Default 0 (no heat loss).",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "condensate_return_fraction": {
+          "description": "Fraction of the condensate (building condensate plus drip condensate) returned to the plant. The rest is discharged (for example, to the sewer) and replaced by make-up water. 1 = full return, 0 = no condensate return. Default 1.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "makeup_water_temperature": {
+          "description": "Temperature of the make-up (city) water supplied to the plant (degrees Celsius).",
+          "type": "number",
+          "default": 12
+        },
+        "drip_condensate_temperature": {
+          "description": "Temperature of the drip condensate formed by the supply-main heat loss when it joins the condensate return (degrees Celsius).",
+          "type": "number",
+          "default": 100
+        },
+        "loss_start_time": {
+          "description": "Simulation time at which steam losses start to ramp in, in seconds. Delaying the losses until after the boiler warm-up improves initialization.",
+          "type": "number",
+          "default": 3600
+        },
+        "loss_ramp_duration": {
+          "description": "Duration of the ramp that brings the steam losses from zero to their full value, in seconds.",
+          "type": "number",
+          "default": 3600
         }
       }
     },

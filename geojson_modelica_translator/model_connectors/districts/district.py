@@ -4,6 +4,7 @@
 import logging
 import shutil
 from pathlib import Path
+from typing import ClassVar
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
@@ -239,6 +240,44 @@ class District:
         # Ensure package.order files include all generated local models/subpackages.
         normalize_package_orders_recursively(self._scaffold.project_path)
 
+    # Defaults for the optional steam loss parameters (match system_parameter_properties.json)
+    STEAM_LOSS_DEFAULTS: ClassVar[dict[str, float]] = {
+        "steam_leak_fraction": 0.0,
+        "distribution_heat_loss_fraction": 0.0,
+        "condensate_return_fraction": 1.0,
+        "makeup_water_temperature": 12.0,
+        "drip_condensate_temperature": 100.0,
+        "loss_start_time": 3600.0,
+        "loss_ramp_duration": 3600.0,
+    }
+
+    def _first_generation_steam_losses(self, steam_params_path: str) -> dict:
+        """Read the optional steam loss parameters for a 1G district.
+
+        The SteamLossAndMakeup component is only added when there is a leak, a supply-main heat loss, or
+        condensate that is not returned. Otherwise the generated model is unchanged.
+
+        :param steam_params_path: str, JSON path of central_steam_plant_parameters
+        :return: dict, loss parameters plus "enabled"
+        """
+        losses = {}
+        for key, default in self.STEAM_LOSS_DEFAULTS.items():
+            value = self.system_parameters.get_param(f"{steam_params_path}.{key}")
+            losses[key] = float(default if value is None else value)
+
+        for key in ["steam_leak_fraction", "distribution_heat_loss_fraction", "condensate_return_fraction"]:
+            if not 0.0 <= losses[key] <= 1.0:
+                raise ValueError(f"{key} must be between 0 and 1, got {losses[key]}")
+        if losses["loss_ramp_duration"] <= 0:
+            raise ValueError("loss_ramp_duration must be greater than 0")
+
+        losses["enabled"] = (
+            losses["steam_leak_fraction"] > 0
+            or losses["distribution_heat_loss_fraction"] > 0
+            or losses["condensate_return_fraction"] < 1
+        )
+        return losses
+
     def _to_modelica_first_generation(self, district_system_params):
         """Generate modelica files for a 1st-generation (steam) district system.
 
@@ -311,6 +350,15 @@ class District:
             or 1.2,
         }
 
+        # Optional steam losses / condensate discharge / make-up water between the plant and the network
+        steam_losses = self._first_generation_steam_losses(steam_params_path)
+        if steam_losses["enabled"]:
+            networks_dir = Path(self._scaffold.networks_path.files_dir)
+            networks_dir.mkdir(parents=True, exist_ok=True)
+            with open(networks_dir / "SteamLossAndMakeup.mo", "w") as f:
+                f.write(render_template("SteamLossAndMakeup.mot", {"project_name": self._scaffold.project_name}))
+            self._scaffold.package.networks.add_model("SteamLossAndMakeup", create_subpackage=False)
+
         # Generate the district energy system model with explicit instantiations
         first_gen_params = {
             "district_within_path": ".".join([self._scaffold.project_name, "Districts"]),
@@ -319,6 +367,7 @@ class District:
             "steam_buildings": steam_buildings,
             "couplings": self._coupling_graph.couplings,
             "steam": steam,
+            "steam_losses": steam_losses,
             "globals": {
                 "project_name": self._scaffold.project_name,
             },

@@ -73,13 +73,34 @@ model DistrictEnergySystem
     kPum={{ steam.pump_control_gain }},
     TiPum={{ steam.pump_control_time_constant }})
     "Central steam plant";
+{% if steam_losses.enabled %}
+  Networks.SteamLossAndMakeup losMak(
+    redeclare final package MediumSte = MediumSte,
+    redeclare final package MediumWat = MediumWat,
+    final pSte=pSat,
+    final mLea_flow_nominal={{ steam_losses.steam_leak_fraction }}*mDis_flow_nominal,
+    final QLos_flow_nominal={{ steam_losses.distribution_heat_loss_fraction }}*QDis_flow_nominal,
+    final fRet={{ steam_losses.condensate_return_fraction }},
+    final TMak=273.15 + {{ steam_losses.makeup_water_temperature }},
+    final TDri=273.15 + {{ steam_losses.drip_condensate_temperature }},
+    final tLosSta={{ steam_losses.loss_start_time }},
+    final tLosRam={{ steam_losses.loss_ramp_duration }})
+    "Steam leaks, supply main heat loss, condensate discharge and make-up water";
+{% endif %}
 equation
 {% for b in steam_buildings %}
   connect(dis.ports_bCon[{{ loop.index }}], {{ b.instance }}.port_a);
   connect({{ b.instance }}.port_b, dis.ports_aCon[{{ loop.index }}]);
 {% endfor %}
+{% if steam_losses.enabled %}
+  connect(pla.port_bSerHea, losMak.port_aSte);
+  connect(losMak.port_bSte, dis.port_aDisSup);
+  connect(dis.port_bDisRet, losMak.port_aWat);
+  connect(losMak.port_bWat, pla.port_aSerHea);
+{% else %}
   connect(pla.port_bSerHea, dis.port_aDisSup);
   connect(dis.port_bDisRet, pla.port_aSerHea);
+{% endif %}
   annotation (
     experiment(
       StopTime=86400,
@@ -112,6 +133,11 @@ The connections wire plant &rarr; distribution &rarr; buildings:
 </html>",
       revisions="<html>
 <ul>
+<li>
+October 30, 2026 by Nicholas Long:<br/>
+Added optional steam leaks, supply main heat loss, condensate discharge and make-up water
+(<code>Networks.SteamLossAndMakeup losMak</code>) between the plant and the distribution network.
+</li>
 <li>
 July 13, 2026 by Nicholas Long:<br/>
 Decomposed the 1st-generation steam district into explicit plant, distribution network,

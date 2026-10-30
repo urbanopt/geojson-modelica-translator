@@ -9,7 +9,7 @@ As an aside, 5GDHC systems also require a `loop_order` JSON file, which is autom
 
 First-generation systems are represented as `district_system.first_generation` in the system parameters and are created from the CLI using `district_type=steam` in `uo_des build-sys-param`.
 
-Current scope for first-generation steam is district heating only. GMT does not currently generate district cooling equipment or a district cooling loop for this mode.
+Current scope for first-generation steam is district heating only (with optional steam losses, see below). GMT does not currently generate district cooling equipment or a district cooling loop for this mode.
 
 ### Generated architecture
 
@@ -36,6 +36,22 @@ All steam parameters live under `district_system.first_generation.central_steam_
 - `distribution_flow_safety_factor` — oversizing multiplier applied to the sum of building nominal flows when sizing the district nominal mass flow rate.
 - `minimum_load_fraction` — minimum (standby) building heating load as a fraction of the building peak load. Because the MBL steam pressure reducing valve and condensate pump are not numerically well posed at exactly zero steam flow, GMT maintains this minimum standby load so the district simulates through overnight/low-demand hours. Set it lower for a smaller standby load; a value of `0` is not recommended.
 - `number_of_boilers` — informational only. The current plant model is single-boiler, so this value does not change the generated model.
+
+### Steam losses, condensate return and make-up water
+
+The MBL steam distribution network (`DistributionCondensatePipe`) is lossless, and the MBL steam plant is a closed loop with no make-up water. GMT can add `Networks.SteamLossAndMakeup` (instance `losMak`) between the plant and the network to represent:
+
+- `steam_leak_fraction`: steam leaks, failed-open steam traps and vents, as a fraction of the district nominal steam mass flow rate (`mDis_flow_nominal`, `kg/s`). The leak is a **constant** flow whenever the system is pressurized, not a fraction of the instantaneous flow.
+- `distribution_heat_loss_fraction`: heat loss of the steam supply mains, as a fraction of the district nominal heat flow rate (`QDis_flow_nominal`, `W`). It is also **constant**. It is modeled as drip condensate (`QLos_flow / (hSte - hDri)`, `kg/s`) that is removed from the steam supply and added to the condensate return at `drip_condensate_temperature` (`degC`, default `100`), so the net energy removed is the heat loss.
+- `condensate_return_fraction`: fraction of the condensate arriving at the plant (building plus drip condensate) that is returned. `1` (default) is full return and `0` is no condensate return. The rest is discharged.
+- `makeup_water_temperature`: city water temperature in `degC` (default `12`). Make-up water replaces the leaked steam and the discharged condensate, so the water mass in the system is conserved and the boiler pays the penalty of heating the make-up water.
+- `loss_start_time` / `loss_ramp_duration`: the losses ramp in from zero after the plant warm-up (defaults `3600` s each).
+
+The component is only generated when there is a leak, a heat loss, or condensate that is not returned. Otherwise the plant connects directly to the network, as before. `losMak` reports `QLos_flow` (`W`), `mLea_flow`, `mDri_flow`, `mDum_flow` and `mMak_flow` (`kg/s`), and the cumulative `ELos` (`J`), `mLea` (`kg`), `VMak` and `VDum` (`m^3`).
+
+Because the leak and heat loss are constant fractions of the **nominal** values, the resulting annual shares depend on the load factor of the district. To target annual shares from the literature (for example, a 10% annual leak share), calibrate the fractions from a lossless run. URBANopt DES provides `urbanopt_des.steam_results.steam_loss_parameters` for this.
+
+Assumptions: flash steam at the drip traps is neglected, the building condensate return pumps still run when condensate is discharged (the discharge is at the plant inlet), and boiler blowdown is not included.
 
 ## 5GDHC without a ground heat exchanger
 
