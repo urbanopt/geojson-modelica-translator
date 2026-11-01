@@ -20,34 +20,20 @@ model SteamBoiler
       a={{ data["nominal_values"]["boiler_efficiency"] }}));
   annotation (
     Documentation(
-      info="<html>
-<p>
-Steam plant component for 1st-generation (steam) district heating systems. It wraps
-<a href=\"modelica://Buildings.DHC.Plants.Steam.SingleBoiler\">
-Buildings.DHC.Plants.Steam.SingleBoiler</a> and constrains the boiler efficiency curve
-coefficient to <code>boiler_efficiency</code> from
-<code>district_system.first_generation.central_steam_plant_parameters</code>.
-</p>
-<p>
-The plant exposes the heating service ports (<code>port_aSerHea</code> condensate return,
-<code>port_bSerHea</code> steam supply) inherited from the plant base class so it can be
-connected to a
-<a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\">
-Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a> distribution network in the
-district model.
-</p>
-</html>",
-      revisions="<html>
-<ul>
-<li>
-July 13, 2026 by Nicholas Long:<br/>
-Refactored SteamBoiler to wrap the plant-only Buildings.DHC.Plants.Steam.SingleBoiler so
-the district model can explicitly connect plant &rarr; distribution &rarr; buildings.
-</li>
-<li>
-February 01, 2024 by Zhanwei He:<br/>
-First implementation.
-</li>
-</ul>
-</html>"));
+      info="
+        <html>
+          <p>Steam plant component for 1st-generation (steam) district heating systems. It wraps <a href=\"modelica://Buildings.DHC.Plants.Steam.SingleBoiler\"> Buildings.DHC.Plants.Steam.SingleBoiler</a> and constrains the boiler efficiency curve coefficient to <code>boiler_efficiency</code> from <code>district_system.first_generation.central_steam_plant_parameters</code>.</p>
+          <p>The plant exposes the heating service ports (<code>port_aSerHea</code> condensate return, <code>port_bSerHea</code> steam supply) inherited from the plant base class so it can be connected to a <a href=\"modelica://Buildings.DHC.Networks.Steam.DistributionCondensatePipe\"> Buildings.DHC.Networks.Steam.DistributionCondensatePipe</a> distribution network in the district model.</p>
+        </html>",
+      revisions="
+        <html>
+          <ul>
+            <li>
+              July 13, 2026 by Nicholas Long:<br/> Refactored SteamBoiler to wrap the plant-only Buildings.DHC.Plants.Steam.SingleBoiler so the district model can explicitly connect plant &rarr; distribution &rarr; buildings.
+            </li>
+            <li>
+              February 01, 2024 by Zhanwei He:<br/> First implementation.
+            </li>
+          </ul>
+        </html>"));
 end SteamBoiler;
