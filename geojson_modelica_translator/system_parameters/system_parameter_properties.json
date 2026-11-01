@@ -1112,9 +1112,15 @@
           "default": 1.2
         },
         "minimum_load_fraction": {
-          "description": "Minimum (standby) building heating load as a fraction of the building peak load. Maintains a minimum steam flow so the pressure reducing valve and condensate pump remain numerically well posed when the time-series demand drops to zero.",
+          "description": "Minimum (standby) building heating load as a fraction of the building peak load. Applied as a floor on the hourly space heating load (lower hours are raised to it). Maintains a minimum steam flow so the pressure reducing valve and condensate pump remain numerically well posed when the time-series demand drops to zero.",
           "type": "number",
           "default": 0.02
+        },
+        "max_step_size": {
+          "description": "Maximum OpenModelica solver step, in seconds (written as __OpenModelica_simulationFlags(maxStepSize) in the district model). Without it the solver can take steps of days at low load and step over hourly load changes, so the plant stops following the load.",
+          "type": "number",
+          "minimum": 1,
+          "default": 900
         },
         "temp_setpoint_hhw": {
           "description": "Heating hot water supply temperature setpoint for ETS (degrees Celsius)",
@@ -1146,6 +1152,11 @@
           "description": "Temperature of the make-up (city) water supplied to the plant (degrees Celsius).",
           "type": "number",
           "default": 12
+        },
+        "sewer_discharge_temperature_limit": {
+          "description": "Maximum temperature of water discharged to the sewer (degrees Celsius). Discharged condensate above this temperature is tempered with make-up (city) water, which is reported as tempering water.",
+          "type": "number",
+          "default": 60
         },
         "drip_condensate_temperature": {
           "description": "Temperature of the drip condensate formed by the supply-main heat loss when it joins the condensate return (degrees Celsius).",

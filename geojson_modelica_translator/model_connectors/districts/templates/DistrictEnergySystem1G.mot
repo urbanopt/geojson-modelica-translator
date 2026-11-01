@@ -82,6 +82,7 @@ model DistrictEnergySystem
     final QLos_flow_nominal={{ steam_losses.distribution_heat_loss_fraction }}*QDis_flow_nominal,
     final fRet={{ steam_losses.condensate_return_fraction }},
     final TMak=273.15 + {{ steam_losses.makeup_water_temperature }},
+    final TSewMax=273.15 + {{ steam_losses.sewer_discharge_temperature_limit }},
     final TDri=273.15 + {{ steam_losses.drip_condensate_temperature }},
     final tLosSta={{ steam_losses.loss_start_time }},
     final tLosRam={{ steam_losses.loss_ramp_duration }})
@@ -105,6 +106,8 @@ equation
     experiment(
       StopTime=86400,
       Tolerance=1e-06),
+    __OpenModelica_simulationFlags(
+      maxStepSize="{{ steam.max_step_size }}"),
     Documentation(
       info="<html>
 <p>
@@ -133,6 +136,12 @@ The connections wire plant &rarr; distribution &rarr; buildings:
 </html>",
       revisions="<html>
 <ul>
+<li>
+October 30, 2026 by Nicholas Long:<br/>
+Limited the OpenModelica solver step size (<code>maxStepSize</code>). Without it, DASSL took steps
+of days at low load and stepped over the hourly load changes, so the plant and condensate pump
+stopped following the load.
+</li>
 <li>
 October 30, 2026 by Nicholas Long:<br/>
 Added optional steam leaks, supply main heat loss, condensate discharge and make-up water

@@ -19,6 +19,8 @@ model SteamLossAndMakeup
     "Make-up water temperature";
   parameter Modelica.Units.SI.Temperature TDri=373.15
     "Temperature of the drip condensate formed by the supply main heat loss";
+  parameter Modelica.Units.SI.Temperature TSewMax=333.15
+    "Maximum temperature of water discharged to the sewer (discharged condensate is tempered with city water at TMak)";
   parameter Modelica.Units.SI.Time tLosSta=3600
     "Time at which the losses start to ramp in";
   parameter Modelica.Units.SI.Time tLosRam(min=1)=3600
@@ -61,10 +63,18 @@ model SteamLossAndMakeup
     "Discharged (not returned) condensate mass flow rate";
   Modelica.Units.SI.MassFlowRate mMak_flow
     "Make-up water mass flow rate";
+  Modelica.Units.SI.Temperature TDum
+    "Temperature of the discharged condensate";
+  Modelica.Units.SI.MassFlowRate mTem_flow
+    "City water mass flow rate that tempers the discharged condensate to TSewMax";
   Modelica.Units.SI.Volume VMak(start=0, fixed=true)
     "Cumulative make-up water volume";
   Modelica.Units.SI.Volume VDum(start=0, fixed=true)
     "Cumulative discharged condensate volume";
+  Modelica.Units.SI.Volume VTem(start=0, fixed=true)
+    "Cumulative city water volume used to temper the discharged condensate";
+  Modelica.Units.SI.Volume VWat(start=0, fixed=true)
+    "Cumulative water use (make-up plus tempering water)";
   Modelica.Units.SI.Mass mLea(start=0, fixed=true)
     "Cumulative leaked steam mass";
   Modelica.Units.SI.Energy ELos(start=0, fixed=true)
@@ -93,6 +103,9 @@ model SteamLossAndMakeup
     final use_m_flow_in=true,
     final nPorts=1)
     "Removes the condensate that is not returned";
+  Buildings.Fluid.Sensors.MassFlowRate senMasDis(
+    redeclare final package Medium=MediumWat)
+    "Separates the condensate discharge from the make-up water injection, so that only condensate is discharged";
   Buildings.Fluid.Sources.MassFlowSource_T souMak(
     redeclare final package Medium=MediumWat,
     final use_m_flow_in=true,
@@ -120,6 +133,17 @@ equation
     x2=0,
     deltaX=1E-4);
   mMak_flow=mLea_flow + mDum_flow;
+  TDum=MediumWat.temperature(
+    MediumWat.setState_phX(
+      p=port_bWat.p,
+      h=inStream(sinDum.ports[1].h_outflow),
+      X=MediumWat.X_default));
+  mTem_flow=mDum_flow*Buildings.Utilities.Math.Functions.smoothMax(
+    x1=(TDum - TSewMax)/(TSewMax - TMak),
+    x2=0,
+    deltaX=1E-3);
+  der(VTem)=mTem_flow/rhoWat;
+  der(VWat)=(mMak_flow + mTem_flow)/rhoWat;
   der(VMak)=mMak_flow/rhoWat;
   der(VDum)=mDum_flow/rhoWat;
   der(mLea)=mLea_flow;
@@ -128,12 +152,14 @@ equation
   connect(port_aSte, port_bSte);
   connect(sinSte.ports[1], port_aSte);
   connect(mSteOut_flow.y, sinSte.m_flow_in);
-  // Water side: network -> (drip condensate added) -> sensor -> (condensate discharged, make-up added) -> plant
+  // Water side: network -> (drip condensate added) -> sensor -> condensate discharged -> sensor -> make-up added -> plant.
+  // The second sensor keeps the cold make-up water from mixing into the discharged condensate.
   connect(souDri.ports[1], port_aWat);
   connect(mDriIn_flow.y, souDri.m_flow_in);
   connect(port_aWat, senMasRet.port_a);
-  connect(senMasRet.port_b, port_bWat);
-  connect(sinDum.ports[1], port_bWat);
+  connect(senMasRet.port_b, senMasDis.port_a);
+  connect(sinDum.ports[1], senMasDis.port_a);
+  connect(senMasDis.port_b, port_bWat);
   connect(mDumOut_flow.y, sinDum.m_flow_in);
   connect(souMak.ports[1], port_bWat);
   connect(mMakIn_flow.y, souMak.m_flow_in);
@@ -166,13 +192,20 @@ plant (building condensate plus drip condensate) is discharged and replaced by m
 <li>
 <b>Make-up water</b> at <code>TMak</code> replaces the leaked steam and the discharged condensate,
 so that the mass of water in the system is conserved. The boiler then heats the make-up water from
-<code>TMak</code>, which is the fuel penalty of the losses.
+<code>TMak</code>, which is the fuel penalty of the losses. The make-up water is added downstream of the
+discharge, so only condensate (at <code>TDum</code>) is discharged.
+</li>
+<li>
+<b>Sewer tempering water</b>: discharged condensate above <code>TSewMax</code> is cooled with city water
+at <code>TMak</code> before it goes to the sewer. The tempering water mass flow rate is
+<code>mDum_flow (TDum - TSewMax)/(TSewMax - TMak)</code>.
 </li>
 </ul>
 <p>
 Leaks and heat loss are constant (they do not scale with the building load) and are ramped in
 between <code>tLosSta</code> and <code>tLosSta + tLosRam</code> to avoid disturbing the plant warm-up.
 Cumulative make-up water <code>VMak</code>, discharged condensate <code>VDum</code>,
+tempering water <code>VTem</code>, total water use <code>VWat = VMak + VTem</code>,
 leaked steam <code>mLea</code> and heat loss <code>ELos</code> are reported.
 </p>
 <p>
@@ -183,6 +216,10 @@ boiler blowdown is not included.
 </html>",
       revisions="<html>
 <ul>
+<li>
+November 1, 2026 by Nicholas Long:<br/>
+Discharged condensate no longer mixes with the make-up water. Added sewer tempering water.
+</li>
 <li>
 October 30, 2026 by Nicholas Long:<br/>
 First implementation.

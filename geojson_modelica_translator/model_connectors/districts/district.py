@@ -246,6 +246,7 @@ class District:
         "distribution_heat_loss_fraction": 0.0,
         "condensate_return_fraction": 1.0,
         "makeup_water_temperature": 12.0,
+        "sewer_discharge_temperature_limit": 60.0,
         "drip_condensate_temperature": 100.0,
         "loss_start_time": 3600.0,
         "loss_ramp_duration": 3600.0,
@@ -268,6 +269,8 @@ class District:
         for key in ["steam_leak_fraction", "distribution_heat_loss_fraction", "condensate_return_fraction"]:
             if not 0.0 <= losses[key] <= 1.0:
                 raise ValueError(f"{key} must be between 0 and 1, got {losses[key]}")
+        if losses["sewer_discharge_temperature_limit"] <= losses["makeup_water_temperature"]:
+            raise ValueError("sewer_discharge_temperature_limit must be above makeup_water_temperature")
         if losses["loss_ramp_duration"] <= 0:
             raise ValueError("loss_ramp_duration must be greater than 0")
 
@@ -348,6 +351,9 @@ class District:
                 f"{steam_params_path}.distribution_flow_safety_factor"
             )
             or 1.2,
+            # Maximum solver step (s). The steam plant and ETS respond to hourly load changes that DASSL can
+            # otherwise step over at low load (days-long steps), leaving the plant stuck at the standby load.
+            "max_step_size": self.system_parameters.get_param(f"{steam_params_path}.max_step_size") or 900,
         }
 
         # Optional steam losses / condensate discharge / make-up water between the plant and the network

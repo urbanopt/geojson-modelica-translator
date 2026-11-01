@@ -570,10 +570,20 @@ Sizing notes:
 
 3. **Minimum standby load.** The MBL steam pressure reducing valve and
    condensate pump are not numerically well posed at exactly zero steam flow.
-   GMT therefore maintains a minimum standby load of
-   `minimum_load_fraction × building_peak_load` so the model simulates through
-   overnight/low-demand hours. Lower it for a smaller standby load; `0` is not
-   recommended.
+   GMT therefore applies a minimum standby load of
+   `minimum_load_fraction × building_peak_load` as a **floor**: when GMT copies
+   the building `.mos` file into the model, every hour with a lower space heating
+   load is raised to the standby load, and hours above it are unchanged. The
+   annual heat served therefore only grows by the standby load during low-load
+   hours. (Earlier versions added the standby load to every hour, which raised
+   the annual heat by `minimum_load_fraction × peak × 8760 h`.) Lower it for a
+   smaller standby load; `0` is not recommended.
 
-4. **Single boiler.** The current plant model is single-boiler. `number_of_boilers`
+4. **Solver step size.** The generated district sets
+   `__OpenModelica_simulationFlags(maxStepSize=...)` from `max_step_size`
+   (default `900` s). Without it, the solver can step over the hourly load
+   changes during long low-load periods and the plant stops following the
+   load. Keep it at or below the load time step (3600 s).
+
+5. **Single boiler.** The current plant model is single-boiler. `number_of_boilers`
    is carried for documentation but does not change the generated model.

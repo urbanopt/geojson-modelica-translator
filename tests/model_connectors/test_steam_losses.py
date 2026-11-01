@@ -174,4 +174,9 @@ class SteamLossesSimulationTest(TestCaseBase):
         assert last("losMak.mLea") == pytest.approx(last("losMak.mLea_flow_nominal") * effective_seconds, rel=1e-2)
         # condensate is discharged (fRet = 0.94) and make-up water is used
         assert last("losMak.VDum") > 0
+        # discharged condensate is not mixed with make-up water, so it leaves near the building condensate temperature
+        assert last("losMak.TDum") > last("losMak.TSewMax")
+        # tempering water cools the discharge to TSewMax with city water at TMak
+        assert last("losMak.VTem") > 0
+        assert last("losMak.VWat") == pytest.approx(last("losMak.VMak") + last("losMak.VTem"), rel=1e-3)
         assert re.fullmatch(r"0\.94\d*", f"{last('losMak.fRet')}")
